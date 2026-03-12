@@ -1,0 +1,20 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F172A"/>
+      <stop offset="1" stop-color="#1E1B4B"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(780 220) rotate(140.28) scale(529.249 686.02)">
+      <stop stop-color="#5F72FF" stop-opacity="0.6"/>
+      <stop offset="1" stop-color="#5F72FF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <rect x="72" y="82" width="240" height="74" rx="37" fill="#5F72FF" fill-opacity="0.18" stroke="#AEBFFF" stroke-opacity="0.6"/>
+  <text x="106" y="128" fill="#DDE4FF" font-family="Arial, sans-serif" font-size="30" font-weight="700">SEEDANCE 3.0</text>
+  <text x="72" y="270" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="68" font-weight="700">Multi-Modal AI Video Generator</text>
+  <text x="72" y="338" fill="#CBD5E1" font-family="Arial, sans-serif" font-size="30" font-weight="500">Reference any asset, direct every scene, generate cinematic videos fast</text>
+  <rect x="72" y="420" width="360" height="90" rx="20" fill="#5F72FF"/>
+  <text x="132" y="476" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="38" font-weight="700">seedance3-pro.com</text>
+</svg>
