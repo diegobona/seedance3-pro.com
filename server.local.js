@@ -72,6 +72,38 @@ app.get("/api/job/:id", (req, res) => {
   res.json({ success: true, job });
 });
 
+app.get("/api/posts", async (_req, res) => {
+  try {
+    const posts = await listPublishedPosts();
+    res.json({ success: true, posts });
+  } catch (error) {
+    res.status(500).json({ success: false, message: String(error?.message || error || "Failed to load posts") });
+  }
+});
+
+app.post("/api/delete-post", async (req, res) => {
+  const fileName = String(req.body.fileName || "").trim();
+  if (!fileName || !/\.html$/i.test(fileName)) {
+    res.status(400).json({ success: false, message: "Invalid fileName." });
+    return;
+  }
+  const jobId = crypto.randomUUID();
+  jobs.set(jobId, {
+    id: jobId,
+    status: "pending",
+    attempts: 0,
+    lastError: "",
+    output: null
+  });
+  deletePostJob(jobId, { fileName }).catch(() => {});
+  res.status(202).json({
+    success: true,
+    queued: true,
+    jobId,
+    message: "Delete job created. It will keep retrying until success."
+  });
+});
+
 async function publishJob(jobId, payload) {
   const job = jobs.get(jobId);
   if (!job) return;
@@ -114,6 +146,42 @@ async function publishJob(jobId, payload) {
     job.status = "pending";
     job.lastError = String(error?.message || error || "Unknown error");
     setTimeout(() => publishJob(jobId, payload), 5000);
+  }
+}
+
+async function deletePostJob(jobId, payload) {
+  const job = jobs.get(jobId);
+  if (!job) return;
+  job.status = "running";
+  job.attempts += 1;
+
+  try {
+    const fileName = payload.fileName;
+    const articlePath = path.join(ROOT_DIR, fileName);
+    try {
+      await fs.unlink(articlePath);
+    } catch {
+    }
+
+    await removeBlogCardByFileName(fileName);
+    await removeSitemapByFileName(fileName);
+
+    const branch = (await runGit(["rev-parse", "--abbrev-ref", "HEAD"])).stdout.trim() || "main";
+    await runGit(["add", "."]);
+    const slugBase = fileName.replace(/\.html$/i, "");
+    const commitResult = await runGit(["commit", "-m", `feat-blog-delete-${slugBase}`], true);
+    if (!commitResult.ok && !/nothing to commit|no changes added/i.test(commitResult.stderr)) {
+      throw new Error(commitResult.stderr || commitResult.stdout || "Git commit failed");
+    }
+    await pushWithRetry(branch, job);
+
+    job.status = "success";
+    job.lastError = "";
+    job.output = { deleted: fileName };
+  } catch (error) {
+    job.status = "pending";
+    job.lastError = String(error?.message || error || "Unknown error");
+    setTimeout(() => deletePostJob(jobId, payload), 5000);
   }
 }
 
@@ -172,6 +240,60 @@ async function upsertSitemap({ fileName }) {
   </url>`;
   sitemap = sitemap.replace("</urlset>", `${entry}\n</urlset>`);
   await fs.writeFile(SITEMAP_PATH, sitemap, "utf8");
+}
+
+async function removeBlogCardByFileName(fileName) {
+  const html = await fs.readFile(BLOG_HTML_PATH, "utf8");
+  const startTag = "<!-- BLOG_POSTS_START -->";
+  const endTag = "<!-- BLOG_POSTS_END -->";
+  const startIndex = html.indexOf(startTag);
+  const endIndex = html.indexOf(endTag);
+  if (startIndex === -1 || endIndex === -1 || endIndex < startIndex) {
+    throw new Error("Blog marker block is missing in blog.html.");
+  }
+  const blockStart = startIndex + startTag.length;
+  const before = html.slice(0, blockStart);
+  const middle = html.slice(blockStart, endIndex);
+  const after = html.slice(endIndex);
+  const cards = middle.match(/<article[\s\S]*?<\/article>/g) || [];
+  const filtered = cards.filter((card) => !card.includes(`href="./${fileName}"`));
+  const newMiddle = `\n${filtered.join("\n\n")}\n`;
+  await fs.writeFile(BLOG_HTML_PATH, `${before}${newMiddle}${after}`, "utf8");
+}
+
+async function removeSitemapByFileName(fileName) {
+  const sitemap = await fs.readFile(SITEMAP_PATH, "utf8");
+  const loc = `https://seedance3-pro.com/${fileName}`;
+  const blocks = sitemap.match(/<url>[\s\S]*?<\/url>/g) || [];
+  const kept = blocks.filter((block) => !block.includes(`<loc>${loc}</loc>`));
+  const output = `${sitemap.slice(0, sitemap.indexOf("<url>"))}${kept.join("\n")}\n</urlset>\n`;
+  await fs.writeFile(SITEMAP_PATH, output, "utf8");
+}
+
+async function listPublishedPosts() {
+  const html = await fs.readFile(BLOG_HTML_PATH, "utf8");
+  const startTag = "<!-- BLOG_POSTS_START -->";
+  const endTag = "<!-- BLOG_POSTS_END -->";
+  const startIndex = html.indexOf(startTag);
+  const endIndex = html.indexOf(endTag);
+  if (startIndex === -1 || endIndex === -1 || endIndex < startIndex) {
+    throw new Error("Blog marker block is missing in blog.html.");
+  }
+  const middle = html.slice(startIndex + startTag.length, endIndex);
+  const cards = middle.match(/<article[\s\S]*?<\/article>/g) || [];
+  return cards.map((card, idx) => {
+    const hrefMatch = card.match(/href="\.\/([^"]+\.html)"/i);
+    const titleMatch = card.match(/<h2[^>]*>([\s\S]*?)<\/h2>/i);
+    const excerptMatch = card.match(/<p class="mt-3 text-sm leading-7 text-slate-300">([\s\S]*?)<\/p>/i);
+    const categoryMatch = card.match(/<p class="text-xs font-medium uppercase tracking-wide text-indigo-200">([\s\S]*?)<\/p>/i);
+    return {
+      id: `${idx}-${hrefMatch ? hrefMatch[1] : "unknown"}`,
+      fileName: hrefMatch ? hrefMatch[1].trim() : "",
+      title: titleMatch ? stripHtml(titleMatch[1]) : "",
+      excerpt: excerptMatch ? stripHtml(excerptMatch[1]) : "",
+      category: categoryMatch ? stripHtml(categoryMatch[1]) : ""
+    };
+  }).filter((item) => item.fileName);
 }
 
 function buildArticleHtml({ title, excerpt, category, content, canonical }) {
@@ -294,6 +416,10 @@ function escapeHtml(input) {
     .replaceAll(">", "&gt;")
     .replaceAll("\"", "&quot;")
     .replaceAll("'", "&#39;");
+}
+
+function stripHtml(input) {
+  return String(input || "").replace(/<[^>]+>/g, "").trim();
 }
 
 async function ensureDir(dirPath) {
