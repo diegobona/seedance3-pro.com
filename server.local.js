@@ -1,0 +1,332 @@
+import express from "express";
+import multer from "multer";
+import fs from "fs/promises";
+import path from "path";
+import { spawn } from "child_process";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const app = express();
+const ROOT_DIR = __dirname;
+const BLOG_ASSETS_DIR = path.join(ROOT_DIR, "blog-assets");
+const BLOG_HTML_PATH = path.join(ROOT_DIR, "blog.html");
+const SITEMAP_PATH = path.join(ROOT_DIR, "sitemap.xml");
+const jobs = new Map();
+
+app.use(express.json({ limit: "20mb" }));
+app.use(express.urlencoded({ extended: true, limit: "20mb" }));
+app.use(express.static(ROOT_DIR, { extensions: ["html"] }));
+
+const upload = multer({ storage: multer.memoryStorage() });
+
+app.get("/admin", (_req, res) => {
+  res.sendFile(path.join(ROOT_DIR, "admin", "index.html"));
+});
+
+app.post("/api/upload-images", upload.array("images", 12), (req, res) => {
+  const files = req.files || [];
+  const result = files.map((file) => ({
+    name: file.originalname,
+    dataUrl: `data:${file.mimetype || "image/png"};base64,${file.buffer.toString("base64")}`
+  }));
+  res.json({ success: true, files: result });
+});
+
+app.post("/api/publish", async (req, res) => {
+  const title = String(req.body.title || "").trim();
+  const excerpt = String(req.body.excerpt || "").trim();
+  const content = String(req.body.content || "").trim();
+  const category = String(req.body.category || "Tutorial").trim();
+
+  if (!title || !content) {
+    res.status(400).json({ success: false, message: "Title and content are required." });
+    return;
+  }
+
+  const jobId = crypto.randomUUID();
+  jobs.set(jobId, {
+    id: jobId,
+    status: "pending",
+    attempts: 0,
+    lastError: "",
+    output: null
+  });
+
+  publishJob(jobId, { title, excerpt, content, category }).catch(() => {});
+  res.status(202).json({
+    success: true,
+    queued: true,
+    jobId,
+    message: "Publish job created. It will keep retrying until success."
+  });
+});
+
+app.get("/api/job/:id", (req, res) => {
+  const job = jobs.get(req.params.id);
+  if (!job) {
+    res.status(404).json({ success: false, message: "Job not found." });
+    return;
+  }
+  res.json({ success: true, job });
+});
+
+async function publishJob(jobId, payload) {
+  const job = jobs.get(jobId);
+  if (!job) return;
+  job.status = "running";
+  job.attempts += 1;
+
+  try {
+    await ensureDir(BLOG_ASSETS_DIR);
+    const slugBase = payload.slugBase || (slugify(payload.title) || `post-${Date.now()}`);
+    payload.slugBase = slugBase;
+    const fileName = payload.fileName || await resolveUniqueHtmlFileName(slugBase);
+    payload.fileName = fileName;
+    const articleUrl = `https://seedance3-pro.com/${fileName}`;
+
+    const imageRes = await materializeInlineImages(payload.content, slugBase);
+    const articleHtml = buildArticleHtml({
+      title: payload.title,
+      excerpt: payload.excerpt || "New Seedance guide published from CMS.",
+      category: payload.category,
+      content: imageRes.content,
+      canonical: articleUrl
+    });
+
+    await fs.writeFile(path.join(ROOT_DIR, fileName), articleHtml, "utf8");
+    await upsertBlogCard({ fileName, title: payload.title, excerpt: payload.excerpt || "New Seedance guide published from CMS.", category: payload.category });
+    await upsertSitemap({ fileName });
+
+    const branch = (await runGit(["rev-parse", "--abbrev-ref", "HEAD"])).stdout.trim() || "main";
+    await runGit(["add", "."]);
+    const commitResult = await runGit(["commit", "-m", `feat-blog-publish-${slugBase}`], true);
+    if (!commitResult.ok && !/nothing to commit|no changes added/i.test(commitResult.stderr)) {
+      throw new Error(commitResult.stderr || commitResult.stdout || "Git commit failed");
+    }
+    await pushWithRetry(branch, job);
+
+    job.status = "success";
+    job.lastError = "";
+    job.output = { articleUrl: `./${fileName}` };
+  } catch (error) {
+    job.status = "pending";
+    job.lastError = String(error?.message || error || "Unknown error");
+    setTimeout(() => publishJob(jobId, payload), 5000);
+  }
+}
+
+async function materializeInlineImages(content, slugBase) {
+  let output = content;
+  let index = 0;
+  const regex = /<img\b([^>]*?)src="(data:image\/[a-zA-Z0-9.+-]+;base64,[^"]+)"([^>]*?)>/g;
+  for (const match of content.matchAll(regex)) {
+    index += 1;
+    const dataUrl = match[2];
+    const parsed = parseDataUrl(dataUrl);
+    const ext = extByMime(parsed.mime);
+    const fileName = `${slugBase}-${Date.now()}-${index}.${ext}`;
+    const outPath = path.join(BLOG_ASSETS_DIR, fileName);
+    await fs.writeFile(outPath, Buffer.from(parsed.base64, "base64"));
+    output = output.replace(dataUrl, `./blog-assets/${fileName}`);
+  }
+  return { content: output };
+}
+
+async function upsertBlogCard({ fileName, title, excerpt, category }) {
+  const html = await fs.readFile(BLOG_HTML_PATH, "utf8");
+  const startTag = "<!-- BLOG_POSTS_START -->";
+  const endTag = "<!-- BLOG_POSTS_END -->";
+  const startIndex = html.indexOf(startTag);
+  const endIndex = html.indexOf(endTag);
+  if (startIndex === -1 || endIndex === -1 || endIndex < startIndex) {
+    throw new Error("Blog marker block is missing in blog.html.");
+  }
+  const href = `./${fileName}`;
+  const before = html.slice(0, startIndex + startTag.length);
+  const middle = html.slice(startIndex + startTag.length, endIndex);
+  const after = html.slice(endIndex);
+  if (middle.includes(href)) return;
+  const card = `
+      <article class="rounded-2xl border border-white/10 bg-slate-900/60 p-6">
+        <p class="text-xs font-medium uppercase tracking-wide text-indigo-200">${escapeHtml(category)}</p>
+        <h2 class="mt-3 text-2xl font-semibold text-white">${escapeHtml(title)}</h2>
+        <p class="mt-3 text-sm leading-7 text-slate-300">${escapeHtml(excerpt)}</p>
+        <a href="${href}" class="mt-5 inline-flex text-sm font-semibold text-indigo-200 hover:text-indigo-100">Read article</a>
+      </article>`;
+  await fs.writeFile(BLOG_HTML_PATH, `${before}${card}\n${middle}${after}`, "utf8");
+}
+
+async function upsertSitemap({ fileName }) {
+  let sitemap = await fs.readFile(SITEMAP_PATH, "utf8");
+  const loc = `https://seedance3-pro.com/${fileName}`;
+  if (sitemap.includes(`<loc>${loc}</loc>`)) return;
+  const now = new Date().toISOString().slice(0, 10);
+  const entry = `
+  <url>
+    <loc>${loc}</loc>
+    <lastmod>${now}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`;
+  sitemap = sitemap.replace("</urlset>", `${entry}\n</urlset>`);
+  await fs.writeFile(SITEMAP_PATH, sitemap, "utf8");
+}
+
+function buildArticleHtml({ title, excerpt, category, content, canonical }) {
+  const safeTitle = escapeHtml(title);
+  const safeExcerpt = escapeHtml(excerpt);
+  const safeCategory = escapeHtml(category);
+  return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${safeTitle} | SEEDANCE Blog</title>
+  <meta name="description" content="${safeExcerpt}">
+  <meta name="keywords" content="Seedance blog,AI video tutorial,Seedance workflow">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <link rel="canonical" href="${canonical}">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="SEEDANCE 3.0">
+  <meta property="og:title" content="${safeTitle}">
+  <meta property="og:description" content="${safeExcerpt}">
+  <meta property="og:url" content="${canonical}">
+  <meta property="og:image" content="https://seedance3-pro.com/og-cover.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${safeTitle}">
+  <meta name="twitter:description" content="${safeExcerpt}">
+  <meta name="twitter:image" content="https://seedance3-pro.com/og-cover.svg">
+  <meta name="theme-color" content="#080c1f">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 antialiased">
+  <header class="sticky top-0 z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+      <a href="./index.html" class="flex items-center gap-3">
+        <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-400 to-violet-500 font-semibold text-white">S3</span>
+        <span class="text-sm font-semibold tracking-[0.2em] text-slate-200">SEEDANCE 3.0</span>
+      </a>
+      <nav class="hidden items-center gap-7 text-sm text-slate-300 lg:flex">
+        <a href="./blog.html" class="text-white">Blog</a>
+        <a href="./features.html" class="hover:text-white">Features</a>
+        <a href="./pricing.html" class="hover:text-white">Pricing</a>
+      </nav>
+      <a href="./index.html#generator" class="rounded-full border border-indigo-300/40 bg-indigo-500/20 px-4 py-2 text-sm font-semibold text-indigo-100 transition hover:bg-indigo-500/35">Start Creating</a>
+    </div>
+  </header>
+  <main class="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
+    <article>
+      <p class="text-xs font-semibold uppercase tracking-wide text-indigo-200">${safeCategory}</p>
+      <h1 class="mt-4 text-4xl font-semibold text-white sm:text-5xl">${safeTitle}</h1>
+      <p class="mt-6 text-base leading-8 text-slate-300">${safeExcerpt}</p>
+      <div class="prose prose-invert mt-10 max-w-none prose-headings:text-white prose-p:text-slate-300 prose-a:text-indigo-300 prose-strong:text-white prose-img:rounded-2xl prose-img:border prose-img:border-white/10">
+        ${content}
+      </div>
+    </article>
+  </main>
+  <footer class="border-t border-white/10 bg-slate-950">
+    <div class="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-8 text-sm text-slate-400 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+      <p>© 2026 SEEDANCE 3.0 · seedance3-pro.com</p>
+      <div class="flex gap-4">
+        <a href="./blog.html" class="hover:text-slate-200">Blog</a>
+        <a href="./index.html" class="hover:text-slate-200">Home</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>`;
+}
+
+async function pushWithRetry(branch, job) {
+  while (true) {
+    const pushResult = await runGit(["push", "origin", branch], true);
+    if (pushResult.ok) {
+      return;
+    }
+    job.lastError = pushResult.stderr || pushResult.stdout || "git push failed";
+    await sleep(5000);
+  }
+}
+
+async function resolveUniqueHtmlFileName(slug) {
+  let index = 0;
+  while (true) {
+    const fileName = index === 0 ? `${slug}.html` : `${slug}-${index + 1}.html`;
+    try {
+      await fs.access(path.join(ROOT_DIR, fileName));
+      index += 1;
+    } catch (_error) {
+      return fileName;
+    }
+  }
+}
+
+function parseDataUrl(dataUrl) {
+  const matched = dataUrl.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/);
+  if (!matched) {
+    throw new Error("Invalid image data URL.");
+  }
+  return { mime: matched[1], base64: matched[2] };
+}
+
+function extByMime(mime) {
+  if (mime.includes("png")) return "png";
+  if (mime.includes("jpeg") || mime.includes("jpg")) return "jpg";
+  if (mime.includes("webp")) return "webp";
+  if (mime.includes("gif")) return "gif";
+  return "png";
+}
+
+function slugify(input) {
+  return String(input || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "")
+    .slice(0, 80);
+}
+
+function escapeHtml(input) {
+  return String(input || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll("\"", "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+async function ensureDir(dirPath) {
+  await fs.mkdir(dirPath, { recursive: true });
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function runGit(args, allowFailure = false) {
+  return new Promise((resolve, reject) => {
+    const child = spawn("git", args, { cwd: ROOT_DIR, shell: false });
+    let stdout = "";
+    let stderr = "";
+    child.stdout.on("data", (data) => {
+      stdout += data.toString();
+    });
+    child.stderr.on("data", (data) => {
+      stderr += data.toString();
+    });
+    child.on("close", (code) => {
+      const ok = code === 0;
+      if (!ok && !allowFailure) {
+        reject(new Error(stderr || stdout || `git ${args.join(" ")} failed`));
+        return;
+      }
+      resolve({ ok, stdout, stderr, code });
+    });
+  });
+}
+
+const port = Number(process.env.PORT || 4310);
+app.listen(port, () => {
+  console.log(`Local CMS running at http://localhost:${port}/admin`);
+});
