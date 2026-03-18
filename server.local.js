@@ -65,6 +65,25 @@ app.post("/api/publish", async (req, res) => {
   });
 });
 
+app.post("/api/translate-en", async (req, res) => {
+  const content = String(req.body.content || "").trim();
+  if (!content) {
+    res.status(400).json({ success: false, message: "正文为空，无法翻译。" });
+    return;
+  }
+  try {
+    const translatedHtml = await translateHtmlToEnglish(content);
+    res.json({ success: true, content: translatedHtml });
+  } catch (error) {
+    const message = String(error?.message || error || "Translate failed");
+    if (message.includes("DEEPSEEK_API_KEY")) {
+      res.status(400).json({ success: false, message });
+      return;
+    }
+    res.status(500).json({ success: false, message });
+  }
+});
+
 app.get("/api/job/:id", (req, res) => {
   const job = jobs.get(req.params.id);
   if (!job) {
@@ -555,6 +574,104 @@ function escapeHtml(input) {
 
 function stripHtml(input) {
   return String(input || "").replace(/<[^>]+>/g, "").trim();
+}
+
+async function translateHtmlToEnglish(content) {
+  const apiKey = await getDeepSeekApiKey();
+  if (!apiKey) {
+    throw new Error("未配置 DEEPSEEK_API_KEY。请在环境变量或 .env.local/cms.secrets.json 中配置后重启 CMS。");
+  }
+  const prompt = `Translate the following HTML content from Chinese to English.
+Rules:
+1) Keep original HTML tag structure as much as possible.
+2) Do not remove or add semantic blocks.
+3) Keep inline styles and attributes unchanged.
+4) Return HTML only, no markdown fences, no explanations.
+HTML:
+${content}`;
+
+  const response = await fetch("https://api.deepseek.com/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`
+    },
+    body: JSON.stringify({
+      model: "deepseek-chat",
+      temperature: 0.1,
+      messages: [
+        {
+          role: "system",
+          content: "You are a precise bilingual editor."
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ]
+    })
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`DeepSeek API error: ${response.status} ${text}`);
+  }
+
+  const result = await response.json();
+  const output = String(result?.choices?.[0]?.message?.content || "").trim();
+  if (!output) {
+    throw new Error("DeepSeek returned empty content.");
+  }
+  return sanitizeArticleHtml(output);
+}
+
+async function getDeepSeekApiKey() {
+  const envKey = String(process.env.DEEPSEEK_API_KEY || "").trim();
+  if (envKey) {
+    return envKey;
+  }
+  const envLocalKey = await readKeyFromEnvLocal();
+  if (envLocalKey) {
+    return envLocalKey;
+  }
+  const jsonKey = await readKeyFromSecretsJson();
+  if (jsonKey) {
+    return jsonKey;
+  }
+  return "";
+}
+
+async function readKeyFromEnvLocal() {
+  const envPath = path.join(ROOT_DIR, ".env.local");
+  try {
+    const text = await fs.readFile(envPath, "utf8");
+    const lines = text.split(/\r?\n/);
+    for (const line of lines) {
+      const normalized = line.trim();
+      if (!normalized || normalized.startsWith("#")) {
+        continue;
+      }
+      const [rawKey, ...rest] = normalized.split("=");
+      if (!rawKey || rawKey.trim() !== "DEEPSEEK_API_KEY") {
+        continue;
+      }
+      const rawValue = rest.join("=").trim();
+      return rawValue.replace(/^['"]|['"]$/g, "");
+    }
+  } catch {
+  }
+  return "";
+}
+
+async function readKeyFromSecretsJson() {
+  const jsonPath = path.join(ROOT_DIR, "cms.secrets.json");
+  try {
+    const text = await fs.readFile(jsonPath, "utf8");
+    const obj = JSON.parse(text);
+    return String(obj?.DEEPSEEK_API_KEY || "").trim();
+  } catch {
+  }
+  return "";
 }
 
 function sanitizeArticleHtml(input) {

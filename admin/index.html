@@ -72,6 +72,7 @@
             <button type="button" data-cmd="ul-disc" class="rounded-lg border border-white/15 px-3 py-1.5 text-xs hover:border-indigo-300/50">圆点列表</button>
             <button type="button" data-cmd="ul-square" class="rounded-lg border border-white/15 px-3 py-1.5 text-xs hover:border-indigo-300/50">方块列表</button>
             <button type="button" data-cmd="ol" class="rounded-lg border border-white/15 px-3 py-1.5 text-xs hover:border-indigo-300/50">有序列表</button>
+            <button type="button" id="translate-en-btn" class="rounded-lg border border-emerald-300/40 bg-emerald-500/15 px-3 py-1.5 text-xs font-semibold text-emerald-100 hover:bg-emerald-500/30">翻译成英文</button>
             <button type="button" data-cmd="quote" class="rounded-lg border border-white/15 px-3 py-1.5 text-xs hover:border-indigo-300/50">引用</button>
             <button type="button" id="clear-format-btn" class="rounded-lg border border-white/15 px-3 py-1.5 text-xs hover:border-indigo-300/50">清除格式</button>
           </div>
@@ -111,6 +112,7 @@
     const refreshPostsButton = document.getElementById("refresh-posts-btn");
     const postsList = document.getElementById("posts-list");
     const clearFormatButton = document.getElementById("clear-format-btn");
+    const translateEnButton = document.getElementById("translate-en-btn");
     const logBox = document.getElementById("log");
     const toolbarButtons = document.querySelectorAll("[data-cmd]");
     let activePublishJobId = "";
@@ -152,6 +154,37 @@
     clearFormatButton.addEventListener("click", () => {
       editor.focus();
       document.execCommand("removeFormat");
+    });
+
+    translateEnButton.addEventListener("click", async () => {
+      const content = normalizeEditorHtml(editor.innerHTML);
+      if (!content) {
+        log("正文为空，无法翻译。");
+        return;
+      }
+      translateEnButton.disabled = true;
+      const oldText = translateEnButton.textContent;
+      translateEnButton.textContent = "翻译中...";
+      log("开始翻译为英文...");
+      try {
+        const response = await fetch("/api/translate-en", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ content })
+        });
+        const result = await response.json();
+        if (!response.ok || !result.success) {
+          log(`翻译失败：${result.message || "未知错误"}`);
+          return;
+        }
+        editor.innerHTML = normalizeEditorHtml(result.content || "");
+        log("翻译完成，已更新编辑器内容。");
+      } catch (error) {
+        log(`翻译失败：${error.message}`);
+      } finally {
+        translateEnButton.disabled = false;
+        translateEnButton.textContent = oldText;
+      }
     });
 
     editor.addEventListener("paste", (event) => {
