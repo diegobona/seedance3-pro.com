@@ -155,11 +155,12 @@ async function publishJob(jobId, payload) {
     const articleUrl = `https://seedance3-pro.com/${fileName}`;
 
     const imageRes = await materializeInlineImages(payload.content, slugBase);
+    const sanitizedContent = sanitizeArticleHtml(imageRes.content);
     const articleHtml = buildArticleHtml({
       title: payload.title,
       excerpt: payload.excerpt || "New Seedance guide published from CMS.",
       category: payload.category,
-      content: imageRes.content,
+      content: sanitizedContent,
       canonical: articleUrl
     });
 
@@ -500,6 +501,17 @@ function escapeHtml(input) {
 
 function stripHtml(input) {
   return String(input || "").replace(/<[^>]+>/g, "").trim();
+}
+
+function sanitizeArticleHtml(input) {
+  let output = String(input || "");
+  output = output.replace(/<\s*(script|style|iframe|object|meta|link)\b[\s\S]*?<\s*\/\s*\1\s*>/gi, "");
+  output = output.replace(/<\s*(meta|link)\b[^>]*>/gi, "");
+  output = output.replace(/\sstyle\s*=\s*(['"])[\s\S]*?\1/gi, "");
+  output = output.replace(/\s(color|bgcolor|face|size)\s*=\s*(['"])[\s\S]*?\2/gi, "");
+  output = output.replace(/<\s*font\b[^>]*>/gi, "<span>");
+  output = output.replace(/<\s*\/\s*font\s*>/gi, "</span>");
+  return output;
 }
 
 async function ensureDir(dirPath) {

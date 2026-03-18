@@ -10,6 +10,12 @@
       content: attr(data-placeholder);
       color: #64748b;
     }
+    #editor {
+      color: #e2e8f0;
+    }
+    #editor * {
+      color: inherit;
+    }
   </style>
 </head>
 <body class="min-h-screen bg-slate-950 text-slate-100">
@@ -131,21 +137,31 @@
     editor.addEventListener("paste", (event) => {
       const items = event.clipboardData?.items || [];
       const imageItems = Array.from(items).filter((item) => item.type.startsWith("image/"));
-      if (!imageItems.length) {
+      if (imageItems.length) {
+        event.preventDefault();
+        imageItems.forEach((item) => {
+          const file = item.getAsFile();
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = () => {
+            const dataUrl = String(reader.result || "");
+            insertHtmlAtCaret(`<figure class="mt-6 overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60"><img src="${dataUrl}" alt="Seedance pasted image" loading="lazy" class="h-64 w-full object-cover"><figcaption class="px-4 py-3 text-xs text-slate-400">Seedance pasted image</figcaption></figure><p><br></p>`);
+          };
+          reader.readAsDataURL(file);
+        });
+        log("已粘贴图片到编辑器。");
         return;
       }
+
+      const html = event.clipboardData?.getData("text/html") || "";
+      const text = event.clipboardData?.getData("text/plain") || "";
       event.preventDefault();
-      imageItems.forEach((item) => {
-        const file = item.getAsFile();
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = () => {
-          const dataUrl = String(reader.result || "");
-          insertHtmlAtCaret(`<figure class="mt-6 overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60"><img src="${dataUrl}" alt="Seedance pasted image" loading="lazy" class="h-64 w-full object-cover"><figcaption class="px-4 py-3 text-xs text-slate-400">Seedance pasted image</figcaption></figure><p><br></p>`);
-        };
-        reader.readAsDataURL(file);
-      });
-      log("已粘贴图片到编辑器。");
+      if (html) {
+        insertHtmlAtCaret(sanitizePastedHtml(html));
+      } else {
+        insertHtmlAtCaret(textToHtml(text));
+      }
+      log("已粘贴文字到编辑器（样式已净化）。");
     });
 
     publishButton.addEventListener("click", async () => {
@@ -276,11 +292,44 @@
     }
 
     function normalizeEditorHtml(html) {
-      const trimmed = String(html || "").trim();
+      const trimmed = sanitizePastedHtml(String(html || "").trim());
       if (!trimmed || trimmed === "<br>" || trimmed === "<p><br></p>") {
         return "";
       }
       return trimmed;
+    }
+
+    function sanitizePastedHtml(rawHtml) {
+      const temp = document.createElement("div");
+      temp.innerHTML = String(rawHtml || "");
+      const deniedTags = new Set(["script", "style", "meta", "link", "iframe", "object"]);
+      const nodes = temp.querySelectorAll("*");
+      nodes.forEach((node) => {
+        const tag = node.tagName.toLowerCase();
+        if (deniedTags.has(tag)) {
+          node.remove();
+          return;
+        }
+        node.removeAttribute("style");
+        node.removeAttribute("color");
+        node.removeAttribute("bgcolor");
+        node.removeAttribute("face");
+        node.removeAttribute("size");
+      });
+      temp.querySelectorAll("font").forEach((font) => {
+        const span = document.createElement("span");
+        span.innerHTML = font.innerHTML;
+        font.replaceWith(span);
+      });
+      return temp.innerHTML;
+    }
+
+    function textToHtml(text) {
+      const safe = escapeHtml(String(text || ""));
+      return safe
+        .split(/\r?\n\r?\n/)
+        .map((block) => `<p>${block.replace(/\r?\n/g, "<br>")}</p>`)
+        .join("");
     }
 
     refreshPostsButton.addEventListener("click", loadPosts);
