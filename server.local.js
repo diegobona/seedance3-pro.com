@@ -507,11 +507,62 @@ function sanitizeArticleHtml(input) {
   let output = String(input || "");
   output = output.replace(/<\s*(script|style|iframe|object|meta|link)\b[\s\S]*?<\s*\/\s*\1\s*>/gi, "");
   output = output.replace(/<\s*(meta|link)\b[^>]*>/gi, "");
-  output = output.replace(/\sstyle\s*=\s*(['"])[\s\S]*?\1/gi, "");
+  output = output.replace(/\sstyle\s*=\s*(['"])([\s\S]*?)\1/gi, (_m, _q, styleText) => {
+    const filtered = filterInlineStyle(styleText);
+    return filtered ? ` style="${filtered}"` : "";
+  });
   output = output.replace(/\s(color|bgcolor|face|size)\s*=\s*(['"])[\s\S]*?\2/gi, "");
   output = output.replace(/<\s*font\b[^>]*>/gi, "<span>");
   output = output.replace(/<\s*\/\s*font\s*>/gi, "</span>");
   return output;
+}
+
+function filterInlineStyle(styleText) {
+  const allowed = new Set([
+    "line-height",
+    "text-indent",
+    "text-align",
+    "margin",
+    "margin-left",
+    "margin-right",
+    "margin-top",
+    "margin-bottom",
+    "padding-left",
+    "padding-right",
+    "padding-top",
+    "padding-bottom",
+    "font-weight",
+    "font-style",
+    "font-size",
+    "text-decoration",
+    "letter-spacing",
+    "word-spacing",
+    "list-style-type",
+    "white-space"
+  ]);
+  const deniedPrefix = ["mso-", "color", "background", "border-color"];
+  const declarations = String(styleText || "").split(";");
+  const kept = [];
+  for (const decl of declarations) {
+    const [rawProp, ...rest] = decl.split(":");
+    const prop = (rawProp || "").trim().toLowerCase();
+    if (!prop || !allowed.has(prop)) {
+      continue;
+    }
+    if (deniedPrefix.some((prefix) => prop.startsWith(prefix))) {
+      continue;
+    }
+    const value = rest.join(":").trim();
+    if (!value) {
+      continue;
+    }
+    const lowered = value.toLowerCase();
+    if (lowered.includes("expression(") || lowered.includes("javascript:") || lowered.includes("url(")) {
+      continue;
+    }
+    kept.push(`${prop}: ${value}`);
+  }
+  return kept.join("; ");
 }
 
 async function ensureDir(dirPath) {

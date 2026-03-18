@@ -16,6 +16,21 @@
     #editor * {
       color: inherit;
     }
+    #editor ul {
+      list-style: disc;
+      list-style-position: inside;
+      padding-left: 0;
+      margin: 0.75rem 0;
+    }
+    #editor ol {
+      list-style: decimal;
+      list-style-position: inside;
+      padding-left: 0;
+      margin: 0.75rem 0;
+    }
+    #editor li {
+      margin: 0.25rem 0;
+    }
   </style>
 </head>
 <body class="min-h-screen bg-slate-950 text-slate-100">
@@ -48,18 +63,19 @@
 
       <div class="mt-6">
         <label class="mb-2 block text-sm font-medium">正文内容（富文本编辑器）</label>
-        <div class="rounded-xl border border-white/15 bg-slate-950">
-          <div class="flex flex-wrap gap-2 border-b border-white/10 p-3">
+        <div class="rounded-xl border border-white/15 bg-slate-950 overflow-hidden">
+          <div id="editor-toolbar" class="sticky top-0 z-20 flex flex-wrap gap-2 border-b border-white/10 bg-slate-950/95 p-3 backdrop-blur">
             <button type="button" data-cmd="bold" class="rounded-lg border border-white/15 px-3 py-1.5 text-xs hover:border-indigo-300/50">加粗</button>
             <button type="button" data-cmd="italic" class="rounded-lg border border-white/15 px-3 py-1.5 text-xs hover:border-indigo-300/50">斜体</button>
             <button type="button" data-cmd="h2" class="rounded-lg border border-white/15 px-3 py-1.5 text-xs hover:border-indigo-300/50">H2</button>
             <button type="button" data-cmd="h3" class="rounded-lg border border-white/15 px-3 py-1.5 text-xs hover:border-indigo-300/50">H3</button>
-            <button type="button" data-cmd="ul" class="rounded-lg border border-white/15 px-3 py-1.5 text-xs hover:border-indigo-300/50">无序列表</button>
+            <button type="button" data-cmd="ul-disc" class="rounded-lg border border-white/15 px-3 py-1.5 text-xs hover:border-indigo-300/50">圆点列表</button>
+            <button type="button" data-cmd="ul-square" class="rounded-lg border border-white/15 px-3 py-1.5 text-xs hover:border-indigo-300/50">方块列表</button>
             <button type="button" data-cmd="ol" class="rounded-lg border border-white/15 px-3 py-1.5 text-xs hover:border-indigo-300/50">有序列表</button>
             <button type="button" data-cmd="quote" class="rounded-lg border border-white/15 px-3 py-1.5 text-xs hover:border-indigo-300/50">引用</button>
             <button type="button" id="clear-format-btn" class="rounded-lg border border-white/15 px-3 py-1.5 text-xs hover:border-indigo-300/50">清除格式</button>
           </div>
-          <div id="editor" contenteditable="true" class="min-h-[420px] px-4 py-3 text-sm leading-7 outline-none" data-placeholder="直接输入正文内容；支持复制粘贴图片、文字和段落格式。"></div>
+          <div id="editor" contenteditable="true" class="min-h-[420px] max-h-[70vh] overflow-y-auto px-4 py-3 text-sm leading-7 outline-none" data-placeholder="直接输入正文内容；支持复制粘贴图片、文字和段落格式。"></div>
         </div>
         <p class="mt-2 text-xs text-slate-400">提示：可直接 Ctrl+V 粘贴截图或图片，发布时会自动转成文章图片文件。</p>
       </div>
@@ -113,12 +129,16 @@
           document.execCommand("formatBlock", false, cmd.toUpperCase());
           return;
         }
-        if (cmd === "ul") {
-          document.execCommand("insertUnorderedList");
+        if (cmd === "ul-disc") {
+          applyUnorderedListStyle("disc");
+          return;
+        }
+        if (cmd === "ul-square") {
+          applyUnorderedListStyle("square");
           return;
         }
         if (cmd === "ol") {
-          document.execCommand("insertOrderedList");
+          applyOrderedListStyle();
           return;
         }
         if (cmd === "quote") {
@@ -299,6 +319,71 @@
       return trimmed;
     }
 
+    function applyUnorderedListStyle(styleType) {
+      normalizeSelectionToBlock();
+      document.execCommand("insertUnorderedList");
+      const selection = window.getSelection();
+      const anchorNode = selection && selection.anchorNode ? selection.anchorNode : null;
+      const ul = findClosestTag(anchorNode, "UL");
+      if (ul) {
+        ul.style.listStyleType = styleType;
+        ul.style.listStylePosition = "inside";
+        ul.style.paddingLeft = "0";
+      }
+    }
+
+    function applyOrderedListStyle() {
+      normalizeSelectionToBlock();
+      document.execCommand("insertOrderedList");
+      const selection = window.getSelection();
+      const anchorNode = selection && selection.anchorNode ? selection.anchorNode : null;
+      const ol = findClosestTag(anchorNode, "OL");
+      if (ol) {
+        ol.style.listStylePosition = "inside";
+        ol.style.paddingLeft = "0";
+      }
+    }
+
+    function normalizeSelectionToBlock() {
+      const selection = window.getSelection();
+      if (!selection || selection.rangeCount === 0 || !selection.isCollapsed) {
+        return;
+      }
+      const anchorNode = selection.anchorNode;
+      const block = findClosestBlock(anchorNode);
+      if (!block || block === editor) {
+        return;
+      }
+      const range = document.createRange();
+      range.selectNodeContents(block);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+
+    function findClosestBlock(node) {
+      const blockTags = new Set(["P", "DIV", "H1", "H2", "H3", "H4", "H5", "H6", "LI", "BLOCKQUOTE"]);
+      let current = node;
+      while (current) {
+        if (current.nodeType === 1 && blockTags.has(current.tagName)) {
+          return current;
+        }
+        current = current.parentNode;
+      }
+      return null;
+    }
+
+    function findClosestTag(node, tagName) {
+      const targetTag = String(tagName || "").toUpperCase();
+      let current = node;
+      while (current) {
+        if (current.nodeType === 1 && current.tagName === targetTag) {
+          return current;
+        }
+        current = current.parentNode;
+      }
+      return null;
+    }
+
     function sanitizePastedHtml(rawHtml) {
       const temp = document.createElement("div");
       temp.innerHTML = String(rawHtml || "");
@@ -310,7 +395,15 @@
           node.remove();
           return;
         }
-        node.removeAttribute("style");
+        const style = node.getAttribute("style");
+        if (style) {
+          const filtered = filterInlineStyle(style);
+          if (filtered) {
+            node.setAttribute("style", filtered);
+          } else {
+            node.removeAttribute("style");
+          }
+        }
         node.removeAttribute("color");
         node.removeAttribute("bgcolor");
         node.removeAttribute("face");
@@ -322,6 +415,54 @@
         font.replaceWith(span);
       });
       return temp.innerHTML;
+    }
+
+    function filterInlineStyle(styleText) {
+      const allowed = new Set([
+        "line-height",
+        "text-indent",
+        "text-align",
+        "margin",
+        "margin-left",
+        "margin-right",
+        "margin-top",
+        "margin-bottom",
+        "padding-left",
+        "padding-right",
+        "padding-top",
+        "padding-bottom",
+        "font-weight",
+        "font-style",
+        "font-size",
+        "text-decoration",
+        "letter-spacing",
+        "word-spacing",
+        "list-style-type",
+        "white-space"
+      ]);
+      const deniedPrefix = ["mso-", "color", "background", "border-color"];
+      const cleaned = [];
+      const declarations = String(styleText || "").split(";");
+      declarations.forEach((decl) => {
+        const [rawProp, ...rest] = decl.split(":");
+        const prop = (rawProp || "").trim().toLowerCase();
+        if (!prop || !allowed.has(prop)) {
+          return;
+        }
+        if (deniedPrefix.some((prefix) => prop.startsWith(prefix))) {
+          return;
+        }
+        const value = rest.join(":").trim();
+        if (!value) {
+          return;
+        }
+        const lowered = value.toLowerCase();
+        if (lowered.includes("expression(") || lowered.includes("javascript:") || lowered.includes("url(")) {
+          return;
+        }
+        cleaned.push(`${prop}: ${value}`);
+      });
+      return cleaned.join("; ");
     }
 
     function textToHtml(text) {
