@@ -379,6 +379,60 @@ function buildArticleHtml({ title, excerpt, category, content, canonical }) {
   <meta name="twitter:image" content="https://seedance3-pro.com/og-cover.svg">
   <meta name="theme-color" content="#080c1f">
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .article-content {
+      margin-top: 2.5rem;
+      color: #cbd5e1;
+      font-size: 1rem;
+      line-height: 1.75;
+    }
+    .article-content p {
+      margin: 0 0 1rem;
+    }
+    .article-content h1,
+    .article-content h2,
+    .article-content h3,
+    .article-content h4,
+    .article-content h5,
+    .article-content h6 {
+      color: #ffffff;
+      font-weight: 700;
+      line-height: 1.35;
+      margin: 1.5rem 0 0.75rem;
+    }
+    .article-content ul {
+      list-style: disc;
+      list-style-position: inside;
+      padding-left: 0;
+      margin: 0.75rem 0;
+    }
+    .article-content ol {
+      list-style: decimal;
+      list-style-position: inside;
+      padding-left: 0;
+      margin: 0.75rem 0;
+    }
+    .article-content li {
+      margin: 0.25rem 0;
+    }
+    .article-content strong {
+      color: #ffffff;
+      font-weight: 700;
+    }
+    .article-content a {
+      color: #a5b4fc;
+    }
+    .article-content blockquote {
+      margin: 1rem 0;
+      padding-left: 1rem;
+      border-left: 2px solid rgba(255,255,255,0.18);
+    }
+    .article-content img {
+      border-radius: 1rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      margin: 1rem 0;
+    }
+  </style>
 </head>
 <body class="bg-slate-950 text-slate-100 antialiased">
   <header class="sticky top-0 z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl">
@@ -400,7 +454,7 @@ function buildArticleHtml({ title, excerpt, category, content, canonical }) {
       <p class="text-xs font-semibold uppercase tracking-wide text-indigo-200">${safeCategory}</p>
       <h1 class="mt-4 text-4xl font-semibold text-white sm:text-5xl">${safeTitle}</h1>
       <p class="mt-6 text-base leading-8 text-slate-300">${safeExcerpt}</p>
-      <div class="prose prose-invert mt-10 max-w-none prose-headings:text-white prose-p:text-slate-300 prose-a:text-indigo-300 prose-strong:text-white prose-img:rounded-2xl prose-img:border prose-img:border-white/10">
+      <div class="article-content">
         ${content}
       </div>
     </article>
@@ -505,8 +559,12 @@ function stripHtml(input) {
 
 function sanitizeArticleHtml(input) {
   let output = String(input || "");
+  output = output.replace(/<\?xml[\s\S]*?\?>/gi, "");
+  output = output.replace(/<!--[\s\S]*?-->/g, "");
   output = output.replace(/<\s*(script|style|iframe|object|meta|link)\b[\s\S]*?<\s*\/\s*\1\s*>/gi, "");
   output = output.replace(/<\s*(meta|link)\b[^>]*>/gi, "");
+  output = output.replace(/<\/?[\w-]+:[^>]*>/gi, "");
+  output = output.replace(/\sclass\s*=\s*(['"])[\s\S]*?\1/gi, "");
   output = output.replace(/\sstyle\s*=\s*(['"])([\s\S]*?)\1/gi, (_m, _q, styleText) => {
     const filtered = filterInlineStyle(styleText);
     return filtered ? ` style="${filtered}"` : "";
