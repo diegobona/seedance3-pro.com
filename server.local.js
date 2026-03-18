@@ -14,6 +14,7 @@ const BLOG_ASSETS_DIR = path.join(ROOT_DIR, "blog-assets");
 const BLOG_HTML_PATH = path.join(ROOT_DIR, "blog.html");
 const SITEMAP_PATH = path.join(ROOT_DIR, "sitemap.xml");
 const jobs = new Map();
+const retryTimers = new Map();
 
 app.use(express.json({ limit: "20mb" }));
 app.use(express.urlencoded({ extended: true, limit: "20mb" }));
@@ -51,7 +52,8 @@ app.post("/api/publish", async (req, res) => {
     status: "pending",
     attempts: 0,
     lastError: "",
-    output: null
+    output: null,
+    canceled: false
   });
 
   publishJob(jobId, { title, excerpt, content, category }).catch(() => {});
@@ -69,7 +71,17 @@ app.get("/api/job/:id", (req, res) => {
     res.status(404).json({ success: false, message: "Job not found." });
     return;
   }
-  res.json({ success: true, job });
+  res.json({
+    success: true,
+    job: {
+      id: job.id,
+      status: job.status,
+      attempts: job.attempts,
+      lastError: job.lastError,
+      output: job.output,
+      canceled: job.canceled
+    }
+  });
 });
 
 app.get("/api/posts", async (_req, res) => {
@@ -93,7 +105,8 @@ app.post("/api/delete-post", async (req, res) => {
     status: "pending",
     attempts: 0,
     lastError: "",
-    output: null
+    output: null,
+    canceled: false
   });
   deletePostJob(jobId, { fileName }).catch(() => {});
   res.status(202).json({
@@ -104,13 +117,36 @@ app.post("/api/delete-post", async (req, res) => {
   });
 });
 
+app.post("/api/cancel-job", async (req, res) => {
+  const jobId = String(req.body.jobId || "").trim();
+  if (!jobId) {
+    res.status(400).json({ success: false, message: "jobId is required." });
+    return;
+  }
+  const job = jobs.get(jobId);
+  if (!job) {
+    res.status(404).json({ success: false, message: "Job not found." });
+    return;
+  }
+  job.canceled = true;
+  job.status = "canceled";
+  job.lastError = "Canceled by user";
+  clearRetryTimer(jobId);
+  res.json({ success: true, message: "Job cancel requested." });
+});
+
 async function publishJob(jobId, payload) {
   const job = jobs.get(jobId);
   if (!job) return;
+  if (job.canceled) {
+    job.status = "canceled";
+    return;
+  }
   job.status = "running";
   job.attempts += 1;
 
   try {
+    ensureJobActive(job);
     await ensureDir(BLOG_ASSETS_DIR);
     const slugBase = payload.slugBase || (slugify(payload.title) || `post-${Date.now()}`);
     payload.slugBase = slugBase;
@@ -131,6 +167,7 @@ async function publishJob(jobId, payload) {
     await upsertBlogCard({ fileName, title: payload.title, excerpt: payload.excerpt || "New Seedance guide published from CMS.", category: payload.category });
     await upsertSitemap({ fileName });
 
+    ensureJobActive(job);
     const branch = (await runGit(["rev-parse", "--abbrev-ref", "HEAD"])).stdout.trim() || "main";
     await runGit(["add", "."]);
     const commitResult = await runGit(["commit", "-m", `feat-blog-publish-${slugBase}`], true);
@@ -142,20 +179,32 @@ async function publishJob(jobId, payload) {
     job.status = "success";
     job.lastError = "";
     job.output = { articleUrl: `./${fileName}` };
+    clearRetryTimer(jobId);
   } catch (error) {
+    if (job.canceled || String(error?.message || "").includes("JOB_CANCELED")) {
+      job.status = "canceled";
+      job.lastError = "Canceled by user";
+      clearRetryTimer(jobId);
+      return;
+    }
     job.status = "pending";
     job.lastError = String(error?.message || error || "Unknown error");
-    setTimeout(() => publishJob(jobId, payload), 5000);
+    scheduleRetry(jobId, () => publishJob(jobId, payload));
   }
 }
 
 async function deletePostJob(jobId, payload) {
   const job = jobs.get(jobId);
   if (!job) return;
+  if (job.canceled) {
+    job.status = "canceled";
+    return;
+  }
   job.status = "running";
   job.attempts += 1;
 
   try {
+    ensureJobActive(job);
     const fileName = payload.fileName;
     const articlePath = path.join(ROOT_DIR, fileName);
     try {
@@ -178,10 +227,17 @@ async function deletePostJob(jobId, payload) {
     job.status = "success";
     job.lastError = "";
     job.output = { deleted: fileName };
+    clearRetryTimer(jobId);
   } catch (error) {
+    if (job.canceled || String(error?.message || "").includes("JOB_CANCELED")) {
+      job.status = "canceled";
+      job.lastError = "Canceled by user";
+      clearRetryTimer(jobId);
+      return;
+    }
     job.status = "pending";
     job.lastError = String(error?.message || error || "Unknown error");
-    setTimeout(() => deletePostJob(jobId, payload), 5000);
+    scheduleRetry(jobId, () => deletePostJob(jobId, payload));
   }
 }
 
@@ -363,12 +419,36 @@ function buildArticleHtml({ title, excerpt, category, content, canonical }) {
 
 async function pushWithRetry(branch, job) {
   while (true) {
+    ensureJobActive(job);
     const pushResult = await runGit(["push", "origin", branch], true);
     if (pushResult.ok) {
       return;
     }
     job.lastError = pushResult.stderr || pushResult.stdout || "git push failed";
     await sleep(5000);
+  }
+}
+
+function ensureJobActive(job) {
+  if (job.canceled) {
+    throw new Error("JOB_CANCELED");
+  }
+}
+
+function scheduleRetry(jobId, fn) {
+  clearRetryTimer(jobId);
+  const timer = setTimeout(() => {
+    retryTimers.delete(jobId);
+    fn();
+  }, 5000);
+  retryTimers.set(jobId, timer);
+}
+
+function clearRetryTimer(jobId) {
+  const timer = retryTimers.get(jobId);
+  if (timer) {
+    clearTimeout(timer);
+    retryTimers.delete(jobId);
   }
 }
 
