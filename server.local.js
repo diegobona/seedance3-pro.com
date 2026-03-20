@@ -175,16 +175,17 @@ async function publishJob(jobId, payload) {
 
     const imageRes = await materializeInlineImages(payload.content, slugBase);
     const sanitizedContent = sanitizeArticleHtml(imageRes.content);
+    const safeExcerpt = String(payload.excerpt || "").trim();
     const articleHtml = buildArticleHtml({
       title: payload.title,
-      excerpt: payload.excerpt || "New Seedance guide published from CMS.",
+      excerpt: safeExcerpt,
       category: payload.category,
       content: sanitizedContent,
       canonical: articleUrl
     });
 
     await fs.writeFile(path.join(ROOT_DIR, fileName), articleHtml, "utf8");
-    await upsertBlogCard({ fileName, title: payload.title, excerpt: payload.excerpt || "New Seedance guide published from CMS.", category: payload.category });
+    await upsertBlogCard({ fileName, title: payload.title, excerpt: safeExcerpt, category: payload.category });
     await upsertSitemap({ fileName });
 
     ensureJobActive(job);
@@ -292,12 +293,14 @@ async function upsertBlogCard({ fileName, title, excerpt, category }) {
   const middle = html.slice(startIndex + startTag.length, endIndex);
   const after = html.slice(endIndex);
   if (middle.includes(href)) return;
+  const excerptHtml = excerpt
+    ? `        <p class="mt-3 text-sm leading-7 text-slate-300">${escapeHtml(excerpt)}</p>\n`
+    : "";
   const card = `
       <article class="rounded-2xl border border-white/10 bg-slate-900/60 p-6">
         <p class="text-xs font-medium uppercase tracking-wide text-indigo-200">${escapeHtml(category)}</p>
         <h2 class="mt-3 text-2xl font-semibold text-white">${escapeHtml(title)}</h2>
-        <p class="mt-3 text-sm leading-7 text-slate-300">${escapeHtml(excerpt)}</p>
-        <a href="${href}" class="mt-5 inline-flex text-sm font-semibold text-indigo-200 hover:text-indigo-100">Read article</a>
+${excerptHtml}        <a href="${href}" class="mt-5 inline-flex text-sm font-semibold text-indigo-200 hover:text-indigo-100">Read article</a>
       </article>`;
   await fs.writeFile(BLOG_HTML_PATH, `${before}${card}\n${middle}${after}`, "utf8");
 }
@@ -376,25 +379,29 @@ function buildArticleHtml({ title, excerpt, category, content, canonical }) {
   const safeTitle = escapeHtml(title);
   const safeExcerpt = escapeHtml(excerpt);
   const safeCategory = escapeHtml(category);
+  const excerptMeta = safeExcerpt || safeTitle;
+  const excerptHtml = safeExcerpt
+    ? `      <p class="mt-6 text-base leading-8 text-slate-300">${safeExcerpt}</p>\n`
+    : "";
   return `<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${safeTitle} | SEEDANCE Blog</title>
-  <meta name="description" content="${safeExcerpt}">
+  <meta name="description" content="${excerptMeta}">
   <meta name="keywords" content="Seedance blog,AI video tutorial,Seedance workflow">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
   <link rel="canonical" href="${canonical}">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="SEEDANCE 3.0">
   <meta property="og:title" content="${safeTitle}">
-  <meta property="og:description" content="${safeExcerpt}">
+  <meta property="og:description" content="${excerptMeta}">
   <meta property="og:url" content="${canonical}">
   <meta property="og:image" content="https://seedance3-pro.com/og-cover.svg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${safeTitle}">
-  <meta name="twitter:description" content="${safeExcerpt}">
+  <meta name="twitter:description" content="${excerptMeta}">
   <meta name="twitter:image" content="https://seedance3-pro.com/og-cover.svg">
   <meta name="theme-color" content="#080c1f">
   <script src="https://cdn.tailwindcss.com"></script>
@@ -472,8 +479,7 @@ function buildArticleHtml({ title, excerpt, category, content, canonical }) {
     <article>
       <p class="text-xs font-semibold uppercase tracking-wide text-indigo-200">${safeCategory}</p>
       <h1 class="mt-4 text-4xl font-semibold text-white sm:text-5xl">${safeTitle}</h1>
-      <p class="mt-6 text-base leading-8 text-slate-300">${safeExcerpt}</p>
-      <div class="article-content">
+${excerptHtml}      <div class="article-content">
         ${content}
       </div>
     </article>
