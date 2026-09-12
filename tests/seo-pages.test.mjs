@@ -113,6 +113,7 @@ test("blog uses the homepage design system without the highlighted intro copy", 
 test("homepage video showcase uses the supplied clips in order", () => {
   const html = read("index.html");
   const css = read("site.css");
+  const script = read("main.js");
   const showcases = [...html.matchAll(/<section[^>]+id="showcase"[^>]*>([\s\S]*?)<\/section>/gi)];
   const expectedSources = [
     "https://cdn.metaso.cn/minimax-h3-example-video/h3-example-009.mp4",
@@ -129,17 +130,57 @@ test("homepage video showcase uses the supplied clips in order", () => {
   assert.equal(showcases.length, 1);
   const ids = [...html.matchAll(/\sid="([^"]+)"/gi)].map((match) => match[1]);
   assert.equal(new Set(ids).size, ids.length, "homepage IDs must be unique");
-  const videoTags = [...showcases[0][1].matchAll(/<video\b([^>]*)>/gi)];
-  assert.deepEqual(videoTags.map((match) => match[1].match(/\bsrc="([^"]+)"/i)?.[1]), expectedSources);
-  for (const [, attributes] of videoTags) {
-    assert.match(attributes, /\bcontrols\b/i);
-    assert.match(attributes, /\bplaysinline\b/i);
-    assert.match(attributes, /\bpreload="metadata"/i);
+  const previewCards = [...showcases[0][1].matchAll(/<article\b([^>]*\bclass="[^"]*\bshowcase-card\b[^"]*"[^>]*)>([\s\S]*?)<\/article>/gi)];
+  assert.equal(previewCards.length, expectedSources.length);
+  const previewButtons = previewCards.map(([, , content]) => content.match(/<button\b([^>]*\bclass="[^"]*\bshowcase-preview-button\b[^"]*"[^>]*)>([\s\S]*?)<\/button>/i));
+  assert.ok(previewButtons.every(Boolean));
+  assert.deepEqual(previewButtons.map((match) => match[1].match(/\bdata-video-src="([^"]+)"/i)?.[1]), expectedSources);
+  for (const [index, [, , cardContent]] of previewCards.entries()) {
+    const [, buttonAttributes, content] = previewButtons[index];
+    assert.match(buttonAttributes, /\btype="button"/i);
+    assert.match(buttonAttributes, new RegExp(`\\baria-label="Play showcase video ${index + 1}"`, "i"));
+    const previewAttributes = content.match(/<video\b([^>]*)>/i)?.[1] ?? "";
+    assert.match(previewAttributes, /\bclass="[^"]*\bshowcase-preview\b/i);
+    assert.match(previewAttributes, /\bmuted\b/i);
+    assert.match(previewAttributes, /\bplaysinline\b/i);
+    assert.match(previewAttributes, /\bpreload="metadata"/i);
+    assert.doesNotMatch(previewAttributes, /\bcontrols\b/i);
+    assert.doesNotMatch(content, /\btabindex=/i);
+    assert.match(content, /\bclass="[^"]*\bshowcase-play\b/i);
+    assert.doesNotMatch(content, /<a\b/i);
+    assert.match(cardContent, /Model: MiniMax H3/i);
+    assert.match(cardContent, /As low as 1¢\/sec/i);
+    assert.match(cardContent, /<a[^>]+class="[^"]*\bshowcase-try\b[^>]+href="\.\/app\/\?model=minimax-h3"[^>]*>\s*Try it\s*<\/a>/i);
   }
+
+  const dialog = html.match(/<dialog\b([^>]*)>([\s\S]*?)<\/dialog>/i);
+  assert.ok(dialog, "homepage should include one shared video dialog");
+  assert.match(dialog[1], /\bid="showcase-player"/i);
+  assert.match(dialog[1], /\baria-label="Showcase video player"/i);
+  assert.match(dialog[2], /<button[^>]+class="[^"]*\bvideo-dialog-close\b[^>]+aria-label="Close video player"/i);
+  assert.match(dialog[2], /<video[^>]+class="[^"]*\bvideo-dialog-player\b[^>]+\bcontrols\b[^>]*>/i);
   assert.doesNotMatch(showcases[0][1], /Prompt intelligence|Prompt library|Model comparisons/i);
   assert.match(css, /\.video-grid\s*\{[^}]*grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\);[^}]*\}/i);
   assert.match(css, /\.video-grid\s*\{\s*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\);\s*\}/i);
   assert.match(css, /\.video-grid\s*\{\s*grid-template-columns:\s*1fr;\s*\}/i);
+  assert.match(css, /\.showcase-card:hover\s+\.showcase-play\s*\{[^}]*opacity:\s*1/i);
+  assert.match(css, /\.showcase-preview-button:focus-visible\s+\.showcase-play\s*\{[^}]*opacity:\s*1/i);
+  assert.match(css, /\.video-dialog\s*\{[^}]*width:\s*min\(92vw,\s*1500px,\s*calc\(177\.7778dvh\s*-\s*85\.3333px\)\)/i);
+  assert.match(css, /\.video-dialog\s*\{[^}]*width:\s*min\(96vw,\s*calc\(177\.7778dvh\s*-\s*56\.8889px\)\)/i);
+  assert.match(script, /querySelectorAll\("\.showcase-preview-button"\)/);
+  assert.match(script, /const source = card\.dataset\.videoSrc;/);
+  assert.match(script, /dialogPlayer\.src = source;/);
+  assert.match(script, /\.showModal\(\)/);
+  assert.match(script, /\.play\(\)/);
+  assert.match(script, /dialogCloseButton\.addEventListener\("click",\s*\(\) => videoDialog\.close\(\)\)/);
+  assert.match(script, /videoDialog\.addEventListener\("click"/);
+  assert.match(script, /if \(event\.target === videoDialog\) videoDialog\.close\(\);/);
+  assert.match(script, /videoDialog\.addEventListener\("close"/);
+  assert.match(script, /dialogPlayer\.pause\(\)/);
+  assert.match(script, /dialogPlayer\.removeAttribute\("src"\)/);
+  assert.match(script, /dialogPlayer\.load\(\)/);
+  assert.match(script, /document\.body\.classList\.remove\("modal-open"\)/);
+  assert.match(script, /activeShowcaseCard\?\.focus\(\)/);
 });
 
 test("footer guide phrase is absent from every HTML page", () => {
