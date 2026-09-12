@@ -88,9 +88,10 @@ test("blog uses the homepage design system without the highlighted intro copy", 
     ["./seedance-lite-vs-pro-which-plan-should-you-choose.html", "Read article"],
     ["./seedance-pricing-2026-all-plans-compared.html", "Read article"],
     ["./how-to-use-seedance-for-free-in-2026-all-free-methods.html", "Read article"],
+    ["./seedance-2-5-image-to-video-guide.html", "Read guide"],
     ["./precise-application-of-seedance-prompts.html", "Read article"],
     ["./after-thorough-testing-the-conclusion-is-clear-seedance-2-0-s-universal-template-2.html", "Read article"],
-    ["./seedance-2-0-complete-tutorial.html", "Read tutorial"],
+    ["./seedance-2-0-complete-tutorial.html", "Read legacy guide"],
     ["./seedance-vs-kling-3-comparison.html", "Read comparison"],
     ["./seedance-tiktok-ad-video-guide.html", "Read playbook"],
   ];
@@ -107,6 +108,63 @@ test("blog uses the homepage design system without the highlighted intro copy", 
   const articleLinks = linksIn(articleBlock).map(({ href, text }) => [href, text]);
   assert.deepEqual(articleLinks, expectedArticles);
   assert.match(html, /<footer class="site-footer">/i);
+});
+
+test("Seedance 2.5 owns the current image-to-video guide intent while 2.0 remains a legacy resource", () => {
+  const currentPath = "seedance-2-5-image-to-video-guide.html";
+  const legacyPath = "seedance-2-0-complete-tutorial.html";
+  const currentUrl = `https://seedance3-pro.com/${currentPath}`;
+  const legacyUrl = `https://seedance3-pro.com/${legacyPath}`;
+  const current = read(currentPath);
+  const legacy = read(legacyPath);
+  const blog = read("blog.html");
+  const sitemap = read("sitemap.xml");
+
+  assert.equal((current.match(/<h1\b/gi) ?? []).length, 1);
+  assert.match(tagContent(current, "title"), /^Seedance 2\.5 Image-to-Video Guide: Prompts, Settings &amp; Examples$/i);
+  assert.match(tagContent(current, "h1"), /^Seedance 2\.5 Image-to-Video Guide$/i);
+  assert.match(current, new RegExp(`<link rel="canonical" href="${currentUrl.replaceAll(".", "\\.")}">`, "i"));
+  assert.match(current, /<meta name="description" content="[^"]{120,160}">/i);
+  assert.match(current, /"@type"\s*:\s*"Article"/i);
+  assert.match(current, /"@type"\s*:\s*"FAQPage"/i);
+  assert.match(current, /How to use Seedance 2\.5 for image-to-video/i);
+  assert.match(current, /Seedance 2\.5 prompt formula/i);
+  assert.match(current, /Recommended settings/i);
+  assert.match(current, /Prompt examples/i);
+  assert.match(current, /Troubleshooting/i);
+  assert.match(current, /Seedance 2\.0 vs Seedance 2\.5/i);
+  assert.match(current, /https:\/\/seed\.bytedance\.com\/en\/blog\/one-take-creation-flexible-referencing-introducing-seedance-2-5/i);
+  assert.match(current, /https:\/\/seed\.bytedance\.com\/en\/seedance2_5/i);
+  assert.doesNotMatch(current, /site brand|official model version/i);
+
+  const jsonLdBlocks = [...current.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/gi)].map((match) => JSON.parse(match[1]));
+  const faqSchema = jsonLdBlocks.find((block) => block["@type"] === "FAQPage");
+  assert.ok(faqSchema, "FAQ schema should be valid JSON-LD");
+  const schemaFaqs = faqSchema.mainEntity.map((item) => [item.name, item.acceptedAnswer.text]);
+  const visibleFaqBlock = current.match(/<div class="faq">([\s\S]*?)<\/div>/i)?.[1] ?? "";
+  const visibleFaqs = [...visibleFaqBlock.matchAll(/<details>\s*<summary>([\s\S]*?)<\/summary>\s*<p>([\s\S]*?)<\/p>\s*<\/details>/gi)].map((match) => [
+    match[1].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim(),
+    match[2].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim(),
+  ]);
+  assert.deepEqual(schemaFaqs, visibleFaqs, "FAQ schema must match the visible questions and answers");
+  const articleHeader = blockByClass(current, "header", "site-header");
+  assert.doesNotMatch(articleHeader, /aria-current="page"/i);
+
+  assert.match(tagContent(legacy, "title"), /^Seedance 2\.0 Image-to-Video Tutorial \(Legacy Guide\)$/i);
+  assert.match(tagContent(legacy, "h1"), /^Seedance 2\.0 Image-to-Video Tutorial \(Legacy Guide\)$/i);
+  assert.doesNotMatch(tagContent(legacy, "title"), /2\.5/i);
+  assert.doesNotMatch(tagContent(legacy, "h1"), /2\.5/i);
+  assert.match(legacy, new RegExp(`<link rel="canonical" href="${legacyUrl.replaceAll(".", "\\.")}">`, "i"));
+  assert.match(legacy, /<a[^>]+href="\.\/seedance-2-5-image-to-video-guide\.html"[^>]*>[^<]*Seedance 2\.5[^<]*<\/a>/i);
+  assert.doesNotMatch(legacy, /site brand|official model version/i);
+
+  const currentCardIndex = blog.indexOf(`href="./${currentPath}"`);
+  const legacyCardIndex = blog.indexOf(`href="./${legacyPath}"`);
+  assert.ok(currentCardIndex > -1, "Blog should link the current guide");
+  assert.ok(legacyCardIndex > currentCardIndex, "Current guide should appear before the legacy guide");
+  assert.match(blog, /<h2>Seedance 2\.5 Image-to-Video Guide: Prompts, Settings &amp; Examples<\/h2>[\s\S]*?href="\.\/seedance-2-5-image-to-video-guide\.html"/i);
+  assert.match(blog, /<h2>Seedance 2\.0 Image-to-Video Tutorial \(Legacy Guide\)<\/h2>[\s\S]*?href="\.\/seedance-2-0-complete-tutorial\.html"[^>]*>Read legacy guide<\/a>/i);
+  assert.equal((sitemap.match(new RegExp(currentUrl.replaceAll(".", "\\."), "g")) ?? []).length, 1);
 });
 
 test("homepage video showcase uses the supplied clips in order", () => {

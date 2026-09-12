@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Seedance 2.5 Image-to-Video Guide: Prompts, Settings &amp; Examples</title>
+  <meta name="description" content="Learn Seedance 2.5 image-to-video with practical prompts, reference controls, recommended settings, editing tips, examples, and troubleshooting advice.">
+  <meta name="keywords" content="Seedance 2.5 image to video,Seedance 2.5 prompts,Seedance 2.5 settings,Seedance image to video guide">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <link rel="canonical" href="https://seedance3-pro.com/seedance-2-5-image-to-video-guide.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="SEEDANCE 3.0">
+  <meta property="og:title" content="Seedance 2.5 Image-to-Video Guide">
+  <meta property="og:description" content="A practical workflow for turning reference images into controlled Seedance 2.5 videos.">
+  <meta property="og:url" content="https://seedance3-pro.com/seedance-2-5-image-to-video-guide.html">
+  <meta property="og:image" content="https://seedance3-pro.com/og-cover.svg">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Seedance 2.5 Image-to-Video Guide">
+  <meta name="twitter:description" content="Prompts, settings, reference controls, examples, and fixes for Seedance 2.5 image-to-video workflows.">
+  <meta name="twitter:image" content="https://seedance3-pro.com/og-cover.svg">
+  <meta name="theme-color" content="#090a0c">
+  <link rel="stylesheet" href="./site.css">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="./favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Seedance 2.5 Image-to-Video Guide: Prompts, Settings & Examples",
+    "description": "A practical Seedance 2.5 image-to-video workflow covering prompts, references, settings, editing, examples, and troubleshooting.",
+    "datePublished": "2026-09-12",
+    "dateModified": "2026-09-12",
+    "mainEntityOfPage": "https://seedance3-pro.com/seedance-2-5-image-to-video-guide.html",
+    "image": "https://seedance3-pro.com/og-cover.svg",
+    "author": { "@type": "Organization", "name": "SEEDANCE 3.0" },
+    "publisher": {
+      "@type": "Organization",
+      "name": "SEEDANCE 3.0",
+      "logo": { "@type": "ImageObject", "url": "https://seedance3-pro.com/assets/seedance-mark.svg" }
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Can Seedance 2.5 turn one image into a video?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. Use the image as the visual anchor, then prompt the desired subject motion, camera path, environment response, duration, and consistency constraints." }
+      },
+      {
+        "@type": "Question",
+        "name": "How long can a Seedance 2.5 video be?",
+        "acceptedAnswer": { "@type": "Answer", "text": "The official Seedance 2.5 page lists up to 30 seconds in a single generation, with extension support. Short drafts remain the fastest way to validate a new idea." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the best Seedance 2.5 prompt structure?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Use: subject anchor, action, camera movement, timing, environment response, visual style, audio direction, and consistency constraints." }
+      },
+      {
+        "@type": "Question",
+        "name": "Should I use all available references?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No. Use only the references needed to control a specific property. Too many overlapping references can make priorities unclear." }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container inner">
+      <a class="brand" href="./index.html" aria-label="SEEDANCE 3.0 home">
+        <img class="brand-mark" src="./assets/seedance-mark.svg" width="40" height="40" alt="">
+        <span>SEEDANCE 3.0</span>
+      </a>
+      <nav class="desktop-nav compact-nav" aria-label="Primary navigation">
+        <a href="./blog.html">Blog</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <a href="./index.html">Home</a><span>/</span><a href="./blog.html">Blog</a><span>/</span><span>Seedance 2.5 Image-to-Video</span>
+        </nav>
+        <p class="eyebrow">Updated September 12, 2026</p>
+        <h1 class="display">Seedance 2.5 Image-to-Video Guide</h1>
+        <p class="lead">Turn a still image into a controlled video by treating the image as your visual anchor and the prompt as a motion plan. This guide covers the workflow, prompt structure, settings, examples, and fixes that matter most.</p>
+        <div class="fact-grid" aria-label="Seedance 2.5 key capabilities">
+          <div class="fact"><strong>30 sec</strong><span>Maximum single generation</span></div>
+          <div class="fact"><strong>30 images</strong><span>Maximum image references</span></div>
+          <div class="fact"><strong>10 videos</strong><span>Maximum video references</span></div>
+          <div class="fact"><strong>10 audio</strong><span>Maximum audio references</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container">
+        <article class="prose">
+          <p><strong>Quick answer:</strong> start with one clear, high-resolution image; describe a single primary action; specify one camera movement; set the intended duration and aspect ratio; then add constraints that preserve identity, clothing, object shape, and background geometry. Generate a short draft first and change one variable at a time.</p>
+
+          <div class="status-panel">
+            <span class="tag lime">What changed</span>
+            <h3>Seedance 2.5 is built for longer, more controllable video creation</h3>
+            <p>ByteDance says Seedance 2.5 can generate up to 30 seconds in one pass, accept up to 30 images, 10 videos, and 10 audio clips as references, and apply timestamp-level editing. Those capabilities make reference planning and time-based prompting more important than they were in shorter workflows.</p>
+            <p><a class="card-link" href="https://seed.bytedance.com/en/blog/one-take-creation-flexible-referencing-introducing-seedance-2-5" target="_blank" rel="noopener noreferrer">Read the Seedance 2.5 launch announcement</a></p>
+          </div>
+
+          <h2>How to use Seedance 2.5 for image-to-video</h2>
+
+          <h3>1. Choose a production-ready reference image</h3>
+          <p>Your source image establishes identity, composition, lighting, wardrobe, and object geometry. Use an image with a clearly visible subject, natural anatomy, enough space for the intended motion, and no accidental text or visual artifacts. If the face or product is already distorted in the input, motion will usually amplify the problem.</p>
+          <ul>
+            <li>Use a sharp image with the subject separated from the background.</li>
+            <li>Match the source aspect ratio to the final platform whenever possible.</li>
+            <li>Leave visual space in the direction the subject or camera will move.</li>
+            <li>Avoid asking a tight portrait to become a distant full-body shot in one step.</li>
+          </ul>
+
+          <h3>2. Define one visual objective</h3>
+          <p>Decide what the clip must accomplish before writing the prompt: animate a portrait, reveal a product, establish a location, reproduce a camera move, or create a short narrative beat. One clip can contain multiple shots, but every shot should support the same objective.</p>
+
+          <h3>3. Describe motion, not the image</h3>
+          <p>The model can already see the reference. Spend prompt space on what changes over time: eye movement, hand motion, fabric response, camera path, environmental motion, sound, and the final pose. Use concrete verbs and a clear sequence.</p>
+
+          <h3>4. Add camera direction and timing</h3>
+          <p>Choose one main movement such as a slow dolly in, lateral tracking shot, controlled orbit, tilt up, or locked-off shot. For longer clips, assign actions to time ranges. Timestamp instructions help separate narrative beats and reduce contradictory motion.</p>
+
+          <h3>5. Add consistency constraints</h3>
+          <p>State what must not change. Useful constraints include: preserve the subject's facial features, body proportions, hairstyle, clothing details, product logo placement, background layout, and lighting direction. Constraints work best when they are specific and short.</p>
+
+          <h3>6. Generate short, evaluate, and extend</h3>
+          <p>Begin with a short draft to validate identity and motion. Review the first and final frames, hands, facial details, camera stability, background geometry, and audio synchronization. Fix the largest problem first. Once the motion language works, create the longer version or use extension to continue the sequence.</p>
+
+          <h2>Seedance 2.5 prompt formula</h2>
+          <p>A reliable image-to-video prompt can be assembled in this order:</p>
+          <div class="prompt-box">[Subject anchor] + [primary action] + [camera movement] + [timing] + [environmental response] + [visual style] + [audio direction] + [consistency constraints]</div>
+          <p>Example:</p>
+          <div class="prompt-box">Use @Image 1 as the exact visual reference. The woman slowly turns toward the window and lifts the curtain with her right hand. The camera makes a subtle dolly in from a medium shot to a medium close-up over 8 seconds. Morning light grows warmer across her face while the curtain and loose hair move gently in the breeze. Natural cinematic realism, restrained motion, quiet room ambience. Preserve her facial features, red dress, body proportions, balcony geometry, and lighting direction. No sudden cuts, no extra fingers, no text.</div>
+
+          <h2>Recommended settings</h2>
+          <p>The exact controls available can vary by interface. Use these choices as production targets rather than rigid defaults.</p>
+          <table class="comparison">
+            <thead>
+              <tr><th>Setting</th><th>Starting point</th><th>When to change it</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Duration</td><td>5–10 seconds for drafts</td><td>Move toward 15–30 seconds after motion and identity are stable.</td></tr>
+              <tr><td>Aspect ratio</td><td>Match the reference image</td><td>Use 9:16 for Shorts/Reels/TikTok, 16:9 for landscape video, or 1:1 for square placements.</td></tr>
+              <tr><td>Camera movement</td><td>One primary move</td><td>Add a second move only when the transition has a clear story purpose.</td></tr>
+              <tr><td>Reference count</td><td>One strong image</td><td>Add references only to control a specific character, object, location, motion, or sound.</td></tr>
+              <tr><td>Prompt timing</td><td>One continuous action</td><td>Use timestamp ranges for multiple shots or precise changes.</td></tr>
+              <tr><td>Variation strategy</td><td>Three versions per idea</td><td>Change only the action, camera, or pacing in each version so results remain comparable.</td></tr>
+            </tbody>
+          </table>
+
+          <h2>Prompt examples</h2>
+
+          <h3>Portrait with subtle natural motion</h3>
+          <div class="prompt-box">Use @Image 1 as the identity and composition reference. The subject blinks naturally, takes a slow breath, and turns her eyes toward the light. Locked camera with an almost imperceptible push in. Soft hair movement from a gentle breeze, realistic skin texture, shallow depth of field. Preserve facial identity, hairstyle, earrings, clothing, and background. No talking, no exaggerated expression, no camera shake.</div>
+
+          <h3>Product reveal</h3>
+          <div class="prompt-box">Use @Image 1 as the exact product reference. Begin with the bottle in silhouette, then move a narrow highlight from left to right across the glass as the camera performs a smooth 20-degree orbit. Fine condensation forms on the surface and the background mist drifts slowly. Premium studio advertising, crisp reflections, controlled black-and-lime palette. Keep the bottle shape, cap, label, typography, and logo unchanged.</div>
+
+          <h3>Cinematic scene with timed beats</h3>
+          <div class="prompt-box">Use @Image 1 for the character and location. 0–4s: medium shot, the character looks across the empty station as paper moves along the platform. 4–8s: the camera tracks laterally while the character begins walking. 8–12s: a train light appears in the distance and the camera slowly pulls back to a wide shot. Moody cinematic realism, cool night lighting, distant rail ambience. Preserve face, coat, station layout, and screen direction across the sequence.</div>
+
+          <h3>Motion-reference workflow</h3>
+          <div class="prompt-box">Use @Image 1 for the subject's exact appearance and @Video 1 only for camera path, pacing, and body movement. Recreate the same controlled arc and final framing while keeping the character, wardrobe, location, and color palette from @Image 1. Do not copy the identity, background, or styling from @Video 1.</div>
+
+          <h2>How to control references without creating conflicts</h2>
+          <p>More references do not automatically produce a better result. Assign one job to each asset and name that job in the prompt. For example, use one image for identity, another for wardrobe, one video for motion, and one audio clip for rhythm. If two references disagree about the same feature, choose a priority explicitly.</p>
+          <p>Seedance 2.5's official documentation describes stronger control over image, video, audio, motion, creative, clay-render, and editing references. The practical advantage is not the maximum number of files—it is the ability to tell the model exactly which property to borrow from each file.</p>
+
+          <h2>Timestamp editing and extensions</h2>
+          <p>For a longer clip, write a simple shot schedule before the full prose prompt. Give each interval one action and one camera instruction. If only one part fails, request a targeted change for that time range while preserving the rest of the sequence. For extensions, restate the character, environment, visual style, motion direction, and sound continuity that must carry forward.</p>
+          <div class="prompt-box">Edit @Video 1. Keep the character, wardrobe, setting, lighting, and audio unchanged. Adjust only 6–9s: replace the sudden camera turn with a slow stabilized pan to the right, ending on the same final composition.</div>
+
+          <h2>Troubleshooting</h2>
+
+          <h3>The face or product changes</h3>
+          <p>Reduce the size of the pose change, use a clearer reference, shorten the first draft, and repeat the exact visual details that must remain fixed. For products, identify shape, material, label position, logo, and cap separately.</p>
+
+          <h3>Motion looks stiff</h3>
+          <p>Replace abstract verbs such as “moves beautifully” with observable movement: shifts weight to the left foot, turns the shoulders, raises the right hand, then looks toward camera. Add secondary motion only after the main action works.</p>
+
+          <h3>The camera jumps or ignores direction</h3>
+          <p>Remove competing moves and describe one continuous path with a start frame and end frame. “Slow dolly in from medium shot to close-up” is more controllable than a list containing zoom, orbit, pan, handheld shake, and crane movement.</p>
+
+          <h3>The background warps</h3>
+          <p>Use a shorter movement, avoid extreme parallax from a flat source image, and instruct the model to preserve architecture, horizon, straight lines, and spatial layout. A wider source image usually gives the camera more room.</p>
+
+          <h3>The clip feels busy or incoherent</h3>
+          <p>Reduce the number of subjects, actions, scene changes, and style modifiers. Create the story as separate stable beats, then extend or edit after each beat works.</p>
+
+          <h2>Seedance 2.0 vs Seedance 2.5</h2>
+          <table class="comparison">
+            <thead>
+              <tr><th>Workflow area</th><th>Seedance 2.0 approach</th><th>Seedance 2.5 approach</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Clip planning</td><td>Short clip-first prompting</td><td>Up to 30-second sequences with clearer narrative beats</td></tr>
+              <tr><td>References</td><td>Keep the reference set compact</td><td>Assign roles across a larger multimodal reference set</td></tr>
+              <tr><td>Prompt structure</td><td>Subject, action, camera, style</td><td>Add timestamp ranges and asset-specific instructions</td></tr>
+              <tr><td>Revision</td><td>Regenerate or extend</td><td>Use targeted timestamp editing, extensions, and reference-based changes</td></tr>
+              <tr><td>Production use</td><td>Individual shots and short concepts</td><td>Longer storytelling and more controlled editing workflows</td></tr>
+            </tbody>
+          </table>
+          <p>If you still use the older workflow, the core lessons remain valuable: clear assets, precise motion verbs, simple camera direction, and controlled iteration. Read the <a class="card-link" href="./seedance-2-0-complete-tutorial.html">Seedance 2.0 legacy tutorial</a> for the earlier process.</p>
+
+          <h2>Seedance 2.5 image-to-video checklist</h2>
+          <ul>
+            <li>The reference image is sharp and matches the intended framing.</li>
+            <li>The prompt contains one primary action and one primary camera movement.</li>
+            <li>Every reference asset has one clearly defined role.</li>
+            <li>Time ranges do not contain conflicting actions.</li>
+            <li>Identity, wardrobe, object, and background constraints are explicit.</li>
+            <li>The first draft is short enough to diagnose quickly.</li>
+            <li>Only one variable changes between test generations.</li>
+            <li>The final review checks the first frame, last frame, hands, face, geometry, motion, and sound.</li>
+          </ul>
+
+          <h2>Frequently asked questions</h2>
+          <div class="faq">
+            <details>
+              <summary>Can Seedance 2.5 turn one image into a video?</summary>
+              <p>Yes. Use the image as the visual anchor, then prompt the desired subject motion, camera path, environment response, duration, and consistency constraints.</p>
+            </details>
+            <details>
+              <summary>How long can a Seedance 2.5 video be?</summary>
+              <p>The official Seedance 2.5 page lists up to 30 seconds in a single generation, with extension support. Short drafts remain the fastest way to validate a new idea.</p>
+            </details>
+            <details>
+              <summary>What is the best Seedance 2.5 prompt structure?</summary>
+              <p>Use: subject anchor, action, camera movement, timing, environment response, visual style, audio direction, and consistency constraints.</p>
+            </details>
+            <details>
+              <summary>Should I use all available references?</summary>
+              <p>No. Use only the references needed to control a specific property. Too many overlapping references can make priorities unclear.</p>
+            </details>
+          </div>
+
+          <h2>Sources and further reading</h2>
+          <ul>
+            <li><a class="card-link" href="https://seed.bytedance.com/en/blog/one-take-creation-flexible-referencing-introducing-seedance-2-5" target="_blank" rel="noopener noreferrer">Introducing Seedance 2.5 — ByteDance Seed</a></li>
+            <li><a class="card-link" href="https://seed.bytedance.com/en/seedance2_5" target="_blank" rel="noopener noreferrer">Seedance 2.5 model page — ByteDance Seed</a></li>
+            <li><a class="card-link" href="./precise-application-of-seedance-prompts.html">More Seedance prompt techniques</a></li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div><a class="brand" href="./index.html"><img class="brand-mark" src="./assets/seedance-mark.svg" width="40" height="40" alt=""><span>SEEDANCE 3.0</span></a></div>
+        <div><h3>Explore</h3><a href="./index.html">Home</a><a href="./blog.html">Blog</a></div>
+        <div><h3>Models</h3><a href="./minimax-h3-ai-video-generator.html">MiniMax H3</a><a href="./nano-banana-2-lite.html">Nano Banana 2 Lite</a><a href="./gpt-image-2.html">GPT Image 2</a></div>
+        <div><h3>Resources</h3><a href="./faq.html">FAQ</a><a href="./pricing.html">Pricing</a><a href="mailto:support@seedance3-pro.com">Contact</a></div>
+      </div>
+      <div class="copyright"><span>© 2026 SEEDANCE 3.0 · seedance3-pro.com</span></div>
+    </div>
+  </footer>
+</body>
+</html>
