@@ -87,3 +87,148 @@ export function normalizeArticleDocument(html) {
   if (!articleContentPattern.test(source)) return source;
   return source.replace(articleContentPattern, (_match, open, content, close) => `${open}\n        ${sanitizeArticleHtml(content)}\n      ${close}`);
 }
+
+const ARTICLE_HEADER = `  <header class="site-header">
+    <div class="container inner">
+      <a class="brand" href="./index.html" aria-label="SEEDANCE 3.0 home">
+        <img class="brand-mark" src="./assets/seedance-mark.svg" width="40" height="40" alt="">
+        <span>SEEDANCE 3.0</span>
+      </a>
+      <nav class="desktop-nav compact-nav" aria-label="Primary navigation">
+        <a href="./index.html">Home</a>
+        <a href="./blog.html">Blog</a>
+      </nav>
+    </div>
+  </header>`;
+
+const ARTICLE_FOOTER = `  <footer class="site-footer article-footer">
+    <div class="container article-footer-inner">
+      <p>© 2026 SEEDANCE 3.0 · seedance3-pro.com</p>
+      <nav aria-label="Footer navigation">
+        <a href="./index.html">Home</a>
+        <a href="./blog.html">Blog</a>
+      </nav>
+    </div>
+  </footer>`;
+
+function escapeHtml(input) {
+  return String(input || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function normalizeLegacyArticleMain(source) {
+  const mainPattern = /<main\b[^>]*>\s*<article\b[^>]*>([\s\S]*?)<\/article>\s*<\/main>/i;
+  const match = source.match(mainPattern);
+  if (!match) return source;
+
+  let article = match[1].trim();
+  const categoryMatch = article.match(/^\s*<p\b[^>]*>([\s\S]*?)<\/p>/i);
+  if (!categoryMatch) return source;
+  const category = categoryMatch[1].trim();
+  article = article.slice(categoryMatch[0].length).trim();
+
+  const headingMatch = article.match(/^\s*<h1\b[^>]*>([\s\S]*?)<\/h1>/i);
+  if (!headingMatch) return source;
+  const heading = headingMatch[1].trim();
+  let content = article.slice(headingMatch[0].length).trim();
+
+  const existingContent = content.match(/^<div\b[^>]*class="[^"]*\barticle-content\b[^"]*"[^>]*>([\s\S]*)<\/div>\s*$/i);
+  if (existingContent) content = existingContent[1].trim();
+
+  const replacement = `<main class="article-main">
+    <div class="container">
+      <article class="article-shell">
+        <p class="eyebrow article-category">${category}</p>
+        <h1 class="article-title">${heading}</h1>
+        <div class="article-content prose">
+          ${content}
+        </div>
+      </article>
+    </div>
+  </main>`;
+  return source.replace(mainPattern, replacement);
+}
+
+export function normalizeBlogArticleDocument(html) {
+  let output = String(html || "");
+  if (!/<meta\s+property="og:type"\s+content="article">/i.test(output)) return output;
+
+  if (/cdn\.tailwindcss\.com/i.test(output)) {
+    output = output.replace(/\s*<script\s+src="https:\/\/cdn\.tailwindcss\.com"><\/script>/i, '\n  <link rel="stylesheet" href="./site.css">');
+    output = output.replace(/\s*<style>\s*\.article-content\s*\{[\s\S]*?<\/style>/i, "");
+  } else if (!/<link\s+rel="stylesheet"\s+href="\.\/site\.css">/i.test(output)) {
+    output = output.replace(/<\/head>/i, '  <link rel="stylesheet" href="./site.css">\n</head>');
+  }
+
+  output = output.replace(/<body\b[^>]*>/i, "<body>");
+  output = output.replace(/\s*<header\b[^>]*>[\s\S]*?<\/header>/i, `\n${ARTICLE_HEADER}`);
+  output = output.replace(/\s*<footer\b[^>]*>[\s\S]*?<\/footer>/i, `\n${ARTICLE_FOOTER}`);
+
+  if (!/<main\s+class="article-main">/i.test(output)) {
+    if (/<section\b[^>]*class="[^"]*\bpage-hero\b/i.test(output)) {
+      output = output.replace(/<main\b[^>]*>/i, '<main class="article-main">');
+      output = output.replace(/<article\s+class="prose">/i, '<article class="article-content prose">');
+    } else {
+      output = normalizeLegacyArticleMain(output);
+    }
+  }
+
+  return output;
+}
+
+export function renderArticleDocument({ title, excerpt, category, content, canonical }) {
+  const safeTitle = escapeHtml(title);
+  const safeExcerpt = escapeHtml(excerpt) || safeTitle;
+  const safeCategory = escapeHtml(category) || "Article";
+  const excerptHtml = excerpt
+    ? `\n        <p class="article-lead">${safeExcerpt}</p>`
+    : "";
+  return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${safeTitle} | SEEDANCE Blog</title>
+  <meta name="description" content="${safeExcerpt}">
+  <meta name="keywords" content="Seedance blog,AI video tutorial,Seedance workflow">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <link rel="canonical" href="${escapeHtml(canonical)}">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="SEEDANCE 3.0">
+  <meta property="og:title" content="${safeTitle}">
+  <meta property="og:description" content="${safeExcerpt}">
+  <meta property="og:url" content="${escapeHtml(canonical)}">
+  <meta property="og:image" content="https://seedance3-pro.com/og-cover.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${safeTitle}">
+  <meta name="twitter:description" content="${safeExcerpt}">
+  <meta name="twitter:image" content="https://seedance3-pro.com/og-cover.svg">
+  <meta name="theme-color" content="#090a0c">
+  <link rel="stylesheet" href="./site.css">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="./favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
+</head>
+<body>
+${ARTICLE_HEADER}
+
+  <main class="article-main">
+    <div class="container">
+      <article class="article-shell">
+        <p class="eyebrow article-category">${safeCategory}</p>
+        <h1 class="article-title">${safeTitle}</h1>${excerptHtml}
+        <div class="article-content prose">
+          ${sanitizeArticleHtml(content)}
+        </div>
+      </article>
+    </div>
+  </main>
+
+${ARTICLE_FOOTER}
+</body>
+</html>`;
+}

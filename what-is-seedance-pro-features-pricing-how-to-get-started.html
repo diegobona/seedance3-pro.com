@@ -19,86 +19,31 @@
   <meta name="twitter:description" content="What Is Seedance Pro? Features, Pricing &amp; How to Get Started">
   <meta name="twitter:image" content="https://seedance3-pro.com/og-cover.svg">
   <meta name="theme-color" content="#080c1f">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    .article-content {
-      margin-top: 2.5rem;
-      color: #cbd5e1;
-      font-size: 1rem;
-      line-height: 1.75;
-    }
-    .article-content p {
-      margin: 0 0 1rem;
-    }
-    .article-content h1,
-    .article-content h2,
-    .article-content h3,
-    .article-content h4,
-    .article-content h5,
-    .article-content h6 {
-      color: #ffffff;
-      font-weight: 700;
-      line-height: 1.35;
-      margin: 1.5rem 0 0.75rem;
-    }
-    .article-content ul {
-      list-style: disc;
-      list-style-position: inside;
-      padding-left: 0;
-      margin: 0.75rem 0;
-    }
-    .article-content ol {
-      list-style: decimal;
-      list-style-position: inside;
-      padding-left: 0;
-      margin: 0.75rem 0;
-    }
-    .article-content li {
-      margin: 0.25rem 0;
-    }
-    .article-content strong {
-      color: #ffffff;
-      font-weight: 700;
-    }
-    .article-content a {
-      color: #a5b4fc;
-    }
-    .article-content blockquote {
-      margin: 1rem 0;
-      padding-left: 1rem;
-      border-left: 2px solid rgba(255,255,255,0.18);
-    }
-    .article-content img {
-      border-radius: 1rem;
-      border: 1px solid rgba(255,255,255,0.1);
-      margin: 1rem 0;
-    }
-  </style>
+  <link rel="stylesheet" href="./site.css">
   <link rel="icon" type="image/svg+xml" href="./favicon.svg">
   <link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="./favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
 </head>
-<body class="bg-slate-950 text-slate-100 antialiased">
-  <header class="sticky top-0 z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl">
-    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-      <a href="./index.html" class="flex items-center gap-3">
-        <img src="./assets/seedance-mark.svg" width="40" height="40" alt="" style="flex-shrink:0">
-        <span class="text-sm font-semibold tracking-[0.2em] text-slate-200">SEEDANCE 3.0</span>
+<body>
+  <header class="site-header">
+    <div class="container inner">
+      <a class="brand" href="./index.html" aria-label="SEEDANCE 3.0 home">
+        <img class="brand-mark" src="./assets/seedance-mark.svg" width="40" height="40" alt="">
+        <span>SEEDANCE 3.0</span>
       </a>
-      <nav class="hidden items-center gap-7 text-sm text-slate-300 lg:flex">
-        <a href="./blog.html" class="text-white">Blog</a>
-        <a href="./features.html" class="hover:text-white">Features</a>
-        <a href="./pricing.html" class="hover:text-white">Pricing</a>
+      <nav class="desktop-nav compact-nav" aria-label="Primary navigation">
+        <a href="./index.html">Home</a>
+        <a href="./blog.html">Blog</a>
       </nav>
-      <a href="./index.html#generator" class="rounded-full border border-indigo-300/40 bg-indigo-500/20 px-4 py-2 text-sm font-semibold text-indigo-100 transition hover:bg-indigo-500/35">Start Creating</a>
     </div>
   </header>
-  <main class="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
-    <article>
-      <p class="text-xs font-semibold uppercase tracking-wide text-indigo-200">Playbook</p>
-      <h1 class="mt-4 text-4xl font-semibold text-white sm:text-5xl">What Is Seedance Pro? Features, Pricing &amp; How to Get Started</h1>
-      <div class="article-content">
-        <h2><span>If you are considering Seedance Pro, the first question is simple: </span><strong>what do you actually get with it?</strong></h2>
+  <main class="article-main">
+    <div class="container">
+      <article class="article-shell">
+        <p class="eyebrow article-category">Playbook</p>
+        <h1 class="article-title">What Is Seedance Pro? Features, Pricing &amp; How to Get Started</h1>
+        <div class="article-content prose">
+          <h2><span>If you are considering Seedance Pro, the first question is simple: </span><strong>what do you actually get with it?</strong></h2>
 <p>Seedance Pro is the higher-tier plan designed for users who need more than the basics. Compared with lighter plans, it is usually aimed at people who use the platform more often, want higher limits, and need a smoother overall experience.</p>
 <p>This article covers <strong>what Seedance Pro is, its main features, pricing considerations, and how to get started</strong>.</p>
 <h2>What Is Seedance Pro?</h2>
@@ -138,16 +83,17 @@
 <p>If your needs are simple, you may not need it yet. But if you are using Seedance regularly and want a better overall experience, <strong>Seedance Pro</strong> is likely the stronger option.</p>
 
 <br>
-      </div>
-    </article>
+        </div>
+      </article>
+    </div>
   </main>
-  <footer class="border-t border-white/10 bg-slate-950">
-    <div class="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-8 text-sm text-slate-400 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+  <footer class="site-footer article-footer">
+    <div class="container article-footer-inner">
       <p>© 2026 SEEDANCE 3.0 · seedance3-pro.com</p>
-      <div class="flex gap-4">
-        <a href="./blog.html" class="hover:text-slate-200">Blog</a>
-        <a href="./index.html" class="hover:text-slate-200">Home</a>
-      </div>
+      <nav aria-label="Footer navigation">
+        <a href="./index.html">Home</a>
+        <a href="./blog.html">Blog</a>
+      </nav>
     </div>
   </footer>
 </body>

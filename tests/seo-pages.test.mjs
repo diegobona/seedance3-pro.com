@@ -110,6 +110,31 @@ test("blog uses the homepage design system without the highlighted intro copy", 
   assert.match(html, /<footer class="site-footer">/i);
 });
 
+test("every Blog article detail page uses the homepage shell and only Home and Blog navigation", () => {
+  const blog = read("blog.html");
+  const articleBlock = blog.match(/<!-- BLOG_POSTS_START -->([\s\S]*?)<!-- BLOG_POSTS_END -->/i)?.[1] ?? "";
+  const articlePaths = [...articleBlock.matchAll(/href="\.\/([^\"]+\.html)"/gi)].map((match) => match[1]);
+
+  assert.ok(articlePaths.length > 0, "Blog should link at least one article detail page");
+  for (const articlePath of articlePaths) {
+    const html = read(articlePath);
+    const header = blockByClass(html, "header", "site-header");
+    const navigation = blockByClass(header, "nav", "compact-nav");
+
+    assert.match(html, /<link rel="stylesheet" href="\.\/site\.css">/i, `${articlePath} should use site.css`);
+    assert.doesNotMatch(html, /cdn\.tailwindcss\.com/i, `${articlePath} should not load Tailwind`);
+    assert.deepEqual(linksIn(navigation), [
+      { href: "./index.html", text: "Home" },
+      { href: "./blog.html", text: "Blog" },
+    ], `${articlePath} should expose only Home and Blog in its header navigation`);
+    assert.doesNotMatch(header, /Start Creating|Features|Pricing/i, `${articlePath} should not expose legacy header actions`);
+    assert.match(html, /<main class="article-main">/i, `${articlePath} should use the shared article layout`);
+    assert.match(html, /<article class="(?:article-shell|article-content prose)">/i, `${articlePath} should use the shared article shell`);
+    assert.match(html, /<(?:div|article) class="article-content prose">/i, `${articlePath} should use shared long-form typography`);
+    assert.match(html, /<footer class="site-footer article-footer">/i, `${articlePath} should use the shared footer`);
+  }
+});
+
 test("Seedance 2.5 owns the current image-to-video guide intent while 2.0 remains a legacy resource", () => {
   const currentPath = "seedance-2-5-image-to-video-guide.html";
   const legacyPath = "seedance-2-0-complete-tutorial.html";
@@ -303,11 +328,59 @@ test("article sanitizer preserves useful markup and removes imported editor cruf
   assert.match(output, /<pre><code class="language-js">const ok = true;<\/code><\/pre>/i);
 });
 
-test("both CMS publishers sanitize article fragments before templating", () => {
+test("Blog article normalization preserves SEO metadata and content and is idempotent", async () => {
+  const { normalizeBlogArticleDocument } = await import("../scripts/article-html.mjs");
+  const jsonLd = `{"@context":"https://schema.org","@type":"Article","headline":"A precise title"}`;
+  const input = `<!doctype html>
+<html lang="en"><head>
+  <title>SEO document title | SEEDANCE Blog</title>
+  <meta name="description" content="Description stays exactly the same.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="https://seedance3-pro.com/example.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Open Graph title">
+  <meta name="twitter:title" content="Twitter title">
+  <script type="application/ld+json">${jsonLd}</script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head><body class="bg-slate-950 text-slate-100 antialiased">
+  <header class="sticky top-0"><a href="./index.html">SEEDANCE 3.0</a><nav><a href="./blog.html">Blog</a><a href="./features.html">Features</a></nav><a href="#generator">Start Creating</a></header>
+  <main class="mx-auto max-w-4xl"><article>
+    <p class="text-xs">Tutorial</p><h1 class="text-5xl">Visible article heading</h1>
+    <p class="mt-6">Lead paragraph with <a href="./kept-link.html">a kept link</a>.</p>
+    <div class="article-content"><h2>Body heading</h2><p>Body copy stays intact.</p><pre><code class="language-js">const kept = true;</code></pre></div>
+  </article></main>
+  <footer class="border-t"><p>Old footer</p></footer>
+</body></html>`;
+  const output = normalizeBlogArticleDocument(input);
+
+  for (const preserved of [
+    "<title>SEO document title | SEEDANCE Blog</title>",
+    '<meta name="description" content="Description stays exactly the same.">',
+    '<meta name="robots" content="index,follow,max-image-preview:large">',
+    '<link rel="canonical" href="https://seedance3-pro.com/example.html">',
+    '<meta property="og:title" content="Open Graph title">',
+    '<meta name="twitter:title" content="Twitter title">',
+    `<script type="application/ld+json">${jsonLd}</script>`,
+    '<a href="./kept-link.html">a kept link</a>',
+    '<pre><code class="language-js">const kept = true;</code></pre>',
+  ]) {
+    assert.match(output, new RegExp(preserved.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  }
+  assert.match(output, /<link rel="stylesheet" href="\.\/site\.css">/i);
+  assert.doesNotMatch(output, /cdn\.tailwindcss\.com|Start Creating|Features/i);
+  assert.deepEqual(linksIn(blockByClass(output, "nav", "compact-nav")), [
+    { href: "./index.html", text: "Home" },
+    { href: "./blog.html", text: "Blog" },
+  ]);
+  assert.equal(normalizeBlogArticleDocument(output), output, "normalization should be idempotent");
+});
+
+test("both CMS publishers use the shared article renderer", () => {
   for (const fileName of ["server.local.js", "worker.js"]) {
     const source = read(fileName);
-    assert.match(source, /import\s*\{\s*sanitizeArticleHtml\s*\}\s*from\s*["']\.\/scripts\/article-html\.mjs["']/i);
-    assert.match(source, /\$\{sanitizeArticleHtml\(content\)\}/i);
+    assert.match(source, /import\s*\{\s*renderArticleDocument\s*\}\s*from\s*["']\.\/scripts\/article-html\.mjs["']/i);
+    assert.match(source, /return\s+renderArticleDocument\(\{[\s\S]*?title,[\s\S]*?content,[\s\S]*?canonical[\s\S]*?\}\);/i);
+    assert.doesNotMatch(source, /cdn\.tailwindcss\.com|Start Creating/i);
   }
 });
 
