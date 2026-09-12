@@ -294,13 +294,13 @@ async function upsertBlogCard({ fileName, title, excerpt, category }) {
   const after = html.slice(endIndex);
   if (middle.includes(href)) return;
   const excerptHtml = excerpt
-    ? `        <p class="mt-3 text-sm leading-7 text-slate-300">${escapeHtml(excerpt)}</p>\n`
+    ? `        <p class="blog-card-excerpt">${escapeHtml(excerpt)}</p>\n`
     : "";
   const card = `
-      <article class="rounded-2xl border border-white/10 bg-slate-900/60 p-6">
-        <p class="text-xs font-medium uppercase tracking-wide text-indigo-200">${escapeHtml(category)}</p>
-        <h2 class="mt-3 text-2xl font-semibold text-white">${escapeHtml(title)}</h2>
-${excerptHtml}        <a href="${href}" class="mt-5 inline-flex text-sm font-semibold text-indigo-200 hover:text-indigo-100">Read article</a>
+      <article class="blog-card card card-pad">
+        <p class="blog-card-category tag lime">${escapeHtml(category)}</p>
+        <h2>${escapeHtml(title)}</h2>
+${excerptHtml}        <a href="${href}" class="card-link">Read article</a>
       </article>`;
   await fs.writeFile(BLOG_HTML_PATH, `${before}${card}\n${middle}${after}`, "utf8");
 }
@@ -363,8 +363,8 @@ async function listPublishedPosts() {
   return cards.map((card, idx) => {
     const hrefMatch = card.match(/href="\.\/([^"]+\.html)"/i);
     const titleMatch = card.match(/<h2[^>]*>([\s\S]*?)<\/h2>/i);
-    const excerptMatch = card.match(/<p class="mt-3 text-sm leading-7 text-slate-300">([\s\S]*?)<\/p>/i);
-    const categoryMatch = card.match(/<p class="text-xs font-medium uppercase tracking-wide text-indigo-200">([\s\S]*?)<\/p>/i);
+    const excerptMatch = card.match(/<p class="blog-card-excerpt">([\s\S]*?)<\/p>/i);
+    const categoryMatch = card.match(/<p class="blog-card-category tag lime">([\s\S]*?)<\/p>/i);
     return {
       id: `${idx}-${hrefMatch ? hrefMatch[1] : "unknown"}`,
       fileName: hrefMatch ? hrefMatch[1].trim() : "",
@@ -459,12 +459,15 @@ function buildArticleHtml({ title, excerpt, category, content, canonical }) {
       margin: 1rem 0;
     }
   </style>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="./favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
 </head>
 <body class="bg-slate-950 text-slate-100 antialiased">
   <header class="sticky top-0 z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl">
     <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
       <a href="./index.html" class="flex items-center gap-3">
-        <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-400 to-violet-500 font-semibold text-white">S3</span>
+        <img src="./assets/seedance-mark.svg" width="40" height="40" alt="" style="flex-shrink:0">
         <span class="text-sm font-semibold tracking-[0.2em] text-slate-200">SEEDANCE 3.0</span>
       </a>
       <nav class="hidden items-center gap-7 text-sm text-slate-300 lg:flex">
