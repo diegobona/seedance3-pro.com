@@ -389,6 +389,27 @@ test("studio preview exposes the planned models without entering the index", () 
   assert.match(html, /Generation coming soon/i);
 });
 
+test("studio header keeps only the Home link", () => {
+  const html = read("app/index.html");
+  const header = blockByClass(html, "header", "workspace-header");
+
+  assert.deepEqual(linksIn(header), [{ href: "../", text: "Home" }]);
+  assert.doesNotMatch(header, /Model guides|Prompts|Preview mode|Release status/i);
+});
+
+test("studio omits the requested preview, guide, and status copy", () => {
+  const html = read("app/index.html");
+  const script = read("app/studio.js");
+
+  assert.doesNotMatch(html, /id="model-description"|id="context-copy"|id="context-link"|class="generation-note"|context-card compact/i);
+  assert.doesNotMatch(html, /Text, image, video, and audio context with native stereo sound|This independent site currently offers a workflow preview|Read the MiniMax H3 guide|STUDIO STATUS|Frontend preview|Backend not connected|Indexing|This page demonstrates the planned workflow|Static product preview|No generation jobs are submitted/i);
+  assert.doesNotMatch(script, /modelDescription|contextCopy|contextLink/);
+  assert.match(html, /<h1 id="model-name">MiniMax H3<\/h1>/i);
+  assert.match(html, /<h2 id="context-title">MiniMax H3 is available from its official provider\.<\/h2>/i);
+  assert.match(html, /<button class="generate-button"[^>]*>Generation coming soon<\/button>/i);
+  assert.match(html, /<div class="sidebar-foot"><a href="\.\.\/">← Back to SEEDANCE 3\.0<\/a><\/div>/i);
+});
+
 test("sitemap includes public model pages and excludes the studio preview", () => {
   const sitemap = read("sitemap.xml");
   for (const page of publicPages) {
