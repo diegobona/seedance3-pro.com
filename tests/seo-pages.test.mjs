@@ -83,7 +83,6 @@ test("blog uses the homepage design system without the highlighted intro copy", 
   const header = blockByClass(html, "header", "site-header");
   const navigation = blockByClass(header, "nav", "compact-nav");
   const expectedArticles = [
-    ["./how-to-use-the-seedance-api-complete-developer-guide-2026-2.html", "Read article"],
     ["./how-to-use-the-seedance-api-complete-developer-guide-2026.html", "Read article"],
     ["./what-is-seedance-pro-features-pricing-how-to-get-started.html", "Read article"],
     ["./seedance-lite-vs-pro-which-plan-should-you-choose.html", "Read article"],
@@ -149,8 +148,9 @@ test("homepage video showcase uses the supplied clips in order", () => {
     assert.match(content, /\bclass="[^"]*\bshowcase-play\b/i);
     assert.doesNotMatch(content, /<a\b/i);
     assert.match(cardContent, /Model: MiniMax H3/i);
-    assert.match(cardContent, /As low as 1¢\/sec/i);
+    assert.match(cardContent, /As low as \$0\.01\/sec/i);
     assert.match(cardContent, /<a[^>]+class="[^"]*\bshowcase-try\b[^>]+href="\.\/app\/\?model=minimax-h3"[^>]*>\s*Try it\s*<\/a>/i);
+    assert.match(cardContent, /<div class="showcase-title-row">\s*<strong>Model: MiniMax H3<\/strong>\s*<a[^>]+class="showcase-try"[^>]*>\s*Try it\s*<\/a>\s*<\/div>\s*<span>As low as \$0\.01\/sec<\/span>/i);
   }
 
   const dialog = html.match(/<dialog\b([^>]*)>([\s\S]*?)<\/dialog>/i);
@@ -164,6 +164,7 @@ test("homepage video showcase uses the supplied clips in order", () => {
   assert.match(css, /\.video-grid\s*\{\s*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\);\s*\}/i);
   assert.match(css, /\.video-grid\s*\{\s*grid-template-columns:\s*1fr;\s*\}/i);
   assert.match(css, /\.showcase-card:hover\s+\.showcase-play\s*\{[^}]*opacity:\s*1/i);
+  assert.match(css, /\.showcase-title-row\s*\{[^}]*display:\s*flex;[^}]*align-items:\s*center;[^}]*gap:\s*10px;/i);
   assert.match(css, /\.showcase-preview-button:focus-visible\s+\.showcase-play\s*\{[^}]*opacity:\s*1/i);
   assert.match(css, /\.video-dialog\s*\{[^}]*width:\s*min\(92vw,\s*1500px,\s*calc\(177\.7778dvh\s*-\s*85\.3333px\)\)/i);
   assert.match(css, /\.video-dialog\s*\{[^}]*width:\s*min\(96vw,\s*calc\(177\.7778dvh\s*-\s*56\.8889px\)\)/i);
@@ -181,6 +182,75 @@ test("homepage video showcase uses the supplied clips in order", () => {
   assert.match(script, /dialogPlayer\.load\(\)/);
   assert.match(script, /document\.body\.classList\.remove\("modal-open"\)/);
   assert.match(script, /activeShowcaseCard\?\.focus\(\)/);
+});
+
+test("the API guide has one indexable primary URL", () => {
+  const primaryPath = "how-to-use-the-seedance-api-complete-developer-guide-2026.html";
+  const aliasPath = "how-to-use-the-seedance-api-complete-developer-guide-2026-2.html";
+  const primaryUrl = `https://seedance3-pro.com/${primaryPath}`;
+  const primary = read(primaryPath);
+  const alias = read(aliasPath);
+  const blog = read("blog.html");
+  const sitemap = read("sitemap.xml");
+
+  assert.match(primary, /<meta name="robots" content="index,follow[^\"]*">/i);
+  assert.match(primary, new RegExp(`<link rel="canonical" href="${primaryUrl.replaceAll(".", "\\.")}">`, "i"));
+  assert.match(alias, /<meta name="robots" content="noindex,follow">/i);
+  assert.match(alias, new RegExp(`<link rel="canonical" href="${primaryUrl.replaceAll(".", "\\.")}">`, "i"));
+  assert.match(alias, new RegExp(`(?:url=|location\\.replace\\()[^>]*${primaryPath.replaceAll(".", "\\.")}`, "i"));
+  assert.equal((blog.match(new RegExp(primaryPath.replaceAll(".", "\\."), "g")) ?? []).length, 1);
+  assert.equal((blog.match(new RegExp(aliasPath.replaceAll(".", "\\."), "g")) ?? []).length, 0);
+  assert.equal((sitemap.match(new RegExp(primaryUrl.replaceAll(".", "\\."), "g")) ?? []).length, 1);
+  assert.equal((sitemap.match(new RegExp(aliasPath.replaceAll(".", "\\."), "g")) ?? []).length, 0);
+});
+
+test("every imported article has one document title and one H1", () => {
+  for (const absolutePath of listHtmlFiles()) {
+    const html = readFileSync(absolutePath, "utf8");
+    if (!/<meta property="og:type" content="article">/i.test(html)) continue;
+    const head = html.match(/<head\b[^>]*>([\s\S]*?)<\/head>/i)?.[1] ?? "";
+    const body = html.match(/<body\b[^>]*>([\s\S]*?)<\/body>/i)?.[1] ?? "";
+    assert.equal((head.match(/<title\b/gi) ?? []).length, 1, `${absolutePath} should have one head title`);
+    assert.equal((body.match(/<title\b/gi) ?? []).length, 0, `${absolutePath} should not have a body title`);
+    assert.equal((body.match(/<h1\b/gi) ?? []).length, 1, `${absolutePath} should have one H1`);
+    assert.doesNotMatch(body, /data-lark-record-data|<mpcpc\b|\s(?:leaf|textstyle|link-id|data-start|data-end)=/i, absolutePath);
+  }
+});
+
+test("article sanitizer preserves useful markup and removes imported editor cruft", async () => {
+  const { sanitizeArticleHtml } = await import("../scripts/article-html.mjs");
+  const input = `<title>Nested title</title>
+    <h1 data-section-id="intro" onclick="alert(1)">Imported heading</h1>
+    <p leaf="" style="color:red">Keep <strong>this text</strong>.</p>
+    <a href="https://example.com/guide" target="_blank">HTTPS</a>
+    <a href="./internal.html">Relative</a><a href="/pricing.html">Root</a><a href="#details">Hash</a>
+    <a href="javascript:alert(1)">Unsafe link</a>
+    <img src="./blog-assets/example.png" alt="Example"><img src="/assets/example.webp" alt="Root image">
+    <ul><li>List item</li></ul><pre><code class="language-js">const ok = true;</code></pre>
+    <mpcpc manual-insert="1"></mpcpc>
+    <span data-lark-record-data="large-editor-payload"></span>`;
+  const output = sanitizeArticleHtml(input);
+
+  assert.doesNotMatch(output, /<title|<h1|onclick|style=|data-section-id|leaf=|javascript:|mpcpc|data-lark/i);
+  assert.match(output, /<h2>Imported heading<\/h2>/i);
+  assert.match(output, /Keep <strong>this text<\/strong>\./i);
+  assert.match(output, /href="https:\/\/example\.com\/guide"/i);
+  assert.match(output, /href="\.\/internal\.html"/i);
+  assert.match(output, /href="\/pricing\.html"/i);
+  assert.match(output, /href="#details"/i);
+  assert.match(output, /Unsafe link/i);
+  assert.match(output, /src="\.\/blog-assets\/example\.png"/i);
+  assert.match(output, /src="\/assets\/example\.webp"/i);
+  assert.match(output, /<ul><li>List item<\/li><\/ul>/i);
+  assert.match(output, /<pre><code class="language-js">const ok = true;<\/code><\/pre>/i);
+});
+
+test("both CMS publishers sanitize article fragments before templating", () => {
+  for (const fileName of ["server.local.js", "worker.js"]) {
+    const source = read(fileName);
+    assert.match(source, /import\s*\{\s*sanitizeArticleHtml\s*\}\s*from\s*["']\.\/scripts\/article-html\.mjs["']/i);
+    assert.match(source, /\$\{sanitizeArticleHtml\(content\)\}/i);
+  }
 });
 
 test("footer guide phrase is absent from every HTML page", () => {

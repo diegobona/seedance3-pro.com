@@ -1,3 +1,5 @@
+import { sanitizeArticleHtml } from "./scripts/article-html.mjs";
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -360,7 +362,7 @@ function buildArticleHtml({ title, excerpt, category, content, canonical }) {
       <h1 class="mt-4 text-4xl font-semibold text-white sm:text-5xl">${safeTitle}</h1>
       <p class="mt-6 text-base leading-8 text-slate-300">${safeExcerpt}</p>
       <div class="prose prose-invert mt-10 max-w-none prose-headings:text-white prose-p:text-slate-300 prose-a:text-indigo-300 prose-strong:text-white prose-img:rounded-2xl prose-img:border prose-img:border-white/10">
-        ${content}
+        ${sanitizeArticleHtml(content)}
       </div>
     </article>
   </main>

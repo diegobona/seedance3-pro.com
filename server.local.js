@@ -4,6 +4,7 @@ import fs from "fs/promises";
 import path from "path";
 import { spawn } from "child_process";
 import { fileURLToPath } from "url";
+import { sanitizeArticleHtml } from "./scripts/article-html.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -174,13 +175,12 @@ async function publishJob(jobId, payload) {
     const articleUrl = `https://seedance3-pro.com/${fileName}`;
 
     const imageRes = await materializeInlineImages(payload.content, slugBase);
-    const sanitizedContent = sanitizeArticleHtml(imageRes.content);
     const safeExcerpt = String(payload.excerpt || "").trim();
     const articleHtml = buildArticleHtml({
       title: payload.title,
       excerpt: safeExcerpt,
       category: payload.category,
-      content: sanitizedContent,
+      content: imageRes.content,
       canonical: articleUrl
     });
 
@@ -483,7 +483,7 @@ function buildArticleHtml({ title, excerpt, category, content, canonical }) {
       <p class="text-xs font-semibold uppercase tracking-wide text-indigo-200">${safeCategory}</p>
       <h1 class="mt-4 text-4xl font-semibold text-white sm:text-5xl">${safeTitle}</h1>
 ${excerptHtml}      <div class="article-content">
-        ${content}
+        ${sanitizeArticleHtml(content)}
       </div>
     </article>
   </main>
@@ -681,72 +681,6 @@ async function readKeyFromSecretsJson() {
   } catch {
   }
   return "";
-}
-
-function sanitizeArticleHtml(input) {
-  let output = String(input || "");
-  output = output.replace(/<\?xml[\s\S]*?\?>/gi, "");
-  output = output.replace(/<!--[\s\S]*?-->/g, "");
-  output = output.replace(/<\s*(script|style|iframe|object|meta|link)\b[\s\S]*?<\s*\/\s*\1\s*>/gi, "");
-  output = output.replace(/<\s*(meta|link)\b[^>]*>/gi, "");
-  output = output.replace(/<\/?[\w-]+:[^>]*>/gi, "");
-  output = output.replace(/\sclass\s*=\s*(['"])[\s\S]*?\1/gi, "");
-  output = output.replace(/\sstyle\s*=\s*(['"])([\s\S]*?)\1/gi, (_m, _q, styleText) => {
-    const filtered = filterInlineStyle(styleText);
-    return filtered ? ` style="${filtered}"` : "";
-  });
-  output = output.replace(/\s(color|bgcolor|face|size)\s*=\s*(['"])[\s\S]*?\2/gi, "");
-  output = output.replace(/<\s*font\b[^>]*>/gi, "<span>");
-  output = output.replace(/<\s*\/\s*font\s*>/gi, "</span>");
-  return output;
-}
-
-function filterInlineStyle(styleText) {
-  const allowed = new Set([
-    "line-height",
-    "text-indent",
-    "text-align",
-    "margin",
-    "margin-left",
-    "margin-right",
-    "margin-top",
-    "margin-bottom",
-    "padding-left",
-    "padding-right",
-    "padding-top",
-    "padding-bottom",
-    "font-weight",
-    "font-style",
-    "font-size",
-    "text-decoration",
-    "letter-spacing",
-    "word-spacing",
-    "list-style-type",
-    "white-space"
-  ]);
-  const deniedPrefix = ["mso-", "color", "background", "border-color"];
-  const declarations = String(styleText || "").split(";");
-  const kept = [];
-  for (const decl of declarations) {
-    const [rawProp, ...rest] = decl.split(":");
-    const prop = (rawProp || "").trim().toLowerCase();
-    if (!prop || !allowed.has(prop)) {
-      continue;
-    }
-    if (deniedPrefix.some((prefix) => prop.startsWith(prefix))) {
-      continue;
-    }
-    const value = rest.join(":").trim();
-    if (!value) {
-      continue;
-    }
-    const lowered = value.toLowerCase();
-    if (lowered.includes("expression(") || lowered.includes("javascript:") || lowered.includes("url(")) {
-      continue;
-    }
-    kept.push(`${prop}: ${value}`);
-  }
-  return kept.join("; ");
 }
 
 async function ensureDir(dirPath) {

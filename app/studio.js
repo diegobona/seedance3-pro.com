@@ -1,3 +1,5 @@
+import { buildModelUrl, normalizeModelId } from "./model-routing.mjs";
+
 const studioModels = {
   "minimax-h3": {
     category: "AI VIDEO / MULTIMODAL",
@@ -76,10 +78,16 @@ const examplePrompt = document.getElementById("example-prompt");
 const uploadGroup = document.getElementById("upload-group");
 const videoSettings = document.getElementById("video-settings");
 const imageSettings = document.getElementById("image-settings");
+const availableModelIds = new Set(Object.keys(studioModels));
 
-function selectModel(modelId) {
-  const model = studioModels[modelId] || studioModels["minimax-h3"];
-  modelButtons.forEach((button) => button.classList.toggle("is-active", button.dataset.model === modelId));
+function modelFromLocation() {
+  return new URLSearchParams(window.location.search).get("model");
+}
+
+function selectModel(modelId, { syncUrl = false } = {}) {
+  const normalizedModelId = normalizeModelId(modelId, availableModelIds);
+  const model = studioModels[normalizedModelId];
+  modelButtons.forEach((button) => button.classList.toggle("is-active", button.dataset.model === normalizedModelId));
   modelName.textContent = model.name;
   modelCategory.textContent = model.category;
   modelDescription.textContent = model.description;
@@ -96,12 +104,15 @@ function selectModel(modelId) {
   uploadGroup.querySelector(".label-line span").textContent = model.type === "video" ? "Image · Video · Audio" : "Reference images";
   videoSettings.hidden = model.type !== "video";
   imageSettings.hidden = model.type !== "image";
+  if (syncUrl && modelFromLocation() !== normalizedModelId) {
+    history.pushState({ model: normalizedModelId }, "", buildModelUrl(window.location.href, normalizedModelId));
+  }
 }
 
-modelButtons.forEach((button) => button.addEventListener("click", () => selectModel(button.dataset.model)));
+modelButtons.forEach((button) => button.addEventListener("click", () => selectModel(button.dataset.model, { syncUrl: true })));
 
-const requestedModel = new URLSearchParams(window.location.search).get("model");
-selectModel(studioModels[requestedModel] ? requestedModel : "minimax-h3");
+selectModel(modelFromLocation());
+window.addEventListener("popstate", () => selectModel(modelFromLocation()));
 
 const prompt = document.getElementById("studio-prompt");
 const promptCount = document.getElementById("prompt-count");

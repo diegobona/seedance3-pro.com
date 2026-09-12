@@ -124,8 +124,9 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .showcase-card:hover .showcase-play { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 .showcase-preview-button:focus-visible .showcase-play { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 .showcase-preview-button:focus-visible { outline: 2px solid var(--lime); outline-offset: -4px; }
-.showcase-meta { position: absolute; right: 0; bottom: 0; left: 0; z-index: 3; display: flex; align-items: flex-end; justify-content: space-between; gap: 14px; padding: 54px 17px 15px; background: linear-gradient(to top, rgba(3,4,6,.92), rgba(3,4,6,.56) 58%, transparent); pointer-events: none; }
+.showcase-meta { position: absolute; right: 0; bottom: 0; left: 0; z-index: 3; padding: 54px 17px 15px; background: linear-gradient(to top, rgba(3,4,6,.92), rgba(3,4,6,.56) 58%, transparent); pointer-events: none; }
 .showcase-copy { display: grid; gap: 3px; min-width: 0; text-align: left; }
+.showcase-title-row { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .showcase-copy strong { color: #fff; font-size: 14px; font-weight: 760; letter-spacing: -.01em; }
 .showcase-copy span { color: rgba(255,255,255,.7); font-size: 11px; }
 .showcase-try { display: inline-flex; min-height: 34px; flex: 0 0 auto; align-items: center; justify-content: center; padding: 0 14px; border: 1px solid var(--lime); border-radius: 999px; background: var(--lime); color: #11140c; font-size: 12px; font-weight: 800; pointer-events: auto; transition: background .2s ease, transform .2s ease; }
