@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "test": "node --test tests/*.test.mjs",
     "start:cms": "node server.local.js",
     "dev:worker": "wrangler dev",
     "deploy:worker": "wrangler deploy"

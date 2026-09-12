@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Creative Studio Preview | SEEDANCE 3.0</title>
+  <meta name="description" content="Preview the planned multi-model AI creative studio for MiniMax H3, SEEDANCE 3.0, Nano Banana 2 Lite, and GPT Image 2.">
+  <meta name="robots" content="noindex,follow">
+  <link rel="canonical" href="https://seedance3-pro.com/">
+  <meta name="theme-color" content="#090a0c">
+  <link rel="stylesheet" href="./studio.css">
+</head>
+<body>
+  <div class="studio-shell">
+    <aside class="sidebar" id="studio-sidebar">
+      <a class="studio-brand" href="../"><span>S3</span><strong>SEEDANCE<br><small>CREATIVE STUDIO</small></strong></a>
+      <button class="sidebar-close" type="button" aria-label="Close model navigation">×</button>
+      <nav aria-label="Model navigation">
+        <div class="nav-section">
+          <div class="section-heading"><span>AI VIDEO</span><span>02</span></div>
+          <button class="model-button is-active" type="button" data-model="minimax-h3"><span class="model-symbol cyan">H3</span><span><strong>MiniMax H3</strong><small>Multimodal video</small></span><em>Featured</em></button>
+          <button class="model-button" type="button" data-model="seedance-3"><span class="model-symbol lime">S3</span><span><strong>SEEDANCE 3.0</strong><small>Next-gen video</small></span><em class="soon">Coming Soon</em></button>
+        </div>
+        <div class="nav-section">
+          <div class="section-heading"><span>AI IMAGE</span><span>02</span></div>
+          <button class="model-button" type="button" data-model="nano-banana-2-lite"><span class="model-symbol violet">NB</span><span><strong>Nano Banana 2 Lite</strong><small>Fast image drafts</small></span></button>
+          <button class="model-button" type="button" data-model="gpt-image-2"><span class="model-symbol orange">G2</span><span><strong>GPT Image 2</strong><small>Generation & editing</small></span></button>
+        </div>
+      </nav>
+      <div class="sidebar-foot"><a href="../">← Back to SEEDANCE 3.0</a><p>Static product preview<br>No generation jobs are submitted.</p></div>
+    </aside>
+
+    <main class="workspace">
+      <header class="workspace-header">
+        <div><button class="sidebar-open" type="button" aria-label="Open model navigation">☰</button><a href="../">Home</a><a href="../minimax-h3-ai-video-generator.html">Model guides</a><a href="../blog.html">Prompts</a></div>
+        <div><span class="preview-pill">Preview mode</span><a class="outline-button" href="../#status">Release status</a></div>
+      </header>
+
+      <div class="workspace-body">
+        <div class="workspace-title"><div><p id="model-category">AI VIDEO / MULTIMODAL</p><h1 id="model-name">MiniMax H3</h1><span id="model-description">Text, image, video, and audio context with native stereo sound.</span></div><span class="model-status" id="model-status">Featured guide</span></div>
+
+        <div class="creation-grid">
+          <section class="creation-panel">
+            <div class="model-select"><span class="model-symbol cyan" id="selected-symbol">H3</span><div><small>Selected model</small><strong id="selected-name">MiniMax H3</strong></div><span class="chevron">⌄</span></div>
+
+            <div class="field-group" id="mode-group">
+              <label>Create from</label>
+              <div class="segmented"><button class="is-selected" type="button">Media</button><button type="button">Image</button><button type="button">Text</button></div>
+            </div>
+
+            <div class="field-group" id="upload-group">
+              <div class="label-line"><label>Reference files</label><span>Image · Video · Audio</span></div>
+              <button class="upload-box" type="button"><span>＋</span><strong>Drop or choose reference media</strong><small>Interface preview only—files are not uploaded</small></button>
+            </div>
+
+            <div class="field-group">
+              <div class="label-line"><label for="studio-prompt">Prompt</label><span><b id="prompt-count">0</b>/2500</span></div>
+              <textarea id="studio-prompt" maxlength="2500" placeholder="Describe the subject, action, environment, camera, timing, and sound direction…"></textarea>
+              <div class="prompt-tools"><button type="button">✦ Prompt structure</button><button type="button">View examples</button></div>
+            </div>
+
+            <div class="settings-grid" id="video-settings">
+              <label>Duration<select disabled><option>8 seconds</option></select></label>
+              <label>Resolution<select disabled><option>Preview</option></select></label>
+              <label>Aspect ratio<select disabled><option>16:9</option></select></label>
+            </div>
+            <div class="settings-grid image-settings" id="image-settings" hidden>
+              <label>Quantity<select disabled><option>1 image</option></select></label>
+              <label>Quality<select disabled><option>Preview</option></select></label>
+              <label>Aspect ratio<select disabled><option>1:1</option></select></label>
+            </div>
+
+            <button class="generate-button" type="button" disabled>Generation coming soon</button>
+            <p class="generation-note">This page demonstrates the planned workflow. No credits, payment, account, or generation backend is active.</p>
+          </section>
+
+          <aside class="context-panel">
+            <div class="context-card spotlight"><span>MODEL NOTE</span><h2 id="context-title">MiniMax H3 is available from its official provider.</h2><p id="context-copy">This independent site currently offers a workflow preview and research guide only. It does not send API requests.</p><a id="context-link" href="../minimax-h3-ai-video-generator.html">Read the MiniMax H3 guide →</a></div>
+            <div class="context-card"><div class="context-tabs"><button class="is-selected" type="button">Examples</button><button type="button">Tips</button></div><div class="example-art"><div class="orb"></div><span>CREATIVE DIRECTION</span></div><h3 id="example-title">Cinematic product reveal</h3><p id="example-prompt">A slow orbital camera, controlled reflections, native room tone, and a clean final composition.</p></div>
+            <div class="context-card compact"><span>STUDIO STATUS</span><div><strong>Frontend preview</strong><em>Backend not connected</em></div><div><strong>Indexing</strong><em>noindex, follow</em></div><div><strong>SEEDANCE 3.0</strong><em>Coming Soon</em></div></div>
+          </aside>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="./studio.js"></script>
+</body>
+</html>
