@@ -53,6 +53,7 @@ test("homepage presents a creator-facing experience instead of release-state mes
 
 test("homepage omits the requested header, FAQ, and footer copy", () => {
   const html = read("index.html");
+  const footer = blockByClass(html, "footer", "site-footer");
 
   assert.doesNotMatch(html, /Independent model guide/i);
   assert.doesNotMatch(html, /<nav[^>]+mobile-nav/i);
@@ -60,6 +61,8 @@ test("homepage omits the requested header, FAQ, and footer copy", () => {
   assert.doesNotMatch(html, /Why does the studio show other AI models\?/i);
   assert.doesNotMatch(html, /Is this an official ByteDance website\?/i);
   assert.doesNotMatch(html, /Independent AI model coverage and creative workflow resources\./i);
+  assert.doesNotMatch(footer, /<h3>SEEDANCE<\/h3>|<h3>Models<\/h3>|<h3>Resources<\/h3>/i);
+  assert.doesNotMatch(footer, /Capabilities|Examples|Showcase|FAQ|MiniMax H3|Nano Banana 2 Lite|GPT Image 2|Model comparison|Guides|Pricing|Start for Free|Contact/i);
 });
 
 test("homepage exposes only Showcase and Blog in its compact navigation", () => {

@@ -202,6 +202,7 @@ body.modal-open { overflow: hidden; }
 
 .site-footer { padding: 52px 0 30px; border-top: 1px solid var(--line); }
 .footer-grid { display: grid; grid-template-columns: 1.3fr repeat(3,.7fr); gap: 38px; }
+.home-footer-grid { display: block; }
 .footer-grid h3 { margin: 0 0 14px; color: var(--muted-2); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
 .footer-grid a { display: block; margin: 10px 0; color: var(--muted); font-size: 13px; }
 .footer-grid a:hover { color: var(--text); }
