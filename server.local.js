@@ -4,7 +4,8 @@ import fs from "fs/promises";
 import path from "path";
 import { spawn } from "child_process";
 import { fileURLToPath } from "url";
-import { renderArticleDocument } from "./scripts/article-html.mjs";
+import { extractEditableArticleData, renderArticleDocument, updateArticleDocument } from "./scripts/article-html.mjs";
+import { parseBlogPosts, upsertBlogCardHtml, validateEditableBlogArticle } from "./scripts/blog-cms-html.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -41,10 +42,28 @@ app.post("/api/publish", async (req, res) => {
   const excerpt = String(req.body.excerpt || "").trim();
   const content = String(req.body.content || "").trim();
   const category = String(req.body.category || "Tutorial").trim();
+  const requestedFileName = String(req.body.fileName || "").trim();
 
   if (!title || !content) {
     res.status(400).json({ success: false, message: "Title and content are required." });
     return;
+  }
+
+  let editFileName = "";
+  let editExcerpt = excerpt;
+  if (requestedFileName) {
+    try {
+      const blogHtml = await fs.readFile(BLOG_HTML_PATH, "utf8");
+      const listedPost = parseBlogPosts(blogHtml).find((post) => post.fileName === requestedFileName);
+      const articleHtml = listedPost
+        ? await fs.readFile(path.join(ROOT_DIR, listedPost.fileName), "utf8").catch(() => null)
+        : null;
+      editFileName = validateEditableBlogArticle({ fileName: requestedFileName, blogHtml, articleHtml });
+      editExcerpt = excerpt || extractEditableArticleData(articleHtml).excerpt;
+    } catch (error) {
+      res.status(400).json({ success: false, message: String(error?.message || "Invalid editable Blog article.") });
+      return;
+    }
   }
 
   const jobId = crypto.randomUUID();
@@ -57,7 +76,7 @@ app.post("/api/publish", async (req, res) => {
     canceled: false
   });
 
-  publishJob(jobId, { title, excerpt, content, category }).catch(() => {});
+  publishJob(jobId, { title, excerpt: editExcerpt, content, category, fileName: editFileName }).catch(() => {});
   res.status(202).json({
     success: true,
     queued: true,
@@ -113,10 +132,43 @@ app.get("/api/posts", async (_req, res) => {
   }
 });
 
+app.get("/api/post", async (req, res) => {
+  const requestedFileName = String(req.query.fileName || "").trim();
+  try {
+    const blogHtml = await fs.readFile(BLOG_HTML_PATH, "utf8");
+    const post = parseBlogPosts(blogHtml).find((item) => item.fileName === requestedFileName);
+    const articleHtml = post
+      ? await fs.readFile(path.join(ROOT_DIR, post.fileName), "utf8").catch(() => null)
+      : null;
+    const fileName = validateEditableBlogArticle({ fileName: requestedFileName, blogHtml, articleHtml });
+    const article = extractEditableArticleData(articleHtml);
+    res.json({
+      success: true,
+      post: {
+        ...post,
+        fileName,
+        title: article.title || post.title,
+        excerpt: post.excerpt || article.excerpt,
+        category: post.category || article.category,
+        content: article.content
+      }
+    });
+  } catch (error) {
+    res.status(404).json({ success: false, message: String(error?.message || "Article not found.") });
+  }
+});
+
 app.post("/api/delete-post", async (req, res) => {
   const fileName = String(req.body.fileName || "").trim();
-  if (!fileName || !/\.html$/i.test(fileName)) {
-    res.status(400).json({ success: false, message: "Invalid fileName." });
+  try {
+    const blogHtml = await fs.readFile(BLOG_HTML_PATH, "utf8");
+    const listedPost = parseBlogPosts(blogHtml).find((post) => post.fileName === fileName);
+    const articleHtml = listedPost
+      ? await fs.readFile(path.join(ROOT_DIR, listedPost.fileName), "utf8").catch(() => null)
+      : null;
+    validateEditableBlogArticle({ fileName, blogHtml, articleHtml });
+  } catch (error) {
+    res.status(400).json({ success: false, message: String(error?.message || "Invalid fileName.") });
     return;
   }
   const jobId = crypto.randomUUID();
@@ -168,7 +220,8 @@ async function publishJob(jobId, payload) {
   try {
     ensureJobActive(job);
     await ensureDir(BLOG_ASSETS_DIR);
-    const slugBase = payload.slugBase || (slugify(payload.title) || `post-${Date.now()}`);
+    const isEdit = Boolean(payload.fileName);
+    const slugBase = payload.slugBase || (isEdit ? payload.fileName.replace(/\.html$/i, "") : (slugify(payload.title) || `post-${Date.now()}`));
     payload.slugBase = slugBase;
     const fileName = payload.fileName || await resolveUniqueHtmlFileName(slugBase);
     payload.fileName = fileName;
@@ -176,13 +229,20 @@ async function publishJob(jobId, payload) {
 
     const imageRes = await materializeInlineImages(payload.content, slugBase);
     const safeExcerpt = String(payload.excerpt || "").trim();
-    const articleHtml = buildArticleHtml({
-      title: payload.title,
-      excerpt: safeExcerpt,
-      category: payload.category,
-      content: imageRes.content,
-      canonical: articleUrl
-    });
+    const articleHtml = isEdit
+      ? updateArticleDocument(await fs.readFile(path.join(ROOT_DIR, fileName), "utf8"), {
+          title: payload.title,
+          excerpt: safeExcerpt,
+          category: payload.category,
+          content: imageRes.content
+        })
+      : buildArticleHtml({
+          title: payload.title,
+          excerpt: safeExcerpt,
+          category: payload.category,
+          content: imageRes.content,
+          canonical: articleUrl
+        });
 
     await fs.writeFile(path.join(ROOT_DIR, fileName), articleHtml, "utf8");
     await upsertBlogCard({ fileName, title: payload.title, excerpt: safeExcerpt, category: payload.category });
@@ -281,28 +341,7 @@ async function materializeInlineImages(content, slugBase) {
 
 async function upsertBlogCard({ fileName, title, excerpt, category }) {
   const html = await fs.readFile(BLOG_HTML_PATH, "utf8");
-  const startTag = "<!-- BLOG_POSTS_START -->";
-  const endTag = "<!-- BLOG_POSTS_END -->";
-  const startIndex = html.indexOf(startTag);
-  const endIndex = html.indexOf(endTag);
-  if (startIndex === -1 || endIndex === -1 || endIndex < startIndex) {
-    throw new Error("Blog marker block is missing in blog.html.");
-  }
-  const href = `./${fileName}`;
-  const before = html.slice(0, startIndex + startTag.length);
-  const middle = html.slice(startIndex + startTag.length, endIndex);
-  const after = html.slice(endIndex);
-  if (middle.includes(href)) return;
-  const excerptHtml = excerpt
-    ? `        <p class="blog-card-excerpt">${escapeHtml(excerpt)}</p>\n`
-    : "";
-  const card = `
-      <article class="blog-card card card-pad">
-        <p class="blog-card-category tag lime">${escapeHtml(category)}</p>
-        <h2>${escapeHtml(title)}</h2>
-${excerptHtml}        <a href="${href}" class="card-link">Read article</a>
-      </article>`;
-  await fs.writeFile(BLOG_HTML_PATH, `${before}${card}\n${middle}${after}`, "utf8");
+  await fs.writeFile(BLOG_HTML_PATH, upsertBlogCardHtml(html, { fileName, title, excerpt, category }), "utf8");
 }
 
 async function upsertSitemap({ fileName }) {
@@ -351,28 +390,7 @@ async function removeSitemapByFileName(fileName) {
 
 async function listPublishedPosts() {
   const html = await fs.readFile(BLOG_HTML_PATH, "utf8");
-  const startTag = "<!-- BLOG_POSTS_START -->";
-  const endTag = "<!-- BLOG_POSTS_END -->";
-  const startIndex = html.indexOf(startTag);
-  const endIndex = html.indexOf(endTag);
-  if (startIndex === -1 || endIndex === -1 || endIndex < startIndex) {
-    throw new Error("Blog marker block is missing in blog.html.");
-  }
-  const middle = html.slice(startIndex + startTag.length, endIndex);
-  const cards = middle.match(/<article[\s\S]*?<\/article>/g) || [];
-  return cards.map((card, idx) => {
-    const hrefMatch = card.match(/href="\.\/([^"]+\.html)"/i);
-    const titleMatch = card.match(/<h2[^>]*>([\s\S]*?)<\/h2>/i);
-    const excerptMatch = card.match(/<p class="blog-card-excerpt">([\s\S]*?)<\/p>/i);
-    const categoryMatch = card.match(/<p class="blog-card-category tag lime">([\s\S]*?)<\/p>/i);
-    return {
-      id: `${idx}-${hrefMatch ? hrefMatch[1] : "unknown"}`,
-      fileName: hrefMatch ? hrefMatch[1].trim() : "",
-      title: titleMatch ? stripHtml(titleMatch[1]) : "",
-      excerpt: excerptMatch ? stripHtml(excerptMatch[1]) : "",
-      category: categoryMatch ? stripHtml(categoryMatch[1]) : ""
-    };
-  }).filter((item) => item.fileName);
+  return parseBlogPosts(html);
 }
 
 function buildArticleHtml({ title, excerpt, category, content, canonical }) {
@@ -455,19 +473,6 @@ function slugify(input) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "")
     .slice(0, 80);
-}
-
-function escapeHtml(input) {
-  return String(input || "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll("\"", "&quot;")
-    .replaceAll("'", "&#39;");
-}
-
-function stripHtml(input) {
-  return String(input || "").replace(/<[^>]+>/g, "").trim();
 }
 
 async function translateHtmlToEnglish(content) {
@@ -599,6 +604,6 @@ function runGit(args, allowFailure = false) {
 }
 
 const port = Number(process.env.PORT || 4310);
-app.listen(port, () => {
+app.listen(port, "127.0.0.1", () => {
   console.log(`Local CMS running at http://localhost:${port}/admin`);
 });

@@ -1,4 +1,5 @@
-import { renderArticleDocument } from "./scripts/article-html.mjs";
+import { extractEditableArticleData, renderArticleDocument, updateArticleDocument } from "./scripts/article-html.mjs";
+import { parseBlogPosts, upsertBlogCardHtml, validateEditableBlogArticle } from "./scripts/blog-cms-html.mjs";
 
 export default {
   async fetch(request, env, ctx) {
@@ -11,6 +12,9 @@ export default {
     }
     if (request.method === "POST" && url.pathname === "/api/publish") {
       return withCors(await handlePublish(request, env, ctx));
+    }
+    if (request.method === "GET" && url.pathname === "/api/post") {
+      return withCors(await handleGetPost(request, url, env));
     }
     if (request.method === "GET" && url.pathname.startsWith("/api/job/")) {
       return withCors(await handleJobStatus(request, url.pathname, env));
@@ -63,17 +67,34 @@ async function handlePublish(request, env, ctx) {
   const excerpt = String(payload?.excerpt || "").trim();
   const content = String(payload?.content || "").trim();
   const category = String(payload?.category || "Tutorial").trim();
+  const requestedFileName = String(payload?.fileName || "").trim();
 
   if (!title || !content) {
     return json({ success: false, message: "Title and content are required." }, 400);
   }
 
+  let editFileName = "";
+  let editExcerpt = excerpt;
+  if (requestedFileName) {
+    try {
+      const cfg = getConfig(env);
+      const blogFile = await getRepoFile(cfg, "blog.html", cfg.branch);
+      const listedPost = parseBlogPosts(blogFile.text).find((post) => post.fileName === requestedFileName);
+      const articleFile = listedPost ? await getRepoFile(cfg, listedPost.fileName, cfg.branch, true) : null;
+      editFileName = validateEditableBlogArticle({ fileName: requestedFileName, blogHtml: blogFile.text, articleHtml: articleFile?.text || null });
+      editExcerpt = excerpt || extractEditableArticleData(articleFile.text).excerpt;
+    } catch (error) {
+      return json({ success: false, message: String(error?.message || "Invalid editable Blog article.") }, 400);
+    }
+  }
+
   const job = {
     id: crypto.randomUUID(),
     title,
-    excerpt: excerpt || "New Seedance guide published from CMS.",
+    excerpt: editFileName ? editExcerpt : (excerpt || "New Seedance guide published from CMS."),
     content,
     category,
+    fileName: editFileName,
     status: "pending",
     attempts: 0,
     createdAt: Date.now(),
@@ -88,6 +109,34 @@ async function handlePublish(request, env, ctx) {
     jobId: job.id,
     message: "Publish job created. It will keep retrying until success."
   }, 202);
+}
+
+async function handleGetPost(request, url, env) {
+  if (!isAuthorized(request, env)) {
+    return json({ success: false, message: "Unauthorized" }, 401);
+  }
+  const requestedFileName = String(url.searchParams.get("fileName") || "").trim();
+  try {
+    const cfg = getConfig(env);
+    const blogFile = await getRepoFile(cfg, "blog.html", cfg.branch);
+    const post = parseBlogPosts(blogFile.text).find((item) => item.fileName === requestedFileName);
+    const articleFile = post ? await getRepoFile(cfg, post.fileName, cfg.branch, true) : null;
+    const fileName = validateEditableBlogArticle({ fileName: requestedFileName, blogHtml: blogFile.text, articleHtml: articleFile?.text || null });
+    const article = extractEditableArticleData(articleFile.text);
+    return json({
+      success: true,
+      post: {
+        ...post,
+        fileName,
+        title: article.title || post.title,
+        excerpt: post.excerpt || article.excerpt,
+        category: post.category || article.category,
+        content: article.content
+      }
+    }, 200);
+  } catch (error) {
+    return json({ success: false, message: String(error?.message || "Article not found.") }, 404);
+  }
 }
 
 async function handleJobStatus(request, pathname, env) {
@@ -152,21 +201,29 @@ async function processJob(id, env) {
 async function publishToGitHub(job, env) {
   const cfg = getConfig(env);
   const branch = cfg.branch;
-  const slugBase = slugify(job.title) || `post-${Date.now()}`;
-  const fileName = await resolveArticleFileName(slugBase, cfg);
+  const isEdit = Boolean(job.fileName);
+  const slugBase = isEdit ? job.fileName.replace(/\.html$/i, "") : (slugify(job.title) || `post-${Date.now()}`);
+  const fileName = job.fileName || await resolveArticleFileName(slugBase, cfg);
   const articleUrl = `${cfg.siteBaseUrl}/${fileName}`;
 
   const imageUpload = await uploadInlineImages(job.content, cfg, branch, slugBase);
   const finalContent = imageUpload.content;
   const imageChanges = imageUpload.changes;
 
-  const articleHtml = buildArticleHtml({
-    title: job.title,
-    excerpt: job.excerpt,
-    category: job.category,
-    content: finalContent,
-    canonical: articleUrl
-  });
+  const articleHtml = isEdit
+    ? updateArticleDocument((await getRepoFile(cfg, fileName, branch)).text, {
+        title: job.title,
+        excerpt: job.excerpt,
+        category: job.category,
+        content: finalContent
+      })
+    : buildArticleHtml({
+        title: job.title,
+        excerpt: job.excerpt,
+        category: job.category,
+        content: finalContent,
+        canonical: articleUrl
+      });
   const articleChange = await upsertRepoFile(cfg, fileName, articleHtml, `feat(blog): publish ${fileName}`, branch);
 
   const blogFile = await getRepoFile(cfg, "blog.html", branch);
@@ -269,32 +326,6 @@ async function upsertRepoFile(cfg, filePath, content, message, branch, contentIs
   };
 }
 
-function upsertBlogCardHtml(html, { fileName, title, excerpt, category }) {
-  const startTag = "<!-- BLOG_POSTS_START -->";
-  const endTag = "<!-- BLOG_POSTS_END -->";
-  const startIndex = html.indexOf(startTag);
-  const endIndex = html.indexOf(endTag);
-  if (startIndex === -1 || endIndex === -1 || endIndex < startIndex) {
-    throw new Error("Blog marker block is missing in blog.html.");
-  }
-  const href = `./${fileName}`;
-  const blockStart = startIndex + startTag.length;
-  const before = html.slice(0, blockStart);
-  const middle = html.slice(blockStart, endIndex);
-  const after = html.slice(endIndex);
-  if (middle.includes(href)) {
-    return html;
-  }
-  const card = `
-      <article class="blog-card card card-pad">
-        <p class="blog-card-category tag lime">${escapeHtml(category)}</p>
-        <h2>${escapeHtml(title)}</h2>
-        <p class="blog-card-excerpt">${escapeHtml(excerpt)}</p>
-        <a href="${href}" class="card-link">Read article</a>
-      </article>`;
-  return `${before}${card}\n${middle}${after}`;
-}
-
 function upsertSitemapEntry(sitemap, fileName, siteBaseUrl) {
   const loc = `${siteBaseUrl}/${fileName}`;
   if (sitemap.includes(`<loc>${loc}</loc>`)) {
@@ -378,15 +409,6 @@ function slugify(input) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "")
     .slice(0, 80);
-}
-
-function escapeHtml(input) {
-  return String(input || "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll("\"", "&quot;")
-    .replaceAll("'", "&#39;");
 }
 
 function isAuthorized(request, env) {

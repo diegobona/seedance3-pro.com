@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Seedance 2.0 Image-to-Video Tutorial (Legacy Guide)</title>
-  <meta name="description" content="Reference the legacy Seedance 2.0 image-to-video workflow for asset preparation, prompt structure, camera direction, timing, and controlled iteration.">
+  <title>Seedance 2.0 Image-to-Video Tutorial (Legacy Guide) | SEEDANCE Blog</title>
+  <meta name="description" content="The archived Seedance 2.0 workflow for prompts, references, timing controls, and iteration checklists.">
   <meta name="keywords" content="Seedance 2.0 image to video,Seedance 2.0 tutorial,legacy Seedance guide">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
   <link rel="canonical" href="https://seedance3-pro.com/seedance-2-0-complete-tutorial.html">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="SEEDANCE 3.0">
   <meta property="og:title" content="Seedance 2.0 Image-to-Video Tutorial (Legacy Guide)">
-  <meta property="og:description" content="A legacy workflow reference for Seedance 2.0 image-to-video creation.">
+  <meta property="og:description" content="The archived Seedance 2.0 workflow for prompts, references, timing controls, and iteration checklists.">
   <meta property="og:url" content="https://seedance3-pro.com/seedance-2-0-complete-tutorial.html">
   <meta property="og:image" content="https://seedance3-pro.com/og-cover.svg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Seedance 2.0 Image-to-Video Tutorial (Legacy Guide)">
-  <meta name="twitter:description" content="Legacy Seedance 2.0 prompts, references, and iteration checklists.">
+  <meta name="twitter:description" content="The archived Seedance 2.0 workflow for prompts, references, timing controls, and iteration checklists.">
   <meta name="twitter:image" content="https://seedance3-pro.com/og-cover.svg">
   <meta name="theme-color" content="#080c1f">
   <link rel="stylesheet" href="./site.css">
@@ -41,43 +41,260 @@
   <main class="article-main">
     <div class="container">
       <article class="article-shell">
-        <p class="eyebrow article-category">Seedance Tutorial</p>
+        <p class="eyebrow article-category">Tutorial</p>
         <h1 class="article-title">Seedance 2.0 Image-to-Video Tutorial (Legacy Guide)</h1>
+        <p class="article-lead">The archived Seedance 2.0 workflow for prompts, references, timing controls, and iteration checklists.</p>
         <div class="article-content prose">
-          <p class="mt-6 text-base leading-8 text-slate-300">This page preserves the earlier Seedance 2.0 workflow for creators who still use it or need a historical reference. For current capabilities, settings, and examples, read the <a href="./seedance-2-5-image-to-video-guide.html" class="font-semibold text-indigo-200 underline decoration-indigo-300/40 underline-offset-4 hover:text-white">Seedance 2.5 image-to-video guide</a>.</p>
-      <p class="mt-4 text-base leading-8 text-slate-300">If you want consistent output quality, treat Seedance as a production pipeline rather than a single prompt box. This tutorial gives you a repeatable framework to move from raw idea to publishable video.</p>
-      <figure class="mt-8 overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60">
-        <img src="./og-cover.svg" alt="Seedance 2.0 workflow overview from prompt to final export" loading="lazy" class="h-64 w-full object-cover">
-        <figcaption class="px-4 py-3 text-xs text-slate-400">Workflow map: asset setup, prompt composition, generation, and iteration control.</figcaption>
-      </figure>
+          <p class="mt-6 text-base leading-8 text-slate-300">
 
-      <h2 class="mt-10 text-2xl font-semibold text-white">1) Prepare assets before prompting</h2>
-      <p class="mt-3 text-sm leading-7 text-slate-300">Use one key visual anchor, one motion reference, and one optional audio reference. Name your files clearly so your prompt mapping remains clean and reproducible.</p>
-      <p class="mt-3 text-sm leading-7 text-slate-300">A practical setup is: @image1 for identity, @video1 for camera language, and @audio1 for rhythm. This prevents style drift and improves iteration speed.</p>
+</p><p class="PDq2pG_selectionAnchorContainer">Seedance 2.0 works best when you treat video generation as a workflow, not a one-shot prompt.<span class="PDq2pG_selectionAnchor"></span></p>
+<p>A good result usually comes from four things: <strong>clear reference assets, a structured prompt, controlled motion, and focused iteration</strong>.</p>
+<p>This tutorial walks through a practical Seedance 2.0 workflow from the first reference image to the final video.</p>
+<hr>
+<h2>1. Prepare Your Reference Assets First</h2>
+<p>Before writing the prompt, decide what you want Seedance to follow.</p>
+<p>A simple setup is:</p>
+<ul>
+<li>
+<strong>@image1</strong> — main character, product, object, or visual style
+</li>
+<li>
+<strong>@video1</strong> — motion, camera movement, or action reference
+</li>
+<li>
+<strong>@audio1</strong> — optional rhythm, dialogue, or sound reference
+</li>
+</ul>
+<p>You do not need to use every type of reference in every generation. Start with the assets that actually affect the shot.</p>
+<p>For example, if character appearance matters most, use a strong character image. If the camera movement is difficult to describe, add a video reference.</p>
+<h3>Need a different reference angle?</h3>
+<p>Sometimes you only have one image of a product, prop, or stylized object, but the video needs to show it from another angle.</p>
+<p>One practical workflow is:</p>
+<p><strong>Reference Image → 3D Model → Choose a New Angle → Render a Still Image → Seedance</strong></p>
+<p>You can use <strong>Pixal3D (pixal3d.net)</strong> to turn a clear object image into a 3D model, rotate the model to the angle you need, and create a new still reference. Then upload that image to Seedance as your visual anchor.</p>
+<p>This is especially useful for:</p>
+<ul>
+<li>
+product shots
+</li>
+<li>
+props
+</li>
+<li>
+vehicles
+</li>
+<li>
+furniture
+</li>
+<li>
+stylized objects
+</li>
+</ul>
+<p>It gives you more control over the reference angle before video generation begins.</p>
+<p><strong>Pixal3D link:</strong>&nbsp;https://<span class="contents"><span><a target="_blank" class="decorated-link" rel="noopener" href="https://pixal3d.net/?utm_source=chatgpt.com">p</a>ixal3d.net</span></span></p>
+<hr>
+<h2>2. Write the Prompt in Three Parts</h2>
+<p>A Seedance prompt does not need to be long. It needs to be clear.</p>
+<p>A useful structure is:</p>
+<p><strong>Subject and action + visual style + camera and motion</strong></p>
+<p>For example:</p>
+<blockquote>
+<p>@image1 as the main product. The bottle stands on a black table with soft studio lighting. The camera slowly pushes forward while light moves across the glass surface. End on a centered product shot.</p>
+</blockquote>
+<p>The important part is that each sentence has a job.</p>
+<h3>Subject and action</h3>
+<p>Describe what happens:</p>
+<blockquote>
+<p>A woman walks toward the window and opens the curtain.</p>
+</blockquote>
+<h3>Visual style</h3>
+<p>Describe how the scene should look:</p>
+<blockquote>
+<p>Warm morning light, realistic interior, natural skin tones.</p>
+</blockquote>
+<h3>Camera and motion</h3>
+<p>Describe how the viewer sees it:</p>
+<blockquote>
+<p>Medium shot, slow dolly-in, camera remains level.</p>
+</blockquote>
+<p>Combining the three gives Seedance much clearer direction than stacking unrelated adjectives.</p>
+<hr>
+<h2>3. Use References Explicitly</h2>
+<p>If you upload reference files, tell Seedance what each one is for.</p>
+<p>Do not assume the model knows why you uploaded them.</p>
+<p>Instead of:</p>
+<blockquote>
+<p>Make a cinematic product video.</p>
+</blockquote>
+<p>Try:</p>
+<blockquote>
+<p>Keep the product appearance consistent with @image1. Follow the slow camera movement of @video1. The camera moves from a three-quarter view to a front product shot.</p>
+</blockquote>
+<p>This separates <strong>appearance</strong> from <strong>motion</strong>.</p>
+<p>That becomes more important when several reference assets are used in the same generation.</p>
+<hr>
+<h2>4. Describe Motion Literally</h2>
+<p>For video generation, action logic matters more than decorative language.</p>
+<p>Avoid prompts such as:</p>
+<blockquote>
+<p>Epic, beautiful, cinematic, dramatic, breathtaking movement.</p>
+</blockquote>
+<p>These words say very little about what should actually move.</p>
+<p>Describe the sequence instead:</p>
+<blockquote>
+<p>The man starts seated. He looks toward the door, puts both hands on the desk, stands up, and walks two steps forward. The camera remains stationary.</p>
+</blockquote>
+<p>Or:</p>
+<blockquote>
+<p>The car enters from the left side of the frame, drives toward the camera, turns right at the intersection, and exits the frame.</p>
+</blockquote>
+<p>Think in terms of:</p>
+<p><strong>starting position → action → direction → ending position</strong></p>
+<p>This is especially useful when generating scenes with people, vehicles, camera movement, or several consecutive actions.</p>
+<hr>
+<h2>5. Control the Camera Separately</h2>
+<p>Subject movement and camera movement are different instructions.</p>
+<p>For example:</p>
+<blockquote>
+<p>The woman walks forward while the camera tracks backward at the same speed.</p>
+</blockquote>
+<p>This is clearer than:</p>
+<blockquote>
+<p>The camera follows the woman.</p>
+</blockquote>
+<p>Useful camera descriptions include:</p>
+<ul>
+<li>
+static camera
+</li>
+<li>
+slow push-in
+</li>
+<li>
+pull back
+</li>
+<li>
+pan left / right
+</li>
+<li>
+tilt up / down
+</li>
+<li>
+track alongside the subject
+</li>
+<li>
+follow from behind
+</li>
+<li>
+orbit around the subject
+</li>
+<li>
+handheld movement
+</li>
+</ul>
+<p>If you want a stable shot, say so.</p>
+<blockquote>
+<p>Locked camera. No zoom. No camera rotation.</p>
+</blockquote>
+<p>Explicit constraints can prevent Seedance from adding unnecessary movement.</p>
+<hr>
+<h2>6. Keep Each Shot Focused</h2>
+<p>Trying to fit too many actions into one generation often makes the result less predictable.</p>
+<p>Instead of:</p>
+<blockquote>
+<p>He enters the room, sits down, opens the laptop, answers the phone, looks surprised, runs outside, and gets into a car.</p>
+</blockquote>
+<p>Split the sequence into several shots.</p>
+<p>For example:</p>
+<p><strong>Shot 1:</strong><br>
+He enters the office and sits at the desk.</p>
+<p><strong>Shot 2:</strong><br>
+Close-up. He opens the laptop and notices something on screen.</p>
+<p><strong>Shot 3:</strong><br>
+He quickly stands and leaves the room.</p>
+<p>Each shot now has a clear beginning and end.</p>
+<p>For short-form video, this also makes editing easier.</p>
+<hr>
+<h2>7. Match the Aspect Ratio to the Final Platform</h2>
+<p>Choose your composition before generation rather than cropping everything afterward.</p>
+<p>For vertical short-form content, use <strong>9:16</strong> and keep important subjects away from the extreme top and bottom of the frame.</p>
+<p>For landscape videos, <strong>16:9</strong> gives you more horizontal space for environments, multiple characters, and lateral movement.</p>
+<p>Also consider where subtitles, platform buttons, or captions may appear.</p>
+<p>The best composition is not simply the one that looks good in the generator. It should work in the final publishing format.</p>
+<hr>
+<h2>8. Change One Thing at a Time</h2>
+<p>When a generation is close but not correct, do not rewrite the entire prompt.</p>
+<p>Identify the problem first.</p>
+<p>If the character looks correct but the camera moves too fast, change only the camera instruction.</p>
+<p>If the action works but the product changes shape, strengthen the reference instruction.</p>
+<p>If the composition is right but the lighting is wrong, change only the lighting description.</p>
+<p>A simple iteration process is:</p>
+<ol>
+<li>
+Generate
+</li>
+<li>
+Identify the biggest problem
+</li>
+<li>
+Change one instruction
+</li>
+<li>
+Generate again
+</li>
+<li>
+Compare the two results
+</li>
+</ol>
+<p>This makes it much easier to learn which instructions are actually affecting the output.</p>
+<hr>
+<h2>9. Check Four Things Before Export</h2>
+<p>Before choosing the final generation, review:</p>
+<h3>Subject consistency</h3>
+<p>Does the character, product, or object stay visually consistent?</p>
+<h3>Motion</h3>
+<p>Do movements start and stop naturally?</p>
+<h3>Camera</h3>
+<p>Does the camera move in the direction and speed you requested?</p>
+<h3>Composition</h3>
+<p>Does the important subject stay readable throughout the shot?</p>
+<p>A visually impressive generation is not necessarily usable if the subject changes halfway through or the camera loses the main action.</p>
+<hr>
+<h2>10. Build a Repeatable Workflow</h2>
+<p>Once you find a combination that works, keep it.</p>
+<p>Save:</p>
+<ul>
+<li>
+successful prompts
+</li>
+<li>
+character reference images
+</li>
+<li>
+camera reference clips
+</li>
+<li>
+useful motion descriptions
+</li>
+<li>
+aspect-ratio versions
+</li>
+<li>
+failed prompts and what went wrong
+</li>
+</ul>
+<p>Over time, you will build your own prompt library.</p>
+<p>A practical Seedance workflow becomes:</p>
+<p><strong>Idea → Reference Assets → Prompt → Generate → Review → Change One Variable → Generate Again → Export</strong></p>
+<p>That process is more reliable than trying to write a perfect prompt from scratch every time.</p>
+<hr>
+<h2>Final Tip</h2>
+<p>Better Seedance videos do not usually come from longer prompts.</p>
+<p>They come from <strong>better references and clearer instructions</strong>.</p>
+<p>Prepare the visual source first, describe exactly what moves, separate subject motion from camera motion, and iterate one variable at a time.</p>
+<p>If the original image does not give you the angle you need, creating a new reference through a 3D workflow can also be useful before you start video generation.</p>
 
-      <h2 class="mt-10 text-2xl font-semibold text-white">2) Use a three-part prompt structure</h2>
-      <p class="mt-3 text-sm leading-7 text-slate-300">Write prompts in this order: intent, style, motion. Example: “Create a premium skincare reveal, soft studio highlights, use @video1 slow push-in and finish on centered packshot from @image1.”</p>
-      <p class="mt-3 text-sm leading-7 text-slate-300">When outputs miss expectations, change only one segment per iteration. This isolates variables and helps you find reliable prompt patterns fast.</p>
-      <figure class="mt-6 overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60">
-        <img src="./og-cover.svg" alt="Prompt template visual for Seedance intent style motion structure" loading="lazy" class="h-56 w-full object-cover">
-        <figcaption class="px-4 py-3 text-xs text-slate-400">Prompt template: intent first, style second, motion instruction third.</figcaption>
-      </figure>
-
-      <h2 class="mt-10 text-2xl font-semibold text-white">3) Tune duration and aspect by goal</h2>
-      <p class="mt-3 text-sm leading-7 text-slate-300">For ad tests, keep clips short and direct. Use 6 to 10 seconds for top-funnel hooks. Switch to 9:16 for short-form platforms and keep your first 2 seconds visually dense.</p>
-      <p class="mt-3 text-sm leading-7 text-slate-300">For storytelling, use longer outputs and reserve transitions for narrative beats. Avoid overloading every shot with effect-heavy instructions.</p>
-
-      <h2 class="mt-10 text-2xl font-semibold text-white">4) Build an iteration checklist</h2>
-      <p class="mt-3 text-sm leading-7 text-slate-300">Score each output on composition, motion smoothness, subject consistency, and pacing. Keep a short record of what changed in each round. Teams that track prompt deltas scale faster.</p>
-      <p class="mt-3 text-sm leading-7 text-slate-300">Use extension mode for continuity instead of starting from scratch. This preserves visual identity and cuts production time.</p>
-      <figure class="mt-6 overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60">
-        <img src="./og-cover.svg" alt="Iteration checklist board for evaluating Seedance generation quality" loading="lazy" class="h-56 w-full object-cover">
-        <figcaption class="px-4 py-3 text-xs text-slate-400">Iteration checklist: composition, motion, identity consistency, and pacing quality.</figcaption>
-      </figure>
-
-      <h2 class="mt-10 text-2xl font-semibold text-white">5) Export strategy for campaign execution</h2>
-      <p class="mt-3 text-sm leading-7 text-slate-300">Generate 3-5 creative variants per concept: one style-safe version, one high-motion version, and one copy-first variant. This gives media buyers immediate testing breadth.</p>
-      <p class="mt-3 text-sm leading-7 text-slate-300">Archive winning prompts and references in a template library. Your long-term advantage comes from workflow memory, not one-off inspiration.</p>
+<br>
         </div>
       </article>
     </div>

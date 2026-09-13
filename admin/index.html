@@ -41,6 +41,10 @@
     </header>
 
     <section class="rounded-2xl border border-white/10 bg-slate-900/70 p-6">
+      <div id="edit-status" class="mb-5 hidden items-center justify-between gap-4 rounded-xl border border-amber-300/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
+        <span>正在编辑：<strong id="edit-file-name" class="break-all"></strong><br><span class="text-xs text-amber-200/70">保存后文章 URL 保持不变。</span></span>
+        <button id="cancel-edit-btn" type="button" class="shrink-0 rounded-lg border border-amber-200/30 px-3 py-2 text-xs font-semibold hover:bg-amber-300/10">取消编辑</button>
+      </div>
       <div class="grid gap-4 md:grid-cols-2">
         <div class="md:col-span-2">
           <label for="title" class="mb-2 block text-sm font-medium">文章标题</label>
@@ -109,6 +113,9 @@
     const editor = document.getElementById("editor");
     const publishButton = document.getElementById("publish-btn");
     const cancelPublishButton = document.getElementById("cancel-publish-btn");
+    const cancelEditButton = document.getElementById("cancel-edit-btn");
+    const editStatus = document.getElementById("edit-status");
+    const editFileName = document.getElementById("edit-file-name");
     const refreshPostsButton = document.getElementById("refresh-posts-btn");
     const postsList = document.getElementById("posts-list");
     const clearFormatButton = document.getElementById("clear-format-btn");
@@ -116,6 +123,7 @@
     const logBox = document.getElementById("log");
     const toolbarButtons = document.querySelectorAll("[data-cmd]");
     let activePublishJobId = "";
+    let activeEditFileName = "";
 
     function log(message) {
       const time = new Date().toLocaleTimeString();
@@ -237,7 +245,8 @@
             title,
             excerpt: excerptInput.value.trim(),
             category: categoryInput.value,
-            content
+            content,
+            fileName: activeEditFileName
           })
         });
         const result = await response.json();
@@ -247,14 +256,17 @@
         }
         log(`任务已创建：${result.jobId}`);
         activePublishJobId = result.jobId;
-        await waitForJob(result.jobId);
+        const completedJob = await waitForJob(result.jobId);
+        if (completedJob?.status === "success") {
+          clearEditState(true);
+        }
         await loadPosts();
       } catch (error) {
         log(`发布失败：${error.message}`);
       } finally {
         activePublishJobId = "";
         publishButton.disabled = false;
-        publishButton.textContent = "发布文章并推送 GitHub";
+        updatePublishButtonLabel();
         cancelPublishButton.classList.add("hidden");
       }
     });
@@ -306,11 +318,11 @@
           } else {
             log(`发布成功：${output.articleUrl || "已生成文章"}`);
           }
-          break;
+          return job;
         }
         if (job.status === "canceled") {
           log("任务已停止。");
-          break;
+          return job;
         }
       }
     }
@@ -507,6 +519,10 @@
     }
 
     refreshPostsButton.addEventListener("click", loadPosts);
+    cancelEditButton.addEventListener("click", () => {
+      clearEditState(true);
+      log("已取消编辑，编辑器已恢复为新文章模式。");
+    });
 
     async function loadPosts() {
       postsList.innerHTML = `<p class="text-xs text-slate-400">加载中...</p>`;
@@ -537,10 +553,21 @@
               <p class="mt-1 text-xs text-slate-400 break-all">${escapeHtml(post.fileName || "")}</p>
               <p class="mt-2 text-xs text-slate-300">${escapeHtml(post.excerpt || "")}</p>
             </div>
-            <button type="button" data-file="${escapeAttr(post.fileName || "")}" class="delete-post-btn rounded-lg border border-rose-300/30 bg-rose-500/20 px-3 py-2 text-xs font-semibold text-rose-100 hover:bg-rose-500/35">删除</button>
+            <div class="flex shrink-0 gap-2">
+              <button type="button" data-file="${escapeAttr(post.fileName || "")}" class="edit-post-btn rounded-lg border border-indigo-300/30 bg-indigo-500/20 px-3 py-2 text-xs font-semibold text-indigo-100 hover:bg-indigo-500/35">编辑</button>
+              <button type="button" data-file="${escapeAttr(post.fileName || "")}" class="delete-post-btn rounded-lg border border-rose-300/30 bg-rose-500/20 px-3 py-2 text-xs font-semibold text-rose-100 hover:bg-rose-500/35">删除</button>
+            </div>
           </div>
         </div>
       `).join("");
+      const editButtons = postsList.querySelectorAll(".edit-post-btn");
+      editButtons.forEach((button) => {
+        button.addEventListener("click", async () => {
+          const fileName = button.getAttribute("data-file") || "";
+          if (!fileName) return;
+          await loadPostForEdit(fileName, button);
+        });
+      });
       const deleteButtons = postsList.querySelectorAll(".delete-post-btn");
       deleteButtons.forEach((button) => {
         button.addEventListener("click", async () => {
@@ -551,6 +578,67 @@
           await deletePost(fileName, button);
         });
       });
+    }
+
+    async function loadPostForEdit(fileName, button) {
+      const oldText = button.textContent;
+      button.disabled = true;
+      button.textContent = "加载中...";
+      log(`正在加载文章：${fileName}`);
+      try {
+        const response = await fetch(`/api/post?fileName=${encodeURIComponent(fileName)}`);
+        const result = await response.json();
+        if (!response.ok || !result.success) {
+          log(`加载文章失败：${result.message || "未知错误"}`);
+          return;
+        }
+        const post = result.post || {};
+        activeEditFileName = post.fileName || fileName;
+        titleInput.value = post.title || "";
+        excerptInput.value = post.excerpt || "";
+        ensureCategoryOption(post.category || "Tutorial");
+        categoryInput.value = post.category || "Tutorial";
+        editor.innerHTML = post.content || "";
+        editFileName.textContent = activeEditFileName;
+        editStatus.classList.remove("hidden");
+        editStatus.classList.add("flex");
+        updatePublishButtonLabel();
+        titleInput.focus();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        log(`已进入编辑模式：${activeEditFileName}`);
+      } catch (error) {
+        log(`加载文章失败：${error.message}`);
+      } finally {
+        button.disabled = false;
+        button.textContent = oldText;
+      }
+    }
+
+    function ensureCategoryOption(category) {
+      if (Array.from(categoryInput.options).some((option) => option.value === category)) return;
+      const option = document.createElement("option");
+      option.value = category;
+      option.textContent = category;
+      categoryInput.appendChild(option);
+    }
+
+    function clearEditState(clearForm = false) {
+      activeEditFileName = "";
+      editFileName.textContent = "";
+      editStatus.classList.add("hidden");
+      editStatus.classList.remove("flex");
+      if (clearForm) {
+        titleInput.value = "";
+        excerptInput.value = "";
+        categoryInput.value = "Tutorial";
+        editor.innerHTML = "";
+      }
+      updatePublishButtonLabel();
+    }
+
+    function updatePublishButtonLabel() {
+      if (publishButton.disabled) return;
+      publishButton.textContent = activeEditFileName ? "保存修改并推送 GitHub" : "发布文章并推送 GitHub";
     }
 
     async function deletePost(fileName, button) {

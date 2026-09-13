@@ -378,7 +378,7 @@ test("Blog article normalization preserves SEO metadata and content and is idemp
 test("both CMS publishers use the shared article renderer", () => {
   for (const fileName of ["server.local.js", "worker.js"]) {
     const source = read(fileName);
-    assert.match(source, /import\s*\{\s*renderArticleDocument\s*\}\s*from\s*["']\.\/scripts\/article-html\.mjs["']/i);
+    assert.match(source, /import\s*\{[^}]*\brenderArticleDocument\b[^}]*\}\s*from\s*["']\.\/scripts\/article-html\.mjs["']/i);
     assert.match(source, /return\s+renderArticleDocument\(\{[\s\S]*?title,[\s\S]*?content,[\s\S]*?canonical[\s\S]*?\}\);/i);
     assert.doesNotMatch(source, /cdn\.tailwindcss\.com|Start Creating/i);
   }
@@ -393,16 +393,19 @@ test("footer guide phrase is absent from every HTML page", () => {
 test("CMS blog publishers emit and parse the shared Blog card classes", () => {
   const localServer = read("server.local.js");
   const worker = read("worker.js");
+  const sharedBlogHtml = read("scripts/blog-cms-html.mjs");
+
+  assert.match(sharedBlogHtml, /<article class="blog-card card card-pad">/);
+  assert.match(sharedBlogHtml, /class="blog-card-category tag lime"/);
+  assert.match(sharedBlogHtml, /class="blog-card-excerpt"/);
+  assert.match(sharedBlogHtml, /class="card-link"/);
+  assert.match(sharedBlogHtml, /export function parseBlogPosts/);
+  assert.match(sharedBlogHtml, /export function upsertBlogCardHtml/);
 
   for (const source of [localServer, worker]) {
-    assert.match(source, /<article class="blog-card card card-pad">/);
-    assert.match(source, /class="blog-card-category tag lime"/);
-    assert.match(source, /class="blog-card-excerpt"/);
-    assert.match(source, /class="card-link"/);
+    assert.match(source, /import\s*\{[^}]*\bparseBlogPosts\b[^}]*\bupsertBlogCardHtml\b[^}]*\}\s*from\s*["']\.\/scripts\/blog-cms-html\.mjs["']/i);
     assert.doesNotMatch(source, /<article class="rounded-2xl border border-white\/10 bg-slate-900\/60 p-6">/);
   }
-  assert.match(localServer, /card\.match\(\/<p class="blog-card-excerpt">/);
-  assert.match(localServer, /card\.match\(\/<p class="blog-card-category tag lime">/);
 });
 
 test("homepage uses distinct high-quality raster artwork", () => {

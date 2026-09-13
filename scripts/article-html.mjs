@@ -7,6 +7,13 @@ const ALLOWED_ELEMENTS = new Set([
 
 const VOID_ELEMENTS = new Set(["br", "hr", "img", "source"]);
 const BOOLEAN_ATTRIBUTES = new Set(["autoplay", "controls", "loop", "muted", "playsinline", "reversed"]);
+const GLOBAL_ATTRIBUTES = new Set(["class", "style"]);
+const SAFE_STYLE_PROPERTIES = new Set([
+  "line-height", "text-indent", "text-align", "margin", "margin-left", "margin-right",
+  "margin-top", "margin-bottom", "padding-left", "padding-right", "padding-top",
+  "padding-bottom", "font-weight", "font-style", "font-size", "text-decoration",
+  "letter-spacing", "word-spacing", "list-style-type", "list-style-position", "white-space"
+]);
 
 const ATTRIBUTES_BY_ELEMENT = {
   a: new Set(["href", "rel", "target", "title"]),
@@ -38,8 +45,22 @@ function sanitizeAttributeValue(value) {
   return String(value || "").replaceAll('"', "&quot;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 }
 
+function sanitizeInlineStyle(styleText) {
+  const output = [];
+  for (const declaration of String(styleText || "").split(";")) {
+    const [rawProperty, ...rawValue] = declaration.split(":");
+    const property = String(rawProperty || "").trim().toLowerCase();
+    const value = rawValue.join(":").trim();
+    const lowered = value.toLowerCase();
+    if (!SAFE_STYLE_PROPERTIES.has(property) || !value) continue;
+    if (lowered.includes("expression(") || lowered.includes("javascript:") || lowered.includes("url(")) continue;
+    output.push(`${property}: ${value}`);
+  }
+  return output.join("; ");
+}
+
 function sanitizeAttributes(element, rawAttributes) {
-  const allowed = ATTRIBUTES_BY_ELEMENT[element] || new Set();
+  const allowed = new Set([...GLOBAL_ATTRIBUTES, ...(ATTRIBUTES_BY_ELEMENT[element] || [])]);
   const output = [];
   const attributePattern = /([^\s=\/>]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+)))?/g;
   for (const match of String(rawAttributes || "").matchAll(attributePattern)) {
@@ -51,7 +72,17 @@ function sanitizeAttributes(element, rawAttributes) {
       continue;
     }
     if (["href", "poster", "src"].includes(name) && !isSafeUrl(value, element, name)) continue;
-    if (name === "class" && !/^language-[a-z0-9_-]+$/i.test(value)) continue;
+    if (name === "class") {
+      const className = value.trim().replace(/\s+/g, " ");
+      if (!className || className.length > 500 || className.split(" ").some((token) => !/^[a-z0-9_:./\[\]%-]+$/i.test(token))) continue;
+      output.push(`class="${sanitizeAttributeValue(className)}"`);
+      continue;
+    }
+    if (name === "style") {
+      const style = sanitizeInlineStyle(value);
+      if (style) output.push(`style="${sanitizeAttributeValue(style)}"`);
+      continue;
+    }
     if (name === "target" && !["_blank", "_self"].includes(value)) continue;
     if (["colspan", "height", "rowspan", "start", "width"].includes(name) && !/^\d{1,5}$/.test(value)) continue;
     output.push(`${name}="${sanitizeAttributeValue(value)}"`);
@@ -118,6 +149,149 @@ function escapeHtml(input) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
+}
+
+function decodeHtml(input) {
+  return String(input || "")
+    .replace(/&#(\d+);/g, (_match, value) => String.fromCodePoint(Number(value)))
+    .replace(/&#x([0-9a-f]+);/gi, (_match, value) => String.fromCodePoint(Number.parseInt(value, 16)))
+    .replaceAll("&quot;", '"')
+    .replaceAll("&#39;", "'")
+    .replaceAll("&lt;", "<")
+    .replaceAll("&gt;", ">")
+    .replaceAll("&amp;", "&");
+}
+
+function textFromHtml(input) {
+  return decodeHtml(String(input || "").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim());
+}
+
+function metaContent(source, attribute, key) {
+  const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const tag = String(source || "").match(new RegExp(`<meta\\b(?=[^>]*\\b${attribute}="${escapedKey}")[^>]*>`, "i"))?.[0] || "";
+  return decodeHtml(tag.match(/\bcontent="([^"]*)"/i)?.[1] || "");
+}
+
+function elementByClass(source, className) {
+  const openingPattern = new RegExp(`<([a-z][a-z0-9]*)\\b[^>]*class="[^"]*\\b${className}\\b[^"]*"[^>]*>`, "i");
+  const opening = openingPattern.exec(source);
+  if (!opening) return null;
+  const tagName = opening[1].toLowerCase();
+  const tokenPattern = new RegExp(`<\\/?${tagName}\\b[^>]*>`, "gi");
+  tokenPattern.lastIndex = opening.index + opening[0].length;
+  let depth = 1;
+  let token;
+  while ((token = tokenPattern.exec(source))) {
+    if (/^<\s*\//.test(token[0])) depth -= 1;
+    else depth += 1;
+    if (depth === 0) {
+      return {
+        openStart: opening.index,
+        innerStart: opening.index + opening[0].length,
+        innerEnd: token.index,
+        closeEnd: token.index + token[0].length,
+      };
+    }
+  }
+  return null;
+}
+
+function replaceElementContentByClass(source, className, content) {
+  const element = elementByClass(source, className);
+  if (!element) return source;
+  return `${source.slice(0, element.innerStart)}${content}${source.slice(element.innerEnd)}`;
+}
+
+function replaceMetaContent(source, attribute, key, value) {
+  const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const pattern = new RegExp(`<meta\\b(?=[^>]*\\b${attribute}="${escapedKey}")[^>]*>`, "i");
+  return source.replace(pattern, (tag) => {
+    if (/\bcontent="[^"]*"/i.test(tag)) {
+      return tag.replace(/\bcontent="[^"]*"/i, `content="${value}"`);
+    }
+    return tag.replace(/>$/, ` content="${value}">`);
+  });
+}
+
+function updateArticleSchema(source, { title, excerpt, modifiedDate }) {
+  return source.replace(/<script\s+type="application\/ld\+json">([\s\S]*?)<\/script>/gi, (block, rawJson) => {
+    let schema;
+    try {
+      schema = JSON.parse(rawJson);
+    } catch {
+      return block;
+    }
+    const candidates = Array.isArray(schema?.["@graph"]) ? schema["@graph"] : [schema];
+    let changed = false;
+    for (const item of candidates) {
+      const types = Array.isArray(item?.["@type"]) ? item["@type"] : [item?.["@type"]];
+      if (!types.includes("Article")) continue;
+      item.headline = title;
+      item.description = excerpt;
+      item.dateModified = modifiedDate;
+      changed = true;
+    }
+    const safeJson = JSON.stringify(schema, null, 2)
+      .replace(/</g, "\\u003c")
+      .replace(/\u2028/g, "\\u2028")
+      .replace(/\u2029/g, "\\u2029");
+    return changed ? `<script type="application/ld+json">\n${safeJson}\n  </script>` : block;
+  });
+}
+
+export function extractEditableArticleContent(html) {
+  const source = String(html || "");
+  const element = elementByClass(source, "article-content");
+  if (!element) throw new Error("Article content container was not found.");
+  return source.slice(element.innerStart, element.innerEnd).trim();
+}
+
+export function extractEditableArticleData(html) {
+  const source = String(html || "");
+  const heading = source.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i)?.[1] || "";
+  const categoryElement = elementByClass(source, "article-category");
+  return {
+    title: textFromHtml(heading),
+    excerpt: metaContent(source, "name", "description"),
+    category: categoryElement ? textFromHtml(source.slice(categoryElement.innerStart, categoryElement.innerEnd)) : "",
+    content: extractEditableArticleContent(source),
+  };
+}
+
+export function updateArticleDocument(html, { title, excerpt, category, content, modifiedDate = new Date().toISOString().slice(0, 10) }) {
+  let output = String(html || "");
+  const nextTitle = String(title || "").trim();
+  const nextExcerpt = String(excerpt || "").trim() || metaContent(output, "name", "description") || nextTitle;
+  const safeTitle = escapeHtml(nextTitle);
+  const safeExcerpt = escapeHtml(nextExcerpt);
+  const safeCategory = escapeHtml(category) || "Article";
+  const safeContent = sanitizeArticleHtml(content);
+
+  if (!/<h1\b/i.test(output) || !elementByClass(output, "article-content")) {
+    throw new Error("Article document cannot be edited safely.");
+  }
+  output = output.replace(/<title\b[^>]*>[\s\S]*?<\/title>/i, `<title>${safeTitle} | SEEDANCE Blog</title>`);
+  output = replaceMetaContent(output, "name", "description", safeExcerpt);
+  output = replaceMetaContent(output, "property", "og:title", safeTitle);
+  output = replaceMetaContent(output, "property", "og:description", safeExcerpt);
+  output = replaceMetaContent(output, "name", "twitter:title", safeTitle);
+  output = replaceMetaContent(output, "name", "twitter:description", safeExcerpt);
+  output = output.replace(/(<h1\b[^>]*>)[\s\S]*?(<\/h1>)/i, `$1${safeTitle}$2`);
+
+  if (elementByClass(output, "article-category")) {
+    output = replaceElementContentByClass(output, "article-category", safeCategory);
+  } else {
+    output = output.replace(/<h1\b/i, `<p class="eyebrow article-category">${safeCategory}</p>\n        <h1`);
+  }
+  if (elementByClass(output, "article-lead")) {
+    output = replaceElementContentByClass(output, "article-lead", safeExcerpt);
+  } else if (elementByClass(output, "lead")) {
+    output = replaceElementContentByClass(output, "lead", safeExcerpt);
+  } else {
+    output = output.replace(/(<\/h1>)/i, `$1\n        <p class="article-lead">${safeExcerpt}</p>`);
+  }
+  output = replaceElementContentByClass(output, "article-content", `\n          ${safeContent}\n        `);
+  return updateArticleSchema(output, { title: nextTitle, excerpt: nextExcerpt, modifiedDate });
 }
 
 function normalizeLegacyArticleMain(source) {
