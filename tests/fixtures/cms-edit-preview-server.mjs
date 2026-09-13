@@ -56,7 +56,7 @@ const server = http.createServer(async (request, response) => {
       json(response, 500, { success: false, message: "Fixture publish failure." });
       return;
     }
-    json(response, 202, { success: true, jobId: "fixture-job" });
+    json(response, 202, { success: true, jobId: String(payload.title || "").includes("[LOST]") ? "lost-job" : "fixture-job" });
     return;
   }
   if (request.method === "GET" && url.pathname === "/api/job/fixture-job") {

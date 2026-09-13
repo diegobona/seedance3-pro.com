@@ -252,6 +252,32 @@ test("CMS surfaces expose safe edit loading and preserve edit state through save
   assert.match(worker, /fileName:\s*editFileName/);
 });
 
+test("CMS publishing stops polling when a job is lost or reaches a failed state", () => {
+  const admin = read("admin/index.html");
+  const waitForJob = admin.match(/async function waitForJob\(jobId\) \{([\s\S]*?)\n    \}\n\n    function sleep/)?.[1] || "";
+
+  assert.match(waitForJob, /response\.status === 404/);
+  assert.match(waitForJob, /return \{ status: "lost" \}/);
+  assert.match(waitForJob, /job\.status === "failed"/);
+  assert.doesNotMatch(waitForJob, /if \(!response\.ok \|\| !result\.success\) \{[\s\S]*?continue;/);
+  assert.match(admin, /finally \{[\s\S]*?endFormOperation\("publish"\)/);
+  assert.doesNotMatch(admin, /重试直到成功/);
+});
+
+test("local publisher stops retrying GitHub indefinitely and reports a terminal failure", () => {
+  const server = read("server.local.js");
+  const publishJob = server.match(/async function publishJob\(jobId, payload\) \{([\s\S]*?)\n\}\n\nasync function deletePostJob/)?.[1] || "";
+  const pushWithRetry = server.match(/async function pushWithRetry\(branch, job\) \{([\s\S]*?)\n\}\n\nfunction ensureJobActive/)?.[1] || "";
+
+  assert.match(server, /const MAX_GIT_PUSH_ATTEMPTS = 3;/);
+  assert.match(pushWithRetry, /for \(let attempt = 1; attempt <= MAX_GIT_PUSH_ATTEMPTS; attempt \+= 1\)/);
+  assert.doesNotMatch(pushWithRetry, /while \(true\)/);
+  assert.match(publishJob, /job\.status = "failed";/);
+  assert.doesNotMatch(publishJob, /scheduleRetry\(/);
+  assert.doesNotMatch(publishJob, /runGit\(\["add", "\."\]\)/);
+  assert.match(publishJob, /runGit\(\["add", "--", fileName, "blog\.html", "sitemap\.xml", \.\.\.imageRes\.files\]\)/);
+});
+
 test("editor links support a custom label and normalize safe website URLs", () => {
   assert.equal(
     buildEditorLink({ label: "Example Website", url: "example.com/docs" }),

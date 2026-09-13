@@ -423,7 +423,7 @@
       publishButton.textContent = "发布中...";
       cancelPublishButton.classList.remove("hidden");
       cancelPublishButton.disabled = false;
-      log("开始创建发布任务，本地服务将重试直到成功。");
+      log("开始创建发布任务：先生成本地文章，再推送到 GitHub。");
       try {
         const response = await fetch("/api/publish", {
           method: "POST",
@@ -444,7 +444,7 @@
         log(`任务已创建：${result.jobId}`);
         activePublishJobId = result.jobId;
         const completedJob = await waitForJob(result.jobId);
-        if (completedJob?.status === "success") {
+        if (completedJob?.status === "success" || completedJob?.output?.localPublished) {
           clearEditState(true);
         }
         await loadPosts();
@@ -488,10 +488,14 @@
         const response = await fetch(`/api/job/${jobId}`, {
           method: "GET"
         });
-        const result = await response.json();
+        const result = await response.json().catch(() => ({ success: false, message: `HTTP ${response.status}` }));
         if (!response.ok || !result.success) {
-          log(`查询任务失败：${result.message || "未知错误"}`);
-          continue;
+          if (response.status === 404) {
+            log("发布任务已中断或服务已重启，已停止等待。请刷新文章列表确认本地结果。");
+            return { status: "lost" };
+          }
+          log(`查询任务失败：${result.message || "未知错误"}，已停止等待。`);
+          return { status: "failed" };
         }
         const job = result.job;
         log(`任务状态：${job.status}，尝试次数：${job.attempts}`);
@@ -509,6 +513,14 @@
         }
         if (job.status === "canceled") {
           log("任务已停止。");
+          return job;
+        }
+        if (job.status === "failed") {
+          if (job.output?.localPublished) {
+            log(`文章已在本地发布：${job.output.articleUrl || "已生成文章"}；GitHub 推送失败，请稍后重新推送。`);
+          } else {
+            log(`发布失败：${job.lastError || "未知错误"}`);
+          }
           return job;
         }
       }

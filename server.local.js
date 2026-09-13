@@ -18,6 +18,7 @@ const SITEMAP_PATH = path.join(ROOT_DIR, "sitemap.xml");
 const DOCX_IMPORT_WORKER_PATH = path.join(ROOT_DIR, "scripts", "docx-import-worker.mjs");
 const DOCX_IMPORT_TIMEOUT_MS = 15_000;
 const MAX_DOCX_OUTPUT_BYTES = 20 * 1024 * 1024;
+const MAX_GIT_PUSH_ATTEMPTS = 3;
 const jobs = new Map();
 const retryTimers = new Map();
 
@@ -166,7 +167,7 @@ app.post("/api/publish", async (req, res) => {
     success: true,
     queued: true,
     jobId,
-    message: "Publish job created. It will keep retrying until success."
+    message: "Publish job created."
   });
 });
 
@@ -332,10 +333,12 @@ async function publishJob(jobId, payload) {
     await fs.writeFile(path.join(ROOT_DIR, fileName), articleHtml, "utf8");
     await upsertBlogCard({ fileName, title: payload.title, excerpt: safeExcerpt, category: payload.category });
     await upsertSitemap({ fileName });
+    job.status = "pushing";
+    job.output = { articleUrl: `./${fileName}`, localPublished: true, githubPushed: false };
 
     ensureJobActive(job);
     const branch = (await runGit(["rev-parse", "--abbrev-ref", "HEAD"])).stdout.trim() || "main";
-    await runGit(["add", "."]);
+    await runGit(["add", "--", fileName, "blog.html", "sitemap.xml", ...imageRes.files]);
     const commitResult = await runGit(["commit", "-m", `feat-blog-publish-${slugBase}`], true);
     if (!commitResult.ok && !/nothing to commit|no changes added/i.test(commitResult.stderr)) {
       throw new Error(commitResult.stderr || commitResult.stdout || "Git commit failed");
@@ -344,7 +347,7 @@ async function publishJob(jobId, payload) {
 
     job.status = "success";
     job.lastError = "";
-    job.output = { articleUrl: `./${fileName}` };
+    job.output.githubPushed = true;
     clearRetryTimer(jobId);
   } catch (error) {
     if (job.canceled || String(error?.message || "").includes("JOB_CANCELED")) {
@@ -353,9 +356,9 @@ async function publishJob(jobId, payload) {
       clearRetryTimer(jobId);
       return;
     }
-    job.status = "pending";
+    job.status = "failed";
     job.lastError = String(error?.message || error || "Unknown error");
-    scheduleRetry(jobId, () => publishJob(jobId, payload));
+    clearRetryTimer(jobId);
   }
 }
 
@@ -410,6 +413,7 @@ async function deletePostJob(jobId, payload) {
 async function materializeInlineImages(content, slugBase) {
   let output = content;
   let index = 0;
+  const files = [];
   const regex = /<img\b([^>]*?)src="(data:image\/[a-zA-Z0-9.+-]+;base64,[^"]+)"([^>]*?)>/g;
   for (const match of content.matchAll(regex)) {
     index += 1;
@@ -419,9 +423,10 @@ async function materializeInlineImages(content, slugBase) {
     const fileName = `${slugBase}-${Date.now()}-${index}.${ext}`;
     const outPath = path.join(BLOG_ASSETS_DIR, fileName);
     await fs.writeFile(outPath, Buffer.from(parsed.base64, "base64"));
+    files.push(path.relative(ROOT_DIR, outPath).replaceAll("\\", "/"));
     output = output.replace(dataUrl, `./blog-assets/${fileName}`);
   }
-  return { content: output };
+  return { content: output, files };
 }
 
 async function upsertBlogCard({ fileName, title, excerpt, category }) {
@@ -489,15 +494,16 @@ function buildArticleHtml({ title, excerpt, category, content, canonical }) {
 }
 
 async function pushWithRetry(branch, job) {
-  while (true) {
+  for (let attempt = 1; attempt <= MAX_GIT_PUSH_ATTEMPTS; attempt += 1) {
     ensureJobActive(job);
     const pushResult = await runGit(["push", "origin", branch], true);
     if (pushResult.ok) {
       return;
     }
     job.lastError = pushResult.stderr || pushResult.stdout || "git push failed";
-    await sleep(5000);
+    if (attempt < MAX_GIT_PUSH_ATTEMPTS) await sleep(5000);
   }
+  throw new Error(job.lastError || "GitHub push failed after three attempts.");
 }
 
 function ensureJobActive(job) {
