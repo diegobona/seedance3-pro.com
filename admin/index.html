@@ -76,6 +76,8 @@
             <button type="button" data-cmd="ul-disc" class="rounded-lg border border-white/15 px-3 py-1.5 text-xs hover:border-indigo-300/50">圆点列表</button>
             <button type="button" data-cmd="ul-square" class="rounded-lg border border-white/15 px-3 py-1.5 text-xs hover:border-indigo-300/50">方块列表</button>
             <button type="button" data-cmd="ol" class="rounded-lg border border-white/15 px-3 py-1.5 text-xs hover:border-indigo-300/50">有序列表</button>
+            <button type="button" id="import-docx-btn" class="rounded-lg border border-amber-300/40 bg-amber-500/15 px-3 py-1.5 text-xs font-semibold text-amber-100 hover:bg-amber-500/30">一键导入 Word</button>
+            <input id="docx-file-input" type="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" class="hidden">
             <button type="button" id="insert-link-btn" class="rounded-lg border border-sky-300/40 bg-sky-500/15 px-3 py-1.5 text-xs font-semibold text-sky-100 hover:bg-sky-500/30">插入链接</button>
             <button type="button" id="translate-en-btn" class="rounded-lg border border-emerald-300/40 bg-emerald-500/15 px-3 py-1.5 text-xs font-semibold text-emerald-100 hover:bg-emerald-500/30">翻译成英文</button>
             <button type="button" data-cmd="quote" class="rounded-lg border border-white/15 px-3 py-1.5 text-xs hover:border-indigo-300/50">引用</button>
@@ -83,7 +85,7 @@
           </div>
           <div id="editor" contenteditable="true" class="min-h-[420px] max-h-[70vh] overflow-y-auto px-4 py-3 text-sm leading-7 outline-none" data-placeholder="直接输入正文内容；支持复制粘贴图片、文字和段落格式。"></div>
         </div>
-        <p class="mt-2 text-xs text-slate-400">提示：可直接 Ctrl+V 粘贴截图或图片，发布时会自动转成文章图片文件。</p>
+        <p class="mt-2 text-xs text-slate-400">提示：可一键导入完整 Word 文档，也可直接 Ctrl+V 粘贴内容；标题层级、编号、列表、粗斜体和图片会自动保留。</p>
       </div>
 
       <div class="mt-6 flex flex-wrap gap-3">
@@ -147,6 +149,8 @@
     const postsList = document.getElementById("posts-list");
     const clearFormatButton = document.getElementById("clear-format-btn");
     const translateEnButton = document.getElementById("translate-en-btn");
+    const importDocxButton = document.getElementById("import-docx-btn");
+    const docxFileInput = document.getElementById("docx-file-input");
     const insertLinkButton = document.getElementById("insert-link-btn");
     const linkDialog = document.getElementById("link-dialog");
     const linkForm = document.getElementById("link-form");
@@ -157,9 +161,74 @@
     const closeLinkDialogButton = document.getElementById("close-link-dialog-btn");
     const logBox = document.getElementById("log");
     const toolbarButtons = document.querySelectorAll("[data-cmd]");
+    const editorToolbarButtons = document.querySelectorAll("#editor-toolbar button");
     let activePublishJobId = "";
     let activeEditFileName = "";
     let pendingLinkRange = null;
+    let activeFormOperation = "";
+
+    importDocxButton.addEventListener("click", () => docxFileInput.click());
+    docxFileInput.addEventListener("change", async () => {
+      const file = docxFileInput.files?.[0];
+      if (!file) return;
+      const hasDraft = Boolean(titleInput.value.trim() || excerptInput.value.trim() || normalizeEditorHtml(editor.innerHTML));
+      if (hasDraft && !window.confirm("导入 Word 将替换当前标题和正文，是否继续？")) {
+        docxFileInput.value = "";
+        return;
+      }
+      if (!beginFormOperation("docx")) {
+        docxFileInput.value = "";
+        return;
+      }
+      const oldText = importDocxButton.textContent;
+      importDocxButton.textContent = "正在导入...";
+      try {
+        const formData = new FormData();
+        formData.append("document", file);
+        const response = await fetch("/api/import-docx", { method: "POST", body: formData });
+        const result = await response.json();
+        if (!response.ok || !result.success) throw new Error(result.message || "Word 文档导入失败。");
+        editor.innerHTML = sanitizePastedHtml(result.content || "");
+        if (result.title) titleInput.value = result.title;
+        editor.focus();
+        const warningText = result.warnings?.length ? ` 格式提示：${result.warnings.slice(0, 3).join("；")}` : "";
+        log(`Word 导入完成：${file.name}。${warningText} 请检查后再发布。`);
+      } catch (error) {
+        log(`Word 导入失败：${error.message}`);
+      } finally {
+        endFormOperation("docx");
+        importDocxButton.textContent = oldText;
+        docxFileInput.value = "";
+      }
+    });
+
+    function beginFormOperation(operation) {
+      if (activeFormOperation) {
+        log(`请等待当前操作完成：${activeFormOperation}`);
+        return false;
+      }
+      activeFormOperation = operation;
+      setFormControlsBusy(true);
+      return true;
+    }
+
+    function endFormOperation(operation) {
+      if (activeFormOperation !== operation) return;
+      activeFormOperation = "";
+      setFormControlsBusy(false);
+    }
+
+    function setFormControlsBusy(isBusy) {
+      editor.setAttribute("contenteditable", isBusy ? "false" : "true");
+      titleInput.disabled = isBusy;
+      excerptInput.disabled = isBusy;
+      categoryInput.disabled = isBusy;
+      publishButton.disabled = isBusy;
+      refreshPostsButton.disabled = isBusy;
+      cancelEditButton.disabled = isBusy;
+      editorToolbarButtons.forEach((button) => { button.disabled = isBusy; });
+      postsList.querySelectorAll("button").forEach((button) => { button.disabled = isBusy; });
+    }
 
     function log(message) {
       const time = new Date().toLocaleTimeString();
@@ -288,7 +357,7 @@
         log("正文为空，无法翻译。");
         return;
       }
-      translateEnButton.disabled = true;
+      if (!beginFormOperation("translate")) return;
       const oldText = translateEnButton.textContent;
       translateEnButton.textContent = "翻译中...";
       log("开始翻译为英文...");
@@ -308,7 +377,7 @@
       } catch (error) {
         log(`翻译失败：${error.message}`);
       } finally {
-        translateEnButton.disabled = false;
+        endFormOperation("translate");
         translateEnButton.textContent = oldText;
       }
     });
@@ -350,7 +419,7 @@
         log("标题和正文不能为空。");
         return;
       }
-      publishButton.disabled = true;
+      if (!beginFormOperation("publish")) return;
       publishButton.textContent = "发布中...";
       cancelPublishButton.classList.remove("hidden");
       cancelPublishButton.disabled = false;
@@ -383,7 +452,7 @@
         log(`发布失败：${error.message}`);
       } finally {
         activePublishJobId = "";
-        publishButton.disabled = false;
+        endFormOperation("publish");
         updatePublishButtonLabel();
         cancelPublishButton.classList.add("hidden");
       }
@@ -699,8 +768,8 @@
     }
 
     async function loadPostForEdit(fileName, button) {
+      if (!beginFormOperation("edit")) return;
       const oldText = button.textContent;
-      button.disabled = true;
       button.textContent = "加载中...";
       log(`正在加载文章：${fileName}`);
       try {
@@ -727,7 +796,7 @@
       } catch (error) {
         log(`加载文章失败：${error.message}`);
       } finally {
-        button.disabled = false;
+        endFormOperation("edit");
         button.textContent = oldText;
       }
     }

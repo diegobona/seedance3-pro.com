@@ -30,6 +30,7 @@ const ATTRIBUTES_BY_ELEMENT = {
 function isSafeUrl(value, element, attribute) {
   const url = String(value || "").trim();
   if (!url) return false;
+  if (element === "img" && attribute === "src" && /^data:image\/(?:png|jpe?g|gif|webp);base64,[a-z0-9+/=\s]+$/i.test(url)) return true;
   if (url.startsWith("#") || url.startsWith("./") || url.startsWith("../")) return true;
   if (url.startsWith("/") && !url.startsWith("//")) return true;
   try {

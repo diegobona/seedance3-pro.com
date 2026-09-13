@@ -15,6 +15,9 @@ const ROOT_DIR = __dirname;
 const BLOG_ASSETS_DIR = path.join(ROOT_DIR, "blog-assets");
 const BLOG_HTML_PATH = path.join(ROOT_DIR, "blog.html");
 const SITEMAP_PATH = path.join(ROOT_DIR, "sitemap.xml");
+const DOCX_IMPORT_WORKER_PATH = path.join(ROOT_DIR, "scripts", "docx-import-worker.mjs");
+const DOCX_IMPORT_TIMEOUT_MS = 15_000;
+const MAX_DOCX_OUTPUT_BYTES = 20 * 1024 * 1024;
 const jobs = new Map();
 const retryTimers = new Map();
 
@@ -23,6 +26,10 @@ app.use(express.urlencoded({ extended: true, limit: "20mb" }));
 app.use(express.static(ROOT_DIR, { extensions: ["html"] }));
 
 const upload = multer({ storage: multer.memoryStorage() });
+const docxUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 20 * 1024 * 1024, files: 1 }
+});
 
 app.get("/admin", (_req, res) => {
   res.sendFile(path.join(ROOT_DIR, "admin", "index.html"));
@@ -36,6 +43,84 @@ app.post("/api/upload-images", upload.array("images", 12), (req, res) => {
   }));
   res.json({ success: true, files: result });
 });
+
+app.post("/api/import-docx", (req, res) => {
+  docxUpload.single("document")(req, res, async (uploadError) => {
+    if (uploadError) {
+      const tooLarge = uploadError.code === "LIMIT_FILE_SIZE";
+      res.status(tooLarge ? 413 : 400).json({
+        success: false,
+        message: tooLarge ? "Word 文档不能超过 20 MB。" : "Word 文档上传失败。"
+      });
+      return;
+    }
+    const file = req.file;
+    if (!file || !/\.docx$/i.test(file.originalname || "")) {
+      res.status(400).json({ success: false, message: "请选择 .docx 格式的 Word 文档。" });
+      return;
+    }
+    try {
+      const article = await convertDocxInIsolatedProcess(file.buffer);
+      res.json({ success: true, ...article });
+    } catch (error) {
+      res.status(400).json({ success: false, message: String(error?.message || "Word 文档导入失败。") });
+    }
+  });
+});
+
+function convertDocxInIsolatedProcess(buffer) {
+  return new Promise((resolve, reject) => {
+    const child = spawn(process.execPath, ["--max-old-space-size=128", DOCX_IMPORT_WORKER_PATH], {
+      cwd: ROOT_DIR,
+      stdio: ["pipe", "pipe", "pipe"],
+      windowsHide: true
+    });
+    const output = [];
+    const errors = [];
+    let outputBytes = 0;
+    let settled = false;
+    const finishWithError = (message) => {
+      if (settled) return;
+      settled = true;
+      child.kill();
+      reject(new Error(message));
+    };
+    const timer = setTimeout(() => {
+      finishWithError("Word document conversion timed out.");
+    }, DOCX_IMPORT_TIMEOUT_MS);
+
+    child.stdout.on("data", (chunk) => {
+      outputBytes += chunk.length;
+      if (outputBytes > MAX_DOCX_OUTPUT_BYTES) {
+        finishWithError("The imported Word content is too large.");
+        return;
+      }
+      output.push(chunk);
+    });
+    child.stderr.on("data", (chunk) => {
+      if (errors.reduce((total, item) => total + item.length, 0) < 16_384) errors.push(chunk);
+    });
+    child.once("error", (error) => {
+      clearTimeout(timer);
+      finishWithError(error.message);
+    });
+    child.once("close", () => {
+      clearTimeout(timer);
+      if (settled) return;
+      settled = true;
+      try {
+        const result = JSON.parse(Buffer.concat(output).toString("utf8"));
+        if (!result.success) throw new Error(result.message || "Word document import failed.");
+        resolve(result.article);
+      } catch (error) {
+        const detail = Buffer.concat(errors).toString("utf8").trim();
+        reject(new Error(detail || error.message || "Word document import failed."));
+      }
+    });
+    child.stdin.on("error", () => {});
+    child.stdin.end(buffer);
+  });
+}
 
 app.post("/api/publish", async (req, res) => {
   const title = String(req.body.title || "").trim();

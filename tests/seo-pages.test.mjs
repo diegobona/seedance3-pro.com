@@ -78,11 +78,23 @@ test("homepage exposes only Showcase and Blog in its compact navigation", () => 
   assert.match(css, /\.site-header \.brand\s*\{\s*white-space:\s*nowrap;\s*\}/i);
 });
 
+test("homepage hero keeps only the primary CTA and a single-line media caption", () => {
+  const html = read("index.html");
+  const css = read("site.css");
+  const hero = blockByClass(html, "section", "hero");
+  assert.doesNotMatch(hero, /Browse prompt guides/i);
+  assert.doesNotMatch(hero, /Multimodal workflows|Cinematic prompt guides|Model comparisons/i);
+  assert.doesNotMatch(hero, /Cinematic motion study/i);
+  assert.match(hero, /<figcaption><strong>Reference · Camera · Light · Sound<\/strong><\/figcaption>/i);
+  assert.match(css, /\.hero-media figcaption strong\s*\{[^}]*white-space:\s*nowrap/i);
+});
+
 test("blog uses the homepage design system without the highlighted intro copy", () => {
   const html = read("blog.html");
   const header = blockByClass(html, "header", "site-header");
   const navigation = blockByClass(header, "nav", "compact-nav");
   const expectedArticles = [
+    ["./how-to-control-character-poses-in-seedance-with-3d-pose-references.html", "Read article"],
     ["./how-to-use-the-seedance-api-complete-developer-guide-2026.html", "Read article"],
     ["./what-is-seedance-pro-features-pricing-how-to-get-started.html", "Read article"],
     ["./seedance-lite-vs-pro-which-plan-should-you-choose.html", "Read article"],

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to Control Character Poses in Seedance with 3D Pose References | SEEDANCE Blog</title>
+  <meta name="description" content="Learn how to control character poses in Seedance using 3D pose references, with a simple workflow for pose setup, camera angle, and motion prompts.">
+  <meta name="keywords" content="Seedance blog,AI video tutorial,Seedance workflow">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <link rel="canonical" href="https://seedance3-pro.com/how-to-control-character-poses-in-seedance-with-3d-pose-references.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="SEEDANCE 3.0">
+  <meta property="og:title" content="How to Control Character Poses in Seedance with 3D Pose References">
+  <meta property="og:description" content="Learn how to control character poses in Seedance using 3D pose references, with a simple workflow for pose setup, camera angle, and motion prompts.">
+  <meta property="og:url" content="https://seedance3-pro.com/how-to-control-character-poses-in-seedance-with-3d-pose-references.html">
+  <meta property="og:image" content="https://seedance3-pro.com/og-cover.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="How to Control Character Poses in Seedance with 3D Pose References">
+  <meta name="twitter:description" content="Learn how to control character poses in Seedance using 3D pose references, with a simple workflow for pose setup, camera angle, and motion prompts.">
+  <meta name="twitter:image" content="https://seedance3-pro.com/og-cover.svg">
+  <meta name="theme-color" content="#090a0c">
+  <link rel="stylesheet" href="./site.css">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="./favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container inner">
+      <a class="brand" href="./index.html" aria-label="SEEDANCE 3.0 home">
+        <img class="brand-mark" src="./assets/seedance-mark.svg" width="40" height="40" alt="">
+        <span>SEEDANCE 3.0</span>
+      </a>
+      <nav class="desktop-nav compact-nav" aria-label="Primary navigation">
+        <a href="./index.html">Home</a>
+        <a href="./blog.html">Blog</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-main">
+    <div class="container">
+      <article class="article-shell">
+        <p class="eyebrow article-category">Tutorial</p>
+        <h1 class="article-title">How to Control Character Poses in Seedance with 3D Pose References</h1>
+        <p class="article-lead">Learn how to control character poses in Seedance using 3D pose references, with a simple workflow for pose setup, camera angle, and motion prompts.</p>
+        <div class="article-content prose">
+          <p><em>A practical workflow using Anyposes + Seedance</em></p><p><strong>The problem: </strong>text prompts are good at describing actions, but weak at precise body positions. If the exact pose matters, build it visually first and use it as Seedance’s starting reference.</p><p><img src="./blog-assets/how-to-control-character-poses-in-seedance-with-3d-pose-references-1789277239623-1.png"></p><h2>1. When to Use a 3D Pose Reference</h2><p>Use it when the starting body position is important: fight scenes, sports, dance, kneeling, sitting/standing, running starts, falls, or shots with unusual camera angles.</p><p>Skip it for simple actions such as “a man walks down the street.”</p><p><img src="./blog-assets/how-to-control-character-poses-in-seedance-with-3d-pose-references-1789277239624-2.png"></p><h2>2. Build the Pose in Anyposes</h2><p>Open <a href="https://anyposes.com/" target="_blank" rel="noopener noreferrer">Anyposes</a>&nbsp;and create only the pose that matters to the shot. Focus on head direction, torso rotation, arms, legs, and weight distribution.</p><ul><li>Match the body pose to the first frame you want.</li><li>Set the camera angle in Anyposes too; front, side, low-angle and three-quarter views produce different results.</li><li>Capture a clean image with the character clearly visible.</li></ul><h2>3. Let the Reference Control the Pose — Let the Prompt Control the Motion</h2><p>Do not waste prompt space redescribing every arm and leg angle already visible in the reference image. Tell Seedance what happens next.</p><p><img src="./blog-assets/how-to-control-character-poses-in-seedance-with-3d-pose-references-1789277239624-3.png"></p><h3>Prompt Template</h3><table><tbody><tr><td><p>Use @image1 as the starting pose. The character [ACTION]. End with [FINAL POSITION]. The camera [CAMERA MOVEMENT]. Keep the motion natural and preserve body proportions.</p></td></tr></tbody></table><h2>4. Three Useful Examples</h2><h3>Fight scene</h3><p><strong>Reference: defensive fighting stance.</strong></p><p>Prompt: Use @image1 as the starting pose. Step forward, throw a right punch, then return to the defensive stance. Static camera.</p><h3>Running start</h3><p><strong>Reference: torso leaning forward, one leg behind, opposite arm forward.</strong></p><p>Prompt: Use @image1 as the starting pose. Push off the ground and accelerate into a sprint. The camera tracks alongside the runner.</p><h3>Stand up from a chair</h3><p><strong>Reference: exact seated pose and foot placement.</strong></p><p>Prompt: Use @image1 as the starting pose. Lean forward, stand up naturally, turn toward the window, and stop. Eye-level camera.</p><h2>5. What Actually Improves Results</h2><ul><li>Use the 3D pose for the starting frame, not the whole animation.</li><li>Separate character motion from camera motion in the prompt.</li><li>If the result is wrong, change one variable at a time: pose, action, camera, or appearance reference.</li><li>If the camera cannot see a body part, do not spend time fine-tuning it.</li></ul><h2>Bottom Line</h2><p><strong>Anyposes controls where the character starts. Seedance controls what happens next.</strong> This is usually faster and more reliable than trying to describe a complex human pose entirely with text.</p><h2>SEO</h2><p><strong>Title: </strong>How to Control Character Poses in Seedance with 3D Pose References</p><p><strong>Meta description: </strong>Learn how to control character poses in Seedance using 3D pose references. Build the pose in Anyposes, set the camera angle, and turn it into AI video.</p><p><strong>Slug: </strong>/3d-pose-reference-for-ai-video</p>
+        </div>
+      </arti
