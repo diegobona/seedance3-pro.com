@@ -13,6 +13,7 @@ import {
   upsertBlogCardHtml,
   validateEditableBlogArticle,
 } from "../scripts/blog-cms-html.mjs";
+import { buildEditorLink } from "../scripts/editor-link.mjs";
 
 const root = resolve(import.meta.dirname, "..");
 const read = (fileName) => readFileSync(resolve(root, fileName), "utf8");
@@ -249,4 +250,33 @@ test("CMS surfaces expose safe edit loading and preserve edit state through save
   assert.match(worker, /isAuthorized\(request, env\)/);
   assert.match(worker, /validateEditableBlogArticle/);
   assert.match(worker, /fileName:\s*editFileName/);
+});
+
+test("editor links support a custom label and normalize safe website URLs", () => {
+  assert.equal(
+    buildEditorLink({ label: "Example Website", url: "example.com/docs" }),
+    '<a href="https://example.com/docs" target="_blank" rel="noopener noreferrer">Example Website</a>',
+  );
+  assert.equal(
+    buildEditorLink({ label: "Internal Guide", url: "./seedance-guide.html" }),
+    '<a href="./seedance-guide.html">Internal Guide</a>',
+  );
+  assert.equal(
+    buildEditorLink({ label: '<Read "this">', url: "https://example.com/?a=1&b=2" }),
+    '<a href="https://example.com/?a=1&amp;b=2" target="_blank" rel="noopener noreferrer">&lt;Read &quot;this&quot;&gt;</a>',
+  );
+  assert.throws(() => buildEditorLink({ label: "Unsafe", url: "javascript:alert(1)" }), /valid website address/i);
+  assert.throws(() => buildEditorLink({ label: "", url: "https://example.com" }), /link name/i);
+});
+
+test("CMS toolbar exposes a custom-name link dialog", () => {
+  const admin = read("admin/index.html");
+  assert.match(admin, /id="insert-link-btn"/);
+  assert.match(admin, /id="link-dialog"/);
+  assert.match(admin, /id="link-label"/);
+  assert.match(admin, /id="link-url"/);
+  assert.match(admin, /buildEditorLink\(\{/);
+  assert.match(admin, /pendingLinkRange/);
+  assert.match(admin, /expandRangeToContainingLinks\(range\)/);
+  assert.match(admin, /event\.key === "Escape"/);
 });

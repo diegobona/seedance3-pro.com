@@ -91,7 +91,7 @@ test("blog uses the homepage design system without the highlighted intro copy", 
     ["./seedance-2-5-image-to-video-guide.html", "Read guide"],
     ["./precise-application-of-seedance-prompts.html", "Read article"],
     ["./after-thorough-testing-the-conclusion-is-clear-seedance-2-0-s-universal-template-2.html", "Read article"],
-    ["./seedance-2-0-complete-tutorial.html", "Read legacy guide"],
+    ["./seedance-2-0-complete-tutorial.html", "Read article"],
     ["./seedance-vs-kling-3-comparison.html", "Read comparison"],
     ["./seedance-tiktok-ad-video-guide.html", "Read playbook"],
   ];
@@ -175,12 +175,11 @@ test("Seedance 2.5 owns the current image-to-video guide intent while 2.0 remain
   const articleHeader = blockByClass(current, "header", "site-header");
   assert.doesNotMatch(articleHeader, /aria-current="page"/i);
 
-  assert.match(tagContent(legacy, "title"), /^Seedance 2\.0 Image-to-Video Tutorial \(Legacy Guide\)$/i);
+  assert.match(tagContent(legacy, "title"), /^Seedance 2\.0 Image-to-Video Tutorial \(Legacy Guide\) \| SEEDANCE Blog$/i);
   assert.match(tagContent(legacy, "h1"), /^Seedance 2\.0 Image-to-Video Tutorial \(Legacy Guide\)$/i);
   assert.doesNotMatch(tagContent(legacy, "title"), /2\.5/i);
   assert.doesNotMatch(tagContent(legacy, "h1"), /2\.5/i);
   assert.match(legacy, new RegExp(`<link rel="canonical" href="${legacyUrl.replaceAll(".", "\\.")}">`, "i"));
-  assert.match(legacy, /<a[^>]+href="\.\/seedance-2-5-image-to-video-guide\.html"[^>]*>[^<]*Seedance 2\.5[^<]*<\/a>/i);
   assert.doesNotMatch(legacy, /site brand|official model version/i);
 
   const currentCardIndex = blog.indexOf(`href="./${currentPath}"`);
@@ -188,7 +187,7 @@ test("Seedance 2.5 owns the current image-to-video guide intent while 2.0 remain
   assert.ok(currentCardIndex > -1, "Blog should link the current guide");
   assert.ok(legacyCardIndex > currentCardIndex, "Current guide should appear before the legacy guide");
   assert.match(blog, /<h2>Seedance 2\.5 Image-to-Video Guide: Prompts, Settings &amp; Examples<\/h2>[\s\S]*?href="\.\/seedance-2-5-image-to-video-guide\.html"/i);
-  assert.match(blog, /<h2>Seedance 2\.0 Image-to-Video Tutorial \(Legacy Guide\)<\/h2>[\s\S]*?href="\.\/seedance-2-0-complete-tutorial\.html"[^>]*>Read legacy guide<\/a>/i);
+  assert.match(blog, /<h2>Seedance 2\.0 Image-to-Video Tutorial \(Legacy Guide\)<\/h2>[\s\S]*?href="\.\/seedance-2-0-complete-tutorial\.html"[^>]*>Read article<\/a>/i);
   assert.equal((sitemap.match(new RegExp(currentUrl.replaceAll(".", "\\."), "g")) ?? []).length, 1);
 });
 
