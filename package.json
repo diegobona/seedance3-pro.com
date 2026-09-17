@@ -7,7 +7,8 @@
     "test": "node --test tests/*.test.mjs",
     "start:cms": "node server.local.js",
     "dev:worker": "wrangler dev",
-    "deploy:worker": "wrangler deploy"
+    "sync:worker-secrets": "wrangler secret bulk .env.local",
+    "deploy:worker": "npm run sync:worker-secrets && wrangler deploy"
   },
   "dependencies": {
     "express": "^4.21.2",

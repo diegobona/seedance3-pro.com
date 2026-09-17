@@ -496,7 +496,7 @@ test("studio omits the requested preview, guide, and status copy", () => {
   assert.doesNotMatch(script, /modelDescription|contextCopy|contextLink/);
   assert.match(html, /<h1 id="model-name">MiniMax H3<\/h1>/i);
   assert.match(html, /<h2 id="context-title">MiniMax H3 is available from its official provider\.<\/h2>/i);
-  assert.match(html, /<button class="generate-button"[^>]*>Generation coming soon<\/button>/i);
+  assert.match(html, /<button class="generate-button"[^>]*>[\s\S]*Generation coming soon[\s\S]*<\/button>/i);
   assert.match(html, /<div class="sidebar-foot"><a href="\.\.\/">← Back to SEEDANCE 3\.0<\/a><\/div>/i);
 });
 

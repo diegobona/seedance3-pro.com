@@ -6,6 +6,7 @@ import { spawn } from "child_process";
 import { fileURLToPath } from "url";
 import { extractEditableArticleData, renderArticleDocument, updateArticleDocument } from "./scripts/article-html.mjs";
 import { parseBlogPosts, upsertBlogCardHtml, validateEditableBlogArticle } from "./scripts/blog-cms-html.mjs";
+import { handleImageGenerationRequest } from "./scripts/tuzi-image.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -31,6 +32,10 @@ const docxUpload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 20 * 1024 * 1024, files: 1 }
 });
+const imageGenerationUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024, files: 1, fields: 4 }
+});
 
 app.get("/admin", (_req, res) => {
   res.sendFile(path.join(ROOT_DIR, "admin", "index.html"));
@@ -43,6 +48,44 @@ app.post("/api/upload-images", upload.array("images", 12), (req, res) => {
     dataUrl: `data:${file.mimetype || "image/png"};base64,${file.buffer.toString("base64")}`
   }));
   res.json({ success: true, files: result });
+});
+
+app.post("/api/images/generate", (req, res) => {
+  imageGenerationUpload.single("image")(req, res, async (uploadError) => {
+    if (uploadError) {
+      const tooLarge = uploadError.code === "LIMIT_FILE_SIZE";
+      res.status(tooLarge ? 413 : 400).json({
+        success: false,
+        message: tooLarge ? "Reference image cannot exceed 10 MB." : "Invalid image upload."
+      });
+      return;
+    }
+
+    try {
+      const form = new FormData();
+      form.set("prompt", String(req.body?.prompt || ""));
+      if (req.file) {
+        form.set("image", new Blob([req.file.buffer], { type: req.file.mimetype }), req.file.originalname || "reference.png");
+      }
+      const apiKey = await getLocalSecret("TUZI_API_KEY");
+      const proxyResponse = await handleImageGenerationRequest(
+        new Request("http://localhost/api/images/generate", { method: "POST", body: form }),
+        {
+          TUZI_API_KEY: apiKey,
+          TUZI_API_BASE: String(process.env.TUZI_API_BASE || "").trim()
+        },
+        { skipRateLimit: true }
+      );
+      const responseBody = Buffer.from(await proxyResponse.arrayBuffer());
+      res.status(proxyResponse.status);
+      for (const [name, value] of proxyResponse.headers) {
+        res.setHeader(name, value);
+      }
+      res.send(responseBody);
+    } catch (error) {
+      res.status(500).json({ success: false, message: String(error?.message || "Image generation failed.") });
+    }
+  });
 });
 
 app.post("/api/import-docx", (req, res) => {
@@ -616,22 +659,26 @@ ${content}`;
 }
 
 async function getDeepSeekApiKey() {
-  const envKey = String(process.env.DEEPSEEK_API_KEY || "").trim();
+  return getLocalSecret("DEEPSEEK_API_KEY");
+}
+
+async function getLocalSecret(secretName) {
+  const envKey = String(process.env[secretName] || "").trim();
   if (envKey) {
     return envKey;
   }
-  const envLocalKey = await readKeyFromEnvLocal();
+  const envLocalKey = await readKeyFromEnvLocal(secretName);
   if (envLocalKey) {
     return envLocalKey;
   }
-  const jsonKey = await readKeyFromSecretsJson();
+  const jsonKey = await readKeyFromSecretsJson(secretName);
   if (jsonKey) {
     return jsonKey;
   }
   return "";
 }
 
-async function readKeyFromEnvLocal() {
+async function readKeyFromEnvLocal(secretName) {
   const envPath = path.join(ROOT_DIR, ".env.local");
   try {
     const text = await fs.readFile(envPath, "utf8");
@@ -642,7 +689,7 @@ async function readKeyFromEnvLocal() {
         continue;
       }
       const [rawKey, ...rest] = normalized.split("=");
-      if (!rawKey || rawKey.trim() !== "DEEPSEEK_API_KEY") {
+      if (!rawKey || rawKey.trim() !== secretName) {
         continue;
       }
       const rawValue = rest.join("=").trim();
@@ -653,12 +700,12 @@ async function readKeyFromEnvLocal() {
   return "";
 }
 
-async function readKeyFromSecretsJson() {
+async function readKeyFromSecretsJson(secretName) {
   const jsonPath = path.join(ROOT_DIR, "cms.secrets.json");
   try {
     const text = await fs.readFile(jsonPath, "utf8");
     const obj = JSON.parse(text);
-    return String(obj?.DEEPSEEK_API_KEY || "").trim();
+    return String(obj?.[secretName] || "").trim();
   } catch {
   }
   return "";

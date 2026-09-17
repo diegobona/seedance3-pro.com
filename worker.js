@@ -1,14 +1,34 @@
 import { extractEditableArticleData, renderArticleDocument, updateArticleDocument } from "./scripts/article-html.mjs";
 import { parseBlogPosts, upsertBlogCardHtml, validateEditableBlogArticle } from "./scripts/blog-cms-html.mjs";
+import { handleImageGenerationRequest } from "./scripts/tuzi-image.mjs";
+
+export { handleImageGenerationRequest };
+
+const IMAGE_ALLOWED_ORIGINS = new Set([
+  "https://seedance3-pro.com",
+  "https://www.seedance3-pro.com"
+]);
 
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+    if (url.pathname === "/api/images/generate" && request.method === "OPTIONS") {
+      if (!isAllowedImageOrigin(request)) {
+        return json({ success: false, message: "Cross-site image generation is not allowed." }, 403);
+      }
+      return withImageCors(new Response(null, { status: 204 }), request);
+    }
     if (request.method === "OPTIONS") {
       return withCors(new Response(null, { status: 204 }));
     }
     if (request.method === "POST" && url.pathname === "/api/upload-images") {
       return withCors(await handleUploadImages(request, env));
+    }
+    if (request.method === "POST" && url.pathname === "/api/images/generate") {
+      if (!isAllowedImageOrigin(request)) {
+        return json({ success: false, message: "Cross-site image generation is not allowed." }, 403);
+      }
+      return withImageCors(await handleImageGenerationRequest(request, env), request);
     }
     if (request.method === "POST" && url.pathname === "/api/publish") {
       return withCors(await handlePublish(request, env, ctx));
@@ -459,6 +479,27 @@ function withCors(response) {
   headers.set("Access-Control-Allow-Origin", "*");
   headers.set("Access-Control-Allow-Headers", "Content-Type, x-admin-token");
   headers.set("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers
+  });
+}
+
+function isAllowedImageOrigin(request) {
+  const origin = request.headers.get("origin");
+  return !origin || IMAGE_ALLOWED_ORIGINS.has(origin);
+}
+
+function withImageCors(response, request) {
+  const headers = new Headers(response.headers);
+  const origin = request.headers.get("origin");
+  if (origin && IMAGE_ALLOWED_ORIGINS.has(origin)) {
+    headers.set("Access-Control-Allow-Origin", origin);
+    headers.set("Vary", "Origin");
+  }
+  headers.set("Access-Control-Allow-Headers", "Content-Type");
+  headers.set("Access-Control-Allow-Methods", "POST,OPTIONS");
   return new Response(response.body, {
     status: response.status,
     statusText: response.statusText,

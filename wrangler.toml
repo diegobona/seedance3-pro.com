@@ -2,7 +2,19 @@ name = "seedance3-blog-cms-worker"
 main = "worker.js"
 compatibility_date = "2026-03-17"
 
-workers_dev = true
+workers_dev = false
+routes = [
+  { pattern = "seedance3-pro.com/api/*", zone_name = "seedance3-pro.com" },
+  { pattern = "www.seedance3-pro.com/api/*", zone_name = "seedance3-pro.com" }
+]
+
+[[ratelimits]]
+name = "IMAGE_RATE_LIMITER"
+namespace_id = "31001"
+
+  [ratelimits.simple]
+  limit = 2
+  period = 60
 
 [triggers]
 crons = ["* * * * *"]
