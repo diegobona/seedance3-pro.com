@@ -1,0 +1,19 @@
+interface Env {
+  DATABASE_URL?: string
+  BETTER_AUTH_SECRET?: string
+  GOOGLE_CLIENT_ID?: string
+  GOOGLE_CLIENT_SECRET?: string
+  TUZI_API_KEY?: string
+  TUZI_API_BASE?: string
+}
+
+declare namespace Cloudflare {
+  interface Env {
+    DATABASE_URL?: string
+    BETTER_AUTH_SECRET?: string
+    GOOGLE_CLIENT_ID?: string
+    GOOGLE_CLIENT_SECRET?: string
+    TUZI_API_KEY?: string
+    TUZI_API_BASE?: string
+  }
+}

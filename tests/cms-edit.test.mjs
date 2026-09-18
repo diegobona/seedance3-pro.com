@@ -254,7 +254,7 @@ test("CMS surfaces expose safe edit loading and preserve edit state through save
 
 test("CMS publishing stops polling when a job is lost or reaches a failed state", () => {
   const admin = read("admin/index.html");
-  const waitForJob = admin.match(/async function waitForJob\(jobId\) \{([\s\S]*?)\n    \}\n\n    function sleep/)?.[1] || "";
+  const waitForJob = admin.match(/async function waitForJob\(jobId\) \{([\s\S]*?)\r?\n    \}\r?\n\r?\n    function sleep/)?.[1] || "";
 
   assert.match(waitForJob, /response\.status === 404/);
   assert.match(waitForJob, /return \{ status: "lost" \}/);
@@ -266,8 +266,8 @@ test("CMS publishing stops polling when a job is lost or reaches a failed state"
 
 test("local publisher stops retrying GitHub indefinitely and reports a terminal failure", () => {
   const server = read("server.local.js");
-  const publishJob = server.match(/async function publishJob\(jobId, payload\) \{([\s\S]*?)\n\}\n\nasync function deletePostJob/)?.[1] || "";
-  const pushWithRetry = server.match(/async function pushWithRetry\(branch, job\) \{([\s\S]*?)\n\}\n\nfunction ensureJobActive/)?.[1] || "";
+  const publishJob = server.match(/async function publishJob\(jobId, payload\) \{([\s\S]*?)\r?\n\}\r?\n\r?\nasync function deletePostJob/)?.[1] || "";
+  const pushWithRetry = server.match(/async function pushWithRetry\(branch, job\) \{([\s\S]*?)\r?\n\}\r?\n\r?\nfunction ensureJobActive/)?.[1] || "";
 
   assert.match(server, /const MAX_GIT_PUSH_ATTEMPTS = 3;/);
   assert.match(pushWithRetry, /for \(let attempt = 1; attempt <= MAX_GIT_PUSH_ATTEMPTS; attempt \+= 1\)/);

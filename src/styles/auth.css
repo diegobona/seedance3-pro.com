@@ -1,0 +1,35 @@
+.workspace-header-account { display:flex; align-items:center; justify-content:flex-end; }
+.login-entry { padding:8px 14px; border:1px solid rgba(216,255,115,.38); border-radius:999px; background:rgba(216,255,115,.08); color:var(--lime); font-size:10px; font-weight:800; cursor:pointer; }
+.login-entry:hover { background:rgba(216,255,115,.14); }
+.auth-loading { width:34px; height:34px; border:2px solid rgba(255,255,255,.1); border-top-color:var(--lime); border-radius:50%; animation:auth-spin .7s linear infinite; }
+.auth-user-menu { position:relative; }
+.user-avatar-button { display:grid; width:34px; height:34px; place-items:center; overflow:hidden; border:1px solid rgba(216,255,115,.3); border-radius:50%; background:rgba(216,255,115,.13); color:var(--lime); font-size:11px; font-weight:900; cursor:pointer; }
+.user-avatar-button img { width:100%; height:100%; object-fit:cover; }
+.user-menu-panel { position:absolute; z-index:80; top:43px; right:0; width:220px; padding:14px; border:1px solid var(--line); border-radius:14px; background:#15171c; box-shadow:0 20px 55px rgba(0,0,0,.45); }
+.user-menu-panel strong,.user-menu-panel small { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.user-menu-panel strong { font-size:12px; }
+.user-menu-panel small { margin-top:4px; color:#7c7d78; font-size:9px; }
+.user-menu-panel button { width:100%; margin-top:13px; padding:9px; border:1px solid var(--line); border-radius:9px; background:transparent; color:#c6c6c1; font-size:9px; text-align:left; cursor:pointer; }
+.auth-dialog-backdrop { position:fixed; z-index:100; inset:0; display:grid; place-items:center; padding:20px; background:rgba(2,3,4,.76); backdrop-filter:blur(10px); }
+.auth-dialog { position:relative; width:min(100%,420px); padding:30px; border:1px solid rgba(216,255,115,.2); border-radius:22px; background:linear-gradient(155deg,rgba(216,255,115,.055),#121419 35%); box-shadow:0 30px 90px rgba(0,0,0,.58); }
+.auth-dialog-close { position:absolute; top:14px; right:14px; width:30px; height:30px; border:0; background:transparent; color:#858681; font-size:22px; cursor:pointer; }
+.auth-eyebrow { color:var(--lime); font-size:8px; font-weight:850; letter-spacing:.15em; }
+.auth-dialog h2 { margin:9px 0 5px; font-size:27px; letter-spacing:-.04em; }
+.auth-dialog > p { margin:0; color:#898a85; font-size:10px; line-height:1.65; }
+.auth-mode-tabs { display:grid; grid-template-columns:1fr 1fr; gap:4px; margin:20px 0 12px; padding:4px; border:1px solid var(--line); border-radius:11px; background:#0d0f12; }
+.auth-mode-tabs button { padding:9px; border:0; border-radius:8px; background:transparent; color:#777872; font-size:10px; cursor:pointer; }
+.auth-mode-tabs button.is-active { background:rgba(216,255,115,.12); color:var(--lime); }
+.google-auth-button,.auth-submit { width:100%; padding:11px 13px; border-radius:10px; font-size:10px; font-weight:800; cursor:pointer; }
+.google-auth-button { border:1px solid var(--line); background:#f5f3ed; color:#171817; }
+.google-auth-button span { display:inline-grid; margin-right:7px; color:#4285f4; font-weight:900; }
+.auth-divider { display:flex; align-items:center; gap:10px; margin:15px 0; color:#63645f; font-size:8px; text-transform:uppercase; }
+.auth-divider::before,.auth-divider::after { height:1px; flex:1; background:var(--line); content:""; }
+.auth-dialog form { display:grid; gap:11px; }
+.auth-dialog label { display:grid; gap:6px; color:#aaa9a5; font-size:9px; font-weight:700; }
+.auth-dialog input { width:100%; padding:11px 12px; border:1px solid var(--line); border-radius:10px; outline:none; background:#0d0f12; color:var(--text); font:inherit; }
+.auth-dialog input:focus { border-color:rgba(216,255,115,.42); }
+.auth-submit { margin-top:2px; border:0; background:var(--lime); color:#17190f; }
+.auth-submit:disabled,.google-auth-button:disabled { cursor:wait; opacity:.65; }
+.auth-error { padding:9px 10px; border:1px solid rgba(255,133,95,.24); border-radius:9px; background:rgba(255,133,95,.07); color:#ff9a79; font-size:9px; line-height:1.5; }
+@keyframes auth-spin { to { transform:rotate(360deg); } }
+@media(max-width:620px){.auth-dialog{padding:25px 20px}.workspace-header-account{margin-left:auto}.workspace-header{gap:10px}}

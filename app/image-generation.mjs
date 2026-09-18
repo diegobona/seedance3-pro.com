@@ -22,7 +22,10 @@ export async function requestImageGeneration({
     throw new Error("Image service returned an invalid response.");
   }
   if (!response.ok || !payload?.success || !payload?.image) {
-    throw new Error(String(payload?.message || "Image generation failed."));
+    const error = new Error(String(payload?.message || "Image generation failed."));
+    error.status = response.status;
+    error.code = String(payload?.code || "");
+    throw error;
   }
   if (payload.image.url) {
     let url;

@@ -19,7 +19,7 @@ test("studio model URLs use the selected model while preserving other URL state"
 });
 
 test("studio clicks push model URLs and browser history restores model state", () => {
-  const html = readFileSync(resolve(root, "app", "index.html"), "utf8");
+  const html = readFileSync(resolve(root, "app", "legacy-preview.html"), "utf8");
   const script = readFileSync(resolve(root, "app", "studio.js"), "utf8");
 
   assert.match(html, /<script type="module" src="\.\/studio\.js"><\/script>/i);
@@ -29,7 +29,7 @@ test("studio clicks push model URLs and browser history restores model state", (
 });
 
 test("pose to image is a signature workflow above the image model list", () => {
-  const html = readFileSync(resolve(root, "app", "index.html"), "utf8");
+  const html = readFileSync(resolve(root, "app", "legacy-preview.html"), "utf8");
   const script = readFileSync(resolve(root, "app", "studio.js"), "utf8");
   const css = readFileSync(resolve(root, "app", "studio.css"), "utf8");
 
@@ -51,7 +51,7 @@ test("pose to image is a signature workflow above the image model list", () => {
 });
 
 test("GPT Image 2 exposes first-party text and reference-image generation controls", () => {
-  const html = readFileSync(resolve(root, "app", "index.html"), "utf8");
+  const html = readFileSync(resolve(root, "app", "legacy-preview.html"), "utf8");
   const script = readFileSync(resolve(root, "app", "studio.js"), "utf8");
   const clientPath = resolve(root, "app", "image-generation.mjs");
   assert.ok(existsSync(clientPath), "expected app/image-generation.mjs");

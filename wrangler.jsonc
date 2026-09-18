@@ -1,0 +1,35 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "seedance3-blog-cms-worker",
+  "main": "./src/server.ts",
+  "compatibility_date": "2026-09-18",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": false,
+  "routes": [
+    { "pattern": "seedance3-pro.com/api/*", "zone_name": "seedance3-pro.com" },
+    { "pattern": "www.seedance3-pro.com/api/*", "zone_name": "seedance3-pro.com" },
+    { "pattern": "seedance3-pro.com/app", "zone_name": "seedance3-pro.com" },
+    { "pattern": "seedance3-pro.com/app/*", "zone_name": "seedance3-pro.com" },
+    { "pattern": "www.seedance3-pro.com/app", "zone_name": "seedance3-pro.com" },
+    { "pattern": "www.seedance3-pro.com/app/*", "zone_name": "seedance3-pro.com" },
+    { "pattern": "seedance3-pro.com/app-assets/*", "zone_name": "seedance3-pro.com" },
+    { "pattern": "www.seedance3-pro.com/app-assets/*", "zone_name": "seedance3-pro.com" }
+  ],
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
+  "triggers": {
+    "crons": ["* * * * *"]
+  },
+  "ratelimits": [
+    {
+      "name": "IMAGE_RATE_LIMITER",
+      "namespace_id": "31001",
+      "simple": { "limit": 2, "period": 60 }
+    }
+  ],
+  "kv_namespaces": [
+    { "binding": "CMS_JOBS", "id": "REPLACE_WITH_KV_NAMESPACE_ID" }
+  ]
+}

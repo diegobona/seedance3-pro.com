@@ -28,7 +28,11 @@ export default {
       if (!isAllowedImageOrigin(request)) {
         return json({ success: false, message: "Cross-site image generation is not allowed." }, 403);
       }
-      return withImageCors(await handleImageGenerationRequest(request, env), request);
+      return withImageCors(json({
+        success: false,
+        code: "AUTH_REQUIRED",
+        message: "Log in to generate images through the TanStack application."
+      }, 401), request);
     }
     if (request.method === "POST" && url.pathname === "/api/publish") {
       return withCors(await handlePublish(request, env, ctx));

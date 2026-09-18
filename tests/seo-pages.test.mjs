@@ -97,6 +97,7 @@ test("blog uses the homepage design system without the highlighted intro copy", 
   const header = blockByClass(html, "header", "site-header");
   const navigation = blockByClass(header, "nav", "compact-nav");
   const expectedArticles = [
+    ["./seedance-2-5-vs-minimax-h3-vs-kling-3-0-which-ai-video-model-is-best-in-2026-2.html", "Read article"],
     ["./how-to-control-character-poses-in-seedance-with-3d-pose-references.html", "Read article"],
     ["./how-to-use-the-seedance-api-complete-developer-guide-2026.html", "Read article"],
     ["./what-is-seedance-pro-features-pricing-how-to-get-started.html", "Read article"],
@@ -469,7 +470,7 @@ for (const page of publicPages) {
 }
 
 test("studio preview exposes the planned models without entering the index", () => {
-  const html = read("app/index.html");
+  const html = read("app/legacy-preview.html");
   assert.match(html, /<meta name="robots" content="noindex,follow">/i);
   assert.match(html, /MiniMax H3/i);
   assert.match(html, /Seedance 3\.0/i);
@@ -480,7 +481,7 @@ test("studio preview exposes the planned models without entering the index", () 
 });
 
 test("studio header keeps only the Home link", () => {
-  const html = read("app/index.html");
+  const html = read("app/legacy-preview.html");
   const header = blockByClass(html, "header", "workspace-header");
 
   assert.deepEqual(linksIn(header), [{ href: "../", text: "Home" }]);
@@ -488,7 +489,7 @@ test("studio header keeps only the Home link", () => {
 });
 
 test("studio omits the requested preview, guide, and status copy", () => {
-  const html = read("app/index.html");
+  const html = read("app/legacy-preview.html");
   const script = read("app/studio.js");
 
   assert.doesNotMatch(html, /id="model-description"|id="context-copy"|id="context-link"|class="generation-note"|context-card compact/i);

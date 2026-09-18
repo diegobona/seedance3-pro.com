@@ -211,6 +211,9 @@ generateButton.addEventListener("click", async () => {
     generationStatus.textContent = "Image generated.";
     generationStatus.className = "generation-status is-success";
   } catch (error) {
+    if (error?.status === 401 || error?.code === "AUTH_REQUIRED") {
+      window.dispatchEvent(new CustomEvent("seedance:auth-required"));
+    }
     generationStatus.textContent = String(error?.message || "Image generation failed.");
     generationStatus.className = "generation-status is-error";
   } finally {
