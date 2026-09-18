@@ -477,7 +477,7 @@ test("studio preview exposes the planned models without entering the index", () 
   assert.match(html, /Coming Soon/i);
   assert.match(html, /Nano Banana 2 Lite/i);
   assert.match(html, /GPT Image 2/i);
-  assert.match(html, /Generation coming soon/i);
+  assert.match(html, /Generate image · 5 credits/i);
 });
 
 test("studio header keeps only the Home link", () => {
@@ -495,9 +495,9 @@ test("studio omits the requested preview, guide, and status copy", () => {
   assert.doesNotMatch(html, /id="model-description"|id="context-copy"|id="context-link"|class="generation-note"|context-card compact/i);
   assert.doesNotMatch(html, /Text, image, video, and audio context with native stereo sound|This independent site currently offers a workflow preview|Read the MiniMax H3 guide|STUDIO STATUS|Frontend preview|Backend not connected|Indexing|This page demonstrates the planned workflow|Static product preview|No generation jobs are submitted/i);
   assert.doesNotMatch(script, /modelDescription|contextCopy|contextLink/);
-  assert.match(html, /<h1 id="model-name">MiniMax H3<\/h1>/i);
-  assert.match(html, /<h2 id="context-title">MiniMax H3 is available from its official provider\.<\/h2>/i);
-  assert.match(html, /<button class="generate-button"[^>]*>[\s\S]*Generation coming soon[\s\S]*<\/button>/i);
+  assert.match(html, /<h1 id="model-name">GPT Image 2<\/h1>/i);
+  assert.doesNotMatch(html, /id="context-title"|MODEL NOTE/i);
+  assert.match(html, /<button class="generate-button"[^>]*>[\s\S]*Generate image · 5 credits[\s\S]*<\/button>/i);
   assert.match(html, /<div class="sidebar-foot"><a href="\.\.\/">← Back to SEEDANCE 3\.0<\/a><\/div>/i);
 });
 

@@ -5,13 +5,69 @@ import { resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
 
+function assertTrialResolutionControl(markup, shellName) {
+  const select = markup.match(/<select\b(?=[^>]*\bid=["']image-quality["'])[^>]*>[\s\S]*?<\/select>/i)?.[0];
+  assert.ok(select, `${shellName} should use a resolution dropdown`);
+  assert.match(select, /<option\b(?=[^>]*\bvalue=["']1K["'])[^>]*\bselected\b[^>]*>\s*1K\s*<\/option>|<option\b(?=[^>]*\bvalue=["']1K["'])[^>]*>\s*1K\s*<\/option>/i);
+  assert.match(select, /<option\b(?=[^>]*\bvalue=["']2K["'])(?=[^>]*\bdisabled\b)[^>]*>[^<]*2K[^<]*Locked[^<]*<\/option>/i);
+  assert.match(select, /<option\b(?=[^>]*\bvalue=["']4K["'])(?=[^>]*\bdisabled\b)[^>]*>[^<]*4K[^<]*Locked[^<]*<\/option>/i);
+  assert.doesNotMatch(markup, /id=["']image-resolution-options["']/i, `${shellName} should remove resolution buttons`);
+  assert.match(markup, /TRIAL\s*·\s*1K ONLY/i, `${shellName} should explain the trial limit`);
+  assert.match(markup, /<label[^>]*>[\s\S]*Resolution[\s\S]*id=["']image-quality["']/i, `${shellName} should label the dropdown`);
+}
+
+function assertVisibleCreditSummary(markup, shellName) {
+  const opening = markup.match(
+    /<section\b(?=[^>]*\bid=["']credit-summary["'])(?=[^>]*\bclass(?:Name)?=["'][^"']*\bcredit-summary\b[^"']*["'])(?![^>]*\bhidden\b)[^>]*>/i
+  );
+  assert.ok(opening, `${shellName} should keep the credit summary section visible`);
+  const contentStart = opening.index + opening[0].length;
+  const contentEnd = markup.indexOf("</section>", contentStart);
+  assert.ok(contentEnd > contentStart, `${shellName} should close the credit summary section`);
+  const summary = markup.slice(contentStart, contentEnd);
+
+  for (const [id, description] of [
+    ["generation-credit-cost", "this generation's cost"],
+    ["current-credit-balance", "the current balance"]
+  ]) {
+    assert.match(
+      summary,
+      new RegExp(`<[^>]+(?=[^>]*\\bid=["']${id}["'])(?=[^>]*\\bclass(?:Name)?=["'][^"']*\\bcredit-summary-value\\b[^"']*["'])[^>]*>`, "i"),
+      `${shellName} should show ${description} with shared value styling`
+    );
+  }
+  assert.match(summary, /THIS GENERATION/i, `${shellName} should label the generation cost`);
+  assert.match(summary, /YOUR BALANCE/i, `${shellName} should label the current balance`);
+  assert.doesNotMatch(summary, /After generation|after-generation-credit-balance/i, `${shellName} should not show projected balance`);
+}
+
+function boundElementName(script, id) {
+  const binding = script.match(new RegExp(
+    `\\b([a-z_$][\\w$]*)\\s*=\\s*document\\.getElementById\\(\\s*["']${id}["']\\s*\\)`,
+    "i"
+  ));
+  assert.ok(binding, `expected controller binding for #${id}`);
+  return binding[1];
+}
+
+function assertNonEmptyCssValue(styles, property, description) {
+  const declaration = styles.match(new RegExp(`\\b${property}\\s*:\\s*([^;}]*)`, "i"));
+  assert.ok(declaration, `expected ${description}`);
+  const value = declaration[1].trim();
+  assert.doesNotMatch(value, /\btransparent\b/i, `${description} must not be transparent`);
+  assert.doesNotMatch(value, /^(?:none|(?:0(?:px|rem|em|%)?\s*)+)$/i, `${description} must be visibly non-empty`);
+  if (property.startsWith("border")) {
+    assert.doesNotMatch(value, /^0(?:px|rem|em|%)?\b/i, `${description} must have non-zero width`);
+  }
+}
+
 test("studio model URLs use the selected model while preserving other URL state", async () => {
   const { buildModelUrl, normalizeModelId } = await import("../app/model-routing.mjs");
   const available = new Set(["minimax-h3", "seedance-3", "pose-to-image", "nano-banana-2-lite", "gpt-image-2"]);
 
   assert.equal(normalizeModelId("nano-banana-2-lite", available), "nano-banana-2-lite");
   assert.equal(normalizeModelId("pose-to-image", available), "pose-to-image");
-  assert.equal(normalizeModelId("unknown", available), "minimax-h3");
+  assert.equal(normalizeModelId("unknown", available), "gpt-image-2");
   assert.equal(
     buildModelUrl("https://www.seedance3-pro.com/app/?model=minimax-h3&ref=showcase#editor", "gpt-image-2"),
     "/app/?model=gpt-image-2&ref=showcase#editor"
@@ -25,11 +81,43 @@ test("studio clicks push model URLs and browser history restores model state", (
   assert.match(html, /<script type="module" src="\.\/studio\.js"><\/script>/i);
   assert.match(script, /history\.pushState\([^;]+buildModelUrl\(window\.location\.href,\s*normalizedModelId\)/i);
   assert.match(script, /modelButtons\.forEach\([\s\S]*selectModel\(button\.dataset\.model,\s*\{\s*syncUrl:\s*true\s*\}\)/i);
-  assert.match(script, /window\.addEventListener\("popstate",[\s\S]*selectModel\(modelFromLocation\(\)\)/i);
+  assert.match(
+    script,
+    /(?:window\.addEventListener\(\s*["']popstate["']|listen\(\s*window\s*,\s*["']popstate["'])[\s\S]*selectModel\(modelFromLocation\(\)\)/i
+  );
 });
 
-test("pose to image is a signature workflow above the image model list", () => {
+test("studio initialization is explicit, repeatable, and cleaned up by React", () => {
   const html = readFileSync(resolve(root, "app", "legacy-preview.html"), "utf8");
+  const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
+  const script = readFileSync(resolve(root, "app", "studio.js"), "utf8");
+
+  assert.match(script, /export\s+function\s+initializeStudio\s*\(/i);
+  assert.match(script, /return\s*\(\s*\)\s*=>\s*\{[\s\S]*?(?:cleanup|destroy)/i);
+
+  const effect = route.match(/useEffect\(\(\)\s*=>\s*\{([\s\S]*?)\n\s*\},\s*\[\]\)/i);
+  assert.ok(effect, "expected a mount-scoped studio effect");
+  assert.match(effect[1], /import\(["']\.\.\/\.\.\/app\/studio\.js["']\)\.then\s*\(/i);
+  const cleanupAssignment = effect[1].match(/\b([a-z_$][\w$]*)\s*=\s*initializeStudio\(\s*\)/i);
+  assert.ok(cleanupAssignment, "React should call initializeStudio after the module resolves");
+  assert.match(effect[1], /\bdisposed\b[\s\S]*?return/i, "late imports should not initialize an unmounted route");
+  assert.match(
+    effect[1],
+    new RegExp(`\\b${cleanupAssignment[1]}\\?\\.\\(\\s*\\)`, "i"),
+    "React should invoke studio cleanup on unmount"
+  );
+  assert.doesNotMatch(route, /studio\.js[^"']*\?/i, "module cache busting should not be used");
+
+  assert.match(html, /\bdata-studio-auto-init\b/i, "legacy preview should explicitly opt into auto-init");
+  assert.doesNotMatch(route, /\bdata-studio-auto-init\b/i, "React shell must not opt into module auto-init");
+  assert.match(script, /data-studio-auto-init/i);
+  assert.match(script, /["']pagehide["'][\s\S]*?(?:cleanup|destroy)/i);
+  assert.match(script, /["']pageshow["'][\s\S]*?persisted[\s\S]*?initializeStudio/i);
+});
+
+test("unavailable models are visibly coming soon and cannot be selected", () => {
+  const html = readFileSync(resolve(root, "app", "legacy-preview.html"), "utf8");
+  const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
   const script = readFileSync(resolve(root, "app", "studio.js"), "utf8");
   const css = readFileSync(resolve(root, "app", "studio.css"), "utf8");
 
@@ -41,13 +129,149 @@ test("pose to image is a signature workflow above the image model list", () => {
   assert.match(html, /<div class="section-heading"><span>AI IMAGE<\/span><\/div>/i);
   assert.match(html, /<div class="section-heading image-models-heading"><span>IMAGE MODELS<\/span><span>02<\/span><\/div>/i);
   assert.match(html, /class="model-button pose-workflow-button"[^>]+data-model="pose-to-image"/i);
-  assert.match(html, /Pose to Image/i);
-  assert.match(html, /Build poses in 3D/i);
-  assert.match(html, /Signature/i);
-  assert.match(html, /Open Pose Studio/i);
-  assert.match(script, /"pose-to-image"\s*:\s*\{[\s\S]*?name:\s*"Pose to Image"[\s\S]*?type:\s*"image"[\s\S]*?\}/i);
+  for (const modelId of ["minimax-h3", "seedance-3", "pose-to-image", "nano-banana-2-lite"]) {
+    const disabledModel = new RegExp(`data-model=["']${modelId}["'][^>]*disabled`, "i");
+    const comingSoon = new RegExp(`data-model=["']${modelId}["'][\\s\\S]*?Coming Soon[\\s\\S]*?<\\/button>`, "i");
+    assert.match(html, disabledModel, `${modelId} should be disabled in the legacy preview`);
+    assert.match(route, disabledModel, `${modelId} should be disabled in the TanStack route`);
+    assert.match(html, comingSoon, `${modelId} should display Coming Soon`);
+    assert.match(route, comingSoon, `${modelId} should display Coming Soon in the TanStack route`);
+  }
+  assert.match(html, /data-model="gpt-image-2"[^>]*class="model-button is-active"|class="model-button is-active"[^>]*data-model="gpt-image-2"/i);
+  assert.doesNotMatch(html, /data-model="gpt-image-2"[^>]*disabled/i);
+  assert.match(script, /"pose-to-image"\s*:\s*\{[\s\S]*?status:\s*"Coming Soon"[\s\S]*?\}/i);
   assert.match(css, /\.pose-workflow-button\s*\{/i);
+  assert.match(css, /\.model-button:disabled/i);
   assert.match(css, /\.settings-grid\[hidden\]\s*\{\s*display:\s*none/i);
+});
+
+test("GPT Image 2 appears before Nano Banana 2 Lite in both studio sidebars", () => {
+  const html = readFileSync(resolve(root, "app", "legacy-preview.html"), "utf8");
+  const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
+
+  for (const [shellName, markup] of [["legacy studio", html], ["TanStack studio", route]]) {
+    const gptImage = markup.indexOf('data-model="gpt-image-2"');
+    const nanoBanana = markup.indexOf('data-model="nano-banana-2-lite"');
+    assert.ok(gptImage >= 0 && nanoBanana >= 0, `${shellName} should contain both image models`);
+    assert.ok(gptImage < nanoBanana, `${shellName} should place GPT Image 2 first`);
+  }
+});
+
+test("empty studios expose a three-image interactive example carousel", () => {
+  const html = readFileSync(resolve(root, "app", "legacy-preview.html"), "utf8");
+  const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
+  const script = readFileSync(resolve(root, "app", "studio.js"), "utf8");
+
+  for (const [shellName, markup] of [["legacy studio", html], ["TanStack studio", route]]) {
+    assert.match(markup, /id=["']example-carousel["'](?![^>]*hidden)/i, `${shellName} should show the empty-state carousel`);
+    const slides = markup.match(/class(?:Name)?=["'][^"']*\bexample-carousel-slide\b[^"']*["']/gi) || [];
+    assert.equal(slides.length, 3, `${shellName} should provide three example slides`);
+    for (const asset of ["editorial-fashion", "lunar-garden", "floating-city"]) {
+      assert.match(markup, new RegExp(`/assets/gpt-image-2-${asset}\\.webp`, "i"));
+    }
+    assert.match(markup, /id=["']example-carousel-previous["']/i);
+    assert.match(markup, /id=["']example-carousel-next["']/i);
+    assert.equal((markup.match(/data-carousel-dot/gi) || []).length, 3, `${shellName} should provide three carousel dots`);
+  }
+
+  assert.match(script, /\bcreateExampleCarouselController\b/);
+  assert.match(script, /exampleCarousel\.hidden\s*=\s*true/i, "generated results should replace the empty-state carousel");
+  assert.match(script, /exampleCarousel\.hidden\s*=\s*false/i, "starting a new generation should restore the empty state until results arrive");
+  assert.ok(
+    script.indexOf("selectModel(modelFromLocation())") < script.indexOf("createExampleCarouselController({"),
+    "the selected model should initialize before the carousel writes its first caption"
+  );
+  assert.doesNotMatch(
+    script,
+    /examplePrompt\.textContent\s*=\s*value/i,
+    "loading a prompt should not overwrite the active carousel caption"
+  );
+});
+
+test("studio removes the model note card", () => {
+  const html = readFileSync(resolve(root, "app", "legacy-preview.html"), "utf8");
+  const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
+  const script = readFileSync(resolve(root, "app", "studio.js"), "utf8");
+
+  assert.doesNotMatch(html, /MODEL NOTE|context-title|context-card spotlight/i);
+  assert.doesNotMatch(route, /MODEL NOTE|context-title|context-card spotlight/i);
+  assert.doesNotMatch(script, /contextTitle|context-title/i);
+});
+
+test("trial studios use a 1K-only resolution dropdown", () => {
+  const html = readFileSync(resolve(root, "app", "legacy-preview.html"), "utf8");
+  const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
+
+  assertTrialResolutionControl(html, "legacy studio");
+  assertTrialResolutionControl(route, "TanStack studio");
+});
+
+test("credit summaries stay visible and visually prominent in both studio shells", () => {
+  const html = readFileSync(resolve(root, "app", "legacy-preview.html"), "utf8");
+  const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
+  const css = readFileSync(resolve(root, "app", "studio.css"), "utf8");
+
+  assertVisibleCreditSummary(html, "legacy studio");
+  assertVisibleCreditSummary(route, "TanStack studio");
+
+  const summaryRule = css.match(/\.credit-summary\s*\{([^}]*)\}/i);
+  assert.ok(summaryRule, "expected credit summary styling");
+  assertNonEmptyCssValue(summaryRule[1], "border(?:-[a-z-]+)?", "a high-contrast credit summary border");
+  assertNonEmptyCssValue(summaryRule[1], "background(?:-image)?", "a contrasting credit summary background or gradient");
+  assertNonEmptyCssValue(summaryRule[1], "box-shadow", "a credit summary accent shadow");
+
+  const valueRule = css.match(/[^{}]*\.credit-summary-value[^{}]*\{([^}]*)\}/i);
+  assert.ok(valueRule, "expected dedicated credit value styling");
+  const fontSize = valueRule[1].match(/\bfont-size\s*:\s*([^;}]+)/i);
+  assert.ok(fontSize, "credit values should declare a prominent font size");
+  const minimumSize = fontSize[1].match(/(?:^|clamp\(\s*)([\d.]+)(px|rem)\b/i);
+  assert.ok(minimumSize, "credit value font size should use px/rem or a px/rem clamp minimum");
+  const pixels = minimumSize[2].toLowerCase() === "rem"
+    ? Number(minimumSize[1]) * 16
+    : Number(minimumSize[1]);
+  assert.ok(pixels >= 20, `credit value font size should be at least 20px, got ${pixels}px`);
+
+  const trialCompleteMessage = "Your free trial is complete. More credits and ultra-affordable creator plans are coming soon.";
+  assert.match(css, new RegExp(trialCompleteMessage.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"));
+  assert.match(readFileSync(resolve(root, "app", "studio.js"), "utf8"), new RegExp(trialCompleteMessage.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"));
+
+  const exhaustedSummaryRule = css.match(/\.credit-summary\.is-exhausted\s*\{([^}]*)\}/i);
+  const exhaustedMessageRule = css.match(/\.credit-summary\.is-exhausted::after\s*\{([^}]*)\}/i);
+  assert.ok(exhaustedSummaryRule, "expected exhausted-credit layout styling");
+  assert.ok(exhaustedMessageRule, "expected exhausted-credit message styling");
+  assert.match(exhaustedSummaryRule[1], /position\s*:\s*relative/i);
+  assert.match(exhaustedSummaryRule[1], /margin-bottom\s*:\s*(?:[4-9]\d|\d{3,})px/i, "the external message should have reserved space");
+  assert.match(exhaustedMessageRule[1], /position\s*:\s*absolute/i);
+  assert.match(exhaustedMessageRule[1], /top\s*:\s*calc\(\s*100%\s*\+\s*\d+px\s*\)/i, "the message should sit below the credit frame");
+  assert.match(exhaustedMessageRule[1], /font-size\s*:\s*11px/i, "the trial-complete message should be one size larger");
+});
+
+test("studio wires the credit summary controller to its actual DOM nodes", () => {
+  const script = readFileSync(resolve(root, "app", "studio.js"), "utf8");
+
+  const containerNode = boundElementName(script, "credit-summary");
+  const costNode = boundElementName(script, "generation-credit-cost");
+  const currentNode = boundElementName(script, "current-credit-balance");
+  const quantityNode = boundElementName(script, "image-quantity");
+
+  assert.match(
+    script,
+    /import\s*\{[\s\S]*?\bcreateCreditSummaryController\b[\s\S]*?\}\s*from\s*["']\.\/studio-controls\.mjs["']/i
+  );
+  const controllerCall = script.match(
+    /\b([a-z_$][\w$]*)\s*=\s*createCreditSummaryController\(\s*\{([\s\S]*?)\}\s*\)/i
+  );
+  assert.ok(controllerCall, "expected studio to create and retain the credit summary controller");
+  for (const nodeName of [containerNode, costNode, currentNode, quantityNode]) {
+    assert.match(controllerCall[2], new RegExp(`\\b${nodeName}\\b`), `expected controller to receive ${nodeName}`);
+  }
+  assert.match(script, new RegExp(`\\b${controllerCall[1]}\\.loadBalance\\s*\\(`, "i"));
+  assert.match(controllerCall[2], /\bonChange\s*:/i, "expected credit state changes to reach the studio");
+  assert.match(
+    script,
+    /generateButton\.disabled\s*=\s*[^;]*\bcreditInsufficient\b/i,
+    "known credit insufficiency should disable generation"
+  );
 });
 
 test("GPT Image 2 exposes first-party text and reference-image generation controls", () => {
@@ -60,12 +284,24 @@ test("GPT Image 2 exposes first-party text and reference-image generation contro
   assert.match(html, /<input[^>]+id="reference-input"[^>]+type="file"[^>]+accept="image\/png,image\/jpeg,image\/webp"/i);
   assert.match(html, /id="generation-status"/i);
   assert.match(html, /id="result-card"[^>]+hidden/i);
-  assert.match(html, /id="result-image"/i);
-  assert.match(html, /id="result-link"/i);
+  assert.match(html, /id="result-gallery"/i);
   assert.match(html, /class="generate-button"[^>]+id="generate-button"[^>]*>[\s\S]*id="generate-button-label"/i);
+  assert.match(html, /id="prompt-structure-button"/i);
+  assert.match(html, /id="example-prompt-button"/i);
+  assert.match(html, /id="image-quantity"(?![^>]*disabled)/i);
+  assert.match(html, /<select[^>]*id="image-quality"[^>]*>[\s\S]*value="1K"[\s\S]*<\/select>/i);
+  assert.match(html, /id="image-aspect-ratio"(?![^>]*disabled)/i);
   assert.match(script, /import\s+\{\s*requestImageGeneration\s*\}\s+from\s+"\.\/image-generation\.mjs"/i);
+  assert.match(script, /applyPromptStructure/);
+  assert.match(script, /examplePromptAt/);
+  assert.match(script, /creditCostForQuantity/);
+  assert.match(script, /sizeForAspectRatio/);
   assert.match(script, /"gpt-image-2"\s*:\s*\{[\s\S]*?canGenerate:\s*true/i);
-  assert.match(script, /generateButtonLabel\.textContent\s*=\s*model\.canGenerate\s*\?\s*"Generate image"/i);
+  assert.match(script, /Generate image\s*·\s*5 credits/i);
+  assert.match(script, /INSUFFICIENT_CREDITS/);
+  assert.match(script, /seedance:credits-updated/);
+  assert.match(script, /result\.images/);
+  assert.match(script, /resultGallery\.replaceChildren/);
   assert.match(client, /fetchImpl\("\/api\/images\/generate"/i);
   assert.doesNotMatch(`${html}\n${script}\n${client}`, /TUZI_API_KEY|Bearer\s+[A-Za-z0-9_-]{8,}/i);
 });

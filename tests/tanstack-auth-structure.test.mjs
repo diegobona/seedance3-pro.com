@@ -21,7 +21,7 @@ test("TanStack Start owns the studio and API routes without replacing the homepa
   }
 
   const packageJson = JSON.parse(read("package.json"));
-  assert.match(packageJson.scripts.dev, /vite dev/);
+  assert.match(packageJson.scripts.dev, /scripts[\\/]dev\.mjs|vite dev/);
   assert.match(packageJson.scripts.build, /vite build/);
 
   const vite = read("vite.config.ts");
@@ -45,4 +45,18 @@ test("TanStack Start owns the studio and API routes without replacing the homepa
 
   const homepage = read("index.html");
   assert.match(homepage, /Seedance 3/i);
+});
+
+test("TanStack image routes use authenticated Neon credit accounting", () => {
+  const balanceRoutePath = resolve(root, "src/routes/api/credits/balance.ts");
+  assert.equal(existsSync(balanceRoutePath), true, "credit balance route should exist");
+
+  const generationRoute = read("src/routes/api/images/generate.ts");
+  assert.match(generationRoute, /createGenerationCreditStore/);
+  assert.match(generationRoute, /creditStore/);
+
+  const balanceRoute = read("src/routes/api/credits/balance.ts");
+  assert.match(balanceRoute, /createFileRoute\(['"]\/api\/credits\/balance['"]\)/);
+  assert.match(balanceRoute, /getCreditBalanceResponse/);
+  assert.match(balanceRoute, /createGenerationCreditStore/);
 });

@@ -1,4 +1,4 @@
-export const DEFAULT_MODEL_ID = "minimax-h3";
+export const DEFAULT_MODEL_ID = "gpt-image-2";
 
 export function normalizeModelId(modelId, availableModelIds, fallback = DEFAULT_MODEL_ID) {
   return availableModelIds.has(modelId) ? modelId : fallback;

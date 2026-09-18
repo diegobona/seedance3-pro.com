@@ -1,4 +1,4 @@
-import { boolean, integer, pgTable, text, timestamp, uniqueIndex } from 'drizzle-orm/pg-core'
+import { boolean, index, integer, pgTable, text, timestamp, uniqueIndex } from 'drizzle-orm/pg-core'
 
 export const user = pgTable('user', {
   id: text('id').primaryKey(),
@@ -15,11 +15,24 @@ export const user = pgTable('user', {
   generationCount: integer('generation_count').default(0).notNull(),
   monthlyGenerationCount: integer('monthly_generation_count').default(0).notNull(),
   generationLimit: integer('generation_limit').default(0).notNull(),
-  creditBalance: integer('credit_balance').default(0).notNull(),
+  creditBalance: integer('credit_balance').default(15).notNull(),
+  trialCreditsGrantedAt: timestamp('trial_credits_granted_at', { withTimezone: true }).defaultNow().notNull(),
   paymentCustomerId: text('payment_customer_id'),
   subscriptionStatus: text('subscription_status').default('inactive').notNull(),
   subscriptionExpiresAt: timestamp('subscription_expires_at', { withTimezone: true }),
 })
+
+export const generationCreditReservation = pgTable('generation_credit_reservation', {
+  id: text('id').primaryKey(),
+  userId: text('user_id').notNull().references(() => user.id, { onDelete: 'cascade' }),
+  credits: integer('credits').notNull(),
+  status: text('status').default('reserved').notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+}, (table) => [
+  index('generation_credit_reservation_user_idx').on(table.userId),
+  index('generation_credit_reservation_status_idx').on(table.status),
+])
 
 export const session = pgTable('session', {
   id: text('id').primaryKey(),

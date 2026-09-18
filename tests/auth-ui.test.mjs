@@ -18,6 +18,9 @@ test('studio exposes complete account entry points without changing the static h
   assert.match(menu, /useSession/)
   assert.match(menu, /signOut/)
   assert.match(menu, /Log in|Sign in/)
+  assert.match(menu, /\/api\/credits\/balance/)
+  assert.match(menu, /seedance:credits-updated/)
+  assert.match(menu, /credits/i)
 
   const homepage = read('index.html')
   assert.doesNotMatch(homepage, /auth-dialog|auth-user-menu|signIn\.email/)

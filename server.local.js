@@ -64,12 +64,19 @@ app.post("/api/images/generate", (req, res) => {
     try {
       const form = new FormData();
       form.set("prompt", String(req.body?.prompt || ""));
+      form.set("quantity", String(req.body?.quantity || "1"));
+      form.set("resolution", String(req.body?.resolution ?? "1K"));
+      form.set("size", String(req.body?.size || "1024x1024"));
       if (req.file) {
         form.set("image", new Blob([req.file.buffer], { type: req.file.mimetype }), req.file.originalname || "reference.png");
       }
       const apiKey = await getLocalSecret("TUZI_API_KEY");
       const proxyResponse = await handleImageGenerationRequest(
-        new Request("http://localhost/api/images/generate", { method: "POST", body: form }),
+        new Request("http://localhost/api/images/generate", {
+          method: "POST",
+          body: form,
+          headers: { "x-seedance-image-quantity": String(req.body?.quantity || "1") }
+        }),
         {
           TUZI_API_KEY: apiKey,
           TUZI_API_BASE: String(process.env.TUZI_API_BASE || "").trim()

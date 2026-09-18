@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as ApiCreditsBalanceRouteImport } from './routes/api/credits/balance'
 import { Route as ApiImagesGenerateRouteImport } from './routes/api/images/generate'
 
 const IndexRoute = IndexRouteImport.update({
@@ -29,6 +30,11 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiCreditsBalanceRoute = ApiCreditsBalanceRouteImport.update({
+  id: '/api/credits/balance',
+  path: '/api/credits/balance',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiImagesGenerateRoute = ApiImagesGenerateRouteImport.update({
   id: '/api/images/generate',
   path: '/api/images/generate',
@@ -39,12 +45,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/credits/balance': typeof ApiCreditsBalanceRoute
   '/api/images/generate': typeof ApiImagesGenerateRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/app': typeof AppRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/credits/balance': typeof ApiCreditsBalanceRoute
   '/api/images/generate': typeof ApiImagesGenerateRoute
 }
 export interface FileRoutesById {
@@ -52,20 +60,38 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/app': typeof AppRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/credits/balance': typeof ApiCreditsBalanceRoute
   '/api/images/generate': typeof ApiImagesGenerateRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/app' | '/api/auth/$' | '/api/images/generate'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/api/auth/$'
+    | '/api/credits/balance'
+    | '/api/images/generate'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app' | '/api/auth/$' | '/api/images/generate'
-  id: '__root__' | '/' | '/app' | '/api/auth/$' | '/api/images/generate'
+  to:
+    | '/'
+    | '/app'
+    | '/api/auth/$'
+    | '/api/credits/balance'
+    | '/api/images/generate'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/api/auth/$'
+    | '/api/credits/balance'
+    | '/api/images/generate'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  ApiCreditsBalanceRoute: typeof ApiCreditsBalanceRoute
   ApiImagesGenerateRoute: typeof ApiImagesGenerateRoute
 }
 
@@ -92,6 +118,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/credits/balance': {
+      id: '/api/credits/balance'
+      path: '/api/credits/balance'
+      fullPath: '/api/credits/balance'
+      preLoaderRoute: typeof ApiCreditsBalanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/images/generate': {
       id: '/api/images/generate'
       path: '/api/images/generate'
@@ -106,6 +139,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
+  ApiCreditsBalanceRoute: ApiCreditsBalanceRoute,
   ApiImagesGenerateRoute: ApiImagesGenerateRoute,
 }
 export const routeTree = rootRouteImport

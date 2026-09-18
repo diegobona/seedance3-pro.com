@@ -6,7 +6,7 @@
   "scripts": {
     "test": "node --test tests/*.test.mjs",
     "test:auth": "tsx --test tests/*.test.ts",
-    "dev": "vite dev --port 4310",
+    "dev": "node scripts/dev.mjs",
     "build": "vite build && tsc --noEmit",
     "preview": "vite preview",
     "generate-routes": "tsr generate",

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-studio-auto-init>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,12 +21,12 @@
       <nav aria-label="Model navigation">
         <div class="nav-section">
           <div class="section-heading"><span>AI VIDEO</span><span>02</span></div>
-          <button class="model-button is-active" type="button" data-model="minimax-h3"><span class="model-symbol cyan">H3</span><span><strong>MiniMax H3</strong><small>Multimodal video</small></span><em>Featured</em></button>
-          <button class="model-button" type="button" data-model="seedance-3"><img src="../assets/seedance-mark.svg" width="40" height="40" alt="" style="flex-shrink:0"><span><strong>SEEDANCE 3.0</strong><small>Next-gen video</small></span><em class="soon">Coming Soon</em></button>
+          <button class="model-button" type="button" data-model="minimax-h3" disabled><span class="model-symbol cyan">H3</span><span><strong>MiniMax H3</strong><small>Multimodal video</small></span><em class="soon">Coming Soon</em></button>
+          <button class="model-button" type="button" data-model="seedance-3" disabled><img src="../assets/seedance-mark.svg" width="40" height="40" alt="" style="flex-shrink:0"><span><strong>SEEDANCE 3.0</strong><small>Next-gen video</small></span><em class="soon">Coming Soon</em></button>
         </div>
         <div class="nav-section">
           <div class="section-heading"><span>AI IMAGE</span></div>
-          <button class="model-button pose-workflow-button" type="button" data-model="pose-to-image">
+          <button class="model-button pose-workflow-button" type="button" data-model="pose-to-image" disabled>
             <span class="pose-symbol" aria-hidden="true">
               <svg viewBox="0 0 32 32" role="presentation">
                 <circle cx="16" cy="5.5" r="3"></circle>
@@ -38,12 +38,11 @@
               </svg>
             </span>
             <span class="pose-workflow-copy"><strong>Pose to Image</strong><small>Build poses in 3D</small></span>
-            <em class="signature">Signature</em>
-            <span class="workflow-cta">Open Pose Studio <b>→</b></span>
+            <em class="soon">Coming Soon</em>
           </button>
           <div class="section-heading image-models-heading"><span>IMAGE MODELS</span><span>02</span></div>
-          <button class="model-button" type="button" data-model="nano-banana-2-lite"><span class="model-symbol violet">NB</span><span><strong>Nano Banana 2 Lite</strong><small>Fast image drafts</small></span></button>
-          <button class="model-button" type="button" data-model="gpt-image-2"><span class="model-symbol orange">G2</span><span><strong>GPT Image 2</strong><small>Generation & editing</small></span></button>
+          <button class="model-button is-active" type="button" data-model="gpt-image-2"><span class="model-symbol orange">G2</span><span><strong>GPT Image 2</strong><small>Generation & editing</small></span></button>
+          <button class="model-button" type="button" data-model="nano-banana-2-lite" disabled><span class="model-symbol violet">NB</span><span><strong>Nano Banana 2 Lite</strong><small>Fast image drafts</small></span><em class="soon">Coming Soon</em></button>
         </div>
       </nav>
       <div class="sidebar-foot"><a href="../">← Back to SEEDANCE 3.0</a></div>
@@ -55,49 +54,76 @@
       </header>
 
       <div class="workspace-body">
-        <div class="workspace-title"><div><p id="model-category">AI VIDEO / MULTIMODAL</p><h1 id="model-name">MiniMax H3</h1></div><span class="model-status" id="model-status">Featured guide</span></div>
+        <div class="workspace-title"><div><p id="model-category">AI IMAGE / GENERATE &amp; EDIT</p><h1 id="model-name">GPT Image 2</h1></div><span class="model-status" id="model-status">Image generator</span></div>
 
         <div class="creation-grid">
           <section class="creation-panel">
-            <div class="model-select"><span class="model-symbol cyan" id="selected-symbol">H3</span><div><small>Selected model</small><strong id="selected-name">MiniMax H3</strong></div><span class="chevron">⌄</span></div>
+            <div class="model-select"><span class="model-symbol orange" id="selected-symbol">G2</span><div><small>Selected model</small><strong id="selected-name">GPT Image 2</strong></div></div>
 
-            <div class="field-group" id="mode-group">
+            <div class="field-group" id="mode-group" hidden>
               <label>Create from</label>
               <div class="segmented"><button class="is-selected" type="button">Media</button><button type="button">Image</button><button type="button">Text</button></div>
             </div>
 
             <div class="field-group" id="upload-group">
-              <div class="label-line"><label id="reference-label">Reference files</label><span id="reference-meta">Image · Video · Audio</span></div>
+              <div class="label-line"><label id="reference-label">Reference image</label><span id="reference-meta">Optional · enables image-to-image</span></div>
               <input id="reference-input" type="file" accept="image/png,image/jpeg,image/webp" hidden>
-              <button class="upload-box" id="upload-box" type="button"><span>＋</span><strong id="upload-title">Drop or choose reference media</strong><small id="upload-hint">Interface preview only—files are not uploaded</small></button>
+              <button class="upload-box is-enabled" id="upload-box" type="button"><span>＋</span><strong id="upload-title">Choose a reference image</strong><small id="upload-hint">PNG, JPEG or WebP · max 10 MB</small></button>
               <div class="reference-preview" id="reference-preview" hidden><img id="reference-preview-image" alt="Reference image preview"><div><strong id="reference-file-name"></strong><small>Used for image-to-image generation</small></div><button id="reference-clear" type="button">Remove</button></div>
             </div>
 
             <div class="field-group">
               <div class="label-line"><label for="studio-prompt">Prompt</label><span><b id="prompt-count">0</b>/2500</span></div>
-              <textarea id="studio-prompt" maxlength="2500" placeholder="Describe the subject, action, environment, camera, timing, and sound direction…"></textarea>
-              <div class="prompt-tools"><button type="button">✦ Prompt structure</button><button type="button">View examples</button></div>
+              <textarea id="studio-prompt" maxlength="2500" placeholder="Describe the subject, action, environment, composition, lighting, style, and details to preserve…"></textarea>
+              <div class="prompt-tools"><button id="prompt-structure-button" type="button">✦ Prompt structure</button><button id="example-prompt-button" type="button">View examples</button></div>
             </div>
 
-            <div class="settings-grid" id="video-settings">
+            <div class="settings-grid" id="video-settings" hidden>
               <label>Duration<select disabled><option>8 seconds</option></select></label>
               <label>Resolution<select disabled><option>Preview</option></select></label>
               <label>Aspect ratio<select disabled><option>16:9</option></select></label>
             </div>
-            <div class="settings-grid image-settings" id="image-settings" hidden>
-              <label>Quantity<select disabled><option>1 image</option></select></label>
-              <label>Quality<select disabled><option>Preview</option></select></label>
-              <label>Aspect ratio<select disabled><option>1:1</option></select></label>
+            <div class="settings-grid image-settings" id="image-settings">
+              <label>Quantity<select id="image-quantity"><option value="1">1 image</option><option value="2">2 images</option><option value="3">3 images</option></select></label>
+              <label class="resolution-setting">
+                <span class="resolution-heading"><span>Resolution</span><small>TRIAL · 1K ONLY</small></span>
+                <select id="image-quality">
+                  <option value="1K" selected>1K</option>
+                  <option value="2K" disabled>2K · Locked</option>
+                  <option value="4K" disabled>4K · Locked</option>
+                </select>
+              </label>
+              <label>Aspect ratio<select id="image-aspect-ratio"><option value="1:1">1:1</option><option value="3:2">3:2 landscape</option><option value="2:3">2:3 portrait</option></select></label>
             </div>
 
-            <button class="generate-button" id="generate-button" type="button" disabled><span id="generate-button-label">Generation coming soon</span></button>
+            <section id="credit-summary" class="credit-summary" aria-label="Generation credit summary" aria-live="polite">
+              <div class="credit-summary-panel credit-summary-cost"><span>THIS GENERATION</span><strong id="generation-credit-cost" class="credit-summary-value">5 credits</strong></div>
+              <div class="credit-summary-panel credit-summary-balance"><span>YOUR BALANCE</span><strong id="current-credit-balance" class="credit-summary-value">— credits</strong></div>
+            </section>
+            <button class="generate-button" id="generate-button" type="button" disabled><span id="generate-button-label">Generate image · 5 credits</span></button>
             <div class="generation-status" id="generation-status" role="status" aria-live="polite"></div>
           </section>
 
           <aside class="context-panel">
-            <div class="context-card spotlight"><span>MODEL NOTE</span><h2 id="context-title">MiniMax H3 is available from its official provider.</h2></div>
-            <div class="context-card result-card" id="result-card" hidden><div class="result-heading"><span>GENERATED IMAGE</span><small>GPT Image 2</small></div><div class="result-frame"><img id="result-image" alt="Generated image result"></div><p id="result-note">Provider image links may expire. Open the original and save it when the result is ready.</p><a id="result-link" href="#" target="_blank" rel="noopener">Open / save original →</a></div>
-            <div class="context-card"><div class="context-tabs"><button class="is-selected" type="button">Examples</button><button type="button">Tips</button></div><div class="example-art"><div class="orb"></div><span>CREATIVE DIRECTION</span></div><h3 id="example-title">Cinematic product reveal</h3><p id="example-prompt">A slow orbital camera, controlled reflections, native room tone, and a clean final composition.</p></div>
+            <div class="context-card result-card" id="result-card" hidden><div class="result-heading"><span>GENERATED IMAGES</span><small>GPT Image 2</small></div><div class="result-gallery" id="result-gallery"></div><p id="result-note">Provider image links may expire. Open or download each result when it is ready.</p></div>
+            <section class="context-card example-carousel" id="example-carousel" aria-labelledby="example-carousel-heading">
+              <div class="result-heading"><span id="example-carousel-heading">IMAGE PREVIEW</span><small>3 DISTINCT STYLES</small></div>
+              <div class="example-carousel-viewport">
+                <figure class="example-carousel-slide" data-title="Editorial architecture" data-description="Photoreal fashion direction with strong geometry and cinematic light."><img src="/assets/gpt-image-2-editorial-fashion.webp" alt="Editorial fashion portrait inside a futuristic gallery"></figure>
+                <figure class="example-carousel-slide" data-title="Playful 3D world" data-description="A tactile character scene with expressive details and luminous color." hidden><img src="/assets/gpt-image-2-lunar-garden.webp" alt="Stylized astronaut tending a luminous garden on the moon"></figure>
+                <figure class="example-carousel-slide" data-title="Fantasy concept art" data-description="An expansive cinematic environment built for scale, depth, and atmosphere." hidden><img src="/assets/gpt-image-2-floating-city.webp" alt="Fantasy floating city above clouds at sunrise"></figure>
+                <button class="example-carousel-arrow previous" id="example-carousel-previous" type="button" aria-label="Previous example image">←</button>
+                <button class="example-carousel-arrow next" id="example-carousel-next" type="button" aria-label="Next example image">→</button>
+              </div>
+              <div class="example-carousel-footer">
+                <div><h3 id="example-title">Editorial architecture</h3><p id="example-prompt">Photoreal fashion direction with strong geometry and cinematic light.</p></div>
+                <div class="example-carousel-dots" aria-label="Choose an example image">
+                  <button class="is-active" type="button" data-carousel-dot aria-label="Show editorial architecture example" aria-current="true"></button>
+                  <button type="button" data-carousel-dot aria-label="Show playful 3D example" aria-current="false"></button>
+                  <button type="button" data-carousel-dot aria-label="Show fantasy concept art example" aria-current="false"></button>
+                </div>
+              </div>
+            </section>
           </aside>
         </div>
       </div>

@@ -3,6 +3,7 @@ import { betterAuth } from 'better-auth'
 import { tanstackStartCookies } from 'better-auth/tanstack-start'
 import { createDb } from '../db'
 import { authSchema } from '../db/schema'
+import { installLocalGoogleProxyFetch } from './google-proxy-fetch'
 
 type AuthEnvironment = {
   DATABASE_URL?: string
@@ -30,11 +31,16 @@ function requireSecret(value: string | undefined) {
 export function createAuth(request: Request, environment: AuthEnvironment = readAuthEnvironment()) {
   const origin = new URL(request.url).origin
   const hasGoogle = Boolean(environment.GOOGLE_CLIENT_ID && environment.GOOGLE_CLIENT_SECRET)
+  const secret = requireSecret(environment.BETTER_AUTH_SECRET)
+
+  if (hasGoogle && ['localhost', '127.0.0.1'].includes(new URL(origin).hostname)) {
+    installLocalGoogleProxyFetch(secret)
+  }
 
   return betterAuth({
     appName: 'SEEDANCE Creative Studio',
     baseURL: origin,
-    secret: requireSecret(environment.BETTER_AUTH_SECRET),
+    secret,
     trustedOrigins: [
       origin,
       'http://localhost:4310',
@@ -69,7 +75,8 @@ export function createAuth(request: Request, environment: AuthEnvironment = read
         generationCount: { type: 'number', required: false, defaultValue: 0, input: false },
         monthlyGenerationCount: { type: 'number', required: false, defaultValue: 0, input: false },
         generationLimit: { type: 'number', required: false, defaultValue: 0, input: false },
-        creditBalance: { type: 'number', required: false, defaultValue: 0, input: false },
+        creditBalance: { type: 'number', required: false, defaultValue: 15, input: false },
+        trialCreditsGrantedAt: { type: 'date', required: false, defaultValue: new Date(), input: false },
         paymentCustomerId: { type: 'string', required: false, input: false, returned: false },
         subscriptionStatus: { type: 'string', required: false, defaultValue: 'inactive', input: false },
         subscriptionExpiresAt: { type: 'date', required: false, input: false },

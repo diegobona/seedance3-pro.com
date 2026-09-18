@@ -19,7 +19,7 @@ test("Better Auth persists sessions in Neon and reserves product account fields"
   }
 
   const schema = read("src/db/schema.ts");
-  for (const table of ["user", "session", "account", "verification"]) {
+  for (const table of ["user", "session", "account", "verification", "generation_credit_reservation"]) {
     assert.match(schema, new RegExp(`pgTable\\(['\"]${table}['\"]`));
   }
   for (const field of [
@@ -29,12 +29,17 @@ test("Better Auth persists sessions in Neon and reserves product account fields"
     "monthlyGenerationCount",
     "generationLimit",
     "creditBalance",
+    "trialCreditsGrantedAt",
     "paymentCustomerId",
     "subscriptionStatus",
     "subscriptionExpiresAt",
   ]) {
     assert.match(schema, new RegExp(`${field}:`), `${field} should be reserved on user`);
   }
+  assert.match(schema, /creditBalance:\s*integer\(['"]credit_balance['"]\)\.default\(15\)/);
+  assert.match(schema, /generationCreditReservation/);
+  assert.match(schema, /status:\s*text\(['"]status['"]\)\.default\(['"]reserved['"]\)/);
+  assert.match(schema, /userId:\s*text\(['"]user_id['"]\)[\s\S]*?references\(\(\)\s*=>\s*user\.id/);
 
   const auth = read("src/lib/auth.ts");
   assert.match(auth, /drizzleAdapter/);
@@ -42,6 +47,8 @@ test("Better Auth persists sessions in Neon and reserves product account fields"
   assert.match(auth, /socialProviders/);
   assert.match(auth, /google/);
   assert.match(auth, /additionalFields/);
+  assert.match(auth, /creditBalance:\s*\{[^}]*defaultValue:\s*15/);
+  assert.match(auth, /trialCreditsGrantedAt:\s*\{[^}]*defaultValue:/);
   assert.match(auth, /tanstackStartCookies\(\)/);
   assert.match(auth, /new URL\(request\.url\)\.origin/);
 
