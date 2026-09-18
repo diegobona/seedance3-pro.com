@@ -1,6 +1,21 @@
 import handler from '@tanstack/react-start/server-entry'
 import legacyWorker from '../worker.js'
 
+interface WorkerContext {
+  waitUntil(promise: Promise<unknown>): void
+}
+
+interface ScheduledControllerLike {
+  cron: string
+  scheduledTime: number
+  noRetry(): void
+}
+
+interface WorkerHandler {
+  fetch(request: Request, env: Env, ctx: WorkerContext): Response | Promise<Response>
+  scheduled(controller: ScheduledControllerLike, env: Env, ctx: WorkerContext): void | Promise<void>
+}
+
 const legacyApiPaths = new Set([
   '/api/upload-images',
   '/api/publish',
@@ -23,4 +38,4 @@ export default {
   scheduled(controller, env, ctx) {
     return legacyWorker.scheduled(controller, env, ctx)
   },
-} satisfies ExportedHandler<Env>
+} satisfies WorkerHandler
