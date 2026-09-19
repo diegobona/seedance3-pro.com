@@ -11,6 +11,10 @@ function read(relativePath) {
   return readFileSync(absolutePath, "utf8");
 }
 
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 function tagContent(html, tagName) {
   const match = html.match(new RegExp(`<${tagName}[^>]*>([\\s\\S]*?)<\\/${tagName}>`, "i"));
   return match?.[1].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim() ?? "";
@@ -43,6 +47,18 @@ test("homepage preserves the Seedance 3 primary search intent", () => {
   assert.match(tagContent(html, "h1"), /Seedance 3\.0/i);
   assert.doesNotMatch(tagContent(html, "h1"), /MiniMax|Nano Banana|GPT Image/i);
   assert.match(html, /<link rel="canonical" href="https:\/\/seedance3-pro\.com\/">/i);
+});
+
+test("homepage search metadata and hero lead surface price and pose editing", () => {
+  const html = read("index.html");
+  const description = "Generate AI video from $0.01 per second. Edit character poses and scenes online, combine multimodal references, and create cinematic results.";
+  const escapedDescription = escapeRegExp(description);
+
+  assert.match(html, new RegExp(`<meta name="description" content="${escapedDescription}">`));
+  assert.match(html, new RegExp(`<meta property="og:description" content="${escapedDescription}">`));
+  assert.match(html, new RegExp(`<meta name="twitter:description" content="${escapedDescription}">`));
+  assert.equal((html.match(/Generate AI video from \$0\.01 per second\./g) ?? []).length >= 6, true);
+  assert.match(blockByClass(html, "section", "hero"), /Edit character poses and scenes online/i);
 });
 
 test("homepage presents a creator-facing experience instead of release-state messaging", () => {
