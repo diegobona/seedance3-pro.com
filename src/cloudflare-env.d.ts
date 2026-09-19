@@ -1,4 +1,5 @@
 interface Env {
+  ASSETS: { fetch(request: Request): Promise<Response> }
   DATABASE_URL?: string
   BETTER_AUTH_SECRET?: string
   GOOGLE_CLIENT_ID?: string
@@ -13,6 +14,7 @@ declare module 'cloudflare:workers' {
 
 declare namespace Cloudflare {
   interface Env {
+    ASSETS: { fetch(request: Request): Promise<Response> }
     DATABASE_URL?: string
     BETTER_AUTH_SECRET?: string
     GOOGLE_CLIENT_ID?: string

@@ -90,7 +90,8 @@ test('multi-image generation reports the dynamic cost when credits are insuffici
   assert.equal(providerCalls, 0)
   assert.deepEqual(credits.calls.reserveAmounts, [15])
   assert.equal(response.headers.get('x-seedance-credit-cost'), '15')
-  assert.match((await response.json()).message, /15 credits/i)
+  const body = (await response.json()) as { message: string }
+  assert.match(body.message, /15 credits/i)
 })
 
 test('anonymous image generation is rejected before provider work', async () => {
@@ -227,7 +228,8 @@ test('a failed post-settlement balance refresh never discards the paid image', a
   assert.equal(response.status, 200)
   assert.equal(credits.calls.getBalance, 2)
   assert.equal(response.headers.get('x-seedance-credit-remaining'), '10')
-  assert.equal((await response.json()).success, true)
+  const body = (await response.json()) as { success: boolean }
+  assert.equal(body.success, true)
 })
 
 test('failed provider responses refund credits and expose the restored balance', async () => {

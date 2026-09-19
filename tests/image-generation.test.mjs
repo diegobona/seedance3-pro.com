@@ -52,7 +52,10 @@ test("one ignored env file drives local development and Worker secret sync", () 
 
   const packageJson = JSON.parse(readFileSync(resolve(root, "package.json"), "utf8"));
   assert.equal(packageJson.scripts["sync:worker-secrets"], "wrangler secret bulk .env.local");
-  assert.equal(packageJson.scripts["deploy:worker"], "npm run sync:worker-secrets && wrangler deploy");
+  assert.equal(
+    packageJson.scripts["deploy:worker"],
+    "npm run build && wrangler deploy --secrets-file .env.local"
+  );
 
   const wrangler = readFileSync(resolve(root, "wrangler.toml"), "utf8");
   assert.match(wrangler, /workers_dev\s*=\s*false/);

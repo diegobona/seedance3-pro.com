@@ -18,7 +18,7 @@
     "start:cms": "node server.local.js",
     "dev:worker": "wrangler dev",
     "sync:worker-secrets": "wrangler secret bulk .env.local",
-    "deploy:worker": "npm run sync:worker-secrets && wrangler deploy"
+    "deploy:worker": "npm run build && wrangler deploy --secrets-file .env.local"
   },
   "dependencies": {
     "@better-auth/drizzle-adapter": "1.7.5",

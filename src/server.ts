@@ -30,6 +30,10 @@ function isLegacyApiRequest(request: Request) {
 
 export default {
   async fetch(request, env, ctx) {
+    const { pathname } = new URL(request.url)
+    if (pathname.startsWith('/app-assets/')) {
+      return env.ASSETS.fetch(request)
+    }
     if (isLegacyApiRequest(request) || request.method === 'OPTIONS') {
       return legacyWorker.fetch(request, env, ctx)
     }

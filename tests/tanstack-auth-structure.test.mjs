@@ -37,11 +37,21 @@ test("TanStack Start owns the studio and API routes without replacing the homepa
   assert.match(server, /scheduled/);
 
   const wrangler = read("wrangler.jsonc");
+  const wranglerConfig = JSON.parse(wrangler);
   assert.match(wrangler, /"main"\s*:\s*"\.\/src\/server\.ts"/);
   assert.match(wrangler, /"nodejs_compat"/);
-  assert.match(wrangler, /seedance3-pro\.com\/app\/\*/);
+  assert.match(wrangler, /seedance3-pro\.com\/app\*/);
   assert.match(wrangler, /seedance3-pro\.com\/app-assets\/\*/);
   assert.match(wrangler, /seedance3-pro\.com\/api\/\*/);
+  assert.doesNotMatch(wrangler, /REPLACE_WITH_KV_NAMESPACE_ID/);
+  assert.match(wrangler, /"traces"\s*:\s*\{\s*"enabled"\s*:\s*true\s*\}/);
+  assert.equal(wranglerConfig.assets?.binding, "ASSETS");
+  assert.equal(wranglerConfig.assets?.run_worker_first, true);
+  assert.equal(wranglerConfig.routes.some(({ pattern }) => pattern === "seedance3-pro.com/app"), false);
+  assert.equal(wranglerConfig.routes.some(({ pattern }) => pattern === "seedance3-pro.com/app*"), true);
+
+  assert.match(server, /pathname\.startsWith\(['"]\/app-assets\/['"]\)/);
+  assert.match(server, /env\.ASSETS\.fetch\(request\)/);
 
   const homepage = read("index.html");
   assert.match(homepage, /Seedance 3/i);
