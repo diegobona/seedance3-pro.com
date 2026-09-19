@@ -43,7 +43,10 @@ function listHtmlFiles(directory = root) {
 
 test("homepage preserves the Seedance 3 primary search intent", () => {
   const html = read("index.html");
-  assert.match(tagContent(html, "title"), /^SEEDANCE 3\.0 \| Multi-Modal AI Video Generator$/i);
+  const title = "Seedance 3.0 AI Video Generator | Try It Free Online";
+  assert.equal(tagContent(html, "title"), title);
+  assert.match(html, new RegExp(`<meta property="og:title" content="${escapeRegExp(title)}">`));
+  assert.match(html, new RegExp(`<meta name="twitter:title" content="${escapeRegExp(title)}">`));
   assert.match(tagContent(html, "h1"), /Seedance 3\.0/i);
   assert.doesNotMatch(tagContent(html, "h1"), /MiniMax|Nano Banana|GPT Image/i);
   assert.match(html, /<link rel="canonical" href="https:\/\/seedance3-pro\.com\/">/i);
