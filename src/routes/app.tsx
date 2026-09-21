@@ -4,6 +4,9 @@ import { AuthDialog } from '../components/auth-dialog'
 import { UserMenu } from '../components/user-menu'
 import '../../app/studio.css'
 import '../styles/auth.css'
+import crossedArmsPresetImage from '../../app/pose-assets/presets/anyposes-crossed-arms.png'
+import kneelingPresetImage from '../../app/pose-assets/presets/anyposes-kneeling.png'
+import joggingPresetImage from '../../app/pose-assets/presets/anyposes-jogging.png'
 
 export const Route = createFileRoute('/app')({
   head: () => ({
@@ -182,9 +185,9 @@ function StudioPage() {
                 <section className="pose-control-card">
                   <div className="pose-control-heading"><div><span>QUICK START</span><h3>Pose presets</h3></div></div>
                   <div className="pose-preset-grid">
-                    <button type="button" data-pose-preset="neutral"><span className="pose-preset-figure neutral" aria-hidden="true" />Neutral</button>
-                    <button type="button" data-pose-preset="contrapposto"><span className="pose-preset-figure contrapposto" aria-hidden="true" />Contrapposto</button>
-                    <button type="button" data-pose-preset="action"><span className="pose-preset-figure action" aria-hidden="true" />Action</button>
+                    <button type="button" data-pose-preset="crossed-arms"><span className="pose-preset-preview crossed-arms"><img src={crossedArmsPresetImage} alt="" /></span>Crossed arms</button>
+                    <button type="button" data-pose-preset="kneeling"><span className="pose-preset-preview kneeling"><img src={kneelingPresetImage} alt="" /></span>Kneeling</button>
+                    <button type="button" data-pose-preset="jogging"><span className="pose-preset-preview jogging"><img src={joggingPresetImage} alt="" /></span>Jogging</button>
                   </div>
                 </section>
 

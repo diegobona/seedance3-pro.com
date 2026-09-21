@@ -320,9 +320,12 @@ test("Pose Studio exposes only the focused ragdoll IK workspace in the TanStack 
     assert.match(route, new RegExp(`data-pose-action=["']${action}["']`, "i"));
   }
   assert.match(route, /13 drag points/i);
-  for (const preset of ["neutral", "contrapposto", "action"]) {
+  for (const preset of ["crossed-arms", "kneeling", "jogging"]) {
     assert.match(route, new RegExp(`data-pose-preset=["']${preset}["']`, "i"));
   }
+  assert.match(route, /anyposes-crossed-arms\.png/i);
+  assert.match(route, /anyposes-kneeling\.png/i);
+  assert.match(route, /anyposes-jogging\.png/i);
   assert.match(route, /Ragdoll IK/i);
   assert.doesNotMatch(route, /FK mode|OpenPose settings|joint hierarchy/i);
   assert.match(script, /import\(["']\.\/pose-studio\.mjs["']\)/i);

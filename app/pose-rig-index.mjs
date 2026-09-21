@@ -17,3 +17,23 @@ export function buildPreferredBoneIndex(root) {
 
   return { byName, bones };
 }
+
+export function captureBoneTransforms(bones) {
+  return bones.map((bone, index) => ({
+    index,
+    name: bone.name,
+    position: bone.position.toArray(),
+    quaternion: bone.quaternion.toArray(),
+    scale: bone.scale.toArray(),
+  }));
+}
+
+export function applyBoneTransforms(bones, savedBones) {
+  for (const saved of savedBones) {
+    const bone = bones[saved.index];
+    if (!bone) continue;
+    bone.position.fromArray(saved.position);
+    bone.quaternion.fromArray(saved.quaternion);
+    bone.scale.fromArray(saved.scale);
+  }
+}

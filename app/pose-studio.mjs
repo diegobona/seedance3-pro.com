@@ -3,9 +3,26 @@ import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import mannequinUrl from "./pose-assets/anyposes-female-rig.fbx?url";
 import { RAGDOLL_HANDLE_SPECS } from "./pose-ragdoll-config.mjs";
-import { buildPreferredBoneIndex, normalizedBoneName } from "./pose-rig-index.mjs";
+import {
+  applyBoneTransforms,
+  buildPreferredBoneIndex,
+  captureBoneTransforms,
+  normalizedBoneName,
+} from "./pose-rig-index.mjs";
+import { ANYPOSES_PRESETS, ANYPOSES_REFERENCE_DIRECTIONS } from "./pose-presets.mjs";
 
 const MAX_HISTORY = 40;
+const PRESET_BONE_BINDINGS = [
+  { key: "spine", bone: "mixamorig:Spine", child: "mixamorig:Spine1" },
+  { key: "leftArm", bone: "mixamorig:LeftArm", child: "mixamorig:LeftForeArm" },
+  { key: "leftForeArm", bone: "mixamorig:LeftForeArm", child: "mixamorig:LeftHand" },
+  { key: "rightArm", bone: "mixamorig:RightArm", child: "mixamorig:RightForeArm" },
+  { key: "rightForeArm", bone: "mixamorig:RightForeArm", child: "mixamorig:RightHand" },
+  { key: "leftUpLeg", bone: "mixamorig:LeftUpLeg", child: "mixamorig:LeftLeg" },
+  { key: "leftLeg", bone: "mixamorig:LeftLeg", child: "mixamorig:LeftFoot" },
+  { key: "rightUpLeg", bone: "mixamorig:RightUpLeg", child: "mixamorig:RightLeg" },
+  { key: "rightLeg", bone: "mixamorig:RightLeg", child: "mixamorig:RightFoot" },
+];
 
 function disposeObject(root) {
   root?.traverse?.((object) => {
@@ -24,12 +41,7 @@ function cloneSnapshot(model, bones) {
   return {
     position: model.position.toArray(),
     quaternion: model.quaternion.toArray(),
-    bones: bones.map((bone) => ({
-      name: bone.name,
-      position: bone.position.toArray(),
-      quaternion: bone.quaternion.toArray(),
-      scale: bone.scale.toArray(),
-    })),
+    bones: captureBoneTransforms(bones),
   };
 }
 
@@ -51,6 +63,7 @@ export function initializePoseStudio({ container, canvasHost }) {
   const redoStack = [];
   const handles = [];
   const bonesByName = new Map();
+  const presetBindings = [];
   let mannequin = null;
   let mannequinBones = [];
   let neutralSnapshot = null;
@@ -124,6 +137,12 @@ export function initializePoseStudio({ container, canvasHost }) {
   const scratchAxis = new THREE.Vector3();
   const scratchParentQuaternion = new THREE.Quaternion();
   const scratchRotation = new THREE.Quaternion();
+  const scratchPresetReference = new THREE.Vector3();
+  const scratchPresetDirection = new THREE.Vector3();
+  const scratchPresetWorldDirection = new THREE.Vector3();
+  const scratchPresetParentDirection = new THREE.Vector3();
+  const scratchPresetDelta = new THREE.Quaternion();
+  const scratchPresetLocalDelta = new THREE.Quaternion();
 
   function setHint(message) {
     if (hint) hint.textContent = message;
@@ -139,17 +158,11 @@ export function initializePoseStudio({ container, canvasHost }) {
   }
 
   function applySnapshot(snapshot) {
-    if (!mannequin || !snapshot) return;
-    mannequin.position.fromArray(snapshot.position);
-    mannequin.quaternion.fromArray(snapshot.quaternion);
-    for (const saved of snapshot.bones) {
-      const bone = bonesByName.get(saved.name) || bonesByName.get(normalizedBoneName(saved.name));
-      if (!bone) continue;
-      bone.position.fromArray(saved.position);
-      bone.quaternion.fromArray(saved.quaternion);
-      bone.scale.fromArray(saved.scale);
-    }
-    mannequin.updateMatrixWorld(true);
+  if (!mannequin || !snapshot) return;
+  mannequin.position.fromArray(snapshot.position);
+  mannequin.quaternion.fromArray(snapshot.quaternion);
+  applyBoneTransforms(mannequinBones, snapshot.bones);
+  mannequin.updateMatrixWorld(true);
     updateHandlePositions();
   }
 
@@ -182,6 +195,10 @@ export function initializePoseStudio({ container, canvasHost }) {
 
   function effectorFor(spec) {
     return bonesByName.get(spec.effector) || bonesByName.get(normalizedBoneName(spec.effector)) || null;
+  }
+
+  function boneFor(name) {
+    return bonesByName.get(name) || bonesByName.get(normalizedBoneName(name)) || null;
   }
 
   function updateHandlePositions() {
@@ -350,36 +367,82 @@ export function initializePoseStudio({ container, canvasHost }) {
     setHint("Drag any of the 13 handles · Drag empty space to orbit · Scroll to zoom");
   }
 
-  function offsetEffector(key, x, y, z) {
-    const spec = RAGDOLL_HANDLE_SPECS.find((candidate) => candidate.key === key);
-    const effector = spec && effectorFor(spec);
-    if (!effector) return;
-    const target = effector.getWorldPosition(new THREE.Vector3()).add(new THREE.Vector3(x, y, z));
-    solveChainToTarget(spec, target);
+  function preparePresetBindings() {
+    presetBindings.length = 0;
+    mannequin.updateMatrixWorld(true);
+    for (const spec of PRESET_BONE_BINDINGS) {
+      const bone = boneFor(spec.bone);
+      const child = boneFor(spec.child);
+      if (!bone || !child) continue;
+      const bonePosition = bone.getWorldPosition(new THREE.Vector3());
+      const childPosition = child.getWorldPosition(new THREE.Vector3());
+      const restWorldDirection = childPosition.sub(bonePosition).normalize();
+      const parentWorldInverse = bone.parent.getWorldQuaternion(new THREE.Quaternion()).invert();
+      const restParentDirection = restWorldDirection.clone().applyQuaternion(parentWorldInverse).normalize();
+      presetBindings.push({
+        ...spec,
+        bone,
+        restLocalQuaternion: bone.quaternion.clone(),
+        restWorldDirection,
+        restParentDirection,
+      });
+    }
   }
 
-  function applyPreset(name) {
+  function applyPresetDirection(binding, referenceDirection, poseDirection) {
+    scratchPresetReference.fromArray(referenceDirection).normalize();
+    scratchPresetDirection.fromArray(poseDirection).normalize();
+    scratchPresetDelta.setFromUnitVectors(scratchPresetReference, scratchPresetDirection);
+    scratchPresetWorldDirection.copy(binding.restWorldDirection).applyQuaternion(scratchPresetDelta).normalize();
+    binding.bone.parent.getWorldQuaternion(scratchParentQuaternion).invert();
+    scratchPresetParentDirection.copy(scratchPresetWorldDirection).applyQuaternion(scratchParentQuaternion).normalize();
+    scratchPresetLocalDelta.setFromUnitVectors(binding.restParentDirection, scratchPresetParentDirection);
+    binding.bone.quaternion.copy(scratchPresetLocalDelta.multiply(binding.restLocalQuaternion)).normalize();
+    mannequin.updateMatrixWorld(true);
+  }
+
+  function placePresetOnGround() {
+    mannequin.traverse((part) => {
+      if (part.isSkinnedMesh) part.computeBoundingBox?.();
+    });
+    const bounds = new THREE.Box3().setFromObject(mannequin);
+    if (Number.isFinite(bounds.min.y)) {
+      mannequin.position.y -= bounds.min.y;
+      mannequin.updateMatrixWorld(true);
+    }
+  }
+
+  function clearActivePreset() {
+    presetButtons.forEach((button) => button.classList.remove("is-active"));
+  }
+
+  function resetPose() {
     if (!neutralSnapshot) return;
     const before = captureSnapshot();
     applySnapshot(neutralSnapshot);
-    if (name === "contrapposto") {
-      mannequin.position.x += 0.16;
-      offsetEffector("leftHand", -0.25, -0.8, 0.08);
-      offsetEffector("rightHand", 0.2, -0.45, -0.06);
-      offsetEffector("leftKnee", 0.18, 0.05, 0.18);
-      offsetEffector("head", -0.12, 0, 0.06);
-    } else if (name === "action") {
-      mannequin.position.y -= 0.08;
-      offsetEffector("leftHand", -0.28, 0.82, 0.12);
-      offsetEffector("rightHand", 0.38, -0.38, 0.32);
-      offsetEffector("leftFoot", -0.28, 0.1, 0.3);
-      offsetEffector("rightKnee", 0.2, 0.2, 0.28);
+    pushHistory(before);
+    clearActivePreset();
+    setHint("Neutral pose restored · drag a handle to refine it");
+  }
+
+  function applyPreset(name) {
+    const preset = ANYPOSES_PRESETS.find((candidate) => candidate.key === name);
+    if (!neutralSnapshot || !preset) return;
+    const before = captureSnapshot();
+    applySnapshot(neutralSnapshot);
+    for (const binding of presetBindings) {
+      applyPresetDirection(
+        binding,
+        ANYPOSES_REFERENCE_DIRECTIONS[binding.key],
+        preset.directions[binding.key]
+      );
     }
+    placePresetOnGround();
     mannequin.updateMatrixWorld(true);
     updateHandlePositions();
     pushHistory(before);
     presetButtons.forEach((button) => button.classList.toggle("is-active", button.dataset.posePreset === name));
-    setHint(`${name === "contrapposto" ? "Contrapposto" : name[0].toUpperCase() + name.slice(1)} pose applied · drag a handle to refine it`);
+    setHint(`${preset.label} · Anyposes preset ${preset.sourceCode} · drag a handle to refine it`);
   }
 
   function listen(target, type, listener, options) {
@@ -393,7 +456,7 @@ export function initializePoseStudio({ container, canvasHost }) {
   listen(renderer.domElement, "pointercancel", finishDrag);
   listen(undoButton, "click", undo);
   listen(redoButton, "click", redo);
-  listen(resetButton, "click", () => applyPreset("neutral"));
+  listen(resetButton, "click", resetPose);
   presetButtons.forEach((button) => listen(button, "click", () => applyPreset(button.dataset.posePreset)));
 
   function resize() {
@@ -430,6 +493,7 @@ export function initializePoseStudio({ container, canvasHost }) {
     const boneIndex = buildPreferredBoneIndex(mannequin);
     for (const [name, bone] of boneIndex.byName) bonesByName.set(name, bone);
     mannequinBones.push(...boneIndex.bones);
+    preparePresetBindings();
 
     mannequin.traverse((objectPart) => {
       if (!objectPart.isMesh) return;
@@ -465,7 +529,6 @@ export function initializePoseStudio({ container, canvasHost }) {
     if (loading) loading.hidden = true;
     presetButtons.forEach((button) => { button.disabled = false; });
     resetButton.disabled = false;
-    presetButtons[0]?.classList.add("is-active");
     setHint("Drag any of the 13 handles · Drag empty space to orbit · Scroll to zoom");
   }
 
