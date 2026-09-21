@@ -54,12 +54,13 @@ function StudioPage() {
             </div>
             <div className="nav-section">
               <div className="section-heading"><span>AI IMAGE</span></div>
-              <button className="model-button pose-workflow-button" type="button" data-model="pose-to-image" disabled>
+              <button className="model-button pose-workflow-button" type="button" data-model="pose-to-image">
                 <span className="pose-symbol" aria-hidden="true">
                   <svg viewBox="0 0 32 32" role="presentation"><circle cx="16" cy="5.5" r="3" /><path d="M16 9v9m0-6-7 4m7-4 7 3m-7 3-5 9m5-9 6 9" /><circle cx="9" cy="16" r="1.25" /><circle cx="23" cy="15" r="1.25" /><circle cx="11" cy="27" r="1.25" /><circle cx="22" cy="27" r="1.25" /></svg>
                 </span>
                 <span className="pose-workflow-copy"><strong>Pose to Image</strong><small>Build poses in 3D</small></span>
-                <em className="soon">Coming Soon</em>
+                <em className="signature">SIGNATURE</em>
+                <span className="workflow-cta">Open Pose Studio <b>↗</b></span>
               </button>
               <div className="section-heading image-models-heading"><span>IMAGE MODELS</span><span>02</span></div>
               <button className="model-button is-active" type="button" data-model="gpt-image-2"><span className="model-symbol orange">G2</span><span><strong>GPT Image 2</strong><small>Generation &amp; editing</small></span></button>
@@ -77,7 +78,7 @@ function StudioPage() {
 
           <div className="workspace-body">
             <div className="workspace-title"><div><p id="model-category">AI IMAGE / GENERATE &amp; EDIT</p><h1 id="model-name">GPT Image 2</h1></div><span className="model-status" id="model-status">Image generator</span></div>
-            <div className="creation-grid">
+            <div className="creation-grid" id="creation-grid">
               <section className="creation-panel">
                 <div className="model-select"><span className="model-symbol orange" id="selected-symbol">G2</span><div><small>Selected model</small><strong id="selected-name">GPT Image 2</strong></div></div>
                 <div className="field-group" id="mode-group" hidden><label>Create from</label><div className="segmented"><button className="is-selected" type="button">Media</button><button type="button">Image</button><button type="button">Text</button></div></div>
@@ -147,6 +148,54 @@ function StudioPage() {
                 </section>
               </aside>
             </div>
+
+            <section className="pose-studio" id="pose-studio" aria-label="Ragdoll IK pose editor" hidden>
+              <div className="pose-stage-card">
+                <div className="pose-toolbar">
+                  <div className="pose-mode-indicator"><span /> Ragdoll IK</div>
+                  <div className="pose-history-controls" aria-label="Pose history">
+                    <button type="button" data-pose-action="undo" aria-label="Undo pose change" disabled>↶ <span>Undo</span></button>
+                    <button type="button" data-pose-action="redo" aria-label="Redo pose change" disabled>↷ <span>Redo</span></button>
+                    <button type="button" data-pose-action="reset">Reset</button>
+                  </div>
+                </div>
+                <div className="pose-canvas" id="pose-canvas" role="application" aria-label="Interactive 3D mannequin. Drag the glowing handles to pose the body.">
+                  <div className="pose-canvas-loading" id="pose-canvas-loading"><span /> Preparing mannequin…</div>
+                  <div className="pose-canvas-hint" id="pose-canvas-hint">Drag a glowing handle · Drag empty space to orbit · Scroll to zoom</div>
+                </div>
+              </div>
+
+              <aside className="pose-control-panel">
+                <section className="pose-control-card pose-intro-card">
+                  <span className="pose-control-eyebrow">DIRECT THE BODY</span>
+                  <h2>Drag. Pose. Create.</h2>
+                  <p>Move the head, hips, hands, or feet. The rest of the body follows automatically.</p>
+                </section>
+
+                <section className="pose-control-card">
+                  <div className="pose-control-heading"><div><span>ANYPOSES RIG</span><h3>13 drag points</h3></div><small>Whole-body control</small></div>
+                  <div className="pose-handle-summary" aria-label="Draggable body areas">
+                    <span>Head</span><span>Chest</span><span>Pelvis</span><span>Shoulders</span><span>Elbows</span><span>Hands</span><span>Knees</span><span>Feet</span>
+                  </div>
+                </section>
+
+                <section className="pose-control-card">
+                  <div className="pose-control-heading"><div><span>QUICK START</span><h3>Pose presets</h3></div></div>
+                  <div className="pose-preset-grid">
+                    <button type="button" data-pose-preset="neutral"><span className="pose-preset-figure neutral" aria-hidden="true" />Neutral</button>
+                    <button type="button" data-pose-preset="contrapposto"><span className="pose-preset-figure contrapposto" aria-hidden="true" />Contrapposto</button>
+                    <button type="button" data-pose-preset="action"><span className="pose-preset-figure action" aria-hidden="true" />Action</button>
+                  </div>
+                </section>
+
+                <section className="pose-control-card pose-next-step">
+                  <span>UP NEXT</span>
+                  <strong>Turn this pose into an image</strong>
+                  <p>Pose capture and AI generation arrive in the next build step.</p>
+                  <button type="button" disabled>Use this pose</button>
+                </section>
+              </aside>
+            </section>
           </div>
         </main>
       </div>

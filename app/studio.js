@@ -37,13 +37,13 @@ const studioModels = {
   },
   "pose-to-image": {
     category: "AI IMAGE / POSE CONTROL",
-    name: "Pose to Image",
-    status: "Coming Soon",
+    name: "Pose Studio",
+    status: "Ragdoll IK",
     symbol: "P3",
     tone: "lime",
     exampleTitle: "Pose-first character image",
     examplePrompt: "Shape the body language and camera angle first, then describe the character, scene, lighting, and visual style.",
-    type: "image"
+    type: "pose"
   },
   "nano-banana-2-lite": {
     category: "AI IMAGE / FAST DRAFTS",
@@ -138,6 +138,8 @@ export function initializeStudio() {
   const sidebar = document.getElementById("studio-sidebar");
   const sidebarOpen = document.querySelector(".sidebar-open");
   const sidebarClose = document.querySelector(".sidebar-close");
+  const creationGrid = document.getElementById("creation-grid");
+  const poseStudio = document.getElementById("pose-studio");
 
   let activeModelId = "gpt-image-2";
   let referenceFile = null;
@@ -150,6 +152,28 @@ export function initializeStudio() {
   let creditInsufficient = false;
   let creditSummaryController;
   let launchWaitlistController;
+  let poseStudioCleanup;
+  let poseStudioPromise;
+
+  function ensurePoseStudio() {
+    if (!poseStudio || poseStudioCleanup || poseStudioPromise) return poseStudioPromise;
+    poseStudioPromise = import("./pose-studio.mjs")
+      .then(({ initializePoseStudio }) => {
+        if (destroyed) return;
+        poseStudioCleanup = initializePoseStudio({
+          container: poseStudio,
+          canvasHost: document.getElementById("pose-canvas")
+        });
+      })
+      .catch(() => {
+        const loading = document.getElementById("pose-canvas-loading");
+        if (loading) loading.textContent = "The 3D editor could not start. Refresh and try again.";
+      })
+      .finally(() => {
+        poseStudioPromise = undefined;
+      });
+    return poseStudioPromise;
+  }
 
   function readActiveVideoTask() {
     try {
@@ -230,6 +254,10 @@ export function initializeStudio() {
     exampleTitle.textContent = model.exampleTitle;
     examplePrompt.textContent = model.examplePrompt;
     const videoModel = model.type === "video";
+    const poseModel = model.type === "pose";
+    creationGrid.hidden = poseModel;
+    if (poseStudio) poseStudio.hidden = !poseModel;
+    if (poseModel) void ensurePoseStudio();
     referenceLabel.textContent = model.canGenerate ? "Reference image" : "Reference files";
     referenceMeta.textContent = model.canGenerate ? "Optional · enables image-to-image" : videoModel ? "Preview only" : "Reference images";
     uploadTitle.textContent = model.canGenerate ? "Choose a reference image" : "Drop or choose reference media";
@@ -574,6 +602,7 @@ export function initializeStudio() {
     creditSummaryController.destroy();
     launchWaitlistController?.destroy();
     exampleCarouselController.destroy();
+    poseStudioCleanup?.();
     while (cleanups.length) cleanups.pop()();
     clearReferenceImage();
   };

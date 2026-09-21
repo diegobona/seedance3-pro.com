@@ -138,7 +138,7 @@ test("H3 is text-to-video only in TanStack while legacy preview keeps it disable
   assert.match(html, /<div class="section-heading"><span>AI IMAGE<\/span><\/div>/i);
   assert.match(html, /<div class="section-heading image-models-heading"><span>IMAGE MODELS<\/span><span>02<\/span><\/div>/i);
   assert.match(html, /class="model-button pose-workflow-button"[^>]+data-model="pose-to-image"/i);
-  for (const modelId of ["seedance-3", "pose-to-image", "nano-banana-2-lite"]) {
+  for (const modelId of ["seedance-3", "nano-banana-2-lite"]) {
     const disabledModel = new RegExp(`data-model=["']${modelId}["'][^>]*disabled`, "i");
     const comingSoon = new RegExp(`data-model=["']${modelId}["'][\\s\\S]*?Coming Soon[\\s\\S]*?<\\/button>`, "i");
     assert.match(html, disabledModel, `${modelId} should be disabled in the legacy preview`);
@@ -146,6 +146,9 @@ test("H3 is text-to-video only in TanStack while legacy preview keeps it disable
     assert.match(html, comingSoon, `${modelId} should display Coming Soon`);
     assert.match(route, comingSoon, `${modelId} should display Coming Soon in the TanStack route`);
   }
+  assert.match(route, /data-model=["']pose-to-image["'](?![^>]*disabled)/i);
+  assert.doesNotMatch(modelButtonMarkup(route, "pose-to-image"), /Coming Soon/i);
+  assert.match(modelButtonMarkup(route, "pose-to-image"), /Open Pose Studio/i);
   assert.match(html, /data-model=["']minimax-h3["'][^>]*disabled/i);
   assert.match(modelButtonMarkup(html, "minimax-h3"), /Coming Soon/i);
   assert.match(route, /data-model=["']minimax-h3["'](?![^>]*disabled)/i);
@@ -153,7 +156,7 @@ test("H3 is text-to-video only in TanStack while legacy preview keeps it disable
   assert.doesNotMatch(modelButtonMarkup(route, "minimax-h3"), /Coming Soon/i);
   assert.match(html, /data-model="gpt-image-2"[^>]*class="model-button is-active"|class="model-button is-active"[^>]*data-model="gpt-image-2"/i);
   assert.doesNotMatch(html, /data-model="gpt-image-2"[^>]*disabled/i);
-  assert.match(script, /"pose-to-image"\s*:\s*\{[\s\S]*?status:\s*"Coming Soon"[\s\S]*?\}/i);
+  assert.match(script, /"pose-to-image"\s*:\s*\{[\s\S]*?status:\s*"Ragdoll IK"[\s\S]*?type:\s*"pose"[\s\S]*?\}/i);
   assert.match(css, /\.pose-workflow-button\s*\{/i);
   assert.match(css, /\.model-button:disabled/i);
   assert.match(css, /\.settings-grid\[hidden\]\s*\{\s*display:\s*none/i);
@@ -305,6 +308,25 @@ test("credit summaries stay visible and visually prominent in both studio shells
   const trialCompleteMessage = "Your free trial is complete. Full launch is coming soon — video generation from $0.01/sec.";
   assert.match(readFileSync(resolve(root, "app", "studio.js"), "utf8"), new RegExp(trialCompleteMessage.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"));
   assert.doesNotMatch(css, /\.credit-summary\.is-exhausted::after/i, "the real waitlist panel should replace generated pseudo-content");
+});
+
+test("Pose Studio exposes only the focused ragdoll IK workspace in the TanStack app", () => {
+  const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
+  const script = readFileSync(resolve(root, "app", "studio.js"), "utf8");
+
+  assert.match(route, /id=["']pose-studio["']/i);
+  assert.match(route, /id=["']pose-canvas["']/i);
+  for (const action of ["undo", "redo", "reset"]) {
+    assert.match(route, new RegExp(`data-pose-action=["']${action}["']`, "i"));
+  }
+  assert.match(route, /13 drag points/i);
+  for (const preset of ["neutral", "contrapposto", "action"]) {
+    assert.match(route, new RegExp(`data-pose-preset=["']${preset}["']`, "i"));
+  }
+  assert.match(route, /Ragdoll IK/i);
+  assert.doesNotMatch(route, /FK mode|OpenPose settings|joint hierarchy/i);
+  assert.match(script, /import\(["']\.\/pose-studio\.mjs["']\)/i);
+  assert.match(script, /initializePoseStudio/i);
 });
 
 test("studio wires the credit summary controller to its actual DOM nodes", () => {
