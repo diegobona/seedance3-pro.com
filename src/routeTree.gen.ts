@@ -11,9 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppRouteImport } from './routes/app'
+import { Route as ApiLaunchWaitlistRouteImport } from './routes/api/launch-waitlist'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApiCreditsBalanceRouteImport } from './routes/api/credits/balance'
 import { Route as ApiImagesGenerateRouteImport } from './routes/api/images/generate'
+import { Route as ApiVideosGenerateRouteImport } from './routes/api/videos/generate'
+import { Route as ApiVideosStatusRouteImport } from './routes/api/videos/status'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -23,6 +26,11 @@ const IndexRoute = IndexRouteImport.update({
 const AppRoute = AppRouteImport.update({
   id: '/app',
   path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiLaunchWaitlistRoute = ApiLaunchWaitlistRouteImport.update({
+  id: '/api/launch-waitlist',
+  path: '/api/launch-waitlist',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
@@ -40,59 +48,90 @@ const ApiImagesGenerateRoute = ApiImagesGenerateRouteImport.update({
   path: '/api/images/generate',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiVideosGenerateRoute = ApiVideosGenerateRouteImport.update({
+  id: '/api/videos/generate',
+  path: '/api/videos/generate',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiVideosStatusRoute = ApiVideosStatusRouteImport.update({
+  id: '/api/videos/status',
+  path: '/api/videos/status',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRoute
+  '/api/launch-waitlist': typeof ApiLaunchWaitlistRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/credits/balance': typeof ApiCreditsBalanceRoute
   '/api/images/generate': typeof ApiImagesGenerateRoute
+  '/api/videos/generate': typeof ApiVideosGenerateRoute
+  '/api/videos/status': typeof ApiVideosStatusRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/app': typeof AppRoute
+  '/api/launch-waitlist': typeof ApiLaunchWaitlistRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/credits/balance': typeof ApiCreditsBalanceRoute
   '/api/images/generate': typeof ApiImagesGenerateRoute
+  '/api/videos/generate': typeof ApiVideosGenerateRoute
+  '/api/videos/status': typeof ApiVideosStatusRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/app': typeof AppRoute
+  '/api/launch-waitlist': typeof ApiLaunchWaitlistRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/credits/balance': typeof ApiCreditsBalanceRoute
   '/api/images/generate': typeof ApiImagesGenerateRoute
+  '/api/videos/generate': typeof ApiVideosGenerateRoute
+  '/api/videos/status': typeof ApiVideosStatusRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/app'
+    | '/api/launch-waitlist'
     | '/api/auth/$'
     | '/api/credits/balance'
     | '/api/images/generate'
+    | '/api/videos/generate'
+    | '/api/videos/status'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/app'
+    | '/api/launch-waitlist'
     | '/api/auth/$'
     | '/api/credits/balance'
     | '/api/images/generate'
+    | '/api/videos/generate'
+    | '/api/videos/status'
   id:
     | '__root__'
     | '/'
     | '/app'
+    | '/api/launch-waitlist'
     | '/api/auth/$'
     | '/api/credits/balance'
     | '/api/images/generate'
+    | '/api/videos/generate'
+    | '/api/videos/status'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRoute
+  ApiLaunchWaitlistRoute: typeof ApiLaunchWaitlistRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiCreditsBalanceRoute: typeof ApiCreditsBalanceRoute
   ApiImagesGenerateRoute: typeof ApiImagesGenerateRoute
+  ApiVideosGenerateRoute: typeof ApiVideosGenerateRoute
+  ApiVideosStatusRoute: typeof ApiVideosStatusRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -109,6 +148,13 @@ declare module '@tanstack/react-router' {
       path: '/app'
       fullPath: '/app'
       preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/launch-waitlist': {
+      id: '/api/launch-waitlist'
+      path: '/api/launch-waitlist'
+      fullPath: '/api/launch-waitlist'
+      preLoaderRoute: typeof ApiLaunchWaitlistRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/auth/$': {
@@ -132,15 +178,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiImagesGenerateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/videos/generate': {
+      id: '/api/videos/generate'
+      path: '/api/videos/generate'
+      fullPath: '/api/videos/generate'
+      preLoaderRoute: typeof ApiVideosGenerateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/videos/status': {
+      id: '/api/videos/status'
+      path: '/api/videos/status'
+      fullPath: '/api/videos/status'
+      preLoaderRoute: typeof ApiVideosStatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRoute,
+  ApiLaunchWaitlistRoute: ApiLaunchWaitlistRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiCreditsBalanceRoute: ApiCreditsBalanceRoute,
   ApiImagesGenerateRoute: ApiImagesGenerateRoute,
+  ApiVideosGenerateRoute: ApiVideosGenerateRoute,
+  ApiVideosStatusRoute: ApiVideosStatusRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

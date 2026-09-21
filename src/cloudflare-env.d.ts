@@ -6,6 +6,10 @@ interface Env {
   GOOGLE_CLIENT_SECRET?: string
   TUZI_API_KEY?: string
   TUZI_API_BASE?: string
+  AUTODL_TOKEN?: string
+  IMAGE_RATE_LIMITER?: {
+    limit(input: { key: string }): Promise<{ success: boolean }>
+  }
 }
 
 declare module 'cloudflare:workers' {
@@ -21,5 +25,9 @@ declare namespace Cloudflare {
     GOOGLE_CLIENT_SECRET?: string
     TUZI_API_KEY?: string
     TUZI_API_BASE?: string
+    AUTODL_TOKEN?: string
+    IMAGE_RATE_LIMITER?: {
+      limit(input: { key: string }): Promise<{ success: boolean }>
+    }
   }
 }

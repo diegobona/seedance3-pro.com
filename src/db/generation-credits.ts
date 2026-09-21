@@ -28,6 +28,12 @@ async function refundStaleReservations(db: Database, userId: string) {
       WHERE "user_id" = ${userId}
         AND "status" = 'reserved'
         AND "created_at" < now() - (15 * interval '1 minute')
+        AND NOT EXISTS (
+          SELECT 1
+          FROM "video_generation_task"
+          WHERE "video_generation_task"."reservation_id" = "generation_credit_reservation"."id"
+            AND "video_generation_task"."status" IN ('submitting', 'queued', 'running')
+        )
       RETURNING "credits"
     ), refund_total AS (
       SELECT COALESCE(SUM("credits"), 0)::integer AS "credits"

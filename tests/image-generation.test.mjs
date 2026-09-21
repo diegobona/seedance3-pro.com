@@ -47,7 +47,10 @@ test("Worker exposes the GPT Image 2 generation handler", () => {
 
 test("one ignored env file drives local development and Worker secret sync", () => {
   const content = readFileSync(resolve(root, ".env.local.example"), "utf8");
-  assert.match(content, /^TUZI_API_KEY=replace_with_your_key\s*$/);
+  assert.deepEqual(content.trim().split(/\r?\n/), [
+    "TUZI_API_KEY=replace_with_your_key",
+    "AUTODL_TOKEN=replace_with_your_token"
+  ]);
   assert.equal(existsSync(resolve(root, ".dev.vars.example")), false);
 
   const packageJson = JSON.parse(readFileSync(resolve(root, "package.json"), "utf8"));

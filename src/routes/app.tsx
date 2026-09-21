@@ -20,6 +20,9 @@ export const Route = createFileRoute('/app')({
 function StudioPage() {
   const [authOpen, setAuthOpen] = useState(false)
   const closeAuth = useCallback(() => setAuthOpen(false), [])
+  const refreshCreditsAfterAuth = useCallback(() => {
+    window.dispatchEvent(new CustomEvent('seedance:auth-changed'))
+  }, [])
 
   useEffect(() => {
     let disposed = false
@@ -46,7 +49,7 @@ function StudioPage() {
           <nav aria-label="Model navigation">
             <div className="nav-section">
               <div className="section-heading"><span>AI VIDEO</span><span>02</span></div>
-              <button className="model-button" type="button" data-model="minimax-h3" disabled><span className="model-symbol cyan">H3</span><span><strong>MiniMax H3</strong><small>Multimodal video</small></span><em className="soon">Coming Soon</em></button>
+              <button className="model-button" type="button" data-model="minimax-h3"><span className="model-symbol cyan">H3</span><span><strong>MiniMax H3</strong><small>Text-to-video</small></span></button>
               <button className="model-button" type="button" data-model="seedance-3" disabled><img src="/assets/seedance-mark.svg" width="40" height="40" alt="" style={{ flexShrink: 0 }} /><span><strong>SEEDANCE 3.0</strong><small>Next-gen video</small></span><em className="soon">Coming Soon</em></button>
             </div>
             <div className="nav-section">
@@ -89,7 +92,11 @@ function StudioPage() {
                   <textarea id="studio-prompt" maxLength={2500} placeholder="Describe the subject, action, environment, composition, lighting, style, and details to preserve…" />
                   <div className="prompt-tools"><button id="prompt-structure-button" type="button">✦ Prompt structure</button><button id="example-prompt-button" type="button">View examples</button></div>
                 </div>
-                <div className="settings-grid" id="video-settings" hidden><label>Duration<select disabled><option>8 seconds</option></select></label><label>Resolution<select disabled><option>Preview</option></select></label><label>Aspect ratio<select disabled><option>16:9</option></select></label></div>
+                <div className="settings-grid" id="video-settings" hidden>
+                  <label>Duration<select id="video-duration" defaultValue="5"><option value="5">5 seconds</option><option value="10">10 seconds</option><option value="15">15 seconds</option></select></label>
+                  <label className="resolution-setting"><span className="resolution-heading"><span>Resolution</span><small>TRIAL · 480P ONLY</small></span><select id="video-resolution" value="480p" disabled><option value="480p">480p</option></select></label>
+                  <label>Aspect ratio<select id="video-aspect-ratio" defaultValue="16:9"><option value="9:16">9:16 portrait</option><option value="16:9">16:9 landscape</option><option value="1:1">1:1 square</option></select></label>
+                </div>
                 <div className="settings-grid image-settings" id="image-settings">
                   <label>Quantity<select id="image-quantity"><option value="1">1 image</option><option value="2">2 images</option><option value="3">3 images</option></select></label>
                   <label className="resolution-setting">
@@ -106,12 +113,20 @@ function StudioPage() {
                   <div className="credit-summary-panel credit-summary-cost"><span>THIS GENERATION</span><strong id="generation-credit-cost" className="credit-summary-value">5 credits</strong></div>
                   <div className="credit-summary-panel credit-summary-balance"><span>YOUR BALANCE</span><strong id="current-credit-balance" className="credit-summary-value">— credits</strong></div>
                 </section>
+                <section className="launch-waitlist" id="launch-waitlist" aria-labelledby="launch-waitlist-title" hidden>
+                  <span className="launch-waitlist-eyebrow">EARLY ACCESS</span>
+                  <h2 id="launch-waitlist-title">Full launch is coming soon</h2>
+                  <p>Video generation from <strong>$0.01/sec</strong>. Join the launch list and receive <strong>5 bonus credits</strong> when we go live.</p>
+                  <button id="launch-waitlist-button" type="button">Notify me &amp; claim 5 credits</button>
+                  <small>We'll email your account address once paid plans open. No spam.</small>
+                  <div className="launch-waitlist-status" id="launch-waitlist-status" role="status" aria-live="polite" />
+                </section>
                 <button className="generate-button" id="generate-button" type="button" disabled><span id="generate-button-label">Generate image · 5 credits</span></button>
                 <div className="generation-status" id="generation-status" role="status" aria-live="polite" />
               </section>
 
               <aside className="context-panel">
-                <div className="context-card result-card" id="result-card" hidden><div className="result-heading"><span>GENERATED IMAGES</span><small>GPT Image 2</small></div><div className="result-gallery" id="result-gallery" /><p id="result-note">Provider image links may expire. Open or download each result when it is ready.</p></div>
+                <div className="context-card result-card" id="result-card" hidden><div className="result-heading"><span id="result-heading-label">GENERATED IMAGES</span><small id="result-model-label">GPT Image 2</small></div><div className="result-gallery" id="result-gallery" /><p id="result-note">Provider image links may expire. Open or download each result when it is ready.</p></div>
                 <section className="context-card example-carousel" id="example-carousel" aria-labelledby="example-carousel-heading">
                   <div className="result-heading"><span id="example-carousel-heading">IMAGE PREVIEW</span><small>3 DISTINCT STYLES</small></div>
                   <div className="example-carousel-viewport">
@@ -135,7 +150,7 @@ function StudioPage() {
           </div>
         </main>
       </div>
-      <AuthDialog open={authOpen} onClose={closeAuth} />
+      <AuthDialog open={authOpen} onClose={closeAuth} onAuthenticated={refreshCreditsAfterAuth} />
     </>
   )
 }

@@ -1,5 +1,6 @@
 import handler from '@tanstack/react-start/server-entry'
 import legacyWorker from '../worker.js'
+import { reconcileVideoGenerationTasks } from './lib/video-task-reconciler'
 
 interface WorkerContext {
   waitUntil(promise: Promise<unknown>): void
@@ -40,6 +41,8 @@ export default {
     return handler.fetch(request)
   },
   scheduled(controller, env, ctx) {
-    return legacyWorker.scheduled(controller, env, ctx)
+    const legacyScheduled = Promise.resolve(legacyWorker.scheduled(controller, env, ctx))
+    ctx.waitUntil(reconcileVideoGenerationTasks(env))
+    return legacyScheduled
   },
 } satisfies WorkerHandler

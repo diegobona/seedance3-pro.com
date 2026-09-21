@@ -115,6 +115,11 @@ export function creditCostForQuantity(value) {
   return normalizeImageQuantity(value) * 5;
 }
 
+export function creditCostForDuration(value) {
+  const duration = Number(value);
+  return [5, 10, 15].includes(duration) ? duration : 5;
+}
+
 function normalizeCreditBalance(value) {
   return Number.isSafeInteger(value) && value >= 0 ? value : null;
 }
@@ -128,10 +133,15 @@ export function projectedCreditBalance(balance, quantity) {
 export function creditSummaryFor(balance, quantity) {
   const currentBalance = normalizeCreditBalance(balance);
   const cost = creditCostForQuantity(quantity);
+  return creditSummaryForCost(currentBalance, cost);
+}
+
+function creditSummaryForCost(balance, cost) {
+  const currentBalance = normalizeCreditBalance(balance);
   return {
     cost,
     currentBalance,
-    projectedBalance: projectedCreditBalance(currentBalance, quantity),
+    projectedBalance: currentBalance === null ? null : Math.max(0, currentBalance - cost),
     insufficient: currentBalance !== null && currentBalance < cost
   };
 }
@@ -141,6 +151,8 @@ export function createCreditSummaryController({
   costElement,
   currentBalanceElement,
   quantityControl,
+  additionalCostControls = [],
+  getCost,
   eventTarget = globalThis,
   fetchImpl = globalThis.fetch,
   onChange = () => {}
@@ -157,7 +169,9 @@ export function createCreditSummaryController({
   }
 
   function render() {
-    const summary = creditSummaryFor(balance, quantityControl?.value);
+    const summary = typeof getCost === "function"
+      ? creditSummaryForCost(balance, getCost())
+      : creditSummaryFor(balance, quantityControl?.value);
     costElement.textContent = `${summary.cost} credits`;
     currentBalanceElement.textContent = summary.currentBalance === null ? "— credits" : `${summary.currentBalance} credits`;
     container.classList.toggle("is-insufficient", summary.insufficient);
@@ -171,40 +185,51 @@ export function createCreditSummaryController({
     render();
   }
 
+  function handleAuthChanged() {
+    void loadBalance();
+  }
+
+  async function loadBalance() {
+    invalidateLoad();
+    const requestVersion = loadVersion;
+    const abortController = new AbortController();
+    loadAbortController = abortController;
+    let loadedBalance = null;
+    try {
+      const response = await fetchImpl("/api/credits/balance", {
+        credentials: "same-origin",
+        signal: abortController.signal
+      });
+      if (response.ok) {
+        const payload = await response.json();
+        loadedBalance = normalizeCreditBalance(payload?.credits?.remaining);
+      }
+    } catch {
+      loadedBalance = null;
+    }
+    if (destroyed || requestVersion !== loadVersion) return;
+    loadAbortController = null;
+    balance = loadedBalance;
+    render();
+  }
+
   quantityControl.addEventListener("change", render);
+  additionalCostControls.forEach((control) => control.addEventListener("change", render));
   eventTarget.addEventListener("seedance:credits-updated", handleCreditsUpdated);
+  eventTarget.addEventListener("seedance:auth-changed", handleAuthChanged);
   render();
 
   return {
-    async loadBalance() {
-      invalidateLoad();
-      const requestVersion = loadVersion;
-      const abortController = new AbortController();
-      loadAbortController = abortController;
-      let loadedBalance = null;
-      try {
-        const response = await fetchImpl("/api/credits/balance", {
-          credentials: "same-origin",
-          signal: abortController.signal
-        });
-        if (response.ok) {
-          const payload = await response.json();
-          loadedBalance = normalizeCreditBalance(payload?.credits?.remaining);
-        }
-      } catch {
-        loadedBalance = null;
-      }
-      if (destroyed || requestVersion !== loadVersion) return;
-      loadAbortController = null;
-      balance = loadedBalance;
-      render();
-    },
+    refresh: render,
+    loadBalance,
     destroy() {
       if (destroyed) return;
       destroyed = true;
       invalidateLoad();
       quantityControl.removeEventListener("change", render);
+      additionalCostControls.forEach((control) => control.removeEventListener("change", render));
       eventTarget.removeEventListener("seedance:credits-updated", handleCreditsUpdated);
+      eventTarget.removeEventListener("seedance:auth-changed", handleAuthChanged);
     }
   };
 }

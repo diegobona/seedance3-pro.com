@@ -46,7 +46,11 @@ test("TanStack Start owns the studio and API routes without replacing the homepa
   assert.doesNotMatch(wrangler, /REPLACE_WITH_KV_NAMESPACE_ID/);
   assert.match(wrangler, /"traces"\s*:\s*\{\s*"enabled"\s*:\s*true\s*\}/);
   assert.equal(wranglerConfig.assets?.binding, "ASSETS");
-  assert.equal(wranglerConfig.assets?.run_worker_first, true);
+  assert.deepEqual(
+    wranglerConfig.assets?.run_worker_first,
+    ["/api/*", "/app", "/app/"],
+    "Vite and built client assets must bypass the Worker while app and API routes remain Worker-first",
+  );
   assert.equal(wranglerConfig.routes.some(({ pattern }) => pattern === "seedance3-pro.com/app"), false);
   assert.equal(wranglerConfig.routes.some(({ pattern }) => pattern === "seedance3-pro.com/app*"), true);
 
@@ -69,4 +73,55 @@ test("TanStack image routes use authenticated Neon credit accounting", () => {
   assert.match(balanceRoute, /createFileRoute\(['"]\/api\/credits\/balance['"]\)/);
   assert.match(balanceRoute, /getCreditBalanceResponse/);
   assert.match(balanceRoute, /createGenerationCreditStore/);
+});
+
+test("TanStack video routes enforce the trial boundary and protected lifecycle wiring", () => {
+  const generationRoutePath = resolve(root, "src/routes/api/videos/generate.ts");
+  const statusRoutePath = resolve(root, "src/routes/api/videos/status.ts");
+  assert.equal(existsSync(generationRoutePath), true, "video generation route should exist");
+  assert.equal(existsSync(statusRoutePath), true, "video status route should exist");
+
+  const generationRoute = read("src/routes/api/videos/generate.ts");
+  assert.match(generationRoute, /createFileRoute\(['"]\/api\/videos\/generate['"]\)/);
+  assert.match(generationRoute, /protectVideoGenerationStart/);
+  assert.match(generationRoute, /preflightVideoGenerationRequest/);
+  assert.match(generationRoute, /resolution\s*!==\s*['"]480p['"]/);
+  assert.match(generationRoute, /IMAGE_RATE_LIMITER\.limit/);
+  assert.match(generationRoute, /AUTODL_TOKEN/);
+  assert.match(generationRoute, /DATABASE_URL/);
+  assert.match(generationRoute, /request\.headers\.get\(['"]origin['"]\)/);
+  assert.match(generationRoute, /new URL\(request\.url\)\.origin/);
+
+  const statusRoute = read("src/routes/api/videos/status.ts");
+  assert.match(statusRoute, /createFileRoute\(['"]\/api\/videos\/status['"]\)/);
+  assert.match(statusRoute, /protectVideoGenerationPoll/);
+  assert.match(statusRoute, /queryAutodlVideoTask/);
+  assert.match(statusRoute, /searchParams\.getAll\(['"]task['"]\)/);
+  assert.match(statusRoute, /searchParams\.size\s*!==\s*1/);
+  assert.match(statusRoute, /UUID/i);
+  assert.match(statusRoute, /request\.headers\.get\(['"]origin['"]\)/);
+  assert.match(statusRoute, /DATABASE_URL/);
+  assert.match(statusRoute, /AUTODL_TOKEN/);
+});
+
+test("TanStack launch waitlist route persists authenticated one-click enrollment", () => {
+  const routePath = resolve(root, "src/routes/api/launch-waitlist.ts");
+  assert.equal(existsSync(routePath), true, "launch waitlist route should exist");
+
+  const route = read("src/routes/api/launch-waitlist.ts");
+  assert.match(route, /createFileRoute\(['"]\/api\/launch-waitlist['"]\)/);
+  assert.match(route, /createLaunchWaitlistStore/);
+  assert.match(route, /getLaunchWaitlistStatusResponse/);
+  assert.match(route, /joinLaunchWaitlistResponse/);
+  assert.match(route, /GET:/);
+  assert.match(route, /POST:/);
+  assert.match(route, /request\.headers\.get\(['"]origin['"]\)/);
+  assert.match(route, /new URL\(request\.url\)\.origin/);
+  assert.match(route, /DATABASE_URL/);
+});
+
+test("scheduled work keeps the legacy worker and registers video reconciliation", () => {
+  const server = read("src/server.ts");
+  assert.match(server, /legacyWorker\.scheduled\(controller, env, ctx\)/);
+  assert.match(server, /ctx\.waitUntil\(reconcileVideoGenerationTasks\(env\)\)/);
 });

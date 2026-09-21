@@ -1,9 +1,12 @@
 import { buildModelUrl, normalizeModelId } from "./model-routing.mjs";
 import { requestImageGeneration } from "./image-generation.mjs";
+import { pollVideoGenerationTask, requestVideoGeneration } from "./video-generation.mjs";
+import { createLaunchWaitlistController } from "./launch-waitlist.mjs";
 import {
   applyPromptStructure,
   createCreditSummaryController,
   createExampleCarouselController,
+  creditCostForDuration,
   creditCostForQuantity,
   examplePromptAt,
   normalizeImageQuantity,
@@ -12,14 +15,15 @@ import {
 
 const studioModels = {
   "minimax-h3": {
-    category: "AI VIDEO / MULTIMODAL",
+    category: "AI VIDEO / TEXT-TO-VIDEO",
     name: "MiniMax H3",
-    status: "Coming Soon",
+    status: "Text-to-video",
     symbol: "H3",
     tone: "cyan",
     exampleTitle: "Cinematic product reveal",
     examplePrompt: "A slow orbital camera, controlled reflections, native room tone, and a clean final composition.",
-    type: "video"
+    type: "video",
+    canGenerate: true
   },
   "seedance-3": {
     category: "AI VIDEO / RELEASE TRACKER",
@@ -64,9 +68,9 @@ const studioModels = {
   }
 };
 
-const availableModelIds = new Set(["gpt-image-2"]);
 const defaultImageGenerationLabel = "Generate image · 5 credits";
-const trialCompleteMessage = "Your free trial is complete. More credits and ultra-affordable creator plans are coming soon.";
+const trialCompleteMessage = "Your free trial is complete. Full launch is coming soon — video generation from $0.01/sec.";
+const activeVideoTaskStorageKey = "seedance:minimax-h3:active-task";
 
 export function initializeStudio() {
   const cleanups = [];
@@ -78,6 +82,8 @@ export function initializeStudio() {
   }
 
   const modelButtons = document.querySelectorAll(".model-button[data-model]");
+  const enabledModelButtons = Array.from(modelButtons).filter((button) => !button.disabled);
+  const availableModelIds = new Set(enabledModelButtons.map((button) => button.dataset.model));
   const modelName = document.getElementById("model-name");
   const modelCategory = document.getElementById("model-category");
   const modelStatus = document.getElementById("model-status");
@@ -86,6 +92,7 @@ export function initializeStudio() {
   const exampleTitle = document.getElementById("example-title");
   const examplePrompt = document.getElementById("example-prompt");
   const uploadBox = document.getElementById("upload-box");
+  const uploadGroup = document.getElementById("upload-group");
   const referenceLabel = document.getElementById("reference-label");
   const referenceMeta = document.getElementById("reference-meta");
   const uploadTitle = document.getElementById("upload-title");
@@ -112,12 +119,22 @@ export function initializeStudio() {
   const promptCount = document.getElementById("prompt-count");
   const promptStructureButton = document.getElementById("prompt-structure-button");
   const examplePromptButton = document.getElementById("example-prompt-button");
+  const promptTools = promptStructureButton.parentElement;
+  const videoDuration = document.getElementById("video-duration");
+  const videoResolution = document.getElementById("video-resolution");
+  const videoAspectRatio = document.getElementById("video-aspect-ratio");
   const imageQuantity = document.getElementById("image-quantity");
   const imageQuality = document.getElementById("image-quality");
   const imageAspectRatio = document.getElementById("image-aspect-ratio");
   const creditSummary = document.getElementById("credit-summary");
   const generationCreditCost = document.getElementById("generation-credit-cost");
   const currentCreditBalance = document.getElementById("current-credit-balance");
+  const launchWaitlist = document.getElementById("launch-waitlist");
+  const launchWaitlistButton = document.getElementById("launch-waitlist-button");
+  const launchWaitlistStatus = document.getElementById("launch-waitlist-status");
+  const resultHeadingLabel = document.getElementById("result-heading-label");
+  const resultModelLabel = document.getElementById("result-model-label");
+  const resultNote = document.getElementById("result-note");
   const sidebar = document.getElementById("studio-sidebar");
   const sidebarOpen = document.querySelector(".sidebar-open");
   const sidebarClose = document.querySelector(".sidebar-close");
@@ -125,14 +142,66 @@ export function initializeStudio() {
   let activeModelId = "gpt-image-2";
   let referenceFile = null;
   let referencePreviewUrl = "";
-  let generationInFlight = false;
+  let imageGenerationInFlight = false;
+  let videoPolling = false;
+  let videoAbortController = null;
+  let activeVideoTaskId = readActiveVideoTask();
   let exampleIndex = 0;
   let creditInsufficient = false;
+  let creditSummaryController;
+  let launchWaitlistController;
+
+  function readActiveVideoTask() {
+    try {
+      return sessionStorage.getItem(activeVideoTaskStorageKey) || "";
+    } catch {
+      return "";
+    }
+  }
+
+  function storeActiveVideoTask(taskId) {
+    activeVideoTaskId = taskId;
+    try {
+      sessionStorage.setItem(activeVideoTaskStorageKey, taskId);
+    } catch {
+      // Polling can continue for this page lifetime when storage is unavailable.
+    }
+  }
+
+  function clearActiveVideoTask() {
+    activeVideoTaskId = "";
+    try {
+      sessionStorage.removeItem(activeVideoTaskStorageKey);
+    } catch {
+      // Storage may be unavailable in hardened browsers.
+    }
+  }
 
   function imageGenerationLabel() {
     const quantity = normalizeImageQuantity(imageQuantity?.value);
     if (quantity === 1) return defaultImageGenerationLabel;
     return `Generate ${quantity} images · ${creditCostForQuantity(quantity)} credits`;
+  }
+
+  function videoGenerationLabel() {
+    return `Generate video · ${creditCostForDuration(videoDuration?.value)} credits`;
+  }
+
+  function isH3Selected() {
+    return activeModelId === "minimax-h3";
+  }
+
+  function updateGenerateButtonLabel() {
+    const model = studioModels[activeModelId];
+    if (!model?.canGenerate) {
+      generateButtonLabel.textContent = "Generation coming soon";
+    } else if (isH3Selected()) {
+      generateButtonLabel.textContent = activeVideoTaskId || videoPolling
+        ? "Video generation in progress…"
+        : videoGenerationLabel();
+    } else {
+      generateButtonLabel.textContent = imageGenerationInFlight ? "Generating…" : imageGenerationLabel();
+    }
   }
 
   function modelFromLocation() {
@@ -141,7 +210,10 @@ export function initializeStudio() {
 
   function updateGenerateButton() {
     const canGenerate = Boolean(studioModels[activeModelId]?.canGenerate);
-    generateButton.disabled = !canGenerate || !prompt.value.trim() || generationInFlight || creditInsufficient;
+    const generationBlocked = isH3Selected()
+      ? videoPolling || Boolean(activeVideoTaskId)
+      : imageGenerationInFlight;
+    generateButton.disabled = !canGenerate || !prompt.value.trim() || generationBlocked || creditInsufficient;
   }
 
   function selectModel(modelId, { syncUrl = false } = {}) {
@@ -157,21 +229,28 @@ export function initializeStudio() {
     selectedSymbol.className = `model-symbol ${model.tone}`;
     exampleTitle.textContent = model.exampleTitle;
     examplePrompt.textContent = model.examplePrompt;
+    const videoModel = model.type === "video";
     referenceLabel.textContent = model.canGenerate ? "Reference image" : "Reference files";
-    referenceMeta.textContent = model.canGenerate ? "Optional · enables image-to-image" : model.type === "video" ? "Image · Video · Audio" : "Reference images";
+    referenceMeta.textContent = model.canGenerate ? "Optional · enables image-to-image" : videoModel ? "Preview only" : "Reference images";
     uploadTitle.textContent = model.canGenerate ? "Choose a reference image" : "Drop or choose reference media";
     uploadHint.textContent = model.canGenerate ? "PNG, JPEG or WebP · max 10 MB" : "Interface preview only—files are not uploaded";
-    uploadBox.classList.toggle("is-enabled", Boolean(model.canGenerate));
-    modeGroup.hidden = Boolean(model.canGenerate);
+    uploadBox.classList.toggle("is-enabled", Boolean(model.canGenerate) && !videoModel);
+    uploadGroup.hidden = model.type === "video";
+    modeGroup.hidden = true;
+    promptTools.hidden = videoModel;
     videoSettings.hidden = model.type !== "video";
     imageSettings.hidden = model.type !== "image";
-    generateButtonLabel.textContent = model.canGenerate ? imageGenerationLabel() : "Generation coming soon";
-    generationStatus.textContent = "";
-    generationStatus.className = "generation-status";
+    updateGenerateButtonLabel();
+    if (!isH3Selected() || !activeVideoTaskId) {
+      generationStatus.textContent = "";
+      generationStatus.className = "generation-status";
+    }
+    creditSummaryController?.refresh();
     updateGenerateButton();
     if (syncUrl && modelFromLocation() !== normalizedModelId) {
       history.pushState({ model: normalizedModelId }, "", buildModelUrl(window.location.href, normalizedModelId));
     }
+    if (isH3Selected() && activeVideoTaskId) void resumeStoredVideoTask();
   }
 
   function setPromptValue(value) {
@@ -215,6 +294,123 @@ export function initializeStudio() {
       return item;
     });
     resultGallery.replaceChildren(...items);
+    resultHeadingLabel.textContent = "GENERATED IMAGES";
+    resultModelLabel.textContent = "GPT Image 2";
+    resultNote.textContent = "Provider image links may expire. Open or download each result when it is ready.";
+  }
+
+  function renderGeneratedVideo(videoUrl) {
+    const item = document.createElement("div");
+    item.className = "result-item video-result-item";
+    const frame = document.createElement("div");
+    frame.className = "result-frame";
+    const video = document.createElement("video");
+    video.src = videoUrl;
+    video.controls = true;
+    video.playsInline = true;
+    video.preload = "metadata";
+    video.setAttribute("aria-label", "Generated MiniMax H3 video");
+    frame.append(video);
+    const link = document.createElement("a");
+    link.href = videoUrl;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.download = "minimax-h3-video.mp4";
+    link.textContent = "Open or download generated video →";
+    item.append(frame, link);
+    resultGallery.replaceChildren(item);
+    resultHeadingLabel.textContent = "GENERATED VIDEO";
+    resultModelLabel.textContent = "MiniMax H3";
+    resultNote.textContent = "Video links may expire. Open or download your result when it is ready.";
+  }
+
+  function updateVideoStatus(update) {
+    announceCredits(update?.credits);
+    const status = update?.status;
+    generationStatus.textContent = status === "queued" || status === "submitting"
+      ? "Video queued. Waiting for generation to start…"
+      : status === "running"
+        ? "MiniMax H3 is generating your video…"
+        : "Video service is busy. Retrying safely…";
+    generationStatus.className = "generation-status is-working";
+  }
+
+  function requiresAuthentication(error) {
+    return error?.status === 401 || error?.code === "AUTH_REQUIRED";
+  }
+
+  async function runVideoTask({ resumeTaskId = "" } = {}) {
+    if (videoPolling || destroyed || !availableModelIds.has("minimax-h3")) return;
+    videoPolling = true;
+    videoAbortController = new AbortController();
+    updateGenerateButtonLabel();
+    updateGenerateButton();
+    generationStatus.textContent = resumeTaskId
+      ? "Resuming video generation status…"
+      : "Submitting your text-to-video prompt…";
+    generationStatus.className = "generation-status is-working";
+    if (!resumeTaskId) {
+      resultCard.hidden = true;
+      exampleCarousel.hidden = false;
+    }
+
+    try {
+      const common = {
+        signal: videoAbortController.signal,
+        onStatus: updateVideoStatus
+      };
+      const result = resumeTaskId
+        ? await pollVideoGenerationTask({ ...common, taskId: resumeTaskId })
+        : await requestVideoGeneration({
+            ...common,
+            prompt: prompt.value,
+            duration: creditCostForDuration(videoDuration.value),
+            resolution: videoResolution.value || "480p",
+            aspectRatio: videoAspectRatio.value,
+            onTask: storeActiveVideoTask
+          });
+      if (destroyed) return;
+      announceCredits(result.credits);
+      clearActiveVideoTask();
+      renderGeneratedVideo(result.videoUrl);
+      resultCard.hidden = false;
+      exampleCarousel.hidden = true;
+      generationStatus.textContent = result.credits
+        ? `Video generated · ${result.credits.remaining} credits remaining.`
+        : "Video generated.";
+      generationStatus.className = "generation-status is-success";
+    } catch (error) {
+      if (destroyed || error?.name === "AbortError") return;
+      announceCredits(error?.credits);
+      if (requiresAuthentication(error)) {
+        window.dispatchEvent(new CustomEvent("seedance:auth-required"));
+      }
+      if (error?.terminal || error?.status === 404 || error?.code === "VIDEO_TASK_NOT_FOUND" || error?.code === "INVALID_VIDEO_TASK") {
+        clearActiveVideoTask();
+      }
+      const requiredCredits = error?.credits?.cost || creditCostForDuration(videoDuration.value);
+      generationStatus.textContent = error?.code === "INSUFFICIENT_CREDITS"
+        ? error?.credits?.remaining === 0
+          ? trialCompleteMessage
+          : `You need ${requiredCredits} credits to generate. ${error.credits ? `Current balance: ${error.credits.remaining}.` : ""}`.trim()
+        : String(error?.message || "Video generation failed.");
+      generationStatus.className = "generation-status is-error";
+    } finally {
+      videoPolling = false;
+      videoAbortController = null;
+      if (!destroyed) {
+        updateGenerateButtonLabel();
+        creditSummaryController?.refresh();
+        updateGenerateButton();
+      }
+    }
+  }
+
+  function resumeStoredVideoTask() {
+    const taskId = activeVideoTaskId || readActiveVideoTask();
+    if (!taskId) return;
+    activeVideoTaskId = taskId;
+    return runVideoTask({ resumeTaskId: taskId });
   }
 
   function clearReferenceImage() {
@@ -251,13 +447,26 @@ export function initializeStudio() {
     generationStatus.className = "generation-status";
   }
 
-  const creditSummaryController = createCreditSummaryController({
+  if (launchWaitlist && launchWaitlistButton && launchWaitlistStatus) {
+    launchWaitlistController = createLaunchWaitlistController({
+      container: launchWaitlist,
+      button: launchWaitlistButton,
+      statusElement: launchWaitlistStatus
+    });
+  }
+
+  creditSummaryController = createCreditSummaryController({
     container: creditSummary,
     costElement: generationCreditCost,
     currentBalanceElement: currentCreditBalance,
     quantityControl: imageQuantity,
+    additionalCostControls: [videoDuration],
+    getCost: () => isH3Selected()
+      ? creditCostForDuration(videoDuration.value)
+      : creditCostForQuantity(imageQuantity.value),
     onChange: (summary) => {
       creditInsufficient = summary.insufficient;
+      void launchWaitlistController?.setVisible(summary.currentBalance === 0);
       updateGenerateButton();
     }
   });
@@ -271,6 +480,7 @@ export function initializeStudio() {
     descriptionElement: examplePrompt
   });
   void creditSummaryController.loadBalance();
+  if (availableModelIds.has("minimax-h3") && activeVideoTaskId) void resumeStoredVideoTask();
 
   modelButtons.forEach((button) => listen(button, "click", () => selectModel(button.dataset.model, { syncUrl: true })));
   listen(window, "popstate", () => selectModel(modelFromLocation()));
@@ -291,8 +501,9 @@ export function initializeStudio() {
     generationStatus.className = "generation-status";
   });
   listen(imageQuantity, "change", () => {
-    generateButtonLabel.textContent = imageGenerationLabel();
+    updateGenerateButtonLabel();
   });
+  listen(videoDuration, "change", updateGenerateButtonLabel);
   listen(uploadBox, "click", () => {
     if (studioModels[activeModelId]?.canGenerate) referenceInput.click();
   });
@@ -300,9 +511,13 @@ export function initializeStudio() {
   listen(referenceClear, "click", clearReferenceImage);
   listen(generateButton, "click", async () => {
     if (generateButton.disabled) return;
-    generationInFlight = true;
+    if (isH3Selected()) {
+      await runVideoTask();
+      return;
+    }
+    imageGenerationInFlight = true;
     updateGenerateButton();
-    generateButtonLabel.textContent = "Generating…";
+    updateGenerateButtonLabel();
     generationStatus.textContent = referenceFile ? "Editing from your reference image…" : "Creating an image from your prompt…";
     generationStatus.className = "generation-status is-working";
     resultCard.hidden = true;
@@ -340,8 +555,8 @@ export function initializeStudio() {
       generationStatus.className = "generation-status is-error";
     } finally {
       if (!destroyed) {
-        generationInFlight = false;
-        generateButtonLabel.textContent = studioModels[activeModelId]?.canGenerate ? imageGenerationLabel() : "Generation coming soon";
+        imageGenerationInFlight = false;
+        updateGenerateButtonLabel();
         updateGenerateButton();
       }
     }
@@ -355,7 +570,9 @@ export function initializeStudio() {
   return () => {
     if (destroyed) return;
     destroyed = true;
+    videoAbortController?.abort();
     creditSummaryController.destroy();
+    launchWaitlistController?.destroy();
     exampleCarouselController.destroy();
     while (cleanups.length) cleanups.pop()();
     clearReferenceImage();

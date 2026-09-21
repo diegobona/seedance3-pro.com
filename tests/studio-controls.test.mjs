@@ -6,6 +6,7 @@ const {
   applyPromptStructure,
   createExampleCarouselController,
   createCreditSummaryController,
+  creditCostForDuration,
   creditSummaryFor,
   creditCostForQuantity,
   examplePromptAt,
@@ -106,6 +107,48 @@ test("image settings map to safe provider parameters and per-image credits", () 
   assert.equal(sizeForAspectRatio("3:2"), "1536x1024");
   assert.equal(sizeForAspectRatio("2:3"), "1024x1536");
   assert.equal(sizeForAspectRatio("unsafe"), "1024x1024");
+});
+
+test("H3 charges one credit per normalized video second", () => {
+  assert.equal(typeof creditCostForDuration, "function");
+  assert.equal(creditCostForDuration("5"), 5);
+  assert.equal(creditCostForDuration("10"), 10);
+  assert.equal(creditCostForDuration("15"), 15);
+  assert.equal(creditCostForDuration("30"), 5);
+});
+
+test("credit summary controller can switch between image quantity and video duration costs", () => {
+  const container = { classList: fakeClassList() };
+  const quantityControl = new EventTarget();
+  quantityControl.value = "3";
+  const durationControl = new EventTarget();
+  durationControl.value = "5";
+  let mode = "image";
+  const summaries = [];
+  const controller = createCreditSummaryController({
+    container,
+    costElement: { textContent: "" },
+    currentBalanceElement: { textContent: "" },
+    quantityControl,
+    additionalCostControls: [durationControl],
+    getCost: () => mode === "video"
+      ? creditCostForDuration(durationControl.value)
+      : creditCostForQuantity(quantityControl.value),
+    eventTarget: new EventTarget(),
+    onChange: (summary) => summaries.push(summary)
+  });
+
+  assert.equal(summaries.at(-1).cost, 15, "three GPT images should retain their existing cost");
+  mode = "video";
+  controller.refresh();
+  assert.equal(summaries.at(-1).cost, 5);
+  durationControl.value = "10";
+  durationControl.dispatchEvent(new Event("change"));
+  assert.equal(summaries.at(-1).cost, 10);
+  durationControl.value = "15";
+  durationControl.dispatchEvent(new Event("change"));
+  assert.equal(summaries.at(-1).cost, 15);
+  controller.destroy();
 });
 
 test("projected balances subtract five credits per normalized image quantity", () => {
@@ -274,6 +317,43 @@ test("credit summary controller marks a zero balance as a completed trial", () =
 
   eventTarget.dispatchEvent(creditsUpdatedEvent(10));
   assert.equal(container.classList.contains("is-exhausted"), false);
+  controller.destroy();
+});
+
+test("credit summary controller reloads the balance after authentication changes", async () => {
+  const container = { classList: fakeClassList() };
+  const currentBalanceElement = { textContent: "" };
+  const quantityControl = new EventTarget();
+  quantityControl.value = "1";
+  const eventTarget = new EventTarget();
+  let fetchCalls = 0;
+  let resolveAuthenticatedBalance;
+  const controller = createCreditSummaryController({
+    container,
+    costElement: { textContent: "" },
+    currentBalanceElement,
+    quantityControl,
+    eventTarget,
+    fetchImpl: async () => {
+      fetchCalls += 1;
+      if (fetchCalls === 1) {
+        return Response.json({ success: false, code: "AUTH_REQUIRED" }, { status: 401 });
+      }
+      return new Promise((resolve) => {
+        resolveAuthenticatedBalance = resolve;
+      });
+    }
+  });
+
+  await controller.loadBalance();
+  assert.equal(currentBalanceElement.textContent, "— credits");
+
+  eventTarget.dispatchEvent(new Event("seedance:auth-changed"));
+  assert.equal(fetchCalls, 2, "authentication should trigger a fresh balance request");
+  resolveAuthenticatedBalance(Response.json({ credits: { remaining: 15 } }));
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(currentBalanceElement.textContent, "15 credits");
+
   controller.destroy();
 });
 

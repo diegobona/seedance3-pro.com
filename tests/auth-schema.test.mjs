@@ -19,7 +19,7 @@ test("Better Auth persists sessions in Neon and reserves product account fields"
   }
 
   const schema = read("src/db/schema.ts");
-  for (const table of ["user", "session", "account", "verification", "generation_credit_reservation"]) {
+  for (const table of ["user", "session", "account", "verification", "generation_credit_reservation", "launch_waitlist"]) {
     assert.match(schema, new RegExp(`pgTable\\(['\"]${table}['\"]`));
   }
   for (const field of [
@@ -40,6 +40,10 @@ test("Better Auth persists sessions in Neon and reserves product account fields"
   assert.match(schema, /generationCreditReservation/);
   assert.match(schema, /status:\s*text\(['"]status['"]\)\.default\(['"]reserved['"]\)/);
   assert.match(schema, /userId:\s*text\(['"]user_id['"]\)[\s\S]*?references\(\(\)\s*=>\s*user\.id/);
+  assert.match(schema, /launchWaitlist/);
+  assert.match(schema, /bonusCredits:\s*integer\(['"]bonus_credits['"]\)\.default\(5\)/);
+  assert.match(schema, /notifiedAt:\s*timestamp\(['"]notified_at['"]/);
+  assert.match(schema, /bonusGrantedAt:\s*timestamp\(['"]bonus_granted_at['"]/);
 
   const auth = read("src/lib/auth.ts");
   assert.match(auth, /drizzleAdapter/);

@@ -15,6 +15,20 @@
       "when": 1789718131320,
       "tag": "0001_friendly_sheva_callister",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1789961976886,
+      "tag": "0002_workable_scarlet_spider",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1789997469616,
+      "tag": "0003_sturdy_lady_bullseye",
+      "breakpoints": true
     }
   ]
 }

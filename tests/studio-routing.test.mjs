@@ -50,6 +50,15 @@ function boundElementName(script, id) {
   return binding[1];
 }
 
+function modelButtonMarkup(markup, modelId) {
+  const start = markup.indexOf(`data-model="${modelId}"`);
+  assert.ok(start >= 0, `expected ${modelId} model button`);
+  const opening = markup.lastIndexOf("<button", start);
+  const end = markup.indexOf("</button>", start);
+  assert.ok(opening >= 0 && end > start, `expected complete ${modelId} model button`);
+  return markup.slice(opening, end + "</button>".length);
+}
+
 function assertNonEmptyCssValue(styles, property, description) {
   const declaration = styles.match(new RegExp(`\\b${property}\\s*:\\s*([^;}]*)`, "i"));
   assert.ok(declaration, `expected ${description}`);
@@ -115,7 +124,7 @@ test("studio initialization is explicit, repeatable, and cleaned up by React", (
   assert.match(script, /["']pageshow["'][\s\S]*?persisted[\s\S]*?initializeStudio/i);
 });
 
-test("unavailable models are visibly coming soon and cannot be selected", () => {
+test("H3 is text-to-video only in TanStack while legacy preview keeps it disabled", () => {
   const html = readFileSync(resolve(root, "app", "legacy-preview.html"), "utf8");
   const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
   const script = readFileSync(resolve(root, "app", "studio.js"), "utf8");
@@ -129,7 +138,7 @@ test("unavailable models are visibly coming soon and cannot be selected", () => 
   assert.match(html, /<div class="section-heading"><span>AI IMAGE<\/span><\/div>/i);
   assert.match(html, /<div class="section-heading image-models-heading"><span>IMAGE MODELS<\/span><span>02<\/span><\/div>/i);
   assert.match(html, /class="model-button pose-workflow-button"[^>]+data-model="pose-to-image"/i);
-  for (const modelId of ["minimax-h3", "seedance-3", "pose-to-image", "nano-banana-2-lite"]) {
+  for (const modelId of ["seedance-3", "pose-to-image", "nano-banana-2-lite"]) {
     const disabledModel = new RegExp(`data-model=["']${modelId}["'][^>]*disabled`, "i");
     const comingSoon = new RegExp(`data-model=["']${modelId}["'][\\s\\S]*?Coming Soon[\\s\\S]*?<\\/button>`, "i");
     assert.match(html, disabledModel, `${modelId} should be disabled in the legacy preview`);
@@ -137,12 +146,74 @@ test("unavailable models are visibly coming soon and cannot be selected", () => 
     assert.match(html, comingSoon, `${modelId} should display Coming Soon`);
     assert.match(route, comingSoon, `${modelId} should display Coming Soon in the TanStack route`);
   }
+  assert.match(html, /data-model=["']minimax-h3["'][^>]*disabled/i);
+  assert.match(modelButtonMarkup(html, "minimax-h3"), /Coming Soon/i);
+  assert.match(route, /data-model=["']minimax-h3["'](?![^>]*disabled)/i);
+  assert.match(modelButtonMarkup(route, "minimax-h3"), /Text-to-video/i);
+  assert.doesNotMatch(modelButtonMarkup(route, "minimax-h3"), /Coming Soon/i);
   assert.match(html, /data-model="gpt-image-2"[^>]*class="model-button is-active"|class="model-button is-active"[^>]*data-model="gpt-image-2"/i);
   assert.doesNotMatch(html, /data-model="gpt-image-2"[^>]*disabled/i);
   assert.match(script, /"pose-to-image"\s*:\s*\{[\s\S]*?status:\s*"Coming Soon"[\s\S]*?\}/i);
   assert.match(css, /\.pose-workflow-button\s*\{/i);
   assert.match(css, /\.model-button:disabled/i);
   assert.match(css, /\.settings-grid\[hidden\]\s*\{\s*display:\s*none/i);
+});
+
+test("available model detection follows the rendered enabled buttons", () => {
+  const script = readFileSync(resolve(root, "app", "studio.js"), "utf8");
+
+  assert.match(script, /modelButtons[\s\S]*filter\([\s\S]*!button\.disabled[\s\S]*new Set/i);
+  assert.doesNotMatch(script, /const availableModelIds\s*=\s*new Set\(\["gpt-image-2"\]\)/i);
+  assert.match(script, /normalizeModelId\(modelId,\s*availableModelIds\)/i);
+});
+
+test("H3 trial controls expose only text, 5\/10\/15 seconds, 480p, and safe aspect ratios", () => {
+  const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
+  const videoSettings = route.match(/<div[^>]+id="video-settings"[\s\S]*?<\/div>/i)?.[0] || "";
+
+  assert.match(videoSettings, /id="video-duration"/i);
+  for (const duration of ["5", "10", "15"]) {
+    assert.match(videoSettings, new RegExp(`value=["']${duration}["']`));
+  }
+  assert.match(videoSettings, /id="video-resolution"[^>]*disabled/i);
+  assert.match(videoSettings, /value="480p"/i);
+  assert.doesNotMatch(videoSettings, /768p/i);
+  assert.match(videoSettings, /id="video-aspect-ratio"/i);
+  for (const ratio of ["9:16", "16:9", "1:1"]) assert.match(videoSettings, new RegExp(`value=["']${ratio}["']`));
+
+  const script = readFileSync(resolve(root, "app", "studio.js"), "utf8");
+  assert.match(script, /uploadGroup\.hidden\s*=\s*[^;]*type\s*===\s*["']video["']/i);
+  assert.match(script, /modeGroup\.hidden\s*=\s*true|modeGroup\.hidden\s*=\s*[^;]*type\s*===\s*["']video["']/i);
+});
+
+test("studio routes H3 through the video client and renders an accessible video result", () => {
+  const script = readFileSync(resolve(root, "app", "studio.js"), "utf8");
+  const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
+  const clientPath = resolve(root, "app", "video-generation.mjs");
+
+  assert.ok(existsSync(clientPath));
+  assert.match(script, /from\s+["']\.\/video-generation\.mjs["']/i);
+  assert.match(script, /requestVideoGeneration/);
+  assert.match(script, /pollVideoGenerationTask/);
+  assert.match(script, /sessionStorage/);
+  assert.match(script, /seedance:auth-required/);
+  assert.match(script, /document\.createElement\(["']video["']\)/i);
+  assert.match(script, /\.controls\s*=\s*true/i);
+  assert.match(script, /\.playsInline\s*=\s*true/i);
+  assert.match(script, /Open or download generated video/i);
+  assert.match(route, /id="result-heading-label"[^>]*>GENERATED IMAGES/i);
+  assert.match(route, /id="result-model-label"[^>]*>GPT Image 2/i);
+});
+
+test("H3 duration drives credit and generate labels without changing GPT Image behavior", () => {
+  const script = readFileSync(resolve(root, "app", "studio.js"), "utf8");
+
+  assert.match(script, /creditCostForDuration/);
+  assert.match(script, /Generate video\s*·\s*\$\{[^}]+\}\s*credits/i);
+  assert.match(script, /Generate image\s*·\s*5 credits/i);
+  assert.match(script, /requestImageGeneration/);
+  assert.match(script, /quantity:\s*normalizeImageQuantity\(imageQuantity\.value\)/i);
+  assert.match(script, /resolution:\s*imageQuality\.value/i);
 });
 
 test("GPT Image 2 appears before Nano Banana 2 Lite in both studio sidebars", () => {
@@ -231,19 +302,9 @@ test("credit summaries stay visible and visually prominent in both studio shells
     : Number(minimumSize[1]);
   assert.ok(pixels >= 20, `credit value font size should be at least 20px, got ${pixels}px`);
 
-  const trialCompleteMessage = "Your free trial is complete. More credits and ultra-affordable creator plans are coming soon.";
-  assert.match(css, new RegExp(trialCompleteMessage.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"));
+  const trialCompleteMessage = "Your free trial is complete. Full launch is coming soon — video generation from $0.01/sec.";
   assert.match(readFileSync(resolve(root, "app", "studio.js"), "utf8"), new RegExp(trialCompleteMessage.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"));
-
-  const exhaustedSummaryRule = css.match(/\.credit-summary\.is-exhausted\s*\{([^}]*)\}/i);
-  const exhaustedMessageRule = css.match(/\.credit-summary\.is-exhausted::after\s*\{([^}]*)\}/i);
-  assert.ok(exhaustedSummaryRule, "expected exhausted-credit layout styling");
-  assert.ok(exhaustedMessageRule, "expected exhausted-credit message styling");
-  assert.match(exhaustedSummaryRule[1], /position\s*:\s*relative/i);
-  assert.match(exhaustedSummaryRule[1], /margin-bottom\s*:\s*(?:[4-9]\d|\d{3,})px/i, "the external message should have reserved space");
-  assert.match(exhaustedMessageRule[1], /position\s*:\s*absolute/i);
-  assert.match(exhaustedMessageRule[1], /top\s*:\s*calc\(\s*100%\s*\+\s*\d+px\s*\)/i, "the message should sit below the credit frame");
-  assert.match(exhaustedMessageRule[1], /font-size\s*:\s*11px/i, "the trial-complete message should be one size larger");
+  assert.doesNotMatch(css, /\.credit-summary\.is-exhausted::after/i, "the real waitlist panel should replace generated pseudo-content");
 });
 
 test("studio wires the credit summary controller to its actual DOM nodes", () => {
@@ -272,6 +333,31 @@ test("studio wires the credit summary controller to its actual DOM nodes", () =>
     /generateButton\.disabled\s*=\s*[^;]*\bcreditInsufficient\b/i,
     "known credit insufficiency should disable generation"
   );
+});
+
+test("exhausted trials offer one-click launch notification and five bonus credits", () => {
+  const html = readFileSync(resolve(root, "app", "legacy-preview.html"), "utf8");
+  const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
+  const script = readFileSync(resolve(root, "app", "studio.js"), "utf8");
+  const css = readFileSync(resolve(root, "app", "studio.css"), "utf8");
+
+  for (const markup of [html, route]) {
+    assert.match(markup, /id=["']launch-waitlist["'][^>]*hidden/i);
+    assert.match(markup, /from\s*<strong>\$0\.01\/sec<\/strong>/i);
+    assert.match(markup, /5 bonus credits/i);
+    assert.match(markup, /id=["']launch-waitlist-button["']/i);
+    assert.match(markup, /Notify me &amp; claim 5 credits/i);
+  }
+  assert.match(script, /createLaunchWaitlistController/);
+  assert.match(script, /setVisible\(summary\.currentBalance\s*===\s*0\)/);
+  assert.match(css, /\.launch-waitlist\s*\{/);
+});
+
+test("successful email authentication tells the studio to refresh its credit balance", () => {
+  const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
+
+  assert.match(route, /onAuthenticated=\{[^}]*\}/i);
+  assert.match(route, /seedance:auth-changed/i);
 });
 
 test("GPT Image 2 exposes first-party text and reference-image generation controls", () => {
