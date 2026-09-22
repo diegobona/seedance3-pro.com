@@ -242,6 +242,15 @@ test("available paid models highlight the $0.01 entry price in the studio sideba
   assert.match(css, /\.price-badge/);
 });
 
+test("selected reference images use a prominent ready-state card", () => {
+  const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
+  const css = readFileSync(resolve(root, "app", "studio.css"), "utf8");
+
+  assert.match(route, /className=["']reference-attached-badge["']>REFERENCE READY</i);
+  assert.match(css, /\.reference-preview\s*\{[^}]*grid-template-columns:92px/i);
+  assert.match(css, /\.reference-attached-badge/);
+});
+
 test("empty studios expose a three-image interactive example carousel", () => {
   const html = readFileSync(resolve(root, "app", "legacy-preview.html"), "utf8");
   const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");

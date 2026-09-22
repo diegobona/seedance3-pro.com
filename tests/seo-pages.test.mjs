@@ -70,6 +70,13 @@ test("homepage presents a creator-facing experience instead of release-state mes
   assert.match(html, /<a[^>]+href="\.\/app\/"[^>]*>\s*Generate Your First AI Video/i);
 });
 
+test("homepage hero video CTA opens MiniMax H3", () => {
+  const html = read("index.html");
+  const hero = blockByClass(html, "section", "hero");
+
+  assert.match(hero, /href="\.\/app\/\?model=minimax-h3"/i);
+});
+
 test("homepage omits the requested header, FAQ, and footer copy", () => {
   const html = read("index.html");
   const footer = blockByClass(html, "footer", "site-footer");

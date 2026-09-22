@@ -7,6 +7,8 @@ import '../styles/auth.css'
 import crossedArmsPresetImage from '../../app/pose-assets/presets/anyposes-crossed-arms.png'
 import kneelingPresetImage from '../../app/pose-assets/presets/anyposes-kneeling.png'
 import joggingPresetImage from '../../app/pose-assets/presets/anyposes-jogging.png'
+import studio01Preview from '../../app/pose-assets/studio-01-preview.png'
+import studio02Preview from '../../app/pose-assets/studio-02-preview.png'
 
 export const Route = createFileRoute('/app')({
   head: () => ({
@@ -89,7 +91,7 @@ function StudioPage() {
                   <div className="label-line"><label id="reference-label">Reference image</label><span id="reference-meta">Optional · enables image-to-image</span></div>
                   <input id="reference-input" type="file" accept="image/png,image/jpeg,image/webp" hidden />
                   <button className="upload-box is-enabled" id="upload-box" type="button"><span>＋</span><strong id="upload-title">Choose a reference image</strong><small id="upload-hint">PNG, JPEG or WebP · max 10 MB</small></button>
-                  <div className="reference-preview" id="reference-preview" hidden><img id="reference-preview-image" alt="Reference image preview" /><div><strong id="reference-file-name" /><small>Used for image-to-image generation</small></div><button id="reference-clear" type="button">Remove</button></div>
+                  <div className="reference-preview" id="reference-preview" hidden><img id="reference-preview-image" alt="Reference image preview" /><div><span className="reference-attached-badge">REFERENCE READY</span><strong id="reference-file-name" /><small>Used for image-to-image generation</small></div><button id="reference-clear" type="button">Remove</button></div>
                 </div>
                 <div className="field-group">
                   <div className="label-line"><label htmlFor="studio-prompt">Prompt</label><span><b id="prompt-count">0</b>/2500</span></div>
@@ -180,6 +182,24 @@ function StudioPage() {
               </div>
 
               <aside className="pose-control-panel">
+                <section className="pose-control-card pose-actors-card">
+                  <div className="pose-control-heading"><div><span>BUILD YOUR SCENE</span><h3>Mannequins</h3></div></div>
+                  <p>Choose a model, then add it to your scene.</p>
+                  <div className="pose-model-grid" aria-label="Mannequin models">
+                    <button type="button" data-pose-model="studio-01" className="is-active" aria-pressed="true"><img src={studio01Preview} alt="Studio 01 mannequin preview" /><span>Studio 01</span></button>
+                    <button type="button" data-pose-model="studio-02" aria-pressed="false"><img src={studio02Preview} alt="Studio 02 mannequin preview" /><span>Studio 02</span></button>
+                  </div>
+                  <button type="button" className="pose-add-button" data-pose-action="add">+ Add mannequin</button>
+                  <div className="pose-scene-heading"><strong>In this scene</strong><span id="pose-actor-count" aria-live="polite">0 mannequins</span></div>
+                  <div className="pose-actor-list" id="pose-actor-list" aria-label="Scene mannequins" />
+                  <p className="pose-selection-hint">Select a mannequin here or click its body to edit it.</p>
+                  <div className="pose-placement-controls" aria-label="Selected mannequin placement">
+                    <span>Move selected</span>
+                    <div><button type="button" data-pose-move="left" aria-label="Move selected mannequin left">←</button><button type="button" data-pose-move="right" aria-label="Move selected mannequin right">→</button><button type="button" data-pose-move="back" aria-label="Move selected mannequin backward">↑</button><button type="button" data-pose-move="front" aria-label="Move selected mannequin forward">↓</button></div>
+                    <div><button type="button" data-pose-turn="-15" aria-label="Rotate selected mannequin left">↶ Turn</button><button type="button" data-pose-turn="15" aria-label="Rotate selected mannequin right">Turn ↷</button></div>
+                    <div><button type="button" data-pose-action="frame">Fit scene</button><button type="button" data-pose-action="remove">Remove selected</button></div>
+                  </div>
+                </section>
                 <section className="pose-control-card pose-intro-card">
                   <span className="pose-control-eyebrow">DIRECT THE BODY</span>
                   <h2>Drag. Pose. Create.</h2>
@@ -205,7 +225,7 @@ function StudioPage() {
                 <section className="pose-control-card pose-next-step">
                   <span>POSE TO IMAGE</span>
                   <strong>Turn this pose into an image</strong>
-                  <p>Send a clean mannequin capture to GPT Image 2 as the pose and camera reference.</p>
+                  <p>Send a clean capture of every mannequin in the scene to GPT Image 2 as the pose and camera reference.</p>
                   <button type="button" data-pose-action="use">Use this pose</button>
                 </section>
               </aside>

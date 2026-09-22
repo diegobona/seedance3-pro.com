@@ -60,5 +60,6 @@ test("pose reference prompt preserves the user's description and adds pose-only 
   assert.match(prompt, /red-haired astronaut in a lunar garden/i);
   assert.equal(prompt.split(POSE_REFERENCE_PROMPT_PREFIX).length - 1, 1);
   assert.equal(buildPoseReferencePrompt(prompt), prompt);
-  assert.match(buildPoseReferencePrompt(""), /Describe the character, clothing, scene, lighting, and style/i);
+  assert.match(buildPoseReferencePrompt(""), /Describe the characters, clothing, scene, lighting, and style/i);
+  assert.match(POSE_REFERENCE_PROMPT_PREFIX, /Preserve the number of figures/i);
 });
