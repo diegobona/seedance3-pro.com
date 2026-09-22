@@ -2,6 +2,7 @@ import { buildModelUrl, normalizeModelId } from "./model-routing.mjs";
 import { requestImageGeneration } from "./image-generation.mjs";
 import { pollVideoGenerationTask, requestVideoGeneration } from "./video-generation.mjs";
 import { createLaunchWaitlistController } from "./launch-waitlist.mjs";
+import { buildPoseReferencePrompt } from "./pose-transfer.mjs";
 import {
   applyPromptStructure,
   createCreditSummaryController,
@@ -162,7 +163,16 @@ export function initializeStudio() {
         if (destroyed) return;
         poseStudioCleanup = initializePoseStudio({
           container: poseStudio,
-          canvasHost: document.getElementById("pose-canvas")
+          canvasHost: document.getElementById("pose-canvas"),
+          onUsePose: async (file) => {
+            if (destroyed) return;
+            selectModel("gpt-image-2", { syncUrl: true });
+            setReferenceImage(file);
+            setPromptValue(buildPoseReferencePrompt(prompt.value));
+            generationStatus.textContent = "Pose reference ready · describe the character, clothing, scene, and style.";
+            generationStatus.className = "generation-status is-success";
+            creationGrid?.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
         });
       })
       .catch(() => {

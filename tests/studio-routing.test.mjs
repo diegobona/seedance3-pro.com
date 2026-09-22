@@ -332,6 +332,23 @@ test("Pose Studio exposes only the focused ragdoll IK workspace in the TanStack 
   assert.match(script, /initializePoseStudio/i);
 });
 
+test("Use this pose captures the clean mannequin and transfers it into GPT Image 2", () => {
+  const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
+  const studio = readFileSync(resolve(root, "app", "studio.js"), "utf8");
+  const poseStudio = readFileSync(resolve(root, "app", "pose-studio.mjs"), "utf8");
+
+  assert.match(route, /data-pose-action=["']use["'](?![^>]*disabled)/i);
+  assert.doesNotMatch(route, /Pose capture and AI generation arrive in the next build step/i);
+  assert.match(poseStudio, /capturePoseReference/);
+  assert.match(poseStudio, /onUsePose/);
+  assert.match(poseStudio, /handles\.forEach[\s\S]*visible\s*=\s*false/i);
+  assert.match(poseStudio, /grid\.visible\s*=\s*false/i);
+  assert.match(studio, /onUsePose\s*:\s*async/i);
+  assert.match(studio, /selectModel\(["']gpt-image-2["'][\s\S]*syncUrl\s*:\s*true/i);
+  assert.match(studio, /setReferenceImage\(/i);
+  assert.match(studio, /buildPoseReferencePrompt/);
+});
+
 test("studio wires the credit summary controller to its actual DOM nodes", () => {
   const script = readFileSync(resolve(root, "app", "studio.js"), "utf8");
 

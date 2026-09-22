@@ -10,6 +10,7 @@ import {
   normalizedBoneName,
 } from "./pose-rig-index.mjs";
 import { ANYPOSES_PRESETS, ANYPOSES_REFERENCE_DIRECTIONS } from "./pose-presets.mjs";
+import { capturePoseReference } from "./pose-transfer.mjs";
 
 const MAX_HISTORY = 40;
 const PRESET_BONE_BINDINGS = [
@@ -49,7 +50,7 @@ function snapshotSignature(snapshot) {
   return JSON.stringify(snapshot);
 }
 
-export function initializePoseStudio({ container, canvasHost }) {
+export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   if (!container || !canvasHost) return () => {};
 
   const loading = canvasHost.querySelector("#pose-canvas-loading");
@@ -57,6 +58,7 @@ export function initializePoseStudio({ container, canvasHost }) {
   const undoButton = container.querySelector('[data-pose-action="undo"]');
   const redoButton = container.querySelector('[data-pose-action="redo"]');
   const resetButton = container.querySelector('[data-pose-action="reset"]');
+  const usePoseButton = container.querySelector('[data-pose-action="use"]');
   const presetButtons = Array.from(container.querySelectorAll("[data-pose-preset]"));
   const cleanups = [];
   const undoStack = [];
@@ -71,6 +73,7 @@ export function initializePoseStudio({ container, canvasHost }) {
   let frameId = 0;
   let drag = null;
   let hoveredHandle = null;
+  let poseCaptureInFlight = false;
 
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x0b0d0d);
@@ -445,6 +448,41 @@ export function initializePoseStudio({ container, canvasHost }) {
     setHint(`${preset.label} · Anyposes preset ${preset.sourceCode} · drag a handle to refine it`);
   }
 
+  async function useCurrentPose() {
+    if (!mannequin || poseCaptureInFlight) return;
+    poseCaptureInFlight = true;
+    usePoseButton.disabled = true;
+    usePoseButton.textContent = "Capturing pose…";
+    const handleVisibility = handles.map((handle) => handle.visible);
+    const gridVisible = grid.visible;
+    try {
+      const file = await capturePoseReference({
+        canvas: renderer.domElement,
+        beforeCapture() {
+          handles.forEach((handle) => { handle.visible = false; });
+          grid.visible = false;
+          renderer.render(scene, camera);
+        },
+        afterCapture() {
+          handles.forEach((handle, index) => { handle.visible = handleVisibility[index]; });
+          grid.visible = gridVisible;
+          renderer.render(scene, camera);
+        },
+      });
+      if (destroyed) return;
+      await onUsePose?.(file);
+      setHint("Pose reference captured · continue in GPT Image 2");
+    } catch {
+      if (!destroyed) setHint("The pose could not be captured · please try again");
+    } finally {
+      poseCaptureInFlight = false;
+      if (!destroyed) {
+        usePoseButton.disabled = false;
+        usePoseButton.textContent = "Use this pose";
+      }
+    }
+  }
+
   function listen(target, type, listener, options) {
     target?.addEventListener(type, listener, options);
     cleanups.push(() => target?.removeEventListener(type, listener, options));
@@ -457,6 +495,7 @@ export function initializePoseStudio({ container, canvasHost }) {
   listen(undoButton, "click", undo);
   listen(redoButton, "click", redo);
   listen(resetButton, "click", resetPose);
+  listen(usePoseButton, "click", useCurrentPose);
   presetButtons.forEach((button) => listen(button, "click", () => applyPreset(button.dataset.posePreset)));
 
   function resize() {
@@ -529,11 +568,13 @@ export function initializePoseStudio({ container, canvasHost }) {
     if (loading) loading.hidden = true;
     presetButtons.forEach((button) => { button.disabled = false; });
     resetButton.disabled = false;
+    usePoseButton.disabled = false;
     setHint("Drag any of the 13 handles · Drag empty space to orbit · Scroll to zoom");
   }
 
   presetButtons.forEach((button) => { button.disabled = true; });
   resetButton.disabled = true;
+  usePoseButton.disabled = true;
   updateHistoryButtons();
   resize();
   animate();
