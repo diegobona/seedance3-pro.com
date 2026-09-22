@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        margin: 0;
+        overflow: hidden;
+        background: #090a0c;
+      }
+
+      #pose-demo {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        color: #f5f3ed;
+        background-color: #090a0c;
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      }
+
+      .video-shell,
+      .footage {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .video-shell {
+        overflow: hidden;
+        background-color: #090a0c;
+      }
+
+      .footage {
+        display: block;
+        object-fit: cover;
+      }
+
+      .focus-wash {
+        position: absolute;
+        right: 60px;
+        bottom: 24px;
+        width: 640px;
+        height: 260px;
+        border-radius: 999px;
+        background: radial-gradient(circle, rgba(216, 255, 115, 0.16) 0%, rgba(216, 255, 115, 0) 70%);
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .caption {
+        position: absolute;
+        left: 346px;
+        bottom: 58px;
+        display: flex;
+        min-width: 520px;
+        max-width: 1120px;
+        flex-direction: column;
+        gap: 8px;
+        padding: 22px 30px 24px;
+        border: 1px solid rgba(216, 255, 115, 0.34);
+        border-radius: 22px;
+        background-color: rgba(9, 10, 12, 0.91);
+        box-shadow: 0 22px 80px rgba(0, 0, 0, 0.45);
+        opacity: 0;
+        visibility: hidden;
+        backdrop-filter: blur(18px);
+      }
+
+      .caption-kicker {
+        color: #d8ff73;
+        font-family: "Space Mono", ui-monospace, monospace;
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+      }
+
+      .caption-copy {
+        color: #f5f3ed;
+        font-size: 58px;
+        font-weight: 850;
+        letter-spacing: -0.045em;
+        line-height: 1.02;
+      }
+
+      .caption-copy strong {
+        color: #d8ff73;
+        font-weight: 900;
+      }
+
+      .caption-final {
+        min-width: 870px;
+      }
+
+      .progress-track {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: 8px;
+        background-color: rgba(245, 243, 237, 0.08);
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 100%;
+        background-color: #d8ff73;
+        transform-origin: left center;
+      }
+
+      .end-fade {
+        position: absolute;
+        inset: 0;
+        background-color: #090a0c;
+        opacity: 0;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <main data-hf-id="hf-7e5z" id="pose-demo" data-composition-id="pose-reference-demo" data-start="0" data-duration="15.4" data-width="1920" data-height="1080">
+      <div data-hf-id="hf-or90" class="video-shell">
+        <video data-hf-id="hf-bwk9" id="pose-workflow-footage" class="footage" src="recordings/pose-workflow.webm" muted playsinline preload="auto" data-start="0" data-duration="15.4" data-media-start="4.2" data-track-index="0"></video>
+      </div>
+
+      <div data-hf-id="hf-xtsd" class="focus-wash" aria-hidden="true"></div>
+
+      <section data-hf-id="hf-d22q" class="caption caption-1">
+        <span data-hf-id="hf-s5xd" class="caption-kicker">Pose control</span>
+        <span data-hf-id="hf-3185" class="caption-copy">Direct the body.</span>
+      </section>
+
+      <section data-hf-id="hf-6wcx" class="caption caption-2">
+        <span data-hf-id="hf-u7tx" class="caption-kicker">Ragdoll workflow</span>
+        <span data-hf-id="hf-shn8" class="caption-copy"><strong data-hf-id="hf-66e5">13-point</strong> ragdoll IK</span>
+      </section>
+
+      <section data-hf-id="hf-64p4" class="caption caption-3">
+        <span data-hf-id="hf-b0j8" class="caption-kicker">Pose to image</span>
+        <span data-hf-id="hf-wls0" class="caption-copy">Use the pose as your reference.</span>
+      </section>
+
+      <section data-hf-id="hf-mwhq" class="caption caption-4 caption-final">
+        <span data-hf-id="hf-suwu" class="caption-kicker">SEEDANCE Creative Studio</span>
+        <span data-hf-id="hf-3fz6" class="caption-copy"><strong data-hf-id="hf-lib6">Pose it.</strong> Describe it. Create it.</span>
+      </section>
+
+      <div data-hf-id="hf-1xti" class="progress-track" aria-hidden="true"><div data-hf-id="hf-7gch" class="progress-bar"></div></div>
+      <div data-hf-id="hf-220b" class="end-fade" aria-hidden="true"></div>
+    </main>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      tl.fromTo(
+        ".video-shell",
+        { opacity: 0, scale: 1.02 },
+        { opacity: 1, scale: 1, duration: 0.65, ease: "power2.out" },
+        0,
+      );
+      tl.fromTo(
+        ".progress-bar",
+        { scaleX: 0 },
+        { scaleX: 1, duration: 15.4, ease: "none" },
+        0,
+      );
+      tl.fromTo(
+        ".focus-wash",
+        { opacity: 0, scale: 0.84 },
+        { opacity: 1, scale: 1.06, duration: 5.4, ease: "sine.inOut" },
+        9.5,
+      );
+
+      function addCaption(selector, start, end) {
+        tl.set(selector, { visibility: "visible" }, start);
+        tl.fromTo(
+          selector,
+          { opacity: 0, y: 38, filter: "blur(16px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.52, ease: "power3.out" },
+          start,
+        );
+        tl.to(
+          selector,
+          { opacity: 0, y: -26, filter: "blur(14px)", duration: 0.34, ease: "power2.in" },
+          end - 0.34,
+        );
+        tl.set(selector, { opacity: 0, visibility: "hidden" }, end);
+      }
+
+      addCaption(".caption-1", 0.5, 4.2);
+      addCaption(".caption-2", 4.45, 9.15);
+      addCaption(".caption-3", 9.4, 12.25);
+
+      tl.set(".caption-4", { visibility: "visible" }, 12.45);
+      tl.fromTo(
+        ".caption-4",
+        { opacity: 0, y: 42, filter: "blur(18px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.58, ease: "power3.out" },
+        12.45,
+      );
+      tl.to(".caption-4 strong", { textShadow: "0 0 28px rgba(216,255,115,.6)", duration: 1.2, ease: "sine.inOut" }, 13.05);
+      tl.to(".end-fade", { opacity: 1, duration: 0.62, ease: "power1.inOut" }, 14.78);
+      tl.set(".caption-4", { opacity: 0, visibility: "hidden" }, 15.4);
+
+      window.__timelines["pose-reference-demo"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

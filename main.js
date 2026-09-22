@@ -55,3 +55,41 @@ if (showcaseCards.length && videoDialog && dialogPlayer && dialogCloseButton) {
     activeShowcaseCard = null;
   });
 }
+
+const poseDemo = document.querySelector("[data-pose-demo]");
+
+if (poseDemo) {
+  const poseDemoStage = poseDemo.closest(".pose-demo-stage");
+  const poseDemoPlay = poseDemoStage?.querySelector("[data-pose-demo-play]");
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const savesData = navigator.connection?.saveData === true;
+
+  poseDemo.addEventListener("timeupdate", () => {
+    if (poseDemo.currentTime > 0.15) poseDemoStage?.classList.add("is-playing");
+  });
+
+  poseDemoPlay?.addEventListener("click", () => {
+    poseDemo.play().catch(() => {
+      // Keep the poster visible if playback is unavailable.
+    });
+  });
+
+  if (prefersReducedMotion || savesData) {
+    poseDemo.removeAttribute("autoplay");
+    poseDemo.pause();
+  } else if ("IntersectionObserver" in window) {
+    const poseDemoObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          poseDemo.play().catch(() => {
+            // The poster remains visible when autoplay is unavailable.
+          });
+        } else {
+          poseDemo.pause();
+        }
+      });
+    }, { threshold: 0.2 });
+
+    poseDemoObserver.observe(poseDemo);
+  }
+}

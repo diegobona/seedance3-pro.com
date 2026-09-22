@@ -1,0 +1,117 @@
+[strong] SEEDANCE
+[small] CREATIVE STUDIO
+[span] AI VIDEO
+[strong] MiniMax H3
+[small] Text-to-video
+[strong] SEEDANCE 3.0
+[small] Next-gen video
+[em] Coming Soon
+[span] AI IMAGE
+[strong] Pose to Image
+[small] Build poses in 3D
+[em] SIGNATURE
+[span] Open Pose Studio
+[span] IMAGE MODELS
+[strong] GPT Image 2
+[small] Generation & editing
+[strong] Nano Banana 2 Lite
+[small] Fast image drafts
+[em] Coming Soon
+[a] ← Back to SEEDANCE 3.0
+[a] Home
+[button] Log in
+[p] AI IMAGE / POSE CONTROL
+[h1] Pose Studio
+[span] Ragdoll IK
+[small] Selected model
+[strong] Pose Studio
+[label] Create from
+[button] Media
+[button] Image
+[button] Text
+[label] Reference files
+[span] Reference images
+[strong] Drop or choose reference media
+[small] Interface preview only—files are not uploaded
+[small] Used for image-to-image generation
+[button] Remove
+[label] Prompt
+[span] /2500
+[button] ✦ Prompt structure
+[button] View examples
+[label] Duration
+[option] 5 seconds
+[option] 10 seconds
+[option] 15 seconds
+[span] Resolution
+[small] TRIAL · 480P ONLY
+[option] 480p
+[label] Aspect ratio
+[option] 9:16 portrait
+[option] 16:9 landscape
+[option] 1:1 square
+[label] Quantity
+[option] 1 image
+[option] 2 images
+[option] 3 images
+[span] Resolution
+[small] TRIAL · 1K ONLY
+[option] 2K · Locked
+[option] 4K · Locked
+[label] Aspect ratio
+[option] 1:1
+[option] 3:2 landscape
+[option] 2:3 portrait
+[span] THIS GENERATION
+[strong] 5 credits
+[span] YOUR BALANCE
+[strong] — credits
+[span] EARLY ACCESS
+[h2] Full launch is coming soon
+[p] Video generation from
+[strong] $0.01/sec
+[p] . Join the launch list and receive
+[strong] 5 bonus credits
+[p] when we go live.
+[button] Notify me & claim 5 credits
+[small] We'll email your account address once paid plans open. No spam.
+[span] Generation coming soon
+[span] GENERATED IMAGES
+[small] GPT Image 2
+[span] POSE GUIDED
+[small] Keep refining this pose or create another variation.
+[button] Edit pose
+[button] Generate again · 5 credits
+[p] Provider image links may expire. Open or download each result when it is ready.
+[span] IMAGE PREVIEW
+[small] 3 DISTINCT STYLES
+[h3] Playful 3D world
+[p] A tactile character scene with expressive details and luminous color.
+[div] Ragdoll IK
+[span] Undo
+[span] Redo
+[button] Reset
+[div] Drag any of the 13 handles · Drag empty space to orbit · Scroll to zoom
+[span] DIRECT THE BODY
+[h2] Drag. Pose. Create.
+[p] Move the head, hips, hands, or feet. The rest of the body follows automatically.
+[span] ANYPOSES RIG
+[h3] 13 drag points
+[small] Whole-body control
+[span] Head
+[span] Chest
+[span] Pelvis
+[span] Shoulders
+[span] Elbows
+[span] Hands
+[span] Knees
+[span] Feet
+[span] QUICK START
+[h3] Pose presets
+[button] Crossed arms
+[button] Kneeling
+[button] Jogging
+[span] POSE TO IMAGE
+[strong] Turn this pose into an image
+[p] Send a clean mannequin capture to GPT Image 2 as the pose and camera reference.
+[button] Use this pose

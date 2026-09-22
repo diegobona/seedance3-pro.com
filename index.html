@@ -55,6 +55,7 @@
         <span>SEEDANCE 3.0</span>
       </a>
       <nav class="desktop-nav compact-nav" aria-label="Primary navigation">
+        <a href="#pose-control">Pose Control</a>
         <a href="#showcase">Showcase</a>
         <a href="./blog.html">Blog</a>
       </nav>
@@ -78,6 +79,34 @@
         <figure class="hero-media">
           <img class="hero-art" src="./assets/seedance3-cinematic-hero.webp" alt="Cinematic fashion performer moving through a rain-lit futuristic city" width="1536" height="1024" fetchpriority="high" decoding="async">
           <figcaption><strong>Reference · Camera · Light · Sound</strong></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="pose-feature" id="pose-control" aria-labelledby="pose-feature-title">
+      <div class="container">
+        <div class="pose-feature-header">
+          <div>
+            <p class="eyebrow">Pose-driven creation</p>
+            <h2 class="section-title" id="pose-feature-title">Pose first. Generate with intention.</h2>
+            <p class="section-copy">Shape the character before you write the prompt. Move 13 ragdoll IK points, capture the pose, and carry it straight into image generation as a visual reference.</p>
+          </div>
+          <a class="button primary pose-feature-cta" href="./app/?model=pose-to-image">Build a Pose <span aria-hidden="true">↗</span></a>
+        </div>
+
+        <figure class="pose-demo-frame">
+          <div class="pose-demo-stage">
+            <video class="pose-demo-video" data-pose-demo autoplay muted loop playsinline preload="metadata" poster="./assets/pose-reference-demo-poster.webp" aria-describedby="pose-demo-description">
+              <source src="./assets/pose-reference-demo.mp4" type="video/mp4">
+              <source src="./assets/pose-reference-demo.webm" type="video/webm">
+            </video>
+            <button class="pose-demo-play" data-pose-demo-play type="button" aria-label="Play the pose-to-image workflow demo"><span aria-hidden="true"></span></button>
+          </div>
+          <figcaption id="pose-demo-description">
+            <span><strong>Drag the pose</strong><small>Whole-body ragdoll IK</small></span>
+            <span><strong>Use as reference</strong><small>One click into GPT Image 2</small></span>
+            <span><strong>Describe and create</strong><small>Your pose stays in the workflow</small></span>
+          </figcaption>
         </figure>
       </div>
     </section>

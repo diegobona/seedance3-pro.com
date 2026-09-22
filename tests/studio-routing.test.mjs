@@ -349,6 +349,22 @@ test("Use this pose captures the clean mannequin and transfers it into GPT Image
   assert.match(studio, /buildPoseReferencePrompt/);
 });
 
+test("pose-guided results can return to the preserved pose or generate again", () => {
+  const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
+  const studio = readFileSync(resolve(root, "app", "studio.js"), "utf8");
+  const css = readFileSync(resolve(root, "app", "studio.css"), "utf8");
+
+  assert.match(route, /id=["']pose-result-actions["'][^>]*hidden/i);
+  assert.match(route, /POSE GUIDED/i);
+  assert.match(route, /id=["']edit-pose-button["']/i);
+  assert.match(route, /id=["']generate-again-button["']/i);
+  assert.match(studio, /createPoseResultActionsController/);
+  assert.match(studio, /selectModel\(["']pose-to-image["'][\s\S]*syncUrl\s*:\s*true/i);
+  assert.match(studio, /onGenerateAgain\s*:\s*\(\)\s*=>\s*runImageGeneration\(\)/i);
+  assert.match(studio, /generationUsedPoseReference[\s\S]*setVisible\(generationUsedPoseReference\)/i);
+  assert.match(css, /\.pose-result-actions\s*\{/i);
+});
+
 test("studio wires the credit summary controller to its actual DOM nodes", () => {
   const script = readFileSync(resolve(root, "app", "studio.js"), "utf8");
 

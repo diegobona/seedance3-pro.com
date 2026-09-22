@@ -3,6 +3,7 @@ import { requestImageGeneration } from "./image-generation.mjs";
 import { pollVideoGenerationTask, requestVideoGeneration } from "./video-generation.mjs";
 import { createLaunchWaitlistController } from "./launch-waitlist.mjs";
 import { buildPoseReferencePrompt } from "./pose-transfer.mjs";
+import { createPoseResultActionsController } from "./pose-result-actions.mjs";
 import {
   applyPromptStructure,
   createCreditSummaryController,
@@ -136,6 +137,9 @@ export function initializeStudio() {
   const resultHeadingLabel = document.getElementById("result-heading-label");
   const resultModelLabel = document.getElementById("result-model-label");
   const resultNote = document.getElementById("result-note");
+  const poseResultActions = document.getElementById("pose-result-actions");
+  const editPoseButton = document.getElementById("edit-pose-button");
+  const generateAgainButton = document.getElementById("generate-again-button");
   const sidebar = document.getElementById("studio-sidebar");
   const sidebarOpen = document.querySelector(".sidebar-open");
   const sidebarClose = document.querySelector(".sidebar-close");
@@ -145,6 +149,7 @@ export function initializeStudio() {
   let activeModelId = "gpt-image-2";
   let referenceFile = null;
   let referencePreviewUrl = "";
+  let poseReferenceActive = false;
   let imageGenerationInFlight = false;
   let videoPolling = false;
   let videoAbortController = null;
@@ -155,6 +160,7 @@ export function initializeStudio() {
   let launchWaitlistController;
   let poseStudioCleanup;
   let poseStudioPromise;
+  let poseResultActionsController;
 
   function ensurePoseStudio() {
     if (!poseStudio || poseStudioCleanup || poseStudioPromise) return poseStudioPromise;
@@ -167,7 +173,7 @@ export function initializeStudio() {
           onUsePose: async (file) => {
             if (destroyed) return;
             selectModel("gpt-image-2", { syncUrl: true });
-            setReferenceImage(file);
+            setReferenceImage(file, { source: "pose" });
             setPromptValue(buildPoseReferencePrompt(prompt.value));
             generationStatus.textContent = "Pose reference ready · describe the character, clothing, scene, and style.";
             generationStatus.className = "generation-status is-success";
@@ -248,6 +254,11 @@ export function initializeStudio() {
       ? videoPolling || Boolean(activeVideoTaskId)
       : imageGenerationInFlight;
     generateButton.disabled = !canGenerate || !prompt.value.trim() || generationBlocked || creditInsufficient;
+    const disabled = generateButton.disabled;
+    poseResultActionsController?.setGenerateState({
+      disabled: disabled || !poseReferenceActive || activeModelId !== "gpt-image-2",
+      cost: creditCostForQuantity(imageQuantity.value),
+    });
   }
 
   function selectModel(modelId, { syncUrl = false } = {}) {
@@ -452,6 +463,8 @@ export function initializeStudio() {
   }
 
   function clearReferenceImage() {
+    poseReferenceActive = false;
+    poseResultActionsController?.setVisible(false);
     referenceFile = null;
     referenceInput.value = "";
     referencePreview.hidden = true;
@@ -463,7 +476,7 @@ export function initializeStudio() {
     }
   }
 
-  function setReferenceImage(file) {
+  function setReferenceImage(file, { source = "upload" } = {}) {
     if (!file) return;
     if (!["image/png", "image/jpeg", "image/webp"].includes(file.type)) {
       generationStatus.textContent = "Choose a PNG, JPEG, or WebP image.";
@@ -477,6 +490,7 @@ export function initializeStudio() {
     }
     clearReferenceImage();
     referenceFile = file;
+    poseReferenceActive = source === "pose";
     referencePreviewUrl = URL.createObjectURL(file);
     referencePreviewImage.src = referencePreviewUrl;
     referenceFileName.textContent = file.name;
@@ -490,6 +504,19 @@ export function initializeStudio() {
       container: launchWaitlist,
       button: launchWaitlistButton,
       statusElement: launchWaitlistStatus
+    });
+  }
+
+  if (poseResultActions && editPoseButton && generateAgainButton) {
+    poseResultActionsController = createPoseResultActionsController({
+      container: poseResultActions,
+      editButton: editPoseButton,
+      generateAgainButton,
+      onEditPose() {
+        selectModel("pose-to-image", { syncUrl: true });
+        poseStudio?.scrollIntoView({ behavior: "smooth", block: "start" });
+      },
+      onGenerateAgain: () => runImageGeneration(),
     });
   }
 
@@ -540,6 +567,7 @@ export function initializeStudio() {
   });
   listen(imageQuantity, "change", () => {
     updateGenerateButtonLabel();
+    updateGenerateButton();
   });
   listen(videoDuration, "change", updateGenerateButtonLabel);
   listen(uploadBox, "click", () => {
@@ -547,18 +575,20 @@ export function initializeStudio() {
   });
   listen(referenceInput, "change", () => setReferenceImage(referenceInput.files?.[0]));
   listen(referenceClear, "click", clearReferenceImage);
-  listen(generateButton, "click", async () => {
-    if (generateButton.disabled) return;
-    if (isH3Selected()) {
-      await runVideoTask();
-      return;
-    }
+  async function runImageGeneration() {
+    if (imageGenerationInFlight || activeModelId !== "gpt-image-2" || !prompt.value.trim() || creditInsufficient) return;
+    const generationUsedPoseReference = poseReferenceActive;
     imageGenerationInFlight = true;
     updateGenerateButton();
     updateGenerateButtonLabel();
-    generationStatus.textContent = referenceFile ? "Editing from your reference image…" : "Creating an image from your prompt…";
+    generationStatus.textContent = generationUsedPoseReference
+      ? "Creating from your pose reference…"
+      : referenceFile
+        ? "Editing from your reference image…"
+        : "Creating an image from your prompt…";
     generationStatus.className = "generation-status is-working";
     resultCard.hidden = true;
+    poseResultActionsController?.setVisible(false);
     exampleCarousel.hidden = false;
     try {
       const result = await requestImageGeneration({
@@ -571,6 +601,7 @@ export function initializeStudio() {
       if (destroyed) return;
       renderGeneratedImages(result.images);
       resultCard.hidden = false;
+      poseResultActionsController?.setVisible(generationUsedPoseReference);
       exampleCarousel.hidden = true;
       announceCredits(result.credits);
       const generatedCount = result.images.length;
@@ -598,6 +629,15 @@ export function initializeStudio() {
         updateGenerateButton();
       }
     }
+  }
+
+  listen(generateButton, "click", async () => {
+    if (generateButton.disabled) return;
+    if (isH3Selected()) {
+      await runVideoTask();
+      return;
+    }
+    await runImageGeneration();
   });
   document.querySelectorAll(".segmented button").forEach((button) => listen(button, "click", () => {
     button.parentElement.querySelectorAll("button").forEach((item) => item.classList.toggle("is-selected", item === button));
@@ -612,6 +652,7 @@ export function initializeStudio() {
     creditSummaryController.destroy();
     launchWaitlistController?.destroy();
     exampleCarouselController.destroy();
+    poseResultActionsController?.destroy();
     poseStudioCleanup?.();
     while (cleanups.length) cleanups.pop()();
     clearReferenceImage();

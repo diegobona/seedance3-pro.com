@@ -130,7 +130,18 @@ function StudioPage() {
               </section>
 
               <aside className="context-panel">
-                <div className="context-card result-card" id="result-card" hidden><div className="result-heading"><span id="result-heading-label">GENERATED IMAGES</span><small id="result-model-label">GPT Image 2</small></div><div className="result-gallery" id="result-gallery" /><p id="result-note">Provider image links may expire. Open or download each result when it is ready.</p></div>
+                <div className="context-card result-card" id="result-card" hidden>
+                  <div className="result-heading"><span id="result-heading-label">GENERATED IMAGES</span><small id="result-model-label">GPT Image 2</small></div>
+                  <div className="result-gallery" id="result-gallery" />
+                  <div className="pose-result-actions" id="pose-result-actions" hidden>
+                    <div><span>POSE GUIDED</span><small>Keep refining this pose or create another variation.</small></div>
+                    <div className="pose-result-buttons">
+                      <button id="edit-pose-button" type="button">Edit pose</button>
+                      <button id="generate-again-button" type="button">Generate again · 5 credits</button>
+                    </div>
+                  </div>
+                  <p id="result-note">Provider image links may expire. Open or download each result when it is ready.</p>
+                </div>
                 <section className="context-card example-carousel" id="example-carousel" aria-labelledby="example-carousel-heading">
                   <div className="result-heading"><span id="example-carousel-heading">IMAGE PREVIEW</span><small>3 DISTINCT STYLES</small></div>
                   <div className="example-carousel-viewport">

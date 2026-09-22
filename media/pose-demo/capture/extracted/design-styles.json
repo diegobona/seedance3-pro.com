@@ -1,0 +1,296 @@
+{
+  "typography": [
+    {
+      "role": "display",
+      "fontFamily": "Inter",
+      "fontSize": "38px",
+      "fontWeight": "700",
+      "lineHeight": "normal",
+      "letterSpacing": "-1.71px",
+      "color": "#F5F3ED",
+      "sampleText": "Pose Studio"
+    },
+    {
+      "role": "heading",
+      "fontFamily": "Inter",
+      "fontSize": "24px",
+      "fontWeight": "700",
+      "lineHeight": "normal",
+      "letterSpacing": "-0.96px",
+      "color": "#F5F3ED",
+      "sampleText": "Drag. Pose. Create."
+    },
+    {
+      "role": "heading-3",
+      "fontFamily": "Inter",
+      "fontSize": "16px",
+      "fontWeight": "700",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "color": "#F5F3ED",
+      "sampleText": "13 drag points"
+    },
+    {
+      "role": "link",
+      "fontFamily": "Inter",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "color": "#F5F3ED",
+      "sampleText": "SEEDANCECREATIVE STUDIO"
+    },
+    {
+      "role": "body",
+      "fontFamily": "Inter",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "lineHeight": "21.7px",
+      "letterSpacing": "normal",
+      "color": "#969990",
+      "sampleText": "Move the head, hips, hands, or feet. The rest of the body fo"
+    },
+    {
+      "role": "body-small",
+      "fontFamily": "Inter",
+      "fontSize": "10px",
+      "fontWeight": "400",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "color": "#6F706B",
+      "sampleText": "Text-to-video"
+    }
+  ],
+  "spacing": {
+    "observed": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      14,
+      16,
+      18,
+      19,
+      20,
+      22
+    ],
+    "baseUnit": 4
+  },
+  "radius": [
+    "10px",
+    "12px",
+    "14px",
+    "18px"
+  ],
+  "shadows": [
+    {
+      "value": "rgba(216, 255, 115, 0.04) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0.18) 0px 10px 32px 0px",
+      "count": 1
+    },
+    {
+      "value": "rgba(216, 255, 115, 0.14) 0px 10px 28px 0px",
+      "count": 1
+    }
+  ],
+  "buttons": [
+    {
+      "label": "Pose to ImageBuild poses in 3DSIGNATUREO",
+      "background": "transparent",
+      "backgroundImage": "linear-gradient(135deg, rgba(216, 255, 115, 0.17), rgba(216, 255, 115, 0.055) 60%, rgba(255, 255, 255, 0.035))",
+      "backdropFilter": "",
+      "color": "#F5F3ED",
+      "padding": "14px 12px 35px",
+      "borderRadius": "14px",
+      "border": "1px solid rgba(216, 255, 115, 0.52)",
+      "boxShadow": "rgba(216, 255, 115, 0.04) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0.18) 0px 10px 32px 0px",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "height": "91px"
+    },
+    {
+      "label": "Log in",
+      "background": "#D8FF73",
+      "backgroundImage": "",
+      "backdropFilter": "",
+      "color": "#D8FF73",
+      "padding": "8px 14px",
+      "borderRadius": "999px",
+      "border": "1px solid rgba(216, 255, 115, 0.38)",
+      "boxShadow": "none",
+      "fontSize": "10px",
+      "fontWeight": "800",
+      "height": "31px"
+    },
+    {
+      "label": "↶ Undo",
+      "background": "#FFFFFF",
+      "backgroundImage": "",
+      "backdropFilter": "",
+      "color": "#52544F",
+      "padding": "8px 12px",
+      "borderRadius": "10px",
+      "border": "1px solid rgba(255, 255, 255, 0.1)",
+      "boxShadow": "none",
+      "fontSize": "12px",
+      "fontWeight": "400",
+      "height": "36px"
+    },
+    {
+      "label": "Crossed arms",
+      "background": "#0D0F10",
+      "backgroundImage": "",
+      "backdropFilter": "",
+      "color": "#AEB0AA",
+      "padding": "7px 5px 10px",
+      "borderRadius": "12px",
+      "border": "1px solid rgba(255, 255, 255, 0.1)",
+      "boxShadow": "none",
+      "fontSize": "10px",
+      "fontWeight": "400",
+      "height": "120px"
+    },
+    {
+      "label": "Use this pose",
+      "background": "#D8FF73",
+      "backgroundImage": "",
+      "backdropFilter": "",
+      "color": "#17190F",
+      "padding": "11px",
+      "borderRadius": "10px",
+      "border": "0px none rgb(23, 25, 15)",
+      "boxShadow": "rgba(216, 255, 115, 0.14) 0px 10px 28px 0px",
+      "fontSize": "12px",
+      "fontWeight": "850",
+      "height": "37px"
+    }
+  ],
+  "cards": [
+    {
+      "label": "card",
+      "background": "transparent",
+      "backgroundImage": "linear-gradient(150deg, rgba(216, 255, 115, 0.035), rgb(16, 18, 20) 42%)",
+      "backdropFilter": "",
+      "color": "#F5F3ED",
+      "padding": "0px",
+      "borderRadius": "22px",
+      "border": "1px solid rgba(216, 255, 115, 0.17)",
+      "boxShadow": "none",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "height": "710px"
+    },
+    {
+      "label": "card",
+      "background": "transparent",
+      "backgroundImage": "",
+      "backdropFilter": "",
+      "color": "#F5F3ED",
+      "padding": "0px",
+      "borderRadius": "0px",
+      "border": "0px none rgb(245, 243, 237)",
+      "boxShadow": "none",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "height": "755.562px"
+    },
+    {
+      "label": "card",
+      "background": "transparent",
+      "backgroundImage": "linear-gradient(145deg, rgba(216, 255, 115, 0.106), rgb(21, 24, 22) 68%)",
+      "backdropFilter": "",
+      "color": "#F5F3ED",
+      "padding": "19px",
+      "borderRadius": "18px",
+      "border": "1px solid rgba(216, 255, 115, 0.24)",
+      "boxShadow": "none",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "height": "151.375px"
+    },
+    {
+      "label": "card",
+      "background": "#121419",
+      "backgroundImage": "",
+      "backdropFilter": "",
+      "color": "#F5F3ED",
+      "padding": "19px",
+      "borderRadius": "18px",
+      "border": "1px solid rgba(255, 255, 255, 0.1)",
+      "boxShadow": "none",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "height": "166px"
+    }
+  ],
+  "nav": {
+    "label": "navigation",
+    "background": "transparent",
+    "backgroundImage": "",
+    "backdropFilter": "",
+    "color": "#F5F3ED",
+    "padding": "0px",
+    "borderRadius": "0px",
+    "border": "0px none rgb(245, 243, 237)",
+    "boxShadow": "none",
+    "fontSize": "16px",
+    "fontWeight": "400",
+    "height": "454px"
+  },
+  "chips": [
+    {
+      "label": "Ragdoll IK",
+      "background": "transparent",
+      "color": "#A8A9A3",
+      "padding": "8px 11px",
+      "borderRadius": "99px",
+      "border": "1px solid rgba(255, 255, 255, 0.1)",
+      "boxShadow": "none",
+      "fontSize": "9px",
+      "fontWeight": "800",
+      "height": "29px"
+    },
+    {
+      "label": "Head",
+      "background": "#D8FF73",
+      "color": "#AEB3A5",
+      "padding": "7px 9px",
+      "borderRadius": "999px",
+      "border": "1px solid rgba(216, 255, 115, 0.16)",
+      "boxShadow": "none",
+      "fontSize": "11px",
+      "fontWeight": "400",
+      "height": "30px"
+    }
+  ],
+  "statCells": [],
+  "tabs": [],
+  "backgrounds": [
+    {
+      "value": "linear-gradient(150deg, rgba(216, 255, 115, 0.035), rgb(16, 18, 20) 42%)",
+      "area": 739820
+    },
+    {
+      "value": "radial-gradient(circle at 50% 35%, rgb(28, 33, 29) 0px, rgb(11, 13, 13) 58%)",
+      "area": 676000
+    },
+    {
+      "value": "linear-gradient(145deg, rgba(216, 255, 115, 0.106), rgb(21, 24, 22) 68%)",
+      "area": 46926
+    }
+  ],
+  "glass": [
+    {
+      "backdropFilter": "blur(12px)",
+      "background": "rgba(8, 10, 9, 0.74)",
+      "border": "1px solid rgba(255, 255, 255, 0.1)",
+      "borderRadius": "999px",
+      "boxShadow": "",
+      "area": 15288
+    }
+  ]
+}
