@@ -52,7 +52,7 @@ function StudioPage() {
           <nav aria-label="Model navigation">
             <div className="nav-section">
               <div className="section-heading"><span>AI VIDEO</span><span>02</span></div>
-              <button className="model-button" type="button" data-model="minimax-h3"><span className="model-symbol cyan">H3</span><span><strong>MiniMax H3</strong><small>Text-to-video</small></span></button>
+              <button className="model-button price-model" type="button" data-model="minimax-h3"><span className="model-symbol cyan">H3</span><span><strong>MiniMax H3</strong><small>Text-to-video</small></span><em className="price-badge">FROM <b>$0.01</b></em></button>
               <button className="model-button" type="button" data-model="seedance-3" disabled><img src="/assets/seedance-mark.svg" width="40" height="40" alt="" style={{ flexShrink: 0 }} /><span><strong>SEEDANCE 3.0</strong><small>Next-gen video</small></span><em className="soon">Coming Soon</em></button>
             </div>
             <div className="nav-section">
@@ -66,7 +66,7 @@ function StudioPage() {
                 <span className="workflow-cta">Open Pose Studio <b>↗</b></span>
               </button>
               <div className="section-heading image-models-heading"><span>IMAGE MODELS</span><span>02</span></div>
-              <button className="model-button is-active" type="button" data-model="gpt-image-2"><span className="model-symbol orange">G2</span><span><strong>GPT Image 2</strong><small>Generation &amp; editing</small></span></button>
+              <button className="model-button price-model is-active" type="button" data-model="gpt-image-2"><span className="model-symbol orange">G2</span><span><strong>GPT Image 2</strong><small>Generation &amp; editing</small></span><em className="price-badge">FROM <b>$0.01</b></em></button>
               <button className="model-button" type="button" data-model="nano-banana-2-lite" disabled><span className="model-symbol violet">NB</span><span><strong>Nano Banana 2 Lite</strong><small>Fast image drafts</small></span><em className="soon">Coming Soon</em></button>
             </div>
           </nav>

@@ -231,6 +231,17 @@ test("GPT Image 2 appears before Nano Banana 2 Lite in both studio sidebars", ()
   }
 });
 
+test("available paid models highlight the $0.01 entry price in the studio sidebar", () => {
+  const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
+  const css = readFileSync(resolve(root, "app", "studio.css"), "utf8");
+
+  assert.match(route, /data-model=["']minimax-h3["'][^>]*>[\s\S]*?<em className=["']price-badge["']>FROM <b>\$0\.01<\/b><\/em>[\s\S]*?<\/button>/i);
+  assert.match(route, /data-model=["']gpt-image-2["'][^>]*>[\s\S]*?<em className=["']price-badge["']>FROM <b>\$0\.01<\/b><\/em>[\s\S]*?<\/button>/i);
+  assert.equal((route.match(/className=["']price-badge["']/g) || []).length, 2);
+  assert.match(css, /\.model-button\.price-model/);
+  assert.match(css, /\.price-badge/);
+});
+
 test("empty studios expose a three-image interactive example carousel", () => {
   const html = readFileSync(resolve(root, "app", "legacy-preview.html"), "utf8");
   const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
