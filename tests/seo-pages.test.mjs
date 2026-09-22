@@ -98,7 +98,7 @@ test("homepage links to Pose Control, Showcase, and Blog in its compact navigati
   const navigation = blockByClass(header, "nav", "compact-nav");
 
   assert.deepEqual(linksIn(navigation), [
-    { href: "./pose-to-image.html", text: "Pose Control" },
+    { href: "./pose-to-image", text: "Pose Control" },
     { href: "#showcase", text: "Showcase" },
     { href: "./blog.html", text: "Blog" },
   ]);

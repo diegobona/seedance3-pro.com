@@ -46,11 +46,11 @@
         <p class="article-lead">Build a 3D pose in Seedance, use it as a GPT Image 2 reference, and refine your character image. Follow the steps, prompt examples, and optional image-to-video workflow.</p>
         <div class="article-content prose">
           <p>When a character's stance or camera angle matters, a 3D mannequin gives the image model a visual reference. In Seedance, you can arrange that reference in the browser and send a capture directly to GPT Image 2. The generated image may still need revisions: a reference guides the model, but does not lock every joint or preserve a character's identity.</p>
-          <p><a href="./pose-to-image.html">See the AI pose generator and its controls</a>, or <a href="./app/?model=pose-to-image">open Pose Studio</a> to follow along. Updated <time datetime="2026-09-22">September 22, 2026</time>.</p>
+          <p><a href="./pose-to-image">See the AI pose generator and its controls</a>, or <a href="./app/?model=pose-to-image">open Pose Studio</a> to follow along. Updated <time datetime="2026-09-22">September 22, 2026</time>.</p>
 
           <h2>1. Start with a pose you can read clearly</h2>
           <p>Choose a preset close to the stance you need. For example, start with Jogging for a running composition. Drag the mannequin's control points to adjust the limbs. Check the shoulders, hips, bent knees, and where the feet meet the floor.</p>
-          <p>For a scene with more than one character, add another mannequin and arrange the figures before capturing. Keep the silhouettes separated where possible: overlapping arms and legs can make the reference harder to interpret.</p>
+          <p>Work with the single mannequin in the current online editor. Keep its silhouette readable: overlapping arms and legs can make the reference harder to interpret.</p>
           <figure>
             <img src="./assets/pose-reference-demo-poster.webp" width="1280" height="720" loading="lazy" decoding="async" alt="Seedance Pose Studio with a mannequin wrist raised and pose control handles visible">
             <figcaption>A real editor capture from the pose-editing demo. This is a mannequin reference, not an AI-generated character image.</figcaption>
@@ -58,7 +58,7 @@
 
           <h2>2. Set the camera before you capture</h2>
           <p>Orbit the camera until the intended pose is clear. A front view, side view, and three-quarter view produce different reference images even when the mannequin stays in the same pose. Leave room around hands and feet if you want a full-body result.</p>
-          <p>Use the final framing to decide which details matter. A hidden hand or a foot behind another character may need a different camera angle rather than more pose adjustments.</p>
+          <p>Use the final framing to decide which details matter. A hidden hand or a foot behind the other leg may need a different camera angle rather than more pose adjustments.</p>
 
           <h2>3. Send the pose to GPT Image 2</h2>
           <p>Select <strong>Use this pose</strong>. Seedance captures the scene and attaches it as a reference in the GPT Image 2 workspace. Check the reference thumbnail before generating, then write the character, clothing, setting, and visual style you want.</p>
@@ -75,9 +75,9 @@
           <h3>Defensive stance</h3>
           <p><strong>Set up:</strong> bent knees, raised arms, and hands that do not overlap the face.</p>
           <blockquote><p>Use the attached mannequin image as the pose and camera reference. Create a full-body concept illustration of an adult martial artist in a dark training outfit. Follow the visible defensive stance and camera angle. Use a simple studio background and clear directional lighting.</p></blockquote>
-          <h3>Two-character composition</h3>
-          <p><strong>Set up:</strong> two mannequins with readable silhouettes and deliberate spacing.</p>
-          <blockquote><p>Use the attached mannequin scene as the composition and pose reference. Create an illustration of two adult explorers, one in a blue jacket and the other in a tan jacket, standing in a mountain landscape. Follow the figures' relative positions, visible stances, and camera framing.</p></blockquote>
+          <h3>Kneeling character</h3>
+          <p><strong>Set up:</strong> the Kneeling preset, with the bent leg and hands clearly visible.</p>
+          <blockquote><p>Use the attached mannequin image as the pose and camera reference. Create an illustration of an adult explorer wearing a tan jacket and kneeling on a rocky trail. Follow the visible kneeling stance and camera framing, with soft overcast light.</p></blockquote>
 
           <h2>5. Compare the image with the reference</h2>
           <p>Inspect the result before using it in a larger project. Check limb placement, hands, feet, body proportions, character count, and camera angle. If an important part drifts, change one variable and generate again so you can tell whether the change helped.</p>
@@ -85,7 +85,7 @@
             <li><strong>Arms or legs merge:</strong> separate them in the pose or rotate the camera to reveal their outlines.</li>
             <li><strong>The image crops a hand or foot:</strong> pull the reference camera back and ask for a full-body composition.</li>
             <li><strong>The model adds a different action:</strong> remove conflicting action words and describe a single still pose.</li>
-            <li><strong>Two characters become difficult to distinguish:</strong> increase spacing and give each a simple, distinct appearance.</li>
+            <li><strong>The result still looks like a mannequin:</strong> describe the intended character and clothing clearly, and identify the mannequin as a pose reference.</li>
           </ul>
           <p>A pose capture describes body layout and framing. It is not an OpenPose skeleton export, an identity reference, or a timed motion sequence.</p>
 
@@ -97,7 +97,7 @@
           <h2>Try a pose-led image</h2>
           <p>Start with one readable pose and a simple scene. Once the still image works, add more complex styling or plan the next video step.</p>
           <p><a class="button primary" href="./app/?model=pose-to-image">Open Pose Studio</a></p>
-          <p><a href="./pose-to-image.html">Review the pose-to-image workflow and FAQs</a>.</p>
+          <p><a href="./pose-to-image">Review the pose-to-image workflow and FAQs</a>.</p>
 
         </div>
       </article>

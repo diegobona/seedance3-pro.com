@@ -22,7 +22,7 @@
 
 **Files:** create `pose-to-image.html`, `pose-to-image.css`; optional copies/exports of verified existing media under `assets/pose-seo/`.
 
-- [x] Write indexable English HTML with a single H1, canonical `https://seedance3-pro.com/pose-to-image.html`, consistent social metadata, and simple WebPage/BreadcrumbList structured data that matches visible content. No fabricated reviews, ratings, price claims, or unsupported structured data.
+- [x] Write indexable English HTML with a single H1, canonical `https://seedance3-pro.com/pose-to-image`, consistent social metadata, and simple WebPage/BreadcrumbList structured data that matches visible content. No fabricated reviews, ratings, price claims, or unsupported structured data.
 - [x] Title: `AI Pose Generator & 3D Pose Editor | Seedance`. Explain 3D pose → capture → GPT Image 2; CTA `./app/?model=pose-to-image`.
 - [x] Reuse the shared dark/lime shell. Add accessible page-specific responsive layouts, explicit keyboard focus, real media with dimensions/alt text, native video controls, and meaningful below-fold text. Load media conservatively.
 - [x] Include supported scene controls, a three-step workflow, truthful pricing/login boundary, output limitations, FAQs, and a related tutorial link. Do not advertise exact identity preservation, OpenPose export, preset deep links, or direct pose-to-video generation.
@@ -61,3 +61,11 @@
 - [ ] Publish one or two distinct hands-on articles and demonstration videos derived from the cases.
 - [ ] Add useful conversion measurement after identifying the existing analytics stack, and obtain a Search Console baseline if access is available.
 - [ ] Improve the Anyposes handoff after ownership/cooperation is confirmed; prepare relevant external submission material. Actual outreach requires explicit instructions.
+
+### Production URL verification
+
+Cloudflare Pages serves the source file `pose-to-image.html` at `/pose-to-image` and redirects requests for the `.html` URL. The canonical, social URL, structured-data identifiers, internal links, and sitemap therefore use the final extensionless URL. The source file remains HTML. Initial production deployment `8397c108-c07f-4a2b-b524-1308d926da62` succeeded for commit `87700bef38123a3076634cf2f70f5915d91b75e7`; the URL consistency correction is a subsequent static release.
+
+### Live product boundary
+
+The production `/app?model=pose-to-image` browser snapshot still shows the older single-mannequin Worker UI: 13 control points, three presets, history and Use this pose; no Add mannequin or transform toolbar. Repository support is not proof of live availability. Landing and tutorial copy therefore describe the deployed single-mannequin workflow and defer multiple-character composition until the app release. This SEO increment does not deploy unrelated Worker changes.
