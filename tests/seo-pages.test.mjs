@@ -91,13 +91,14 @@ test("homepage omits the requested header, FAQ, and footer copy", () => {
   assert.doesNotMatch(footer, /Capabilities|Examples|Showcase|FAQ|MiniMax H3|Nano Banana 2 Lite|GPT Image 2|Model comparison|Guides|Pricing|Start for Free|Contact/i);
 });
 
-test("homepage exposes only Showcase and Blog in its compact navigation", () => {
+test("homepage links to Pose Control, Showcase, and Blog in its compact navigation", () => {
   const html = read("index.html");
   const css = read("site.css");
   const header = blockByClass(html, "header", "site-header");
   const navigation = blockByClass(header, "nav", "compact-nav");
 
   assert.deepEqual(linksIn(navigation), [
+    { href: "./pose-to-image.html", text: "Pose Control" },
     { href: "#showcase", text: "Showcase" },
     { href: "./blog.html", text: "Blog" },
   ]);

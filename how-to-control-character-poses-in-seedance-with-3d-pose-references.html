@@ -4,20 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>How to Control Character Poses in Seedance with 3D Pose References | SEEDANCE Blog</title>
-  <meta name="description" content="Learn how to control character poses in Seedance using 3D pose references, with a simple workflow for pose setup, camera angle, and motion prompts.">
-  <meta name="keywords" content="Seedance blog,AI video tutorial,Seedance workflow">
+  <meta name="description" content="Build a 3D pose in Seedance, use it as a GPT Image 2 reference, and refine your character image. Follow the steps, prompt examples, and optional image-to-video workflow.">
+  <meta name="keywords" content="3D pose reference,pose to image,AI pose generator,character pose tutorial">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
   <link rel="canonical" href="https://seedance3-pro.com/how-to-control-character-poses-in-seedance-with-3d-pose-references.html">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="SEEDANCE 3.0">
   <meta property="og:title" content="How to Control Character Poses in Seedance with 3D Pose References">
-  <meta property="og:description" content="Learn how to control character poses in Seedance using 3D pose references, with a simple workflow for pose setup, camera angle, and motion prompts.">
+  <meta property="og:description" content="Build a 3D pose in Seedance, use it as a GPT Image 2 reference, and refine your character image. Follow the steps, prompt examples, and optional image-to-video workflow.">
   <meta property="og:url" content="https://seedance3-pro.com/how-to-control-character-poses-in-seedance-with-3d-pose-references.html">
-  <meta property="og:image" content="https://seedance3-pro.com/og-cover.svg">
+  <meta property="og:image" content="https://seedance3-pro.com/assets/pose-reference-demo-poster.webp">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="How to Control Character Poses in Seedance with 3D Pose References">
-  <meta name="twitter:description" content="Learn how to control character poses in Seedance using 3D pose references, with a simple workflow for pose setup, camera angle, and motion prompts.">
-  <meta name="twitter:image" content="https://seedance3-pro.com/og-cover.svg">
+  <meta name="twitter:description" content="Build a 3D pose in Seedance, use it as a GPT Image 2 reference, and refine your character image. Follow the steps, prompt examples, and optional image-to-video workflow.">
+  <meta name="twitter:image" content="https://seedance3-pro.com/assets/pose-reference-demo-poster.webp">
   <meta name="theme-color" content="#090a0c">
   <link rel="stylesheet" href="./site.css">
   <link rel="icon" type="image/svg+xml" href="./favicon.svg">
@@ -43,9 +43,62 @@
       <article class="article-shell">
         <p class="eyebrow article-category">Tutorial</p>
         <h1 class="article-title">How to Control Character Poses in Seedance with 3D Pose References</h1>
-        <p class="article-lead">Learn how to control character poses in Seedance using 3D pose references, with a simple workflow for pose setup, camera angle, and motion prompts.</p>
+        <p class="article-lead">Build a 3D pose in Seedance, use it as a GPT Image 2 reference, and refine your character image. Follow the steps, prompt examples, and optional image-to-video workflow.</p>
         <div class="article-content prose">
-          <p><em>A practical workflow using Anyposes + Seedance</em></p><p><strong>The problem: </strong>text prompts are good at describing actions, but weak at precise body positions. If the exact pose matters, build it visually first and use it as Seedance’s starting reference.</p><p><img src="./blog-assets/how-to-control-character-poses-in-seedance-with-3d-pose-references-1789277757240-1.png"></p><h2>1. When to Use a 3D Pose Reference</h2><p>Use it when the starting body position is important: fight scenes, sports, dance, kneeling, sitting/standing, running starts, falls, or shots with unusual camera angles.</p><p>Skip it for simple actions such as “a man walks down the street.”</p><p><img src="./blog-assets/how-to-control-character-poses-in-seedance-with-3d-pose-references-1789277757241-2.png"></p><h2>2. Build the Pose in Anyposes</h2><p>Open <a href="https://anyposes.com/" target="_blank" rel="noopener noreferrer">Anyposes</a>&nbsp;and create only the pose that matters to the shot. Focus on head direction, torso rotation, arms, legs, and weight distribution.</p><ul><li>Match the body pose to the first frame you want.</li><li>Set the camera angle in Anyposes too; front, side, low-angle and three-quarter views produce different results.</li><li>Capture a clean image with the character clearly visible.</li></ul><h2>3. Let the Reference Control the Pose — Let the Prompt Control the Motion</h2><p>Do not waste prompt space redescribing every arm and leg angle already visible in the reference image. Tell Seedance what happens next.</p><p><img src="./blog-assets/how-to-control-character-poses-in-seedance-with-3d-pose-references-1789277757243-3.png"></p><h3>Prompt Template</h3><table><tbody><tr><td><p>Use @image1 as the starting pose. The character [ACTION]. End with [FINAL POSITION]. The camera [CAMERA MOVEMENT]. Keep the motion natural and preserve body proportions.</p></td></tr></tbody></table><h2>4. Three Useful Examples</h2><h3>Fight scene</h3><p><strong>Reference: defensive fighting stance.</strong></p><p>Prompt: Use @image1 as the starting pose. Step forward, throw a right punch, then return to the defensive stance. Static camera.</p><h3>Running start</h3><p><strong>Reference: torso leaning forward, one leg behind, opposite arm forward.</strong></p><p>Prompt: Use @image1 as the starting pose. Push off the ground and accelerate into a sprint. The camera tracks alongside the runner.</p><h3>Stand up from a chair</h3><p><strong>Reference: exact seated pose and foot placement.</strong></p><p>Prompt: Use @image1 as the starting pose. Lean forward, stand up naturally, turn toward the window, and stop. Eye-level camera.</p><h2>5. What Actually Improves Results</h2><ul><li>Use the 3D pose for the starting frame, not the whole animation.</li><li>Separate character motion from camera motion in the prompt.</li><li>If the result is wrong, change one variable at a time: pose, action, camera, or appearance reference.</li><li>If the camera cannot see a body part, do not spend time fine-tuning it.</li></ul><h2>Bottom Line</h2><p><strong>Anyposes controls where the character starts. Seedance controls what happens next.</strong> This is usually faster and more reliable than trying to describe a complex human pose entirely with text.</p><h2>SEO</h2><p><strong>Title: </strong>How to Control Character Poses in Seedance with 3D Pose References</p><p><strong>Meta description: </strong>Learn how to control character poses in Seedance using 3D pose references. Build the pose in Anyposes, set the camera angle, and turn it into AI video.</p><p><strong>Slug: </strong>/3d-pose-reference-for-ai-video</p>
+          <p>When a character's stance or camera angle matters, a 3D mannequin gives the image model a visual reference. In Seedance, you can arrange that reference in the browser and send a capture directly to GPT Image 2. The generated image may still need revisions: a reference guides the model, but does not lock every joint or preserve a character's identity.</p>
+          <p><a href="./pose-to-image.html">See the AI pose generator and its controls</a>, or <a href="./app/?model=pose-to-image">open Pose Studio</a> to follow along. Updated <time datetime="2026-09-22">September 22, 2026</time>.</p>
+
+          <h2>1. Start with a pose you can read clearly</h2>
+          <p>Choose a preset close to the stance you need. For example, start with Jogging for a running composition. Drag the mannequin's control points to adjust the limbs. Check the shoulders, hips, bent knees, and where the feet meet the floor.</p>
+          <p>For a scene with more than one character, add another mannequin and arrange the figures before capturing. Keep the silhouettes separated where possible: overlapping arms and legs can make the reference harder to interpret.</p>
+          <figure>
+            <img src="./assets/pose-reference-demo-poster.webp" width="1280" height="720" loading="lazy" decoding="async" alt="Seedance Pose Studio with a mannequin wrist raised and pose control handles visible">
+            <figcaption>A real editor capture from the pose-editing demo. This is a mannequin reference, not an AI-generated character image.</figcaption>
+          </figure>
+
+          <h2>2. Set the camera before you capture</h2>
+          <p>Orbit the camera until the intended pose is clear. A front view, side view, and three-quarter view produce different reference images even when the mannequin stays in the same pose. Leave room around hands and feet if you want a full-body result.</p>
+          <p>Use the final framing to decide which details matter. A hidden hand or a foot behind another character may need a different camera angle rather than more pose adjustments.</p>
+
+          <h2>3. Send the pose to GPT Image 2</h2>
+          <p>Select <strong>Use this pose</strong>. Seedance captures the scene and attaches it as a reference in the GPT Image 2 workspace. Check the reference thumbnail before generating, then write the character, clothing, setting, and visual style you want.</p>
+          <p>You can explore the pose editor before signing in. Image generation requires sign-in and credits; check the cost shown in the workspace before submitting.</p>
+          <p>A useful starting prompt is:</p>
+          <blockquote><p>Use the attached mannequin image as the pose and camera reference. Create a full-body image of [character] wearing [clothing], in [setting], with [lighting and style]. Follow the visible stance, limb placement, and framing. Render the mannequin as the described character.</p></blockquote>
+          <p>This is a prompt example, not a tested output guarantee. It uses the attached image directly; you do not need to type an <code>@image1</code> token in this workspace.</p>
+
+          <h2>4. Adapt the prompt to the scene</h2>
+          <p>These examples describe what to try. They are not before-and-after case studies.</p>
+          <h3>Running character</h3>
+          <p><strong>Set up:</strong> a jogging pose, visible bent knee, and room ahead of the figure.</p>
+          <blockquote><p>Use the attached mannequin image as the pose and camera reference. Create a full-body editorial photograph of an adult runner wearing a red track jacket and black shorts on an outdoor track. Follow the visible running stance and framing, with soft morning light.</p></blockquote>
+          <h3>Defensive stance</h3>
+          <p><strong>Set up:</strong> bent knees, raised arms, and hands that do not overlap the face.</p>
+          <blockquote><p>Use the attached mannequin image as the pose and camera reference. Create a full-body concept illustration of an adult martial artist in a dark training outfit. Follow the visible defensive stance and camera angle. Use a simple studio background and clear directional lighting.</p></blockquote>
+          <h3>Two-character composition</h3>
+          <p><strong>Set up:</strong> two mannequins with readable silhouettes and deliberate spacing.</p>
+          <blockquote><p>Use the attached mannequin scene as the composition and pose reference. Create an illustration of two adult explorers, one in a blue jacket and the other in a tan jacket, standing in a mountain landscape. Follow the figures' relative positions, visible stances, and camera framing.</p></blockquote>
+
+          <h2>5. Compare the image with the reference</h2>
+          <p>Inspect the result before using it in a larger project. Check limb placement, hands, feet, body proportions, character count, and camera angle. If an important part drifts, change one variable and generate again so you can tell whether the change helped.</p>
+          <ul>
+            <li><strong>Arms or legs merge:</strong> separate them in the pose or rotate the camera to reveal their outlines.</li>
+            <li><strong>The image crops a hand or foot:</strong> pull the reference camera back and ask for a full-body composition.</li>
+            <li><strong>The model adds a different action:</strong> remove conflicting action words and describe a single still pose.</li>
+            <li><strong>Two characters become difficult to distinguish:</strong> increase spacing and give each a simple, distinct appearance.</li>
+          </ul>
+          <p>A pose capture describes body layout and framing. It is not an OpenPose skeleton export, an identity reference, or a timed motion sequence.</p>
+
+          <h2>Can you turn this pose into a video?</h2>
+          <p>The workflow on this site currently ends with an image. The site's video generator does not currently accept this pose capture or the finished image as an input. To continue, download a suitable generated image and use a separate, compatible image-to-video tool that accepts a starting frame.</p>
+          <p>In that tool, describe a short action and the camera movement. For example: <em>The runner takes two strides forward while the camera tracks alongside at waist height.</em> A starting image can guide the opening composition; it does not specify every pose throughout the clip. Motion transfer from a reference video is a different workflow.</p>
+          <p>If you already use a separate 3D editor such as <a href="https://anyposes.com/" target="_blank" rel="noopener noreferrer">Anyposes</a>, its screenshot can also serve as an image reference in a tool that accepts uploads. Check that tool's input and motion controls before following a video tutorial.</p>
+
+          <h2>Try a pose-led image</h2>
+          <p>Start with one readable pose and a simple scene. Once the still image works, add more complex styling or plan the next video step.</p>
+          <p><a class="button primary" href="./app/?model=pose-to-image">Open Pose Studio</a></p>
+          <p><a href="./pose-to-image.html">Review the pose-to-image workflow and FAQs</a>.</p>
+
         </div>
       </article>
     </div>
