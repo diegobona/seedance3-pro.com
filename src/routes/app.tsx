@@ -176,6 +176,16 @@ function StudioPage() {
                   </div>
                 </div>
                 <div className="pose-canvas" id="pose-canvas" role="application" aria-label="Interactive 3D mannequin. Drag the glowing handles to pose the body.">
+                  <div className="pose-object-toolbar" id="pose-object-toolbar" role="toolbar" aria-label="Selected mannequin tools" hidden>
+                    <span id="pose-selected-label" className="pose-selected-label" />
+                    <div className="pose-object-tools">
+                      <button type="button" data-pose-tool="pose" aria-label="Pose joints" aria-pressed="true" title="Adjust body pose"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4" r="2" /><path d="M12 7v7m-7-5 7 2 7-2M7 21l5-7 5 7" /></svg><span>Pose</span></button>
+                      <button type="button" data-pose-tool="translate" aria-label="Move mannequin" aria-pressed="false" title="Move mannequin"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20M2 12h20M8 6l4-4 4 4M8 18l4 4 4-4M6 8l-4 4 4 4m12-8 4 4-4 4" /></svg><span>Move</span></button>
+                      <button type="button" data-pose-tool="rotate" aria-label="Rotate mannequin" aria-pressed="false" title="Rotate mannequin"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7a9 9 0 0 0-15-1M4 17a9 9 0 0 0 15 1M20 2v5h-5M4 22v-5h5" /></svg><span>Rotate</span></button>
+                      <button type="button" data-pose-tool="scale" aria-label="Scale mannequin" aria-pressed="false" title="Scale mannequin proportionally"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3h7v7M21 3l-9 9M3 14v7h7M3 21l9-9" /></svg><span>Scale</span></button>
+                      <button type="button" data-pose-action="remove" className="pose-delete-tool" aria-label="Delete mannequin" title="Delete selected mannequin"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7m4-7v7" /></svg><span>Delete</span></button>
+                    </div>
+                  </div>
                   <div className="pose-canvas-loading" id="pose-canvas-loading"><span /> Preparing mannequin…</div>
                   <div className="pose-canvas-hint" id="pose-canvas-hint">Drag a glowing handle · Drag empty space to orbit · Scroll to zoom</div>
                 </div>
@@ -190,27 +200,11 @@ function StudioPage() {
                     <button type="button" data-pose-model="studio-02" aria-pressed="false"><img src={studio02Preview} alt="Studio 02 mannequin preview" /><span>Studio 02</span></button>
                   </div>
                   <button type="button" className="pose-add-button" data-pose-action="add">+ Add mannequin</button>
-                  <div className="pose-scene-heading"><strong>In this scene</strong><span id="pose-actor-count" aria-live="polite">0 mannequins</span></div>
-                  <div className="pose-actor-list" id="pose-actor-list" aria-label="Scene mannequins" />
-                  <p className="pose-selection-hint">Select a mannequin here or click its body to edit it.</p>
-                  <div className="pose-placement-controls" aria-label="Selected mannequin placement">
-                    <span>Move selected</span>
-                    <div><button type="button" data-pose-move="left" aria-label="Move selected mannequin left">←</button><button type="button" data-pose-move="right" aria-label="Move selected mannequin right">→</button><button type="button" data-pose-move="back" aria-label="Move selected mannequin backward">↑</button><button type="button" data-pose-move="front" aria-label="Move selected mannequin forward">↓</button></div>
-                    <div><button type="button" data-pose-turn="-15" aria-label="Rotate selected mannequin left">↶ Turn</button><button type="button" data-pose-turn="15" aria-label="Rotate selected mannequin right">Turn ↷</button></div>
-                    <div><button type="button" data-pose-action="frame">Fit scene</button><button type="button" data-pose-action="remove">Remove selected</button></div>
-                  </div>
                 </section>
                 <section className="pose-control-card pose-intro-card">
                   <span className="pose-control-eyebrow">DIRECT THE BODY</span>
                   <h2>Drag. Pose. Create.</h2>
                   <p>Move the head, hips, hands, or feet. The rest of the body follows automatically.</p>
-                </section>
-
-                <section className="pose-control-card">
-                  <div className="pose-control-heading"><div><span>ANYPOSES RIG</span><h3>13 drag points</h3></div><small>Whole-body control</small></div>
-                  <div className="pose-handle-summary" aria-label="Draggable body areas">
-                    <span>Head</span><span>Chest</span><span>Pelvis</span><span>Shoulders</span><span>Elbows</span><span>Hands</span><span>Knees</span><span>Feet</span>
-                  </div>
                 </section>
 
                 <section className="pose-control-card">

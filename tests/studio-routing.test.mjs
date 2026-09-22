@@ -339,7 +339,6 @@ test("Pose Studio exposes only the focused ragdoll IK workspace in the TanStack 
   for (const action of ["undo", "redo", "reset"]) {
     assert.match(route, new RegExp(`data-pose-action=["']${action}["']`, "i"));
   }
-  assert.match(route, /13 drag points/i);
   for (const preset of ["crossed-arms", "kneeling", "jogging"]) {
     assert.match(route, new RegExp(`data-pose-preset=["']${preset}["']`, "i"));
   }

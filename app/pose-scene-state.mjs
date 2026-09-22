@@ -25,6 +25,7 @@ export function captureSceneState(actors, selectedId) {
       id,
       position: model.position.toArray(),
       quaternion: model.quaternion.toArray(),
+      scale: model.scale.toArray(),
       bones: captureBoneTransforms(bones),
     })),
   };
@@ -39,6 +40,7 @@ export function restoreSceneState(records, snapshot) {
     actor.model.visible = true;
     actor.model.position.fromArray(saved.position);
     actor.model.quaternion.fromArray(saved.quaternion);
+    actor.model.scale.fromArray(saved.scale ?? [1, 1, 1]);
     applyBoneTransforms(actor.bones, saved.bones);
     actor.model.updateMatrixWorld(true);
     actors.push(actor);

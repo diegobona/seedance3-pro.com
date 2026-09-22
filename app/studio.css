@@ -63,6 +63,18 @@ textarea { width:100%; min-height:154px; resize:vertical; padding:15px; border:1
 .pose-canvas-loading span { width:9px; height:9px; border-radius:50%; background:var(--lime); box-shadow:0 0 18px rgba(216,255,115,.75); animation:pose-pulse 1.15s ease-in-out infinite alternate; }
 .pose-canvas-hint { position:absolute; z-index:2; right:18px; bottom:17px; left:18px; width:max-content; max-width:calc(100% - 36px); margin:auto; padding:9px 13px; border:1px solid rgba(255,255,255,.1); border-radius:999px; background:rgba(8,10,9,.74); color:#a7aaa1; font-size:12px; text-align:center; pointer-events:none; backdrop-filter:blur(12px); }
 .pose-canvas.is-dragging-pose .pose-canvas-hint { border-color:rgba(216,255,115,.32); color:var(--lime); }
+.pose-object-toolbar { position:absolute; z-index:4; top:14px; left:50%; transform:translateX(-50%); max-width:calc(100% - 24px); padding:8px; border:1px solid rgba(216,255,115,.28); border-radius:15px; background:rgba(20,24,21,.94); box-shadow:0 8px 24px #0006; backdrop-filter:blur(14px); }
+.pose-object-toolbar[hidden] { display:none; }
+.pose-selected-label { display:block; margin:0 4px 6px; color:#aeb6a2; font-size:10px; letter-spacing:.05em; }
+.pose-object-tools { display:flex; gap:5px; }
+.pose-object-tools button { display:grid; justify-items:center; gap:5px; min-width:50px; padding:8px 10px; border:1px solid transparent; border-radius:9px; background:transparent; color:#d9dfd1; cursor:pointer; }
+.pose-object-tools svg { width:23px; height:23px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+.pose-object-tools span { font-size:10px; font-weight:750; }
+.pose-object-tools button:hover,.pose-object-tools button[aria-pressed="true"] { color:var(--lime); border-color:#d8ff7355; background:#d8ff731a; }
+.pose-object-tools .pose-delete-tool { color:#ff9c81; border-left-color:#ffffff1a; }
+.pose-object-tools .pose-delete-tool:hover { color:#ffc6b7; background:#ff795222; border-color:#ff795255; }
+.pose-object-tools button:focus-visible { outline:2px solid var(--lime); outline-offset:2px; }
+.pose-object-tools button:disabled { opacity:.4; cursor:default; }
 .pose-control-panel { display:grid; gap:12px; }
 .pose-model-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:14px; }
 .pose-model-grid button { overflow:hidden; padding:0 0 9px; border:1px solid var(--line); border-radius:12px; background:#0c0e0e; color:#c4c5be; cursor:pointer; }
@@ -71,21 +83,7 @@ textarea { width:100%; min-height:154px; resize:vertical; padding:15px; border:1
 .pose-model-grid span { font-size:12px; font-weight:800; }
 .pose-add-button { width:100%; margin-top:12px; padding:12px; border:0; border-radius:10px; background:var(--lime); color:#17190f; font-weight:850; cursor:pointer; }
 .pose-add-button:disabled { opacity:.5; cursor:wait; }
-.pose-scene-heading { display:flex; justify-content:space-between; gap:8px; margin:20px 0 9px; font-size:12px; }
-.pose-scene-heading > span { color:#9ea196; font-size:11px; }
-.pose-actor-list { display:grid; gap:6px; max-height:204px; overflow-y:auto; }
-.pose-actor-list > button { display:flex; align-items:center; gap:10px; width:100%; padding:7px; border:1px solid var(--line); border-radius:10px; background:#0c0e0e; color:#c4c5be; text-align:left; cursor:pointer; }
-.pose-actor-list > button[aria-pressed="true"] { border-color:rgba(216,255,115,.65); background:rgba(216,255,115,.09); color:var(--lime); }
-.pose-actor-list img { width:34px; height:40px; border-radius:6px; object-fit:cover; }
-.pose-actor-list span { font-size:12px; font-weight:750; }
-.pose-control-card .pose-selection-hint { font-size:11px; }
-.pose-placement-controls { display:grid; gap:7px; margin-top:14px; }
-.pose-placement-controls > span { color:#b8bcb0; font-size:11px; }
-.pose-placement-controls > div { display:flex; gap:6px; }
-.pose-placement-controls button { flex:1; padding:8px 4px; border:1px solid var(--line); border-radius:8px; background:#171a18; color:#d4d7ce; font-size:11px; cursor:pointer; }
-.pose-placement-controls button:hover:not(:disabled) { border-color:var(--lime); color:var(--lime); }
-.pose-placement-controls button:disabled { opacity:.35; cursor:default; }
-.pose-model-grid button:focus-visible,.pose-actor-list button:focus-visible,.pose-placement-controls button:focus-visible,.pose-add-button:focus-visible { outline:2px solid var(--lime); outline-offset:3px; }
+.pose-model-grid button:focus-visible,.pose-add-button:focus-visible { outline:2px solid var(--lime); outline-offset:3px; }
 .pose-actors-card { grid-row:span 2; }
 .pose-control-card { padding:19px; border-radius:18px; }
 .pose-intro-card { overflow:hidden; position:relative; border-color:rgba(216,255,115,.24); background:linear-gradient(145deg,rgba(216,255,115,.105),#151816 68%); }
@@ -96,8 +94,6 @@ textarea { width:100%; min-height:154px; resize:vertical; padding:15px; border:1
 .pose-control-heading { display:flex; align-items:flex-end; justify-content:space-between; gap:12px; }
 .pose-control-heading h3 { margin:5px 0 0; font-size:16px; }
 .pose-control-heading small { color:#6e716b; font-size:11px; text-align:right; }
-.pose-handle-summary { display:flex; flex-wrap:wrap; gap:7px; margin-top:14px; }
-.pose-handle-summary span { padding:7px 9px; border:1px solid rgba(216,255,115,.16); border-radius:999px; background:rgba(216,255,115,.045); color:#aeb3a5; font-size:11px; }
 .pose-preset-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; margin-top:14px; }
 .pose-preset-grid button { display:flex; min-width:0; min-height:120px; align-items:center; justify-content:flex-end; flex-direction:column; gap:8px; overflow:hidden; padding:7px 5px 10px; border:1px solid var(--line); border-radius:12px; background:#0d0f10; color:#aeb0aa; font-size:10px; line-height:1.2; cursor:pointer; }
 .pose-preset-grid button:hover,.pose-preset-grid button.is-active { border-color:rgba(216,255,115,.38); background:rgba(216,255,115,.065); color:var(--text); }

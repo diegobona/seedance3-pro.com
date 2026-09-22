@@ -1,10 +1,10 @@
 import * as THREE from "three";
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { TransformControls } from "three/addons/controls/TransformControls.js";
+import { captureTransformBasis, applyPivotTransform } from "./pose-transform.mjs";
 import mannequinUrl from "./pose-assets/anyposes-female-rig.fbx?url";
 import studio02Url from "./pose-assets/anyposes-studio-02.fbx?url";
-import studio01Preview from "./pose-assets/studio-01-preview.png";
-import studio02Preview from "./pose-assets/studio-02-preview.png";
 import { captureSceneState, restoreSceneState, nextActorPosition, normalizeMannequin } from "./pose-scene-state.mjs";
 import { RAGDOLL_HANDLE_SPECS } from "./pose-ragdoll-config.mjs";
 import {
@@ -18,8 +18,8 @@ import { capturePoseReference } from "./pose-transfer.mjs";
 
 const MAX_HISTORY = 40;
 const MODEL_CATALOG = {
-  "studio-01": { label: "Studio 01", url: mannequinUrl, preview: studio01Preview },
-  "studio-02": { label: "Studio 02", url: studio02Url, preview: studio02Preview },
+  "studio-01": { label: "Studio 01", url: mannequinUrl },
+  "studio-02": { label: "Studio 02", url: studio02Url },
 };
 const PRESET_BONE_BINDINGS = [
   { key: "spine", bone: "mixamorig:Spine", child: "mixamorig:Spine1" },
@@ -71,10 +71,9 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   const modelButtons = Array.from(container.querySelectorAll("[data-pose-model]"));
   const addButton = container.querySelector('[data-pose-action="add"]');
   const removeButton = container.querySelector('[data-pose-action="remove"]');
-  const frameButton = container.querySelector('[data-pose-action="frame"]');
-  const actorList = container.querySelector("#pose-actor-list");
-  const actorCount = container.querySelector("#pose-actor-count");
-  const placementButtons = Array.from(container.querySelectorAll("[data-pose-move], [data-pose-turn]"));
+  const objectToolbar = container.querySelector("#pose-object-toolbar");
+  const selectedLabel = container.querySelector("#pose-selected-label");
+  const toolButtons = Array.from(container.querySelectorAll("[data-pose-tool]"));
   const cleanups = [];
   const undoStack = [];
   const redoStack = [];
@@ -95,6 +94,9 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   let drag = null;
   let hoveredHandle = null;
   let poseCaptureInFlight = false;
+  let activeTool = "pose";
+  let gizmoDrag = null;
+  let emptyPress = null;
 
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x0b0d0d);
@@ -121,6 +123,16 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   controls.maxDistance = 36;
   controls.minPolarAngle = Math.PI * 0.18;
   controls.maxPolarAngle = Math.PI * 0.8;
+
+  const transform = new TransformControls(camera, renderer.domElement);
+  // Route pointer events ourselves so IK, gizmos and orbit never start together.
+  transform.disconnect();
+  renderer.domElement.style.touchAction = "none";
+  transform.setSize(1.15);
+  const transformPivot = new THREE.Object3D();
+  const transformHelper = transform.getHelper();
+  scene.add(transformPivot, transformHelper);
+  transform.detach();
 
   scene.add(new THREE.HemisphereLight(0xf3f6f0, 0x26291e, 2.35));
   const keyLight = new THREE.DirectionalLight(0xffffff, 3.6);
@@ -201,39 +213,54 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     if (hoveredHandle) hoveredHandle.scale.setScalar(1);
     hoveredHandle = null;
     clearActivePreset();
-    renderActorList();
+    updateSceneButtons();
     updateHandlePositions();
+    syncTransformTool();
+  }
+
+  function syncTransformTool() {
+    objectToolbar.hidden = !mannequin;
+    selectedLabel.textContent = actorRecords.get(selectedId)?.label ?? "";
+    toolButtons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.poseTool === activeTool)));
+    transform.detach();
+    if (!mannequin || activeTool === "pose") return;
+    mannequin.updateMatrixWorld(true);
+    const hips = boneFor("mixamorig:Hips");
+    if (hips) hips.getWorldPosition(transformPivot.position);
+    else mannequin.getWorldPosition(transformPivot.position);
+    transformPivot.quaternion.copy(mannequin.quaternion);
+    transformPivot.scale.setScalar(1);
+    transformPivot.updateMatrixWorld(true);
+    transform.setMode(activeTool);
+    transform.setSpace(activeTool === "scale" ? "local" : "world");
+    transform.attach(transformPivot);
+    transformHelper.updateMatrixWorld(true);
+  }
+
+  function selectTool(tool) {
+    if (!mannequin || modelLoading || poseCaptureInFlight) return;
+    finishDrag();
+    activeTool = tool;
+    updateHandlePositions();
+    syncTransformTool();
+    const hints = {
+      pose: "Drag a joint to pose · Click another mannequin to select it",
+      translate: "Drag an arrow or plane to move · Drag the center to move freely",
+      rotate: "Drag a colored ring to rotate the selected mannequin",
+      scale: "Drag a scale handle to resize proportionally",
+    };
+    setHint(hints[tool]);
   }
 
   function updateSceneButtons() {
     const busy = modelLoading || poseCaptureInFlight;
     addButton.disabled = busy;
     removeButton.disabled = busy || !mannequin;
-    frameButton.disabled = busy || !actors.length;
-    placementButtons.forEach((button) => { button.disabled = busy || !mannequin; });
+    toolButtons.forEach((button) => { button.disabled = busy || !mannequin; });
     presetButtons.forEach((button) => { button.disabled = busy || !mannequin; });
     resetButton.disabled = busy || !mannequin;
     usePoseButton.disabled = busy || !actors.length;
     updateHistoryButtons();
-  }
-
-  function renderActorList() {
-    actorList.replaceChildren();
-    for (const actor of actors) {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.dataset.poseActor = actor.id;
-      button.setAttribute("aria-pressed", String(actor.id === selectedId));
-      const thumbnail = document.createElement("img");
-      thumbnail.src = MODEL_CATALOG[actor.modelKey].preview;
-      thumbnail.alt = "";
-      const label = document.createElement("span");
-      label.textContent = actor.label;
-      button.append(thumbnail, label);
-      actorList.append(button);
-    }
-    actorCount.textContent = `${actors.length} mannequin${actors.length === 1 ? "" : "s"}`;
-    updateSceneButtons();
   }
 
   function pruneRemovedActors() {
@@ -286,7 +313,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   }
 
   function updateHandlePositions() {
-    if (!mannequin) {
+    if (!mannequin || activeTool !== "pose") {
       handles.forEach((handle) => { handle.visible = false; });
       return;
     }
@@ -407,6 +434,25 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
 
   function onPointerDown(event) {
     if (event.button !== 0 || modelLoading || poseCaptureInFlight) return;
+    if (!pointerFromEvent(event)) return;
+    emptyPress = null;
+    if (mannequin && activeTool !== "pose") {
+      transformHelper.updateMatrixWorld(true);
+      transform.pointerHover(pointer);
+      if (transform.axis) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        controls.enabled = false;
+        gizmoDrag = {
+          pointerId: event.pointerId,
+          before: captureSnapshot(),
+          basis: captureTransformBasis(mannequin, transformPivot),
+        };
+        transform.pointerDown({ x: pointer.x, y: pointer.y, button: 0 });
+        renderer.domElement.setPointerCapture(event.pointerId);
+        return;
+      }
+    }
     const handle = pickedHandle(event);
     if (!handle) {
       const hit = raycaster.intersectObjects(actors.map(({ model }) => model), true)[0]?.object;
@@ -416,13 +462,15 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
         const actor = actors.find(({ model }) => model === root);
         if (actor && actor.id !== selectedId) {
           selectActor(actor.id);
-          setHint(`${actor.label} selected · drag a handle to pose it`);
+          setHint(`${actor.label} selected · choose Pose, Move, Rotate or Scale`);
         }
+      } else {
+        emptyPress = { x: event.clientX, y: event.clientY, pointerId: event.pointerId };
       }
       return;
     }
     event.preventDefault();
-    event.stopPropagation();
+    event.stopImmediatePropagation();
     renderer.domElement.setPointerCapture?.(event.pointerId);
     controls.enabled = false;
     camera.getWorldDirection(cameraDirection);
@@ -436,6 +484,20 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   }
 
   function onPointerMove(event) {
+    if (modelLoading || poseCaptureInFlight) return;
+    if (emptyPress && Math.hypot(event.clientX - emptyPress.x, event.clientY - emptyPress.y) > 5) emptyPress = null;
+    if (gizmoDrag) {
+      if (event.pointerId !== gizmoDrag.pointerId || !pointerFromEvent(event)) return;
+      event.stopImmediatePropagation();
+      transform.pointerMove({ x: pointer.x, y: pointer.y, button: -1 });
+      applyPivotTransform(mannequin, transformPivot, gizmoDrag.basis, activeTool, transform.axis ?? "XYZ");
+      return;
+    }
+    if (mannequin && activeTool !== "pose" && pointerFromEvent(event)) {
+      transform.pointerHover(pointer);
+      renderer.domElement.style.cursor = transform.axis ? "grab" : "default";
+      return;
+    }
     if (!drag) {
       const handle = pickedHandle(event);
       if (handle !== hoveredHandle) {
@@ -447,6 +509,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
       return;
     }
     if (event.pointerId !== drag.pointerId || !pointerFromEvent(event)) return;
+    event.stopImmediatePropagation();
     if (!raycaster.ray.intersectPlane(dragPlane, dragPoint)) return;
     dragPoint.add(dragOffset);
     drag.handle.position.copy(dragPoint);
@@ -455,6 +518,25 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   }
 
   function finishDrag(event) {
+    if (gizmoDrag) {
+      if (event?.pointerId !== undefined && event.pointerId !== gizmoDrag.pointerId) return;
+      const completed = gizmoDrag;
+      gizmoDrag = null;
+      transform.pointerUp({ button: 0 });
+      if (renderer.domElement.hasPointerCapture(completed.pointerId)) renderer.domElement.releasePointerCapture(completed.pointerId);
+      controls.enabled = true;
+      pushHistory(completed.before);
+      syncTransformTool();
+      setHint("Transform applied · drag again to refine · Undo to restore");
+      return;
+    }
+    if (emptyPress && event?.type === "pointerup" && event.pointerId === emptyPress.pointerId) {
+      emptyPress = null;
+      selectActor(null);
+      setHint("Click a mannequin to select it · Drag empty space to orbit");
+      return;
+    }
+    if (event?.type === "pointercancel") emptyPress = null;
     if (!drag || (event?.pointerId !== undefined && event.pointerId !== drag.pointerId)) return;
     const completed = drag;
     drag = null;
@@ -523,6 +605,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     const before = captureSnapshot();
     restoreNeutralPose();
     updateHandlePositions();
+    syncTransformTool();
     pushHistory(before);
     clearActivePreset();
     setHint("Neutral pose restored · drag a handle to refine it");
@@ -546,6 +629,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     mannequin.quaternion.copy(facing);
     mannequin.updateMatrixWorld(true);
     updateHandlePositions();
+    syncTransformTool();
     pushHistory(before);
     presetButtons.forEach((button) => button.classList.toggle("is-active", button.dataset.posePreset === name));
     setHint(`${preset.label} · Anyposes preset ${preset.sourceCode} · drag a handle to refine it`);
@@ -553,23 +637,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
 
   function restoreNeutralPose() {
     applyBoneTransforms(mannequinBones, neutralSnapshot.bones);
-    mannequin.position.y = neutralSnapshot.position[1];
     mannequin.updateMatrixWorld(true);
-  }
-
-  function changePlacement(button) {
-    if (!mannequin || modelLoading || poseCaptureInFlight) return;
-    const before = captureSnapshot();
-    const direction = button.dataset.poseMove;
-    if (direction === "left") mannequin.position.x -= 0.5;
-    if (direction === "right") mannequin.position.x += 0.5;
-    if (direction === "back") mannequin.position.z -= 0.5;
-    if (direction === "front") mannequin.position.z += 0.5;
-    if (button.dataset.poseTurn) mannequin.rotateY(THREE.MathUtils.degToRad(Number(button.dataset.poseTurn)));
-    mannequin.updateMatrixWorld(true);
-    updateHandlePositions();
-    pushHistory(before);
-    setHint("Position updated · use Fit scene to see all mannequins");
   }
 
   function removeSelectedActor() {
@@ -616,17 +684,20 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     usePoseButton.textContent = "Capturing pose…";
     const handleVisibility = handles.map((handle) => handle.visible);
     const gridVisible = grid.visible;
+    const gizmoVisible = transformHelper.visible;
     try {
       const file = await capturePoseReference({
         canvas: renderer.domElement,
         beforeCapture() {
           handles.forEach((handle) => { handle.visible = false; });
           grid.visible = false;
+          transformHelper.visible = false;
           renderer.render(scene, camera);
         },
         afterCapture() {
           handles.forEach((handle, index) => { handle.visible = handleVisibility[index]; });
           grid.visible = gridVisible;
+          transformHelper.visible = gizmoVisible;
           renderer.render(scene, camera);
         },
       });
@@ -650,8 +721,8 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     cleanups.push(() => target?.removeEventListener(type, listener, options));
   }
 
-  listen(renderer.domElement, "pointerdown", onPointerDown);
-  listen(renderer.domElement, "pointermove", onPointerMove);
+  listen(renderer.domElement, "pointerdown", onPointerDown, true);
+  listen(renderer.domElement, "pointermove", onPointerMove, true);
   listen(renderer.domElement, "pointerup", finishDrag);
   listen(renderer.domElement, "pointercancel", finishDrag);
   listen(renderer.domElement, "lostpointercapture", finishDrag);
@@ -661,12 +732,6 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   listen(usePoseButton, "click", useCurrentPose);
   listen(addButton, "click", () => addMannequin(selectedModel));
   listen(removeButton, "click", removeSelectedActor);
-  listen(frameButton, "click", frameScene);
-  listen(actorList, "click", (event) => {
-    if (modelLoading || poseCaptureInFlight) return;
-    const button = event.target.closest("[data-pose-actor]");
-    if (button) selectActor(button.dataset.poseActor);
-  });
   modelButtons.forEach((button) => listen(button, "click", () => {
     selectedModel = button.dataset.poseModel;
     modelButtons.forEach((candidate) => {
@@ -675,7 +740,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
       candidate.setAttribute("aria-pressed", String(active));
     });
   }));
-  placementButtons.forEach((button) => listen(button, "click", () => changePlacement(button)));
+  toolButtons.forEach((button) => listen(button, "click", () => selectTool(button.dataset.poseTool)));
   presetButtons.forEach((button) => listen(button, "click", () => applyPreset(button.dataset.posePreset)));
 
   function resize() {
@@ -692,7 +757,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
 
   function animate() {
     if (destroyed) return;
-    controls.update();
+    if (controls.enabled) controls.update();
     renderer.render(scene, camera);
     frameId = requestAnimationFrame(animate);
   }
@@ -786,6 +851,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     cancelAnimationFrame(frameId);
     while (cleanups.length) cleanups.pop()();
     controls.dispose();
+    transform.dispose();
     renderer.dispose();
     handles.forEach((handle) => disposeObject(handle));
     actorRecords.forEach(({ model }) => disposeObject(model));
