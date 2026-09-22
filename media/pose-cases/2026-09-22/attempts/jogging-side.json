@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "caseId": "jogging-side",
+  "status": "succeeded",
+  "attemptNumber": 1,
+  "source": "developer-api-with-live-editor-reference",
+  "prompt": "Use the attached 3D mannequin only as a body-pose and camera-angle reference. Preserve the pose and framing; do not copy the mannequin's appearance.\n\nCreate a realistic studio photograph of one adult woman with a short black bob, a mustard-yellow jacket, charcoal trousers, and white sneakers. Use a plain light-gray studio background and soft, even lighting. Follow the attached reference for body pose, camera angle, and framing.",
+  "reference": {
+    "file": "references/jg-01.png",
+    "sha256": "9dc62cd68eb679a15a047cb2098e346082e4cae48933c14d1c3329497f79835b",
+    "width": 1834,
+    "height": 1300
+  },
+  "settings": {
+    "endpoint": "https://api.tu-zi.com/v1/images/edits",
+    "model": "gpt-image-2",
+    "quality": "medium",
+    "n": 1,
+    "size": "1024x1024",
+    "response_format": "b64_json",
+    "seed": null
+  },
+  "reservedMaximumUsd": 0.04,
+  "reservedAt": "2026-09-22T11:40:11.187Z",
+  "requestStartedAt": "2026-09-22T11:40:11.191Z",
+  "requestFinishedAt": "2026-09-22T11:41:15.906Z",
+  "httpStatus": 200,
+  "requestId": null,
+  "usage": {
+    "input_tokens": 2494,
+    "output_tokens": 1056,
+    "total_tokens": 3550
+  },
+  "output": {
+    "file": "outputs/jogging-side.png",
+    "sha256": "6aaaa1040cd3906ca7daa998926c87a59392d18a2698269180fada3da8a27ae5",
+    "bytes": 1586426,
+    "width": 1254,
+    "height": 1254
+  }
+}

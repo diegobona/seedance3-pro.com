@@ -124,6 +124,7 @@ test("blog uses the homepage design system without the highlighted intro copy", 
   const header = blockByClass(html, "header", "site-header");
   const navigation = blockByClass(header, "nav", "compact-nav");
   const expectedArticles = [
+    ["./pose-reference-camera-angle-examples", "Explore the examples"],
     ["./seedance-2-5-vs-minimax-h3-vs-kling-3-0-which-ai-video-model-is-best-in-2026-2.html", "Read article"],
     ["./how-to-control-character-poses-in-seedance-with-3d-pose-references.html", "Read article"],
     ["./how-to-use-the-seedance-api-complete-developer-guide-2026.html", "Read article"],

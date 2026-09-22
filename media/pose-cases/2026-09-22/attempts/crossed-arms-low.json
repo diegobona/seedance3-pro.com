@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "caseId": "crossed-arms-low",
+  "status": "succeeded",
+  "attemptNumber": 1,
+  "source": "developer-api-with-live-editor-reference",
+  "prompt": "Use the attached 3D mannequin only as a body-pose and camera-angle reference. Preserve the pose and framing; do not copy the mannequin's appearance.\n\nCreate a realistic studio photograph of one adult woman with a short black bob, a mustard-yellow jacket, charcoal trousers, and white sneakers. Use a plain light-gray studio background and soft, even lighting. Follow the attached reference for body pose, camera angle, and framing.",
+  "reference": {
+    "file": "references/ca-02.png",
+    "sha256": "94c772a13827af62b89206b0c84da8052418d727f63751f866acd52ba9738991",
+    "width": 1834,
+    "height": 1300
+  },
+  "settings": {
+    "endpoint": "https://api.tu-zi.com/v1/images/edits",
+    "model": "gpt-image-2",
+    "quality": "medium",
+    "n": 1,
+    "size": "1024x1024",
+    "response_format": "b64_json",
+    "seed": null
+  },
+  "reservedMaximumUsd": 0.04,
+  "reservedAt": "2026-09-22T11:37:09.152Z",
+  "requestStartedAt": "2026-09-22T11:37:09.157Z",
+  "requestFinishedAt": "2026-09-22T11:37:53.879Z",
+  "httpStatus": 200,
+  "requestId": null,
+  "usage": {
+    "input_tokens": 2494,
+    "output_tokens": 1056,
+    "total_tokens": 3550
+  },
+  "output": {
+    "file": "outputs/crossed-arms-low.png",
+    "sha256": "331ba92872a88e49483e3bf1248d5418be3153e927aa4e8b81cfdc02a2e1c510",
+    "bytes": 1589134,
+    "width": 1254,
+    "height": 1254
+  }
+}

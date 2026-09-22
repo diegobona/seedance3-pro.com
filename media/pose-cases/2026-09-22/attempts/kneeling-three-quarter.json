@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "caseId": "kneeling-three-quarter",
+  "status": "succeeded",
+  "attemptNumber": 1,
+  "source": "developer-api-with-live-editor-reference",
+  "prompt": "Use the attached 3D mannequin only as a body-pose and camera-angle reference. Preserve the pose and framing; do not copy the mannequin's appearance.\n\nCreate a realistic studio photograph of one adult woman with a short black bob, a mustard-yellow jacket, charcoal trousers, and white sneakers. Use a plain light-gray studio background and soft, even lighting. Follow the attached reference for body pose, camera angle, and framing.",
+  "reference": {
+    "file": "references/kn-01.png",
+    "sha256": "b33f1e08b5eba31517d3e7f38ab06e55205fa6f8395a0736a833f4e94cbf2f17",
+    "width": 1834,
+    "height": 1300
+  },
+  "settings": {
+    "endpoint": "https://api.tu-zi.com/v1/images/edits",
+    "model": "gpt-image-2",
+    "quality": "medium",
+    "n": 1,
+    "size": "1024x1024",
+    "response_format": "b64_json",
+    "seed": null
+  },
+  "reservedMaximumUsd": 0.04,
+  "reservedAt": "2026-09-22T11:37:54.002Z",
+  "requestStartedAt": "2026-09-22T11:37:54.007Z",
+  "requestFinishedAt": "2026-09-22T11:38:46.583Z",
+  "httpStatus": 200,
+  "requestId": null,
+  "usage": {
+    "input_tokens": 2494,
+    "output_tokens": 1056,
+    "total_tokens": 3550
+  },
+  "output": {
+    "file": "outputs/kneeling-three-quarter.png",
+    "sha256": "8bb2b4f4dd50dacf05225f4440c727938069336fc26314065d25d6d38ab58938",
+    "bytes": 1586094,
+    "width": 1254,
+    "height": 1254
+  }
+}

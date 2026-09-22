@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 1,
+  "cases": [
+    {
+      "id": "crossed-arms-front",
+      "reference": {
+        "file": "references/ca-01.png",
+        "sha256": "f82999635ef6adccfc66c8075767084f66242ed3150577482ab64fd6d29b9fe9"
+      },
+      "prompt": "Use the attached 3D mannequin only as a body-pose and camera-angle reference. Preserve the pose and framing; do not copy the mannequin's appearance.\n\nCreate a realistic studio photograph of one adult woman with a short black bob, a mustard-yellow jacket, charcoal trousers, and white sneakers. Use a plain light-gray studio background and soft, even lighting. Follow the attached reference for body pose, camera angle, and framing.",
+      "settings": {
+        "endpoint": "https://api.tu-zi.com/v1/images/edits",
+        "model": "gpt-image-2",
+        "quality": "medium",
+        "n": 1,
+        "size": "1024x1024",
+        "response_format": "b64_json",
+        "seed": null
+      },
+      "capture": {
+        "method": "Original attached PNG exported using Use this pose in the live editor",
+        "url": "https://seedance3-pro.com/app/?model=pose-to-image",
+        "viewport": "1600x1000",
+        "screenshot": "screenshots/ca-01-editor.png",
+        "camera": "Manually orbited; descriptive view labels are approximate, not measured angles",
+        "zoomChanged": false,
+        "bodyUnchangedWithinPair": true
+      }
+    },
+    {
+      "id": "crossed-arms-low",
+      "reference": {
+        "file": "references/ca-02.png",
+        "sha256": "94c772a13827af62b89206b0c84da8052418d727f63751f866acd52ba9738991"
+      },
+      "prompt": "Use the attached 3D mannequin only as a body-pose and camera-angle reference. Preserve the pose and framing; do not copy the mannequin's appearance.\n\nCreate a realistic studio photograph of one adult woman with a short black bob, a mustard-yellow jacket, charcoal trousers, and white sneakers. Use a plain light-gray studio background and soft, even lighting. Follow the attached reference for body pose, camera angle, and framing.",
+      "settings": {
+        "endpoint": "https://api.tu-zi.com/v1/images/edits",
+        "model": "gpt-image-2",
+        "quality": "medium",
+        "n": 1,
+        "size": "1024x1024",
+        "response_format": "b64_json",
+        "seed": null
+      },
+      "capture": {
+        "method": "Original attached PNG exported using Use this pose in the live editor",
+        "url": "https://seedance3-pro.com/app/?model=pose-to-image",
+        "viewport": "1600x1000",
+        "screenshot": "screenshots/ca-02-editor.png",
+        "camera": "Manually orbited; descriptive view labels are approximate, not measured angles",
+        "zoomChanged": false,
+        "bodyUnchangedWithinPair": true
+      }
+    },
+    {
+      "id": "kneeling-three-quarter",
+      "reference": {
+        "file": "references/kn-01.png",
+        "sha256": "b33f1e08b5eba31517d3e7f38ab06e55205fa6f8395a0736a833f4e94cbf2f17"
+      },
+      "prompt": "Use the attached 3D mannequin only as a body-pose and camera-angle reference. Preserve the pose and framing; do not copy the mannequin's appearance.\n\nCreate a realistic studio photograph of one adult woman with a short black bob, a mustard-yellow jacket, charcoal trousers, and white sneakers. Use a plain light-gray studio background and soft, even lighting. Follow the attached reference for body pose, camera angle, and framing.",
+      "settings": {
+        "endpoint": "https://api.tu-zi.com/v1/images/edits",
+        "model": "gpt-image-2",
+        "quality": "medium",
+        "n": 1,
+        "size": "1024x1024",
+        "response_format": "b64_json",
+        "seed": null
+      },
+      "capture": {
+        "method": "Original attached PNG exported using Use this pose in the live editor",
+        "url": "https://seedance3-pro.com/app/?model=pose-to-image",
+        "viewport": "1600x1000",
+        "screenshot": "screenshots/kn-01-editor.png",
+        "camera": "Manually orbited; descriptive view labels are approximate, not measured angles",
+        "zoomChanged": false,
+        "bodyUnchangedWithinPair": true
+      }
+    },
+    {
+      "id": "kneeling-high",
+      "reference": {
+        "file": "references/kn-02.png",
+        "sha256": "3c49b1e0608bb76080f2b736fd72c671fccf4092d7557f45ec6a24cec823e5f6"
+      },
+      "prompt": "Use the attached 3D mannequin only as a body-pose and camera-angle reference. Preserve the pose and framing; do not copy the mannequin's appearance.\n\nCreate a realistic studio photograph of one adult woman with a short black bob, a mustard-yellow jacket, charcoal trousers, and white sneakers. Use a plain light-gray studio background and soft, even lighting. Follow the attached reference for body pose, camera angle, and framing.",
+      "settings": {
+        "endpoint": "https://api.tu-zi.com/v1/images/edits",
+        "model": "gpt-image-2",
+        "quality": "medium",
+        "n": 1,
+        "size": "1024x1024",
+        "response_format": "b64_json",
+        "seed": null
+      },
+      "capture": {
+        "method": "Original attached PNG exported using Use this pose in the live editor",
+        "url": "https://seedance3-pro.com/app/?model=pose-to-image",
+        "viewport": "1600x1000",
+        "screenshot": "screenshots/kn-02-editor.png",
+        "camera": "Manually orbited; descriptive view labels are approximate, not measured angles",
+        "zoomChanged": false,
+        "bodyUnchangedWithinPair": true
+      }
+    },
+    {
+      "id": "jogging-side",
+      "reference": {
+        "file": "references/jg-01.png",
+        "sha256": "9dc62cd68eb679a15a047cb2098e346082e4cae48933c14d1c3329497f79835b"
+      },
+      "prompt": "Use the attached 3D mannequin only as a body-pose and camera-angle reference. Preserve the pose and framing; do not copy the mannequin's appearance.\n\nCreate a realistic studio photograph of one adult woman with a short black bob, a mustard-yellow jacket, charcoal trousers, and white sneakers. Use a plain light-gray studio background and soft, even lighting. Follow the attached reference for body pose, camera angle, and framing.",
+      "settings": {
+        "endpoint": "https://api.tu-zi.com/v1/images/edits",
+        "model": "gpt-image-2",
+        "quality": "medium",
+        "n": 1,
+        "size": "1024x1024",
+        "response_format": "b64_json",
+        "seed": null
+      },
+      "capture": {
+        "method": "Original attached PNG exported using Use this pose in the live editor",
+        "url": "https://seedance3-pro.com/app/?model=pose-to-image",
+        "viewport": "1600x1000",
+        "screenshot": "screenshots/jg-01-editor.png",
+        "camera": "Manually orbited; descriptive view labels are approximate, not measured angles",
+        "zoomChanged": false,
+        "bodyUnchangedWithinPair": true
+      }
+    },
+    {
+      "id": "jogging-three-quarter",
+      "reference": {
+        "file": "references/jg-02.png",
+        "sha256": "e6dbfe83a6a013ea239370300f6e5f6500be9bc0f4df3870aeebaef8099af31f"
+      },
+      "prompt": "Use the attached 3D mannequin only as a body-pose and camera-angle reference. Preserve the pose and framing; do not copy the mannequin's appearance.\n\nCreate a realistic studio photograph of one adult woman with a short black bob, a mustard-yellow jacket, charcoal trousers, and white sneakers. Use a plain light-gray studio background and soft, even lighting. Follow the attached reference for body pose, camera angle, and framing.",
+      "settings": {
+        "endpoint": "https://api.tu-zi.com/v1/images/edits",
+        "model": "gpt-image-2",
+        "quality": "medium",
+        "n": 1,
+        "size": "1024x1024",
+        "response_format": "b64_json",
+        "seed": null
+      },
+      "capture": {
+        "method": "Original attached PNG exported using Use this pose in the live editor",
+        "url": "https://seedance3-pro.com/app/?model=pose-to-image",
+        "viewport": "1600x1000",
+        "screenshot": "screenshots/jg-02-editor.png",
+        "camera": "Manually orbited; descriptive view labels are approximate, not measured angles",
+        "zoomChanged": false,
+        "bodyUnchangedWithinPair": true
+      }
+    }
+  ]
+}

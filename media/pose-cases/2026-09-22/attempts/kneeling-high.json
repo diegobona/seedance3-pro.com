@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "caseId": "kneeling-high",
+  "status": "succeeded",
+  "attemptNumber": 1,
+  "source": "developer-api-with-live-editor-reference",
+  "prompt": "Use the attached 3D mannequin only as a body-pose and camera-angle reference. Preserve the pose and framing; do not copy the mannequin's appearance.\n\nCreate a realistic studio photograph of one adult woman with a short black bob, a mustard-yellow jacket, charcoal trousers, and white sneakers. Use a plain light-gray studio background and soft, even lighting. Follow the attached reference for body pose, camera angle, and framing.",
+  "reference": {
+    "file": "references/kn-02.png",
+    "sha256": "3c49b1e0608bb76080f2b736fd72c671fccf4092d7557f45ec6a24cec823e5f6",
+    "width": 1834,
+    "height": 1300
+  },
+  "settings": {
+    "endpoint": "https://api.tu-zi.com/v1/images/edits",
+    "model": "gpt-image-2",
+    "quality": "medium",
+    "n": 1,
+    "size": "1024x1024",
+    "response_format": "b64_json",
+    "seed": null
+  },
+  "reservedMaximumUsd": 0.04,
+  "reservedAt": "2026-09-22T11:38:46.695Z",
+  "requestStartedAt": "2026-09-22T11:38:46.700Z",
+  "requestFinishedAt": "2026-09-22T11:40:11.067Z",
+  "httpStatus": 200,
+  "requestId": null,
+  "usage": {
+    "input_tokens": 2494,
+    "output_tokens": 1056,
+    "total_tokens": 3550
+  },
+  "output": {
+    "file": "outputs/kneeling-high.png",
+    "sha256": "17e6b0e68c5f7f8025d4597b98ed7fb97fd02a79d53622aa4d5b730d14c9cdaa",
+    "bytes": 1612806,
+    "width": 1254,
+    "height": 1254
+  }
+}

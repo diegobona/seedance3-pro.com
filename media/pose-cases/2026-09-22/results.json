@@ -1,0 +1,166 @@
+{
+  "schemaVersion": 1,
+  "reviewDate": "2026-09-22",
+  "method": "Visual descriptive review, not a benchmark; 0-2 per dimension. Hidden parts are not assessed.",
+  "attempts": 6,
+  "retries": 0,
+  "results": [
+    {
+      "caseId": "crossed-arms-front",
+      "attemptRecord": "attempts/crossed-arms-front.json",
+      "output": {
+        "file": "outputs/crossed-arms-front.png",
+        "sha256": "91109fd02f5dc9b9d7c7c17c3630482e30876b8822c046ffa2038867f6c57035",
+        "bytes": 1422842,
+        "width": 1254,
+        "height": 1254
+      },
+      "review": {
+        "Pose": {
+          "score": 2,
+          "observation": "The crossed forearms, splayed foreground hand, and bent knee broadly follow the reference."
+        },
+        "Visible anatomy": {
+          "score": 2,
+          "observation": "The visible hands and limbs look plausible. Fingers hidden behind the foreground arm cannot be assessed."
+        },
+        "Framing": {
+          "score": 1,
+          "observation": "The front view and full body remain, but the figure fills more of the square frame."
+        }
+      }
+    },
+    {
+      "caseId": "crossed-arms-low",
+      "attemptRecord": "attempts/crossed-arms-low.json",
+      "output": {
+        "file": "outputs/crossed-arms-low.png",
+        "sha256": "331ba92872a88e49483e3bf1248d5418be3153e927aa4e8b81cfdc02a2e1c510",
+        "bytes": 1589134,
+        "width": 1254,
+        "height": 1254
+      },
+      "review": {
+        "Pose": {
+          "score": 1,
+          "observation": "The folded-arm idea remains, but the open foreground hand becomes a tucked hand and the legs are straighter."
+        },
+        "Visible anatomy": {
+          "score": 2,
+          "observation": "No obvious defect in visible limbs. The tucked fingers are occluded and cannot be assessed."
+        },
+        "Framing": {
+          "score": 1,
+          "observation": "The view from below remains clear, while the figure is much larger and the shoes are grounded."
+        }
+      }
+    },
+    {
+      "caseId": "kneeling-three-quarter",
+      "attemptRecord": "attempts/kneeling-three-quarter.json",
+      "output": {
+        "file": "outputs/kneeling-three-quarter.png",
+        "sha256": "8bb2b4f4dd50dacf05225f4440c727938069336fc26314065d25d6d38ab58938",
+        "bytes": 1586094,
+        "width": 1254,
+        "height": 1254
+      },
+      "review": {
+        "Pose": {
+          "score": 2,
+          "observation": "The lowered knee, raised opposite leg, forward lean, and downward gaze broadly match. The far hand moves onto the raised knee."
+        },
+        "Visible anatomy": {
+          "score": 2,
+          "observation": "Visible fingers, knees, and shoes look plausible. Clothing conceals exact joint contours."
+        },
+        "Framing": {
+          "score": 1,
+          "observation": "The oblique view is retained, but the figure fills substantially more of the frame and has clearer floor contact."
+        }
+      }
+    },
+    {
+      "caseId": "kneeling-high",
+      "attemptRecord": "attempts/kneeling-high.json",
+      "output": {
+        "file": "outputs/kneeling-high.png",
+        "sha256": "17e6b0e68c5f7f8025d4597b98ed7fb97fd02a79d53622aa4d5b730d14c9cdaa",
+        "bytes": 1612806,
+        "width": 1254,
+        "height": 1254
+      },
+      "review": {
+        "Pose": {
+          "score": 2,
+          "observation": "The kneeling leg arrangement and forward lean remain. The near hand reaches farther toward the floor."
+        },
+        "Visible anatomy": {
+          "score": 2,
+          "observation": "Visible fingers and limbs look plausible. Hair partly obscures the face; hidden details are not assessable."
+        },
+        "Framing": {
+          "score": 1,
+          "observation": "The high view preserves the visible crown and shoulders, but enlarges the figure and reduces surrounding space."
+        }
+      }
+    },
+    {
+      "caseId": "jogging-side",
+      "attemptRecord": "attempts/jogging-side.json",
+      "output": {
+        "file": "outputs/jogging-side.png",
+        "sha256": "6aaaa1040cd3906ca7daa998926c87a59392d18a2698269180fada3da8a27ae5",
+        "bytes": 1586426,
+        "width": 1254,
+        "height": 1254
+      },
+      "review": {
+        "Pose": {
+          "score": 2,
+          "observation": "The back-facing torso, lowered forward arm, and trailing bent leg broadly follow the reference."
+        },
+        "Visible anatomy": {
+          "score": 2,
+          "observation": "No obvious defect in visible limbs or the near hand. The far hand is hidden behind the body."
+        },
+        "Framing": {
+          "score": 1,
+          "observation": "The rear-biased side view remains, but the larger figure nearly fills the square frame and the forward shoe sits lower."
+        }
+      }
+    },
+    {
+      "caseId": "jogging-three-quarter",
+      "attemptRecord": "attempts/jogging-three-quarter.json",
+      "output": {
+        "file": "outputs/jogging-three-quarter.png",
+        "sha256": "54d1ba1aec5fba864fc302ea1d228a6e03fed275dac1ff083f81a1c2a84168c7",
+        "bytes": 1615613,
+        "width": 1254,
+        "height": 1254
+      },
+      "review": {
+        "Pose": {
+          "score": 2,
+          "observation": "The raised far hand, bent near elbow, and trailing leg broadly follow the reference; wrist and foot angles differ."
+        },
+        "Visible anatomy": {
+          "score": 2,
+          "observation": "The visible fingers and limbs look plausible. Clothing hides precise knee and elbow contours."
+        },
+        "Framing": {
+          "score": 1,
+          "observation": "The oblique/profile-biased view and full body remain, but the subject is larger and the feet are closer to the lower edge."
+        }
+      }
+    }
+  ],
+  "billingSummary": {
+    "currency": "USD",
+    "settledRequests": 6,
+    "total": 0.24,
+    "perRequest": 0.04,
+    "matchingMethod": "Six settled provider edit logs matched by sequential request time windows; no request ID was supplied in response headers."
+  }
+}

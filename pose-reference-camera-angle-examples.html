@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>3D Pose Reference Examples: Six Camera Views Compared | Seedance</title>
+  <meta name="description" content="Compare six 3D pose references and first image outputs across crossed-arms, kneeling, and jogging camera views. See the shared prompt, settings, and study limitations.">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+  <link rel="canonical" href="https://seedance3-pro.com/pose-reference-camera-angle-examples">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="SEEDANCE 3.0">
+  <meta property="og:title" content="3D Pose Reference Examples: Six Camera Views Compared">
+  <meta property="og:description" content="Three mannequin poses, two camera views each, and one shared image prompt. Explore the reference images, first outputs, and comparison method.">
+  <meta property="og:url" content="https://seedance3-pro.com/pose-reference-camera-angle-examples">
+  <meta property="og:image" content="https://seedance3-pro.com/media/pose-cases/2026-09-22/references/ca-01.png">
+  <meta property="og:image:alt" content="3D mannequin in the crossed-arms pose, captured from the front in Seedance Pose Studio">
+  <meta property="article:published_time" content="2026-09-22">
+  <meta property="article:modified_time" content="2026-09-22">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="3D Pose Reference Examples: Six Camera Views Compared">
+  <meta name="twitter:description" content="Three mannequin poses, two camera views each, and one shared image prompt. Explore the reference images, first outputs, and comparison method.">
+  <meta name="twitter:image" content="https://seedance3-pro.com/media/pose-cases/2026-09-22/references/ca-01.png">
+  <meta name="twitter:image:alt" content="3D mannequin in the crossed-arms pose, captured from the front in Seedance Pose Studio">
+  <meta name="theme-color" content="#090a0c">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="./site.css">
+  <link rel="stylesheet" href="./pose-reference-camera-angle-examples.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "@id": "https://seedance3-pro.com/pose-reference-camera-angle-examples#article",
+    "mainEntityOfPage": "https://seedance3-pro.com/pose-reference-camera-angle-examples",
+    "url": "https://seedance3-pro.com/pose-reference-camera-angle-examples",
+    "headline": "3D Pose Reference Examples: Six Camera Views Compared",
+    "description": "Compare six 3D pose references and first image outputs across crossed-arms, kneeling, and jogging camera views. See the shared prompt, settings, and study limitations.",
+    "image": "https://seedance3-pro.com/media/pose-cases/2026-09-22/references/ca-01.png",
+    "datePublished": "2026-09-22",
+    "dateModified": "2026-09-22",
+    "inLanguage": "en",
+    "author": { "@type": "Organization", "name": "SEEDANCE 3.0", "url": "https://seedance3-pro.com/" },
+    "publisher": { "@type": "Organization", "name": "SEEDANCE 3.0", "url": "https://seedance3-pro.com/" }
+  }
+  </script>
+</head>
+<body class="pose-study-page">
+  <a class="study-skip" href="#main-content">Skip to article</a>
+  <header class="site-header">
+    <div class="container inner">
+      <a class="brand" href="./" aria-label="SEEDANCE 3.0 home"><img class="brand-mark" src="./assets/seedance-mark.svg" width="40" height="40" alt=""><span>SEEDANCE 3.0</span></a>
+      <nav class="desktop-nav compact-nav" aria-label="Primary navigation"><a href="./">Home</a><a href="./blog.html">Blog</a></nav>
+    </div>
+  </header>
+
+  <main class="article-main" id="main-content" tabindex="-1">
+    <div class="container">
+      <article class="article-shell study-shell">
+        <header class="study-header">
+          <p class="eyebrow article-category">Pose reference case study</p>
+          <h1 class="article-title">3D pose references.<br>Six camera views compared.</h1>
+          <p class="article-lead">A crossed-arms stance, a kneeling pose, and a jogging pose—each captured from two camera views. Compare the reference with its first image output, using the same character prompt throughout.</p>
+          <p class="study-byline">By SEEDANCE 3.0 <span aria-hidden="true">·</span> <time datetime="2026-09-22">September 22, 2026</time></p>
+          <nav class="study-jump-links" aria-label="On this page"><a href="#crossed-arms">Crossed arms</a><a href="#kneeling">Kneeling</a><a href="#jogging">Jogging</a><a href="#method">Method &amp; prompt</a><a href="#limitations">Limitations</a></nav>
+        </header>
+
+        <div class="article-content prose study-intro">
+          <p>The camera changes what an image reference shows: which limbs overlap, how much of the body is visible, and the space around the figure. This comparison looks at pose, visible anatomy, and framing separately instead of treating them as one result.</p>
+          <p>The references come from the single-mannequin editor currently online in <a href="./app/?model=pose-to-image">Seedance Pose Studio</a>. Outputs use the site's existing developer API adapter with the provider model requested as <code>gpt-image-2</code>. These are API examples using live-editor references, not six generation transactions through the production workbench. <a href="#method">Read the full method and prompt</a>.</p>
+          <p class="study-reading-note"><strong>How to read the panels:</strong> each case labels the original mannequin reference and its first output. Images keep their original aspect ratios. Open either image to inspect the original file.</p>
+        </div>
+
+        <section class="study-pair" id="crossed-arms" aria-labelledby="crossed-arms-title">
+          <div class="study-pair-heading"><span class="study-pair-index">PAIR 01</span><h2 id="crossed-arms-title">Crossed arms: front and low views</h2><p>The same crossed-arms body pose, viewed from the front and from below. Compare the arm overlap, head-to-body perspective, and crop.</p></div>
+          <article class="study-case" id="crossed-arms-front" aria-labelledby="ca-front-title">
+            <header class="study-case-heading"><h3 id="ca-front-title">Front view</h3><span>CA-01 <span aria-hidden="true">/</span> First output</span></header>
+            <div class="study-image-pair">
+              <figure><a href="./media/pose-cases/2026-09-22/references/ca-01.png" aria-label="Open original crossed-arms front reference"><img src="./media/pose-cases/2026-09-22/references/ca-01.png" width="1834" height="1300" loading="lazy" decoding="async" alt="Single 3D mannequin in the crossed-arms pose, viewed from the front"></a><figcaption><span class="study-image-label">Reference</span><span>Crossed arms · front</span></figcaption></figure>
+              <figure><a href="./media/pose-cases/2026-09-22/outputs/crossed-arms-front.png" aria-label="Open original first output for crossed-arms front reference"><img src="./media/pose-cases/2026-09-22/outputs/crossed-arms-front.png" width="1254" height="1254" loading="lazy" decoding="async" alt="First API-generated image using the crossed-arms front-view reference"></a><figcaption><span class="study-image-label">First output</span><span>1254 × 1254 PNG</span></figcaption></figure>
+            </div>
+            <dl class="study-evaluation" data-evaluation="crossed-arms-front"><div><dt>Pose</dt><dd><strong>2/2.</strong> The crossed forearms, splayed foreground hand, and bent knee broadly follow the reference.</dd></div><div><dt>Visible anatomy</dt><dd><strong>2/2.</strong> The visible hands and limbs look plausible. Fingers hidden behind the foreground arm cannot be assessed.</dd></div><div><dt>Framing</dt><dd><strong>1/2.</strong> The front view and full body remain, but the figure fills more of the square frame.</dd></div></dl>
+          </article>
+          <article class="study-case" id="crossed-arms-low" aria-labelledby="ca-low-title">
+            <header class="study-case-heading"><h3 id="ca-low-title">Low view</h3><span>CA-02 <span aria-hidden="true">/</span> First output</span></header>
+            <div class="study-image-pair">
+              <figure><a href="./media/pose-cases/2026-09-22/references/ca-02.png" aria-label="Open original crossed-arms low-view reference"><img src="./media/pose-cases/2026-09-22/references/ca-02.png" width="1834" height="1300" loading="lazy" decoding="async" alt="Single 3D mannequin in the crossed-arms pose, viewed from a low camera position"></a><figcaption><span class="study-image-label">Reference</span><span>Crossed arms · low</span></figcaption></figure>
+              <figure><a href="./media/pose-cases/2026-09-22/outputs/crossed-arms-low.png" aria-label="Open original first output for crossed-arms low-view reference"><img src="./media/pose-cases/2026-09-22/outputs/crossed-arms-low.png" width="1254" height="1254" loading="lazy" decoding="async" alt="First API-generated image using the crossed-arms low-view reference"></a><figcaption><span class="study-image-label">First output</span><span>1254 × 1254 PNG</span></figcaption></figure>
+            </div>
+            <dl class="study-evaluation" data-evaluation="crossed-arms-low"><div><dt>Pose</dt><dd><strong>1/2.</strong> The folded-arm idea remains, but the open foreground hand becomes a tucked hand and the legs are straighter.</dd></div><div><dt>Visible anatomy</dt><dd><strong>2/2.</strong> No obvious defect in visible limbs. The tucked fingers are occluded and cannot be assessed.</dd></div><div><dt>Framing</dt><dd><strong>1/2.</strong> The view from below remains clear, while the figure is much larger and the shoes are grounded.</dd></div></dl>
+          </article>
+          <div class="study-pair-finding" data-pair-findings="crossed-arms"><strong>What these two views show</strong><p>Both outputs retain the folded-arm idea, and the low-view output is visibly photographed from below. The low-view result also replaces the open foreground hand with a more conventional tucked-arm arrangement. A recognizable pose does not guarantee the same hand placement.</p></div>
+        </section>
+
+        <section class="study-pair" id="kneeling" aria-labelledby="kneeling-title">
+          <div class="study-pair-heading"><span class="study-pair-index">PAIR 02</span><h2 id="kneeling-title">Kneeling: three-quarter and high views</h2><p>The same kneeling body pose from two camera positions. Compare the bent legs, visible contact with the floor, and how the figure occupies the frame.</p></div>
+          <article class="study-case" id="kneeling-three-quarter" aria-labelledby="kn-three-quarter-title">
+            <header class="study-case-heading"><h3 id="kn-three-quarter-title">Three-quarter view</h3><span>KN-01 <span aria-hidden="true">/</span> First output</span></header>
+            <div class="study-image-pair">
+              <figure><a href="./media/pose-cases/2026-09-22/references/kn-01.png" aria-label="Open original kneeling three-quarter reference"><img src="./media/pose-cases/2026-09-22/references/kn-01.png" width="1834" height="1300" loading="lazy" decoding="async" alt="Single 3D mannequin in the kneeling pose, viewed from a three-quarter camera position"></a><figcaption><span class="study-image-label">Reference</span><span>Kneeling · three-quarter</span></figcaption></figure>
+              <figure><a href="./media/pose-cases/2026-09-22/outputs/kneeling-three-quarter.png" aria-label="Open original first output for kneeling three-quarter reference"><img src="./media/pose-cases/2026-09-22/outputs/kneeling-three-quarter.png" width="1254" height="1254" loading="lazy" decoding="async" alt="First API-generated image using the kneeling three-quarter-view reference"></a><figcaption><span class="study-image-label">First output</span><span>1254 × 1254 PNG</span></figcaption></figure>
+            </div>
+            <dl class="study-evaluation" data-evaluation="kneeling-three-quarter"><div><dt>Pose</dt><dd><strong>2/2.</strong> The lowered knee, raised opposite leg, forward lean, and downward gaze broadly match. The far hand moves onto the raised knee.</dd></div><div><dt>Visible anatomy</dt><dd><strong>2/2.</strong> Visible fingers, knees, and shoes look plausible. Clothing conceals exact joint contours.</dd></div><div><dt>Framing</dt><dd><strong>1/2.</strong> The oblique view is retained, but the figure fills substantially more of the frame and has clearer floor contact.</dd></div></dl>
+          </article>
+          <article class="study-case" id="kneeling-high" aria-labelledby="kn-high-title">
+            <header class="study-case-heading"><h3 id="kn-high-title">High view</h3><span>KN-02 <span aria-hidden="true">/</span> First output</span></header>
+            <div class="study-image-pair">
+              <figure><a href="./media/pose-cases/2026-09-22/references/kn-02.png" aria-label="Open original kneeling high-view reference"><img src="./media/pose-cases/2026-09-22/references/kn-02.png" width="1834" height="1300" loading="lazy" decoding="async" alt="Single 3D mannequin in the kneeling pose, viewed from a high camera position"></a><figcaption><span class="study-image-label">Reference</span><span>Kneeling · high</span></figcaption></figure>
+              <figure><a href="./media/pose-cases/2026-09-22/outputs/kneeling-high.png" aria-label="Open original first output for kneeling high-view reference"><img src="./media/pose-cases/2026-09-22/outputs/kneeling-high.png" width="1254" height="1254" loading="lazy" decoding="async" alt="First API-generated image using the kneeling high-view reference"></a><figcaption><span class="study-image-label">First output</span><span>1254 × 1254 PNG</span></figcaption></figure>
+            </div>
+            <dl class="study-evaluation" data-evaluation="kneeling-high"><div><dt>Pose</dt><dd><strong>2/2.</strong> The kneeling leg arrangement and forward lean remain. The near hand reaches farther toward the floor.</dd></div><div><dt>Visible anatomy</dt><dd><strong>2/2.</strong> Visible fingers and limbs look plausible. Hair partly obscures the face; hidden details are not assessable.</dd></div><div><dt>Framing</dt><dd><strong>1/2.</strong> The high view preserves the visible crown and shoulders, but enlarges the figure and reduces surrounding space.</dd></div></dl>
+          </article>
+          <div class="study-pair-finding" data-pair-findings="kneeling"><strong>What these two views show</strong><p>Both outputs retain one knee down and the other leg raised. The high-view result shows more of the crown and shoulders, as its reference does. Both enlarge the subject, and the high-view result extends the near hand farther toward the floor.</p></div>
+        </section>
+
+        <section class="study-pair" id="jogging" aria-labelledby="jogging-title">
+          <div class="study-pair-heading"><span class="study-pair-index">PAIR 03</span><h2 id="jogging-title">Jogging: side and three-quarter views</h2><p>The same jogging body pose from the side and at a three-quarter view. Compare the arm swing, bent legs, and separation of the limbs.</p></div>
+          <article class="study-case" id="jogging-side" aria-labelledby="jg-side-title">
+            <header class="study-case-heading"><h3 id="jg-side-title">Rear-biased side view</h3><span>JG-01 <span aria-hidden="true">/</span> First output</span></header>
+            <div class="study-image-pair">
+              <figure><a href="./media/pose-cases/2026-09-22/references/jg-01.png" aria-label="Open original jogging side-view reference"><img src="./media/pose-cases/2026-09-22/references/jg-01.png" width="1834" height="1300" loading="lazy" decoding="async" alt="Single 3D mannequin in the jogging pose, viewed from the side"></a><figcaption><span class="study-image-label">Reference</span><span>Jogging · side</span></figcaption></figure>
+              <figure><a href="./media/pose-cases/2026-09-22/outputs/jogging-side.png" aria-label="Open original first output for jogging side-view reference"><img src="./media/pose-cases/2026-09-22/outputs/jogging-side.png" width="1254" height="1254" loading="lazy" decoding="async" alt="First API-generated image using the jogging side-view reference"></a><figcaption><span class="study-image-label">First output</span><span>1254 × 1254 PNG</span></figcaption></figure>
+            </div>
+            <dl class="study-evaluation" data-evaluation="jogging-side"><div><dt>Pose</dt><dd><strong>2/2.</strong> The back-facing torso, lowered forward arm, and trailing bent leg broadly follow the reference.</dd></div><div><dt>Visible anatomy</dt><dd><strong>2/2.</strong> No obvious defect in visible limbs or the near hand. The far hand is hidden behind the body.</dd></div><div><dt>Framing</dt><dd><strong>1/2.</strong> The rear-biased side view remains, but the larger figure nearly fills the square frame and the forward shoe sits lower.</dd></div></dl>
+          </article>
+          <article class="study-case" id="jogging-three-quarter" aria-labelledby="jg-three-quarter-title">
+            <header class="study-case-heading"><h3 id="jg-three-quarter-title">Front-oblique view</h3><span>JG-02 <span aria-hidden="true">/</span> First output</span></header>
+            <div class="study-image-pair">
+              <figure><a href="./media/pose-cases/2026-09-22/references/jg-02.png" aria-label="Open original jogging three-quarter reference"><img src="./media/pose-cases/2026-09-22/references/jg-02.png" width="1834" height="1300" loading="lazy" decoding="async" alt="Single 3D mannequin in the jogging pose, viewed from a three-quarter camera position"></a><figcaption><span class="study-image-label">Reference</span><span>Jogging · three-quarter</span></figcaption></figure>
+              <figure><a href="./media/pose-cases/2026-09-22/outputs/jogging-three-quarter.png" aria-label="Open original first output for jogging three-quarter reference"><img src="./media/pose-cases/2026-09-22/outputs/jogging-three-quarter.png" width="1254" height="1254" loading="lazy" decoding="async" alt="First API-generated image using the jogging three-quarter-view reference"></a><figcaption><span class="study-image-label">First output</span><span>1254 × 1254 PNG</span></figcaption></figure>
+            </div>
+            <dl class="study-evaluation" data-evaluation="jogging-three-quarter"><div><dt>Pose</dt><dd><strong>2/2.</strong> The raised far hand, bent near elbow, and trailing leg broadly follow the reference; wrist and foot angles differ.</dd></div><div><dt>Visible anatomy</dt><dd><strong>2/2.</strong> The visible fingers and limbs look plausible. Clothing hides precise knee and elbow contours.</dd></div><div><dt>Framing</dt><dd><strong>1/2.</strong> The oblique/profile-biased view and full body remain, but the subject is larger and the feet are closer to the lower edge.</dd></div></dl>
+          </article>
+          <div class="study-pair-finding" data-pair-findings="jogging"><strong>What these two views show</strong><p>The first reference shows more of the back; the second reveals the chest and both hands. That visibility difference carries into the outputs. Arm and leg silhouettes broadly remain, but wrist, shoe, and ground-contact details change.</p></div>
+        </section>
+
+        <div class="article-content prose study-method">
+          <section id="method" aria-labelledby="method-title">
+            <p class="eyebrow">Behind the comparison</p>
+            <h2 id="method-title">The method, settings, and full prompt</h2>
+            <p>This study uses three presets from the live single-mannequin editor. Within each pair, the body pose stays unchanged while the camera is adjusted manually. View labels describe the intended composition; they are not measured camera angles. Capture and zoom details belong to each reference's evidence record.</p>
+            <p>The six references are submitted individually through the site's existing developer API adapter. Each reference gets one initial request and one first output, with the same prompt and settings. The protocol retains weak results, makes no automatic paid retries, and does not retouch the output images.</p>
+            <dl class="study-settings">
+              <div><dt>Reference source</dt><dd>Live Seedance editor · one mannequin</dd></div>
+              <div><dt>Generation route</dt><dd>Developer API · existing site adapter</dd></div>
+              <div><dt>Endpoint</dt><dd><code>https://api.tu-zi.com/v1/images/edits</code></dd></div>
+              <div><dt>Requested model</dt><dd><code>gpt-image-2</code></dd></div>
+              <div><dt>Quality / quantity</dt><dd><code>medium</code> · <code>n=1</code></dd></div>
+              <div><dt>Requested output</dt><dd><code>1024x1024</code> · <code>b64_json</code></dd></div>
+              <div><dt>Actual PNG dimensions</dt><dd>References: 1834 × 1300 · all outputs: 1254 × 1254</dd></div>
+              <div><dt>Seed</dt><dd>No seed supplied</dd></div>
+              <div><dt>Selection / changes</dt><dd>First outputs · no output retouching or retries</dd></div>
+            </dl>
+            <p>The provider's requested model name is recorded as sent. This case study does not independently authenticate the provider's underlying model implementation.</p>
+            <h3>The same prompt for all six references</h3>
+            <p>The first paragraph is the live editor's automatic pose-reference instruction. The second supplies the shared character and visual direction. No camera-specific instruction is added between cases.</p>
+            <pre class="study-prompt">Use the attached 3D mannequin only as a body-pose and camera-angle reference. Preserve the pose and framing; do not copy the mannequin's appearance.
+
+Create a realistic studio photograph of one adult woman with a short black bob, a mustard-yellow jacket, charcoal trousers, and white sneakers. Use a plain light-gray studio background and soft, even lighting. Follow the attached reference for body pose, camera angle, and framing.</pre>
+            <h3>Reading the evaluations</h3>
+            <p>Pose, visible anatomy, and framing use separate descriptive 0–2 scales. They summarize these images only. An occluded feature that cannot be assessed must be called out, rather than silently treated as correct.</p>
+            <div class="study-rubric-wrap"><table class="study-rubric"><caption>Visual review rubric</caption><thead><tr><th scope="col">Dimension</th><th scope="col">0</th><th scope="col">1</th><th scope="col">2</th></tr></thead><tbody><tr><th scope="row">Pose</th><td>Major visible stance or limb mismatch</td><td>Partial match, with visible differences</td><td>Broad match to the visible pose</td></tr><tr><th scope="row">Visible anatomy</th><td>Major visible anatomical defect</td><td>Localized defect or ambiguous visible detail</td><td>No obvious defect in assessable parts</td></tr><tr><th scope="row">Framing</th><td>Major camera or crop departure</td><td>Some camera or crop departure</td><td>Broad match in view and composition</td></tr></tbody></table></div>
+            <p><a href="./media/pose-cases/2026-09-22/cases.json">Inspect the evidence manifest</a> for original reference hashes and submitted settings. <a href="./media/pose-cases/2026-09-22/results.json">Inspect output hashes, reviews, and request records</a>.</p>
+            <p>All six first requests returned PNG images. The originals are linked without retouching or resizing. Although the requested size was 1024 × 1024, every delivered PNG measures 1254 × 1254. No zoom adjustments were made between captures; camera orbit was manual.</p>
+          </section>
+
+          <section id="limitations" aria-labelledby="limitations-title">
+            <h2 id="limitations-title">What this comparison can and cannot tell you</h2>
+            <p>These six examples are an exploratory look at camera composition. They are not a scientific benchmark, a success rate, or evidence that a camera angle alone caused an output change. Only one output is requested per reference, and no seed is fixed.</p>
+            <p>The reference captures are wider than square, while the requested outputs are 1024 × 1024. That aspect-ratio change can affect crop, subject scale, and empty space. Manual orbit and unfixed generation randomness also limit direct comparisons; inspect each source image rather than assuming a measured camera setup.</p>
+            <p>A matching outfit does not demonstrate identity preservation. A plausible silhouette does not establish correct hidden anatomy. No example guarantees an exact joint match, and this study does not test multiple figures, other image models, or pose-to-video generation.</p>
+            <div class="study-pair-finding" data-study-findings><strong>Practical observations from these six outputs</strong><p>In these six outputs, the main stance and broad view generally follow the mannequin. Exact hand placement and subject scale do not. Use the reference to make the silhouette and view readable, then inspect hands, feet, overlaps, and crop separately. The low-view crossed-arms example is a useful reminder to review a convincing image against the actual reference.</p></div>
+          </section>
+        </div>
+
+        <aside class="study-next" aria-labelledby="next-title">
+          <div><p class="eyebrow">Try your own composition</p><h2 id="next-title">Start with the view you want.</h2><p>Explore the pose editor, then review the resulting image against your reference. Generation through the workbench requires sign-in and sufficient credits.</p></div>
+          <div class="study-next-actions"><a class="button primary" href="./app/?model=pose-to-image">Open Pose Studio <span aria-hidden="true">↗</span></a><a href="./pose-to-image">Explore the pose-to-image workflow <span aria-hidden="true">→</span></a><a href="./how-to-control-character-poses-in-seedance-with-3d-pose-references">Read the step-by-step pose guide <span aria-hidden="true">→</span></a></div>
+        </aside>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer article-footer"><div class="container article-footer-inner"><p>© 2026 SEEDANCE 3.0 · seedance3-pro.com</p><nav aria-label="Footer navigation"><a href="./">Home</a><a href="./blog.html">Blog</a><a href="./pose-to-image">Pose to Image</a></nav></div></footer>
+</body>
+</html>
