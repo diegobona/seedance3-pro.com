@@ -497,6 +497,29 @@ for (const page of publicPages) {
   });
 }
 
+test("pose content stays independent of a specific image model", () => {
+  for (const file of [
+    "pose-to-image.html",
+    "pose-reference-camera-angle-examples.html",
+    "how-to-control-character-poses-in-seedance-with-3d-pose-references.html",
+  ]) {
+    assert.doesNotMatch(read(file), /GPT Image 2|gpt-image-2/i, `${file} should use model-neutral language`);
+  }
+
+  assert.doesNotMatch(read("blog.html"), /send it to GPT Image 2/i);
+  assert.doesNotMatch(read("app/pose-studio.mjs"), /continue in GPT Image 2/i);
+  assert.doesNotMatch(read("src/routes/app.tsx"), /Send a clean capture[^<]+to GPT Image 2/i);
+});
+
+test("pose landing removes the crossed-out copy and uses a compatible video source order", () => {
+  const html = read("pose-to-image.html");
+  const video = html.match(/<video\b[\s\S]*?<\/video>/i)?.[0] ?? "";
+
+  assert.doesNotMatch(html, /pose-access-note|pose-capability-strip|pose-recording-caption/i);
+  assert.match(video, /preload="metadata"/i);
+  assert.ok(video.indexOf("pose-reference-demo.mp4") < video.indexOf("pose-reference-demo.webm"));
+});
+
 test("studio preview exposes the planned models without entering the index", () => {
   const html = read("app/legacy-preview.html");
   assert.match(html, /<meta name="robots" content="noindex,follow">/i);

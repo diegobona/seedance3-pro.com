@@ -219,7 +219,7 @@ function StudioPage() {
                 <section className="pose-control-card pose-next-step">
                   <span>POSE TO IMAGE</span>
                   <strong>Turn this pose into an image</strong>
-                  <p>Send a clean capture of every mannequin in the scene to GPT Image 2 as the pose and camera reference.</p>
+                  <p>Send a clean capture of every mannequin in the scene to the image workspace as the pose and camera reference.</p>
                   <button type="button" data-pose-action="use">Use this pose</button>
                 </section>
               </aside>

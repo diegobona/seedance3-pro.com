@@ -703,7 +703,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
       });
       if (destroyed) return;
       await onUsePose?.(file);
-      setHint("Pose reference captured · continue in GPT Image 2");
+      setHint("Pose reference captured · continue in the image workspace");
     } catch {
       if (!destroyed) setHint("The pose could not be captured · please try again");
     } finally {

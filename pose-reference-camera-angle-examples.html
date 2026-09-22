@@ -66,7 +66,7 @@
 
         <div class="article-content prose study-intro">
           <p>The camera changes what an image reference shows: which limbs overlap, how much of the body is visible, and the space around the figure. This comparison looks at pose, visible anatomy, and framing separately instead of treating them as one result.</p>
-          <p>The references come from the single-mannequin editor currently online in <a href="./app/?model=pose-to-image">Seedance Pose Studio</a>. Outputs use the site's existing developer API adapter with the provider model requested as <code>gpt-image-2</code>. These are API examples using live-editor references, not six generation transactions through the production workbench. <a href="#method">Read the full method and prompt</a>.</p>
+          <p>The references come from the single-mannequin editor currently online in <a href="./app/?model=pose-to-image">Seedance Pose Studio</a>. Outputs use the site's current image-generation adapter. These are API examples using live-editor references, not six generation transactions through the production workbench. <a href="#method">Read the full method and prompt</a>.</p>
           <p class="study-reading-note"><strong>How to read the panels:</strong> each case labels the original mannequin reference and its first output. Images keep their original aspect ratios. Open either image to inspect the original file.</p>
         </div>
 
@@ -142,14 +142,12 @@
             <dl class="study-settings">
               <div><dt>Reference source</dt><dd>Live Seedance editor · one mannequin</dd></div>
               <div><dt>Generation route</dt><dd>Developer API · existing site adapter</dd></div>
-              <div><dt>Requested model</dt><dd><code>gpt-image-2</code></dd></div>
               <div><dt>Quality / quantity</dt><dd><code>medium</code> · <code>n=1</code></dd></div>
               <div><dt>Requested output</dt><dd><code>1024x1024</code> · <code>b64_json</code></dd></div>
               <div><dt>Actual PNG dimensions</dt><dd>References: 1834 × 1300 · all outputs: 1254 × 1254</dd></div>
               <div><dt>Seed</dt><dd>No seed supplied</dd></div>
               <div><dt>Selection / changes</dt><dd>First outputs · no output retouching or retries</dd></div>
             </dl>
-            <p>The provider's requested model name is recorded as sent. This case study does not independently authenticate the provider's underlying model implementation.</p>
             <h3>The same prompt for all six references</h3>
             <p>The first paragraph is the live editor's automatic pose-reference instruction. The second supplies the shared character and visual direction. No camera-specific instruction is added between cases.</p>
             <pre class="study-prompt">Use the attached 3D mannequin only as a body-pose and camera-angle reference. Preserve the pose and framing; do not copy the mannequin's appearance.
