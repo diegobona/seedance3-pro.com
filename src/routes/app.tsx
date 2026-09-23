@@ -9,6 +9,9 @@ import kneelingPresetImage from '../../app/pose-assets/presets/anyposes-kneeling
 import joggingPresetImage from '../../app/pose-assets/presets/anyposes-jogging.png'
 import studio01Preview from '../../app/pose-assets/studio-01-preview.png'
 import studio02Preview from '../../app/pose-assets/studio-02-preview.png'
+import catPreview from '../../app/pose-assets/animals/cat-preview.png'
+import dogPreview from '../../app/pose-assets/animals/dog-preview.png'
+import horsePreview from '../../app/pose-assets/animals/horse-preview.png'
 
 export const Route = createFileRoute('/app')({
   validateSearch: (search: Record<string, unknown>) => ({ model: typeof search.model === 'string' ? search.model : '' }),
@@ -207,11 +210,10 @@ function StudioPage() {
               <aside className="pose-control-panel">
                 <section className="pose-control-card pose-actors-card">
                   <div className="pose-control-heading"><div><span>BUILD YOUR SCENE</span><h3>Characters</h3></div></div>
-                  <p>Choose a human or animal to add.</p>
                   <div className="pose-model-grid" aria-label="Character models">
                     <button type="button" data-pose-model="studio-01" aria-pressed="false"><img src={studio01Preview} alt="Female character preview" /><span>Female</span></button>
                     <button type="button" data-pose-model="studio-02" className="is-active" aria-pressed="true"><img src={studio02Preview} alt="Male character preview" /><span>Male</span></button>
-                    {['cat','dog','horse'].map(kind => <button type="button" key={kind} data-pose-model={kind} aria-pressed="false"><span className="pose-animal-preview" data-animal-preview aria-hidden="true" /><span>{kind.charAt(0).toUpperCase()+kind.slice(1)}</span></button>)}
+                    {([['cat',catPreview],['dog',dogPreview],['horse',horsePreview]] as const).map(([kind,preview]) => <button type="button" key={kind} data-pose-model={kind} aria-pressed="false"><img src={preview} alt="" /><span>{kind.charAt(0).toUpperCase()+kind.slice(1)}</span></button>)}
                   </div>
                   <button type="button" className="pose-add-button" data-pose-action="add">+ Add character</button>
                   <details className="pose-model-credits"><summary>3D model credits</summary><p>Cat by <a href="https://blendswap.com/blend/18519" target="_blank" rel="noreferrer">JonasDichelle</a> and horse by <a href="https://blendswap.com/blend/13903" target="_blank" rel="noreferrer">b2przemo</a>, <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noreferrer">CC BY 3.0</a>. Source conversion by <a href="https://github.com/nrz/ylikuutio" target="_blank" rel="noreferrer">Antti Nuortimo</a>. Dog by <a href="https://opengameart.org/content/dog-low-poly-rigged" target="_blank" rel="noreferrer">crownjoshua</a>, CC0. Meshes adapted and rigged for Pose Studio.</p></details>

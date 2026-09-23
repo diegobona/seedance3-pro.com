@@ -103,10 +103,6 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   const objectSelect = container.querySelector('#pose-scene-object');
   const propButtons = Array.from(container.querySelectorAll('[data-pose-prop]'));
   const modelButtons = Array.from(container.querySelectorAll("[data-pose-model]"));
-  modelButtons.forEach(button => {
-    const preview = button.querySelector('[data-animal-preview]');
-    if (preview) preview.innerHTML = animalIcon(button.dataset.poseModel);
-  });
   const addButton = container.querySelector('[data-pose-action="add"]');
   const removeButton = container.querySelector('[data-pose-action="remove"]');
   const objectToolbar = container.querySelector("#pose-object-toolbar");

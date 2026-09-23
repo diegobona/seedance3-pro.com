@@ -20,6 +20,8 @@ node scripts/build-animal-assets.mjs
 
 `--prepare` downloads the credited cat and horse FBX sources when absent and writes the three rig-input JSON files. The Blender step computes bone-heat skin weights. The final build requires weights matching both the geometry's vertex count and the rig-input hash; rerun skinning after changing geometry or joint positions. Temporary sources and intermediate files stay in `.animal-asset-work/`; publish the generated GLBs and license notices.
 
+Regenerate the character selection thumbnails from the final GLBs with `blender --background --factory-startup --disable-autoexec --python scripts/render-animal-thumbnails.py`. This writes the three 256×192 PNG previews beside their models.
+
 ## Compatibility and checks
 
 Animal rig version 2 keeps the published joint order and hierarchy while improving anatomical rest positions. Scene restore migrates version 1 animal bone positions relative to their old rest positions; new scenes carry `rigVersion: 2`. Keep the legacy rest-position definitions stable so existing shared scenes continue to work.

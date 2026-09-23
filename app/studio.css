@@ -76,10 +76,10 @@ textarea { width:100%; min-height:154px; resize:vertical; padding:15px; border:1
 .pose-object-tools button:focus-visible { outline:2px solid var(--lime); outline-offset:2px; }
 .pose-object-tools button:disabled { opacity:.4; cursor:default; }
 .pose-control-panel { display:grid; gap:12px; }
-.pose-model-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:14px; }
-.pose-model-grid button { overflow:hidden; padding:0 0 9px; border:1px solid var(--line); border-radius:12px; background:#0c0e0e; color:#c4c5be; cursor:pointer; }
+.pose-model-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:7px; margin-top:12px; }
+.pose-model-grid button { min-width:0; overflow:hidden; padding:0 0 6px; border:1px solid var(--line); border-radius:10px; background:#0c0e0e; color:#c4c5be; cursor:pointer; }
 .pose-model-grid button.is-active { border-color:var(--lime); background:rgba(216,255,115,.08); color:var(--lime); box-shadow:0 0 0 1px rgba(216,255,115,.2); }
-.pose-model-grid img { display:block; width:100%; height:128px; object-fit:contain; margin-bottom:9px; background:#fff; }
+.pose-model-grid img { display:block; width:100%; height:62px; object-fit:contain; margin-bottom:5px; background:#e8ece8; }
 .pose-model-grid span { font-size:12px; font-weight:800; }
 .pose-model-credits { margin-top:12px; color:var(--muted); font-size:11px; line-height:1.6; }
 .pose-model-credits summary { cursor:pointer; }
@@ -143,6 +143,3 @@ textarea { width:100%; min-height:154px; resize:vertical; padding:15px; border:1
 @media(max-width:1120px){.pose-studio{grid-template-columns:1fr}.pose-control-panel{grid-template-columns:repeat(2,minmax(0,1fr))}.pose-intro-card,.pose-next-step{grid-column:span 2}.pose-canvas{min-height:600px}}
 @media(max-width:620px){.pose-control-panel{grid-template-columns:1fr}.pose-intro-card,.pose-next-step{grid-column:auto}.pose-toolbar{align-items:flex-start;flex-direction:column}.pose-history-controls{width:100%}.pose-history-controls button{flex:1}.pose-history-controls button span{display:none}.pose-canvas{min-height:520px}.pose-canvas-hint{bottom:11px;font-size:11px;line-height:1.35}.pose-control-card{padding:16px}}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
-
-.pose-animal-preview { display:flex; align-items:center; justify-content:center; width:100%; aspect-ratio:1; background:#dce1de; color:#596362; }
-.pose-animal-preview svg { width:86%; height:86%; }
