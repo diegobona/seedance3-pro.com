@@ -886,10 +886,11 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     commit: pushHistory,
   }));
   container.querySelectorAll('[data-pose-palette]').forEach(button => listen(button, 'click', () => {
-    if (!mannequin || poseCaptureInFlight || modelLoading) return;
+    if (poseCaptureInFlight || modelLoading) return;
     const before = captureSnapshot();
     const [figure, background] = button.dataset.posePalette.split(',');
-    setActorColor(actorRecords.get(selectedId), figure);
+    const selected = actors.find(actor => actor.id === selectedId);
+    for (const actor of selected ? [selected] : actors) setActorColor(actor, figure);
     bodyColor.value = figure;
     changeBackground(background); pushHistory(before);
   }));
