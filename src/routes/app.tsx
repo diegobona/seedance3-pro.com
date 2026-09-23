@@ -221,13 +221,13 @@ function StudioPage() {
                 <section className="pose-control-card pose-props-card">
                   <div className="pose-control-heading"><div><span>SET THE SCENE</span><h3>Props</h3></div></div>
                   <div className="pose-view-grid">{[['chair','Chair'],['stool','Stool'],['table','Table'],['box','Box'],['ball','Ball'],['staff','Staff']].map(([kind,label]) => <button type="button" key={kind} data-pose-prop={kind}>+ {label}</button>)}</div>
-                  <label className="pose-field">Scene objects<select id="pose-scene-object" defaultValue=""><option value="">Select an object</option></select></label>
                 </section>
                 <section className="pose-control-card">
                   <div className="pose-control-heading"><div><span>COMPOSE</span><h3>Camera &amp; colors</h3></div></div>
                   <div className="pose-view-grid" aria-label="Camera views">{[['front','Front'],['three','¾ view'],['left','Left'],['right','Right'],['back','Back'],['high','High']].map(([view,label]) => <button type="button" key={view} data-pose-view={view}>{label}</button>)}</div>
                   <label className="pose-field">Selected object<input type="color" id="pose-body-color" defaultValue="#d9d9d9" /></label>
                   <label className="pose-field">Background<input type="color" id="pose-background-color" defaultValue="#0b0d0d" /></label>
+                  <div className="pose-guide-options"><label><input type="checkbox" id="pose-show-ground" />Ground</label><label><input type="checkbox" id="pose-show-grid" />Grid</label></div>
                   <div className="pose-view-grid" aria-label="Color themes"><button type="button" data-pose-palette="#d9d9d9,#0b0d0d">Dark</button><button type="button" data-pose-palette="#334155,#e5e7eb">Light</button><button type="button" data-pose-palette="#e0a442,#183044">Contrast</button></div>
                 </section>
                 <section className="pose-control-card pose-library-card">

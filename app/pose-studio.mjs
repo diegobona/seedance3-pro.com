@@ -23,6 +23,7 @@ import { POSE_LIBRARY, presetPreview, setActorColor, setActorMirrored } from './
 import { PROP_CATALOG, createProp } from './pose-props.mjs';
 import { encodeSharedScene, decodeSharedScene } from './pose-share.mjs';
 import { createModelCache } from './pose-model-cache.mjs';
+import { bindLiveColorControl } from './pose-color-control.mjs';
 import { ANIMAL_CATALOG, ANIMAL_HANDLE_SPECS, ANIMAL_PRESETS, applyAnimalPreset, animalIcon } from './pose-animals.mjs';
 
 const MAX_HISTORY = 40;
@@ -100,7 +101,8 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   let sceneAspect = 'auto';
   const shareButton = container.querySelector('[data-pose-action="share"]');
   const shareField = container.querySelector('#pose-share-link');
-  const objectSelect = container.querySelector('#pose-scene-object');
+  const groundToggle = container.querySelector('#pose-show-ground');
+  const gridToggle = container.querySelector('#pose-show-grid');
   const propButtons = Array.from(container.querySelectorAll('[data-pose-prop]'));
   const modelButtons = Array.from(container.querySelectorAll("[data-pose-model]"));
   const addButton = container.querySelector('[data-pose-action="add"]');
@@ -185,6 +187,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   const grid = new THREE.GridHelper(22, 22, 0x63782e, 0x242824);
   grid.material.opacity = 0.4;
   grid.material.transparent = true;
+  grid.visible = false;
   scene.add(grid);
 
   const groundMaterial = new THREE.MeshStandardMaterial({ color: 0x0b0d0d, roughness: 0.94 });
@@ -192,6 +195,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   ground.rotation.x = -Math.PI / 2;
   ground.position.y = -0.02;
   ground.receiveShadow = true;
+  ground.visible = false;
   scene.add(ground);
 
   const raycaster = new THREE.Raycaster();
@@ -306,11 +310,6 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     if (shareButton) shareButton.disabled = busy || !actors.length;
     propButtons.forEach(button => { button.disabled = busy || actors.length >= 30; });
     addButton.disabled = busy || actors.length >= 30;
-    if (objectSelect) {
-      objectSelect.replaceChildren(new Option('Select an object', ''), ...actors.map(actor => new Option(actor.label, actor.id)));
-      objectSelect.value = selectedId ?? '';
-      objectSelect.disabled = busy;
-    }
     updateHistoryButtons();
   }
 
@@ -836,6 +835,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     usePoseButton.textContent = "Capturing pose…";
     const handleVisibility = handles.map((handle) => handle.visible);
     const gridVisible = grid.visible;
+    const groundVisible = ground.visible;
     const gizmoVisible = transformHelper.visible;
     const originalSize = renderer.getSize(new THREE.Vector2());
     const pixelRatio = renderer.getPixelRatio();
@@ -845,6 +845,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
         beforeCapture() {
           handles.forEach((handle) => { handle.visible = false; });
           grid.visible = false;
+          ground.visible = false;
           transformHelper.visible = false;
           renderer.setPixelRatio(1);
           renderer.setSize(Math.round(1600 * Math.min(1, camera.aspect)), Math.round(1600 / Math.max(1, camera.aspect)), false);
@@ -853,6 +854,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
         afterCapture() {
           handles.forEach((handle, index) => { handle.visible = handleVisibility[index]; });
           grid.visible = gridVisible;
+          ground.visible = groundVisible;
           transformHelper.visible = gizmoVisible;
           renderer.setPixelRatio(pixelRatio);
           renderer.setSize(originalSize.x, originalSize.y, false);
@@ -907,19 +909,21 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   listen(copyButton, 'click', () => useCurrentPose('copy'));
   listen(mirrorButton, 'click', mirrorPose);
   listen(shareButton, 'click', shareScene);
-  listen(objectSelect, 'change', () => selectActor(objectSelect.value));
+  listen(groundToggle, 'change', () => { ground.visible = groundToggle.checked; });
+  listen(gridToggle, 'change', () => { grid.visible = gridToggle.checked; });
   propButtons.forEach(button => listen(button, 'click', () => addProp(button.dataset.poseProp)));
-  listen(bodyColor, 'change', () => {
-    if (!mannequin || poseCaptureInFlight) return;
-    const before = captureSnapshot();
-    setActorColor(actorRecords.get(selectedId), bodyColor.value);
-    pushHistory(before);
-  });
-  listen(backgroundColor, 'change', () => {
-    if (poseCaptureInFlight) return;
-    const before = captureSnapshot();
-    changeBackground(backgroundColor.value); pushHistory(before);
-  });
+  cleanups.push(bindLiveColorControl(bodyColor, {
+    canEdit: () => Boolean(mannequin) && !poseCaptureInFlight && !modelLoading,
+    capture: captureSnapshot,
+    apply: color => setActorColor(actorRecords.get(selectedId), color),
+    commit: pushHistory,
+  }));
+  cleanups.push(bindLiveColorControl(backgroundColor, {
+    canEdit: () => !poseCaptureInFlight && !modelLoading,
+    capture: captureSnapshot,
+    apply: changeBackground,
+    commit: pushHistory,
+  }));
   container.querySelectorAll('[data-pose-palette]').forEach(button => listen(button, 'click', () => {
     if (!mannequin || poseCaptureInFlight || modelLoading) return;
     const before = captureSnapshot();
