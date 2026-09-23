@@ -782,15 +782,18 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     setHint(`${PROP_CATALOG[kind]} added · use Move, Rotate or Scale to place it`);
   }
 
+  let shareRequestId = 0;
+
   async function shareScene() {
     if (modelLoading || poseCaptureInFlight || !actors.length) return;
+    const requestId = ++shareRequestId;
     finishDrag();
     shareButton.disabled = true;
     try {
       const saved = { ...captureSnapshot(), version: 1, aspect: sceneAspect,
         camera: { position: camera.position.toArray(), target: controls.target.toArray() } };
       const encoded = await encodeSharedScene(saved);
-      if (destroyed) return;
+      if (destroyed || requestId !== shareRequestId) return;
       const url = new URL(window.location.href);
       url.search = '?model=pose-to-image';
       url.hash = `pose=${encoded}`;
@@ -798,8 +801,10 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
       shareField.value = url.href;
       try {
         await navigator.clipboard.writeText(url.href);
+        if (destroyed || requestId !== shareRequestId) return;
         setHint('Link copied · anyone with it can open and edit this scene');
       } catch {
+        if (destroyed || requestId !== shareRequestId) return;
         shareField.focus(); shareField.select();
         setHint('Your scene link is ready · copy the selected link');
       }
@@ -892,7 +897,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
       if (!destroyed) {
         controls.enabled = true;
         updateSceneButtons();
-        usePoseButton.textContent = "Use this pose";
+        usePoseButton.textContent = "Pose to Image";
       }
     }
   }
@@ -902,6 +907,12 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     cleanups.push(() => target?.removeEventListener(type, listener, options));
   }
 
+  listen(document, 'click', event => {
+    const button = event.target.closest?.('button, summary');
+    if (!button || button === shareButton) return;
+    shareRequestId++;
+    shareField.hidden = true;
+  }, true);
   listen(renderer.domElement, "pointerdown", onPointerDown, true);
   listen(renderer.domElement, "pointermove", onPointerMove, true);
   listen(renderer.domElement, "pointerup", finishDrag);
