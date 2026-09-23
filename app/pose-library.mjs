@@ -24,6 +24,18 @@ export const POSE_LIBRARY = [
   pose('squat', 'Squat', 'Floor', { spine:[0,.9,.3],leftUpLeg:[.4,.1,1],leftLeg:[-.1,-1,-.5],rightUpLeg:[-.4,.1,1],rightLeg:[.1,-1,-.5],leftArm:[.2,0,1],leftForeArm:[0,0,1],rightArm:[-.2,0,1],rightForeArm:[0,0,1] }),
   pose('kneel-both', 'Both knees', 'Floor', { leftUpLeg:[.15,-1,0],leftLeg:[0,.1,-1],rightUpLeg:[-.15,-1,0],rightLeg:[0,.1,-1] }),
   pose('floor-sit', 'Floor seated', 'Floor', { leftUpLeg:[.2,0,1],leftLeg:[.1,0,1],rightUpLeg:[-.2,0,1],rightLeg:[-.1,0,1] }),
+  pose('attention', 'Attention', 'Standing', { spine:[0,1,0],leftArm:[.08,-1,0],leftForeArm:[0,-1,0],rightArm:[-.08,-1,0],rightForeArm:[0,-1,0],leftUpLeg:[.02,-1,0],leftLeg:[0,-1,0],rightUpLeg:[-.02,-1,0],rightLeg:[0,-1,0] }),
+  pose('one-hand-hip', 'One hand on hip', 'Standing', { leftArm:[.65,-.75,0],leftForeArm:[-.7,.1,.2],rightUpLeg:[-.25,-1,.15],rightLeg:[.1,-1,-.15] }),
+  pose('model-stance', 'Model stance', 'Standing', { spine:[.08,1,0],leftArm:[.55,-.8,0],leftForeArm:[-.65,.05,.2],leftUpLeg:[.02,-1,0],leftLeg:[0,-1,0],rightUpLeg:[.18,-.95,.25],rightLeg:[-.12,-1,-.18] }),
+  pose('salute', 'Salute', 'Gesture', { rightArm:[-.85,.05,.3],rightForeArm:[.65,.8,.05] }),
+  pose('phone', 'On the phone', 'Gesture', { rightArm:[-.35,-.9,.12],rightForeArm:[.15,1,.12] }),
+  pose('shrug', 'Shrug', 'Gesture', { leftArm:[.5,-.85,0],leftForeArm:[.7,.65,.3],rightArm:[-.5,-.85,0],rightForeArm:[-.7,.65,.3] }),
+  pose('overhead-stretch', 'Overhead stretch', 'Gesture', { spine:[0,1,0],leftArm:[.3,1,0],leftForeArm:[-.3,1,.1],rightArm:[-.3,1,0],rightForeArm:[.3,1,.1] }),
+  pose('punch', 'Straight punch', 'Action', { spine:[0,.98,.15],leftArm:[.08,.05,1],leftForeArm:[0,0,1],rightArm:[-.35,-.45,.6],rightForeArm:[.1,1,.2],leftUpLeg:[.2,-1,.3],leftLeg:[0,-1,-.1],rightUpLeg:[-.25,-1,-.4],rightLeg:[0,-1,-.1] }),
+  pose('front-kick', 'Front kick', 'Action', { spine:[0,1,-.12],leftUpLeg:[.1,.1,1],leftLeg:[0,-.08,1],rightUpLeg:[-.08,-1,0],rightLeg:[0,-1,0],leftArm:[.6,-.4,-.3],leftForeArm:[.2,.8,.5],rightArm:[-.4,-.5,.3],rightForeArm:[.1,1,.3] }),
+  pose('side-lunge', 'Side lunge', 'Action', { spine:[.15,1,.2],leftUpLeg:[.8,-.5,.5],leftLeg:[-.1,-1,-.15],rightUpLeg:[-.8,-.8,0],rightLeg:[-.7,-.8,0],leftArm:[.2,-.3,1],leftForeArm:[-.25,.25,1],rightArm:[-.2,-.3,1],rightForeArm:[.25,.25,1] }),
+  pose('sit-hands-lap', 'Hands on lap', 'Seated', { spine:[0,1,0],leftUpLeg:[.15,0,1],leftLeg:[0,-1,0],rightUpLeg:[-.15,0,1],rightLeg:[0,-1,0],leftArm:[.12,-1,.15],leftForeArm:[-.2,-.15,1],rightArm:[-.12,-1,.15],rightForeArm:[.2,-.15,1] }),
+  pose('sit-lean-forward', 'Seated lean', 'Seated', { spine:[0,.85,.5],leftUpLeg:[.4,0,1],leftLeg:[0,-1,-.15],rightUpLeg:[-.4,0,1],rightLeg:[0,-1,-.15],leftArm:[.2,-1,.2],leftForeArm:[-.25,.1,1],rightArm:[-.2,-1,.2],rightForeArm:[.25,.1,1] }),
 ];
 
 // Compact 3D-direction projection: an illustrative preview, not a generated image.
