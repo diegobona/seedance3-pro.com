@@ -53,7 +53,7 @@ function StudioPage() {
 
   return (
     <>
-      <div className="studio-shell">
+      <div className={`studio-shell${initiallyPose ? ' is-pose-mode' : ''}`}>
         <aside className="sidebar" id="studio-sidebar">
           <a className="studio-brand" href="/"><img src="/assets/seedance-mark.svg" width="40" height="40" alt="" /><strong>SEEDANCE<br /><small>CREATIVE STUDIO</small></strong></a>
           <button className="sidebar-close" type="button" aria-label="Close model navigation">×</button>
@@ -184,7 +184,10 @@ function StudioPage() {
               </div>
               <div className="pose-stage-card">
                 <div className="pose-toolbar">
-                  <div className="pose-mode-indicator"><span /> Ragdoll IK</div>
+                  <div className="pose-stage-heading">
+                    <button className="pose-sidebar-toggle" type="button" aria-controls="studio-sidebar" aria-expanded="true" title="Collapse menu">‹ <span>Collapse menu</span></button>
+                    <div className="pose-mode-indicator"><span /> Ragdoll IK</div>
+                  </div>
                   <div className="pose-history-controls" aria-label="Pose history">
                     <button type="button" data-pose-action="undo" aria-label="Undo pose change" disabled>↶ <span>Undo</span></button>
                     <button type="button" data-pose-action="redo" aria-label="Redo pose change" disabled>↷ <span>Redo</span></button>

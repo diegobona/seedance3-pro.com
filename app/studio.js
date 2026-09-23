@@ -143,6 +143,19 @@ export function initializeStudio() {
   const sidebar = document.getElementById("studio-sidebar");
   const sidebarOpen = document.querySelector(".sidebar-open");
   const sidebarClose = document.querySelector(".sidebar-close");
+  const studioShell = document.querySelector(".studio-shell");
+  const poseSidebarToggle = document.querySelector(".pose-sidebar-toggle");
+  let poseSidebarCollapsed = false;
+
+  function updatePoseSidebar() {
+    const poseMode = activeModelId === "pose-to-image";
+    studioShell.classList.toggle("is-pose-mode", poseMode);
+    studioShell.classList.toggle("is-sidebar-collapsed", poseMode && poseSidebarCollapsed);
+    const label = poseSidebarCollapsed ? "Expand menu" : "Collapse menu";
+    poseSidebarToggle.setAttribute("aria-expanded", String(!poseSidebarCollapsed));
+    poseSidebarToggle.title = label;
+    poseSidebarToggle.replaceChildren(document.createTextNode(poseSidebarCollapsed ? "› " : "‹ "), Object.assign(document.createElement("span"), { textContent: label }));
+  }
   const creationGrid = document.getElementById("creation-grid");
   const poseStudio = document.getElementById("pose-studio");
 
@@ -265,6 +278,7 @@ export function initializeStudio() {
     const normalizedModelId = normalizeModelId(modelId, availableModelIds);
     const model = studioModels[normalizedModelId];
     activeModelId = normalizedModelId;
+    updatePoseSidebar();
     modelButtons.forEach((button) => button.classList.toggle("is-active", button.dataset.model === normalizedModelId));
     modelName.textContent = model.name;
     modelCategory.textContent = model.category;
@@ -643,6 +657,10 @@ export function initializeStudio() {
     button.parentElement.querySelectorAll("button").forEach((item) => item.classList.toggle("is-selected", item === button));
   }));
   listen(sidebarOpen, "click", () => sidebar.classList.add("is-open"));
+  listen(poseSidebarToggle, "click", () => {
+    poseSidebarCollapsed = !poseSidebarCollapsed;
+    updatePoseSidebar();
+  });
   listen(sidebarClose, "click", () => sidebar.classList.remove("is-open"));
 
   return () => {
