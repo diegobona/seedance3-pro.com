@@ -15,6 +15,7 @@ import {
 } from "./pose-rig-index.mjs";
 import { ANYPOSES_PRESETS, ANYPOSES_REFERENCE_DIRECTIONS } from "./pose-presets.mjs";
 import { capturePoseReference } from "./pose-transfer.mjs";
+import { POSE_LIBRARY, presetPreview, setActorColor, setActorMirrored } from './pose-library.mjs';
 
 const MAX_HISTORY = 40;
 const MODEL_CATALOG = {
@@ -67,7 +68,15 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   const redoButton = container.querySelector('[data-pose-action="redo"]');
   const resetButton = container.querySelector('[data-pose-action="reset"]');
   const usePoseButton = container.querySelector('[data-pose-action="use"]');
+  const presetGrid = container.querySelector('.pose-preset-grid');
+  if (presetGrid) presetGrid.innerHTML = POSE_LIBRARY.map(p => `<button type="button" data-pose-preset="${p.key}" data-category="${p.category}" title="${p.label}"><span class="pose-preset-diagram">${presetPreview(p)}</span>${p.label}</button>`).join('');
   const presetButtons = Array.from(container.querySelectorAll("[data-pose-preset]"));
+  const downloadButton = container.querySelector('[data-pose-action="download"]');
+  const copyButton = container.querySelector('[data-pose-action="copy"]');
+  const mirrorButton = container.querySelector('[data-pose-action="mirror"]');
+  const bodyColor = container.querySelector('#pose-body-color');
+  const backgroundColor = container.querySelector('#pose-background-color');
+  const aspectSelect = container.querySelector('#pose-aspect');
   const modelButtons = Array.from(container.querySelectorAll("[data-pose-model]"));
   const addButton = container.querySelector('[data-pose-action="add"]');
   const removeButton = container.querySelector('[data-pose-action="remove"]');
@@ -190,13 +199,14 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   }
 
   function captureSnapshot() {
-    return captureSceneState(actors, selectedId);
+    return { ...captureSceneState(actors, selectedId), background: scene.background.getHexString() };
   }
 
   function applySnapshot(snapshot) {
     if (!snapshot) return;
     const restored = restoreSceneState(actorRecords, snapshot);
     actors = restored.actors;
+    if (snapshot.background) changeBackground('#' + snapshot.background);
     selectActor(restored.selectedId);
     clearActivePreset();
   }
@@ -210,6 +220,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     bonesByName = actor?.byName ?? new Map();
     presetBindings = actor?.bindings ?? [];
     neutralSnapshot = actor?.neutral ?? null;
+    if (bodyColor) bodyColor.value = actor?.color ?? '#d9d9d9';
     if (hoveredHandle) hoveredHandle.scale.setScalar(1);
     hoveredHandle = null;
     clearActivePreset();
@@ -260,6 +271,9 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     presetButtons.forEach((button) => { button.disabled = busy || !mannequin; });
     resetButton.disabled = busy || !mannequin;
     usePoseButton.disabled = busy || !actors.length;
+    for (const button of [downloadButton, copyButton]) if (button) button.disabled = busy || !actors.length;
+    if (mirrorButton) mirrorButton.disabled = busy || !mannequin;
+    if (bodyColor) bodyColor.disabled = busy || !mannequin;
     updateHistoryButtons();
   }
 
@@ -329,8 +343,13 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   function rotateJointToward(joint, effector, target, maxAngle) {
     joint.getWorldPosition(scratchJointPosition);
     effector.getWorldPosition(scratchEffectorPosition);
+    // Work in the parent's coordinates so mirrored and scaled rigs keep correct IK.
+    joint.parent.worldToLocal(scratchJointPosition);
+    joint.parent.worldToLocal(scratchEffectorPosition);
+    scratchToTarget.copy(target);
+    joint.parent.worldToLocal(scratchToTarget);
     scratchToEffector.subVectors(scratchEffectorPosition, scratchJointPosition);
-    scratchToTarget.subVectors(target, scratchJointPosition);
+    scratchToTarget.sub(scratchJointPosition);
     if (scratchToEffector.lengthSq() < 1e-8 || scratchToTarget.lengthSq() < 1e-8) return false;
     scratchToEffector.normalize();
     scratchToTarget.normalize();
@@ -341,8 +360,6 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     if (scratchAxis.lengthSq() < 1e-9) return false;
     scratchAxis.normalize();
     angle = Math.min(angle, maxAngle);
-    joint.parent.getWorldQuaternion(scratchParentQuaternion).invert();
-    scratchAxis.applyQuaternion(scratchParentQuaternion).normalize();
     scratchRotation.setFromAxisAngle(scratchAxis, angle);
     joint.quaternion.premultiply(scratchRotation).normalize();
     mannequin.updateMatrixWorld(true);
@@ -612,10 +629,13 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   }
 
   function applyPreset(name) {
-    const preset = ANYPOSES_PRESETS.find((candidate) => candidate.key === name);
+    const preset = POSE_LIBRARY.find((candidate) => candidate.key === name);
     if (!neutralSnapshot || !preset) return;
     const before = captureSnapshot();
     const facing = mannequin.quaternion.clone();
+    const actor = actorRecords.get(selectedId);
+    const mirrored = Boolean(actor.mirrored);
+    setActorMirrored(actor, false);
     mannequin.quaternion.fromArray(neutralSnapshot.quaternion);
     restoreNeutralPose();
     for (const binding of presetBindings) {
@@ -626,13 +646,14 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
       );
     }
     placePresetOnGround();
+    setActorMirrored(actor, mirrored);
     mannequin.quaternion.copy(facing);
     mannequin.updateMatrixWorld(true);
     updateHandlePositions();
     syncTransformTool();
     pushHistory(before);
     presetButtons.forEach((button) => button.classList.toggle("is-active", button.dataset.posePreset === name));
-    setHint(`${preset.label} · Anyposes preset ${preset.sourceCode} · drag a handle to refine it`);
+    setHint(`${preset.label} · drag a handle to refine it`);
   }
 
   function restoreNeutralPose() {
@@ -675,7 +696,37 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     controls.update();
   }
 
-  async function useCurrentPose() {
+  function changeBackground(color) {
+    scene.background.set(color);
+    scene.fog.color.set(color);
+    groundMaterial.color.set(color);
+    if (backgroundColor) backgroundColor.value = color;
+  }
+
+  function mirrorPose() {
+    if (!mannequin || modelLoading || poseCaptureInFlight) return;
+    finishDrag();
+    const before = captureSnapshot();
+    const actor = actorRecords.get(selectedId);
+    setActorMirrored(actor, !actor.mirrored);
+    updateHandlePositions();
+    syncTransformTool();
+    pushHistory(before);
+    setHint('Pose mirrored · Undo to restore');
+  }
+
+  function setCameraView(view) {
+    if (poseCaptureInFlight || modelLoading) return;
+    frameScene();
+    const distance = camera.position.distanceTo(controls.target);
+    const directions = { front:[0,0,1], back:[0,0,-1], left:[-1,0,0], right:[1,0,0], high:[0,1,1], three:[1,.25,1] };
+    camera.position.copy(controls.target).add(new THREE.Vector3(...(directions[view] ?? directions.front)).normalize().multiplyScalar(distance));
+    camera.lookAt(controls.target);
+    controls.update();
+    setHint('Camera view updated · drag empty space to fine-tune');
+  }
+
+  async function useCurrentPose(mode = 'use') {
     if (!actors.length || poseCaptureInFlight || modelLoading) return;
     finishDrag();
     poseCaptureInFlight = true;
@@ -685,27 +736,48 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     const handleVisibility = handles.map((handle) => handle.visible);
     const gridVisible = grid.visible;
     const gizmoVisible = transformHelper.visible;
+    const originalSize = renderer.getSize(new THREE.Vector2());
+    const pixelRatio = renderer.getPixelRatio();
     try {
-      const file = await capturePoseReference({
+      const capture = capturePoseReference({
         canvas: renderer.domElement,
         beforeCapture() {
           handles.forEach((handle) => { handle.visible = false; });
           grid.visible = false;
           transformHelper.visible = false;
+          renderer.setPixelRatio(1);
+          renderer.setSize(Math.round(1600 * Math.min(1, camera.aspect)), Math.round(1600 / Math.max(1, camera.aspect)), false);
           renderer.render(scene, camera);
         },
         afterCapture() {
           handles.forEach((handle, index) => { handle.visible = handleVisibility[index]; });
           grid.visible = gridVisible;
           transformHelper.visible = gizmoVisible;
+          renderer.setPixelRatio(pixelRatio);
+          renderer.setSize(originalSize.x, originalSize.y, false);
           renderer.render(scene, camera);
         },
       });
-      if (destroyed) return;
-      await onUsePose?.(file);
-      setHint("Pose reference captured · continue in the image workspace");
+      if (mode === 'copy' && navigator.clipboard?.write && typeof ClipboardItem !== 'undefined') {
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': capture.then(file => new Blob([file], { type:'image/png' })) })]);
+        setHint('Image copied · paste it into your image tool');
+      } else {
+        const file = await capture;
+        if (destroyed) return;
+        if (mode === 'download' || mode === 'copy') {
+          const url = URL.createObjectURL(file);
+          const link = document.createElement('a');
+          link.href = url; link.download = 'seedance-pose-reference.png';
+          document.body.append(link); link.click(); link.remove();
+          setTimeout(() => URL.revokeObjectURL(url), 10000);
+          setHint(mode === 'copy' ? 'Clipboard unavailable · PNG downloaded instead' : 'PNG downloaded · ready to use anywhere');
+        } else {
+          await onUsePose?.(file);
+          setHint("Pose reference captured · continue in the image workspace");
+        }
+      }
     } catch {
-      if (!destroyed) setHint("The pose could not be captured · please try again");
+      if (!destroyed) setHint(mode === 'copy' ? 'Copy unavailable · use Download PNG instead' : "The pose could not be captured · please try again");
     } finally {
       poseCaptureInFlight = false;
       if (!destroyed) {
@@ -729,7 +801,39 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   listen(undoButton, "click", undo);
   listen(redoButton, "click", redo);
   listen(resetButton, "click", resetPose);
-  listen(usePoseButton, "click", useCurrentPose);
+  listen(usePoseButton, "click", () => useCurrentPose());
+  listen(downloadButton, 'click', () => useCurrentPose('download'));
+  listen(copyButton, 'click', () => useCurrentPose('copy'));
+  listen(mirrorButton, 'click', mirrorPose);
+  listen(bodyColor, 'change', () => {
+    if (!mannequin || poseCaptureInFlight) return;
+    const before = captureSnapshot();
+    setActorColor(actorRecords.get(selectedId), bodyColor.value);
+    pushHistory(before);
+  });
+  listen(backgroundColor, 'change', () => {
+    if (poseCaptureInFlight) return;
+    const before = captureSnapshot();
+    changeBackground(backgroundColor.value); pushHistory(before);
+  });
+  container.querySelectorAll('[data-pose-palette]').forEach(button => listen(button, 'click', () => {
+    if (!mannequin || poseCaptureInFlight || modelLoading) return;
+    const before = captureSnapshot();
+    const [figure, background] = button.dataset.posePalette.split(',');
+    setActorColor(actorRecords.get(selectedId), figure);
+    bodyColor.value = figure;
+    changeBackground(background); pushHistory(before);
+  }));
+  listen(container.querySelector('#pose-preset-category'), 'change', event => {
+    presetButtons.forEach(button => { button.hidden = event.target.value !== 'All' && button.dataset.category !== event.target.value; });
+  });
+  container.querySelectorAll('[data-pose-view]').forEach(button => listen(button, 'click', () => setCameraView(button.dataset.poseView)));
+  listen(aspectSelect, 'change', () => {
+    if (poseCaptureInFlight) return;
+    canvasHost.style.aspectRatio = aspectSelect.value;
+    canvasHost.classList.toggle('pose-fixed-aspect', aspectSelect.value !== 'auto');
+    resize();
+  });
   listen(addButton, "click", () => addMannequin(selectedModel));
   listen(removeButton, "click", removeSelectedActor);
   modelButtons.forEach((button) => listen(button, "click", () => {
@@ -796,6 +900,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
       model: mannequin, bones: mannequinBones, byName: bonesByName,
       bindings: presetBindings, neutral: neutralSnapshot,
     };
+    setActorColor(actor, '#d9d9d9');
     const [x, , z] = nextActorPosition(actors);
     mannequin.position.x += x;
     mannequin.position.z += z;

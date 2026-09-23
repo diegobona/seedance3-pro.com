@@ -173,6 +173,7 @@ function StudioPage() {
                     <button type="button" data-pose-action="undo" aria-label="Undo pose change" disabled>↶ <span>Undo</span></button>
                     <button type="button" data-pose-action="redo" aria-label="Redo pose change" disabled>↷ <span>Redo</span></button>
                     <button type="button" data-pose-action="reset">Reset</button>
+                    <button type="button" data-pose-action="mirror" disabled>Mirror</button>
                   </div>
                 </div>
                 <div className="pose-canvas" id="pose-canvas" role="application" aria-label="Interactive 3D mannequin. Drag the glowing handles to pose the body.">
@@ -192,6 +193,19 @@ function StudioPage() {
               </div>
 
               <aside className="pose-control-panel">
+                <section className="pose-control-card pose-export-card">
+                  <div className="pose-control-heading"><div><span>TAKE IT ANYWHERE</span><h3>Export reference</h3></div></div>
+                  <label className="pose-field">Frame<select id="pose-aspect" defaultValue="auto"><option value="auto">Viewport</option><option value="1 / 1">Square · 1:1</option><option value="3 / 4">Portrait · 3:4</option><option value="9 / 16">Portrait · 9:16</option><option value="16 / 9">Landscape · 16:9</option></select></label>
+                  <div className="pose-export-actions"><button type="button" data-pose-action="download" disabled>Download PNG</button><button type="button" data-pose-action="copy" disabled>Copy image</button></div>
+                  <p>Clean reference · no sign-in needed</p>
+                </section>
+                <section className="pose-control-card">
+                  <div className="pose-control-heading"><div><span>COMPOSE</span><h3>Camera &amp; colors</h3></div></div>
+                  <div className="pose-view-grid" aria-label="Camera views">{[['front','Front'],['three','¾ view'],['left','Left'],['right','Right'],['back','Back'],['high','High']].map(([view,label]) => <button type="button" key={view} data-pose-view={view}>{label}</button>)}</div>
+                  <label className="pose-field">Selected figure<input type="color" id="pose-body-color" defaultValue="#d9d9d9" /></label>
+                  <label className="pose-field">Background<input type="color" id="pose-background-color" defaultValue="#0b0d0d" /></label>
+                  <div className="pose-view-grid" aria-label="Color themes"><button type="button" data-pose-palette="#d9d9d9,#0b0d0d">Dark</button><button type="button" data-pose-palette="#334155,#e5e7eb">Light</button><button type="button" data-pose-palette="#e0a442,#183044">Contrast</button></div>
+                </section>
                 <section className="pose-control-card pose-actors-card">
                   <div className="pose-control-heading"><div><span>BUILD YOUR SCENE</span><h3>Mannequins</h3></div></div>
                   <p>Choose a model, then add it to your scene.</p>
@@ -201,14 +215,9 @@ function StudioPage() {
                   </div>
                   <button type="button" className="pose-add-button" data-pose-action="add">+ Add mannequin</button>
                 </section>
-                <section className="pose-control-card pose-intro-card">
-                  <span className="pose-control-eyebrow">DIRECT THE BODY</span>
-                  <h2>Drag. Pose. Create.</h2>
-                  <p>Move the head, hips, hands, or feet. The rest of the body follows automatically.</p>
-                </section>
-
-                <section className="pose-control-card">
+                <section className="pose-control-card pose-library-card">
                   <div className="pose-control-heading"><div><span>QUICK START</span><h3>Pose presets</h3></div></div>
+                  <label className="pose-field">Category<select id="pose-preset-category" defaultValue="All">{['All','Standing','Gesture','Action','Seated','Floor'].map(category => <option key={category}>{category}</option>)}</select></label>
                   <div className="pose-preset-grid">
                     <button type="button" data-pose-preset="crossed-arms"><span className="pose-preset-preview crossed-arms"><img src={crossedArmsPresetImage} alt="" /></span>Crossed arms</button>
                     <button type="button" data-pose-preset="kneeling"><span className="pose-preset-preview kneeling"><img src={kneelingPresetImage} alt="" /></span>Kneeling</button>
