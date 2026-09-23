@@ -211,12 +211,11 @@ function StudioPage() {
                 <section className="pose-control-card pose-actors-card">
                   <div className="pose-control-heading"><div><span>BUILD YOUR SCENE</span><h3>Characters</h3></div></div>
                   <div className="pose-model-grid" aria-label="Character models">
-                    <button type="button" data-pose-model="studio-01" aria-pressed="false"><img src={studio01Preview} alt="Female character preview" /><span>Female</span></button>
                     <button type="button" data-pose-model="studio-02" className="is-active" aria-pressed="true"><img src={studio02Preview} alt="Male character preview" /><span>Male</span></button>
+                    <button type="button" data-pose-model="studio-01" aria-pressed="false"><img src={studio01Preview} alt="Female character preview" /><span>Female</span></button>
                     {([['cat',catPreview],['dog',dogPreview],['horse',horsePreview]] as const).map(([kind,preview]) => <button type="button" key={kind} data-pose-model={kind} aria-pressed="false"><img src={preview} alt="" /><span>{kind.charAt(0).toUpperCase()+kind.slice(1)}</span></button>)}
                   </div>
                   <button type="button" className="pose-add-button" data-pose-action="add">+ Add character</button>
-                  <details className="pose-model-credits"><summary>3D model credits</summary><p>Cat by <a href="https://blendswap.com/blend/18519" target="_blank" rel="noreferrer">JonasDichelle</a> and horse by <a href="https://blendswap.com/blend/13903" target="_blank" rel="noreferrer">b2przemo</a>, <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noreferrer">CC BY 3.0</a>. Source conversion by <a href="https://github.com/nrz/ylikuutio" target="_blank" rel="noreferrer">Antti Nuortimo</a>. Dog by <a href="https://opengameart.org/content/dog-low-poly-rigged" target="_blank" rel="noreferrer">crownjoshua</a>, CC0. Meshes adapted and rigged for Pose Studio.</p></details>
                 </section>
                 <section className="pose-control-card pose-props-card">
                   <div className="pose-control-heading"><div><span>SET THE SCENE</span><h3>Props</h3></div></div>
@@ -227,8 +226,8 @@ function StudioPage() {
                   <div className="pose-view-grid" aria-label="Camera views">{[['front','Front'],['three','¾ view'],['left','Left'],['right','Right'],['back','Back'],['high','High']].map(([view,label]) => <button type="button" key={view} data-pose-view={view}>{label}</button>)}</div>
                   <label className="pose-field">Selected object<input type="color" id="pose-body-color" defaultValue="#d9d9d9" /></label>
                   <label className="pose-field">Background<input type="color" id="pose-background-color" defaultValue="#0b0d0d" /></label>
-                  <div className="pose-guide-options"><label><input type="checkbox" id="pose-show-ground" />Ground</label><label><input type="checkbox" id="pose-show-grid" />Grid</label></div>
                   <div className="pose-view-grid" aria-label="Color themes"><button type="button" data-pose-palette="#d9d9d9,#0b0d0d">Dark</button><button type="button" data-pose-palette="#334155,#e5e7eb">Light</button><button type="button" data-pose-palette="#e0a442,#183044">Contrast</button></div>
+                  <div className="pose-guide-options"><label><input type="checkbox" id="pose-show-ground" />Ground</label><label><input type="checkbox" id="pose-show-grid" />Grid</label></div>
                 </section>
                 <section className="pose-control-card pose-library-card">
                   <div className="pose-control-heading"><div><span>QUICK START</span><h3>Pose presets</h3></div></div>
@@ -247,6 +246,7 @@ function StudioPage() {
                   <button type="button" data-pose-action="use">Use this pose</button>
                 </section>
               </aside>
+              <footer className="pose-model-credits"><p>Cat by <a href="https://blendswap.com/blend/18519" target="_blank" rel="noreferrer">JonasDichelle</a> and horse by <a href="https://blendswap.com/blend/13903" target="_blank" rel="noreferrer">b2przemo</a>, <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noreferrer">CC BY 3.0</a>. Source conversion by <a href="https://github.com/nrz/ylikuutio" target="_blank" rel="noreferrer">Antti Nuortimo</a>. Dog by <a href="https://opengameart.org/content/dog-low-poly-rigged" target="_blank" rel="noreferrer">crownjoshua</a>, CC0. Meshes adapted and rigged for Pose Studio.</p></footer>
             </section>
           </div>
         </main>
