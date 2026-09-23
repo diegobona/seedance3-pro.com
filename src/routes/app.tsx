@@ -186,7 +186,6 @@ function StudioPage() {
                 <div className="pose-toolbar">
                   <div className="pose-stage-heading">
                     <button className="pose-sidebar-toggle" type="button" aria-controls="studio-sidebar" aria-expanded="true" title="Collapse menu">‹ <span>Collapse menu</span></button>
-                    
                   </div>
                   <div className="pose-object-toolbar" id="pose-object-toolbar" role="toolbar" aria-label="Selected object tools" hidden>
                     <div className="pose-object-tools">
