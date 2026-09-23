@@ -172,13 +172,14 @@ function StudioPage() {
             </div>
 
             <section className="pose-studio" id="pose-studio" aria-label="Ragdoll IK pose editor" hidden={!initiallyPose}>
-              <div className="pose-export-bar" aria-label="Export and share">
+              <div className="pose-export-bar" aria-label="Generate, export and share">
                 <div className="pose-export-actions">
+                  <button type="button" data-pose-action="use" disabled>Use this pose</button>
                   <button type="button" data-pose-action="download" disabled>Download PNG</button>
                   <button type="button" data-pose-action="copy" disabled>Copy image</button>
                   <button type="button" data-pose-action="share" disabled>Copy editable scene link</button>
                 </div>
-                <span className="pose-export-note">Clean reference · no sign-in needed</span>
+                <details className="pose-action-help"><summary>How it works</summary><p>Use this pose sends a clean scene capture to the image workspace as a pose and camera reference. Downloading and copying reference images do not require sign-in.</p></details>
                 <input id="pose-share-link" className="pose-share-link" aria-label="Editable scene link" readOnly hidden onFocus={event => event.currentTarget.select()} />
               </div>
               <div className="pose-stage-card">
@@ -239,12 +240,6 @@ function StudioPage() {
                   </div>
                 </section>
 
-                <section className="pose-control-card pose-next-step">
-                  <span>POSE TO IMAGE</span>
-                  <strong>Turn this pose into an image</strong>
-                  <p>Send a clean capture of the whole scene to the image workspace as the pose and camera reference.</p>
-                  <button type="button" data-pose-action="use">Use this pose</button>
-                </section>
               </aside>
               <footer className="pose-model-credits"><p>Cat by <a href="https://blendswap.com/blend/18519" target="_blank" rel="noreferrer">JonasDichelle</a> and horse by <a href="https://blendswap.com/blend/13903" target="_blank" rel="noreferrer">b2przemo</a>, <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noreferrer">CC BY 3.0</a>. Source conversion by <a href="https://github.com/nrz/ylikuutio" target="_blank" rel="noreferrer">Antti Nuortimo</a>. Dog by <a href="https://opengameart.org/content/dog-low-poly-rigged" target="_blank" rel="noreferrer">crownjoshua</a>, CC0. Meshes adapted and rigged for Pose Studio.</p></footer>
             </section>
