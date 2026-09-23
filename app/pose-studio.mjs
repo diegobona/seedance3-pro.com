@@ -491,6 +491,11 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
 
   function onPointerDown(event) {
     if (event.button !== 0 || modelLoading || poseCaptureInFlight) return;
+    // Let OrbitControls handle Shift + left-drag, even over joints or gizmos.
+    if (event.shiftKey) {
+      emptyPress = null;
+      return;
+    }
     if (!pointerFromEvent(event)) return;
     emptyPress = null;
     if (mannequin && activeTool !== "pose") {
@@ -591,7 +596,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     if (emptyPress && event?.type === "pointerup" && event.pointerId === emptyPress.pointerId) {
       emptyPress = null;
       selectActor(null);
-      setHint("Click a character to select it · Left-drag empty space to orbit · Right-drag to pan");
+      setHint("Click a character to select it · Left-drag empty space to orbit · Right-drag / Shift + left-drag to pan");
       return;
     }
     if (event?.type === "pointercancel") emptyPress = null;
@@ -606,7 +611,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     canvasHost.classList.remove("is-dragging-pose");
     pushHistory(completed.before);
     updateHandlePositions();
-    setHint("Drag a joint handle · Right-drag to pan · Scroll to zoom");
+    setHint("Drag a joint handle · Right-drag / Shift + left-drag to pan · Scroll to zoom");
   }
 
   function preparePresetBindings() {
@@ -1061,7 +1066,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
       const before = captureSnapshot();
       prepareMannequin(object, modelKey);
       if (!initial) pushHistory(before);
-      setHint("Drag handles to pose · Left-drag empty space to orbit · Right-drag to pan · Scroll to zoom");
+      setHint("Drag handles to pose · Left-drag empty space to orbit · Right-drag / Shift + left-drag to pan · Scroll to zoom");
     } catch {
       if (!destroyed) setHint("This character could not be loaded · click Add character to retry");
     } finally {
