@@ -7,6 +7,7 @@
 cms.secrets.json
 node_modules/
 .pose-case-run/
+.animal-asset-work/
 dist
 .wrangler
 worker-configuration.d.ts

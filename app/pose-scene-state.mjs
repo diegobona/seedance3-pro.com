@@ -1,6 +1,7 @@
 import { captureBoneTransforms, applyBoneTransforms } from "./pose-rig-index.mjs";
 import { Box3, Group, Vector3 } from "three";
 import { setActorColor, setActorMirrored } from './pose-library.mjs';
+import { migrateLegacyAnimalBones } from './pose-animal-rig.mjs';
 
 // Keep asset-origin correction inside a child so scene translation and rotation
 // always use a mannequin-centered pivot, regardless of the FBX source origin.
@@ -22,9 +23,10 @@ export function normalizeMannequin(object, height = 7.25) {
 export function captureSceneState(actors, selectedId) {
   return {
     selectedId,
-    actors: actors.map(({ id, model, bones, color, mirrored, kind, modelKey }) => ({
+    actors: actors.map(({ id, model, bones, color, mirrored, kind, modelKey, rigVersion }) => ({
       id,
       kind: kind ?? 'mannequin', modelKey,
+      ...(kind === 'animal' && rigVersion !== undefined ? { rigVersion } : {}),
       color, mirrored: Boolean(mirrored),
       position: model.position.toArray(),
       quaternion: model.quaternion.toArray(),
@@ -46,7 +48,10 @@ export function restoreSceneState(records, snapshot) {
     actor.model.scale.fromArray(saved.scale ?? [1, 1, 1]);
     setActorMirrored(actor, Boolean(saved.mirrored));
     if (saved.color) setActorColor(actor, saved.color);
-    applyBoneTransforms(actor.bones, saved.bones);
+    const savedBones = actor.kind === 'animal' && actor.rigVersion === 2 && (saved.rigVersion ?? 1) === 1
+      ? migrateLegacyAnimalBones(actor.modelKey, saved.bones, actor.neutral.bones)
+      : saved.bones;
+    applyBoneTransforms(actor.bones, savedBones);
     actor.model.updateMatrixWorld(true);
     actors.push(actor);
   }

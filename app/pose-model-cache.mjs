@@ -16,14 +16,18 @@ function release(root) {
 export function createModelCache(load) {
   const templates = new Map();
   let disposed = false;
+  function templateFor(key) {
+    if (disposed) return Promise.reject(new Error('Model cache disposed'));
+    if (!templates.has(key)) {
+      const pending = Promise.resolve().then(() => load(key)).catch(error => { templates.delete(key); throw error; });
+      templates.set(key, pending);
+    }
+    return templates.get(key);
+  }
   return {
+    preload(key) { return templateFor(key).then(() => undefined); },
     async get(key) {
-      if (disposed) throw new Error('Model cache disposed');
-      if (!templates.has(key)) {
-        const pending = Promise.resolve().then(() => load(key)).catch(error => { templates.delete(key); throw error; });
-        templates.set(key, pending);
-      }
-      const template = await templates.get(key);
+      const template = await templateFor(key);
       if (disposed) throw new Error('Model cache disposed');
       const copy = clone(template);
       copy.traverse(part => {

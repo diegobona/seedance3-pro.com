@@ -214,6 +214,7 @@ function StudioPage() {
                     {['cat','dog','horse'].map(kind => <button type="button" key={kind} data-pose-model={kind} aria-pressed="false"><span className="pose-animal-preview" data-animal-preview aria-hidden="true" /><span>{kind.charAt(0).toUpperCase()+kind.slice(1)}</span></button>)}
                   </div>
                   <button type="button" className="pose-add-button" data-pose-action="add">+ Add character</button>
+                  <details className="pose-model-credits"><summary>3D model credits</summary><p>Cat by <a href="https://blendswap.com/blend/18519" target="_blank" rel="noreferrer">JonasDichelle</a> and horse by <a href="https://blendswap.com/blend/13903" target="_blank" rel="noreferrer">b2przemo</a>, <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noreferrer">CC BY 3.0</a>. Source conversion by <a href="https://github.com/nrz/ylikuutio" target="_blank" rel="noreferrer">Antti Nuortimo</a>. Dog by <a href="https://opengameart.org/content/dog-low-poly-rigged" target="_blank" rel="noreferrer">crownjoshua</a>, CC0. Meshes adapted and rigged for Pose Studio.</p></details>
                 </section>
                 <section className="pose-control-card pose-props-card">
                   <div className="pose-control-heading"><div><span>SET THE SCENE</span><h3>Props</h3></div></div>

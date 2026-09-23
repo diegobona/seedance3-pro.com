@@ -1,10 +1,14 @@
 import * as THREE from "three";
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TransformControls } from "three/addons/controls/TransformControls.js";
 import { captureTransformBasis, applyPivotTransform } from "./pose-transform.mjs";
 import mannequinUrl from "./pose-assets/anyposes-female-rig.fbx?url";
 import studio02Url from "./pose-assets/anyposes-studio-02.fbx?url";
+import catUrl from './pose-assets/animals/cat.glb?url';
+import dogUrl from './pose-assets/animals/dog.glb?url';
+import horseUrl from './pose-assets/animals/horse.glb?url';
 import { captureSceneState, restoreSceneState, nextActorPosition, normalizeMannequin } from "./pose-scene-state.mjs";
 import { RAGDOLL_HANDLE_SPECS } from "./pose-ragdoll-config.mjs";
 import {
@@ -19,13 +23,15 @@ import { POSE_LIBRARY, presetPreview, setActorColor, setActorMirrored } from './
 import { PROP_CATALOG, createProp } from './pose-props.mjs';
 import { encodeSharedScene, decodeSharedScene } from './pose-share.mjs';
 import { createModelCache } from './pose-model-cache.mjs';
-import { ANIMAL_CATALOG, ANIMAL_HANDLE_SPECS, ANIMAL_PRESETS, createAnimal, applyAnimalPreset, animalIcon } from './pose-animals.mjs';
+import { ANIMAL_CATALOG, ANIMAL_HANDLE_SPECS, ANIMAL_PRESETS, applyAnimalPreset, animalIcon } from './pose-animals.mjs';
 
 const MAX_HISTORY = 40;
 const MODEL_CATALOG = {
   "studio-01": { label: "Female", url: mannequinUrl },
   "studio-02": { label: "Male", url: studio02Url },
-  ...ANIMAL_CATALOG,
+  ...Object.fromEntries(Object.entries(ANIMAL_CATALOG).map(([key, item]) => [key, {
+    ...item, url: { cat: catUrl, dog: dogUrl, horse: horseUrl }[key],
+  }])),
 };
 const PRESET_BONE_BINDINGS = [
   { key: "spine", bone: "mixamorig:Spine", child: "mixamorig:Spine1" },
@@ -62,6 +68,16 @@ function cloneSnapshot(model, bones) {
 
 function snapshotSignature(snapshot) {
   return JSON.stringify(snapshot);
+}
+
+function invalidateSkinnedBounds(root) {
+  // Three caches these independently of bone transforms. Rebuild them lazily
+  // for framing, picking and culling after an edit, not on every render frame.
+  root?.traverse((part) => {
+    if (!part.isSkinnedMesh) return;
+    part.boundingBox = null;
+    part.boundingSphere = null;
+  });
 }
 
 export function initializePoseStudio({ container, canvasHost, onUsePose }) {
@@ -219,6 +235,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     if (!snapshot) return;
     const restored = restoreSceneState(actorRecords, snapshot);
     actors = restored.actors;
+    actors.forEach(({ model }) => invalidateSkinnedBounds(model));
     if (snapshot.background) changeBackground('#' + snapshot.background);
     selectActor(restored.selectedId);
     clearActivePreset();
@@ -558,6 +575,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     dragPoint.add(dragOffset);
     drag.handle.position.copy(dragPoint);
     solveChainToTarget(drag.handle.userData.spec, dragPoint);
+    invalidateSkinnedBounds(mannequin);
     updateHandlePositions();
   }
 
@@ -697,6 +715,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   function restoreNeutralPose() {
     applyBoneTransforms(mannequinBones, neutralSnapshot.bones);
     mannequin.updateMatrixWorld(true);
+    invalidateSkinnedBounds(mannequin);
   }
 
   function removeSelectedActor() {
@@ -794,6 +813,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     const before = captureSnapshot();
     const actor = actorRecords.get(selectedId);
     setActorMirrored(actor, !actor.mirrored);
+    invalidateSkinnedBounds(mannequin);
     updateHandlePositions();
     syncTransformTool();
     pushHistory(before);
@@ -920,6 +940,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   listen(removeButton, "click", removeSelectedActor);
   modelButtons.forEach((button) => listen(button, "click", () => {
     selectedModel = button.dataset.poseModel;
+    void modelCache.preload(selectedModel).catch(() => {});
     modelButtons.forEach((candidate) => {
       const active = candidate.dataset.poseModel === selectedModel;
       candidate.classList.toggle("is-active", active);
@@ -981,8 +1002,13 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     scene.add(mannequin);
     neutralSnapshot = cloneSnapshot(mannequin, mannequinBones);
     const id = String(nextActorId++);
+    let rigVersion = 1;
+    if (animal) object.traverse(part => {
+      if (part.userData.rigRevision === 2) rigVersion = 2;
+    });
     const actor = {
       id, modelKey, kind: animal ? 'animal' : 'mannequin', label: `${MODEL_CATALOG[modelKey].label} · ${id}`,
+      ...(animal ? { rigVersion } : {}),
       model: mannequin, bones: mannequinBones, byName: bonesByName,
       bindings: presetBindings, neutral: neutralSnapshot,
     };
@@ -1004,7 +1030,15 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   animate();
 
   const loader = new FBXLoader();
-  const modelCache = createModelCache(key => Object.hasOwn(ANIMAL_CATALOG,key) ? createAnimal(key) : loader.loadAsync(MODEL_CATALOG[key].url));
+  const animalLoader = new GLTFLoader();
+  const modelCache = createModelCache(async key => Object.hasOwn(ANIMAL_CATALOG,key)
+    ? (await animalLoader.loadAsync(MODEL_CATALOG[key].url)).scene
+    : loader.loadAsync(MODEL_CATALOG[key].url));
+  modelButtons.forEach(button => {
+    const warm = () => { void modelCache.preload(button.dataset.poseModel).catch(() => {}); };
+    listen(button, 'pointerenter', warm);
+    listen(button, 'focus', warm);
+  });
   async function addMannequin(modelKey, initial = false) {
     if (modelLoading || poseCaptureInFlight || actors.length >= 30 || !MODEL_CATALOG[modelKey]) return;
     finishDrag();

@@ -81,6 +81,10 @@ textarea { width:100%; min-height:154px; resize:vertical; padding:15px; border:1
 .pose-model-grid button.is-active { border-color:var(--lime); background:rgba(216,255,115,.08); color:var(--lime); box-shadow:0 0 0 1px rgba(216,255,115,.2); }
 .pose-model-grid img { display:block; width:100%; height:128px; object-fit:contain; margin-bottom:9px; background:#fff; }
 .pose-model-grid span { font-size:12px; font-weight:800; }
+.pose-model-credits { margin-top:12px; color:var(--muted); font-size:11px; line-height:1.6; }
+.pose-model-credits summary { cursor:pointer; }
+.pose-model-credits p { font-size:11px; }
+.pose-model-credits a { color:inherit; text-decoration:underline; }
 .pose-add-button { width:100%; margin-top:12px; padding:12px; border:0; border-radius:10px; background:var(--lime); color:#17190f; font-weight:850; cursor:pointer; }
 .pose-add-button:disabled { opacity:.5; cursor:wait; }
 .pose-model-grid button:focus-visible,.pose-add-button:focus-visible { outline:2px solid var(--lime); outline-offset:3px; }

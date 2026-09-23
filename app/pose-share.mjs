@@ -17,6 +17,7 @@ export function validateSharedScene(data) {
       if (!Object.hasOwn(PROP_CATALOG, actor.modelKey) || actor.bones.length || actor.mirrored) throw new Error('Invalid prop');
     } else if (actor.kind === 'animal') {
       if (!Object.hasOwn(ANIMAL_CATALOG,actor.modelKey)) throw new Error('Invalid animal');
+      if (actor.rigVersion !== undefined && ![1, 2].includes(actor.rigVersion)) throw new Error('Invalid animal rig');
     } else if (actor.kind !== 'mannequin' || !['studio-01','studio-02'].includes(actor.modelKey)) throw new Error('Invalid model');
     if (actor.bones.some(b => !transform(b) || !Number.isInteger(b.index) || b.index < 0 || b.index >= 300)) throw new Error('Invalid pose');
   }
