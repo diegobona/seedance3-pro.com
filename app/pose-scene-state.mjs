@@ -22,8 +22,9 @@ export function normalizeMannequin(object, height = 7.25) {
 export function captureSceneState(actors, selectedId) {
   return {
     selectedId,
-    actors: actors.map(({ id, model, bones, color, mirrored }) => ({
+    actors: actors.map(({ id, model, bones, color, mirrored, kind, modelKey }) => ({
       id,
+      kind: kind ?? 'mannequin', modelKey,
       color, mirrored: Boolean(mirrored),
       position: model.position.toArray(),
       quaternion: model.quaternion.toArray(),

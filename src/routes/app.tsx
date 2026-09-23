@@ -177,14 +177,14 @@ function StudioPage() {
                   </div>
                 </div>
                 <div className="pose-canvas" id="pose-canvas" role="application" aria-label="Interactive 3D mannequin. Drag the glowing handles to pose the body.">
-                  <div className="pose-object-toolbar" id="pose-object-toolbar" role="toolbar" aria-label="Selected mannequin tools" hidden>
+                  <div className="pose-object-toolbar" id="pose-object-toolbar" role="toolbar" aria-label="Selected object tools" hidden>
                     <span id="pose-selected-label" className="pose-selected-label" />
                     <div className="pose-object-tools">
                       <button type="button" data-pose-tool="pose" aria-label="Pose joints" aria-pressed="true" title="Adjust body pose"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4" r="2" /><path d="M12 7v7m-7-5 7 2 7-2M7 21l5-7 5 7" /></svg><span>Pose</span></button>
-                      <button type="button" data-pose-tool="translate" aria-label="Move mannequin" aria-pressed="false" title="Move mannequin"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20M2 12h20M8 6l4-4 4 4M8 18l4 4 4-4M6 8l-4 4 4 4m12-8 4 4-4 4" /></svg><span>Move</span></button>
-                      <button type="button" data-pose-tool="rotate" aria-label="Rotate mannequin" aria-pressed="false" title="Rotate mannequin"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7a9 9 0 0 0-15-1M4 17a9 9 0 0 0 15 1M20 2v5h-5M4 22v-5h5" /></svg><span>Rotate</span></button>
-                      <button type="button" data-pose-tool="scale" aria-label="Scale mannequin" aria-pressed="false" title="Scale mannequin proportionally"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3h7v7M21 3l-9 9M3 14v7h7M3 21l9-9" /></svg><span>Scale</span></button>
-                      <button type="button" data-pose-action="remove" className="pose-delete-tool" aria-label="Delete mannequin" title="Delete selected mannequin"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7m4-7v7" /></svg><span>Delete</span></button>
+                      <button type="button" data-pose-tool="translate" aria-label="Move object" aria-pressed="false" title="Move object"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20M2 12h20M8 6l4-4 4 4M8 18l4 4 4-4M6 8l-4 4 4 4m12-8 4 4-4 4" /></svg><span>Move</span></button>
+                      <button type="button" data-pose-tool="rotate" aria-label="Rotate object" aria-pressed="false" title="Rotate object"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7a9 9 0 0 0-15-1M4 17a9 9 0 0 0 15 1M20 2v5h-5M4 22v-5h5" /></svg><span>Rotate</span></button>
+                      <button type="button" data-pose-tool="scale" aria-label="Scale object" aria-pressed="false" title="Scale object proportionally"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3h7v7M21 3l-9 9M3 14v7h7M3 21l9-9" /></svg><span>Scale</span></button>
+                      <button type="button" data-pose-action="remove" className="pose-delete-tool" aria-label="Delete object" title="Delete selected object"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7m4-7v7" /></svg><span>Delete</span></button>
                     </div>
                   </div>
                   <div className="pose-canvas-loading" id="pose-canvas-loading"><span /> Preparing mannequin…</div>
@@ -197,12 +197,19 @@ function StudioPage() {
                   <div className="pose-control-heading"><div><span>TAKE IT ANYWHERE</span><h3>Export reference</h3></div></div>
                   <label className="pose-field">Frame<select id="pose-aspect" defaultValue="auto"><option value="auto">Viewport</option><option value="1 / 1">Square · 1:1</option><option value="3 / 4">Portrait · 3:4</option><option value="9 / 16">Portrait · 9:16</option><option value="16 / 9">Landscape · 16:9</option></select></label>
                   <div className="pose-export-actions"><button type="button" data-pose-action="download" disabled>Download PNG</button><button type="button" data-pose-action="copy" disabled>Copy image</button></div>
+                  <button type="button" className="pose-add-button" data-pose-action="share" disabled>Copy editable scene link</button>
+                  <input id="pose-share-link" className="pose-share-link" aria-label="Editable scene link" readOnly hidden onFocus={event => event.currentTarget.select()} />
                   <p>Clean reference · no sign-in needed</p>
+                </section>
+                <section className="pose-control-card pose-props-card">
+                  <div className="pose-control-heading"><div><span>SET THE SCENE</span><h3>Props</h3></div></div>
+                  <div className="pose-view-grid">{[['chair','Chair'],['stool','Stool'],['table','Table'],['box','Box'],['ball','Ball'],['staff','Staff']].map(([kind,label]) => <button type="button" key={kind} data-pose-prop={kind}>+ {label}</button>)}</div>
+                  <label className="pose-field">Scene objects<select id="pose-scene-object" defaultValue=""><option value="">Select an object</option></select></label>
                 </section>
                 <section className="pose-control-card">
                   <div className="pose-control-heading"><div><span>COMPOSE</span><h3>Camera &amp; colors</h3></div></div>
                   <div className="pose-view-grid" aria-label="Camera views">{[['front','Front'],['three','¾ view'],['left','Left'],['right','Right'],['back','Back'],['high','High']].map(([view,label]) => <button type="button" key={view} data-pose-view={view}>{label}</button>)}</div>
-                  <label className="pose-field">Selected figure<input type="color" id="pose-body-color" defaultValue="#d9d9d9" /></label>
+                  <label className="pose-field">Selected object<input type="color" id="pose-body-color" defaultValue="#d9d9d9" /></label>
                   <label className="pose-field">Background<input type="color" id="pose-background-color" defaultValue="#0b0d0d" /></label>
                   <div className="pose-view-grid" aria-label="Color themes"><button type="button" data-pose-palette="#d9d9d9,#0b0d0d">Dark</button><button type="button" data-pose-palette="#334155,#e5e7eb">Light</button><button type="button" data-pose-palette="#e0a442,#183044">Contrast</button></div>
                 </section>
@@ -228,7 +235,7 @@ function StudioPage() {
                 <section className="pose-control-card pose-next-step">
                   <span>POSE TO IMAGE</span>
                   <strong>Turn this pose into an image</strong>
-                  <p>Send a clean capture of every mannequin in the scene to the image workspace as the pose and camera reference.</p>
+                  <p>Send a clean capture of the whole scene to the image workspace as the pose and camera reference.</p>
                   <button type="button" data-pose-action="use">Use this pose</button>
                 </section>
               </aside>

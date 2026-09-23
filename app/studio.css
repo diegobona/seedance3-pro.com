@@ -115,6 +115,9 @@ textarea { width:100%; min-height:154px; resize:vertical; padding:15px; border:1
 .pose-export-actions button:first-child { background:var(--lime); color:#17190f; font-weight:750; }
 .pose-export-actions button:disabled { opacity:.4; cursor:wait; }
 .pose-export-card p { font-size:11px; }
+.pose-share-link { box-sizing:border-box; width:100%; margin-top:10px; padding:9px; border:1px solid var(--line); border-radius:8px; color:#eee; background:#171a17; }
+.pose-share-link[hidden] { display:none; }
+.pose-view-grid button:disabled { opacity:.4; cursor:default; }
 .pose-canvas.pose-fixed-aspect { height:auto; min-height:0; }
 .pose-control-panel { display:flex; flex-direction:column; }
 .pose-export-card { order:-2; }

@@ -16,6 +16,8 @@ import {
 import { ANYPOSES_PRESETS, ANYPOSES_REFERENCE_DIRECTIONS } from "./pose-presets.mjs";
 import { capturePoseReference } from "./pose-transfer.mjs";
 import { POSE_LIBRARY, presetPreview, setActorColor, setActorMirrored } from './pose-library.mjs';
+import { PROP_CATALOG, createProp } from './pose-props.mjs';
+import { encodeSharedScene, decodeSharedScene } from './pose-share.mjs';
 
 const MAX_HISTORY = 40;
 const MODEL_CATALOG = {
@@ -77,6 +79,10 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   const bodyColor = container.querySelector('#pose-body-color');
   const backgroundColor = container.querySelector('#pose-background-color');
   const aspectSelect = container.querySelector('#pose-aspect');
+  const shareButton = container.querySelector('[data-pose-action="share"]');
+  const shareField = container.querySelector('#pose-share-link');
+  const objectSelect = container.querySelector('#pose-scene-object');
+  const propButtons = Array.from(container.querySelectorAll('[data-pose-prop]'));
   const modelButtons = Array.from(container.querySelectorAll("[data-pose-model]"));
   const addButton = container.querySelector('[data-pose-action="add"]');
   const removeButton = container.querySelector('[data-pose-action="remove"]');
@@ -162,7 +168,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   grid.material.transparent = true;
   scene.add(grid);
 
-  const groundMaterial = new THREE.MeshStandardMaterial({ color: 0x101312, roughness: 0.94 });
+  const groundMaterial = new THREE.MeshStandardMaterial({ color: 0x0b0d0d, roughness: 0.94 });
   const ground = new THREE.Mesh(new THREE.CircleGeometry(10.8, 64), groundMaterial);
   ground.rotation.x = -Math.PI / 2;
   ground.position.y = -0.02;
@@ -220,6 +226,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     bonesByName = actor?.byName ?? new Map();
     presetBindings = actor?.bindings ?? [];
     neutralSnapshot = actor?.neutral ?? null;
+    if (actor?.kind === 'prop' && activeTool === 'pose') activeTool = 'translate';
     if (bodyColor) bodyColor.value = actor?.color ?? '#d9d9d9';
     if (hoveredHandle) hoveredHandle.scale.setScalar(1);
     hoveredHandle = null;
@@ -257,7 +264,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     const hints = {
       pose: "Drag a joint to pose · Click another mannequin to select it",
       translate: "Drag an arrow or plane to move · Drag the center to move freely",
-      rotate: "Drag a colored ring to rotate the selected mannequin",
+      rotate: "Drag a colored ring to rotate the selected object",
       scale: "Drag a scale handle to resize proportionally",
     };
     setHint(hints[tool]);
@@ -265,15 +272,24 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
 
   function updateSceneButtons() {
     const busy = modelLoading || poseCaptureInFlight;
+    const isFigure = Boolean(mannequin && actorRecords.get(selectedId)?.kind !== 'prop');
     addButton.disabled = busy;
     removeButton.disabled = busy || !mannequin;
-    toolButtons.forEach((button) => { button.disabled = busy || !mannequin; });
-    presetButtons.forEach((button) => { button.disabled = busy || !mannequin; });
-    resetButton.disabled = busy || !mannequin;
+    toolButtons.forEach((button) => { button.disabled = busy || !mannequin || (button.dataset.poseTool === 'pose' && !isFigure); });
+    presetButtons.forEach((button) => { button.disabled = busy || !isFigure; });
+    resetButton.disabled = busy || !isFigure;
     usePoseButton.disabled = busy || !actors.length;
     for (const button of [downloadButton, copyButton]) if (button) button.disabled = busy || !actors.length;
-    if (mirrorButton) mirrorButton.disabled = busy || !mannequin;
+    if (mirrorButton) mirrorButton.disabled = busy || !isFigure;
     if (bodyColor) bodyColor.disabled = busy || !mannequin;
+    if (shareButton) shareButton.disabled = busy || !actors.length;
+    propButtons.forEach(button => { button.disabled = busy || actors.length >= 30; });
+    addButton.disabled = busy || actors.length >= 30;
+    if (objectSelect) {
+      objectSelect.replaceChildren(new Option('Select an object', ''), ...actors.map(actor => new Option(actor.label, actor.id)));
+      objectSelect.value = selectedId ?? '';
+      objectSelect.disabled = busy;
+    }
     updateHistoryButtons();
   }
 
@@ -669,7 +685,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     actors = actors.filter(({ id }) => id !== selectedId);
     selectActor(actors.at(-1)?.id ?? null);
     pushHistory(before);
-    setHint(actors.length ? "Mannequin removed · Undo to restore it" : "Choose a model and add a mannequin to begin");
+    setHint(actors.length ? "Object removed · Undo to restore it" : "Choose a model and add a mannequin to begin");
   }
 
   function frameScene() {
@@ -679,6 +695,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     for (const actor of actors) {
       actor.model.updateMatrixWorld(true);
       actor.bones.forEach((bone) => bounds.expandByPoint(bone.getWorldPosition(point)));
+      if (actor.kind === 'prop') bounds.union(new THREE.Box3().setFromObject(actor.model));
     }
     if (bounds.isEmpty()) return;
     const center = bounds.getCenter(new THREE.Vector3());
@@ -703,8 +720,54 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     if (backgroundColor) backgroundColor.value = color;
   }
 
+  function registerProp(kind, model = createProp(kind)) {
+    const id = String(nextActorId++);
+    const actor = { id, kind: 'prop', modelKey: kind, label: `${PROP_CATALOG[kind]} · ${id}`, model, bones: [], color: '#8997a8' };
+    model.position.fromArray(nextActorPosition(actors));
+    scene.add(model);
+    actors.push(actor); actorRecords.set(id, actor);
+    selectActor(id);
+    return actor;
+  }
+
+  function addProp(kind) {
+    if (modelLoading || poseCaptureInFlight || actors.length >= 30) return;
+    finishDrag();
+    const before = captureSnapshot();
+    registerProp(kind);
+    frameScene(); syncTransformTool();
+    pushHistory(before);
+    setHint(`${PROP_CATALOG[kind]} added · use Move, Rotate or Scale to place it`);
+  }
+
+  async function shareScene() {
+    if (modelLoading || poseCaptureInFlight || !actors.length) return;
+    finishDrag();
+    shareButton.disabled = true;
+    try {
+      const saved = { ...captureSnapshot(), version: 1, aspect: aspectSelect.value,
+        camera: { position: camera.position.toArray(), target: controls.target.toArray() } };
+      const encoded = await encodeSharedScene(saved);
+      if (destroyed) return;
+      const url = new URL(window.location.href);
+      url.search = '?model=pose-to-image';
+      url.hash = `pose=${encoded}`;
+      shareField.hidden = false;
+      shareField.value = url.href;
+      try {
+        await navigator.clipboard.writeText(url.href);
+        setHint('Link copied · anyone with it can open and edit this scene');
+      } catch {
+        shareField.focus(); shareField.select();
+        setHint('Your scene link is ready · copy the selected link');
+      }
+    } catch {
+      setHint('Unable to create a link · try a smaller scene or a current browser');
+    } finally { if (!destroyed) updateSceneButtons(); }
+  }
+
   function mirrorPose() {
-    if (!mannequin || modelLoading || poseCaptureInFlight) return;
+    if (!mannequin || actorRecords.get(selectedId)?.kind === 'prop' || modelLoading || poseCaptureInFlight) return;
     finishDrag();
     const before = captureSnapshot();
     const actor = actorRecords.get(selectedId);
@@ -805,6 +868,9 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   listen(downloadButton, 'click', () => useCurrentPose('download'));
   listen(copyButton, 'click', () => useCurrentPose('copy'));
   listen(mirrorButton, 'click', mirrorPose);
+  listen(shareButton, 'click', shareScene);
+  listen(objectSelect, 'change', () => selectActor(objectSelect.value));
+  propButtons.forEach(button => listen(button, 'click', () => addProp(button.dataset.poseProp)));
   listen(bodyColor, 'change', () => {
     if (!mannequin || poseCaptureInFlight) return;
     const before = captureSnapshot();
@@ -920,7 +986,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
 
   const loader = new FBXLoader();
   async function addMannequin(modelKey, initial = false) {
-    if (modelLoading || poseCaptureInFlight || !MODEL_CATALOG[modelKey]) return;
+    if (modelLoading || poseCaptureInFlight || actors.length >= 30 || !MODEL_CATALOG[modelKey]) return;
     finishDrag();
     modelLoading = true;
     updateSceneButtons();
@@ -948,7 +1014,51 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
       }
     }
   }
-  addMannequin(selectedModel, true);
+  async function initializeScene() {
+    const encoded = new URLSearchParams(window.location.hash.slice(1)).get('pose');
+    if (!encoded) { await addMannequin(selectedModel, true); return; }
+    modelLoading = true;
+    updateSceneButtons();
+    const objects = [];
+    try {
+      const saved = await decodeSharedScene(encoded);
+      // Load everything before replacing the scene; a broken link must not leave a partial scene.
+      for (const actor of saved.actors) {
+        const object = actor.kind === 'prop' ? createProp(actor.modelKey) : await loader.loadAsync(MODEL_CATALOG[actor.modelKey].url);
+        objects.push(object);
+      }
+      if (destroyed) { objects.forEach(disposeObject); return; }
+      const idMap = new Map();
+      saved.actors.forEach((actor, index) => {
+        if (actor.kind === 'prop') registerProp(actor.modelKey, objects[index]);
+        else prepareMannequin(objects[index], actor.modelKey);
+        idMap.set(actor.id, selectedId);
+      });
+      applySnapshot({ ...saved, selectedId: idMap.get(saved.selectedId), actors: saved.actors.map(actor => ({ ...actor, id: idMap.get(actor.id) })) });
+      aspectSelect.value = saved.aspect;
+      canvasHost.style.aspectRatio = saved.aspect;
+      canvasHost.classList.toggle('pose-fixed-aspect', saved.aspect !== 'auto');
+      resize();
+      controls.target.fromArray(saved.camera.target);
+      camera.position.fromArray(saved.camera.position);
+      const distance = camera.position.distanceTo(controls.target);
+      controls.maxDistance = Math.max(36, distance * 2);
+      camera.far = Math.max(80, distance * 4);
+      scene.fog.near = distance + 12; scene.fog.far = distance + 35;
+      camera.updateProjectionMatrix();
+      camera.lookAt(controls.target); controls.update();
+      setHint('Shared scene opened · select any object to keep editing');
+    } catch {
+      objects.filter(object => !object.parent).forEach(disposeObject);
+      modelLoading = false;
+      await addMannequin(selectedModel, true);
+      setHint('This share link could not be opened · a fresh scene is ready');
+    } finally {
+      modelLoading = false;
+      if (!destroyed) { if (loading) loading.hidden = true; updateSceneButtons(); }
+    }
+  }
+  initializeScene();
 
   return () => {
     if (destroyed) return;
