@@ -78,7 +78,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   const mirrorButton = container.querySelector('[data-pose-action="mirror"]');
   const bodyColor = container.querySelector('#pose-body-color');
   const backgroundColor = container.querySelector('#pose-background-color');
-  const aspectSelect = container.querySelector('#pose-aspect');
+  let sceneAspect = 'auto';
   const shareButton = container.querySelector('[data-pose-action="share"]');
   const shareField = container.querySelector('#pose-share-link');
   const objectSelect = container.querySelector('#pose-scene-object');
@@ -745,7 +745,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     finishDrag();
     shareButton.disabled = true;
     try {
-      const saved = { ...captureSnapshot(), version: 1, aspect: aspectSelect.value,
+      const saved = { ...captureSnapshot(), version: 1, aspect: sceneAspect,
         camera: { position: camera.position.toArray(), target: controls.target.toArray() } };
       const encoded = await encodeSharedScene(saved);
       if (destroyed) return;
@@ -894,12 +894,6 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     presetButtons.forEach(button => { button.hidden = event.target.value !== 'All' && button.dataset.category !== event.target.value; });
   });
   container.querySelectorAll('[data-pose-view]').forEach(button => listen(button, 'click', () => setCameraView(button.dataset.poseView)));
-  listen(aspectSelect, 'change', () => {
-    if (poseCaptureInFlight) return;
-    canvasHost.style.aspectRatio = aspectSelect.value;
-    canvasHost.classList.toggle('pose-fixed-aspect', aspectSelect.value !== 'auto');
-    resize();
-  });
   listen(addButton, "click", () => addMannequin(selectedModel));
   listen(removeButton, "click", removeSelectedActor);
   modelButtons.forEach((button) => listen(button, "click", () => {
@@ -1035,7 +1029,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
         idMap.set(actor.id, selectedId);
       });
       applySnapshot({ ...saved, selectedId: idMap.get(saved.selectedId), actors: saved.actors.map(actor => ({ ...actor, id: idMap.get(actor.id) })) });
-      aspectSelect.value = saved.aspect;
+      sceneAspect = saved.aspect;
       canvasHost.style.aspectRatio = saved.aspect;
       canvasHost.classList.toggle('pose-fixed-aspect', saved.aspect !== 'auto');
       resize();

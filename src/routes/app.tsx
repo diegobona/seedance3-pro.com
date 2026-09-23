@@ -166,6 +166,15 @@ function StudioPage() {
             </div>
 
             <section className="pose-studio" id="pose-studio" aria-label="Ragdoll IK pose editor" hidden>
+              <div className="pose-export-bar" aria-label="Export and share">
+                <div className="pose-export-actions">
+                  <button type="button" data-pose-action="download" disabled>Download PNG</button>
+                  <button type="button" data-pose-action="copy" disabled>Copy image</button>
+                  <button type="button" data-pose-action="share" disabled>Copy editable scene link</button>
+                </div>
+                <span className="pose-export-note">Clean reference · no sign-in needed</span>
+                <input id="pose-share-link" className="pose-share-link" aria-label="Editable scene link" readOnly hidden onFocus={event => event.currentTarget.select()} />
+              </div>
               <div className="pose-stage-card">
                 <div className="pose-toolbar">
                   <div className="pose-mode-indicator"><span /> Ragdoll IK</div>
@@ -193,13 +202,14 @@ function StudioPage() {
               </div>
 
               <aside className="pose-control-panel">
-                <section className="pose-control-card pose-export-card">
-                  <div className="pose-control-heading"><div><span>TAKE IT ANYWHERE</span><h3>Export reference</h3></div></div>
-                  <label className="pose-field">Frame<select id="pose-aspect" defaultValue="auto"><option value="auto">Viewport</option><option value="1 / 1">Square · 1:1</option><option value="3 / 4">Portrait · 3:4</option><option value="9 / 16">Portrait · 9:16</option><option value="16 / 9">Landscape · 16:9</option></select></label>
-                  <div className="pose-export-actions"><button type="button" data-pose-action="download" disabled>Download PNG</button><button type="button" data-pose-action="copy" disabled>Copy image</button></div>
-                  <button type="button" className="pose-add-button" data-pose-action="share" disabled>Copy editable scene link</button>
-                  <input id="pose-share-link" className="pose-share-link" aria-label="Editable scene link" readOnly hidden onFocus={event => event.currentTarget.select()} />
-                  <p>Clean reference · no sign-in needed</p>
+                <section className="pose-control-card pose-actors-card">
+                  <div className="pose-control-heading"><div><span>BUILD YOUR SCENE</span><h3>Mannequins</h3></div></div>
+                  <p>Choose a model, then add it to your scene.</p>
+                  <div className="pose-model-grid" aria-label="Mannequin models">
+                    <button type="button" data-pose-model="studio-01" className="is-active" aria-pressed="true"><img src={studio01Preview} alt="Studio 01 mannequin preview" /><span>Studio 01</span></button>
+                    <button type="button" data-pose-model="studio-02" aria-pressed="false"><img src={studio02Preview} alt="Studio 02 mannequin preview" /><span>Studio 02</span></button>
+                  </div>
+                  <button type="button" className="pose-add-button" data-pose-action="add">+ Add mannequin</button>
                 </section>
                 <section className="pose-control-card pose-props-card">
                   <div className="pose-control-heading"><div><span>SET THE SCENE</span><h3>Props</h3></div></div>
@@ -212,15 +222,6 @@ function StudioPage() {
                   <label className="pose-field">Selected object<input type="color" id="pose-body-color" defaultValue="#d9d9d9" /></label>
                   <label className="pose-field">Background<input type="color" id="pose-background-color" defaultValue="#0b0d0d" /></label>
                   <div className="pose-view-grid" aria-label="Color themes"><button type="button" data-pose-palette="#d9d9d9,#0b0d0d">Dark</button><button type="button" data-pose-palette="#334155,#e5e7eb">Light</button><button type="button" data-pose-palette="#e0a442,#183044">Contrast</button></div>
-                </section>
-                <section className="pose-control-card pose-actors-card">
-                  <div className="pose-control-heading"><div><span>BUILD YOUR SCENE</span><h3>Mannequins</h3></div></div>
-                  <p>Choose a model, then add it to your scene.</p>
-                  <div className="pose-model-grid" aria-label="Mannequin models">
-                    <button type="button" data-pose-model="studio-01" className="is-active" aria-pressed="true"><img src={studio01Preview} alt="Studio 01 mannequin preview" /><span>Studio 01</span></button>
-                    <button type="button" data-pose-model="studio-02" aria-pressed="false"><img src={studio02Preview} alt="Studio 02 mannequin preview" /><span>Studio 02</span></button>
-                  </div>
-                  <button type="button" className="pose-add-button" data-pose-action="add">+ Add mannequin</button>
                 </section>
                 <section className="pose-control-card pose-library-card">
                   <div className="pose-control-heading"><div><span>QUICK START</span><h3>Pose presets</h3></div></div>
