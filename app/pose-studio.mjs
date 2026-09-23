@@ -19,11 +19,13 @@ import { POSE_LIBRARY, presetPreview, setActorColor, setActorMirrored } from './
 import { PROP_CATALOG, createProp } from './pose-props.mjs';
 import { encodeSharedScene, decodeSharedScene } from './pose-share.mjs';
 import { createModelCache } from './pose-model-cache.mjs';
+import { ANIMAL_CATALOG, ANIMAL_HANDLE_SPECS, ANIMAL_PRESETS, createAnimal, applyAnimalPreset, animalIcon } from './pose-animals.mjs';
 
 const MAX_HISTORY = 40;
 const MODEL_CATALOG = {
-  "studio-01": { label: "Studio 01", url: mannequinUrl },
-  "studio-02": { label: "Studio 02", url: studio02Url },
+  "studio-01": { label: "Female", url: mannequinUrl },
+  "studio-02": { label: "Male", url: studio02Url },
+  ...ANIMAL_CATALOG,
 };
 const PRESET_BONE_BINDINGS = [
   { key: "spine", bone: "mixamorig:Spine", child: "mixamorig:Spine1" },
@@ -73,7 +75,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   const usePoseButton = container.querySelector('[data-pose-action="use"]');
   const presetGrid = container.querySelector('.pose-preset-grid');
   if (presetGrid) presetGrid.innerHTML = POSE_LIBRARY.map(p => `<button type="button" data-pose-preset="${p.key}" data-category="${p.category}" title="${p.label}"><span class="pose-preset-diagram">${presetPreview(p)}</span>${p.label}</button>`).join('');
-  const presetButtons = Array.from(container.querySelectorAll("[data-pose-preset]"));
+  let presetButtons = Array.from(container.querySelectorAll("[data-pose-preset]"));
   const downloadButton = container.querySelector('[data-pose-action="download"]');
   const copyButton = container.querySelector('[data-pose-action="copy"]');
   const mirrorButton = container.querySelector('[data-pose-action="mirror"]');
@@ -85,6 +87,10 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   const objectSelect = container.querySelector('#pose-scene-object');
   const propButtons = Array.from(container.querySelectorAll('[data-pose-prop]'));
   const modelButtons = Array.from(container.querySelectorAll("[data-pose-model]"));
+  modelButtons.forEach(button => {
+    const preview = button.querySelector('[data-animal-preview]');
+    if (preview) preview.innerHTML = animalIcon(button.dataset.poseModel);
+  });
   const addButton = container.querySelector('[data-pose-action="add"]');
   const removeButton = container.querySelector('[data-pose-action="remove"]');
   const objectToolbar = container.querySelector("#pose-object-toolbar");
@@ -231,7 +237,8 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     if (bodyColor) bodyColor.value = actor?.color ?? '#d9d9d9';
     if (hoveredHandle) hoveredHandle.scale.setScalar(1);
     hoveredHandle = null;
-    clearActivePreset();
+    renderPresetLibrary(actor);
+    createHandles();
     updateSceneButtons();
     updateHandlePositions();
     syncTransformTool();
@@ -244,7 +251,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     transform.detach();
     if (!mannequin || activeTool === "pose") return;
     mannequin.updateMatrixWorld(true);
-    const hips = boneFor("mixamorig:Hips");
+    const hips = boneFor("mixamorig:Hips") || boneFor('AnimalRoot');
     if (hips) hips.getWorldPosition(transformPivot.position);
     else mannequin.getWorldPosition(transformPivot.position);
     transformPivot.quaternion.copy(mannequin.quaternion);
@@ -263,7 +270,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     updateHandlePositions();
     syncTransformTool();
     const hints = {
-      pose: "Drag a joint to pose · Click another mannequin to select it",
+      pose: "Drag a joint to pose · Click another character to select it",
       translate: "Drag an arrow or plane to move · Drag the center to move freely",
       rotate: "Drag a colored ring to rotate the selected object",
       scale: "Drag a scale handle to resize proportionally",
@@ -411,8 +418,11 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   }
 
   function createHandles() {
+    handles.forEach(handle => { scene.remove(handle); disposeObject(handle); });
+    handles.length = 0;
+    const specs = actorRecords.get(selectedId)?.kind === 'animal' ? ANIMAL_HANDLE_SPECS : RAGDOLL_HANDLE_SPECS;
     const handleMaterialByColor = new Map();
-    for (const spec of RAGDOLL_HANDLE_SPECS) {
+    for (const spec of specs) {
       if (!effectorFor(spec)) continue;
       let material = handleMaterialByColor.get(spec.color);
       if (!material) {
@@ -567,7 +577,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     if (emptyPress && event?.type === "pointerup" && event.pointerId === emptyPress.pointerId) {
       emptyPress = null;
       selectActor(null);
-      setHint("Click a mannequin to select it · Drag empty space to orbit");
+      setHint("Click a character to select it · Drag empty space to orbit");
       return;
     }
     if (event?.type === "pointercancel") emptyPress = null;
@@ -582,7 +592,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     canvasHost.classList.remove("is-dragging-pose");
     pushHistory(completed.before);
     updateHandlePositions();
-    setHint("Drag any of the 13 handles · Drag empty space to orbit · Scroll to zoom");
+    setHint("Drag a joint handle · Drag empty space to orbit · Scroll to zoom");
   }
 
   function preparePresetBindings() {
@@ -634,6 +644,15 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     presetButtons.forEach((button) => button.classList.remove("is-active"));
   }
 
+  function renderPresetLibrary(actor) {
+    const animal = actor?.kind === 'animal';
+    const library = animal ? ANIMAL_PRESETS : POSE_LIBRARY;
+    const category = container.querySelector('#pose-preset-category');
+    category.replaceChildren(...(animal ? ['All','Animals'] : ['All','Standing','Gesture','Action','Seated','Floor']).map(value => new Option(value,value)));
+    presetGrid.innerHTML = library.map(p => `<button type="button" data-pose-preset="${p.key}" data-category="${p.category}" title="${p.label}"><span class="pose-preset-diagram">${animal ? animalIcon(actor.modelKey) : presetPreview(p)}</span>${p.label}</button>`).join('');
+    presetButtons = Array.from(presetGrid.querySelectorAll('[data-pose-preset]'));
+  }
+
   function resetPose() {
     if (!neutralSnapshot) return;
     const before = captureSnapshot();
@@ -646,15 +665,17 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   }
 
   function applyPreset(name) {
-    const preset = POSE_LIBRARY.find((candidate) => candidate.key === name);
+    const actor = actorRecords.get(selectedId);
+    const animal = actor?.kind === 'animal';
+    const preset = (animal ? ANIMAL_PRESETS : POSE_LIBRARY).find((candidate) => candidate.key === name);
     if (!neutralSnapshot || !preset) return;
     const before = captureSnapshot();
     const facing = mannequin.quaternion.clone();
-    const actor = actorRecords.get(selectedId);
     const mirrored = Boolean(actor.mirrored);
     setActorMirrored(actor, false);
     mannequin.quaternion.fromArray(neutralSnapshot.quaternion);
     restoreNeutralPose();
+    if (animal) applyAnimalPreset(bonesByName, name);
     for (const binding of presetBindings) {
       applyPresetDirection(
         binding,
@@ -686,7 +707,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     actors = actors.filter(({ id }) => id !== selectedId);
     selectActor(actors.at(-1)?.id ?? null);
     pushHistory(before);
-    setHint(actors.length ? "Object removed · Undo to restore it" : "Choose a model and add a mannequin to begin");
+    setHint(actors.length ? "Object removed · Undo to restore it" : "Choose a model and add a character to begin");
   }
 
   function frameScene() {
@@ -696,13 +717,13 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     for (const actor of actors) {
       actor.model.updateMatrixWorld(true);
       actor.bones.forEach((bone) => bounds.expandByPoint(bone.getWorldPosition(point)));
-      if (actor.kind === 'prop') bounds.union(new THREE.Box3().setFromObject(actor.model));
+      if (actor.kind === 'prop' || actor.kind === 'animal') bounds.union(new THREE.Box3().setFromObject(actor.model));
     }
     if (bounds.isEmpty()) return;
     const center = bounds.getCenter(new THREE.Vector3());
     const size = bounds.getSize(new THREE.Vector3());
     const tangent = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
-    const distance = Math.max(16, size.y / (2 * tangent), size.x / (2 * tangent * camera.aspect)) * 1.35 + size.z / 2;
+    const distance = Math.max(7, size.y / (2 * tangent), size.x / (2 * tangent * camera.aspect)) * 1.35 + size.z / 2;
     controls.maxDistance = Math.max(36, distance * 2);
     camera.far = Math.max(80, distance * 4);
     scene.fog.near = distance + 12;
@@ -906,7 +927,10 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     });
   }));
   toolButtons.forEach((button) => listen(button, "click", () => selectTool(button.dataset.poseTool)));
-  presetButtons.forEach((button) => listen(button, "click", () => applyPreset(button.dataset.posePreset)));
+  listen(presetGrid, 'click', event => {
+    const button = event.target.closest('[data-pose-preset]');
+    if (button && !button.disabled) applyPreset(button.dataset.posePreset);
+  });
 
   function resize() {
     const width = Math.max(1, canvasHost.clientWidth);
@@ -928,14 +952,15 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   }
 
   function prepareMannequin(object, modelKey) {
-    mannequin = normalizeMannequin(object);
+    const animal = Object.hasOwn(ANIMAL_CATALOG, modelKey);
+    mannequin = normalizeMannequin(object, animal ? ANIMAL_CATALOG[modelKey].height : 7.25);
     bonesByName = new Map();
     mannequinBones = [];
     presetBindings = [];
     const boneIndex = buildPreferredBoneIndex(mannequin);
     for (const [name, bone] of boneIndex.byName) bonesByName.set(name, bone);
     mannequinBones.push(...boneIndex.bones);
-    preparePresetBindings();
+    if (!animal) preparePresetBindings();
 
     mannequin.traverse((objectPart) => {
       if (!objectPart.isMesh) return;
@@ -944,7 +969,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
       const originalMaterials = Array.isArray(objectPart.material) ? objectPart.material : [objectPart.material];
       const polishedMaterials = originalMaterials.map((material) => {
         const next = material;
-        next.color?.lerp?.(new THREE.Color(0xe2ded2), 0.38);
+        if (!next.userData.fixedColor) next.color?.lerp?.(new THREE.Color(0xe2ded2), 0.38);
         if ("roughness" in next) next.roughness = 0.72;
         if ("metalness" in next) next.metalness = 0.02;
         return next;
@@ -957,7 +982,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     neutralSnapshot = cloneSnapshot(mannequin, mannequinBones);
     const id = String(nextActorId++);
     const actor = {
-      id, modelKey, label: `${MODEL_CATALOG[modelKey].label} · ${id}`,
+      id, modelKey, kind: animal ? 'animal' : 'mannequin', label: `${MODEL_CATALOG[modelKey].label} · ${id}`,
       model: mannequin, bones: mannequinBones, byName: bonesByName,
       bindings: presetBindings, neutral: neutralSnapshot,
     };
@@ -968,7 +993,6 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     actors.push(actor);
     actorRecords.set(id, actor);
     selectActor(id);
-    if (!handles.length) createHandles();
     frameScene();
   }
 
@@ -980,7 +1004,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   animate();
 
   const loader = new FBXLoader();
-  const modelCache = createModelCache(key => loader.loadAsync(MODEL_CATALOG[key].url));
+  const modelCache = createModelCache(key => Object.hasOwn(ANIMAL_CATALOG,key) ? createAnimal(key) : loader.loadAsync(MODEL_CATALOG[key].url));
   async function addMannequin(modelKey, initial = false) {
     if (modelLoading || poseCaptureInFlight || actors.length >= 30 || !MODEL_CATALOG[modelKey]) return;
     finishDrag();
@@ -990,7 +1014,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     const loadingTimer = setTimeout(() => {
       if (loading && !destroyed) {
         loading.hidden = false;
-        loading.innerHTML = "<span></span> Loading mannequin…";
+        loading.innerHTML = "<span></span> Loading character…";
       }
     }, 180);
     try {
@@ -1002,9 +1026,9 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
       const before = captureSnapshot();
       prepareMannequin(object, modelKey);
       if (!initial) pushHistory(before);
-      setHint("Select a mannequin · Drag its handles to pose · Drag empty space to orbit");
+      setHint("Select a character · Drag its handles to pose · Drag empty space to orbit");
     } catch {
-      if (!destroyed) setHint("This mannequin could not be loaded · click Add mannequin to retry");
+      if (!destroyed) setHint("This character could not be loaded · click Add character to retry");
     } finally {
       clearTimeout(loadingTimer);
       modelLoading = false;

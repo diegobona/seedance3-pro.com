@@ -139,3 +139,6 @@ textarea { width:100%; min-height:154px; resize:vertical; padding:15px; border:1
 @media(max-width:1120px){.pose-studio{grid-template-columns:1fr}.pose-control-panel{grid-template-columns:repeat(2,minmax(0,1fr))}.pose-intro-card,.pose-next-step{grid-column:span 2}.pose-canvas{min-height:600px}}
 @media(max-width:620px){.pose-control-panel{grid-template-columns:1fr}.pose-intro-card,.pose-next-step{grid-column:auto}.pose-toolbar{align-items:flex-start;flex-direction:column}.pose-history-controls{width:100%}.pose-history-controls button{flex:1}.pose-history-controls button span{display:none}.pose-canvas{min-height:520px}.pose-canvas-hint{bottom:11px;font-size:11px;line-height:1.35}.pose-control-card{padding:16px}}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+.pose-animal-preview { display:flex; align-items:center; justify-content:center; width:100%; aspect-ratio:1; background:#dce1de; color:#596362; }
+.pose-animal-preview svg { width:86%; height:86%; }

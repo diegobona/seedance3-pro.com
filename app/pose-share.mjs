@@ -1,4 +1,5 @@
 import { PROP_CATALOG } from './pose-props.mjs';
+import { ANIMAL_CATALOG } from './pose-animals.mjs';
 
 const ASPECTS = ['auto', '1 / 1', '3 / 4', '9 / 16', '16 / 9'];
 const MAX_BYTES = 2_000_000;
@@ -14,6 +15,8 @@ export function validateSharedScene(data) {
     ids.add(actor.id);
     if (actor.kind === 'prop') {
       if (!Object.hasOwn(PROP_CATALOG, actor.modelKey) || actor.bones.length || actor.mirrored) throw new Error('Invalid prop');
+    } else if (actor.kind === 'animal') {
+      if (!Object.hasOwn(ANIMAL_CATALOG,actor.modelKey)) throw new Error('Invalid animal');
     } else if (actor.kind !== 'mannequin' || !['studio-01','studio-02'].includes(actor.modelKey)) throw new Error('Invalid model');
     if (actor.bones.some(b => !transform(b) || !Number.isInteger(b.index) || b.index < 0 || b.index >= 300)) throw new Error('Invalid pose');
   }

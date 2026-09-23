@@ -188,7 +188,7 @@ function StudioPage() {
                     <button type="button" data-pose-action="mirror" disabled>Mirror</button>
                   </div>
                 </div>
-                <div className="pose-canvas" id="pose-canvas" role="application" aria-label="Interactive 3D mannequin. Drag the glowing handles to pose the body.">
+                <div className="pose-canvas" id="pose-canvas" role="application" aria-label="Interactive 3D characters. Drag the glowing handles to pose the body.">
                   <div className="pose-object-toolbar" id="pose-object-toolbar" role="toolbar" aria-label="Selected object tools" hidden>
                     <span id="pose-selected-label" className="pose-selected-label" />
                     <div className="pose-object-tools">
@@ -199,20 +199,21 @@ function StudioPage() {
                       <button type="button" data-pose-action="remove" className="pose-delete-tool" aria-label="Delete object" title="Delete selected object"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7m4-7v7" /></svg><span>Delete</span></button>
                     </div>
                   </div>
-                  <div className="pose-canvas-loading" id="pose-canvas-loading"><span /> Preparing mannequin…</div>
+                  <div className="pose-canvas-loading" id="pose-canvas-loading"><span /> Loading character…</div>
                   <div className="pose-canvas-hint" id="pose-canvas-hint">Drag a glowing handle · Drag empty space to orbit · Scroll to zoom</div>
                 </div>
               </div>
 
               <aside className="pose-control-panel">
                 <section className="pose-control-card pose-actors-card">
-                  <div className="pose-control-heading"><div><span>BUILD YOUR SCENE</span><h3>Mannequins</h3></div></div>
-                  <p>Choose a model, then add it to your scene.</p>
-                  <div className="pose-model-grid" aria-label="Mannequin models">
-                    <button type="button" data-pose-model="studio-01" aria-pressed="false"><img src={studio01Preview} alt="Studio 01 mannequin preview" /><span>Studio 01</span></button>
-                    <button type="button" data-pose-model="studio-02" className="is-active" aria-pressed="true"><img src={studio02Preview} alt="Studio 02 mannequin preview" /><span>Studio 02</span></button>
+                  <div className="pose-control-heading"><div><span>BUILD YOUR SCENE</span><h3>Characters</h3></div></div>
+                  <p>Choose a human or animal to add.</p>
+                  <div className="pose-model-grid" aria-label="Character models">
+                    <button type="button" data-pose-model="studio-01" aria-pressed="false"><img src={studio01Preview} alt="Female character preview" /><span>Female</span></button>
+                    <button type="button" data-pose-model="studio-02" className="is-active" aria-pressed="true"><img src={studio02Preview} alt="Male character preview" /><span>Male</span></button>
+                    {['cat','dog','horse'].map(kind => <button type="button" key={kind} data-pose-model={kind} aria-pressed="false"><span className="pose-animal-preview" data-animal-preview aria-hidden="true" /><span>{kind.charAt(0).toUpperCase()+kind.slice(1)}</span></button>)}
                   </div>
-                  <button type="button" className="pose-add-button" data-pose-action="add">+ Add mannequin</button>
+                  <button type="button" className="pose-add-button" data-pose-action="add">+ Add character</button>
                 </section>
                 <section className="pose-control-card pose-props-card">
                   <div className="pose-control-heading"><div><span>SET THE SCENE</span><h3>Props</h3></div></div>

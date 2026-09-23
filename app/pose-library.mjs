@@ -43,7 +43,7 @@ export function presetPreview(preset) {
 export function setActorColor(actor, color) {
   actor.color = color;
   actor.model.traverse(part => {
-    for (const material of (Array.isArray(part.material) ? part.material : [part.material])) material?.color?.set(color);
+    for (const material of (Array.isArray(part.material) ? part.material : [part.material])) if (!material?.userData?.fixedColor) material?.color?.set(color);
   });
 }
 
