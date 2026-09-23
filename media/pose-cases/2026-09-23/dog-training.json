@@ -1,0 +1,20 @@
+{
+  "id": "dog-training",
+  "title": "A person, a dog and a ball",
+  "prompt": "Use the attached 3D scene as a composition reference. Keep the camera angle, subject count, body poses, left/right placement, relative scale and furniture arrangement. Turn the mannequins into fully clothed adults and the animal models into real animals. Do not render the 3D mannequins, selection handles or interface. Natural outdoor photograph of an adult man kneeling on the left beside a seated golden retriever on the right, a red rubber ball in front of the dog. Keep the kneeling posture and separated silhouettes. Casual green shirt, grass, softly blurred park. Exactly one person, one dog, one ball.",
+  "reference": {
+    "file": "references/dog-training.png",
+    "sha256": "d725e1958ee30de611c8c8109a81ccd2978e239aa323f8a33a363de34f734930",
+    "width": 1536,
+    "height": 1024
+  },
+  "output": {
+    "file": "outputs/dog-training.png",
+    "sha256": "a90f0387e16e5fa02648bbc393ed431053ed000a765ee4c4859c21d38701153d",
+    "width": 1536,
+    "height": 1024
+  },
+  "attempts": 1,
+  "requestedSize": "1536x1024",
+  "generatedAt": "2026-09-23T15:12:28.197Z"
+}

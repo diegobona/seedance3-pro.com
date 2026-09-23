@@ -1,0 +1,20 @@
+{
+  "id": "two-friends",
+  "title": "Two people, one composition",
+  "prompt": "Use the attached 3D scene as a composition reference. Keep the camera angle, subject count, body poses, left/right placement, relative scale and furniture arrangement. Turn the mannequins into fully clothed adults and the animal models into real animals. Do not render the 3D mannequins, selection handles or interface. Editorial photograph of two adult friends, a man in a navy jacket on the left and a woman in a cream knit sweater on the right, in a sunlit city courtyard. Full bodies visible. Preserve their different poses and the gap between them.",
+  "reference": {
+    "file": "references/two-friends.png",
+    "sha256": "ff6cac9f352c48407ea5def9cc7e077706fcb4c75e433e22a2c78dfe58313818",
+    "width": 1536,
+    "height": 1024
+  },
+  "output": {
+    "file": "outputs/two-friends.png",
+    "sha256": "1eab324a41bb52567886fa95e7a1b43c8a6fe8e7c3d166df9dff2b779221f0df",
+    "width": 1536,
+    "height": 1024
+  },
+  "attempts": 1,
+  "requestedSize": "1536x1024",
+  "generatedAt": "2026-09-23T15:11:29.274Z"
+}

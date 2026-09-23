@@ -1,0 +1,204 @@
+{
+  "date": "2026-09-23",
+  "requests": 10,
+  "completed": 9,
+  "retouched": false,
+  "referenceMethod": "Rendered from saved scene setups using Pose Studio production models, presets and props",
+  "cases": [
+    {
+      "id": "two-friends",
+      "title": "Two people, one composition",
+      "prompt": "Use the attached 3D scene as a composition reference. Keep the camera angle, subject count, body poses, left/right placement, relative scale and furniture arrangement. Turn the mannequins into fully clothed adults and the animal models into real animals. Do not render the 3D mannequins, selection handles or interface. Editorial photograph of two adult friends, a man in a navy jacket on the left and a woman in a cream knit sweater on the right, in a sunlit city courtyard. Full bodies visible. Preserve their different poses and the gap between them.",
+      "reference": {
+        "file": "references/two-friends.png",
+        "sha256": "ff6cac9f352c48407ea5def9cc7e077706fcb4c75e433e22a2c78dfe58313818",
+        "width": 1536,
+        "height": 1024
+      },
+      "output": {
+        "file": "outputs/two-friends.png",
+        "sha256": "1eab324a41bb52567886fa95e7a1b43c8a6fe8e7c3d166df9dff2b779221f0df",
+        "width": 1536,
+        "height": 1024
+      },
+      "attempts": 1,
+      "requestedSize": "1536x1024",
+      "generatedAt": "2026-09-23T15:11:29.274Z",
+      "observation": "The two distinct stances carry through. The AI brings the people closer to the camera and changes some hand and foot details."
+    },
+    {
+      "id": "cafe-conversation",
+      "title": "A conversation around a table",
+      "prompt": "Use the attached 3D scene as a composition reference. Keep the camera angle, subject count, body poses, left/right placement, relative scale and furniture arrangement. Turn the mannequins into fully clothed adults and the animal models into real animals. Do not render the 3D mannequins, selection handles or interface. Warm lifestyle photograph of an adult man seated on the left chair and an adult woman seated on the right chair, talking over a small wooden cafe table placed between and slightly in front of them. Preserve both seated poses, two chairs and one table. Linen clothing, quiet terrace, natural afternoon light.",
+      "reference": {
+        "file": "references/cafe-conversation.png",
+        "sha256": "58bbfff52a59e9863fbde8ac19d10be2a4991d7d80820454c57537ba33bcb5b7",
+        "width": 1536,
+        "height": 1024
+      },
+      "output": {
+        "file": "outputs/cafe-conversation.png",
+        "sha256": "491181d347585f40598517613f3953aecb43fe90b482502a17db1f83b265b82f",
+        "width": 1536,
+        "height": 1024
+      },
+      "attempts": 1,
+      "requestedSize": "1536x1024",
+      "generatedAt": "2026-09-23T15:10:54.979Z",
+      "observation": "The two chairs and central table become a shared caf\u00e9 scene. The people turn toward each other, with some changes to their arms and legs."
+    },
+    {
+      "id": "dog-training",
+      "title": "A person, a dog and a ball",
+      "prompt": "Use the attached 3D scene as a composition reference. Keep the camera angle, subject count, body poses, left/right placement, relative scale and furniture arrangement. Turn the mannequins into fully clothed adults and the animal models into real animals. Do not render the 3D mannequins, selection handles or interface. Natural outdoor photograph of an adult man kneeling on the left beside a seated golden retriever on the right, a red rubber ball in front of the dog. Keep the kneeling posture and separated silhouettes. Casual green shirt, grass, softly blurred park. Exactly one person, one dog, one ball.",
+      "reference": {
+        "file": "references/dog-training.png",
+        "sha256": "d725e1958ee30de611c8c8109a81ccd2978e239aa323f8a33a363de34f734930",
+        "width": 1536,
+        "height": 1024
+      },
+      "output": {
+        "file": "outputs/dog-training.png",
+        "sha256": "a90f0387e16e5fa02648bbc393ed431053ed000a765ee4c4859c21d38701153d",
+        "width": 1536,
+        "height": 1024
+      },
+      "attempts": 1,
+      "requestedSize": "1536x1024",
+      "generatedAt": "2026-09-23T15:12:28.197Z",
+      "observation": "The kneeling person, sitting dog and foreground ball all carry through into the park setting."
+    },
+    {
+      "id": "cat-companion",
+      "title": "A quiet moment with a cat",
+      "prompt": "Use the attached 3D scene as a composition reference. Keep the camera angle, subject count, body poses, left/right placement, relative scale and furniture arrangement. Turn the mannequins into fully clothed adults and the animal models into real animals. Do not render the 3D mannequins, selection handles or interface. Cozy lifestyle photograph of an adult woman seated on a wooden chair on the left, a ginger cat sitting on the stool to her right and a small side table farther right. Keep the cat on the stool, the seated body language and the positions of all three pieces of furniture. Soft cream cardigan, warm window light, home reading corner. No extra people or pets.",
+      "reference": {
+        "file": "references/cat-companion.png",
+        "sha256": "0eed972620a44059116b9da9a4aec45a90d0edec20ae4657e8bb059dc05475ef",
+        "width": 1536,
+        "height": 1024
+      },
+      "output": {
+        "file": "outputs/cat-companion.png",
+        "sha256": "c43023ca8f20bb2bb4625a3221f71b51fbd8062a0182620c0c4e07186c84aca2",
+        "width": 1536,
+        "height": 1024
+      },
+      "attempts": 1,
+      "requestedSize": "1536x1024",
+      "generatedAt": "2026-09-23T15:12:52.565Z",
+      "observation": "The person, cat and three pieces of furniture keep their left-to-right arrangement. The AI adds a book and changes the person\u2019s hands to hold it."
+    },
+    {
+      "id": "running-partners",
+      "title": "Two runners and their dog",
+      "prompt": "Use the attached 3D scene as a composition reference. Keep the camera angle, subject count, body poses, left/right placement, relative scale and furniture arrangement. Turn the mannequins into fully clothed adults and the animal models into real animals. Do not render the 3D mannequins, selection handles or interface. Sports editorial photograph of an adult man and woman running together with a brown dog between them in the foreground, on a lakeside path. Keep the two running body poses, staggered positions and full bodies. Blue and coral athletic clothing, crisp daylight, believable running motion. Exactly two people and one dog.",
+      "reference": {
+        "file": "references/running-partners.png",
+        "sha256": "e160421d9ce25eee8d680c56efa9c29c44de9402fbbf743e794e95746db3c1f5",
+        "width": 1536,
+        "height": 1024
+      },
+      "output": {
+        "file": "outputs/running-partners.png",
+        "sha256": "42d52f153a2654bae8cc1dbe5ed3e747f417cb1cdd4bd99e180e8042ea75c0e4",
+        "width": 1536,
+        "height": 1024
+      },
+      "attempts": 1,
+      "requestedSize": "1536x1024",
+      "generatedAt": "2026-09-23T15:14:08.848Z",
+      "observation": "Both runners and the dog remain in the scene, while the AI changes the dog\u2019s direction and some running details."
+    },
+    {
+      "id": "pet-portrait",
+      "title": "Three animals without a guessing game",
+      "prompt": "Use the attached 3D scene as a composition reference. Keep the camera angle, subject count, body poses, left/right placement, relative scale and furniture arrangement. Turn the mannequins into fully clothed adults and the animal models into real animals. Do not render the 3D mannequins, selection handles or interface. Studio pet photograph of a seated golden retriever on the left, a small seated gray cat on the center stool and a second beagle standing on the right. A red ball rests at the front left. Match the spacing and camera view. Exactly two dogs and one cat, one wooden stool and one ball. Warm cream backdrop, gentle softbox light, realistic fur.",
+      "reference": {
+        "file": "references/pet-portrait.png",
+        "sha256": "3cb80c328145a16d1b92db65d73c74a55648fd463f1e3204784deac3cf43e149",
+        "width": 1536,
+        "height": 1024
+      },
+      "output": {
+        "file": "outputs/pet-portrait.png",
+        "sha256": "f97830700a457411ad34bd0db16a3d6849752bf60c6ebf432c11a047511ff79b",
+        "width": 1536,
+        "height": 1024
+      },
+      "attempts": 1,
+      "requestedSize": "1536x1024",
+      "generatedAt": "2026-09-23T15:14:13.749Z",
+      "observation": "Both dogs, the cat on the stool and the foreground ball are present. The prompt supplies their breeds, fur and studio setting."
+    },
+    {
+      "id": "stable-morning",
+      "title": "People, pets and a horse in one scene",
+      "prompt": "Use the attached 3D scene as a composition reference. Keep the camera angle, subject count, body poses, left/right placement, relative scale and furniture arrangement. Turn the mannequins into fully clothed adults and the animal models into real animals. Do not render the 3D mannequins, selection handles or interface. Cinematic countryside photograph of an adult man standing at the left, an adult woman standing at the right, one chestnut horse behind the center, a seated dog at the front left and a small cat at the front right. Two wooden crates and a wooden stool sit at the sides, in the positions shown. Keep all five subjects distinct and full bodies visible. Simple outdoor workwear, rustic stable courtyard, soft morning light.",
+      "reference": {
+        "file": "references/stable-morning.png",
+        "sha256": "393a12c881869dd9cafc85477961d280299a867ef2043e75f59c4f8f4caa5ba2",
+        "width": 1536,
+        "height": 1024
+      },
+      "output": {
+        "file": "outputs/stable-morning.png",
+        "sha256": "ca68785c00c189f438e609e378b1a42142fa40d963a0d40b322f3644b48bf518",
+        "width": 1536,
+        "height": 1024
+      },
+      "attempts": 1,
+      "requestedSize": "1536x1024",
+      "generatedAt": "2026-09-23T15:15:35.172Z",
+      "observation": "Both people, all three animals and the side props appear in the result. The horse and pets take up more space than in the reference."
+    },
+    {
+      "id": "horses-and-handlers",
+      "title": "Two horses, two people, clear spacing",
+      "prompt": "Use the attached 3D scene as a composition reference. Keep the camera angle, subject count, body poses, left/right placement, relative scale and furniture arrangement. Turn the mannequins into fully clothed adults and the animal models into real animals. Do not render the 3D mannequins, selection handles or interface. Equestrian editorial photograph of two adult horse handlers, a man and a woman standing between two horses at an outdoor stable. A dark bay horse on the far left and a palomino horse on the far right. Two wooden storage boxes sit near the front corners. Preserve the four separate silhouettes, full bodies and layout. Practical riding clothes, soft overcast daylight. Exactly two people and two horses.",
+      "reference": {
+        "file": "references/horses-and-handlers.png",
+        "sha256": "ff8e72d060567b3ae8346f72ea33487557207bccded83f1866e6f079833ee2ed",
+        "width": 1536,
+        "height": 1024
+      },
+      "output": {
+        "file": "outputs/horses-and-handlers.png",
+        "sha256": "c86eee2ac994a3aa9a37fefc2f93ee66289cee87b83d3a75e399ab2e59e23e96",
+        "width": 1536,
+        "height": 1024
+      },
+      "attempts": 1,
+      "requestedSize": "1536x1024",
+      "generatedAt": "2026-09-23T15:16:44.542Z",
+      "observation": "The two horses remain on opposite sides of the two people, with both boxes in the foreground. The result adjusts the horses\u2019 proportions."
+    },
+    {
+      "id": "garden-overhead",
+      "title": "The same gathering, seen from above",
+      "prompt": "Use the attached 3D scene as a composition reference. Keep the camera angle, subject count, body poses, left/right placement, relative scale and furniture arrangement. Turn the mannequins into fully clothed adults and the animal models into real animals. Do not render the 3D mannequins, selection handles or interface. High-angle editorial photograph looking down at three adult friends gathered around a wooden garden table: man seated left, woman standing behind the center, woman seated right. A dog sitting at the front left, a cat at the right edge and a ball at the front right. Preserve the overhead camera angle, exactly three people, two pets, two chairs and one table, and their relative placement. Summer clothing, garden patio, gentle daylight.",
+      "reference": {
+        "file": "references/garden-overhead.png",
+        "sha256": "0701df70e2bcb348c90839f677ef7a98b1df64d428b859e5f6ab59570d079659",
+        "width": 1536,
+        "height": 1024
+      },
+      "output": {
+        "file": "outputs/garden-overhead.png",
+        "sha256": "fbc6b3075b25b1ab0e176de8df1eba66a9b601e261636e7021c00204f31494a7",
+        "width": 1536,
+        "height": 1024
+      },
+      "attempts": 1,
+      "requestedSize": "1536x1024",
+      "generatedAt": "2026-09-23T15:17:28.504Z",
+      "observation": "The higher view keeps all three people, both pets and the furniture visible. The hand positions change, but the group arrangement remains clear."
+    }
+  ],
+  "unresolved": [
+    {
+      "id": "garden-gathering",
+      "status": "request timed out; not retried"
+    }
+  ]
+}

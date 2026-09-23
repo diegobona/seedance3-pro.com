@@ -1,0 +1,20 @@
+{
+  "id": "stable-morning",
+  "title": "People, pets and a horse in one scene",
+  "prompt": "Use the attached 3D scene as a composition reference. Keep the camera angle, subject count, body poses, left/right placement, relative scale and furniture arrangement. Turn the mannequins into fully clothed adults and the animal models into real animals. Do not render the 3D mannequins, selection handles or interface. Cinematic countryside photograph of an adult man standing at the left, an adult woman standing at the right, one chestnut horse behind the center, a seated dog at the front left and a small cat at the front right. Two wooden crates and a wooden stool sit at the sides, in the positions shown. Keep all five subjects distinct and full bodies visible. Simple outdoor workwear, rustic stable courtyard, soft morning light.",
+  "reference": {
+    "file": "references/stable-morning.png",
+    "sha256": "393a12c881869dd9cafc85477961d280299a867ef2043e75f59c4f8f4caa5ba2",
+    "width": 1536,
+    "height": 1024
+  },
+  "output": {
+    "file": "outputs/stable-morning.png",
+    "sha256": "ca68785c00c189f438e609e378b1a42142fa40d963a0d40b322f3644b48bf518",
+    "width": 1536,
+    "height": 1024
+  },
+  "attempts": 1,
+  "requestedSize": "1536x1024",
+  "generatedAt": "2026-09-23T15:15:35.172Z"
+}

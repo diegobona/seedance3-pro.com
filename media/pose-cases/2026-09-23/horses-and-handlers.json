@@ -1,0 +1,20 @@
+{
+  "id": "horses-and-handlers",
+  "title": "Two horses, two people, clear spacing",
+  "prompt": "Use the attached 3D scene as a composition reference. Keep the camera angle, subject count, body poses, left/right placement, relative scale and furniture arrangement. Turn the mannequins into fully clothed adults and the animal models into real animals. Do not render the 3D mannequins, selection handles or interface. Equestrian editorial photograph of two adult horse handlers, a man and a woman standing between two horses at an outdoor stable. A dark bay horse on the far left and a palomino horse on the far right. Two wooden storage boxes sit near the front corners. Preserve the four separate silhouettes, full bodies and layout. Practical riding clothes, soft overcast daylight. Exactly two people and two horses.",
+  "reference": {
+    "file": "references/horses-and-handlers.png",
+    "sha256": "ff8e72d060567b3ae8346f72ea33487557207bccded83f1866e6f079833ee2ed",
+    "width": 1536,
+    "height": 1024
+  },
+  "output": {
+    "file": "outputs/horses-and-handlers.png",
+    "sha256": "c86eee2ac994a3aa9a37fefc2f93ee66289cee87b83d3a75e399ab2e59e23e96",
+    "width": 1536,
+    "height": 1024
+  },
+  "attempts": 1,
+  "requestedSize": "1536x1024",
+  "generatedAt": "2026-09-23T15:16:44.542Z"
+}
