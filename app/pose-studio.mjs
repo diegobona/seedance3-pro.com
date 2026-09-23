@@ -24,7 +24,7 @@ import { PROP_CATALOG, createProp } from './pose-props.mjs';
 import { encodeSharedScene, decodeSharedScene } from './pose-share.mjs';
 import { createModelCache } from './pose-model-cache.mjs';
 import { bindLiveColorControl } from './pose-color-control.mjs';
-import { ANIMAL_CATALOG, ANIMAL_HANDLE_SPECS, ANIMAL_PRESETS, applyAnimalPreset, animalIcon } from './pose-animals.mjs';
+import { ANIMAL_CATALOG, ANIMAL_HANDLE_SPECS, getAnimalPresets, applyAnimalPreset, animalPresetPreview } from './pose-animals.mjs';
 
 const MAX_HISTORY = 40;
 const MODEL_CATALOG = {
@@ -615,10 +615,10 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
 
   function renderPresetLibrary(actor) {
     const animal = actor?.kind === 'animal';
-    const library = animal ? ANIMAL_PRESETS : POSE_LIBRARY;
+    const library = animal ? getAnimalPresets(actor.modelKey) : POSE_LIBRARY;
     const category = container.querySelector('#pose-preset-category');
-    category.replaceChildren(...(animal ? ['All','Animals'] : ['All','Standing','Gesture','Action','Seated','Floor']).map(value => new Option(value,value)));
-    presetGrid.innerHTML = library.map(p => `<button type="button" data-pose-preset="${p.key}" data-category="${p.category}" title="${p.label}"><span class="pose-preset-diagram">${animal ? animalIcon(actor.modelKey) : presetPreview(p)}</span>${p.label}</button>`).join('');
+    category.replaceChildren(...(animal ? ['All',...new Set(library.map(p => p.category))] : ['All','Standing','Gesture','Action','Seated','Floor']).map(value => new Option(value,value)));
+    presetGrid.innerHTML = library.map(p => `<button type="button" data-pose-preset="${p.key}" data-category="${p.category}" title="${p.label}"><span class="pose-preset-diagram">${animal ? animalPresetPreview(p, actor.modelKey, actor) : presetPreview(p)}</span>${p.label}</button>`).join('');
     presetButtons = Array.from(presetGrid.querySelectorAll('[data-pose-preset]'));
   }
 
@@ -636,7 +636,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   function applyPreset(name) {
     const actor = actorRecords.get(selectedId);
     const animal = actor?.kind === 'animal';
-    const preset = (animal ? ANIMAL_PRESETS : POSE_LIBRARY).find((candidate) => candidate.key === name);
+    const preset = (animal ? getAnimalPresets(actor.modelKey) : POSE_LIBRARY).find((candidate) => candidate.key === name);
     if (!neutralSnapshot || !preset) return;
     const before = captureSnapshot();
     const facing = mannequin.quaternion.clone();
@@ -644,7 +644,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     setActorMirrored(actor, false);
     mannequin.quaternion.fromArray(neutralSnapshot.quaternion);
     restoreNeutralPose();
-    if (animal) applyAnimalPreset(bonesByName, name);
+    if (animal) applyAnimalPreset(bonesByName, name, actor.modelKey);
     if (!animal) applyHumanPresetDirections(mannequin, presetBindings, preset);
     placePresetOnGround();
     setActorMirrored(actor, mirrored);
