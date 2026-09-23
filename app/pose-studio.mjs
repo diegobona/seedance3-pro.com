@@ -98,7 +98,6 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   const addButton = container.querySelector('[data-pose-action="add"]');
   const removeButton = container.querySelector('[data-pose-action="remove"]');
   const objectToolbar = container.querySelector("#pose-object-toolbar");
-  const selectedLabel = container.querySelector("#pose-selected-label");
   const toolButtons = Array.from(container.querySelectorAll("[data-pose-tool]"));
   const cleanups = [];
   const undoStack = [];
@@ -248,7 +247,6 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
 
   function syncTransformTool() {
     objectToolbar.hidden = !mannequin;
-    selectedLabel.textContent = actorRecords.get(selectedId)?.label ?? "";
     toolButtons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.poseTool === activeTool)));
     transform.detach();
     if (!mannequin || activeTool === "pose") return;

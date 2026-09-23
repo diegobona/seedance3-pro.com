@@ -88,7 +88,7 @@ function StudioPage() {
           </header>
 
           <div className="workspace-body">
-            <div className="workspace-title"><div><p id="model-category">{initiallyPose ? 'AI IMAGE / POSE CONTROL' : 'AI IMAGE / GENERATE & EDIT'}</p><h1 id="model-name">{initiallyPose ? 'Pose Studio' : 'GPT Image 2'}</h1></div><span className="model-status" id="model-status">{initiallyPose ? 'Ragdoll IK' : 'Image generator'}</span></div>
+            <div className="workspace-title"><div><p id="model-category">{initiallyPose ? 'AI IMAGE / POSE CONTROL' : 'AI IMAGE / GENERATE & EDIT'}</p><h1 id="model-name">{initiallyPose ? 'Pose Studio' : 'GPT Image 2'}</h1></div><span className="model-status" id="model-status" hidden={initiallyPose}>{initiallyPose ? '' : 'Image generator'}</span></div>
             <div className="creation-grid" id="creation-grid" hidden={initiallyPose}>
               <section className="creation-panel">
                 <div className="model-select"><span className="model-symbol orange" id="selected-symbol">G2</span><div><small>Selected model</small><strong id="selected-name">GPT Image 2</strong></div></div>
@@ -171,7 +171,7 @@ function StudioPage() {
               </aside>
             </div>
 
-            <section className="pose-studio" id="pose-studio" aria-label="Ragdoll IK pose editor" hidden={!initiallyPose}>
+            <section className="pose-studio" id="pose-studio" aria-label="3D pose editor" hidden={!initiallyPose}>
               <div className="pose-export-bar" aria-label="Generate, export and share">
                 <div className="pose-export-actions">
                   <button type="button" data-pose-action="use" disabled>Pose to Image</button>
@@ -186,7 +186,16 @@ function StudioPage() {
                 <div className="pose-toolbar">
                   <div className="pose-stage-heading">
                     <button className="pose-sidebar-toggle" type="button" aria-controls="studio-sidebar" aria-expanded="true" title="Collapse menu">‹ <span>Collapse menu</span></button>
-                    <div className="pose-mode-indicator"><span /> Ragdoll IK</div>
+                    
+                  </div>
+                  <div className="pose-object-toolbar" id="pose-object-toolbar" role="toolbar" aria-label="Selected object tools" hidden>
+                    <div className="pose-object-tools">
+                      <button type="button" data-pose-tool="pose" aria-label="Pose joints" aria-pressed="true" title="Adjust body pose"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4" r="2" /><path d="M12 7v7m-7-5 7 2 7-2M7 21l5-7 5 7" /></svg><span>Pose</span></button>
+                      <button type="button" data-pose-tool="translate" aria-label="Move object" aria-pressed="false" title="Move object"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20M2 12h20M8 6l4-4 4 4M8 18l4 4 4-4M6 8l-4 4 4 4m12-8 4 4-4 4" /></svg><span>Move</span></button>
+                      <button type="button" data-pose-tool="rotate" aria-label="Rotate object" aria-pressed="false" title="Rotate object"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7a9 9 0 0 0-15-1M4 17a9 9 0 0 0 15 1M20 2v5h-5M4 22v-5h5" /></svg><span>Rotate</span></button>
+                      <button type="button" data-pose-tool="scale" aria-label="Scale object" aria-pressed="false" title="Scale object proportionally"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3h7v7M21 3l-9 9M3 14v7h7M3 21l9-9" /></svg><span>Scale</span></button>
+                      <button type="button" data-pose-action="remove" className="pose-delete-tool" aria-label="Delete object" title="Delete selected object"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7m4-7v7" /></svg><span>Delete</span></button>
+                    </div>
                   </div>
                   <div className="pose-history-controls" aria-label="Pose history">
                     <button type="button" data-pose-action="undo" aria-label="Undo pose change" disabled>↶ <span>Undo</span></button>
@@ -196,16 +205,6 @@ function StudioPage() {
                   </div>
                 </div>
                 <div className="pose-canvas" id="pose-canvas" role="application" aria-label="Interactive 3D characters. Drag the glowing handles to pose the body.">
-                  <div className="pose-object-toolbar" id="pose-object-toolbar" role="toolbar" aria-label="Selected object tools" hidden>
-                    <span id="pose-selected-label" className="pose-selected-label" />
-                    <div className="pose-object-tools">
-                      <button type="button" data-pose-tool="pose" aria-label="Pose joints" aria-pressed="true" title="Adjust body pose"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4" r="2" /><path d="M12 7v7m-7-5 7 2 7-2M7 21l5-7 5 7" /></svg><span>Pose</span></button>
-                      <button type="button" data-pose-tool="translate" aria-label="Move object" aria-pressed="false" title="Move object"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20M2 12h20M8 6l4-4 4 4M8 18l4 4 4-4M6 8l-4 4 4 4m12-8 4 4-4 4" /></svg><span>Move</span></button>
-                      <button type="button" data-pose-tool="rotate" aria-label="Rotate object" aria-pressed="false" title="Rotate object"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7a9 9 0 0 0-15-1M4 17a9 9 0 0 0 15 1M20 2v5h-5M4 22v-5h5" /></svg><span>Rotate</span></button>
-                      <button type="button" data-pose-tool="scale" aria-label="Scale object" aria-pressed="false" title="Scale object proportionally"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3h7v7M21 3l-9 9M3 14v7h7M3 21l9-9" /></svg><span>Scale</span></button>
-                      <button type="button" data-pose-action="remove" className="pose-delete-tool" aria-label="Delete object" title="Delete selected object"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7m4-7v7" /></svg><span>Delete</span></button>
-                    </div>
-                  </div>
                   <div className="pose-canvas-loading" id="pose-canvas-loading"><span /> Loading character…</div>
                   <div className="pose-canvas-hint" id="pose-canvas-hint">Drag handles to pose · Left-drag empty space to orbit · Right-drag / Shift + left-drag to pan · Scroll to zoom</div>
                 </div>

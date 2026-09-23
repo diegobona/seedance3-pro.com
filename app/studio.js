@@ -40,7 +40,7 @@ const studioModels = {
   "pose-to-image": {
     category: "AI IMAGE / POSE CONTROL",
     name: "Pose Studio",
-    status: "Ragdoll IK",
+    status: "",
     symbol: "P3",
     tone: "lime",
     exampleTitle: "Pose-first character image",
@@ -283,6 +283,7 @@ export function initializeStudio() {
     modelName.textContent = model.name;
     modelCategory.textContent = model.category;
     modelStatus.textContent = model.status;
+    modelStatus.hidden = model.type === "pose";
     selectedName.textContent = model.name;
     selectedSymbol.textContent = model.symbol;
     selectedSymbol.className = `model-symbol ${model.tone}`;
