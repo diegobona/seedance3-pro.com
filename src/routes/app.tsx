@@ -11,6 +11,7 @@ import studio01Preview from '../../app/pose-assets/studio-01-preview.png'
 import studio02Preview from '../../app/pose-assets/studio-02-preview.png'
 
 export const Route = createFileRoute('/app')({
+  validateSearch: (search: Record<string, unknown>) => ({ model: typeof search.model === 'string' ? search.model : '' }),
   head: () => ({
     meta: [
       { title: 'AI Creative Studio | SEEDANCE 3.0' },
@@ -23,6 +24,8 @@ export const Route = createFileRoute('/app')({
 })
 
 function StudioPage() {
+  const { model: initialModel } = Route.useSearch()
+  const initiallyPose = initialModel === 'pose-to-image'
   const [authOpen, setAuthOpen] = useState(false)
   const closeAuth = useCallback(() => setAuthOpen(false), [])
   const refreshCreditsAfterAuth = useCallback(() => {
@@ -59,7 +62,7 @@ function StudioPage() {
             </div>
             <div className="nav-section">
               <div className="section-heading"><span>AI IMAGE</span></div>
-              <button className="model-button pose-workflow-button" type="button" data-model="pose-to-image">
+              <button className={`model-button pose-workflow-button${initiallyPose ? ' is-active' : ''}`} type="button" data-model="pose-to-image">
                 <span className="pose-symbol" aria-hidden="true">
                   <svg viewBox="0 0 32 32" role="presentation"><circle cx="16" cy="5.5" r="3" /><path d="M16 9v9m0-6-7 4m7-4 7 3m-7 3-5 9m5-9 6 9" /><circle cx="9" cy="16" r="1.25" /><circle cx="23" cy="15" r="1.25" /><circle cx="11" cy="27" r="1.25" /><circle cx="22" cy="27" r="1.25" /></svg>
                 </span>
@@ -68,7 +71,7 @@ function StudioPage() {
                 <span className="workflow-cta">Open Pose Studio <b>↗</b></span>
               </button>
               <div className="section-heading image-models-heading"><span>IMAGE MODELS</span><span>02</span></div>
-              <button className="model-button price-model is-active" type="button" data-model="gpt-image-2"><span className="model-symbol orange">G2</span><span><strong>GPT Image 2</strong><small>Generation &amp; editing</small></span><em className="price-badge">FROM <b>$0.01</b></em></button>
+              <button className={`model-button price-model${initiallyPose ? '' : ' is-active'}`} type="button" data-model="gpt-image-2"><span className="model-symbol orange">G2</span><span><strong>GPT Image 2</strong><small>Generation &amp; editing</small></span><em className="price-badge">FROM <b>$0.01</b></em></button>
               <button className="model-button" type="button" data-model="nano-banana-2-lite" disabled><span className="model-symbol violet">NB</span><span><strong>Nano Banana 2 Lite</strong><small>Fast image drafts</small></span><em className="soon">Coming Soon</em></button>
             </div>
           </nav>
@@ -82,8 +85,8 @@ function StudioPage() {
           </header>
 
           <div className="workspace-body">
-            <div className="workspace-title"><div><p id="model-category">AI IMAGE / GENERATE &amp; EDIT</p><h1 id="model-name">GPT Image 2</h1></div><span className="model-status" id="model-status">Image generator</span></div>
-            <div className="creation-grid" id="creation-grid">
+            <div className="workspace-title"><div><p id="model-category">{initiallyPose ? 'AI IMAGE / POSE CONTROL' : 'AI IMAGE / GENERATE & EDIT'}</p><h1 id="model-name">{initiallyPose ? 'Pose Studio' : 'GPT Image 2'}</h1></div><span className="model-status" id="model-status">{initiallyPose ? 'Ragdoll IK' : 'Image generator'}</span></div>
+            <div className="creation-grid" id="creation-grid" hidden={initiallyPose}>
               <section className="creation-panel">
                 <div className="model-select"><span className="model-symbol orange" id="selected-symbol">G2</span><div><small>Selected model</small><strong id="selected-name">GPT Image 2</strong></div></div>
                 <div className="field-group" id="mode-group" hidden><label>Create from</label><div className="segmented"><button className="is-selected" type="button">Media</button><button type="button">Image</button><button type="button">Text</button></div></div>
@@ -165,7 +168,7 @@ function StudioPage() {
               </aside>
             </div>
 
-            <section className="pose-studio" id="pose-studio" aria-label="Ragdoll IK pose editor" hidden>
+            <section className="pose-studio" id="pose-studio" aria-label="Ragdoll IK pose editor" hidden={!initiallyPose}>
               <div className="pose-export-bar" aria-label="Export and share">
                 <div className="pose-export-actions">
                   <button type="button" data-pose-action="download" disabled>Download PNG</button>
@@ -206,8 +209,8 @@ function StudioPage() {
                   <div className="pose-control-heading"><div><span>BUILD YOUR SCENE</span><h3>Mannequins</h3></div></div>
                   <p>Choose a model, then add it to your scene.</p>
                   <div className="pose-model-grid" aria-label="Mannequin models">
-                    <button type="button" data-pose-model="studio-01" className="is-active" aria-pressed="true"><img src={studio01Preview} alt="Studio 01 mannequin preview" /><span>Studio 01</span></button>
-                    <button type="button" data-pose-model="studio-02" aria-pressed="false"><img src={studio02Preview} alt="Studio 02 mannequin preview" /><span>Studio 02</span></button>
+                    <button type="button" data-pose-model="studio-01" aria-pressed="false"><img src={studio01Preview} alt="Studio 01 mannequin preview" /><span>Studio 01</span></button>
+                    <button type="button" data-pose-model="studio-02" className="is-active" aria-pressed="true"><img src={studio02Preview} alt="Studio 02 mannequin preview" /><span>Studio 02</span></button>
                   </div>
                   <button type="button" className="pose-add-button" data-pose-action="add">+ Add mannequin</button>
                 </section>

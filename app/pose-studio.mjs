@@ -18,6 +18,7 @@ import { capturePoseReference } from "./pose-transfer.mjs";
 import { POSE_LIBRARY, presetPreview, setActorColor, setActorMirrored } from './pose-library.mjs';
 import { PROP_CATALOG, createProp } from './pose-props.mjs';
 import { encodeSharedScene, decodeSharedScene } from './pose-share.mjs';
+import { createModelCache } from './pose-model-cache.mjs';
 
 const MAX_HISTORY = 40;
 const MODEL_CATALOG = {
@@ -98,7 +99,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   const actorRecords = new Map();
   let actors = [];
   let selectedId = null;
-  let selectedModel = "studio-01";
+  let selectedModel = "studio-02";
   let nextActorId = 1;
   let modelLoading = false;
   let mannequin = null;
@@ -942,7 +943,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
       objectPart.receiveShadow = true;
       const originalMaterials = Array.isArray(objectPart.material) ? objectPart.material : [objectPart.material];
       const polishedMaterials = originalMaterials.map((material) => {
-        const next = material.clone();
+        const next = material;
         next.color?.lerp?.(new THREE.Color(0xe2ded2), 0.38);
         if ("roughness" in next) next.roughness = 0.72;
         if ("metalness" in next) next.metalness = 0.02;
@@ -979,17 +980,21 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   animate();
 
   const loader = new FBXLoader();
+  const modelCache = createModelCache(key => loader.loadAsync(MODEL_CATALOG[key].url));
   async function addMannequin(modelKey, initial = false) {
     if (modelLoading || poseCaptureInFlight || actors.length >= 30 || !MODEL_CATALOG[modelKey]) return;
     finishDrag();
     modelLoading = true;
     updateSceneButtons();
-    if (loading) {
-      loading.hidden = false;
-      loading.innerHTML = "<span></span> Preparing mannequin…";
-    }
+    if (loading) loading.hidden = actors.length > 0;
+    const loadingTimer = setTimeout(() => {
+      if (loading && !destroyed) {
+        loading.hidden = false;
+        loading.innerHTML = "<span></span> Loading mannequin…";
+      }
+    }, 180);
     try {
-      const object = await loader.loadAsync(MODEL_CATALOG[modelKey].url);
+      const object = await modelCache.get(modelKey);
       if (destroyed) {
         disposeObject(object);
         return;
@@ -1001,6 +1006,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     } catch {
       if (!destroyed) setHint("This mannequin could not be loaded · click Add mannequin to retry");
     } finally {
+      clearTimeout(loadingTimer);
       modelLoading = false;
       if (!destroyed) {
         if (loading) loading.hidden = true;
@@ -1018,7 +1024,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
       const saved = await decodeSharedScene(encoded);
       // Load everything before replacing the scene; a broken link must not leave a partial scene.
       for (const actor of saved.actors) {
-        const object = actor.kind === 'prop' ? createProp(actor.modelKey) : await loader.loadAsync(MODEL_CATALOG[actor.modelKey].url);
+        const object = actor.kind === 'prop' ? createProp(actor.modelKey) : await modelCache.get(actor.modelKey);
         objects.push(object);
       }
       if (destroyed) { objects.forEach(disposeObject); return; }
@@ -1057,6 +1063,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   return () => {
     if (destroyed) return;
     destroyed = true;
+    modelCache.dispose();
     cancelAnimationFrame(frameId);
     while (cleanups.length) cleanups.pop()();
     controls.dispose();
