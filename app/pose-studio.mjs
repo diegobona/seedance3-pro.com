@@ -17,7 +17,7 @@ import {
   captureBoneTransforms,
   normalizedBoneName,
 } from "./pose-rig-index.mjs";
-import { ANYPOSES_PRESETS, ANYPOSES_REFERENCE_DIRECTIONS } from "./pose-presets.mjs";
+import { prepareHumanPresetBindings, applyHumanPresetDirections } from './pose-human-presets.mjs';
 import { capturePoseReference } from "./pose-transfer.mjs";
 import { POSE_LIBRARY, presetPreview, setActorColor, setActorMirrored } from './pose-library.mjs';
 import { PROP_CATALOG, createProp } from './pose-props.mjs';
@@ -34,17 +34,7 @@ const MODEL_CATALOG = {
     ...item, url: { cat: catUrl, dog: dogUrl, horse: horseUrl }[key],
   }])),
 };
-const PRESET_BONE_BINDINGS = [
-  { key: "spine", bone: "mixamorig:Spine", child: "mixamorig:Spine1" },
-  { key: "leftArm", bone: "mixamorig:LeftArm", child: "mixamorig:LeftForeArm" },
-  { key: "leftForeArm", bone: "mixamorig:LeftForeArm", child: "mixamorig:LeftHand" },
-  { key: "rightArm", bone: "mixamorig:RightArm", child: "mixamorig:RightForeArm" },
-  { key: "rightForeArm", bone: "mixamorig:RightForeArm", child: "mixamorig:RightHand" },
-  { key: "leftUpLeg", bone: "mixamorig:LeftUpLeg", child: "mixamorig:LeftLeg" },
-  { key: "leftLeg", bone: "mixamorig:LeftLeg", child: "mixamorig:LeftFoot" },
-  { key: "rightUpLeg", bone: "mixamorig:RightUpLeg", child: "mixamorig:RightLeg" },
-  { key: "rightLeg", bone: "mixamorig:RightLeg", child: "mixamorig:RightFoot" },
-];
+
 
 function disposeObject(root) {
   root?.traverse?.((object) => {
@@ -212,12 +202,6 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   const scratchAxis = new THREE.Vector3();
   const scratchParentQuaternion = new THREE.Quaternion();
   const scratchRotation = new THREE.Quaternion();
-  const scratchPresetReference = new THREE.Vector3();
-  const scratchPresetDirection = new THREE.Vector3();
-  const scratchPresetWorldDirection = new THREE.Vector3();
-  const scratchPresetParentDirection = new THREE.Vector3();
-  const scratchPresetDelta = new THREE.Quaternion();
-  const scratchPresetLocalDelta = new THREE.Quaternion();
 
   function setHint(message) {
     if (hint) hint.textContent = message;
@@ -614,40 +598,6 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     setHint("Drag a joint handle · Right-drag / Shift + left-drag to pan · Scroll to zoom");
   }
 
-  function preparePresetBindings() {
-    presetBindings.length = 0;
-    mannequin.updateMatrixWorld(true);
-    for (const spec of PRESET_BONE_BINDINGS) {
-      const bone = boneFor(spec.bone);
-      const child = boneFor(spec.child);
-      if (!bone || !child) continue;
-      const bonePosition = bone.getWorldPosition(new THREE.Vector3());
-      const childPosition = child.getWorldPosition(new THREE.Vector3());
-      const restWorldDirection = childPosition.sub(bonePosition).normalize();
-      const parentWorldInverse = bone.parent.getWorldQuaternion(new THREE.Quaternion()).invert();
-      const restParentDirection = restWorldDirection.clone().applyQuaternion(parentWorldInverse).normalize();
-      presetBindings.push({
-        ...spec,
-        bone,
-        restLocalQuaternion: bone.quaternion.clone(),
-        restWorldDirection,
-        restParentDirection,
-      });
-    }
-  }
-
-  function applyPresetDirection(binding, referenceDirection, poseDirection) {
-    scratchPresetReference.fromArray(referenceDirection).normalize();
-    scratchPresetDirection.fromArray(poseDirection).normalize();
-    scratchPresetDelta.setFromUnitVectors(scratchPresetReference, scratchPresetDirection);
-    scratchPresetWorldDirection.copy(binding.restWorldDirection).applyQuaternion(scratchPresetDelta).normalize();
-    binding.bone.parent.getWorldQuaternion(scratchParentQuaternion).invert();
-    scratchPresetParentDirection.copy(scratchPresetWorldDirection).applyQuaternion(scratchParentQuaternion).normalize();
-    scratchPresetLocalDelta.setFromUnitVectors(binding.restParentDirection, scratchPresetParentDirection);
-    binding.bone.quaternion.copy(scratchPresetLocalDelta.multiply(binding.restLocalQuaternion)).normalize();
-    mannequin.updateMatrixWorld(true);
-  }
-
   function placePresetOnGround() {
     mannequin.traverse((part) => {
       if (part.isSkinnedMesh) part.computeBoundingBox?.();
@@ -695,13 +645,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     mannequin.quaternion.fromArray(neutralSnapshot.quaternion);
     restoreNeutralPose();
     if (animal) applyAnimalPreset(bonesByName, name);
-    for (const binding of presetBindings) {
-      applyPresetDirection(
-        binding,
-        ANYPOSES_REFERENCE_DIRECTIONS[binding.key],
-        preset.directions[binding.key]
-      );
-    }
+    if (!animal) applyHumanPresetDirections(mannequin, presetBindings, preset);
     placePresetOnGround();
     setActorMirrored(actor, mirrored);
     mannequin.quaternion.copy(facing);
@@ -998,7 +942,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     const boneIndex = buildPreferredBoneIndex(mannequin);
     for (const [name, bone] of boneIndex.byName) bonesByName.set(name, bone);
     mannequinBones.push(...boneIndex.bones);
-    if (!animal) preparePresetBindings();
+    if (!animal) presetBindings = prepareHumanPresetBindings(mannequin, bonesByName);
 
     mannequin.traverse((objectPart) => {
       if (!objectPart.isMesh) return;
