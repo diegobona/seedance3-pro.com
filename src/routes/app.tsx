@@ -203,7 +203,7 @@ function StudioPage() {
                     </div>
                   </div>
                   <div className="pose-canvas-loading" id="pose-canvas-loading"><span /> Loading character…</div>
-                  <div className="pose-canvas-hint" id="pose-canvas-hint">Drag a glowing handle · Drag empty space to orbit · Scroll to zoom</div>
+                  <div className="pose-canvas-hint" id="pose-canvas-hint">Drag handles to pose · Left-drag empty space to orbit · Right-drag to pan · Scroll to zoom</div>
                 </div>
               </div>
 

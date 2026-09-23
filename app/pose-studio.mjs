@@ -154,7 +154,8 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   controls.target.set(0, 4, 0);
   controls.enableDamping = true;
   controls.dampingFactor = 0.075;
-  controls.enablePan = false;
+  controls.enablePan = true;
+  controls.mouseButtons.RIGHT = THREE.MOUSE.PAN;
   controls.minDistance = 7;
   controls.maxDistance = 36;
   controls.minPolarAngle = Math.PI * 0.18;
@@ -590,7 +591,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     if (emptyPress && event?.type === "pointerup" && event.pointerId === emptyPress.pointerId) {
       emptyPress = null;
       selectActor(null);
-      setHint("Click a character to select it · Drag empty space to orbit");
+      setHint("Click a character to select it · Left-drag empty space to orbit · Right-drag to pan");
       return;
     }
     if (event?.type === "pointercancel") emptyPress = null;
@@ -605,7 +606,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     canvasHost.classList.remove("is-dragging-pose");
     pushHistory(completed.before);
     updateHandlePositions();
-    setHint("Drag a joint handle · Drag empty space to orbit · Scroll to zoom");
+    setHint("Drag a joint handle · Right-drag to pan · Scroll to zoom");
   }
 
   function preparePresetBindings() {
@@ -1060,7 +1061,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
       const before = captureSnapshot();
       prepareMannequin(object, modelKey);
       if (!initial) pushHistory(before);
-      setHint("Select a character · Drag its handles to pose · Drag empty space to orbit");
+      setHint("Drag handles to pose · Left-drag empty space to orbit · Right-drag to pan · Scroll to zoom");
     } catch {
       if (!destroyed) setHint("This character could not be loaded · click Add character to retry");
     } finally {
