@@ -12,7 +12,7 @@ This map records the page that owns each search intent. Primary navigation and `
 | Pose reference examples | `/pose-reference-camera-angle-examples` | Published, indexable; existing URL retained |
 | Generic and Pose workspace | `/app/` and `/app/?model=pose-to-image` | Functional, noindex |
 | Nano Banana 2 Lite model information | `/nano-banana-2-lite.html` | Published guide; tool unavailable |
-| Video and image showcase | `/showcase.html` | Published, indexable; uses current H3, GPT Image 2 and Pose media |
+| Creative showcase | `/showcase.html` | Published, indexable; editable Pose scenes featured above the video gallery and scene prompts |
 | Blog and existing articles | `/blog.html` and existing article URLs | Published; existing URLs retained |
 | Prompt guide | `/prompt-guide` | Coming Soon page; noindex, absent from sitemap |
 | MiniMax H3 video case index | `/prompts/minimax-h3/videos` | Coming Soon page; noindex, absent from sitemap |

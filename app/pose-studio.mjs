@@ -21,12 +21,20 @@ import { prepareHumanPresetBindings, applyHumanPresetDirections } from './pose-h
 import { capturePoseReference } from "./pose-transfer.mjs";
 import { POSE_LIBRARY, presetPreview, setActorColor, setActorMirrored } from './pose-library.mjs';
 import { PROP_CATALOG, createProp } from './pose-props.mjs';
-import { encodeSharedScene, decodeSharedScene } from './pose-share.mjs';
+import { encodeSharedScene, decodeSharedScene, validateSharedScene } from './pose-share.mjs';
+import twoFriendsSceneUrl from '../media/pose-cases/2026-09-23/scenes/two-friends.json?url';
+import cafeConversationSceneUrl from '../media/pose-cases/2026-09-23/scenes/cafe-conversation.json?url';
+import dogTrainingSceneUrl from '../media/pose-cases/2026-09-23/scenes/dog-training.json?url';
 import { createModelCache } from './pose-model-cache.mjs';
 import { bindLiveColorControl } from './pose-color-control.mjs';
 import { ANIMAL_CATALOG, ANIMAL_HANDLE_SPECS, getAnimalPresets, applyAnimalPreset, animalPresetPreview } from './pose-animals.mjs';
 
 const MAX_HISTORY = 40;
+const SHOWCASE_SCENE_URLS = Object.freeze({
+  'two-friends': twoFriendsSceneUrl,
+  'cafe-conversation': cafeConversationSceneUrl,
+  'dog-training': dogTrainingSceneUrl,
+});
 const MODEL_CATALOG = {
   "studio-01": { label: "Female", url: mannequinUrl },
   "studio-02": { label: "Male", url: studio02Url },
@@ -1033,13 +1041,24 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     }
   }
   async function initializeScene() {
-    const encoded = new URLSearchParams(window.location.hash.slice(1)).get('pose');
-    if (!encoded) { await addMannequin(selectedModel, true); return; }
+    const sceneParams = new URLSearchParams(window.location.hash.slice(1));
+    const encoded = sceneParams.get('pose');
+    const showcaseScene = sceneParams.get('scene');
+    if (!encoded && !showcaseScene) { await addMannequin(selectedModel, true); return; }
     modelLoading = true;
     updateSceneButtons();
     const objects = [];
     try {
-      const saved = await decodeSharedScene(encoded);
+      let saved;
+      if (encoded) {
+        saved = await decodeSharedScene(encoded);
+      } else {
+        if (!Object.hasOwn(SHOWCASE_SCENE_URLS, showcaseScene)) throw new Error('Unknown scene');
+        const sceneUrl = SHOWCASE_SCENE_URLS[showcaseScene];
+        const response = await fetch(sceneUrl);
+        if (!response.ok) throw new Error('Scene unavailable');
+        saved = validateSharedScene(await response.json());
+      }
       // Load everything before replacing the scene; a broken link must not leave a partial scene.
       for (const actor of saved.actors) {
         const object = actor.kind === 'prop' ? createProp(actor.modelKey) : await modelCache.get(actor.modelKey);
@@ -1065,12 +1084,12 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
       scene.fog.near = distance + 12; scene.fog.far = distance + 35;
       camera.updateProjectionMatrix();
       camera.lookAt(controls.target); controls.update();
-      setHint('Shared scene opened · select any object to keep editing');
+      setHint('Scene opened · select any object to keep editing');
     } catch {
       objects.filter(object => !object.parent).forEach(disposeObject);
       modelLoading = false;
       await addMannequin(selectedModel, true);
-      setHint('This share link could not be opened · a fresh scene is ready');
+      setHint('This scene could not be opened · a fresh scene is ready');
     } finally {
       modelLoading = false;
       if (!destroyed) { if (loading) loading.hidden = true; updateSceneButtons(); }

@@ -2,28 +2,88 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
+import { validateSharedScene } from '../app/pose-share.mjs'
 
 const root = resolve(import.meta.dirname, '..')
 const read = (path) => readFileSync(resolve(root, path), 'utf8')
 
-test('showcase uses existing video, image and Pose examples rather than generic placeholders', () => {
-  const homepage = read('index.html')
+test('showcase features editable Pose scenes before the video gallery', () => {
   const showcase = read('showcase.html')
-  const homeVideos = new Set([...homepage.matchAll(/data-video-src="([^"]+)"/g)].map(match => match[1]))
-  const showcaseVideos = [...showcase.matchAll(/data-video-src="([^"]+)"/g)].map(match => match[1])
-
-  assert.ok(showcaseVideos.length >= 4)
-  assert.ok(showcaseVideos.every(source => homeVideos.has(source)), 'showcase videos should reuse the already featured samples')
-  for (const image of ['gpt-image-2-editorial-fashion.webp', 'gpt-image-2-lunar-garden.webp', 'gpt-image-2-floating-city.webp']) {
-    assert.match(showcase, new RegExp(image))
+  assert.match(showcase, /<title>AI Showcase: Editable Pose Scenes & Videos/)
+  assert.ok(showcase.indexOf('id="pose"') < showcase.indexOf('id="community-videos"'))
+  assert.match(showcase, /id="community-videos"/)
+  assert.match(showcase, /id="showcase-info"/)
+  assert.doesNotMatch(showcase, /id="videos"|id="images"|MiniMax H3 video samples|GPT Image 2 image examples/)
+  assert.doesNotMatch(showcase, /class="showcase-preview-button"|id="showcase-player"/)
+  assert.doesNotMatch(showcase, /pose-reference-demo\.mp4/)
+  const poseStudio = read('app/pose-studio.mjs')
+  for (const scene of ['two-friends', 'cafe-conversation', 'dog-training']) {
+    assert.match(showcase, new RegExp(`href="\\./app/\\?model=pose-to-image#scene=${scene}"`))
+    assert.match(showcase, new RegExp(`references/${scene}\\.png`))
+    assert.match(poseStudio, new RegExp(`'${scene}': [a-zA-Z]+SceneUrl`))
+    validateSharedScene(JSON.parse(read(`media/pose-cases/2026-09-23/scenes/${scene}.json`)))
   }
-  assert.match(showcase, /pose-reference-demo\.mp4/)
-  assert.match(showcase, /id="showcase-player"/)
-  assert.doesNotMatch(showcase, /<img[^>]+src="\.\/og-cover\.svg"/i)
-  assert.doesNotMatch(showcase, /search visibility|long-tail detail pages/i)
-  for (const href of ['./app/video/minimax-h3', './app/image/gpt-image-2', './pose-to-image']) {
+  assert.equal((showcase.match(/Edit this scene/g) ?? []).length, 3)
+  for (const href of ['./app/video/minimax-h3', './pose-to-image']) {
     assert.ok(showcase.includes(`href="${href}"`), `${href} should have a next step`)
   }
+})
+
+test('video masonry keeps 10 short clips, 20 films, playable tiles and model-neutral scene notes', () => {
+  const showcase = read('showcase.html')
+  const section = showcase.match(/<section class="showcase-section showcase-section-alt" id="community-videos"[\s\S]*?<\/section>/)?.[0] ?? ''
+  assert.match(showcase, /<meta name="referrer" content="no-referrer">/)
+  const shortSection = section.split('<div class="community-video-grid community-video-grid--long">')[0]
+  const shortCards = [...shortSection.matchAll(/<article class="community-video-card community-video-card--x(?: community-video-card--portrait)?" data-duration-seconds="([\d.]+)">([\s\S]*?)<\/article>/g)]
+  assert.equal(shortCards.length, 10)
+  const xIds = shortCards.map(([, duration, card]) => {
+    assert.ok(Number(duration) > 0 && Number(duration) <= 15, 'X clips must be no longer than 15 seconds')
+    const id = card.match(/data-x-post-url="https:\/\/x\.com\/[\w]+\/status\/(\d+)"/)?.[1]
+    assert.ok(id, 'each X card needs an original post URL')
+    assert.match(card, new RegExp(`href="https://x\\.com/[\\w]+/status/${id}"`))
+    assert.match(card, /pbs\.twimg\.com\//)
+    assert.match(card, /community-video-credit/)
+    assert.match(card, /Inspired prompt · our interpretation/)
+    assert.match(card, /data-copy-community-prompt/)
+    return id
+  })
+  assert.equal(new Set(xIds).size, 10)
+  assert.ok(section.indexOf('community-video-grid--short') < section.indexOf('community-video-grid--long'))
+  assert.equal((section.match(/community-video-card--portrait/g) ?? []).length, 2)
+  assert.doesNotMatch(section.match(/<div class="showcase-section-head">[\s\S]*?<\/div><span class="showcase-count">/)?.[0] ?? '', /YouTube|Seedance 2\.0|MiniMax H3/)
+  assert.doesNotMatch(section, /More creator films/)
+  const playerCode = read('main.js')
+  for (const id of xIds) {
+    assert.match(playerCode, new RegExp(`"${id}": "https://video\\.twimg\\.com/[^" ]+\\.mp4\\?tag=\\d+"`))
+  }
+  assert.match(playerCode, /video\.controls = true/)
+  assert.match(playerCode, /video\.play\(\)/)
+  assert.match(playerCode, /community-video-info-button/)
+  assert.match(playerCode, /sceneDialog\.showModal\(\)/)
+  assert.doesNotMatch(playerCode, /widgets\.createTweet|platform\.twitter\.com\/widgets\.js/)
+
+  const cards = [...section.matchAll(/<article class="community-video-card">([\s\S]*?)<\/article>/g)].map(match => match[1])
+  assert.equal(cards.length, 20)
+
+  const ids = cards.map(card => {
+    const videoId = card.match(/data-community-video-id="([\w-]{11})"/)?.[1]
+    assert.ok(videoId, 'each card needs a creator video player')
+    assert.match(card, new RegExp(`i\\.ytimg\\.com/vi/${videoId}/hqdefault\\.jpg`), 'each card shows the original video poster')
+    assert.match(card, new RegExp(`youtube\\.com/watch\\?v=${videoId}`), 'each card links to the original upload')
+    assert.match(card, /loading="lazy"/)
+    assert.match(card, /community-video-credit/)
+    assert.match(card, /Inspired prompt · our interpretation/)
+    assert.match(card, /<p class="community-video-prompt">[^<]{80,}<\/p>/)
+    assert.match(card, /data-copy-community-prompt/)
+    return videoId
+  })
+
+  assert.equal(new Set(ids).size, 20)
+  assert.match(section, /not the creators' original inputs/)
+  assert.match(playerCode, /navigator\.clipboard\.writeText\(promptText\.textContent\)/)
+  assert.match(read('main.js'), /youtube-nocookie\.com\/embed\/\$\{videoId\}/)
+  assert.match(read('showcase.css'), /\.community-video-grid\{column-count:4/)
+  assert.match(read('showcase.css'), /\.community-video-body\{position:absolute/)
 })
 
 test('Coming Soon resources are real noindex routes with explicit Worker coverage', () => {

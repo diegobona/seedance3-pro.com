@@ -10,5 +10,5 @@ export const Route = createFileRoute('/prompts/minimax-h3/videos')({
     ],
     links: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
   }),
-  component: () => <ComingSoonPage kind="Video case library" title="MiniMax H3 video cases are coming soon." description="We are preparing a browsable collection of video results and the creative directions behind them. You can watch the current H3 samples in our showcase today." primaryHref="/app/video/minimax-h3" primaryLabel="Create with MiniMax H3" />,
+  component: () => <ComingSoonPage kind="Video case library" title="MiniMax H3 video cases are coming soon." description="We are preparing a browsable collection of video results and the creative directions behind them. You can explore the current video showcase today." primaryHref="/app/video/minimax-h3" primaryLabel="Create with MiniMax H3" />,
 })
