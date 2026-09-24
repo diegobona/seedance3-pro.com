@@ -11,12 +11,18 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppRouteImport } from './routes/app'
+import { Route as PromptGuideRouteImport } from './routes/prompt-guide'
 import { Route as ApiLaunchWaitlistRouteImport } from './routes/api/launch-waitlist'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApiCreditsBalanceRouteImport } from './routes/api/credits/balance'
 import { Route as ApiImagesGenerateRouteImport } from './routes/api/images/generate'
 import { Route as ApiVideosGenerateRouteImport } from './routes/api/videos/generate'
 import { Route as ApiVideosStatusRouteImport } from './routes/api/videos/status'
+import { Route as AppImageGptImage2RouteImport } from './routes/app_.image.gpt-image-2'
+import { Route as AppVideoMinimaxH3RouteImport } from './routes/app_.video.minimax-h3'
+import { Route as AppVideoSeedance25RouteImport } from './routes/app_.video.seedance-2-5'
+import { Route as PromptsGptImage2ImagesRouteImport } from './routes/prompts/gpt-image-2/images'
+import { Route as PromptsMinimaxH3VideosRouteImport } from './routes/prompts/minimax-h3/videos'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -26,6 +32,11 @@ const IndexRoute = IndexRouteImport.update({
 const AppRoute = AppRouteImport.update({
   id: '/app',
   path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PromptGuideRoute = PromptGuideRouteImport.update({
+  id: '/prompt-guide',
+  path: '/prompt-guide',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiLaunchWaitlistRoute = ApiLaunchWaitlistRouteImport.update({
@@ -58,80 +69,147 @@ const ApiVideosStatusRoute = ApiVideosStatusRouteImport.update({
   path: '/api/videos/status',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppImageGptImage2Route = AppImageGptImage2RouteImport.update({
+  id: '/app_/image/gpt-image-2',
+  path: '/app/image/gpt-image-2',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppVideoMinimaxH3Route = AppVideoMinimaxH3RouteImport.update({
+  id: '/app_/video/minimax-h3',
+  path: '/app/video/minimax-h3',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppVideoSeedance25Route = AppVideoSeedance25RouteImport.update({
+  id: '/app_/video/seedance-2-5',
+  path: '/app/video/seedance-2-5',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PromptsGptImage2ImagesRoute = PromptsGptImage2ImagesRouteImport.update({
+  id: '/prompts/gpt-image-2/images',
+  path: '/prompts/gpt-image-2/images',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PromptsMinimaxH3VideosRoute = PromptsMinimaxH3VideosRouteImport.update({
+  id: '/prompts/minimax-h3/videos',
+  path: '/prompts/minimax-h3/videos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRoute
+  '/prompt-guide': typeof PromptGuideRoute
   '/api/launch-waitlist': typeof ApiLaunchWaitlistRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/credits/balance': typeof ApiCreditsBalanceRoute
   '/api/images/generate': typeof ApiImagesGenerateRoute
   '/api/videos/generate': typeof ApiVideosGenerateRoute
   '/api/videos/status': typeof ApiVideosStatusRoute
+  '/app/image/gpt-image-2': typeof AppImageGptImage2Route
+  '/app/video/minimax-h3': typeof AppVideoMinimaxH3Route
+  '/app/video/seedance-2-5': typeof AppVideoSeedance25Route
+  '/prompts/gpt-image-2/images': typeof PromptsGptImage2ImagesRoute
+  '/prompts/minimax-h3/videos': typeof PromptsMinimaxH3VideosRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/app': typeof AppRoute
+  '/prompt-guide': typeof PromptGuideRoute
   '/api/launch-waitlist': typeof ApiLaunchWaitlistRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/credits/balance': typeof ApiCreditsBalanceRoute
   '/api/images/generate': typeof ApiImagesGenerateRoute
   '/api/videos/generate': typeof ApiVideosGenerateRoute
   '/api/videos/status': typeof ApiVideosStatusRoute
+  '/app/image/gpt-image-2': typeof AppImageGptImage2Route
+  '/app/video/minimax-h3': typeof AppVideoMinimaxH3Route
+  '/app/video/seedance-2-5': typeof AppVideoSeedance25Route
+  '/prompts/gpt-image-2/images': typeof PromptsGptImage2ImagesRoute
+  '/prompts/minimax-h3/videos': typeof PromptsMinimaxH3VideosRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/app': typeof AppRoute
+  '/prompt-guide': typeof PromptGuideRoute
   '/api/launch-waitlist': typeof ApiLaunchWaitlistRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/credits/balance': typeof ApiCreditsBalanceRoute
   '/api/images/generate': typeof ApiImagesGenerateRoute
   '/api/videos/generate': typeof ApiVideosGenerateRoute
   '/api/videos/status': typeof ApiVideosStatusRoute
+  '/app_/image/gpt-image-2': typeof AppImageGptImage2Route
+  '/app_/video/minimax-h3': typeof AppVideoMinimaxH3Route
+  '/app_/video/seedance-2-5': typeof AppVideoSeedance25Route
+  '/prompts/gpt-image-2/images': typeof PromptsGptImage2ImagesRoute
+  '/prompts/minimax-h3/videos': typeof PromptsMinimaxH3VideosRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/app'
+    | '/prompt-guide'
     | '/api/launch-waitlist'
     | '/api/auth/$'
     | '/api/credits/balance'
     | '/api/images/generate'
     | '/api/videos/generate'
     | '/api/videos/status'
+    | '/app/image/gpt-image-2'
+    | '/app/video/minimax-h3'
+    | '/app/video/seedance-2-5'
+    | '/prompts/gpt-image-2/images'
+    | '/prompts/minimax-h3/videos'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/app'
+    | '/prompt-guide'
     | '/api/launch-waitlist'
     | '/api/auth/$'
     | '/api/credits/balance'
     | '/api/images/generate'
     | '/api/videos/generate'
     | '/api/videos/status'
+    | '/app/image/gpt-image-2'
+    | '/app/video/minimax-h3'
+    | '/app/video/seedance-2-5'
+    | '/prompts/gpt-image-2/images'
+    | '/prompts/minimax-h3/videos'
   id:
     | '__root__'
     | '/'
     | '/app'
+    | '/prompt-guide'
     | '/api/launch-waitlist'
     | '/api/auth/$'
     | '/api/credits/balance'
     | '/api/images/generate'
     | '/api/videos/generate'
     | '/api/videos/status'
+    | '/app_/image/gpt-image-2'
+    | '/app_/video/minimax-h3'
+    | '/app_/video/seedance-2-5'
+    | '/prompts/gpt-image-2/images'
+    | '/prompts/minimax-h3/videos'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRoute
+  PromptGuideRoute: typeof PromptGuideRoute
   ApiLaunchWaitlistRoute: typeof ApiLaunchWaitlistRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiCreditsBalanceRoute: typeof ApiCreditsBalanceRoute
   ApiImagesGenerateRoute: typeof ApiImagesGenerateRoute
   ApiVideosGenerateRoute: typeof ApiVideosGenerateRoute
   ApiVideosStatusRoute: typeof ApiVideosStatusRoute
+  AppImageGptImage2Route: typeof AppImageGptImage2Route
+  AppVideoMinimaxH3Route: typeof AppVideoMinimaxH3Route
+  AppVideoSeedance25Route: typeof AppVideoSeedance25Route
+  PromptsGptImage2ImagesRoute: typeof PromptsGptImage2ImagesRoute
+  PromptsMinimaxH3VideosRoute: typeof PromptsMinimaxH3VideosRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -148,6 +226,13 @@ declare module '@tanstack/react-router' {
       path: '/app'
       fullPath: '/app'
       preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/prompt-guide': {
+      id: '/prompt-guide'
+      path: '/prompt-guide'
+      fullPath: '/prompt-guide'
+      preLoaderRoute: typeof PromptGuideRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/launch-waitlist': {
@@ -192,18 +277,59 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiVideosStatusRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app_/image/gpt-image-2': {
+      id: '/app_/image/gpt-image-2'
+      path: '/app/image/gpt-image-2'
+      fullPath: '/app/image/gpt-image-2'
+      preLoaderRoute: typeof AppImageGptImage2RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app_/video/minimax-h3': {
+      id: '/app_/video/minimax-h3'
+      path: '/app/video/minimax-h3'
+      fullPath: '/app/video/minimax-h3'
+      preLoaderRoute: typeof AppVideoMinimaxH3RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app_/video/seedance-2-5': {
+      id: '/app_/video/seedance-2-5'
+      path: '/app/video/seedance-2-5'
+      fullPath: '/app/video/seedance-2-5'
+      preLoaderRoute: typeof AppVideoSeedance25RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/prompts/gpt-image-2/images': {
+      id: '/prompts/gpt-image-2/images'
+      path: '/prompts/gpt-image-2/images'
+      fullPath: '/prompts/gpt-image-2/images'
+      preLoaderRoute: typeof PromptsGptImage2ImagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/prompts/minimax-h3/videos': {
+      id: '/prompts/minimax-h3/videos'
+      path: '/prompts/minimax-h3/videos'
+      fullPath: '/prompts/minimax-h3/videos'
+      preLoaderRoute: typeof PromptsMinimaxH3VideosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRoute,
+  PromptGuideRoute: PromptGuideRoute,
   ApiLaunchWaitlistRoute: ApiLaunchWaitlistRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiCreditsBalanceRoute: ApiCreditsBalanceRoute,
   ApiImagesGenerateRoute: ApiImagesGenerateRoute,
   ApiVideosGenerateRoute: ApiVideosGenerateRoute,
   ApiVideosStatusRoute: ApiVideosStatusRoute,
+  AppImageGptImage2Route: AppImageGptImage2Route,
+  AppVideoMinimaxH3Route: AppVideoMinimaxH3Route,
+  AppVideoSeedance25Route: AppVideoSeedance25Route,
+  PromptsGptImage2ImagesRoute: PromptsGptImage2ImagesRoute,
+  PromptsMinimaxH3VideosRoute: PromptsMinimaxH3VideosRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

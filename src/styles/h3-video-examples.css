@@ -1,0 +1,19 @@
+.h3-examples { padding: 14px; overflow: hidden; border-color: rgba(130, 223, 240, .24); background: linear-gradient(145deg, rgba(91, 194, 221, .07), #191b1f 38%); }
+.h3-examples-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 5px 6px 15px; }
+.h3-examples-heading span { color: #b7eefd; font-size: 11px; font-weight: 800; letter-spacing: .13em; }
+.h3-examples-heading small { color: #8b9397; font-size: 10px; letter-spacing: .07em; }
+.h3-example-player { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 15px; background: #090a0c; object-fit: contain; }
+.h3-example-details { padding: 17px 6px 14px; }
+.h3-example-title { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.h3-example-title span { color: #94a4a6; font-size: 10px; font-weight: 800; letter-spacing: .12em; }
+.h3-example-title h2 { margin: 4px 0 0; font-size: clamp(20px, 2vw, 25px); }
+.h3-example-title button { flex: 0 0 auto; padding: 10px 15px; border: 0; border-radius: 10px; background: #d5ff72; color: #13160d; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; }
+.h3-example-title button:hover { background: #ebffae; }
+.h3-example-title button:focus-visible, .h3-example-options button:focus-visible { outline: 2px solid #d5ff72; outline-offset: 3px; }
+.h3-example-prompt { margin: 13px 0 0; color: #b7bdc0 !important; font-size: 13px !important; line-height: 1.65 !important; }
+.h3-example-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; padding: 12px 2px 2px; border-top: 1px solid #33383a; }
+.h3-example-options button { min-width: 0; padding: 5px; border: 1px solid #363b3d; border-radius: 11px; background: #202326; color: #c7cdce; text-align: left; cursor: pointer; }
+.h3-example-options button.is-selected { border-color: #c8f579; color: #f7f9f4; }
+.h3-example-options video { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 7px; background: #111315; object-fit: cover; pointer-events: none; }
+.h3-example-options span { display: block; overflow: hidden; padding: 8px 4px 5px; font-size: 11px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+@media (max-width: 620px) { .h3-example-title { align-items: flex-start; } .h3-example-title button { padding: 9px 11px; } .h3-example-options { gap: 5px; } .h3-example-options span { font-size: 10px; } }

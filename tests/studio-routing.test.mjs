@@ -89,7 +89,7 @@ test("studio clicks push model URLs and browser history restores model state", (
 
   assert.match(html, /<script type="module" src="\.\/studio\.js"><\/script>/i);
   assert.match(script, /history\.pushState\([^;]+buildModelUrl\(window\.location\.href,\s*normalizedModelId\)/i);
-  assert.match(script, /modelButtons\.forEach\([\s\S]*selectModel\(button\.dataset\.model,\s*\{\s*syncUrl:\s*true\s*\}\)/i);
+  assert.match(script, /modelButtons\.forEach\([\s\S]*canonicalModelPath\(modelId\)[\s\S]*selectModel\(modelId,\s*\{\s*syncUrl:\s*true\s*\}\)/i);
   assert.match(
     script,
     /(?:window\.addEventListener\(\s*["']popstate["']|listen\(\s*window\s*,\s*["']popstate["'])[\s\S]*selectModel\(modelFromLocation\(\)\)/i
@@ -136,15 +136,17 @@ test("H3 is text-to-video only in TanStack while legacy preview keeps it disable
   assert.ok(poseEntry >= 0, "expected a Pose to Image navigation entry");
   assert.ok(imageModelsHeading > poseEntry, "expected Pose to Image before the image model list");
   assert.match(html, /<div class="section-heading"><span>AI IMAGE<\/span><\/div>/i);
-  assert.match(html, /<div class="section-heading image-models-heading"><span>IMAGE MODELS<\/span><span>02<\/span><\/div>/i);
+  assert.match(html, /<div class="section-heading image-models-heading"><span>IMAGE MODELS<\/span><span>01<\/span><\/div>/i);
   assert.match(html, /class="model-button pose-workflow-button"[^>]+data-model="pose-to-image"/i);
-  for (const modelId of ["seedance-3", "nano-banana-2-lite"]) {
+  for (const modelId of ["seedance-3"]) {
     const disabledModel = new RegExp(`data-model=["']${modelId}["'][^>]*disabled`, "i");
-    const comingSoon = new RegExp(`data-model=["']${modelId}["'][\\s\\S]*?Coming Soon[\\s\\S]*?<\\/button>`, "i");
     assert.match(html, disabledModel, `${modelId} should be disabled in the legacy preview`);
     assert.match(route, disabledModel, `${modelId} should be disabled in the TanStack route`);
-    assert.match(html, comingSoon, `${modelId} should display Coming Soon`);
-    assert.match(route, comingSoon, `${modelId} should display Coming Soon in the TanStack route`);
+  }
+  for (const markup of [html, route]) {
+    assert.match(modelButtonMarkup(markup, "seedance-3"), /Release Updates/i);
+    assert.doesNotMatch(modelButtonMarkup(markup, "seedance-3"), /Coming Soon/i);
+    assert.doesNotMatch(markup, /data-model="nano-banana-2-lite"/i);
   }
   assert.match(route, /data-model=["']pose-to-image["'](?![^>]*disabled)/i);
   assert.doesNotMatch(modelButtonMarkup(route, "pose-to-image"), /Coming Soon/i);
@@ -156,7 +158,7 @@ test("H3 is text-to-video only in TanStack while legacy preview keeps it disable
   assert.doesNotMatch(modelButtonMarkup(route, "minimax-h3"), /Coming Soon/i);
   assert.match(html, /data-model="gpt-image-2"[^>]*class="model-button is-active"|class="model-button is-active"[^>]*data-model="gpt-image-2"/i);
   assert.doesNotMatch(html, /data-model="gpt-image-2"[^>]*disabled/i);
-  assert.match(script, /"pose-to-image"\s*:\s*\{[\s\S]*?status:\s*"Ragdoll IK"[\s\S]*?type:\s*"pose"[\s\S]*?\}/i);
+  assert.match(script, /"pose-to-image"\s*:\s*\{[\s\S]*?type:\s*"pose"[\s\S]*?\}/i);
   assert.match(css, /\.pose-workflow-button\s*\{/i);
   assert.match(css, /\.model-button:disabled/i);
   assert.match(css, /\.settings-grid\[hidden\]\s*\{\s*display:\s*none/i);
@@ -219,27 +221,22 @@ test("H3 duration drives credit and generate labels without changing GPT Image b
   assert.match(script, /resolution:\s*imageQuality\.value/i);
 });
 
-test("GPT Image 2 appears before Nano Banana 2 Lite in both studio sidebars", () => {
+test("GPT Image 2 is the only image model in both studio sidebars", () => {
   const html = readFileSync(resolve(root, "app", "legacy-preview.html"), "utf8");
   const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
 
   for (const [shellName, markup] of [["legacy studio", html], ["TanStack studio", route]]) {
     const gptImage = markup.indexOf('data-model="gpt-image-2"');
-    const nanoBanana = markup.indexOf('data-model="nano-banana-2-lite"');
-    assert.ok(gptImage >= 0 && nanoBanana >= 0, `${shellName} should contain both image models`);
-    assert.ok(gptImage < nanoBanana, `${shellName} should place GPT Image 2 first`);
+    assert.ok(gptImage >= 0, `${shellName} should contain GPT Image 2`);
+    assert.doesNotMatch(markup, /data-model="nano-banana-2-lite"/i);
   }
 });
 
-test("available paid models highlight the $0.01 entry price in the studio sidebar", () => {
+test("only H3 and GPT Image 2 show their entry price in the studio sidebar", () => {
   const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
-  const css = readFileSync(resolve(root, "app", "studio.css"), "utf8");
-
-  assert.match(route, /data-model=["']minimax-h3["'][^>]*>[\s\S]*?<em className=["']price-badge["']>FROM <b>\$0\.01<\/b><\/em>[\s\S]*?<\/button>/i);
-  assert.match(route, /data-model=["']gpt-image-2["'][^>]*>[\s\S]*?<em className=["']price-badge["']>FROM <b>\$0\.01<\/b><\/em>[\s\S]*?<\/button>/i);
-  assert.equal((route.match(/className=["']price-badge["']/g) || []).length, 2);
-  assert.match(css, /\.model-button\.price-model/);
-  assert.match(css, /\.price-badge/);
+  for (const modelId of ["minimax-h3", "gpt-image-2"])
+    assert.match(modelButtonMarkup(route, modelId), /<em className="price-badge">FROM <b>\$0\.01<\/b><\/em>/i);
+  assert.doesNotMatch(route, /data-model="seedance-2-5"/i);
 });
 
 test("selected reference images use a prominent ready-state card", () => {
@@ -256,8 +253,9 @@ test("empty studios expose a three-image interactive example carousel", () => {
   const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
   const script = readFileSync(resolve(root, "app", "studio.js"), "utf8");
 
+  assert.match(html, /id=["']example-carousel["'](?![^>]*hidden)/i, "legacy studio should show the empty-state carousel");
+  assert.match(route, /id=["']example-carousel["'][^>]*hidden=\{initiallyVideo\}/i, "video landing should hide the image examples on first render");
   for (const [shellName, markup] of [["legacy studio", html], ["TanStack studio", route]]) {
-    assert.match(markup, /id=["']example-carousel["'](?![^>]*hidden)/i, `${shellName} should show the empty-state carousel`);
     const slides = markup.match(/class(?:Name)?=["'][^"']*\bexample-carousel-slide\b[^"']*["']/gi) || [];
     assert.equal(slides.length, 3, `${shellName} should provide three example slides`);
     for (const asset of ["editorial-fashion", "lunar-garden", "floating-city"]) {
@@ -269,6 +267,7 @@ test("empty studios expose a three-image interactive example carousel", () => {
   }
 
   assert.match(script, /\bcreateExampleCarouselController\b/);
+  assert.match(script, /exampleCarousel\.hidden\s*=\s*videoModel/i, "switching to video should hide image examples");
   assert.match(script, /exampleCarousel\.hidden\s*=\s*true/i, "generated results should replace the empty-state carousel");
   assert.match(script, /exampleCarousel\.hidden\s*=\s*false/i, "starting a new generation should restore the empty state until results arrive");
   assert.ok(
@@ -345,7 +344,7 @@ test("Pose Studio exposes only the focused ragdoll IK workspace in the TanStack 
   assert.match(route, /anyposes-crossed-arms\.png/i);
   assert.match(route, /anyposes-kneeling\.png/i);
   assert.match(route, /anyposes-jogging\.png/i);
-  assert.match(route, /Ragdoll IK/i);
+  assert.match(route, /aria-label="Interactive 3D characters/i);
   assert.doesNotMatch(route, /FK mode|OpenPose settings|joint hierarchy/i);
   assert.match(script, /import\(["']\.\/pose-studio\.mjs["']\)/i);
   assert.match(script, /initializePoseStudio/i);
@@ -356,7 +355,8 @@ test("Use this pose captures the clean mannequin and transfers it into GPT Image
   const studio = readFileSync(resolve(root, "app", "studio.js"), "utf8");
   const poseStudio = readFileSync(resolve(root, "app", "pose-studio.mjs"), "utf8");
 
-  assert.match(route, /data-pose-action=["']use["'](?![^>]*disabled)/i);
+  assert.match(route, /data-pose-action=["']use["']\s+disabled/i);
+  assert.match(poseStudio, /usePoseButton\.disabled = busy \|\| !actors\.length/i);
   assert.doesNotMatch(route, /Pose capture and AI generation arrive in the next build step/i);
   assert.match(poseStudio, /capturePoseReference/);
   assert.match(poseStudio, /onUsePose/);

@@ -48,8 +48,8 @@ test("TanStack Start owns the studio and API routes without replacing the homepa
   assert.equal(wranglerConfig.assets?.binding, "ASSETS");
   assert.deepEqual(
     wranglerConfig.assets?.run_worker_first,
-    ["/api/*", "/app", "/app/"],
-    "Vite and built client assets must bypass the Worker while app and API routes remain Worker-first",
+    ["/api/*", "/app", "/app/", "/app/video/*", "/app/image/*", "/minimax-h3-ai-video-generator.html", "/gpt-image-2.html", "/prompt-guide", "/prompts/*"],
+    "API, model pages, legacy redirects, and Coming Soon resources must reach the Worker",
   );
   assert.equal(wranglerConfig.routes.some(({ pattern }) => pattern === "seedance3-pro.com/app"), false);
   assert.equal(wranglerConfig.routes.some(({ pattern }) => pattern === "seedance3-pro.com/app*"), true);

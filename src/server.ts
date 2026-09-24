@@ -1,6 +1,7 @@
 import handler from '@tanstack/react-start/server-entry'
 import legacyWorker from '../worker.js'
 import { reconcileVideoGenerationTasks } from './lib/video-task-reconciler'
+import { legacyModelRedirect, modelIdFromPath } from '../app/seo-routes.mjs'
 
 interface WorkerContext {
   waitUntil(promise: Promise<unknown>): void
@@ -31,7 +32,15 @@ function isLegacyApiRequest(request: Request) {
 
 export default {
   async fetch(request, env, ctx) {
-    const { pathname } = new URL(request.url)
+    const url = new URL(request.url)
+    const { pathname } = url
+    if (request.method === 'GET' || request.method === 'HEAD') {
+      const destination = legacyModelRedirect(url)
+      if (destination) return Response.redirect(`https://seedance3-pro.com${destination}`, 308)
+      if (url.hostname === 'www.seedance3-pro.com' && modelIdFromPath(pathname)) {
+        return Response.redirect(`https://seedance3-pro.com${pathname}${url.search}`, 308)
+      }
+    }
     if (pathname.startsWith('/app-assets/')) {
       return env.ASSETS.fetch(request)
     }

@@ -66,45 +66,51 @@ test("homepage search metadata and hero lead surface price and pose editing", ()
 
 test("homepage presents a creator-facing experience instead of release-state messaging", () => {
   const html = read("index.html");
-  assert.doesNotMatch(html, /Release status|Studio preview|Coming Soon/i);
-  assert.match(html, /<a[^>]+href="\.\/app\/"[^>]*>\s*Generate Your First AI Video/i);
+  const hero = blockByClass(html, "section", "hero");
+  assert.doesNotMatch(hero, /Release status|Studio preview|Coming Soon/i);
+  assert.match(html, /<a[^>]+href="\.\/app\/video\/minimax-h3"[^>]*>\s*Generate Your First AI Video/i);
 });
 
 test("homepage hero video CTA opens MiniMax H3", () => {
   const html = read("index.html");
   const hero = blockByClass(html, "section", "hero");
 
-  assert.match(hero, /href="\.\/app\/\?model=minimax-h3"/i);
+  assert.match(hero, /href="\.\/app\/video\/minimax-h3"/i);
 });
 
-test("homepage omits the requested header, FAQ, and footer copy", () => {
+test("homepage keeps concise copy while linking the published tools and resources", () => {
   const html = read("index.html");
   const footer = blockByClass(html, "footer", "site-footer");
 
   assert.doesNotMatch(html, /Independent model guide/i);
-  assert.doesNotMatch(html, /<nav[^>]+mobile-nav/i);
-  assert.doesNotMatch(html, /<button[^>]+menu-button/i);
   assert.doesNotMatch(html, /Why does the studio show other AI models\?/i);
   assert.doesNotMatch(html, /Is this an official ByteDance website\?/i);
   assert.doesNotMatch(html, /Independent AI model coverage and creative workflow resources\./i);
-  assert.doesNotMatch(footer, /<h3>SEEDANCE<\/h3>|<h3>Models<\/h3>|<h3>Resources<\/h3>/i);
-  assert.doesNotMatch(footer, /Capabilities|Examples|Showcase|FAQ|MiniMax H3|Nano Banana 2 Lite|GPT Image 2|Model comparison|Guides|Pricing|Start for Free|Contact/i);
+  for (const href of ["./app/video/minimax-h3", "./app/image/gpt-image-2", "./pose-to-image", "./showcase.html", "./blog.html"]) {
+    assert.ok(linksIn(footer).some(link => link.href === href), `${href} should be linked from the footer`);
+  }
 });
 
-test("homepage links to Pose Control, Showcase, and Blog in its compact navigation", () => {
+test("homepage navigation reaches live tools and content on desktop and mobile", () => {
   const html = read("index.html");
   const css = read("site.css");
   const header = blockByClass(html, "header", "site-header");
   const navigation = blockByClass(header, "nav", "compact-nav");
 
   assert.deepEqual(linksIn(navigation), [
+    { href: "./", text: "Seedance 3.0 Release Updates" },
+    { href: "./app/video/minimax-h3", text: "H3 Video" },
+    { href: "./app/image/gpt-image-2", text: "GPT Image 2" },
     { href: "./pose-to-image", text: "Pose Control" },
-    { href: "#showcase", text: "Showcase" },
+    { href: "./showcase.html", text: "Showcase" },
     { href: "./blog.html", text: "Blog" },
   ]);
-  assert.match(header, /<a[^>]+href="\.\/app\/"[^>]*>Start for Free<\/a>/i);
-  assert.match(header, /<div class="header-actions primary-action">/i);
-  assert.match(css, /\.header-actions\.primary-action\s*\{\s*display:\s*none;\s*\}/i);
+  assert.match(header, /class="menu-button"[^>]*aria-controls="mobile-navigation"/i);
+  const mobileNavigation = blockByClass(header, "nav", "mobile-nav");
+  assert.deepEqual(linksIn(mobileNavigation), linksIn(navigation));
+  assert.match(header, /<a[^>]+href="\.\/app\/video\/minimax-h3"[^>]*>Start for Free<\/a>/i);
+  assert.match(header, /<div class="header-actions">/i);
+  assert.match(css, /\.desktop-nav\.compact-nav\s*\{\s*display:\s*none;\s*\}/i);
   assert.match(css, /\.site-header \.brand\s*\{\s*white-space:\s*nowrap;\s*\}/i);
 });
 
@@ -142,7 +148,10 @@ test("blog uses the homepage design system without the highlighted intro copy", 
 
   assert.match(html, /<link rel="stylesheet" href="\.\/site\.css">/i);
   assert.doesNotMatch(html, /cdn\.tailwindcss\.com|bg-slate-|text-indigo-/i);
-  assert.deepEqual(linksIn(navigation), [{ href: "./blog.html", text: "Blog" }]);
+  assert.deepEqual(linksIn(navigation), [
+    { href: "./", text: "Seedance 3.0 Release Updates" },
+    { href: "./blog.html", text: "Blog" },
+  ]);
   assert.doesNotMatch(html, /href="\.\/showcase\.html"/i);
   assert.doesNotMatch(header, /Start Creating/i);
   assert.doesNotMatch(html, /Tutorial Center|Seedance Tutorials and Long-Tail Guides|This blog section helps Seedance 3\.0 build topical authority/i);
@@ -275,7 +284,7 @@ test("homepage video showcase uses the supplied clips in order", () => {
     assert.doesNotMatch(content, /<a\b/i);
     assert.match(cardContent, /Model: MiniMax H3/i);
     assert.match(cardContent, /As low as \$0\.01\/sec/i);
-    assert.match(cardContent, /<a[^>]+class="[^"]*\bshowcase-try\b[^>]+href="\.\/app\/\?model=minimax-h3"[^>]*>\s*Try it\s*<\/a>/i);
+    assert.match(cardContent, /<a[^>]+class="[^"]*\bshowcase-try\b[^>]+href="\.\/app\/video\/minimax-h3"[^>]*>\s*Try it\s*<\/a>/i);
     assert.match(cardContent, /<div class="showcase-title-row">\s*<strong>Model: MiniMax H3<\/strong>\s*<a[^>]+class="showcase-try"[^>]*>\s*Try it\s*<\/a>\s*<\/div>\s*<span>As low as \$0\.01\/sec<\/span>/i);
   }
 
@@ -461,22 +470,10 @@ test("homepage uses distinct high-quality raster artwork", () => {
 
 const publicPages = [
   {
-    file: "minimax-h3-ai-video-generator.html",
-    title: /MiniMax H3 AI Video Generator/i,
-    h1: /MiniMax H3 AI Video Generator/i,
-    canonical: "https://seedance3-pro.com/minimax-h3-ai-video-generator.html",
-  },
-  {
     file: "nano-banana-2-lite.html",
     title: /Nano Banana 2 Lite/i,
     h1: /Nano Banana 2 Lite/i,
     canonical: "https://seedance3-pro.com/nano-banana-2-lite.html",
-  },
-  {
-    file: "gpt-image-2.html",
-    title: /GPT Image 2/i,
-    h1: /GPT Image 2/i,
-    canonical: "https://seedance3-pro.com/gpt-image-2.html",
   },
   {
     file: "minimax-h3-vs-seedance-3.html",
@@ -526,7 +523,7 @@ test("studio preview exposes the planned models without entering the index", () 
   assert.match(html, /MiniMax H3/i);
   assert.match(html, /Seedance 3\.0/i);
   assert.match(html, /Coming Soon/i);
-  assert.match(html, /Nano Banana 2 Lite/i);
+  assert.doesNotMatch(html, /Nano Banana 2 Lite/i);
   assert.match(html, /GPT Image 2/i);
   assert.match(html, /Generate image · 5 credits/i);
 });
@@ -552,10 +549,10 @@ test("studio omits the requested preview, guide, and status copy", () => {
   assert.match(html, /<div class="sidebar-foot"><a href="\.\.\/">← Back to SEEDANCE 3\.0<\/a><\/div>/i);
 });
 
-test("sitemap includes public model pages and excludes the studio preview", () => {
+test("sitemap includes remaining static pages and excludes the generic studio", () => {
   const sitemap = read("sitemap.xml");
   for (const page of publicPages) {
     assert.match(sitemap, new RegExp(page.file.replaceAll(".", "\\.")));
   }
-  assert.doesNotMatch(sitemap, /\/app(?:\/|<)/i);
+  assert.doesNotMatch(sitemap, /<loc>https:\/\/seedance3-pro\.com\/app\/<\/loc>/i);
 });

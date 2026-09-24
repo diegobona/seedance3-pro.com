@@ -2,8 +2,11 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useCallback, useEffect, useState } from 'react'
 import { AuthDialog } from '../components/auth-dialog'
 import { UserMenu } from '../components/user-menu'
+import { ModelLandingContent } from '../components/model-landing-content'
+import { H3VideoExamples } from '../components/h3-video-examples'
 import '../../app/studio.css'
 import '../styles/auth.css'
+import '../styles/model-landing.css'
 import crossedArmsPresetImage from '../../app/pose-assets/presets/anyposes-crossed-arms.png'
 import kneelingPresetImage from '../../app/pose-assets/presets/anyposes-kneeling.png'
 import joggingPresetImage from '../../app/pose-assets/presets/anyposes-jogging.png'
@@ -14,7 +17,8 @@ import dogPreview from '../../app/pose-assets/animals/dog-preview.png'
 import horsePreview from '../../app/pose-assets/animals/horse-preview.png'
 
 export const Route = createFileRoute('/app')({
-  validateSearch: (search: Record<string, unknown>) => ({ model: typeof search.model === 'string' ? search.model : '' }),
+  validateSearch: (search: Record<string, unknown>) =>
+    typeof search.model === 'string' && search.model ? { model: search.model } : {},
   head: () => ({
     meta: [
       { title: 'AI Creative Studio | SEEDANCE 3.0' },
@@ -23,12 +27,19 @@ export const Route = createFileRoute('/app')({
     ],
     links: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
   }),
-  component: StudioPage,
+  component: AppPage,
 })
 
-function StudioPage() {
-  const { model: initialModel } = Route.useSearch()
+function AppPage() {
+  const { model } = Route.useSearch()
+  return <StudioPage initialModel={model} />
+}
+
+export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false }: { initialModel?: string; modelLanding?: boolean }) {
   const initiallyPose = initialModel === 'pose-to-image'
+  const initiallyH3 = initialModel === 'minimax-h3'
+  const initiallySeedance25 = initialModel === 'seedance-2-5'
+  const initiallyVideo = initiallyH3 || initiallySeedance25
   const [authOpen, setAuthOpen] = useState(false)
   const closeAuth = useCallback(() => setAuthOpen(false), [])
   const refreshCreditsAfterAuth = useCallback(() => {
@@ -60,8 +71,8 @@ function StudioPage() {
           <nav aria-label="Model navigation">
             <div className="nav-section">
               <div className="section-heading"><span>AI VIDEO</span><span>02</span></div>
-              <button className="model-button price-model" type="button" data-model="minimax-h3"><span className="model-symbol cyan">H3</span><span><strong>MiniMax H3</strong><small>Text-to-video</small></span><em className="price-badge">FROM <b>$0.01</b></em></button>
-              <button className="model-button" type="button" data-model="seedance-3" disabled><img src="/assets/seedance-mark.svg" width="40" height="40" alt="" style={{ flexShrink: 0 }} /><span><strong>SEEDANCE 3.0</strong><small>Next-gen video</small></span><em className="soon">Coming Soon</em></button>
+              <button className={`model-button price-model${initiallyH3 ? ' is-active' : ''}`} type="button" data-model="minimax-h3"><span className="model-symbol cyan">H3</span><span><strong>MiniMax H3</strong><small>Text-to-video</small></span><em className="price-badge">FROM <b>$0.01</b></em></button>
+              <button className="model-button release-model" type="button" data-model="seedance-3" disabled><img src="/assets/seedance-mark.svg" width="40" height="40" alt="" style={{ flexShrink: 0 }} /><span className="release-model-copy"><span className="release-title-row"><strong>SEEDANCE 3.0</strong><em className="release-status">Release Updates</em></span><small>Next-gen video</small></span></button>
             </div>
             <div className="nav-section">
               <div className="section-heading"><span>AI IMAGE</span></div>
@@ -73,27 +84,27 @@ function StudioPage() {
                 <em className="signature">SIGNATURE</em>
                 <span className="workflow-cta">Open Pose Studio <b>↗</b></span>
               </button>
-              <div className="section-heading image-models-heading"><span>IMAGE MODELS</span><span>02</span></div>
-              <button className={`model-button price-model${initiallyPose ? '' : ' is-active'}`} type="button" data-model="gpt-image-2"><span className="model-symbol orange">G2</span><span><strong>GPT Image 2</strong><small>Generation &amp; editing</small></span><em className="price-badge">FROM <b>$0.01</b></em></button>
-              <button className="model-button" type="button" data-model="nano-banana-2-lite" disabled><span className="model-symbol violet">NB</span><span><strong>Nano Banana 2 Lite</strong><small>Fast image drafts</small></span><em className="soon">Coming Soon</em></button>
+              <div className="section-heading image-models-heading"><span>IMAGE MODELS</span><span>01</span></div>
+              <button className={`model-button price-model${initiallyPose || initiallyVideo ? '' : ' is-active'}`} type="button" data-model="gpt-image-2"><span className="model-symbol orange">G2</span><span><strong>GPT Image 2</strong><small>Generation &amp; editing</small></span><em className="price-badge">FROM <b>$0.01</b></em></button>
             </div>
           </nav>
           <div className="sidebar-foot"><a href="/">← Back to SEEDANCE 3.0</a></div>
         </aside>
 
-        <main className="workspace">
+        <main className="workspace" id="workspace">
           <header className="workspace-header">
             <div><button className="sidebar-open" type="button" aria-label="Open model navigation">☰</button><a href="/">Home</a></div>
             <div className="workspace-header-account"><UserMenu onLogin={() => setAuthOpen(true)} /></div>
           </header>
 
           <div className="workspace-body">
-            <div className="workspace-title"><div><p id="model-category">{initiallyPose ? 'AI IMAGE / POSE CONTROL' : 'AI IMAGE / GENERATE & EDIT'}</p><h1 id="model-name">{initiallyPose ? 'Pose Studio' : 'GPT Image 2'}</h1></div><span className="model-status" id="model-status" hidden={initiallyPose}>{initiallyPose ? '' : 'Image generator'}</span></div>
+            <div className="workspace-title"><div><p id="model-category">{initiallyPose ? 'AI IMAGE / POSE CONTROL' : initiallyVideo ? 'AI VIDEO / TEXT TO VIDEO' : 'AI IMAGE / GENERATE & EDIT'}</p><h1 id="model-name" data-landing-model={modelLanding ? initialModel : undefined}>{initiallyPose ? 'Pose Studio' : initiallySeedance25 ? 'Seedance 2.5 Video Generator' : initiallyH3 ? 'MiniMax H3 AI Video Generator' : modelLanding ? 'GPT Image 2 Generator & Editor' : 'GPT Image 2'}</h1></div><span className="model-status" id="model-status" hidden={initiallyPose}>{initiallyPose ? '' : initiallyVideo ? 'Video generator' : 'Image generator'}</span></div>
+            {modelLanding && <p className="model-landing-intro">{initiallySeedance25 ? 'Create a video from a text prompt in the Seedance 2.5 workspace. Choose a 5, 10 or 15 second trial clip in 480p, then follow the result here.' : initiallyH3 ? 'Create a video from a text prompt with MiniMax H3. Choose a 5, 10 or 15 second trial clip in 480p, then follow the result in your workspace.' : 'Generate or edit an image with GPT Image 2. Start from text or upload one reference image, choose your format and create a 1K trial image.'}</p>}
             <div className="creation-grid" id="creation-grid" hidden={initiallyPose}>
               <section className="creation-panel">
-                <div className="model-select"><span className="model-symbol orange" id="selected-symbol">G2</span><div><small>Selected model</small><strong id="selected-name">GPT Image 2</strong></div></div>
+                <div className="model-select"><span className={`model-symbol ${initiallySeedance25 ? 'lime' : initiallyH3 ? 'cyan' : 'orange'}`} id="selected-symbol">{initiallySeedance25 ? 'S2' : initiallyH3 ? 'H3' : 'G2'}</span><div><small>Selected model</small><strong id="selected-name">{initiallySeedance25 ? 'SEEDANCE 2.5' : initiallyH3 ? 'MiniMax H3' : 'GPT Image 2'}</strong></div></div>
                 <div className="field-group" id="mode-group" hidden><label>Create from</label><div className="segmented"><button className="is-selected" type="button">Media</button><button type="button">Image</button><button type="button">Text</button></div></div>
-                <div className="field-group" id="upload-group">
+                <div className="field-group" id="upload-group" hidden={initiallyVideo}>
                   <div className="label-line"><label id="reference-label">Reference image</label><span id="reference-meta">Optional · enables image-to-image</span></div>
                   <input id="reference-input" type="file" accept="image/png,image/jpeg,image/webp" hidden />
                   <button className="upload-box is-enabled" id="upload-box" type="button"><span>＋</span><strong id="upload-title">Choose a reference image</strong><small id="upload-hint">PNG, JPEG or WebP · max 10 MB</small></button>
@@ -101,15 +112,15 @@ function StudioPage() {
                 </div>
                 <div className="field-group">
                   <div className="label-line"><label htmlFor="studio-prompt">Prompt</label><span><b id="prompt-count">0</b>/2500</span></div>
-                  <textarea id="studio-prompt" maxLength={2500} placeholder="Describe the subject, action, environment, composition, lighting, style, and details to preserve…" />
-                  <div className="prompt-tools"><button id="prompt-structure-button" type="button">✦ Prompt structure</button><button id="example-prompt-button" type="button">View examples</button></div>
+                  <textarea id="studio-prompt" maxLength={2500} placeholder={initiallyVideo ? 'Describe the subject, action, setting, camera movement, lighting, and final shot…' : 'Describe the subject, action, environment, composition, lighting, style, and details to preserve…'} />
+                  <div className="prompt-tools" hidden={initiallyVideo}><button id="prompt-structure-button" type="button">✦ Prompt structure</button><button id="example-prompt-button" type="button">View examples</button></div>
                 </div>
-                <div className="settings-grid" id="video-settings" hidden>
+                <div className="settings-grid" id="video-settings" hidden={!initiallyVideo}>
                   <label>Duration<select id="video-duration" defaultValue="5"><option value="5">5 seconds</option><option value="10">10 seconds</option><option value="15">15 seconds</option></select></label>
                   <label className="resolution-setting"><span className="resolution-heading"><span>Resolution</span><small>TRIAL · 480P ONLY</small></span><select id="video-resolution" value="480p" disabled><option value="480p">480p</option></select></label>
                   <label>Aspect ratio<select id="video-aspect-ratio" defaultValue="16:9"><option value="9:16">9:16 portrait</option><option value="16:9">16:9 landscape</option><option value="1:1">1:1 square</option></select></label>
                 </div>
-                <div className="settings-grid image-settings" id="image-settings">
+                <div className="settings-grid image-settings" id="image-settings" hidden={initiallyVideo}>
                   <label>Quantity<select id="image-quantity"><option value="1">1 image</option><option value="2">2 images</option><option value="3">3 images</option></select></label>
                   <label className="resolution-setting">
                     <span className="resolution-heading"><span>Resolution</span><small>TRIAL · 1K ONLY</small></span>
@@ -133,11 +144,13 @@ function StudioPage() {
                   <small>We'll email your account address once paid plans open. No spam.</small>
                   <div className="launch-waitlist-status" id="launch-waitlist-status" role="status" aria-live="polite" />
                 </section>
-                <button className="generate-button" id="generate-button" type="button" disabled><span id="generate-button-label">Generate image · 5 credits</span></button>
+                <button className="generate-button" id="generate-button" type="button" disabled><span id="generate-button-label">{initiallyVideo ? 'Generate video · 5 credits' : 'Generate image · 5 credits'}</span></button>
                 <div className="generation-status" id="generation-status" role="status" aria-live="polite" />
               </section>
 
               <aside className="context-panel">
+                {initiallyH3 && modelLanding && <H3VideoExamples />}
+                {initiallySeedance25 && modelLanding && <section className="context-card model-video-guide" aria-label="Video trial details"><p className="model-landing-eyebrow">Seedance 2.5 trial</p><h2>Direct your first shot</h2><p>Start with the subject and action, then add camera movement, setting and lighting. The current form accepts a text prompt and creates 480p clips.</p><ul><li>5, 10 or 15 seconds</li><li>Landscape, portrait or square</li><li>Credit cost shown before generation</li></ul><a href="#model-details">How this tool works ↓</a></section>}
                 <div className="context-card result-card" id="result-card" hidden>
                   <div className="result-heading"><span id="result-heading-label">GENERATED IMAGES</span><small id="result-model-label">GPT Image 2</small></div>
                   <div className="result-gallery" id="result-gallery" />
@@ -150,7 +163,7 @@ function StudioPage() {
                   </div>
                   <p id="result-note">Provider image links may expire. Open or download each result when it is ready.</p>
                 </div>
-                <section className="context-card example-carousel" id="example-carousel" aria-labelledby="example-carousel-heading">
+                <section className="context-card example-carousel" id="example-carousel" aria-labelledby="example-carousel-heading" hidden={initiallyVideo}>
                   <div className="result-heading"><span id="example-carousel-heading">IMAGE PREVIEW</span><small>3 DISTINCT STYLES</small></div>
                   <div className="example-carousel-viewport">
                     <figure className="example-carousel-slide" data-title="Editorial architecture" data-description="Photoreal fashion direction with strong geometry and cinematic light."><img src="/assets/gpt-image-2-editorial-fashion.webp" alt="Editorial fashion portrait inside a futuristic gallery" /></figure>
@@ -247,7 +260,8 @@ function StudioPage() {
           </div>
         </main>
       </div>
-      <AuthDialog open={authOpen} onClose={closeAuth} onAuthenticated={refreshCreditsAfterAuth} />
+        {modelLanding && <ModelLandingContent modelId={initialModel} />}
+        <AuthDialog open={authOpen} onClose={closeAuth} onAuthenticated={refreshCreditsAfterAuth} />
     </>
   )
 }

@@ -1,4 +1,5 @@
 import { buildModelUrl, normalizeModelId } from "./model-routing.mjs";
+import { canonicalModelPath, modelIdFromPath } from "./seo-routes.mjs";
 import { requestImageGeneration } from "./image-generation.mjs";
 import { pollVideoGenerationTask, requestVideoGeneration } from "./video-generation.mjs";
 import { createLaunchWaitlistController } from "./launch-waitlist.mjs";
@@ -16,6 +17,17 @@ import {
 } from "./studio-controls.mjs";
 
 const studioModels = {
+  "seedance-2-5": {
+    category: "AI VIDEO / TEXT-TO-VIDEO",
+    name: "SEEDANCE 2.5",
+    status: "Text-to-video",
+    symbol: "S2",
+    tone: "lime",
+    exampleTitle: "Cinematic story scene",
+    examplePrompt: "A clear subject, one action, camera movement, lighting, and a clean final shot.",
+    type: "video",
+    canGenerate: true
+  },
   "minimax-h3": {
     category: "AI VIDEO / TEXT-TO-VIDEO",
     name: "MiniMax H3",
@@ -30,7 +42,7 @@ const studioModels = {
   "seedance-3": {
     category: "AI VIDEO / RELEASE TRACKER",
     name: "SEEDANCE 3.0",
-    status: "Coming Soon",
+    status: "Release Updates",
     symbol: "S3",
     tone: "lime",
     exampleTitle: "Reference-led story scene",
@@ -86,6 +98,8 @@ export function initializeStudio() {
   const modelButtons = document.querySelectorAll(".model-button[data-model]");
   const enabledModelButtons = Array.from(modelButtons).filter((button) => !button.disabled);
   const availableModelIds = new Set(enabledModelButtons.map((button) => button.dataset.model));
+  const routeModelId = modelIdFromPath(window.location.pathname);
+  if (routeModelId && studioModels[routeModelId]?.canGenerate) availableModelIds.add(routeModelId);
   const modelName = document.getElementById("model-name");
   const modelCategory = document.getElementById("model-category");
   const modelStatus = document.getElementById("model-status");
@@ -240,15 +254,15 @@ export function initializeStudio() {
     return `Generate video · ${creditCostForDuration(videoDuration?.value)} credits`;
   }
 
-  function isH3Selected() {
-    return activeModelId === "minimax-h3";
+  function isVideoGenerationSelected() {
+    return activeModelId === "seedance-2-5" || activeModelId === "minimax-h3";
   }
 
   function updateGenerateButtonLabel() {
     const model = studioModels[activeModelId];
     if (!model?.canGenerate) {
       generateButtonLabel.textContent = "Generation coming soon";
-    } else if (isH3Selected()) {
+    } else if (isVideoGenerationSelected()) {
       generateButtonLabel.textContent = activeVideoTaskId || videoPolling
         ? "Video generation in progress…"
         : videoGenerationLabel();
@@ -258,12 +272,12 @@ export function initializeStudio() {
   }
 
   function modelFromLocation() {
-    return new URLSearchParams(window.location.search).get("model");
+    return modelIdFromPath(window.location.pathname) || new URLSearchParams(window.location.search).get("model");
   }
 
   function updateGenerateButton() {
     const canGenerate = Boolean(studioModels[activeModelId]?.canGenerate);
-    const generationBlocked = isH3Selected()
+    const generationBlocked = isVideoGenerationSelected()
       ? videoPolling || Boolean(activeVideoTaskId)
       : imageGenerationInFlight;
     generateButton.disabled = !canGenerate || !prompt.value.trim() || generationBlocked || creditInsufficient;
@@ -280,7 +294,7 @@ export function initializeStudio() {
     activeModelId = normalizedModelId;
     updatePoseSidebar();
     modelButtons.forEach((button) => button.classList.toggle("is-active", button.dataset.model === normalizedModelId));
-    modelName.textContent = model.name;
+    if (modelName.dataset.landingModel !== normalizedModelId) modelName.textContent = model.name;
     modelCategory.textContent = model.category;
     modelStatus.textContent = model.status;
     modelStatus.hidden = model.type === "pose";
@@ -291,6 +305,7 @@ export function initializeStudio() {
     examplePrompt.textContent = model.examplePrompt;
     const videoModel = model.type === "video";
     const poseModel = model.type === "pose";
+    exampleCarousel.hidden = videoModel;
     creationGrid.hidden = poseModel;
     if (poseStudio) poseStudio.hidden = !poseModel;
     if (poseModel) void ensurePoseStudio();
@@ -305,7 +320,7 @@ export function initializeStudio() {
     videoSettings.hidden = model.type !== "video";
     imageSettings.hidden = model.type !== "image";
     updateGenerateButtonLabel();
-    if (!isH3Selected() || !activeVideoTaskId) {
+    if (!isVideoGenerationSelected() || !activeVideoTaskId) {
       generationStatus.textContent = "";
       generationStatus.className = "generation-status";
     }
@@ -314,7 +329,7 @@ export function initializeStudio() {
     if (syncUrl && modelFromLocation() !== normalizedModelId) {
       history.pushState({ model: normalizedModelId }, "", buildModelUrl(window.location.href, normalizedModelId));
     }
-    if (isH3Selected() && activeVideoTaskId) void resumeStoredVideoTask();
+    if (isVideoGenerationSelected() && activeVideoTaskId) void resumeStoredVideoTask();
   }
 
   function setPromptValue(value) {
@@ -373,7 +388,7 @@ export function initializeStudio() {
     video.controls = true;
     video.playsInline = true;
     video.preload = "metadata";
-    video.setAttribute("aria-label", "Generated MiniMax H3 video");
+    video.setAttribute("aria-label", "Generated video");
     frame.append(video);
     const link = document.createElement("a");
     link.href = videoUrl;
@@ -384,7 +399,7 @@ export function initializeStudio() {
     item.append(frame, link);
     resultGallery.replaceChildren(item);
     resultHeadingLabel.textContent = "GENERATED VIDEO";
-    resultModelLabel.textContent = "MiniMax H3";
+    resultModelLabel.textContent = activeModelId === "seedance-2-5" ? "Video result" : "MiniMax H3";
     resultNote.textContent = "Video links may expire. Open or download your result when it is ready.";
   }
 
@@ -394,7 +409,7 @@ export function initializeStudio() {
     generationStatus.textContent = status === "queued" || status === "submitting"
       ? "Video queued. Waiting for generation to start…"
       : status === "running"
-        ? "MiniMax H3 is generating your video…"
+        ? "Generating your video…"
         : "Video service is busy. Retrying safely…";
     generationStatus.className = "generation-status is-working";
   }
@@ -404,7 +419,7 @@ export function initializeStudio() {
   }
 
   async function runVideoTask({ resumeTaskId = "" } = {}) {
-    if (videoPolling || destroyed || !availableModelIds.has("minimax-h3")) return;
+    if (videoPolling || destroyed || !(availableModelIds.has("minimax-h3") || availableModelIds.has("seedance-2-5"))) return;
     videoPolling = true;
     videoAbortController = new AbortController();
     updateGenerateButtonLabel();
@@ -415,7 +430,7 @@ export function initializeStudio() {
     generationStatus.className = "generation-status is-working";
     if (!resumeTaskId) {
       resultCard.hidden = true;
-      exampleCarousel.hidden = false;
+      exampleCarousel.hidden = true;
     }
 
     try {
@@ -541,7 +556,7 @@ export function initializeStudio() {
     currentBalanceElement: currentCreditBalance,
     quantityControl: imageQuantity,
     additionalCostControls: [videoDuration],
-    getCost: () => isH3Selected()
+    getCost: () => isVideoGenerationSelected()
       ? creditCostForDuration(videoDuration.value)
       : creditCostForQuantity(imageQuantity.value),
     onChange: (summary) => {
@@ -560,9 +575,17 @@ export function initializeStudio() {
     descriptionElement: examplePrompt
   });
   void creditSummaryController.loadBalance();
-  if (availableModelIds.has("minimax-h3") && activeVideoTaskId) void resumeStoredVideoTask();
+  if ((availableModelIds.has("minimax-h3") || availableModelIds.has("seedance-2-5")) && activeVideoTaskId) void resumeStoredVideoTask();
 
-  modelButtons.forEach((button) => listen(button, "click", () => selectModel(button.dataset.model, { syncUrl: true })));
+  modelButtons.forEach((button) => listen(button, "click", () => {
+    const modelId = button.dataset.model;
+    if (modelIdFromPath(window.location.pathname)) {
+      if (modelId === modelFromLocation()) return;
+      window.location.assign(canonicalModelPath(modelId) || buildModelUrl(`${window.location.origin}/app/`, modelId));
+      return;
+    }
+    selectModel(modelId, { syncUrl: true });
+  }));
   listen(window, "popstate", () => selectModel(modelFromLocation()));
   listen(prompt, "input", () => {
     promptCount.textContent = String(prompt.value.length);
@@ -648,7 +671,7 @@ export function initializeStudio() {
 
   listen(generateButton, "click", async () => {
     if (generateButton.disabled) return;
-    if (isH3Selected()) {
+    if (isVideoGenerationSelected()) {
       await runVideoTask();
       return;
     }
