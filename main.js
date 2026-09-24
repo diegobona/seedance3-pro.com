@@ -71,6 +71,7 @@ const sceneDialog = document.getElementById("showcase-info");
 if (sceneDialog) {
   const title = sceneDialog.querySelector("#showcase-info-title");
   const credit = sceneDialog.querySelector(".showcase-info-credit");
+  const promptLabel = sceneDialog.querySelector(".showcase-info-prompt span");
   const promptText = sceneDialog.querySelector(".showcase-info-prompt p");
   const originalLink = sceneDialog.querySelector(".showcase-info-actions a");
   const closeButton = sceneDialog.querySelector(".showcase-info-close");
@@ -81,14 +82,15 @@ if (sceneDialog) {
     const cardTitle = card.querySelector("h3")?.textContent?.trim();
     const cardCredit = card.querySelector(".community-video-credit");
     const cardOriginal = card.querySelector(".community-video-links a");
-    if (!cardTitle || !cardCredit || !cardOriginal) return;
+    const isOriginal = card.classList.contains("community-video-card--original");
+    if (!cardTitle || (!isOriginal && (!cardCredit || !cardOriginal))) return;
 
-    cardCredit.textContent = cardCredit.textContent.replace(/ · Seedance 2\.0$/, "");
-    card.dataset.originalUrl = cardOriginal.href;
+    if (cardCredit) cardCredit.textContent = cardCredit.textContent.replace(/ · Seedance 2\.0$/, "");
+    if (cardOriginal) card.dataset.originalUrl = cardOriginal.href;
     card.querySelector(".community-video-category")?.remove();
     card.querySelector(".community-video-links")?.remove();
     const playButton = card.querySelector(".community-video-play");
-    playButton?.setAttribute("aria-label", playButton.getAttribute("aria-label").replace(/ on X$/, ""));
+    if (playButton) playButton.setAttribute("aria-label", playButton.getAttribute("aria-label").replace(/ on X$/, ""));
 
     const infoButton = document.createElement("button");
     infoButton.type = "button";
@@ -99,9 +101,12 @@ if (sceneDialog) {
       stopCommunityPlayer();
       lastTrigger = infoButton;
       title.textContent = cardTitle;
-      credit.textContent = cardCredit.textContent;
+      credit.textContent = cardCredit?.textContent ?? "";
+      credit.hidden = isOriginal;
+      promptLabel.textContent = isOriginal ? "Prompt used for this video" : "Inspired prompt · our interpretation";
       promptText.textContent = card.querySelector(".community-video-prompt")?.textContent?.trim() ?? "";
-      originalLink.href = card.dataset.originalUrl;
+      originalLink.hidden = isOriginal;
+      if (!isOriginal) originalLink.href = card.dataset.originalUrl;
       copyButton.textContent = "Copy prompt";
       sceneDialog.showModal();
       document.body.classList.add("modal-open");
@@ -198,6 +203,28 @@ document.querySelectorAll("[data-x-post-url]").forEach((button) => {
     activeCommunityPlayer = { button, card, player, media: video };
     video.play().catch(() => {
       // Native controls let the visitor start playback if autoplay is blocked.
+    });
+  });
+});
+
+document.querySelectorAll("[data-local-video-src]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const player = button.closest(".community-video-player");
+    const card = player?.closest(".community-video-card");
+    if (!player || !card) return;
+    stopCommunityPlayer();
+    const video = document.createElement("video");
+    video.controls = true;
+    video.playsInline = true;
+    video.preload = "metadata";
+    video.poster = button.querySelector("img")?.src ?? "";
+    video.src = button.dataset.localVideoSrc;
+    video.setAttribute("aria-label", button.getAttribute("aria-label") ?? "Showcase video");
+    player.replaceChildren(video);
+    card.classList.add("is-playing");
+    activeCommunityPlayer = { button, card, player, media: video };
+    video.play().catch(() => {
+      // Native controls remain available if autoplay is blocked.
     });
   });
 });

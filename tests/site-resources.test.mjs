@@ -7,15 +7,16 @@ import { validateSharedScene } from '../app/pose-share.mjs'
 const root = resolve(import.meta.dirname, '..')
 const read = (path) => readFileSync(resolve(root, path), 'utf8')
 
-test('showcase features editable Pose scenes before the video gallery', () => {
+test('showcase features editable Pose scenes before the Video Prompt Library', () => {
   const showcase = read('showcase.html')
-  assert.match(showcase, /<title>AI Showcase: Editable Pose Scenes & Videos/)
+  assert.match(showcase, /<title>Editable Pose Scenes & Video Prompt Library/)
   assert.ok(showcase.indexOf('id="pose"') < showcase.indexOf('id="community-videos"'))
   assert.match(showcase, /id="community-videos"/)
   assert.match(showcase, /id="showcase-info"/)
   assert.doesNotMatch(showcase, /id="videos"|id="images"|MiniMax H3 video samples|GPT Image 2 image examples/)
   assert.doesNotMatch(showcase, /class="showcase-preview-button"|id="showcase-player"/)
   assert.doesNotMatch(showcase, /pose-reference-demo\.mp4/)
+  assert.doesNotMatch(showcase, /Get Inspired|Video gallery|30 videos/)
   const poseStudio = read('app/pose-studio.mjs')
   for (const scene of ['two-friends', 'cafe-conversation', 'dog-training']) {
     assert.match(showcase, new RegExp(`href="\\./app/\\?model=pose-to-image#scene=${scene}"`))
@@ -50,7 +51,8 @@ test('video masonry keeps 10 short clips, 20 films, playable tiles and model-neu
   assert.equal(new Set(xIds).size, 10)
   assert.ok(section.indexOf('community-video-grid--short') < section.indexOf('community-video-grid--long'))
   assert.equal((section.match(/community-video-card--portrait/g) ?? []).length, 2)
-  assert.doesNotMatch(section.match(/<div class="showcase-section-head">[\s\S]*?<\/div><span class="showcase-count">/)?.[0] ?? '', /YouTube|Seedance 2\.0|MiniMax H3/)
+  assert.match(section, /<h2 id="community-video-heading">Video Prompt Library<\/h2>/)
+  assert.doesNotMatch(section.slice(0, section.indexOf('community-video-grid')), /YouTube|Seedance 2\.0|MiniMax H3|showcase-count/)
   assert.doesNotMatch(section, /More creator films/)
   const playerCode = read('main.js')
   for (const id of xIds) {
@@ -79,7 +81,7 @@ test('video masonry keeps 10 short clips, 20 films, playable tiles and model-neu
   })
 
   assert.equal(new Set(ids).size, 20)
-  assert.match(section, /not the creators' original inputs/)
+  assert.match(showcase, /Inspired prompt · our interpretation/)
   assert.match(playerCode, /navigator\.clipboard\.writeText\(promptText\.textContent\)/)
   assert.match(read('main.js'), /youtube-nocookie\.com\/embed\/\$\{videoId\}/)
   assert.match(read('showcase.css'), /\.community-video-grid\{column-count:4/)

@@ -1,0 +1,59 @@
+{
+  "workflow": "minimax_h3_lightx2v_no_pic",
+  "duration": 5,
+  "resolution": "768p",
+  "scenes": {
+    "foldable-origami-crane": {
+      "id": "foldable-origami-crane",
+      "title": "The phone that folded too far",
+      "aspectRatio": "16:9",
+      "prompt": "A five-second single shot in a bright café. A person unfolds a sleek, unbranded foldable phone. It folds itself one more time into a tiny metallic origami crane and flies away. The person stares at their empty hands, deadpan. Playful physical comedy, realistic motion, clean commercial lighting, 16:9, no text or logos.",
+      "providerTaskId": "69c3674f-caf2-4e79-a5af-7165ea83b2ee",
+      "status": "downloaded",
+      "file": "media/showcase-h3/2026-09-25/foldable-origami-crane.mp4",
+      "bytes": 1218284
+    },
+    "smart-glasses-coffee": {
+      "id": "smart-glasses-coffee",
+      "title": "Directions to the coffee in your hand",
+      "aspectRatio": "9:16",
+      "prompt": "A five-second single shot in a kitchen. A person puts on unbranded smart glasses. A large glowing navigation arrow appears and points insistently toward the coffee mug already in their hand. They slowly look at the mug, then at the camera in embarrassment. Subtle AR effects, dry comedy, 9:16, no text or logos.",
+      "providerTaskId": "30b7b3ef-4fea-47ba-853f-607ca0d862d1",
+      "status": "downloaded",
+      "file": "media/showcase-h3/2026-09-25/smart-glasses-coffee.mp4",
+      "bytes": 780505
+    },
+    "corgi-sprint": {
+      "id": "corgi-sprint",
+      "title": "The corgi wins the sprint",
+      "aspectRatio": "16:9",
+      "prompt": "Five-second single shot at a fictional neighborhood running track. A serious adult sprinter explodes off the starting line, but a tiny corgi dashes past and crosses the finish tape first. The runner stops and stares; the corgi looks delighted. Dramatic sports-camera energy, playful comedy, 16:9, no official marks or text.",
+      "providerTaskId": "9871afb0-f5a6-479f-bb74-1823fadbc7f0",
+      "status": "downloaded",
+      "file": "media/showcase-h3/2026-09-25/corgi-sprint.mp4",
+      "bytes": 3446646
+    },
+    "cat-fashion-runway": {
+      "id": "cat-fashion-runway",
+      "title": "The cat steals the runway",
+      "aspectRatio": "9:16",
+      "prompt": "Five-second single shot on a glamorous fashion runway. A model walks toward the camera with a serious expression. A confident black cat trots past her and takes center stage as camera flashes turn toward the cat. The model breaks character and smiles. Chic editorial lighting, realistic movement, 9:16, no logos or text.",
+      "providerTaskId": "c4af0411-ed9e-41e7-8cbf-c40489dbe7b1",
+      "status": "downloaded",
+      "file": "media/showcase-h3/2026-09-25/cat-fashion-runway.mp4",
+      "bytes": 2574496
+    },
+    "grandma-dance-floor": {
+      "id": "grandma-dance-floor",
+      "title": "Grandma owns the dance floor",
+      "aspectRatio": "9:16",
+      "prompt": "Five-second single shot at a lively family party. Young adults hesitate on the dance floor; a stylish grandmother steps forward and does one effortless old-school dance move. Everyone immediately copies her as she gives the camera a knowing smile. Joyful, expressive faces, retro party lighting, 9:16, no recognizable music, text or logos.",
+      "providerTaskId": "103a0d61-101d-4632-8846-ca4b021e2afa",
+      "status": "downloaded",
+      "file": "media/showcase-h3/2026-09-25/grandma-dance-floor.mp4",
+      "bytes": 2362786
+    }
+  },
+  "publishedDurationSeconds": 5,
+  "postProcess": "Trimmed to exactly 5 seconds with H.264/AAC and faststart"
+}
