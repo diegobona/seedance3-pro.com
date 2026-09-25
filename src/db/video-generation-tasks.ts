@@ -123,7 +123,7 @@ async function updatePollState(
     SET "status" = ${status},
         "poll_attempts" = "poll_attempts" + 1,
         "last_polled_at" = ${now},
-        "next_poll_at" = ${now} + (
+        "next_poll_at" = ${now}::timestamptz + (
           LEAST(
             ${MAX_POLL_DELAY_MS},
             GREATEST(
