@@ -91,7 +91,8 @@ test('video masonry keeps 10 short clips, 20 films, playable tiles and model-neu
 test('remaining Coming Soon resources are real noindex routes with explicit Worker coverage', () => {
   const routes = [
     ['src/routes/prompt-guide.tsx', '/prompt-guide'],
-    ['src/routes/prompts/gpt-image-2/images.tsx', '/prompts/gpt-image-2/images'],
+    ['src/routes/gpt-image-2-prompts.tsx', '/gpt-image-2-prompts'],
+    ['src/routes/seedance-3-0-prompts.tsx', '/seedance-3-0-prompts'],
   ]
   const sitemap = read('sitemap.xml')
   const config = JSON.parse(read('wrangler.jsonc'))
@@ -107,6 +108,11 @@ test('remaining Coming Soon resources are real noindex routes with explicit Work
   assert.ok(routePatterns.includes('seedance3-pro.com/prompts/*'))
   assert.ok(config.assets.run_worker_first.includes('/prompt-guide'))
   assert.ok(config.assets.run_worker_first.includes('/prompts/*'))
+  for (const path of ['/minimax-h3-prompts', '/gpt-image-2-prompts', '/seedance-3-0-prompts']) {
+    assert.ok(routePatterns.includes(`seedance3-pro.com${path}`))
+    assert.ok(routePatterns.includes(`www.seedance3-pro.com${path}`))
+    assert.ok(config.assets.run_worker_first.includes(path))
+  }
 
   const component = read('src/components/coming-soon-page.tsx')
   assert.match(component, /Coming soon/i)
@@ -120,7 +126,7 @@ test('five original H3 videos have linked, indexable cases with their submitted 
   const showcase = read('showcase.html')
   const sitemap = read('sitemap.xml')
   const detailRoute = read('src/routes/prompts/minimax-h3/videos_.$slug.tsx')
-  const indexRoute = read('src/routes/prompts/minimax-h3/videos.tsx')
+  const indexRoute = read('src/routes/minimax-h3-prompts.tsx')
   const previewCode = read('main.js')
   const originalCards = [...showcase.matchAll(/<a class="community-video-card community-video-card--original[^"]*" href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)]
   assert.match(indexRoute, /index,follow/)
@@ -144,4 +150,21 @@ test('five original H3 videos have linked, indexable cases with their submitted 
     assert.ok(existsSync(resolve(root, scene.file)), slug + ' video must exist')
     assert.ok(existsSync(resolve(root, scene.file.replace(/\.mp4$/, '.jpg'))), slug + ' poster must exist')
   }
+})
+
+test('model sidebar links all three showcases while homepage Showcase keeps its current destination', () => {
+  const sidebar = read('src/routes/app.tsx')
+  const homepage = read('index.html')
+  for (const [label, path] of [
+    ['MiniMax H3 showcase', '/minimax-h3-prompts'],
+    ['GPT Image 2 showcase', '/gpt-image-2-prompts'],
+    ['Seedance 3.0 showcase', '/seedance-3-0-prompts'],
+  ]) {
+    assert.ok(sidebar.includes(`href="${path}"`))
+    assert.ok(sidebar.includes(label))
+  }
+  assert.match(homepage, /<a href="\.\/showcase\.html">Showcase<\/a>/)
+  const server = read('src/server.ts')
+  assert.match(server, /'\/prompts\/minimax-h3\/videos': '\/minimax-h3-prompts'/)
+  assert.match(server, /'\/prompts\/gpt-image-2\/images': '\/gpt-image-2-prompts'/)
 })

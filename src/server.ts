@@ -25,6 +25,11 @@ const legacyApiPaths = new Set([
   '/api/retry-now',
 ])
 
+const legacyPromptPaths: Record<string, string> = {
+  '/prompts/minimax-h3/videos': '/minimax-h3-prompts',
+  '/prompts/gpt-image-2/images': '/gpt-image-2-prompts',
+}
+
 function isLegacyApiRequest(request: Request) {
   const { pathname } = new URL(request.url)
   return legacyApiPaths.has(pathname) || pathname.startsWith('/api/job/')
@@ -35,6 +40,8 @@ export default {
     const url = new URL(request.url)
     const { pathname } = url
     if (request.method === 'GET' || request.method === 'HEAD') {
+      const promptDestination = legacyPromptPaths[pathname]
+      if (promptDestination) return Response.redirect(`https://seedance3-pro.com${promptDestination}${url.search}`, 308)
       const destination = legacyModelRedirect(url)
       if (destination) return Response.redirect(`https://seedance3-pro.com${destination}`, 308)
       if (url.hostname === 'www.seedance3-pro.com' && modelIdFromPath(pathname)) {

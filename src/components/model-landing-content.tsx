@@ -82,7 +82,7 @@ export function ModelLandingContent({ modelId }: { modelId: string }) {
           <a href="/app/image/gpt-image-2">GPT Image 2 image</a>
           <a href="/pose-to-image">Pose Control</a>
           <a href="/showcase.html">Showcase</a>
-          {modelId === 'minimax-h3' && <a href="/prompts/minimax-h3/videos">H3 Video Prompt Library</a>}
+          {modelId === 'minimax-h3' && <a href="/minimax-h3-prompts">H3 Video Prompt Library</a>}
           <a href="/blog.html">Blog</a>
         </nav>
       </div>

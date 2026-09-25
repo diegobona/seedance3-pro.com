@@ -18,12 +18,18 @@
     { "pattern": "www.seedance3-pro.com/gpt-image-2.html", "zone_name": "seedance3-pro.com" },
     { "pattern": "seedance3-pro.com/prompt-guide", "zone_name": "seedance3-pro.com" },
     { "pattern": "www.seedance3-pro.com/prompt-guide", "zone_name": "seedance3-pro.com" },
+    { "pattern": "seedance3-pro.com/minimax-h3-prompts", "zone_name": "seedance3-pro.com" },
+    { "pattern": "www.seedance3-pro.com/minimax-h3-prompts", "zone_name": "seedance3-pro.com" },
+    { "pattern": "seedance3-pro.com/gpt-image-2-prompts", "zone_name": "seedance3-pro.com" },
+    { "pattern": "www.seedance3-pro.com/gpt-image-2-prompts", "zone_name": "seedance3-pro.com" },
+    { "pattern": "seedance3-pro.com/seedance-3-0-prompts", "zone_name": "seedance3-pro.com" },
+    { "pattern": "www.seedance3-pro.com/seedance-3-0-prompts", "zone_name": "seedance3-pro.com" },
     { "pattern": "seedance3-pro.com/prompts/*", "zone_name": "seedance3-pro.com" },
     { "pattern": "www.seedance3-pro.com/prompts/*", "zone_name": "seedance3-pro.com" }
   ],
   "assets": {
     "binding": "ASSETS",
-    "run_worker_first": ["/api/*", "/app", "/app/", "/app/video/*", "/app/image/*", "/minimax-h3-ai-video-generator.html", "/gpt-image-2.html", "/prompt-guide", "/prompts/*"]
+    "run_worker_first": ["/api/*", "/app", "/app/", "/app/video/*", "/app/image/*", "/minimax-h3-ai-video-generator.html", "/gpt-image-2.html", "/prompt-guide", "/minimax-h3-prompts", "/gpt-image-2-prompts", "/seedance-3-0-prompts", "/prompts/*"]
   },
   "observability": {
     "enabled": true,

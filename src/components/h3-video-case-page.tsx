@@ -15,7 +15,7 @@ function CaseHeader() {
       <nav aria-label="Primary navigation">
         <a href="/app/video/minimax-h3">H3 Video</a>
         <a href="/showcase">Showcase</a>
-        <a href="/prompts/minimax-h3/videos" aria-current="page">Video Prompt Library</a>
+        <a href="/minimax-h3-prompts" aria-current="page">Video Prompt Library</a>
       </nav>
       <a className="video-case-header-cta" href="/app/video/minimax-h3">Start Creating ↗</a>
     </header>
@@ -76,7 +76,7 @@ export function H3VideoCaseDetail({ videoCase }: { videoCase: H3VideoCase }) {
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') window.location.assign('/prompts/minimax-h3/videos')
+      if (event.key === 'Escape') window.location.assign('/minimax-h3-prompts')
     }
     document.addEventListener('keydown', closeOnEscape)
     return () => document.removeEventListener('keydown', closeOnEscape)
@@ -98,8 +98,8 @@ export function H3VideoCaseDetail({ videoCase }: { videoCase: H3VideoCase }) {
         <div className="video-case-backdrop-grid">{h3VideoCases.map((entry) => <img key={entry.slug} src={entry.posterUrl} alt="" />)}</div>
       </div>
       <article className="video-case-modal" role="dialog" aria-modal="true" aria-labelledby="video-case-title">
-        <a className="video-case-close" href="/prompts/minimax-h3/videos" aria-label="Close case and return to video library">×</a>
-        <nav className="video-case-breadcrumbs" aria-label="Breadcrumb"><a href="/showcase">Showcase</a><span aria-hidden="true">/</span><a href="/prompts/minimax-h3/videos">Video Prompt Library</a></nav>
+        <a className="video-case-close" href="/minimax-h3-prompts" aria-label="Close case and return to video library">×</a>
+        <nav className="video-case-breadcrumbs" aria-label="Breadcrumb"><a href="/showcase">Showcase</a><span aria-hidden="true">/</span><a href="/minimax-h3-prompts">Video Prompt Library</a></nav>
         <h1 id="video-case-title">{videoCase.title}</h1>
         <div className="video-case-modal-top">
           <div className={'video-case-player' + (videoCase.aspectRatio === '9:16' ? ' is-portrait' : '')}>
@@ -134,7 +134,7 @@ export function H3VideoCaseDetail({ videoCase }: { videoCase: H3VideoCase }) {
           <p>{videoCase.creativeNote}</p>
         </section>
         <section className="video-case-related" aria-labelledby="related-video-cases">
-          <div className="video-case-related-heading"><h2 id="related-video-cases">More original video prompts</h2><a href="/prompts/minimax-h3/videos">View all five ↗</a></div>
+          <div className="video-case-related-heading"><h2 id="related-video-cases">More original video prompts</h2><a href="/minimax-h3-prompts">View all five ↗</a></div>
           <div className="video-case-related-grid">{related.map((entry) => <CaseCard key={entry.slug} videoCase={entry} />)}</div>
         </section>
       </article>

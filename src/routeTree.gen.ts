@@ -11,7 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppRouteImport } from './routes/app'
+import { Route as GptImage2PromptsRouteImport } from './routes/gpt-image-2-prompts'
+import { Route as MinimaxH3PromptsRouteImport } from './routes/minimax-h3-prompts'
 import { Route as PromptGuideRouteImport } from './routes/prompt-guide'
+import { Route as Seedance30PromptsRouteImport } from './routes/seedance-3-0-prompts'
 import { Route as ApiLaunchWaitlistRouteImport } from './routes/api/launch-waitlist'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApiCreditsBalanceRouteImport } from './routes/api/credits/balance'
@@ -35,9 +38,24 @@ const AppRoute = AppRouteImport.update({
   path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GptImage2PromptsRoute = GptImage2PromptsRouteImport.update({
+  id: '/gpt-image-2-prompts',
+  path: '/gpt-image-2-prompts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MinimaxH3PromptsRoute = MinimaxH3PromptsRouteImport.update({
+  id: '/minimax-h3-prompts',
+  path: '/minimax-h3-prompts',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PromptGuideRoute = PromptGuideRouteImport.update({
   id: '/prompt-guide',
   path: '/prompt-guide',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Seedance30PromptsRoute = Seedance30PromptsRouteImport.update({
+  id: '/seedance-3-0-prompts',
+  path: '/seedance-3-0-prompts',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiLaunchWaitlistRoute = ApiLaunchWaitlistRouteImport.update({
@@ -105,7 +123,10 @@ const PromptsMinimaxH3VideosSlugRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRoute
+  '/gpt-image-2-prompts': typeof GptImage2PromptsRoute
+  '/minimax-h3-prompts': typeof MinimaxH3PromptsRoute
   '/prompt-guide': typeof PromptGuideRoute
+  '/seedance-3-0-prompts': typeof Seedance30PromptsRoute
   '/api/launch-waitlist': typeof ApiLaunchWaitlistRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/credits/balance': typeof ApiCreditsBalanceRoute
@@ -122,7 +143,10 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/app': typeof AppRoute
+  '/gpt-image-2-prompts': typeof GptImage2PromptsRoute
+  '/minimax-h3-prompts': typeof MinimaxH3PromptsRoute
   '/prompt-guide': typeof PromptGuideRoute
+  '/seedance-3-0-prompts': typeof Seedance30PromptsRoute
   '/api/launch-waitlist': typeof ApiLaunchWaitlistRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/credits/balance': typeof ApiCreditsBalanceRoute
@@ -140,7 +164,10 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/app': typeof AppRoute
+  '/gpt-image-2-prompts': typeof GptImage2PromptsRoute
+  '/minimax-h3-prompts': typeof MinimaxH3PromptsRoute
   '/prompt-guide': typeof PromptGuideRoute
+  '/seedance-3-0-prompts': typeof Seedance30PromptsRoute
   '/api/launch-waitlist': typeof ApiLaunchWaitlistRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/credits/balance': typeof ApiCreditsBalanceRoute
@@ -159,7 +186,10 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/app'
+    | '/gpt-image-2-prompts'
+    | '/minimax-h3-prompts'
     | '/prompt-guide'
+    | '/seedance-3-0-prompts'
     | '/api/launch-waitlist'
     | '/api/auth/$'
     | '/api/credits/balance'
@@ -176,7 +206,10 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/app'
+    | '/gpt-image-2-prompts'
+    | '/minimax-h3-prompts'
     | '/prompt-guide'
+    | '/seedance-3-0-prompts'
     | '/api/launch-waitlist'
     | '/api/auth/$'
     | '/api/credits/balance'
@@ -193,7 +226,10 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/app'
+    | '/gpt-image-2-prompts'
+    | '/minimax-h3-prompts'
     | '/prompt-guide'
+    | '/seedance-3-0-prompts'
     | '/api/launch-waitlist'
     | '/api/auth/$'
     | '/api/credits/balance'
@@ -211,7 +247,10 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRoute
+  GptImage2PromptsRoute: typeof GptImage2PromptsRoute
+  MinimaxH3PromptsRoute: typeof MinimaxH3PromptsRoute
   PromptGuideRoute: typeof PromptGuideRoute
+  Seedance30PromptsRoute: typeof Seedance30PromptsRoute
   ApiLaunchWaitlistRoute: typeof ApiLaunchWaitlistRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiCreditsBalanceRoute: typeof ApiCreditsBalanceRoute
@@ -242,11 +281,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/gpt-image-2-prompts': {
+      id: '/gpt-image-2-prompts'
+      path: '/gpt-image-2-prompts'
+      fullPath: '/gpt-image-2-prompts'
+      preLoaderRoute: typeof GptImage2PromptsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/minimax-h3-prompts': {
+      id: '/minimax-h3-prompts'
+      path: '/minimax-h3-prompts'
+      fullPath: '/minimax-h3-prompts'
+      preLoaderRoute: typeof MinimaxH3PromptsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/prompt-guide': {
       id: '/prompt-guide'
       path: '/prompt-guide'
       fullPath: '/prompt-guide'
       preLoaderRoute: typeof PromptGuideRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seedance-3-0-prompts': {
+      id: '/seedance-3-0-prompts'
+      path: '/seedance-3-0-prompts'
+      fullPath: '/seedance-3-0-prompts'
+      preLoaderRoute: typeof Seedance30PromptsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/launch-waitlist': {
@@ -339,7 +399,10 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRoute,
+  GptImage2PromptsRoute: GptImage2PromptsRoute,
+  MinimaxH3PromptsRoute: MinimaxH3PromptsRoute,
   PromptGuideRoute: PromptGuideRoute,
+  Seedance30PromptsRoute: Seedance30PromptsRoute,
   ApiLaunchWaitlistRoute: ApiLaunchWaitlistRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiCreditsBalanceRoute: ApiCreditsBalanceRoute,

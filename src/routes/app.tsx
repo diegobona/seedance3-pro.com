@@ -87,6 +87,12 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
               <div className="section-heading image-models-heading"><span>IMAGE MODELS</span><span>01</span></div>
               <button className={`model-button price-model${initiallyPose || initiallyVideo ? '' : ' is-active'}`} type="button" data-model="gpt-image-2"><span className="model-symbol orange">G2</span><span><strong>GPT Image 2</strong><small>Generation &amp; editing</small></span><em className="price-badge">FROM <b>$0.01</b></em></button>
             </div>
+            <div className="nav-section showcase-nav-section">
+              <div className="section-heading"><span>SHOWCASE</span><span>03</span></div>
+              <a className="showcase-nav-link" href="/minimax-h3-prompts"><span className="model-symbol cyan">H3</span><span>MiniMax H3 showcase</span></a>
+              <a className="showcase-nav-link" href="/gpt-image-2-prompts"><span className="model-symbol orange">G2</span><span>GPT Image 2 showcase</span></a>
+              <a className="showcase-nav-link" href="/seedance-3-0-prompts"><img src="/assets/seedance-mark.svg" width="34" height="34" alt="" /><span>Seedance 3.0 showcase<small>Coming soon</small></span></a>
+            </div>
           </nav>
           <div className="sidebar-foot"><a href="/">← Back to SEEDANCE 3.0</a></div>
         </aside>

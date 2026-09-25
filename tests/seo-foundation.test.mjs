@@ -33,10 +33,11 @@ test('sitemap publishes new model pages and excludes redirects, workspace and em
     assert.ok(urls.includes(`https://seedance3-pro.com${path}`), path)
   }
   assert.ok(!urls.includes('https://seedance3-pro.com/app/'))
-  for (const path of ['/minimax-h3-ai-video-generator.html', '/gpt-image-2.html', '/prompt-guide', '/prompts/gpt-image-2/images']) {
+  for (const path of ['/minimax-h3-ai-video-generator.html', '/gpt-image-2.html', '/prompt-guide', '/prompts/gpt-image-2/images', '/gpt-image-2-prompts', '/seedance-3-0-prompts']) {
     assert.ok(!urls.some(url => url.includes(path)), path)
   }
-  assert.ok(urls.includes('https://seedance3-pro.com/prompts/minimax-h3/videos'))
+  assert.ok(urls.includes('https://seedance3-pro.com/minimax-h3-prompts'))
+  assert.ok(!urls.includes('https://seedance3-pro.com/prompts/minimax-h3/videos'))
   assert.match(read('robots.txt'), /Sitemap: https:\/\/seedance3-pro\.com\/sitemap.xml/)
 })
 
@@ -54,7 +55,8 @@ test('the homepage directs model searches to distinct model tool pages', () => {
   assert.match(homepage, /href="\.\/app\/video\/minimax-h3"/)
   assert.match(homepage, /href="\.\/app\/image\/gpt-image-2"/)
   assert.match(homepage, /href="\.\/pose-to-image"/)
-  for (const path of ['./prompt-guide', './prompts/minimax-h3/videos', './prompts/gpt-image-2/images']) {
-    assert.ok(homepage.includes(`href="${path}"`), `${path} should be available as a Coming Soon resource`)
+  for (const path of ['./prompt-guide', './minimax-h3-prompts', './gpt-image-2-prompts', './seedance-3-0-prompts']) {
+    assert.ok(homepage.includes(`href="${path}"`), `${path} should be linked from the footer`)
   }
+  assert.match(homepage, /<a href="\.\/showcase\.html">Showcase<\/a>/)
 })
