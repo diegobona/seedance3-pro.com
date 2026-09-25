@@ -121,15 +121,24 @@ test('five original H3 videos have linked, indexable cases with their submitted 
   const sitemap = read('sitemap.xml')
   const detailRoute = read('src/routes/prompts/minimax-h3/videos_.$slug.tsx')
   const indexRoute = read('src/routes/prompts/minimax-h3/videos.tsx')
+  const previewCode = read('main.js')
+  const originalCards = [...showcase.matchAll(/<a class="community-video-card community-video-card--original[^"]*" href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)]
   assert.match(indexRoute, /index,follow/)
   assert.match(detailRoute, /index,follow/)
   assert.match(detailRoute, /rel: 'canonical'/)
   assert.match(read('src/components/h3-video-case-page.tsx'), /application\/ld\+json/)
   assert.equal(Object.keys(manifest.scenes).length, 5)
+  assert.equal(originalCards.length, 5)
+  assert.match(previewCode, /new IntersectionObserver\(\(entries\)/)
+  assert.match(previewCode, /video\.play\(\)/)
+  assert.match(previewCode, /video\.pause\(\)/)
   for (const [slug, scene] of Object.entries(manifest.scenes)) {
     const path = '/prompts/minimax-h3/videos/' + slug
+    const card = originalCards.find(([_, href]) => href === '.' + path)?.[2]
     assert.ok(sitemap.includes('<loc>https://seedance3-pro.com' + path + '</loc>'), slug + ' needs a sitemap entry')
-    assert.ok(showcase.includes('href=".' + path + '"'), slug + ' needs a Showcase link')
+    assert.ok(card, slug + ' needs a clickable Showcase card')
+    assert.match(card, /<video class="community-video-preview" muted loop playsinline preload="none"/)
+    assert.ok(card.includes('data-preview-src="./' + scene.file + '"'), slug + ' needs its original video preview')
     assert.ok(cases.includes(scene.prompt), slug + ' must keep the exact submitted prompt')
     assert.ok(cases.includes(scene.title), slug + ' must keep the original title')
     assert.ok(existsSync(resolve(root, scene.file)), slug + ' video must exist')

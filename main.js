@@ -208,27 +208,43 @@ document.querySelectorAll("[data-x-post-url]").forEach((button) => {
   });
 });
 
-document.querySelectorAll("[data-local-video-src]").forEach((button) => {
-  button.addEventListener("click", () => {
-    const player = button.closest(".community-video-player");
-    const card = player?.closest(".community-video-card");
-    if (!player || !card) return;
-    stopCommunityPlayer();
-    const video = document.createElement("video");
-    video.controls = true;
-    video.playsInline = true;
-    video.preload = "metadata";
-    video.poster = button.querySelector("img")?.src ?? "";
-    video.src = button.dataset.localVideoSrc;
-    video.setAttribute("aria-label", button.getAttribute("aria-label") ?? "Showcase video");
-    player.replaceChildren(video);
-    card.classList.add("is-playing");
-    activeCommunityPlayer = { button, card, player, media: video };
+const originalVideoPreviews = document.querySelectorAll(".community-video-preview");
+if (originalVideoPreviews.length && "IntersectionObserver" in window) {
+  const visiblePreviews = new Set();
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const playPreview = (video) => {
+    if (prefersReducedMotion || document.hidden) return;
+    if (!video.hasAttribute("src")) {
+      video.preload = "metadata";
+      video.src = video.dataset.previewSrc;
+    }
     video.play().catch(() => {
-      // Native controls remain available if autoplay is blocked.
+      // The poster remains visible if the browser blocks autoplay.
+    });
+  };
+
+  const previewObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const video = entry.target;
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.35) {
+        visiblePreviews.add(video);
+        playPreview(video);
+      } else {
+        visiblePreviews.delete(video);
+        video.pause();
+      }
+    });
+  }, { threshold: [0, 0.35] });
+
+  originalVideoPreviews.forEach((video) => previewObserver.observe(video));
+  document.addEventListener("visibilitychange", () => {
+    visiblePreviews.forEach((video) => {
+      if (document.hidden) video.pause();
+      else playPreview(video);
     });
   });
-});
+}
 
 const poseDemo = document.querySelector("[data-pose-demo]");
 
