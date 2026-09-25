@@ -1,0 +1,4 @@
+.gpt-image-examples { border-color:rgba(216,255,115,.24); background:linear-gradient(145deg,rgba(216,255,115,.06),#191b1f 38%); }
+.gpt-image-examples .h3-examples-heading span { color:#d8ff73; }
+.gpt-image-examples .h3-example-player { background:#101214; }
+.gpt-image-examples .h3-example-options img { display:block; width:100%; aspect-ratio:16/9; border-radius:7px; background:#111315; object-fit:cover; pointer-events:none; }

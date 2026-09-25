@@ -127,6 +127,7 @@ export function initializeStudio() {
   const resultCard = document.getElementById("result-card");
   const resultGallery = document.getElementById("result-gallery");
   const exampleCarousel = document.getElementById("example-carousel");
+  const hasDedicatedImageExamples = Boolean(document.getElementById("gpt-image-examples"));
   const exampleCarouselSlides = document.querySelectorAll(".example-carousel-slide");
   const exampleCarouselDots = document.querySelectorAll("[data-carousel-dot]");
   const exampleCarouselPrevious = document.getElementById("example-carousel-previous");
@@ -305,7 +306,7 @@ export function initializeStudio() {
     examplePrompt.textContent = model.examplePrompt;
     const videoModel = model.type === "video";
     const poseModel = model.type === "pose";
-    exampleCarousel.hidden = videoModel;
+    exampleCarousel.hidden = videoModel || hasDedicatedImageExamples;
     creationGrid.hidden = poseModel;
     if (poseStudio) poseStudio.hidden = !poseModel;
     if (poseModel) void ensurePoseStudio();
@@ -645,7 +646,7 @@ export function initializeStudio() {
     generationStatus.className = "generation-status is-working";
     resultCard.hidden = true;
     poseResultActionsController?.setVisible(false);
-    exampleCarousel.hidden = false;
+    exampleCarousel.hidden = hasDedicatedImageExamples;
     try {
       const result = await requestImageGeneration({
         prompt: prompt.value,

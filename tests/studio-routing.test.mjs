@@ -254,7 +254,7 @@ test("empty studios expose a three-image interactive example carousel", () => {
   const script = readFileSync(resolve(root, "app", "studio.js"), "utf8");
 
   assert.match(html, /id=["']example-carousel["'](?![^>]*hidden)/i, "legacy studio should show the empty-state carousel");
-  assert.match(route, /id=["']example-carousel["'][^>]*hidden=\{initiallyVideo\}/i, "video landing should hide the image examples on first render");
+  assert.match(route, /id=["']example-carousel["'][^>]*hidden=\{initiallyVideo \|\| showGptImageExamples\}/i, "model landing pages should hide the generic image carousel on first render");
   for (const [shellName, markup] of [["legacy studio", html], ["TanStack studio", route]]) {
     const slides = markup.match(/class(?:Name)?=["'][^"']*\bexample-carousel-slide\b[^"']*["']/gi) || [];
     assert.equal(slides.length, 3, `${shellName} should provide three example slides`);
@@ -269,7 +269,7 @@ test("empty studios expose a three-image interactive example carousel", () => {
   assert.match(script, /\bcreateExampleCarouselController\b/);
   assert.match(script, /exampleCarousel\.hidden\s*=\s*videoModel/i, "switching to video should hide image examples");
   assert.match(script, /exampleCarousel\.hidden\s*=\s*true/i, "generated results should replace the empty-state carousel");
-  assert.match(script, /exampleCarousel\.hidden\s*=\s*false/i, "starting a new generation should restore the empty state until results arrive");
+  assert.match(script, /exampleCarousel\.hidden\s*=\s*hasDedicatedImageExamples/i, "the generic image carousel should stay hidden when dedicated GPT examples are present");
   assert.ok(
     script.indexOf("selectModel(modelFromLocation())") < script.indexOf("createExampleCarouselController({"),
     "the selected model should initialize before the carousel writes its first caption"
@@ -327,6 +327,24 @@ test("credit summaries stay visible and visually prominent in both studio shells
   const trialCompleteMessage = "Your free trial is complete. Full launch is coming soon — video generation from $0.01/sec.";
   assert.match(readFileSync(resolve(root, "app", "studio.js"), "utf8"), new RegExp(trialCompleteMessage.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"));
   assert.doesNotMatch(css, /\.credit-summary\.is-exhausted::after/i, "the real waitlist panel should replace generated pseudo-content");
+});
+
+test("GPT Image 2 landing uses three original non-political examples with prompt handoff", () => {
+  const component = readFileSync(resolve(root, "src", "components", "gpt-image-examples.tsx"), "utf8");
+  const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
+  const cases = JSON.parse(readFileSync(resolve(root, "src", "data", "gpt-image-cases.json"), "utf8"));
+  const slugs = ["foldable-pocket-universe", "climate-week-rooftops", "ai-classroom-claymation"];
+
+  for (const slug of slugs) {
+    assert.match(component, new RegExp(slug));
+    assert.ok(cases.some((entry) => entry.slug === slug && entry.prompt.length > 100));
+  }
+  assert.doesNotMatch(component, /summit-circus-satire/);
+  assert.match(route, /showGptImageExamples && <GptImageExamples\s*\/>/);
+  assert.match(component, /prompt\.value = selected\.prompt/);
+  assert.match(component, /prompt\.dispatchEvent\(new Event\('input'/);
+  assert.match(component, /aspectRatio\.value = selected\.aspectRatio/);
+  assert.match(component, /Try it ↗/);
 });
 
 test("Pose Studio exposes only the focused ragdoll IK workspace in the TanStack app", () => {

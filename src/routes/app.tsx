@@ -4,6 +4,7 @@ import { AuthDialog } from '../components/auth-dialog'
 import { UserMenu } from '../components/user-menu'
 import { ModelLandingContent } from '../components/model-landing-content'
 import { H3VideoExamples } from '../components/h3-video-examples'
+import { GptImageExamples } from '../components/gpt-image-examples'
 import '../../app/studio.css'
 import '../styles/auth.css'
 import '../styles/model-landing.css'
@@ -40,6 +41,7 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
   const initiallyH3 = initialModel === 'minimax-h3'
   const initiallySeedance25 = initialModel === 'seedance-2-5'
   const initiallyVideo = initiallyH3 || initiallySeedance25
+  const showGptImageExamples = initialModel === 'gpt-image-2' && modelLanding
   const [authOpen, setAuthOpen] = useState(false)
   const closeAuth = useCallback(() => setAuthOpen(false), [])
   const refreshCreditsAfterAuth = useCallback(() => {
@@ -156,6 +158,7 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
 
               <aside className="context-panel">
                 {initiallyH3 && modelLanding && <H3VideoExamples />}
+                {showGptImageExamples && <GptImageExamples />}
                 {initiallySeedance25 && modelLanding && <section className="context-card model-video-guide" aria-label="Video trial details"><p className="model-landing-eyebrow">Seedance 2.5 trial</p><h2>Direct your first shot</h2><p>Start with the subject and action, then add camera movement, setting and lighting. The current form accepts a text prompt and creates 480p clips.</p><ul><li>5, 10 or 15 seconds</li><li>Landscape, portrait or square</li><li>Credit cost shown before generation</li></ul><a href="#model-details">How this tool works ↓</a></section>}
                 <div className="context-card result-card" id="result-card" hidden>
                   <div className="result-heading"><span id="result-heading-label">GENERATED IMAGES</span><small id="result-model-label">GPT Image 2</small></div>
@@ -169,7 +172,7 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
                   </div>
                   <p id="result-note">Provider image links may expire. Open or download each result when it is ready.</p>
                 </div>
-                <section className="context-card example-carousel" id="example-carousel" aria-labelledby="example-carousel-heading" hidden={initiallyVideo}>
+                <section className="context-card example-carousel" id="example-carousel" aria-labelledby="example-carousel-heading" hidden={initiallyVideo || showGptImageExamples}>
                   <div className="result-heading"><span id="example-carousel-heading">IMAGE PREVIEW</span><small>3 DISTINCT STYLES</small></div>
                   <div className="example-carousel-viewport">
                     <figure className="example-carousel-slide" data-title="Editorial architecture" data-description="Photoreal fashion direction with strong geometry and cinematic light."><img src="/assets/gpt-image-2-editorial-fashion.webp" alt="Editorial fashion portrait inside a futuristic gallery" /></figure>
