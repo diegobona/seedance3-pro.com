@@ -48,7 +48,7 @@ test("TanStack Start owns the studio and API routes without replacing the homepa
   assert.equal(wranglerConfig.assets?.binding, "ASSETS");
   assert.deepEqual(
     wranglerConfig.assets?.run_worker_first,
-    ["/api/*", "/app", "/app/", "/app/video/*", "/app/image/*", "/minimax-h3-ai-video-generator.html", "/gpt-image-2.html", "/prompt-guide", "/prompts/*"],
+    ["/api/*", "/app", "/app/", "/app/video/*", "/app/image/*", "/minimax-h3-ai-video-generator.html", "/gpt-image-2.html", "/prompt-guide", "/minimax-h3-prompts", "/minimax-h3-prompts/*", "/gpt-image-2-prompts", "/gpt-image-2-prompts/*", "/seedance-3-0-prompts", "/prompts/*"],
     "API, model pages, legacy redirects, and Coming Soon resources must reach the Worker",
   );
   assert.equal(wranglerConfig.routes.some(({ pattern }) => pattern === "seedance3-pro.com/app"), false);

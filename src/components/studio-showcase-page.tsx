@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, type ReactNode } from 'react'
 import { AuthDialog } from './auth-dialog'
 import { UserMenu } from './user-menu'
 import { h3VideoCases, h3VideoCaseTryUrl, h3VideoCaseUrl } from '../data/h3-video-cases'
+import { gptImageCases, gptImageCaseTryUrl, gptImageCaseUrl } from '../data/gpt-image-cases'
 import '../../app/studio.css'
 import '../styles/auth.css'
 import '../styles/studio-showcase.css'
@@ -17,7 +18,7 @@ const showcaseContent = {
   'gpt-image-2': {
     label: 'AI IMAGE / IMAGE PROMPTS',
     title: 'GPT Image 2 showcase',
-    description: 'Image examples and their prompts are coming soon.',
+    description: 'Explore five original images in distinct styles. Open any image for its exact prompt and a short creative note.',
   },
   'seedance-3-0': {
     label: 'AI VIDEO / VIDEO PROMPTS',
@@ -57,31 +58,69 @@ function H3ShowcaseGrid() {
   return (
     <section className="studio-showcase-grid" aria-label="Original MiniMax H3 video prompts">
       {h3VideoCases.map((videoCase) => (
-        <article className="studio-showcase-card" key={videoCase.slug}>
-          <div className={`studio-showcase-media${videoCase.aspectRatio === '9:16' ? ' is-portrait' : ''}`}>
-            <video className="studio-showcase-video" muted loop playsInline preload="none" poster={videoCase.posterUrl} data-src={videoCase.videoUrl} aria-hidden="true" />
-            <a className="studio-showcase-cover-link" href={h3VideoCaseUrl(videoCase.slug)} aria-label={`Open ${videoCase.title} video and prompt`}><span className="studio-showcase-card-title">{videoCase.title}</span></a>
-            <div className="studio-showcase-hover-actions">
-              <button type="button" disabled aria-label="Like (coming soon)" title="Coming soon">♡</button>
-              <a href={h3VideoCaseTryUrl(videoCase)} aria-label={`Try ${videoCase.title} prompt in MiniMax H3`}>Try Now</a>
-              <button type="button" disabled aria-label="Share (coming soon)" title="Coming soon">↗</button>
-            </div>
-          </div>
-        </article>
+        <ShowcaseCard
+          key={videoCase.slug}
+          title={videoCase.title}
+          caseUrl={h3VideoCaseUrl(videoCase.slug)}
+          tryUrl={h3VideoCaseTryUrl(videoCase)}
+          modelLabel="MiniMax H3"
+          portrait={videoCase.aspectRatio === '9:16'}
+          media={<video className="studio-showcase-video" muted loop playsInline preload="none" poster={videoCase.posterUrl} data-src={videoCase.videoUrl} aria-hidden="true" />}
+        />
       ))}
     </section>
   )
 }
 
-function FutureShowcase({ model }: { model: Exclude<StudioShowcaseModel, 'minimax-h3'> }) {
-  const isImage = model === 'gpt-image-2'
+function ShowcaseCard({ title, caseUrl, tryUrl, modelLabel, portrait, media }: {
+  title: string
+  caseUrl: string
+  tryUrl: string
+  modelLabel: string
+  portrait: boolean
+  media: ReactNode
+}) {
+  return (
+    <article className="studio-showcase-card">
+      <div className={`studio-showcase-media${portrait ? ' is-portrait' : ''}`}>
+        {media}
+        <a className="studio-showcase-cover-link" href={caseUrl} aria-label={`Open ${title} and prompt`}><span className="studio-showcase-card-title">{title}</span></a>
+        <div className="studio-showcase-hover-actions">
+          <button type="button" disabled aria-label="Like (coming soon)" title="Coming soon">♡</button>
+          <a href={tryUrl} aria-label={`Try ${title} prompt in ${modelLabel}`}>Try Now</a>
+          <button type="button" disabled aria-label="Share (coming soon)" title="Coming soon">↗</button>
+        </div>
+      </div>
+    </article>
+  )
+}
+
+function GptImageShowcaseGrid() {
+  return (
+    <section className="studio-showcase-grid" aria-label="Original GPT Image 2 image prompts">
+      {gptImageCases.map((imageCase) => (
+        <ShowcaseCard
+          key={imageCase.slug}
+          title={imageCase.title}
+          caseUrl={gptImageCaseUrl(imageCase.slug)}
+          tryUrl={gptImageCaseTryUrl(imageCase)}
+          modelLabel="GPT Image 2"
+          portrait={imageCase.aspectRatio === '2:3'}
+          media={<img src={imageCase.imageUrl} alt={imageCase.summary} loading="lazy" width={imageCase.aspectRatio === '2:3' ? 1024 : imageCase.aspectRatio === '3:2' ? 1536 : 1024} height={imageCase.aspectRatio === '2:3' ? 1536 : imageCase.aspectRatio === '3:2' ? 1024 : 1024} />}
+        />
+      ))}
+    </section>
+  )
+}
+
+function FutureShowcase() {
   return (
     <section className="studio-showcase-future" aria-label="Upcoming model showcase">
       <span className="studio-showcase-future-badge">Coming soon</span>
-      <h2>{isImage ? 'Image prompts are on their way.' : 'Seedance 3.0 video prompts are on their way.'}</h2>
-      <p>{isImage ? 'We will add finished images with their actual prompts and creative notes here.' : 'This space is reserved for Seedance 3.0 examples and the prompts behind them.'}</p>
+      <h2>Seedance 3.0 video prompts are on their way.</h2>
+      <p>This space is reserved for Seedance 3.0 examples and the prompts behind them.</p>
       <div className="studio-showcase-actions">
-        <a className="studio-showcase-primary" href={isImage ? '/app/image/gpt-image-2' : '/showcase.html'}>{isImage ? 'Open GPT Image 2' : 'Explore current showcase'} ↗</a>
+        <a className="studio-showcase-primary" href="/showcase.html">Explore current showcase ↗</a>
         <a href="/minimax-h3-prompts">See current video prompts ↗</a>
       </div>
     </section>
@@ -141,7 +180,7 @@ export function StudioShowcasePage({ model }: { model: StudioShowcaseModel }) {
               <h1>{content.title}</h1>
               <p>{content.description}</p>
             </div>
-            {model === 'minimax-h3' ? <H3ShowcaseGrid /> : <FutureShowcase model={model} />}
+            {model === 'minimax-h3' ? <H3ShowcaseGrid /> : model === 'gpt-image-2' ? <GptImageShowcaseGrid /> : <FutureShowcase />}
           </div>
         </main>
       </div>

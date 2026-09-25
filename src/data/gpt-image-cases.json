@@ -1,0 +1,72 @@
+[
+  {
+    "slug": "summit-circus-satire",
+    "title": "A summit becomes a circus",
+    "seoTitle": "Summit Circus Editorial Cartoon Prompt | GPT Image 2",
+    "summary": "A fictional political cartoon turns a diplomatic photo-op into a clownish visual gag.",
+    "creativeNote": "This is an invented editorial satire, not a depiction of what happened at the meeting. The ink lines, flat colors and exaggerated clown costume make that distinction visible at a glance.",
+    "prompt": "Create an unmistakably fictional editorial political cartoon inspired by a US-China leaders' meeting. Donald Trump, recognizable in caricature, is behaving like an over-the-top clown in oversized shoes and a bright red clown nose, juggling blank briefing folders while trying to greet Xi Jinping. Xi Jinping, recognizable in caricature, stands calmly in a dark suit and raises one eyebrow. A generic diplomatic meeting room, no real insignia. Bold hand-inked outlines, witty newspaper-cartoon exaggeration, flat limited red-blue-cream palette, visible paper texture, clear comic staging. Put a small clearly legible SATIRE label in the upper left. This is a fictional joke, not a record of actual conduct. Absolutely no photorealism, no fake news headline, no official seal.",
+    "style": "Editorial cartoon",
+    "topic": "US–China summit satire",
+    "sourceUrl": "https://isa.china-mission.gov.cn/eng/zgyw/202609/t20260925_12031181.htm",
+    "aspectRatio": "3:2",
+    "size": "1536x1024",
+    "imageUrl": "/media/showcase-gpt-image-2/2026-09-26/summit-circus-satire.webp"
+  },
+  {
+    "slug": "climate-week-rooftops",
+    "title": "The city grows a new canopy",
+    "seoTitle": "Climate Week Paper Cut City Prompt | GPT Image 2",
+    "summary": "A layered paper city imagines clean energy and greenery sharing the New York skyline.",
+    "creativeNote": "Climate Week NYC is the topical starting point. Layered cut-paper shapes keep the image optimistic and readable while the solar roofs and planted terraces give the idea concrete visual anchors.",
+    "prompt": "An imaginative scene inspired by Climate Week NYC 2026: a New York neighborhood where rooftops unfold into lush gardens, solar panels, rainwater channels and tiny shared green spaces. People of different ages tend plants and ride bicycles between buildings. Intricate hand-cut paper collage, visible layered paper edges and soft cast shadows, sophisticated emerald, sky blue and warm coral palette, elegant editorial illustration, portrait composition with a strong foreground-to-background journey. No event logo, no slogans, no text.",
+    "style": "Layered paper cut",
+    "topic": "Climate Week NYC",
+    "sourceUrl": "https://www.climateweeknyc.org/",
+    "aspectRatio": "2:3",
+    "size": "1024x1536",
+    "imageUrl": "/media/showcase-gpt-image-2/2026-09-26/climate-week-rooftops.webp"
+  },
+  {
+    "slug": "foldable-pocket-universe",
+    "title": "A universe in your pocket",
+    "seoTitle": "Foldable Phone Surreal Product Prompt | GPT Image 2",
+    "summary": "A generic foldable device opens into a miniature world in a playful product image.",
+    "creativeNote": "The recent foldable-phone launch inspired the subject, but the hardware is intentionally unbranded. Studio photography grounds the impossible miniature landscape in convincing materials and light.",
+    "prompt": "Luxury commercial product photograph of a sleek unbranded foldable smartphone half-open on a matte ivory tabletop. A tiny impossible miniature landscape blooms from the screen: curved ocean, little clouds, a sunlit mountain and one small sailboat, as if a whole world fits in the hinge. Physically believable metal and glass, precise reflections, soft morning window light, high-end macro lens depth of field, subtle surrealism, beautifully restrained composition, landscape 3:2. No brand marks, no logos, no text, no recognizable real phone design.",
+    "style": "Surreal product photography",
+    "topic": "Foldable devices",
+    "sourceUrl": "https://www.apple.com/newsroom/2026/09/apple-unveils-iphone-duo/",
+    "aspectRatio": "3:2",
+    "size": "1536x1024",
+    "imageUrl": "/media/showcase-gpt-image-2/2026-09-26/foldable-pocket-universe.webp"
+  },
+  {
+    "slug": "nagoya-sprint-illustration",
+    "title": "The final stride in Nagoya",
+    "seoTitle": "Asian Games Sports Illustration Prompt | GPT Image 2",
+    "summary": "A fictional runner surges toward a finish line in a dynamic Japanese-inspired print.",
+    "creativeNote": "The ongoing Aichi–Nagoya Asian Games suggested the sporting moment. The athlete and scene are fictional; the sweeping ink motion and limited pigments borrow the energy of a handmade print rather than representing an actual result.",
+    "prompt": "A fictional Asian track athlete in an unbranded uniform makes the final stride toward a finish line in Nagoya at golden hour, with cheering spectators reduced to expressive shapes. Contemporary Japanese woodblock-print aesthetic mixed with energetic sports-poster composition: sweeping ink curves, textured indigo and vermilion pigment, imperfect registration, dramatic diagonal motion and windblown ribbons. Portrait 2:3, powerful silhouette, emotional human focus. No flags, no medal claim, no official marks, no words or numbers.",
+    "style": "Contemporary woodblock print",
+    "topic": "Aichi–Nagoya Asian Games",
+    "sourceUrl": "https://www.aichi-nagoya2026.org/",
+    "aspectRatio": "2:3",
+    "size": "1024x1536",
+    "imageUrl": "/media/showcase-gpt-image-2/2026-09-26/nagoya-sprint-illustration.webp"
+  },
+  {
+    "slug": "ai-classroom-claymation",
+    "title": "The robot asks the first question",
+    "seoTitle": "Human AI Classroom Claymation Prompt | GPT Image 2",
+    "summary": "A curious little robot joins a human-led classroom in a tactile stop-motion scene.",
+    "creativeNote": "Recent AI and human-development discussions informed a gentle collaboration story. Handmade clay surfaces and a child-height viewpoint make the technology feel approachable rather than monumental.",
+    "prompt": "A warm stop-motion claymation still in a small community classroom. A friendly hand-built robot raises a little clay hand to ask a question while a human teacher smiles and a diverse group of adult learners gathers around a table of handmade models. The robot is a curious participant, not the teacher. Expressive faces, tactile fingerprints in the clay, hand-painted miniature sets, soft amber practical light, subtle film grain, square 1:1 framing, charming and funny. No logos, no text, no real institutional insignia.",
+    "style": "Claymation",
+    "topic": "AI and human development",
+    "sourceUrl": "https://www.un.org/sustainabledevelopment/blog/2026/09/press-release-un-convening-explores-the-future-of-ai-human-development-and-human-dignity/",
+    "aspectRatio": "1:1",
+    "size": "1024x1024",
+    "imageUrl": "/media/showcase-gpt-image-2/2026-09-26/ai-classroom-claymation.webp"
+  }
+]

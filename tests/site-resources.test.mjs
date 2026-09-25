@@ -91,7 +91,6 @@ test('video masonry keeps 10 short clips, 20 films, playable tiles and model-neu
 test('remaining Coming Soon resources are real noindex routes with explicit Worker coverage', () => {
   const routes = [
     ['src/routes/prompt-guide.tsx', '/prompt-guide'],
-    ['src/routes/gpt-image-2-prompts.tsx', '/gpt-image-2-prompts'],
     ['src/routes/seedance-3-0-prompts.tsx', '/seedance-3-0-prompts'],
   ]
   const sitemap = read('sitemap.xml')
@@ -157,6 +156,39 @@ test('five original H3 videos have linked, indexable cases with their submitted 
     assert.ok(existsSync(resolve(root, scene.file)), slug + ' video must exist')
     assert.ok(existsSync(resolve(root, scene.file.replace(/\.mp4$/, '.jpg'))), slug + ' poster must exist')
   }
+})
+
+test('five original GPT Image 2 images have published prompts and working case routes', () => {
+  const cases = JSON.parse(read('src/data/gpt-image-cases.json'))
+  const sitemap = read('sitemap.xml')
+  const indexRoute = read('src/routes/gpt-image-2-prompts.tsx')
+  const detailRoute = read('src/routes/gpt-image-2-prompts_.$slug.tsx')
+  const showcase = read('src/components/studio-showcase-page.tsx')
+  const studio = read('app/studio.js')
+  const config = JSON.parse(read('wrangler.jsonc'))
+
+  assert.equal(cases.length, 5)
+  assert.equal(new Set(cases.map((entry) => entry.slug)).size, 5)
+  assert.equal(new Set(cases.map((entry) => entry.style)).size, 5)
+  assert.match(indexRoute, /index,follow/)
+  assert.match(detailRoute, /index,follow/)
+  assert.match(detailRoute, /rel: 'canonical'/)
+  assert.match(showcase, /GptImageShowcaseGrid/)
+  assert.match(showcase, /gptImageCaseTryUrl/)
+  assert.match(studio, /imageAspectRatio\.value = aspectRatio/)
+  assert.match(read('src/components/gpt-image-case-page.tsx'), /application\/ld\+json/)
+  assert.ok(config.routes.some((route) => route.pattern === 'seedance3-pro.com/gpt-image-2-prompts/*'))
+  assert.ok(config.assets.run_worker_first.includes('/gpt-image-2-prompts/*'))
+  assert.ok(sitemap.includes('<loc>https://seedance3-pro.com/gpt-image-2-prompts</loc>'))
+  for (const imageCase of cases) {
+    const imagePath = imageCase.imageUrl.slice(1)
+    const originalPath = imagePath.replace(/\.webp$/, '.png')
+    assert.ok(imageCase.prompt.length > 100, imageCase.slug + ' needs its actual prompt')
+    assert.ok(existsSync(resolve(root, imagePath)), imageCase.slug + ' needs a served image')
+    assert.ok(existsSync(resolve(root, originalPath)), imageCase.slug + ' needs the original API result')
+    assert.ok(sitemap.includes('<loc>https://seedance3-pro.com/gpt-image-2-prompts/' + imageCase.slug + '</loc>'))
+  }
+  assert.match(cases[0].creativeNote, /fictional|satire/i)
 })
 
 test('model sidebar links all three showcases while homepage Showcase keeps its current destination', () => {

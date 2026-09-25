@@ -16,10 +16,11 @@ This map records the page that owns each search intent. Primary navigation and `
 | Blog and existing articles | `/blog.html` and existing article URLs | Published; existing URLs retained |
 | Prompt guide | `/prompt-guide` | Coming Soon page; noindex, absent from sitemap |
 | MiniMax H3 showcase and prompt index | `/minimax-h3-prompts` | Published, indexable; five original H3 examples inside the studio layout |
-| GPT Image 2 showcase and prompt index | `/gpt-image-2-prompts` | Coming Soon content inside the studio layout; noindex, absent from sitemap |
+| GPT Image 2 showcase and prompt index | `/gpt-image-2-prompts` | Published, indexable; five original images inside the studio layout |
 | Seedance 3.0 showcase and prompt index | `/seedance-3-0-prompts` | Reserved Coming Soon content inside the studio layout; noindex, absent from sitemap |
 | Original H3 video cases | `/minimax-h3-prompts/{slug}` | Five published, indexable video-first modal pages; linked from Showcase |
-| Other individual prompt/case | `/{model}-prompts/{slug}` | Reserved until a verified example exists |
+| Original GPT Image 2 cases | `/gpt-image-2-prompts/{slug}` | Five published, indexable image-first modal pages; linked from the GPT Image 2 showcase |
+| Seedance 3.0 prompt/case | `/seedance-3-0-prompts/{slug}` | Reserved until a verified example exists |
 
 The two former model guides, `/minimax-h3-ai-video-generator.html` and `/gpt-image-2.html`, redirect to the new tool pages. The former library URLs `/prompts/minimax-h3/videos` and `/prompts/gpt-image-2/images` redirect to the model-specific prompt indexes. The five former H3 detail URLs under `/prompts/minimax-h3/videos/` also redirect to their matching `/minimax-h3-prompts/{slug}` pages. Legacy `/app/?model=minimax-h3` and `/app/?model=gpt-image-2` links redirect too when the query contains only the model. Query URLs carrying other state remain usable in the generic workspace. The Worker owns these redirects and the Coming Soon resource routes; deployment must include the updated `wrangler.jsonc` routes.
 
@@ -27,4 +28,4 @@ Published tool pages contain the generation interface, visible explanation, step
 
 The existing pricing page and existing API-related article were not modified in this phase. A dedicated API product page is deferred.
 
-The prompt guide, GPT Image 2 prompt index, and Seedance 3.0 prompt index remain Coming Soon, noindex, and absent from the sitemap. The H3 video index and five detail pages use the original prompts recorded in `media/showcase-h3/2026-09-25/generation.json`; each detail URL is directly accessible and renders as a large modal over a subdued video gallery. Showcase links to these detail URLs while retaining click-to-play on its video tiles.
+The prompt guide and Seedance 3.0 prompt index remain Coming Soon, noindex, and absent from the sitemap. The H3 video index and five detail pages use the original prompts recorded in `media/showcase-h3/2026-09-25/generation.json`; each detail URL is directly accessible and renders as a large modal over a subdued video gallery. The GPT Image 2 index and five detail pages use the prompts in `src/data/gpt-image-cases.json`, with original API images and optimized WebP assets in `media/showcase-gpt-image-2/2026-09-26/`. Both model showcases share the same card hover actions and Try Now handoff to the matching generator.

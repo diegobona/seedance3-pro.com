@@ -566,15 +566,19 @@ export function initializeStudio() {
     }
   });
   selectModel(modelFromLocation());
-  if (activeModelId === "minimax-h3") {
+  if (activeModelId === "minimax-h3" || activeModelId === "gpt-image-2") {
     const showcaseSearch = new URLSearchParams(window.location.search);
     const showcasePrompt = showcaseSearch.get("prompt");
     if (showcasePrompt) {
       setPromptValue(showcasePrompt);
       const duration = showcaseSearch.get("duration");
       const aspectRatio = showcaseSearch.get("aspect_ratio");
-      if (["5", "10", "15"].includes(duration)) videoDuration.value = duration;
-      if (["16:9", "9:16", "1:1"].includes(aspectRatio)) videoAspectRatio.value = aspectRatio;
+      if (activeModelId === "minimax-h3") {
+        if (["5", "10", "15"].includes(duration)) videoDuration.value = duration;
+        if (["16:9", "9:16", "1:1"].includes(aspectRatio)) videoAspectRatio.value = aspectRatio;
+      } else if (["1:1", "3:2", "2:3"].includes(aspectRatio)) {
+        imageAspectRatio.value = aspectRatio;
+      }
       creditSummaryController?.refresh();
       updateGenerateButtonLabel();
       updateGenerateButton();
