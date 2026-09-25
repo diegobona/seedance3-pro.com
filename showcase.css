@@ -59,6 +59,9 @@
 .community-video-info-button{position:absolute;top:11px;right:11px;z-index:2;min-height:29px;padding:5px 10px;border:1px solid rgba(255,255,255,.32);border-radius:999px;background:rgba(12,10,20,.72);color:#fff;font:inherit;font-size:11px;font-weight:750;cursor:pointer;backdrop-filter:blur(8px)}
 .community-video-info-button:hover{background:rgba(31,25,42,.94)}
 .community-video-info-button:focus-visible,.community-video-error:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+.community-video-case-link{position:absolute;top:11px;right:11px;z-index:2;display:inline-flex;min-height:29px;align-items:center;padding:5px 10px;border:1px solid rgba(216,255,115,.55);border-radius:999px;background:rgba(12,16,11,.82);color:#eaffb1;font-size:11px;font-weight:800;backdrop-filter:blur(8px)}
+.community-video-case-link:hover{border-color:var(--lime);background:#29331f;color:#fff}
+.community-video-case-link:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
 .showcase-info-dialog{width:min(92vw,620px);max-height:90dvh;padding:0;overflow:auto;border:1px solid #463951;border-radius:24px;background:#181522;color:#f2edf8;box-shadow:0 30px 100px rgba(0,0,0,.7)}
 .showcase-info-dialog::backdrop{background:rgba(3,4,6,.78);backdrop-filter:blur(12px)}
 .showcase-info-shell{position:relative;padding:clamp(24px,4vw,40px)}

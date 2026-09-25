@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { validateSharedScene } from '../app/pose-share.mjs'
 
@@ -88,10 +88,9 @@ test('video masonry keeps 10 short clips, 20 films, playable tiles and model-neu
   assert.match(read('showcase.css'), /\.community-video-body\{position:absolute/)
 })
 
-test('Coming Soon resources are real noindex routes with explicit Worker coverage', () => {
+test('remaining Coming Soon resources are real noindex routes with explicit Worker coverage', () => {
   const routes = [
     ['src/routes/prompt-guide.tsx', '/prompt-guide'],
-    ['src/routes/prompts/minimax-h3/videos.tsx', '/prompts/minimax-h3/videos'],
     ['src/routes/prompts/gpt-image-2/images.tsx', '/prompts/gpt-image-2/images'],
   ]
   const sitemap = read('sitemap.xml')
@@ -113,4 +112,27 @@ test('Coming Soon resources are real noindex routes with explicit Worker coverag
   assert.match(component, /Coming soon/i)
   assert.match(component, /href="\/app\/video\/minimax-h3"/)
   assert.match(component, /href="\/app\/image\/gpt-image-2"/)
+})
+
+test('five original H3 videos have linked, indexable cases with their submitted prompts', () => {
+  const manifest = JSON.parse(read('media/showcase-h3/2026-09-25/generation.json'))
+  const cases = read('src/data/h3-video-cases.ts')
+  const showcase = read('showcase.html')
+  const sitemap = read('sitemap.xml')
+  const detailRoute = read('src/routes/prompts/minimax-h3/videos_.$slug.tsx')
+  const indexRoute = read('src/routes/prompts/minimax-h3/videos.tsx')
+  assert.match(indexRoute, /index,follow/)
+  assert.match(detailRoute, /index,follow/)
+  assert.match(detailRoute, /rel: 'canonical'/)
+  assert.match(read('src/components/h3-video-case-page.tsx'), /application\/ld\+json/)
+  assert.equal(Object.keys(manifest.scenes).length, 5)
+  for (const [slug, scene] of Object.entries(manifest.scenes)) {
+    const path = '/prompts/minimax-h3/videos/' + slug
+    assert.ok(sitemap.includes('<loc>https://seedance3-pro.com' + path + '</loc>'), slug + ' needs a sitemap entry')
+    assert.ok(showcase.includes('href=".' + path + '"'), slug + ' needs a Showcase link')
+    assert.ok(cases.includes(scene.prompt), slug + ' must keep the exact submitted prompt')
+    assert.ok(cases.includes(scene.title), slug + ' must keep the original title')
+    assert.ok(existsSync(resolve(root, scene.file)), slug + ' video must exist')
+    assert.ok(existsSync(resolve(root, scene.file.replace(/\.mp4$/, '.jpg'))), slug + ' poster must exist')
+  }
 })

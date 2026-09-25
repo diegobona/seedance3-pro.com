@@ -84,6 +84,7 @@ if (sceneDialog) {
     const cardOriginal = card.querySelector(".community-video-links a");
     const isOriginal = card.classList.contains("community-video-card--original");
     if (!cardTitle || (!isOriginal && (!cardCredit || !cardOriginal))) return;
+    if (isOriginal) return;
 
     if (cardCredit) cardCredit.textContent = cardCredit.textContent.replace(/ · Seedance 2\.0$/, "");
     if (cardOriginal) card.dataset.originalUrl = cardOriginal.href;

@@ -33,9 +33,10 @@ test('sitemap publishes new model pages and excludes redirects, workspace and em
     assert.ok(urls.includes(`https://seedance3-pro.com${path}`), path)
   }
   assert.ok(!urls.includes('https://seedance3-pro.com/app/'))
-  for (const path of ['/minimax-h3-ai-video-generator.html', '/gpt-image-2.html', '/prompt-guide', '/prompts/']) {
+  for (const path of ['/minimax-h3-ai-video-generator.html', '/gpt-image-2.html', '/prompt-guide', '/prompts/gpt-image-2/images']) {
     assert.ok(!urls.some(url => url.includes(path)), path)
   }
+  assert.ok(urls.includes('https://seedance3-pro.com/prompts/minimax-h3/videos'))
   assert.match(read('robots.txt'), /Sitemap: https:\/\/seedance3-pro\.com\/sitemap.xml/)
 })
 

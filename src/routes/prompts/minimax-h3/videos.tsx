@@ -1,14 +1,27 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { ComingSoonPage } from '../../../components/coming-soon-page'
+import { H3VideoCaseIndex } from '../../../components/h3-video-case-page'
+
+const url = 'https://seedance3-pro.com/prompts/minimax-h3/videos'
+const title = 'MiniMax H3 Video Prompt Library | Original Examples'
+const description = 'Watch five original MiniMax H3 videos and explore the exact text prompts used to create each short scene.'
 
 export const Route = createFileRoute('/prompts/minimax-h3/videos')({
   head: () => ({
     meta: [
-      { title: 'MiniMax H3 Video Examples Coming Soon | SEEDANCE 3.0' },
-      { name: 'description', content: 'A MiniMax H3 video case library is coming soon. Watch current examples or try text-to-video generation now.' },
-      { name: 'robots', content: 'noindex,follow' },
+      { title },
+      { name: 'description', content: description },
+      { name: 'robots', content: 'index,follow,max-image-preview:large,max-video-preview:-1' },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:title', content: title },
+      { property: 'og:description', content: description },
+      { property: 'og:url', content: url },
+      { property: 'og:image', content: 'https://seedance3-pro.com/media/showcase-h3/2026-09-25/corgi-sprint.jpg' },
+      { name: 'twitter:card', content: 'summary_large_image' },
     ],
-    links: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
+    links: [
+      { rel: 'canonical', href: url },
+      { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+    ],
   }),
-  component: () => <ComingSoonPage kind="Video case library" title="MiniMax H3 video cases are coming soon." description="We are preparing a browsable collection of video results and the creative directions behind them. You can explore the current video showcase today." primaryHref="/app/video/minimax-h3" primaryLabel="Create with MiniMax H3" />,
+  component: H3VideoCaseIndex,
 })

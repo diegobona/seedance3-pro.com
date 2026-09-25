@@ -15,9 +15,10 @@ This map records the page that owns each search intent. Primary navigation and `
 | Creative showcase | `/showcase.html` | Published, indexable; editable Pose scenes featured above the Video Prompt Library |
 | Blog and existing articles | `/blog.html` and existing article URLs | Published; existing URLs retained |
 | Prompt guide | `/prompt-guide` | Coming Soon page; noindex, absent from sitemap |
-| MiniMax H3 video case index | `/prompts/minimax-h3/videos` | Coming Soon page; noindex, absent from sitemap |
+| MiniMax H3 video case index | `/prompts/minimax-h3/videos` | Published, indexable; five original H3 examples |
 | GPT Image 2 image case index | `/prompts/gpt-image-2/images` | Coming Soon page; noindex, absent from sitemap |
-| Individual prompt/case | `/prompts/{model}/{media}/{slug}` | Reserved; no route, links or sitemap entry yet |
+| Original H3 video cases | `/prompts/minimax-h3/videos/{slug}` | Five published, indexable video-first modal pages; linked from Showcase |
+| Other individual prompt/case | `/prompts/{model}/{media}/{slug}` | Reserved until a verified example exists |
 
 The two former model guides, `/minimax-h3-ai-video-generator.html` and `/gpt-image-2.html`, redirect to the new tool pages. Legacy `/app/?model=minimax-h3` and `/app/?model=gpt-image-2` links redirect too when the query contains only the model. Query URLs carrying other state remain usable in the generic workspace. The Worker owns these redirects and the Coming Soon resource routes; deployment must include the updated `wrangler.jsonc` routes.
 
@@ -25,4 +26,4 @@ Published tool pages contain the generation interface, visible explanation, step
 
 The existing pricing page and existing API-related article were not modified in this phase. A dedicated API product page is deferred.
 
-The three Coming Soon pages are linked as upcoming resources, but do not claim that entries are already published. Keep them noindex and out of the sitemap until substantive guide or case content replaces their placeholder copy. Do not publish individual detail URLs before individual examples exist.
+The prompt guide and GPT Image 2 case index remain Coming Soon, noindex, and absent from the sitemap. The H3 video index and five detail pages use the original prompts recorded in `media/showcase-h3/2026-09-25/generation.json`; each detail URL is directly accessible and renders as a large modal over a subdued video gallery. Showcase links to these detail URLs while retaining click-to-play on its video tiles.

@@ -23,6 +23,7 @@ import { Route as AppVideoMinimaxH3RouteImport } from './routes/app_.video.minim
 import { Route as AppVideoSeedance25RouteImport } from './routes/app_.video.seedance-2-5'
 import { Route as PromptsGptImage2ImagesRouteImport } from './routes/prompts/gpt-image-2/images'
 import { Route as PromptsMinimaxH3VideosRouteImport } from './routes/prompts/minimax-h3/videos'
+import { Route as PromptsMinimaxH3VideosSlugRouteImport } from './routes/prompts/minimax-h3/videos_.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -94,6 +95,12 @@ const PromptsMinimaxH3VideosRoute = PromptsMinimaxH3VideosRouteImport.update({
   path: '/prompts/minimax-h3/videos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PromptsMinimaxH3VideosSlugRoute =
+  PromptsMinimaxH3VideosSlugRouteImport.update({
+    id: '/prompts/minimax-h3/videos_/$slug',
+    path: '/prompts/minimax-h3/videos/$slug',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -110,6 +117,7 @@ export interface FileRoutesByFullPath {
   '/app/video/seedance-2-5': typeof AppVideoSeedance25Route
   '/prompts/gpt-image-2/images': typeof PromptsGptImage2ImagesRoute
   '/prompts/minimax-h3/videos': typeof PromptsMinimaxH3VideosRoute
+  '/prompts/minimax-h3/videos/$slug': typeof PromptsMinimaxH3VideosSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -126,6 +134,7 @@ export interface FileRoutesByTo {
   '/app/video/seedance-2-5': typeof AppVideoSeedance25Route
   '/prompts/gpt-image-2/images': typeof PromptsGptImage2ImagesRoute
   '/prompts/minimax-h3/videos': typeof PromptsMinimaxH3VideosRoute
+  '/prompts/minimax-h3/videos/$slug': typeof PromptsMinimaxH3VideosSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -143,6 +152,7 @@ export interface FileRoutesById {
   '/app_/video/seedance-2-5': typeof AppVideoSeedance25Route
   '/prompts/gpt-image-2/images': typeof PromptsGptImage2ImagesRoute
   '/prompts/minimax-h3/videos': typeof PromptsMinimaxH3VideosRoute
+  '/prompts/minimax-h3/videos_/$slug': typeof PromptsMinimaxH3VideosSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -161,6 +171,7 @@ export interface FileRouteTypes {
     | '/app/video/seedance-2-5'
     | '/prompts/gpt-image-2/images'
     | '/prompts/minimax-h3/videos'
+    | '/prompts/minimax-h3/videos/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -177,6 +188,7 @@ export interface FileRouteTypes {
     | '/app/video/seedance-2-5'
     | '/prompts/gpt-image-2/images'
     | '/prompts/minimax-h3/videos'
+    | '/prompts/minimax-h3/videos/$slug'
   id:
     | '__root__'
     | '/'
@@ -193,6 +205,7 @@ export interface FileRouteTypes {
     | '/app_/video/seedance-2-5'
     | '/prompts/gpt-image-2/images'
     | '/prompts/minimax-h3/videos'
+    | '/prompts/minimax-h3/videos_/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -210,6 +223,7 @@ export interface RootRouteChildren {
   AppVideoSeedance25Route: typeof AppVideoSeedance25Route
   PromptsGptImage2ImagesRoute: typeof PromptsGptImage2ImagesRoute
   PromptsMinimaxH3VideosRoute: typeof PromptsMinimaxH3VideosRoute
+  PromptsMinimaxH3VideosSlugRoute: typeof PromptsMinimaxH3VideosSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -312,6 +326,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PromptsMinimaxH3VideosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/prompts/minimax-h3/videos_/$slug': {
+      id: '/prompts/minimax-h3/videos_/$slug'
+      path: '/prompts/minimax-h3/videos/$slug'
+      fullPath: '/prompts/minimax-h3/videos/$slug'
+      preLoaderRoute: typeof PromptsMinimaxH3VideosSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -330,6 +351,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppVideoSeedance25Route: AppVideoSeedance25Route,
   PromptsGptImage2ImagesRoute: PromptsGptImage2ImagesRoute,
   PromptsMinimaxH3VideosRoute: PromptsMinimaxH3VideosRoute,
+  PromptsMinimaxH3VideosSlugRoute: PromptsMinimaxH3VideosSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
