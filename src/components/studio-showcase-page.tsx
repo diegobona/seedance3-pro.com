@@ -1,0 +1,144 @@
+import { useCallback, useEffect, useState } from 'react'
+import { AuthDialog } from './auth-dialog'
+import { UserMenu } from './user-menu'
+import { h3VideoCases, h3VideoCaseUrl } from '../data/h3-video-cases'
+import '../../app/studio.css'
+import '../styles/auth.css'
+import '../styles/studio-showcase.css'
+
+export type StudioShowcaseModel = 'minimax-h3' | 'gpt-image-2' | 'seedance-3-0'
+
+const showcaseContent = {
+  'minimax-h3': {
+    label: 'AI VIDEO / VIDEO PROMPTS',
+    title: 'MiniMax H3 showcase',
+    description: 'Watch five original short videos, then open any scene for the exact prompt and a brief creative note.',
+  },
+  'gpt-image-2': {
+    label: 'AI IMAGE / IMAGE PROMPTS',
+    title: 'GPT Image 2 showcase',
+    description: 'Image examples and their prompts are coming soon.',
+  },
+  'seedance-3-0': {
+    label: 'AI VIDEO / VIDEO PROMPTS',
+    title: 'Seedance 3.0 showcase',
+    description: 'This model-specific video prompt library is coming soon.',
+  },
+} as const
+
+function H3ShowcaseGrid() {
+  useEffect(() => {
+    const videos = Array.from(document.querySelectorAll<HTMLVideoElement>('.studio-showcase-video'))
+    if (!('IntersectionObserver' in window)) return
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        const video = entry.target as HTMLVideoElement
+        if (entry.isIntersecting) {
+          if (!video.src && video.dataset.src) video.src = video.dataset.src
+          void video.play().catch(() => {})
+        } else {
+          video.pause()
+        }
+      }
+    }, { threshold: 0.25 })
+    videos.forEach((video) => observer.observe(video))
+    return () => {
+      observer.disconnect()
+      videos.forEach((video) => video.pause())
+    }
+  }, [])
+
+  return (
+    <section className="studio-showcase-grid" aria-label="Original MiniMax H3 video prompts">
+      {h3VideoCases.map((videoCase) => (
+        <a className="studio-showcase-card" href={h3VideoCaseUrl(videoCase.slug)} key={videoCase.slug} aria-label={`Open ${videoCase.title} video and prompt`}>
+          <div className={`studio-showcase-media${videoCase.aspectRatio === '9:16' ? ' is-portrait' : ''}`}>
+            <video className="studio-showcase-video" muted loop playsInline preload="none" poster={videoCase.posterUrl} data-src={videoCase.videoUrl} aria-hidden="true" />
+            <span>View video &amp; prompt ↗</span>
+          </div>
+          <div className="studio-showcase-card-copy">
+            <h2>{videoCase.title}</h2>
+            <p>{videoCase.prompt}</p>
+          </div>
+        </a>
+      ))}
+    </section>
+  )
+}
+
+function FutureShowcase({ model }: { model: Exclude<StudioShowcaseModel, 'minimax-h3'> }) {
+  const isImage = model === 'gpt-image-2'
+  return (
+    <section className="studio-showcase-future" aria-label="Upcoming model showcase">
+      <span className="studio-showcase-future-badge">Coming soon</span>
+      <h2>{isImage ? 'Image prompts are on their way.' : 'Seedance 3.0 video prompts are on their way.'}</h2>
+      <p>{isImage ? 'We will add finished images with their actual prompts and creative notes here.' : 'This space is reserved for Seedance 3.0 examples and the prompts behind them.'}</p>
+      <div className="studio-showcase-actions">
+        <a className="studio-showcase-primary" href={isImage ? '/app/image/gpt-image-2' : '/showcase.html'}>{isImage ? 'Open GPT Image 2' : 'Explore current showcase'} ↗</a>
+        <a href="/minimax-h3-prompts">See current video prompts ↗</a>
+      </div>
+    </section>
+  )
+}
+
+export function StudioShowcasePage({ model }: { model: StudioShowcaseModel }) {
+  const [authOpen, setAuthOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const closeAuth = useCallback(() => setAuthOpen(false), [])
+  const refreshCreditsAfterAuth = useCallback(() => {
+    window.dispatchEvent(new CustomEvent('seedance:auth-changed'))
+  }, [])
+  const content = showcaseContent[model]
+
+  return (
+    <>
+      <div className="studio-shell studio-showcase-shell">
+        <aside className={`sidebar${sidebarOpen ? ' is-open' : ''}`} id="studio-sidebar">
+          <a className="studio-brand" href="/"><img src="/assets/seedance-mark.svg" width="40" height="40" alt="" /><strong>SEEDANCE<br /><small>CREATIVE STUDIO</small></strong></a>
+          <button className="sidebar-close" type="button" aria-label="Close model navigation" onClick={() => setSidebarOpen(false)}>×</button>
+          <nav aria-label="Model navigation">
+            <div className="nav-section">
+              <div className="section-heading"><span>AI VIDEO</span><span>02</span></div>
+              <a className="model-button price-model" href="/app/video/minimax-h3"><span className="model-symbol cyan">H3</span><span><strong>MiniMax H3</strong><small>Text-to-video</small></span><em className="price-badge">FROM <b>$0.01</b></em></a>
+              <button className="model-button release-model" type="button" disabled><img src="/assets/seedance-mark.svg" width="40" height="40" alt="" style={{ flexShrink: 0 }} /><span className="release-model-copy"><span className="release-title-row"><strong>SEEDANCE 3.0</strong><em className="release-status">Release Updates</em></span><small>Next-gen video</small></span></button>
+            </div>
+            <div className="nav-section">
+              <div className="section-heading"><span>AI IMAGE</span></div>
+              <a className="model-button pose-workflow-button" href="/app/?model=pose-to-image">
+                <span className="pose-symbol" aria-hidden="true"><svg viewBox="0 0 32 32" role="presentation"><circle cx="16" cy="5.5" r="3" /><path d="M16 9v9m0-6-7 4m7-4 7 3m-7 3-5 9m5-9 6 9" /><circle cx="9" cy="16" r="1.25" /><circle cx="23" cy="15" r="1.25" /><circle cx="11" cy="27" r="1.25" /><circle cx="22" cy="27" r="1.25" /></svg></span>
+                <span className="pose-workflow-copy"><strong>Pose to Image</strong><small>Build poses in 3D</small></span>
+                <em className="signature">SIGNATURE</em>
+                <span className="workflow-cta">Open Pose Studio <b>↗</b></span>
+              </a>
+              <div className="section-heading image-models-heading"><span>IMAGE MODELS</span><span>01</span></div>
+              <a className="model-button price-model" href="/app/image/gpt-image-2"><span className="model-symbol orange">G2</span><span><strong>GPT Image 2</strong><small>Generation &amp; editing</small></span><em className="price-badge">FROM <b>$0.01</b></em></a>
+            </div>
+            <div className="nav-section showcase-nav-section">
+              <div className="section-heading"><span>SHOWCASE</span><span>03</span></div>
+              <a className="showcase-nav-link" href="/minimax-h3-prompts" aria-current={model === 'minimax-h3' ? 'page' : undefined}><span className="model-symbol cyan">H3</span><span>MiniMax H3 showcase</span></a>
+              <a className="showcase-nav-link" href="/gpt-image-2-prompts" aria-current={model === 'gpt-image-2' ? 'page' : undefined}><span className="model-symbol orange">G2</span><span>GPT Image 2 showcase</span></a>
+              <a className="showcase-nav-link" href="/seedance-3-0-prompts" aria-current={model === 'seedance-3-0' ? 'page' : undefined}><img src="/assets/seedance-mark.svg" width="34" height="34" alt="" /><span>Seedance 3.0 showcase<small>Coming soon</small></span></a>
+            </div>
+          </nav>
+          <div className="sidebar-foot"><a href="/">← Back to SEEDANCE 3.0</a></div>
+        </aside>
+
+        <main className="workspace">
+          <header className="workspace-header">
+            <div><button className="sidebar-open" type="button" aria-label="Open model navigation" onClick={() => setSidebarOpen(true)}>☰</button><a href="/">Home</a></div>
+            <div className="workspace-header-account"><UserMenu onLogin={() => setAuthOpen(true)} /></div>
+          </header>
+          <div className="workspace-body studio-showcase-body">
+            <div className="studio-showcase-intro">
+              <p className="studio-showcase-eyebrow">{content.label}</p>
+              <h1>{content.title}</h1>
+              <p>{content.description}</p>
+            </div>
+            {model === 'minimax-h3' ? <H3ShowcaseGrid /> : <FutureShowcase model={model} />}
+          </div>
+        </main>
+      </div>
+      <AuthDialog open={authOpen} onClose={closeAuth} onAuthenticated={refreshCreditsAfterAuth} />
+    </>
+  )
+}

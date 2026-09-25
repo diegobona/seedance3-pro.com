@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { ComingSoonPage } from '../components/coming-soon-page'
+import { StudioShowcasePage } from '../components/studio-showcase-page'
 
 export const Route = createFileRoute('/gpt-image-2-prompts')({
   head: () => ({
@@ -10,5 +10,5 @@ export const Route = createFileRoute('/gpt-image-2-prompts')({
     ],
     links: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
   }),
-  component: () => <ComingSoonPage kind="GPT Image 2 showcase" title="GPT Image 2 prompts are coming soon." description="We are preparing image examples with their prompts and creative notes. For now, explore the current showcase or create an image in the studio." primaryHref="/app/image/gpt-image-2" primaryLabel="Create with GPT Image 2" />,
+  component: () => <StudioShowcasePage model="gpt-image-2" />,
 })

@@ -101,7 +101,7 @@ test('remaining Coming Soon resources are real noindex routes with explicit Work
   for (const [sourceFile, path] of routes) {
     const source = read(sourceFile)
     assert.match(source, /noindex,follow/)
-    assert.match(source, /ComingSoonPage/)
+    assert.match(source, /ComingSoonPage|StudioShowcasePage/)
     assert.ok(!sitemap.includes(`https://seedance3-pro.com${path}<`), `${path} should stay out of the sitemap`)
   }
   assert.ok(routePatterns.includes('seedance3-pro.com/prompt-guide'))
@@ -133,6 +133,12 @@ test('five original H3 videos have linked, indexable cases with their submitted 
   assert.match(detailRoute, /index,follow/)
   assert.match(detailRoute, /rel: 'canonical'/)
   assert.match(read('src/components/h3-video-case-page.tsx'), /application\/ld\+json/)
+  assert.match(indexRoute, /StudioShowcasePage/)
+  const showcasePage = read('src/components/studio-showcase-page.tsx')
+  assert.match(showcasePage, /studio-shell studio-showcase-shell/)
+  assert.match(showcasePage, /workspace-header/)
+  assert.match(showcasePage, /H3ShowcaseGrid/)
+  assert.match(showcasePage, /FutureShowcase/)
   assert.equal(Object.keys(manifest.scenes).length, 5)
   assert.equal(originalCards.length, 5)
   assert.match(previewCode, /new IntersectionObserver\(\(entries\)/)

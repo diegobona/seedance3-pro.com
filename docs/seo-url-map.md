@@ -15,9 +15,9 @@ This map records the page that owns each search intent. Primary navigation and `
 | Creative showcase | `/showcase.html` | Published, indexable; editable Pose scenes featured above the Video Prompt Library |
 | Blog and existing articles | `/blog.html` and existing article URLs | Published; existing URLs retained |
 | Prompt guide | `/prompt-guide` | Coming Soon page; noindex, absent from sitemap |
-| MiniMax H3 showcase and prompt index | `/minimax-h3-prompts` | Published, indexable; five original H3 examples |
-| GPT Image 2 showcase and prompt index | `/gpt-image-2-prompts` | Coming Soon page; noindex, absent from sitemap |
-| Seedance 3.0 showcase and prompt index | `/seedance-3-0-prompts` | Reserved Coming Soon page; noindex, absent from sitemap |
+| MiniMax H3 showcase and prompt index | `/minimax-h3-prompts` | Published, indexable; five original H3 examples inside the studio layout |
+| GPT Image 2 showcase and prompt index | `/gpt-image-2-prompts` | Coming Soon content inside the studio layout; noindex, absent from sitemap |
+| Seedance 3.0 showcase and prompt index | `/seedance-3-0-prompts` | Reserved Coming Soon content inside the studio layout; noindex, absent from sitemap |
 | Original H3 video cases | `/minimax-h3-prompts/{slug}` | Five published, indexable video-first modal pages; linked from Showcase |
 | Other individual prompt/case | `/{model}-prompts/{slug}` | Reserved until a verified example exists |
 

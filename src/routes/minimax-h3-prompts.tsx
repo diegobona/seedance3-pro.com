@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { H3VideoCaseIndex } from '../components/h3-video-case-page'
+import { StudioShowcasePage } from '../components/studio-showcase-page'
 
 const url = 'https://seedance3-pro.com/minimax-h3-prompts'
 const title = 'MiniMax H3 Prompts & Video Showcase | Original Examples'
@@ -23,5 +23,5 @@ export const Route = createFileRoute('/minimax-h3-prompts')({
       { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
     ],
   }),
-  component: H3VideoCaseIndex,
+  component: () => <StudioShowcasePage model="minimax-h3" />,
 })

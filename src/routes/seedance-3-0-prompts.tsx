@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { ComingSoonPage } from '../components/coming-soon-page'
+import { StudioShowcasePage } from '../components/studio-showcase-page'
 
 export const Route = createFileRoute('/seedance-3-0-prompts')({
   head: () => ({
@@ -10,5 +10,5 @@ export const Route = createFileRoute('/seedance-3-0-prompts')({
     ],
     links: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
   }),
-  component: () => <ComingSoonPage kind="Seedance 3.0 showcase" title="Seedance 3.0 prompts are coming soon." description="This model-specific showcase is reserved for Seedance 3.0 examples and their prompts. You can browse the video ideas already available in the current showcase." primaryHref="/showcase.html" primaryLabel="Explore current videos" />,
+  component: () => <StudioShowcasePage model="seedance-3-0" />,
 })
