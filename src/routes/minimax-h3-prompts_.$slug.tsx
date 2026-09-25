@@ -1,10 +1,10 @@
 import { createFileRoute, notFound } from '@tanstack/react-router'
-import { H3VideoCaseDetail } from '../../../components/h3-video-case-page'
-import { getH3VideoCase, h3VideoCaseUrl } from '../../../data/h3-video-cases'
+import { H3VideoCaseDetail } from '../components/h3-video-case-page'
+import { getH3VideoCase, h3VideoCaseUrl } from '../data/h3-video-cases'
 
 const siteUrl = 'https://seedance3-pro.com'
 
-export const Route = createFileRoute('/prompts/minimax-h3/videos_/$slug')({
+export const Route = createFileRoute('/minimax-h3-prompts_/$slug')({
   loader: ({ params }) => {
     const videoCase = getH3VideoCase(params.slug)
     if (!videoCase) throw notFound()

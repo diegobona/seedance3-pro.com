@@ -75,5 +75,5 @@ export function getH3VideoCase(slug: string) {
 }
 
 export function h3VideoCaseUrl(slug: string) {
-  return '/prompts/minimax-h3/videos/' + slug
+  return '/minimax-h3-prompts/' + slug
 }

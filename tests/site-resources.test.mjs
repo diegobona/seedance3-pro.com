@@ -125,7 +125,7 @@ test('five original H3 videos have linked, indexable cases with their submitted 
   const cases = read('src/data/h3-video-cases.ts')
   const showcase = read('showcase.html')
   const sitemap = read('sitemap.xml')
-  const detailRoute = read('src/routes/prompts/minimax-h3/videos_.$slug.tsx')
+  const detailRoute = read('src/routes/minimax-h3-prompts_.$slug.tsx')
   const indexRoute = read('src/routes/minimax-h3-prompts.tsx')
   const previewCode = read('main.js')
   const originalCards = [...showcase.matchAll(/<a class="community-video-card community-video-card--original[^"]*" href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)]
@@ -139,9 +139,10 @@ test('five original H3 videos have linked, indexable cases with their submitted 
   assert.match(previewCode, /video\.play\(\)/)
   assert.match(previewCode, /video\.pause\(\)/)
   for (const [slug, scene] of Object.entries(manifest.scenes)) {
-    const path = '/prompts/minimax-h3/videos/' + slug
+    const path = '/minimax-h3-prompts/' + slug
     const card = originalCards.find(([_, href]) => href === '.' + path)?.[2]
     assert.ok(sitemap.includes('<loc>https://seedance3-pro.com' + path + '</loc>'), slug + ' needs a sitemap entry')
+    assert.ok(!sitemap.includes('<loc>https://seedance3-pro.com/prompts/minimax-h3/videos/' + slug + '</loc>'), slug + ' old URL should leave the sitemap')
     assert.ok(card, slug + ' needs a clickable Showcase card')
     assert.match(card, /<video class="community-video-preview" muted loop playsinline preload="none"/)
     assert.ok(card.includes('data-preview-src="./' + scene.file + '"'), slug + ' needs its original video preview')
@@ -167,4 +168,9 @@ test('model sidebar links all three showcases while homepage Showcase keeps its 
   const server = read('src/server.ts')
   assert.match(server, /'\/prompts\/minimax-h3\/videos': '\/minimax-h3-prompts'/)
   assert.match(server, /'\/prompts\/gpt-image-2\/images': '\/gpt-image-2-prompts'/)
+  assert.match(server, /legacyH3VideoCasePrefix/)
+  assert.match(server, /\/minimax-h3-prompts\/\$\{slug\}/)
+  const config = JSON.parse(read('wrangler.jsonc'))
+  assert.ok(config.routes.some(route => route.pattern === 'seedance3-pro.com/minimax-h3-prompts/*'))
+  assert.ok(config.assets.run_worker_first.includes('/minimax-h3-prompts/*'))
 })

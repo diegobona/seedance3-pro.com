@@ -29,6 +29,7 @@ const legacyPromptPaths: Record<string, string> = {
   '/prompts/minimax-h3/videos': '/minimax-h3-prompts',
   '/prompts/gpt-image-2/images': '/gpt-image-2-prompts',
 }
+const legacyH3VideoCasePrefix = '/prompts/minimax-h3/videos/'
 
 function isLegacyApiRequest(request: Request) {
   const { pathname } = new URL(request.url)
@@ -42,6 +43,10 @@ export default {
     if (request.method === 'GET' || request.method === 'HEAD') {
       const promptDestination = legacyPromptPaths[pathname]
       if (promptDestination) return Response.redirect(`https://seedance3-pro.com${promptDestination}${url.search}`, 308)
+      if (pathname.startsWith(legacyH3VideoCasePrefix)) {
+        const slug = pathname.slice(legacyH3VideoCasePrefix.length)
+        if (slug && !slug.includes('/')) return Response.redirect(`https://seedance3-pro.com/minimax-h3-prompts/${slug}${url.search}`, 308)
+      }
       const destination = legacyModelRedirect(url)
       if (destination) return Response.redirect(`https://seedance3-pro.com${destination}`, 308)
       if (url.hostname === 'www.seedance3-pro.com' && modelIdFromPath(pathname)) {
