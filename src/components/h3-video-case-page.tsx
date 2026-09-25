@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import {
   h3VideoCases,
   h3VideoCaseUrl,
+  h3VideoCaseTryUrl,
   type H3VideoCase,
 } from '../data/h3-video-cases'
 import '../styles/h3-video-cases.css'
@@ -117,14 +118,14 @@ export function H3VideoCaseDetail({ videoCase }: { videoCase: H3VideoCase }) {
               <div><dt>Format</dt><dd>{videoCase.aspectRatio}</dd></div>
             </dl>
             <p>Watch the finished scene, then use the exact text prompt as a starting point for your own variation.</p>
-            <a href="/app/video/minimax-h3">Open H3 Video ↗</a>
+            <a href={h3VideoCaseTryUrl(videoCase)}>Open H3 Video ↗</a>
           </aside>
         </div>
         <p className="video-case-summary">{videoCase.summary}</p>
         <section className="video-case-prompt-panel" aria-labelledby="video-case-prompt-title">
           <div className="video-case-prompt-heading">
             <div><span className="video-case-details-label">Prompt used for this video</span><h2 id="video-case-prompt-title">Prompt</h2></div>
-            <div className="video-case-actions"><a href="/app/video/minimax-h3">Generate Video ↗</a><button type="button" onClick={copyPrompt}>{copyLabel}</button></div>
+            <div className="video-case-actions"><a href={h3VideoCaseTryUrl(videoCase)}>Generate Video ↗</a><button type="button" onClick={copyPrompt}>{copyLabel}</button></div>
           </div>
           <p>{videoCase.prompt}</p>
         </section>

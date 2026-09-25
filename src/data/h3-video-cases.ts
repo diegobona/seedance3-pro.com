@@ -77,3 +77,12 @@ export function getH3VideoCase(slug: string) {
 export function h3VideoCaseUrl(slug: string) {
   return '/minimax-h3-prompts/' + slug
 }
+
+export function h3VideoCaseTryUrl(videoCase: H3VideoCase) {
+  const search = new URLSearchParams({
+    prompt: videoCase.prompt,
+    duration: '5',
+    aspect_ratio: videoCase.aspectRatio,
+  })
+  return '/app/video/minimax-h3?' + search.toString()
+}

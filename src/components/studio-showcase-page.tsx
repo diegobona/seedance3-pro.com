@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { AuthDialog } from './auth-dialog'
 import { UserMenu } from './user-menu'
-import { h3VideoCases, h3VideoCaseUrl } from '../data/h3-video-cases'
+import { h3VideoCases, h3VideoCaseTryUrl, h3VideoCaseUrl } from '../data/h3-video-cases'
 import '../../app/studio.css'
 import '../styles/auth.css'
 import '../styles/studio-showcase.css'
@@ -29,7 +29,13 @@ const showcaseContent = {
 function H3ShowcaseGrid() {
   useEffect(() => {
     const videos = Array.from(document.querySelectorAll<HTMLVideoElement>('.studio-showcase-video'))
-    if (!('IntersectionObserver' in window)) return
+    if (!('IntersectionObserver' in window)) {
+      videos.forEach((video) => {
+        if (video.dataset.src) video.src = video.dataset.src
+        void video.play().catch(() => {})
+      })
+      return () => videos.forEach((video) => video.pause())
+    }
     const observer = new IntersectionObserver((entries) => {
       for (const entry of entries) {
         const video = entry.target as HTMLVideoElement
@@ -51,16 +57,17 @@ function H3ShowcaseGrid() {
   return (
     <section className="studio-showcase-grid" aria-label="Original MiniMax H3 video prompts">
       {h3VideoCases.map((videoCase) => (
-        <a className="studio-showcase-card" href={h3VideoCaseUrl(videoCase.slug)} key={videoCase.slug} aria-label={`Open ${videoCase.title} video and prompt`}>
+        <article className="studio-showcase-card" key={videoCase.slug}>
           <div className={`studio-showcase-media${videoCase.aspectRatio === '9:16' ? ' is-portrait' : ''}`}>
             <video className="studio-showcase-video" muted loop playsInline preload="none" poster={videoCase.posterUrl} data-src={videoCase.videoUrl} aria-hidden="true" />
-            <span>View video &amp; prompt ↗</span>
+            <a className="studio-showcase-cover-link" href={h3VideoCaseUrl(videoCase.slug)} aria-label={`Open ${videoCase.title} video and prompt`}><span className="studio-showcase-card-title">{videoCase.title}</span></a>
+            <div className="studio-showcase-hover-actions">
+              <button type="button" disabled aria-label="Like (coming soon)" title="Coming soon">♡</button>
+              <a href={h3VideoCaseTryUrl(videoCase)} aria-label={`Try ${videoCase.title} prompt in MiniMax H3`}>Try Now</a>
+              <button type="button" disabled aria-label="Share (coming soon)" title="Coming soon">↗</button>
+            </div>
           </div>
-          <div className="studio-showcase-card-copy">
-            <h2>{videoCase.title}</h2>
-            <p>{videoCase.prompt}</p>
-          </div>
-        </a>
+        </article>
       ))}
     </section>
   )

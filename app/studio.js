@@ -566,6 +566,20 @@ export function initializeStudio() {
     }
   });
   selectModel(modelFromLocation());
+  if (activeModelId === "minimax-h3") {
+    const showcaseSearch = new URLSearchParams(window.location.search);
+    const showcasePrompt = showcaseSearch.get("prompt");
+    if (showcasePrompt) {
+      setPromptValue(showcasePrompt);
+      const duration = showcaseSearch.get("duration");
+      const aspectRatio = showcaseSearch.get("aspect_ratio");
+      if (["5", "10", "15"].includes(duration)) videoDuration.value = duration;
+      if (["16:9", "9:16", "1:1"].includes(aspectRatio)) videoAspectRatio.value = aspectRatio;
+      creditSummaryController?.refresh();
+      updateGenerateButtonLabel();
+      updateGenerateButton();
+    }
+  }
   const exampleCarouselController = createExampleCarouselController({
     slides: exampleCarouselSlides,
     dots: exampleCarouselDots,
