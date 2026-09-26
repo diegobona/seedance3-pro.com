@@ -1,3 +1,4 @@
+import { publicArticlePath, articleFileFromCard, normalizeSitemapUrls } from "./scripts/public-urls.mjs";
 import express from "express";
 import multer from "multer";
 import fs from "fs/promises";
@@ -361,7 +362,7 @@ async function publishJob(jobId, payload) {
     payload.slugBase = slugBase;
     const fileName = payload.fileName || await resolveUniqueHtmlFileName(slugBase);
     payload.fileName = fileName;
-    const articleUrl = `https://seedance3-pro.com/${fileName}`;
+    const articleUrl = `https://seedance3-pro.com${publicArticlePath(fileName)}`;
 
     const imageRes = await materializeInlineImages(payload.content, slugBase);
     const safeExcerpt = String(payload.excerpt || "").trim();
@@ -384,7 +385,7 @@ async function publishJob(jobId, payload) {
     await upsertBlogCard({ fileName, title: payload.title, excerpt: safeExcerpt, category: payload.category });
     await upsertSitemap({ fileName });
     job.status = "pushing";
-    job.output = { articleUrl: `./${fileName}`, localPublished: true, githubPushed: false };
+    job.output = { articleUrl: `.${publicArticlePath(fileName)}`, localPublished: true, githubPushed: false };
 
     ensureJobActive(job);
     const branch = (await runGit(["rev-parse", "--abbrev-ref", "HEAD"])).stdout.trim() || "main";
@@ -485,9 +486,13 @@ async function upsertBlogCard({ fileName, title, excerpt, category }) {
 }
 
 async function upsertSitemap({ fileName }) {
-  let sitemap = await fs.readFile(SITEMAP_PATH, "utf8");
-  const loc = `https://seedance3-pro.com/${fileName}`;
-  if (sitemap.includes(`<loc>${loc}</loc>`)) return;
+  const original = await fs.readFile(SITEMAP_PATH, "utf8");
+  let sitemap = normalizeSitemapUrls(original);
+  const loc = `https://seedance3-pro.com${publicArticlePath(fileName)}`;
+  if (sitemap.includes(`<loc>${loc}</loc>`)) {
+    if (sitemap !== original) await fs.writeFile(SITEMAP_PATH, sitemap, "utf8");
+    return;
+  }
   const now = new Date().toISOString().slice(0, 10);
   const entry = `
   <url>
@@ -514,14 +519,14 @@ async function removeBlogCardByFileName(fileName) {
   const middle = html.slice(blockStart, endIndex);
   const after = html.slice(endIndex);
   const cards = middle.match(/<article[\s\S]*?<\/article>/g) || [];
-  const filtered = cards.filter((card) => !card.includes(`href="./${fileName}"`));
+  const filtered = cards.filter((card) => articleFileFromCard(card) !== fileName);
   const newMiddle = `\n${filtered.join("\n\n")}\n`;
   await fs.writeFile(BLOG_HTML_PATH, `${before}${newMiddle}${after}`, "utf8");
 }
 
 async function removeSitemapByFileName(fileName) {
-  const sitemap = await fs.readFile(SITEMAP_PATH, "utf8");
-  const loc = `https://seedance3-pro.com/${fileName}`;
+  const sitemap = normalizeSitemapUrls(await fs.readFile(SITEMAP_PATH, "utf8"));
+  const loc = `https://seedance3-pro.com${publicArticlePath(fileName)}`;
   const blocks = sitemap.match(/<url>[\s\S]*?<\/url>/g) || [];
   const kept = blocks.filter((block) => !block.includes(`<loc>${loc}</loc>`));
   const output = `${sitemap.slice(0, sitemap.indexOf("<url>"))}${kept.join("\n")}\n</urlset>\n`;

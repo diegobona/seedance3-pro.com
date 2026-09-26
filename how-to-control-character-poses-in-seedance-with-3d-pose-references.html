@@ -7,12 +7,12 @@
   <meta name="description" content="Build a 3D pose in Seedance, use it as an image-generation reference, and refine your character image. Follow the steps, prompt examples, and optional image-to-video workflow.">
   <meta name="keywords" content="3D pose reference,pose to image,AI pose generator,character pose tutorial">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
-  <link rel="canonical" href="https://seedance3-pro.com/how-to-control-character-poses-in-seedance-with-3d-pose-references.html">
+  <link rel="canonical" href="https://seedance3-pro.com/how-to-control-character-poses-in-seedance-with-3d-pose-references">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="SEEDANCE 3.0">
   <meta property="og:title" content="How to Control Character Poses in Seedance with 3D Pose References">
   <meta property="og:description" content="Build a 3D pose in Seedance, use it as an image-generation reference, and refine your character image. Follow the steps, prompt examples, and optional image-to-video workflow.">
-  <meta property="og:url" content="https://seedance3-pro.com/how-to-control-character-poses-in-seedance-with-3d-pose-references.html">
+  <meta property="og:url" content="https://seedance3-pro.com/how-to-control-character-poses-in-seedance-with-3d-pose-references">
   <meta property="og:image" content="https://seedance3-pro.com/assets/pose-reference-demo-poster.webp?v=2">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="How to Control Character Poses in Seedance with 3D Pose References">
@@ -27,13 +27,13 @@
 <body>
   <header class="site-header">
     <div class="container inner">
-      <a class="brand" href="./index.html" aria-label="SEEDANCE 3.0 home">
+      <a class="brand" href="./" aria-label="SEEDANCE 3.0 home">
         <img class="brand-mark" src="./assets/seedance-mark.svg" width="40" height="40" alt="">
         <span>SEEDANCE 3.0</span>
       </a>
       <nav class="desktop-nav compact-nav" aria-label="Primary navigation">
-        <a href="./index.html">Home</a>
-        <a href="./blog.html">Blog</a>
+        <a href="./">Home</a>
+        <a href="./blog">Blog</a>
       </nav>
     </div>
   </header>
@@ -61,7 +61,7 @@
           <p>Use the final framing to decide which details matter. A hidden hand or a foot behind the other leg may need a different camera angle rather than more pose adjustments.</p>
 
           <h2>3. Send the pose to image generation</h2>
-          <p>Select <strong>Use this pose</strong>. Seedance captures the scene and attaches it as a reference in the image workspace. Check the reference thumbnail before generating, then write the character, clothing, setting, and visual style you want.</p>
+          <p>Select <strong>Pose to Image</strong>. Seedance captures the scene and attaches it as a reference in the image workspace. Check the reference thumbnail before generating, then write the character, clothing, setting, and visual style you want.</p>
           <p>You can explore the pose editor before signing in. Image generation requires sign-in and credits; check the cost shown in the workspace before submitting.</p>
           <p>A useful starting prompt is:</p>
           <blockquote><p>Use the attached mannequin image as the pose and camera reference. Create a full-body image of [character] wearing [clothing], in [setting], with [lighting and style]. Follow the visible stance, limb placement, and framing. Render the mannequin as the described character.</p></blockquote>
@@ -90,9 +90,11 @@
           <p>A pose capture describes body layout and framing. It is not an OpenPose skeleton export, an identity reference, or a timed motion sequence.</p>
 
           <h2>Can you turn this pose into a video?</h2>
-          <p>The workflow on this site currently ends with an image. The site's video generator does not currently accept this pose capture or the finished image as an input. To continue, download a suitable generated image and use a separate, compatible image-to-video tool that accepts a starting frame.</p>
-          <p>In that tool, describe a short action and the camera movement. For example: <em>The runner takes two strides forward while the camera tracks alongside at waist height.</em> A starting image can guide the opening composition; it does not specify every pose throughout the clip. Motion transfer from a reference video is a different workflow.</p>
+          <p>Once you have a finished image you like, select <strong>Animate this image</strong> on the generated result to use it as a reference in the <a href="/app/video/minimax-h3">MiniMax H3 Video Generator</a>. Describe the movement you want, then review the available settings before generating.</p>
+          <p>In the video tool, describe a short action and the camera movement. For example: <em>The runner takes two strides forward while the camera tracks alongside at waist height.</em> A starting image can guide the opening composition; it does not specify every pose throughout the clip. Motion transfer from a reference video is a different workflow.</p>
           <p>If you already use a separate 3D editor such as <a href="https://anyposes.com/" target="_blank" rel="noopener noreferrer">Anyposes</a>, its screenshot can also serve as an image reference in a tool that accepts uploads. Check that tool's input and motion controls before following a video tutorial.</p>
+
+          <p>For motion prompt ideas, explore <a href="/minimax-h3-prompts/corgi-sprint">the corgi sprint video and its camera direction</a>, or browse the <a href="/minimax-h3-prompts">MiniMax H3 Prompt Library</a>. These are text-generated examples to study, not demonstrations of pose transfer.</p>
 
           <h2>Try a pose-led image</h2>
           <p>Start with one readable pose and a simple scene. Once the still image works, add more complex styling or plan the next video step.</p>
@@ -108,8 +110,8 @@
     <div class="container article-footer-inner">
       <p>© 2026 SEEDANCE 3.0 · seedance3-pro.com</p>
       <nav aria-label="Footer navigation">
-        <a href="./index.html">Home</a>
-        <a href="./blog.html">Blog</a>
+        <a href="./">Home</a>
+        <a href="./blog">Blog</a>
       </nav>
     </div>
   </footer>

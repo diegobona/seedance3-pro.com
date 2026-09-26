@@ -62,5 +62,5 @@ test('the homepage directs model searches to distinct model tool pages', () => {
   for (const path of ['./prompt-guide', './minimax-h3-prompts', './gpt-image-2-prompts', './seedance-3-0-prompts']) {
     assert.ok(homepage.includes(`href="${path}"`), `${path} should be linked from the footer`)
   }
-  assert.match(homepage, /<a href="\.\/showcase\.html">Showcase<\/a>/)
+  assert.match(homepage, /<a href="\.\/showcase">Showcase<\/a>/)
 })

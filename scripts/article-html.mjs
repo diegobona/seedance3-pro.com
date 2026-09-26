@@ -122,13 +122,13 @@ export function normalizeArticleDocument(html) {
 
 const ARTICLE_HEADER = `  <header class="site-header">
     <div class="container inner">
-      <a class="brand" href="./index.html" aria-label="SEEDANCE 3.0 home">
+      <a class="brand" href="./" aria-label="SEEDANCE 3.0 home">
         <img class="brand-mark" src="./assets/seedance-mark.svg" width="40" height="40" alt="">
         <span>SEEDANCE 3.0</span>
       </a>
       <nav class="desktop-nav compact-nav" aria-label="Primary navigation">
-        <a href="./index.html">Home</a>
-        <a href="./blog.html">Blog</a>
+        <a href="./">Home</a>
+        <a href="./blog">Blog</a>
       </nav>
     </div>
   </header>`;
@@ -137,8 +137,8 @@ const ARTICLE_FOOTER = `  <footer class="site-footer article-footer">
     <div class="container article-footer-inner">
       <p>© 2026 SEEDANCE 3.0 · seedance3-pro.com</p>
       <nav aria-label="Footer navigation">
-        <a href="./index.html">Home</a>
-        <a href="./blog.html">Blog</a>
+        <a href="./">Home</a>
+        <a href="./blog">Blog</a>
       </nav>
     </div>
   </footer>`;

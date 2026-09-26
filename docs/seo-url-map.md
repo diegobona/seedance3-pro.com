@@ -11,9 +11,9 @@ This map records the page that owns each search intent. Primary navigation and `
 | Pose to Image explanation | `/pose-to-image` | Published, indexable; existing URL retained |
 | Pose reference examples | `/pose-reference-camera-angle-examples` | Published, indexable; existing URL retained |
 | Generic and Pose workspace | `/app/` and `/app/?model=pose-to-image` | Functional, noindex |
-| Nano Banana 2 Lite model information | `/nano-banana-2-lite.html` | Tool unavailable; noindex, absent from sitemap |
-| Creative showcase | `/showcase.html` | Published, indexable; editable Pose scenes featured above the Video Prompt Library |
-| Blog and existing articles | `/blog.html` and existing article URLs | Published; existing URLs retained |
+| Nano Banana 2 Lite model information | `/nano-banana-2-lite` | Tool unavailable; noindex, absent from sitemap |
+| Creative showcase | `/showcase` | Published, indexable; editable Pose scenes featured above the Video Prompt Library |
+| Blog and existing articles | `/blog` and existing article URLs | Published; existing URLs retained |
 | Prompt guide | `/prompt-guide` | Coming Soon page; noindex, absent from sitemap |
 | MiniMax H3 Prompt Library | `/minimax-h3-prompts` | Published, indexable; original H3 examples inside the studio layout |
 | GPT Image 2 Prompt Library | `/gpt-image-2-prompts` | Published, indexable; original images inside the studio layout |
@@ -29,3 +29,7 @@ Published tool pages contain the generation interface, visible explanation, step
 The legacy pricing page is noindex and absent from the sitemap; direct access remains available. Existing pricing and API-related articles retain their separate editorial URLs. A dedicated API product page is deferred.
 
 The prompt guide and Seedance 3.0 prompt index remain Coming Soon, noindex, and absent from the sitemap. The H3 video index and five detail pages use the original prompts recorded in `media/showcase-h3/2026-09-25/generation.json`; each detail URL is directly accessible and renders as a large modal over a subdued video gallery. The GPT Image 2 index and five detail pages use the prompts in `src/data/gpt-image-cases.json`, with original API images and optimized WebP assets in `media/showcase-gpt-image-2/2026-09-26/`. Both model showcases share the same card hover actions and Try Now handoff to the matching generator.
+
+## Contextual internal links
+
+Model generators and Prompt Libraries link to relevant prompting or pose-reference tutorials. Those tutorials link back to published tools, libraries and selected original cases using descriptive text. Case dialogs retain related works, their parent library and prompt handoff to the generator, and include a Home breadcrumb. The Blog index offers video, image and pose workflow entry points. These links render in HTML and use the canonical extensionless destinations.

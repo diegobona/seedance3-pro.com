@@ -202,7 +202,7 @@ test('model sidebar links all three prompt libraries while homepage Showcase kee
     assert.ok(sidebar.includes(`href="${path}"`))
     assert.ok(sidebar.includes(label))
   }
-  assert.match(homepage, /<a href="\.\/showcase\.html">Showcase<\/a>/)
+  assert.match(homepage, /<a href="\.\/showcase">Showcase<\/a>/)
   const server = read('src/server.ts')
   assert.match(server, /'\/prompts\/minimax-h3\/videos': '\/minimax-h3-prompts'/)
   assert.match(server, /'\/prompts\/gpt-image-2\/images': '\/gpt-image-2-prompts'/)

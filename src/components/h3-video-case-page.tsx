@@ -43,7 +43,7 @@ export function H3VideoCaseIndex() {
     <main className="video-case-site">
       <CaseHeader />
       <div className="video-case-container">
-        <nav className="video-case-breadcrumbs" aria-label="Breadcrumb"><a href="/showcase">Showcase</a><span aria-hidden="true">/</span><span>MiniMax H3 Prompt Library</span></nav>
+        <nav className="video-case-breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/showcase">Showcase</a><span aria-hidden="true">/</span><span>MiniMax H3 Prompt Library</span></nav>
         <section className="video-case-index-intro">
           <p className="video-case-eyebrow">Original video examples</p>
           <h1>MiniMax H3 Prompt Library</h1>
@@ -100,7 +100,7 @@ export function H3VideoCaseDetail({ videoCase }: { videoCase: H3VideoCase }) {
       </div>
       <article className="video-case-modal" role="dialog" aria-modal="true" aria-labelledby="video-case-title">
         <a className="video-case-close" href="/minimax-h3-prompts" aria-label="Close case and return to video library">×</a>
-        <nav className="video-case-breadcrumbs" aria-label="Breadcrumb"><a href="/showcase">Showcase</a><span aria-hidden="true">/</span><a href="/minimax-h3-prompts">MiniMax H3 Prompt Library</a></nav>
+        <nav className="video-case-breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/showcase">Showcase</a><span aria-hidden="true">/</span><a href="/minimax-h3-prompts">MiniMax H3 Prompt Library</a></nav>
         <h1 id="video-case-title">{videoCase.title}</h1>
         <div className="video-case-modal-top">
           <div className={'video-case-player' + (videoCase.aspectRatio === '9:16' ? ' is-portrait' : '')}>
@@ -135,7 +135,7 @@ export function H3VideoCaseDetail({ videoCase }: { videoCase: H3VideoCase }) {
           <p>{videoCase.creativeNote}</p>
         </section>
         <section className="video-case-related" aria-labelledby="related-video-cases">
-          <div className="video-case-related-heading"><h2 id="related-video-cases">More original video prompts</h2><a href="/minimax-h3-prompts">View all prompts ↗</a></div>
+          <div className="video-case-related-heading"><h2 id="related-video-cases">More original video prompts</h2><a href="/minimax-h3-prompts">MiniMax H3 Prompt Library ↗</a></div>
           <div className="video-case-related-grid">{related.map((entry) => <CaseCard key={entry.slug} videoCase={entry} />)}</div>
         </section>
       </article>

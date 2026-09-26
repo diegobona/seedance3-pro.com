@@ -15,7 +15,7 @@ export function ComingSoonPage({ kind, title, description, primaryHref, primaryL
           <a href="/">Seedance 3.0 <span className="release-badge">Release Updates</span></a>
           <a href="/app/video/minimax-h3">H3 Video</a>
           <a href="/app/image/gpt-image-2">GPT Image 2</a>
-          <a href="/showcase.html">Showcase</a>
+          <a href="/showcase">Showcase</a>
         </nav>
       </header>
 
@@ -27,7 +27,7 @@ export function ComingSoonPage({ kind, title, description, primaryHref, primaryL
         <p className="resource-note">We are preparing examples and practical guidance for this section. The full guide and case collections are not published yet.</p>
         <div className="resource-actions">
           <a className="resource-primary" href={primaryHref}>{primaryLabel} <span aria-hidden="true">↗</span></a>
-          <a className="resource-secondary" href="/showcase.html">View current examples</a>
+          <a className="resource-secondary" href="/showcase">View current examples</a>
         </div>
       </section>
 
@@ -37,7 +37,7 @@ export function ComingSoonPage({ kind, title, description, primaryHref, primaryL
           <a href="/app/video/minimax-h3">MiniMax H3 video generator</a>
           <a href="/app/image/gpt-image-2">GPT Image 2 image generator</a>
           <a href="/pose-to-image">Pose Control</a>
-          <a href="/blog.html">Blog</a>
+          <a href="/blog">Blog</a>
         </div>
       </section>
     </main>

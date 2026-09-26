@@ -83,6 +83,8 @@ export function ModelLandingContent({ modelId }: { modelId: string }) {
         </div>
         <h2>How to use this generator</h2>
         <ol className="model-landing-steps">{page.steps.map(step => <li key={step}>{step}</li>)}</ol>
+        {modelId === 'minimax-h3' && <p className="model-learning-links">For a worked example, explore the <a href="/minimax-h3-prompts/foldable-origami-crane">foldable phone video and its exact prompt</a>. Read the <a href="/precise-application-of-seedance-prompts">camera movement and video prompting guide</a> for ideas to adapt to your next scene.</p>}
+        {modelId === 'gpt-image-2' && <p className="model-learning-links">Explore the <a href="/gpt-image-2-prompts/foldable-pocket-universe">surreal product image and its exact prompt</a>, or follow the <a href="/how-to-control-character-poses-in-seedance-with-3d-pose-references">3D pose reference tutorial</a> to plan a character image before generating.</p>}
         <h2>Questions about this tool</h2>
         <div className="model-landing-faq">{page.questions.map(([question, answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}</div>
         <nav className="model-landing-links" aria-label="Explore related tools">
@@ -90,10 +92,10 @@ export function ModelLandingContent({ modelId }: { modelId: string }) {
           <a href="/app/video/minimax-h3">MiniMax H3 video</a>
           <a href="/app/image/gpt-image-2">GPT Image 2 image</a>
           <a href="/pose-to-image">Pose Control</a>
-          <a href="/showcase.html">Showcase</a>
+          <a href="/showcase">Showcase</a>
           {modelId === 'minimax-h3' && <a href="/minimax-h3-prompts">MiniMax H3 Prompt Library</a>}
           {modelId === 'gpt-image-2' && <a href="/gpt-image-2-prompts">GPT Image 2 Prompt Library</a>}
-          <a href="/blog.html">Blog</a>
+          <a href="/blog">Blog</a>
         </nav>
       </div>
     </section>

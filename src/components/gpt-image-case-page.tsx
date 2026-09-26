@@ -64,7 +64,7 @@ export function GptImageCaseDetail({ imageCase }: { imageCase: GptImageCase }) {
       </div>
       <article className="video-case-modal" role="dialog" aria-modal="true" aria-labelledby="image-case-title">
         <a className="video-case-close" href="/gpt-image-2-prompts" aria-label="Close case and return to image library">×</a>
-        <nav className="video-case-breadcrumbs" aria-label="Breadcrumb"><a href="/showcase">Showcase</a><span aria-hidden="true">/</span><a href="/gpt-image-2-prompts">GPT Image 2 Prompt Library</a></nav>
+        <nav className="video-case-breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/showcase">Showcase</a><span aria-hidden="true">/</span><a href="/gpt-image-2-prompts">GPT Image 2 Prompt Library</a></nav>
         <h1 id="image-case-title">{imageCase.title}</h1>
         <div className="video-case-modal-top">
           <div className={'video-case-player image-case-player' + (imageCase.aspectRatio === '2:3' ? ' is-portrait' : '')}>
@@ -97,7 +97,7 @@ export function GptImageCaseDetail({ imageCase }: { imageCase: GptImageCase }) {
           <p><a href={imageCase.sourceUrl} target="_blank" rel="noopener noreferrer">Topic reference ↗</a></p>
         </section>
         <section className="video-case-related" aria-labelledby="related-image-cases">
-          <div className="video-case-related-heading"><h2 id="related-image-cases">More original image prompts</h2><a href="/gpt-image-2-prompts">View all prompts ↗</a></div>
+          <div className="video-case-related-heading"><h2 id="related-image-cases">More original image prompts</h2><a href="/gpt-image-2-prompts">GPT Image 2 Prompt Library ↗</a></div>
           <div className="video-case-related-grid">{related.map((entry) => <RelatedCaseCard key={entry.slug} imageCase={entry} />)}</div>
         </section>
       </article>

@@ -1,3 +1,4 @@
+import { publicArticlePath, normalizeSitemapUrls } from "./scripts/public-urls.mjs";
 import { extractEditableArticleData, renderArticleDocument, updateArticleDocument } from "./scripts/article-html.mjs";
 import { parseBlogPosts, upsertBlogCardHtml, validateEditableBlogArticle } from "./scripts/blog-cms-html.mjs";
 import { handleImageGenerationRequest } from "./scripts/tuzi-image.mjs";
@@ -228,7 +229,7 @@ async function publishToGitHub(job, env) {
   const isEdit = Boolean(job.fileName);
   const slugBase = isEdit ? job.fileName.replace(/\.html$/i, "") : (slugify(job.title) || `post-${Date.now()}`);
   const fileName = job.fileName || await resolveArticleFileName(slugBase, cfg);
-  const articleUrl = `${cfg.siteBaseUrl}/${fileName}`;
+  const articleUrl = `${cfg.siteBaseUrl}${publicArticlePath(fileName)}`;
 
   const imageUpload = await uploadInlineImages(job.content, cfg, branch, slugBase);
   const finalContent = imageUpload.content;
@@ -265,7 +266,7 @@ async function publishToGitHub(job, env) {
 
   return {
     fileName,
-    articleUrl: `./${fileName}`,
+    articleUrl: `.${publicArticlePath(fileName)}`,
     branch,
     changes: [...imageChanges, articleChange, blogChange, sitemapChange]
   };
@@ -351,7 +352,8 @@ async function upsertRepoFile(cfg, filePath, content, message, branch, contentIs
 }
 
 function upsertSitemapEntry(sitemap, fileName, siteBaseUrl) {
-  const loc = `${siteBaseUrl}/${fileName}`;
+  sitemap = normalizeSitemapUrls(sitemap);
+  const loc = `${siteBaseUrl}${publicArticlePath(fileName)}`;
   if (sitemap.includes(`<loc>${loc}</loc>`)) {
     return sitemap;
   }

@@ -120,7 +120,7 @@ function FutureShowcase() {
       <h2>Seedance 3.0 video prompts are on their way.</h2>
       <p>This space is reserved for Seedance 3.0 examples and the prompts behind them.</p>
       <div className="studio-showcase-actions">
-        <a className="studio-showcase-primary" href="/showcase.html">Explore current showcase ↗</a>
+        <a className="studio-showcase-primary" href="/showcase">Explore current showcase ↗</a>
         <a href="/minimax-h3-prompts">See current video prompts ↗</a>
       </div>
     </section>
@@ -140,11 +140,14 @@ function PromptLibraryGuide({ model }: { model: 'minimax-h3' | 'gpt-image-2' }) 
         <li>Select Try Now on its card to load the prompt into the generator.</li>
         <li>{isVideo ? 'Adapt the subject, action or camera direction, review the current video settings, then generate your variation.' : 'Adapt the subject, palette or composition, add reference images if useful, then review the current image settings and generate.'}</li>
       </ol>
+      <p>{isVideo
+        ? <>For more ways to describe a shot, read the <a href="/precise-application-of-seedance-prompts">camera movement and video prompting guide</a>. Apply the ideas to a prompt here and compare the result.</>
+        : <>To plan a character composition, follow the <a href="/how-to-control-character-poses-in-seedance-with-3d-pose-references">3D pose reference tutorial</a>. To add movement to a finished image, read the <a href="/seedance-2-5-image-to-video-guide">image-to-video workflow guide</a>.</>}</p>
       <nav aria-label="Related creative tools and prompt libraries">
         <a href={isVideo ? '/app/video/minimax-h3' : '/app/image/gpt-image-2'}>{isVideo ? 'Open MiniMax H3 Video Generator' : 'Open GPT Image 2 Generator'}</a>
         <a href={isVideo ? '/gpt-image-2-prompts' : '/minimax-h3-prompts'}>{isVideo ? 'GPT Image 2 Prompt Library' : 'MiniMax H3 Prompt Library'}</a>
         <a href="/pose-to-image">Explore the 3D Pose Editor</a>
-        <a href="/showcase.html">Browse the creative Showcase</a>
+        <a href="/showcase">Browse the creative Showcase</a>
       </nav>
     </section>
   )

@@ -24,4 +24,6 @@
 .model-landing-faq p { margin: 12px 0 0; }
 .model-landing-links { display: flex; flex-wrap: wrap; gap: 16px 24px; margin-top: 55px; }
 .model-landing-links a { color: #c9ff55; }
+.model-learning-links { max-width: 800px; color: #b4b7af; line-height: 1.75; }
+.model-learning-links a { color: #c9ff55; text-decoration: underline; text-underline-offset: 3px; }
 @media (max-width: 720px) { .model-landing-inner { width: min(100% - 28px, 1080px); padding: 55px 0 68px; } .model-landing-grid { grid-template-columns: 1fr; } }

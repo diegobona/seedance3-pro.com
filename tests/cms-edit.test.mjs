@@ -197,7 +197,7 @@ test("Blog helpers validate ownership and replace an edited card in place", () =
   assert.equal(posts.length, 2);
   assert.deepEqual(posts[0], { id: "0-first-guide.html", fileName: "first-guide.html", title: "Edited First", excerpt: "Edited excerpt", category: "Comparison" });
   assert.equal(posts[1].fileName, second.fileName);
-  assert.equal((updated.match(/first-guide\.html/g) || []).length, 1);
+  assert.equal((updated.match(/href="\.\/first-guide"/g) || []).length, 1);
 });
 
 test("every article currently listed on Blog can be loaded into the editor", () => {

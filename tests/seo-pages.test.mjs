@@ -1,3 +1,4 @@
+import { parseBlogPosts } from "../scripts/blog-cms-html.mjs";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
@@ -87,7 +88,7 @@ test("homepage keeps concise copy while linking the published tools and resource
   assert.doesNotMatch(html, /Why does the studio show other AI models\?/i);
   assert.doesNotMatch(html, /Is this an official ByteDance website\?/i);
   assert.doesNotMatch(html, /Independent AI model coverage and creative workflow resources\./i);
-  for (const href of ["./app/video/minimax-h3", "./app/image/gpt-image-2", "./pose-to-image", "./showcase.html", "./blog.html"]) {
+  for (const href of ["./app/video/minimax-h3", "./app/image/gpt-image-2", "./pose-to-image", "./showcase", "./blog"]) {
     assert.ok(linksIn(footer).some(link => link.href === href), `${href} should be linked from the footer`);
   }
 });
@@ -103,8 +104,8 @@ test("homepage navigation reaches live tools and content on desktop and mobile",
     { href: "./app/video/minimax-h3", text: "H3 Video" },
     { href: "./app/image/gpt-image-2", text: "GPT Image 2" },
     { href: "./pose-to-image", text: "Pose Control" },
-    { href: "./showcase.html", text: "Showcase" },
-    { href: "./blog.html", text: "Blog" },
+    { href: "./showcase", text: "Showcase" },
+    { href: "./blog", text: "Blog" },
   ]);
   assert.match(header, /class="menu-button"[^>]*aria-controls="mobile-navigation"/i);
   const mobileNavigation = blockByClass(header, "nav", "mobile-nav");
@@ -132,28 +133,28 @@ test("blog uses the homepage design system without the highlighted intro copy", 
   const navigation = blockByClass(header, "nav", "compact-nav");
   const expectedArticles = [
     ["./pose-reference-camera-angle-examples", "Explore the examples"],
-    ["./seedance-2-5-vs-minimax-h3-vs-kling-3-0-which-ai-video-model-is-best-in-2026-2.html", "Read article"],
-    ["./how-to-control-character-poses-in-seedance-with-3d-pose-references.html", "Read article"],
-    ["./how-to-use-the-seedance-api-complete-developer-guide-2026.html", "Read article"],
-    ["./what-is-seedance-pro-features-pricing-how-to-get-started.html", "Read article"],
-    ["./seedance-lite-vs-pro-which-plan-should-you-choose.html", "Read article"],
-    ["./seedance-pricing-2026-all-plans-compared.html", "Read article"],
-    ["./how-to-use-seedance-for-free-in-2026-all-free-methods.html", "Read article"],
-    ["./seedance-2-5-image-to-video-guide.html", "Read guide"],
-    ["./precise-application-of-seedance-prompts.html", "Read article"],
-    ["./after-thorough-testing-the-conclusion-is-clear-seedance-2-0-s-universal-template-2.html", "Read article"],
-    ["./seedance-2-0-complete-tutorial.html", "Read article"],
-    ["./seedance-vs-kling-3-comparison.html", "Read comparison"],
-    ["./seedance-tiktok-ad-video-guide.html", "Read playbook"],
+    ["./seedance-2-5-vs-minimax-h3-vs-kling-3-0-which-ai-video-model-is-best-in-2026-2", "Read article"],
+    ["./how-to-control-character-poses-in-seedance-with-3d-pose-references", "Read article"],
+    ["./how-to-use-the-seedance-api-complete-developer-guide-2026", "Read article"],
+    ["./what-is-seedance-pro-features-pricing-how-to-get-started", "Read article"],
+    ["./seedance-lite-vs-pro-which-plan-should-you-choose", "Read article"],
+    ["./seedance-pricing-2026-all-plans-compared", "Read article"],
+    ["./how-to-use-seedance-for-free-in-2026-all-free-methods", "Read article"],
+    ["./seedance-2-5-image-to-video-guide", "Read guide"],
+    ["./precise-application-of-seedance-prompts", "Read article"],
+    ["./after-thorough-testing-the-conclusion-is-clear-seedance-2-0-s-universal-template-2", "Read article"],
+    ["./seedance-2-0-complete-tutorial", "Read article"],
+    ["./seedance-vs-kling-3-comparison", "Read comparison"],
+    ["./seedance-tiktok-ad-video-guide", "Read playbook"],
   ];
 
   assert.match(html, /<link rel="stylesheet" href="\.\/site\.css">/i);
   assert.doesNotMatch(html, /cdn\.tailwindcss\.com|bg-slate-|text-indigo-/i);
   assert.deepEqual(linksIn(navigation), [
     { href: "./", text: "Seedance 3.0 Release Updates" },
-    { href: "./blog.html", text: "Blog" },
+    { href: "./blog", text: "Blog" },
   ]);
-  assert.doesNotMatch(html, /href="\.\/showcase\.html"/i);
+  assert.doesNotMatch(html, /href="\.\/showcase"/i);
   assert.doesNotMatch(header, /Start Creating/i);
   assert.doesNotMatch(html, /Tutorial Center|Seedance Tutorials and Long-Tail Guides|This blog section helps Seedance 3\.0 build topical authority/i);
   assert.match(html, /<!-- BLOG_POSTS_START -->[\s\S]*<!-- BLOG_POSTS_END -->/i);
@@ -167,7 +168,7 @@ test("blog uses the homepage design system without the highlighted intro copy", 
 test("every Blog article detail page uses the homepage shell and only Home and Blog navigation", () => {
   const blog = read("blog.html");
   const articleBlock = blog.match(/<!-- BLOG_POSTS_START -->([\s\S]*?)<!-- BLOG_POSTS_END -->/i)?.[1] ?? "";
-  const articlePaths = [...articleBlock.matchAll(/href="\.\/([^\"]+\.html)"/gi)].map((match) => match[1]);
+  const articlePaths = parseBlogPosts(blog).map((post) => post.fileName);
 
   assert.ok(articlePaths.length > 0, "Blog should link at least one article detail page");
   for (const articlePath of articlePaths) {
@@ -178,13 +179,13 @@ test("every Blog article detail page uses the homepage shell and only Home and B
     assert.match(html, /<link rel="stylesheet" href="\.\/site\.css">/i, `${articlePath} should use site.css`);
     assert.doesNotMatch(html, /cdn\.tailwindcss\.com/i, `${articlePath} should not load Tailwind`);
     assert.deepEqual(linksIn(navigation), [
-      { href: "./index.html", text: "Home" },
-      { href: "./blog.html", text: "Blog" },
+      { href: "./", text: "Home" },
+      { href: "./blog", text: "Blog" },
     ], `${articlePath} should expose only Home and Blog in its header navigation`);
     assert.doesNotMatch(header, /Start Creating|Features|Pricing/i, `${articlePath} should not expose legacy header actions`);
-    assert.match(html, /<main class="article-main">/i, `${articlePath} should use the shared article layout`);
-    assert.match(html, /<article class="(?:article-shell|article-content prose)">/i, `${articlePath} should use the shared article shell`);
-    assert.match(html, /<(?:div|article) class="article-content prose">/i, `${articlePath} should use shared long-form typography`);
+    assert.match(html, /<main class="article-main"[^>]*>/i, `${articlePath} should use the shared article layout`);
+    assert.match(html, /<article class="(?:article-shell|article-content prose)(?: [^"]*)?">/i, `${articlePath} should use the shared article shell`);
+    assert.match(html, /<(?:div|article) class="article-content prose(?: [^"]*)?">/i, `${articlePath} should use shared long-form typography`);
     assert.match(html, /<footer class="site-footer article-footer">/i, `${articlePath} should use the shared footer`);
   }
 });
@@ -192,8 +193,8 @@ test("every Blog article detail page uses the homepage shell and only Home and B
 test("Seedance 2.5 owns the current image-to-video guide intent while 2.0 remains a legacy resource", () => {
   const currentPath = "seedance-2-5-image-to-video-guide.html";
   const legacyPath = "seedance-2-0-complete-tutorial.html";
-  const currentUrl = `https://seedance3-pro.com/${currentPath}`;
-  const legacyUrl = `https://seedance3-pro.com/${legacyPath}`;
+  const currentUrl = `https://seedance3-pro.com/${currentPath.replace(/\.html$/, "")}`;
+  const legacyUrl = `https://seedance3-pro.com/${legacyPath.replace(/\.html$/, "")}`;
   const current = read(currentPath);
   const legacy = read(legacyPath);
   const blog = read("blog.html");
@@ -236,12 +237,12 @@ test("Seedance 2.5 owns the current image-to-video guide intent while 2.0 remain
   assert.match(legacy, new RegExp(`<link rel="canonical" href="${legacyUrl.replaceAll(".", "\\.")}">`, "i"));
   assert.doesNotMatch(legacy, /site brand|official model version/i);
 
-  const currentCardIndex = blog.indexOf(`href="./${currentPath}"`);
-  const legacyCardIndex = blog.indexOf(`href="./${legacyPath}"`);
+  const currentCardIndex = blog.indexOf(`href="./${currentPath.replace(/\.html$/, "")}"`);
+  const legacyCardIndex = blog.indexOf(`href="./${legacyPath.replace(/\.html$/, "")}"`);
   assert.ok(currentCardIndex > -1, "Blog should link the current guide");
   assert.ok(legacyCardIndex > currentCardIndex, "Current guide should appear before the legacy guide");
-  assert.match(blog, /<h2>Seedance 2\.5 Image-to-Video Guide: Prompts, Settings &amp; Examples<\/h2>[\s\S]*?href="\.\/seedance-2-5-image-to-video-guide\.html"/i);
-  assert.match(blog, /<h2>Seedance 2\.0 Image-to-Video Tutorial \(Legacy Guide\)<\/h2>[\s\S]*?href="\.\/seedance-2-0-complete-tutorial\.html"[^>]*>Read article<\/a>/i);
+  assert.match(blog, /<h2>Seedance 2\.5 Image-to-Video Guide: Prompts, Settings &amp; Examples<\/h2>[\s\S]*?href="\.\/seedance-2-5-image-to-video-guide"/i);
+  assert.match(blog, /<h2>Seedance 2\.0 Image-to-Video Tutorial \(Legacy Guide\)<\/h2>[\s\S]*?href="\.\/seedance-2-0-complete-tutorial"[^>]*>Read article<\/a>/i);
   assert.equal((sitemap.match(new RegExp(currentUrl.replaceAll(".", "\\."), "g")) ?? []).length, 1);
 });
 
@@ -323,7 +324,7 @@ test("homepage video showcase uses the supplied clips in order", () => {
 test("the API guide has one indexable primary URL", () => {
   const primaryPath = "how-to-use-the-seedance-api-complete-developer-guide-2026.html";
   const aliasPath = "how-to-use-the-seedance-api-complete-developer-guide-2026-2.html";
-  const primaryUrl = `https://seedance3-pro.com/${primaryPath}`;
+  const primaryUrl = `https://seedance3-pro.com/${primaryPath.replace(/\.html$/, "")}`;
   const primary = read(primaryPath);
   const alias = read(aliasPath);
   const blog = read("blog.html");
@@ -333,8 +334,8 @@ test("the API guide has one indexable primary URL", () => {
   assert.match(primary, new RegExp(`<link rel="canonical" href="${primaryUrl.replaceAll(".", "\\.")}">`, "i"));
   assert.match(alias, /<meta name="robots" content="noindex,follow">/i);
   assert.match(alias, new RegExp(`<link rel="canonical" href="${primaryUrl.replaceAll(".", "\\.")}">`, "i"));
-  assert.match(alias, new RegExp(`(?:url=|location\\.replace\\()[^>]*${primaryPath.replaceAll(".", "\\.")}`, "i"));
-  assert.equal((blog.match(new RegExp(primaryPath.replaceAll(".", "\\."), "g")) ?? []).length, 1);
+  assert.match(alias, new RegExp(`(?:url=|location\\.replace\\()[^>]*${primaryPath.replace(/\.html$/, "").replaceAll(".", "\\.")}`, "i"));
+  assert.equal((blog.match(new RegExp(primaryPath.replace(/\.html$/, "").replaceAll(".", "\\."), "g")) ?? []).length, 1);
   assert.equal((blog.match(new RegExp(aliasPath.replaceAll(".", "\\."), "g")) ?? []).length, 0);
   assert.equal((sitemap.match(new RegExp(primaryUrl.replaceAll(".", "\\."), "g")) ?? []).length, 1);
   assert.equal((sitemap.match(new RegExp(aliasPath.replaceAll(".", "\\."), "g")) ?? []).length, 0);
@@ -396,7 +397,7 @@ test("Blog article normalization preserves SEO metadata and content and is idemp
   <script type="application/ld+json">${jsonLd}</script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head><body class="bg-slate-950 text-slate-100 antialiased">
-  <header class="sticky top-0"><a href="./index.html">SEEDANCE 3.0</a><nav><a href="./blog.html">Blog</a><a href="./features.html">Features</a></nav><a href="#generator">Start Creating</a></header>
+  <header class="sticky top-0"><a href="./">SEEDANCE 3.0</a><nav><a href="./blog">Blog</a><a href="./features">Features</a></nav><a href="#generator">Start Creating</a></header>
   <main class="mx-auto max-w-4xl"><article>
     <p class="text-xs">Tutorial</p><h1 class="text-5xl">Visible article heading</h1>
     <p class="mt-6">Lead paragraph with <a href="./kept-link.html">a kept link</a>.</p>
@@ -422,8 +423,8 @@ test("Blog article normalization preserves SEO metadata and content and is idemp
   assert.match(output, /<link rel="stylesheet" href="\.\/site\.css">/i);
   assert.doesNotMatch(output, /cdn\.tailwindcss\.com|Start Creating|Features/i);
   assert.deepEqual(linksIn(blockByClass(output, "nav", "compact-nav")), [
-    { href: "./index.html", text: "Home" },
-    { href: "./blog.html", text: "Blog" },
+    { href: "./", text: "Home" },
+    { href: "./blog", text: "Blog" },
   ]);
   assert.equal(normalizeBlogArticleDocument(output), output, "normalization should be idempotent");
 });
@@ -474,7 +475,7 @@ const publicPages = [
     file: "minimax-h3-vs-seedance-3.html",
     title: /MiniMax H3 vs Seedance 3/i,
     h1: /MiniMax H3 vs Seedance 3/i,
-    canonical: "https://seedance3-pro.com/minimax-h3-vs-seedance-3.html",
+    canonical: "https://seedance3-pro.com/minimax-h3-vs-seedance-3",
   },
 ];
 
@@ -547,7 +548,7 @@ test("studio omits the requested preview, guide, and status copy", () => {
 test("sitemap includes remaining static pages and excludes the generic studio", () => {
   const sitemap = read("sitemap.xml");
   for (const page of publicPages) {
-    assert.match(sitemap, new RegExp(page.file.replaceAll(".", "\\.")));
+    assert.match(sitemap, new RegExp(page.canonical.replaceAll(".", "\\.")));
   }
   assert.doesNotMatch(sitemap, /<loc>https:\/\/seedance3-pro\.com\/app\/<\/loc>/i);
 });

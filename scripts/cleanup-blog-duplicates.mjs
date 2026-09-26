@@ -1,3 +1,4 @@
+import { articleFileFromCard, publicArticlePath, normalizeSitemapUrls } from "./public-urls.mjs";
 import fs from "fs/promises";
 import path from "path";
 
@@ -9,7 +10,7 @@ const startTag = "<!-- BLOG_POSTS_START -->";
 const endTag = "<!-- BLOG_POSTS_END -->";
 
 function cardDetails(block, index) {
-  const href = block.match(/href="\.\/([^"]+\.html)"/i)?.[1]?.trim() || "";
+  const href = articleFileFromCard(block);
   const title = block.match(/<h2[^>]*>([\s\S]*?)<\/h2>/i)?.[1]?.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim() || "";
   return { block, href, index, normalizedTitle: title.toLowerCase() };
 }
@@ -19,7 +20,7 @@ function choosePrimary(items) {
 }
 
 function buildAliasHtml(aliasFile, primaryFile) {
-  const primaryUrl = `${siteBaseUrl}/${primaryFile}`;
+  const primaryUrl = `${siteBaseUrl}${publicArticlePath(primaryFile)}`;
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -28,14 +29,14 @@ function buildAliasHtml(aliasFile, primaryFile) {
   <title>Article moved | SEEDANCE Blog</title>
   <meta name="robots" content="noindex,follow">
   <link rel="canonical" href="${primaryUrl}">
-  <meta http-equiv="refresh" content="0; url=./${primaryFile}">
+  <meta http-equiv="refresh" content="0; url=.${publicArticlePath(primaryFile)}">
 </head>
 <body>
   <main>
     <h1>Article moved</h1>
-    <p>This guide now has one canonical URL. <a href="./${primaryFile}">Read the Seedance API guide</a>.</p>
+    <p>This guide now has one canonical URL. <a href=".${publicArticlePath(primaryFile)}">Read the Seedance API guide</a>.</p>
   </main>
-  <script>location.replace("./${primaryFile}" + location.search + location.hash);</script>
+  <script>location.replace(".${publicArticlePath(primaryFile)}" + location.search + location.hash);</script>
 </body>
 </html>
 <!-- Compatibility alias: ${aliasFile} -->
@@ -80,7 +81,7 @@ await fs.writeFile(blogPath, `${before}\n${keptCards.map((card) => card.block).j
 
 const aliasPaths = new Set(aliases.map(({ alias }) => alias));
 const primaryPaths = new Set(aliases.map(({ primary }) => primary));
-const sitemapXml = await fs.readFile(sitemapPath, "utf8");
+const sitemapXml = normalizeSitemapUrls(await fs.readFile(sitemapPath, "utf8"));
 const urlBlocks = sitemapXml.match(/<url>[\s\S]*?<\/url>/g) || [];
 const seenLocations = new Set();
 const keptUrlBlocks = [];
@@ -89,13 +90,13 @@ for (const block of urlBlocks) {
   const location = block.match(/<loc>(.*?)<\/loc>/i)?.[1]?.trim() || "";
   if (!location || seenLocations.has(location)) continue;
   const pathname = new URL(location).pathname.replace(/^\//, "");
-  if (aliasPaths.has(pathname)) continue;
+  if (aliasPaths.has(`${pathname}.html`)) continue;
   seenLocations.add(location);
   keptUrlBlocks.push(block);
 }
 
 for (const primary of primaryPaths) {
-  const location = `${siteBaseUrl}/${primary}`;
+  const location = `${siteBaseUrl}${publicArticlePath(primary)}`;
   if (seenLocations.has(location)) continue;
   keptUrlBlocks.push(`  <url>\n    <loc>${location}</loc>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>`);
   seenLocations.add(location);

@@ -1,3 +1,5 @@
+import { articleFileFromCard, publicArticlePath } from "./public-urls.mjs";
+
 const ARTICLE_FILE_PATTERN = /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.html$/i;
 
 function escapeHtml(input) {
@@ -40,7 +42,7 @@ function urlMatchesFileName(value, fileName) {
   if (!value) return false;
   try {
     const parsed = new URL(value, "https://seedance3-pro.com/");
-    return decodeURIComponent(parsed.pathname.split("/").filter(Boolean).at(-1) || "") === fileName
+    return [publicArticlePath(fileName), `/${fileName}`].includes(decodeURIComponent(parsed.pathname))
       && !parsed.search
       && !parsed.hash;
   } catch {
@@ -52,7 +54,7 @@ export function parseBlogPosts(html) {
   const block = blogPostBlock(html)[1];
   const cards = block.match(/<article\b[\s\S]*?<\/article>/gi) || [];
   return cards.map((card, index) => {
-    const fileName = card.match(/href="\.\/([^\"]+\.html)"/i)?.[1]?.trim() || "";
+    const fileName = articleFileFromCard(card);
     return {
       id: `${index}-${fileName || "unknown"}`,
       fileName,
@@ -86,7 +88,7 @@ function renderBlogCard({ fileName, title, excerpt, category }) {
   return `<article class="blog-card card card-pad">
         <p class="blog-card-category tag lime">${escapeHtml(category || "Tutorial")}</p>
         <h2>${escapeHtml(title)}</h2>${excerptHtml}
-        <a href="./${fileName}" class="card-link">Read article</a>
+        <a href=".${publicArticlePath(fileName)}" class="card-link">Read article</a>
       </article>`;
 }
 
@@ -94,10 +96,9 @@ export function upsertBlogCardHtml(html, post) {
   const source = String(html || "");
   const blockMatch = blogPostBlock(source);
   const block = blockMatch[1];
-  const href = `./${post.fileName}`;
   const cards = block.match(/<article\b[\s\S]*?<\/article>/gi) || [];
   const card = renderBlogCard(post);
-  const existingIndex = cards.findIndex((item) => item.includes(`href="${href}"`));
+  const existingIndex = cards.findIndex((item) => articleFileFromCard(item) === post.fileName);
   const nextCards = [...cards];
   if (existingIndex >= 0) nextCards[existingIndex] = card;
   else nextCards.unshift(card);
