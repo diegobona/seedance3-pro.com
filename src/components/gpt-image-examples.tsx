@@ -32,7 +32,9 @@ export function GptImageExamples() {
   return (
     <section className="context-card h3-examples gpt-image-examples" id="gpt-image-examples" aria-label="GPT Image 2 image examples">
       <div className="h3-examples-heading"><span>IMAGE EXAMPLES</span><small>MADE WITH GPT IMAGE 2</small></div>
-      <img key={selected.slug} className="h3-example-player" src={selected.imageUrl} alt={selected.summary} width={selected.size.split('x')[0]} height={selected.size.split('x')[1]} />
+      <div className="gpt-example-frame">
+        <img key={selected.slug} src={selected.imageUrl} alt={selected.summary} />
+      </div>
       <div className="h3-example-details">
         <div className="h3-example-title"><div><span>{selected.style.toUpperCase()}</span><h2>{selected.title}</h2></div><button type="button" onClick={tryExample}>Try it ↗</button></div>
         <p className="h3-example-prompt">{selected.prompt}</p>
