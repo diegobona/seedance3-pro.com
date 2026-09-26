@@ -1,0 +1,10 @@
+{
+  "model": "gpt-image-2",
+  "generatedAt": "2026-09-26T01:45:48.981Z",
+  "prompt": "Edit this countryside photograph while preserving the same two clothed adults, chestnut horse, stable setting and warm morning lighting. Remove the dog, remove the cat, and remove the wooden crate at the FRONT RIGHT. Fill those spaces naturally with dirt ground. Retain exactly ONE wooden crate at front LEFT and ONE wooden stool behind the woman on the right. Pose the man at left with both arms crossed comfortably across his chest. Keep the woman at right with her outside hand on her hip, and extend her other arm toward the left, gently bent at the elbow, open hand resting near the horse shoulder. The horse remains between and behind the adults, side view facing right. Show full bodies, all boots and hooves. Keep the same clothing, identities and photographic quality. Final scene contains exactly two adults, one horse, one wooden crate and one wooden stool. No other people or animals. No text or logos. Landscape 3:2 editorial photograph.",
+  "input": "media/pose-cases/2026-09-23/outputs/stable-morning.png",
+  "output": "result.png",
+  "size": "1536x1024",
+  "count": 1,
+  "note": "Direct 3D reference requests were rejected by provider moderation. Final image is an AI edit of the existing ranch photograph, with poses and object count adjusted to match the recorded scene. It is shown as an AI visualization, not a recorded successful generation in the website."
+}

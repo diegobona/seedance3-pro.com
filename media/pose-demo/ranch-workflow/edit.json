@@ -1,0 +1,89 @@
+{
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "duration": 22,
+  "beats": [
+    {
+      "name": "00-scene",
+      "start": 0,
+      "duration": 1.4,
+      "title": "Compose the whole scene.",
+      "subtitle": "Two people. One horse. A wooden crate and a stool.",
+      "stage": "01 / COMPOSE"
+    },
+    {
+      "name": "01-preset",
+      "start": 1.4,
+      "duration": 2,
+      "title": "Start with a pose preset.",
+      "subtitle": "Select a character. Apply a pose in one click.",
+      "stage": "02 / POSE PRESETS"
+    },
+    {
+      "name": "02-select",
+      "start": 3.4,
+      "duration": 0.9,
+      "title": "Direct each character.",
+      "subtitle": "Keep both people and the horse in the same composition.",
+      "stage": "03 / MANUAL CONTROL"
+    },
+    {
+      "name": "03-drag",
+      "start": 4.3,
+      "duration": 2.4,
+      "title": "Drag a joint. Refine the pose.",
+      "subtitle": "Move the wrist; the arm follows with ragdoll IK.",
+      "stage": "03 / MANUAL CONTROL"
+    },
+    {
+      "name": "04-orbit",
+      "start": 6.699999999999999,
+      "duration": 1.8,
+      "title": "Find your camera angle.",
+      "subtitle": "Orbit the scene while keeping every object in place.",
+      "stage": "04 / CAMERA"
+    },
+    {
+      "name": "05-camera",
+      "start": 8.5,
+      "duration": 1.3,
+      "title": "Lock in the composition.",
+      "subtitle": "People, animal, props and camera — all arranged.",
+      "stage": "04 / CAMERA"
+    },
+    {
+      "name": "06-reference",
+      "start": 9.8,
+      "duration": 1.4,
+      "title": "Send the scene to your image workflow.",
+      "subtitle": "Pose to Image attaches a clean reference automatically.",
+      "stage": "05 / POSE TO IMAGE"
+    },
+    {
+      "name": "07-description",
+      "start": 11.200000000000001,
+      "duration": 1.8,
+      "title": "Describe the world around it.",
+      "subtitle": "Add clothing, a rustic stable and warm morning light.",
+      "stage": "05 / POSE TO IMAGE"
+    },
+    {
+      "name": "08-compare",
+      "start": 13.000000000000002,
+      "duration": 4,
+      "title": "One composition. A whole new world.",
+      "subtitle": "A countryside visualization of the arranged scene.",
+      "stage": "06 / AI IMAGE"
+    },
+    {
+      "name": "09-result",
+      "start": 17,
+      "duration": 5,
+      "title": "Pose it. Make it yours.",
+      "subtitle": "Start with the scene. Give your image a clear direction.",
+      "stage": "POSE STUDIO / SEEDANCE"
+    }
+  ],
+  "source": "Real Pose Studio UI screenshots captured during preset, IK, camera and reference-transfer interactions."
+}

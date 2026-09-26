@@ -1,14 +1,14 @@
-# Silent Homepage Demo Script
+# Silent ranch demo script
 
-**Format:** 16:9, silent, approximately 14 seconds, designed for muted autoplay and looping.
+1. Compose the whole scene.
+2. Start with a pose preset.
+3. Direct each character.
+4. Drag a joint. Refine the pose.
+5. Find your camera angle.
+6. Lock in the composition.
+7. Send the scene to your image workflow.
+8. Describe the world around it.
+9. One composition. A whole new world.
+10. Pose it. Make it yours.
 
-## On-screen copy
-
-1. **Direct the body.**
-2. **13-point ragdoll IK**
-3. **Use the pose as your reference.**
-4. **Pose it. Describe it. Create it.**
-
-## Interaction spine
-
-The viewer sees a real Pose Studio session: choose a familiar preset, make one clear wrist adjustment, transfer the cleaned mannequin pose into GPT Image 2, and end on the attached pose reference. No generation request is submitted, so the demo never spends credits or implies a result that was not produced.
+22 seconds. Short holds and fast real interactions. No narration. The final image is labeled AI visualization; see STORYBOARD.md for its actual generation method.
