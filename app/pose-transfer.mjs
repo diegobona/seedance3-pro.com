@@ -1,5 +1,5 @@
 export const POSE_REFERENCE_PROMPT_PREFIX =
-  "Use the attached 3D mannequin scene only as a body-pose and camera-angle reference. Preserve the number of figures, each figure's pose and position, their relative spacing, and the framing; do not copy the mannequins' appearance.";
+  "Use Image 1, the attached 3D mannequin scene, only as a body-pose and camera-angle reference. Preserve the number of figures, each figure's pose and position, their relative spacing, and the framing; do not copy the mannequins' appearance. Use any additional reference images for the characters, clothing or environment as described below.";
 
 export function buildPoseReferencePrompt(value) {
   const prompt = String(value || "").trim();

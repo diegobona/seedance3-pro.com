@@ -2,6 +2,7 @@ import { buildModelUrl, normalizeModelId } from "./model-routing.mjs";
 import { canonicalModelPath, modelIdFromPath } from "./seo-routes.mjs";
 import { requestImageGeneration } from "./image-generation.mjs";
 import { prepareImageForVideo, loadVideoReference } from "./image-to-video.mjs";
+import { validateImageReferences } from "./image-references.mjs";
 import { pollVideoGenerationTask, requestVideoGeneration } from "./video-generation.mjs";
 import { createLaunchWaitlistController } from "./launch-waitlist.mjs";
 import { buildPoseReferencePrompt } from "./pose-transfer.mjs";
@@ -189,8 +190,7 @@ export function initializeStudio() {
   const poseStudio = document.getElementById("pose-studio");
 
   let activeModelId = "gpt-image-2";
-  let referenceFile = null;
-  let referencePreviewUrl = "";
+  let imageReferences = [];
   let poseReferenceActive = false;
   let imageGenerationInFlight = false;
   let videoPolling = false;
@@ -376,10 +376,10 @@ export function initializeStudio() {
     creationGrid.hidden = poseModel;
     if (poseStudio) poseStudio.hidden = !poseModel;
     if (poseModel) void ensurePoseStudio();
-    referenceLabel.textContent = model.canGenerate ? "Reference image" : "Reference files";
+    referenceLabel.textContent = model.canGenerate ? "Reference images" : "Reference files";
     referenceMeta.textContent = model.canGenerate ? "Optional · enables image-to-image" : videoModel ? "Preview only" : "Reference images";
-    uploadTitle.textContent = model.canGenerate ? "Choose a reference image" : "Drop or choose reference media";
-    uploadHint.textContent = model.canGenerate ? "PNG, JPEG or WebP · max 10 MB" : "Interface preview only—files are not uploaded";
+    uploadTitle.textContent = model.canGenerate ? "Add reference images" : "Drop or choose reference media";
+    uploadHint.textContent = model.canGenerate ? "Up to 16 images · 10 MB each · 24 MB total" : "Interface preview only—files are not uploaded";
     uploadBox.classList.toggle("is-enabled", Boolean(model.canGenerate) && !videoModel);
     uploadGroup.hidden = model.type === "video";
     updateVideoMode();
@@ -601,18 +601,48 @@ export function initializeStudio() {
   }
 
   function clearReferenceImage() {
-    poseReferenceActive = false;
     poseResultActionsController?.setVisible(false);
-    referenceFile = null;
+    imageReferences.forEach(item => URL.revokeObjectURL(item.url));
+    imageReferences = [];
     referenceInput.value = "";
-    referencePreview.hidden = true;
-    referencePreviewImage.removeAttribute("src");
-    referenceFileName.textContent = "";
-    if (referencePreviewUrl) {
-      URL.revokeObjectURL(referencePreviewUrl);
-      referencePreviewUrl = "";
+    renderImageReferences();
+  }
+
+  function renderImageReferences() {
+    const pose = imageReferences.find(item => item.source === "pose");
+    poseReferenceActive = Boolean(pose);
+    if (poseScenePreview) {
+      if (pose) poseScenePreview.src = pose.url;
+      else poseScenePreview.removeAttribute("src");
     }
-    poseScenePreview?.removeAttribute("src");
+    referencePreview.classList.add("multiple-image-references");
+    referencePreview.hidden = imageReferences.length === 0;
+    referenceMeta.textContent = `${imageReferences.length} / 16 · Optional`;
+    const items = imageReferences.map((item, index) => {
+      const row = document.createElement("div");
+      row.className = "image-reference-item";
+      const thumbnail = document.createElement("img");
+      thumbnail.src = item.url;
+      thumbnail.alt = `Reference image ${index + 1}`;
+      const caption = document.createElement("span");
+      caption.textContent = `Image ${index + 1}${item.source === "pose" ? " · Pose" : ""}`;
+      caption.title = item.file.name;
+      const remove = document.createElement("button");
+      remove.type = "button";
+      remove.textContent = "×";
+      remove.setAttribute("aria-label", `Remove reference image ${index + 1}`);
+      remove.disabled = imageGenerationInFlight;
+      remove.onclick = () => {
+        if (imageGenerationInFlight) return;
+        imageReferences.splice(index, 1);
+        URL.revokeObjectURL(item.url);
+        renderImageReferences();
+      };
+      row.append(thumbnail, caption, remove);
+      return row;
+    });
+    referencePreview.replaceChildren(...items);
+    referenceInput.disabled = imageGenerationInFlight;
     updateImageContext();
   }
 
@@ -626,30 +656,27 @@ export function initializeStudio() {
   }
 
   function setReferenceImage(file, { source = "upload" } = {}) {
-    if (!file) return;
-    if (!["image/png", "image/jpeg", "image/webp"].includes(file.type)) {
-      generationStatus.textContent = "Choose a PNG, JPEG, or WebP image.";
+    const files = Array.isArray(file) ? file : file ? [file] : [];
+    if (!files.length || imageGenerationInFlight) return;
+    const retained = source === "pose" ? imageReferences.filter(item => item.source !== "pose") : imageReferences;
+    const error = validateImageReferences([...retained.map(item => item.file), ...files]);
+    referenceInput.value = "";
+    if (error) {
+      generationStatus.textContent = error;
       generationStatus.className = "generation-status is-error";
       return;
     }
-    if (file.size > 10 * 1024 * 1024) {
-      generationStatus.textContent = "Reference image cannot exceed 10 MB.";
-      generationStatus.className = "generation-status is-error";
-      return;
-    }
-    clearReferenceImage();
-    referenceFile = file;
-    poseReferenceActive = source === "pose";
-    referencePreviewUrl = URL.createObjectURL(file);
-    referencePreviewImage.src = referencePreviewUrl;
-    referenceFileName.textContent = file.name;
-    referencePreview.hidden = false;
-    if (poseReferenceActive) {
+    const added = files.map(file => ({ file, source, url: URL.createObjectURL(file) }));
+    if (source === "pose") {
+      imageReferences.filter(item => item.source === "pose").forEach(item => URL.revokeObjectURL(item.url));
+      imageReferences = [...added, ...retained];
       resultCard.hidden = true;
-      if (poseScenePreview) poseScenePreview.src = referencePreviewUrl;
+      poseResultActionsController?.setVisible(false);
+    } else {
+      imageReferences.push(...added);
     }
-    updateImageContext();
-    generationStatus.textContent = "Reference image ready.";
+    renderImageReferences();
+    generationStatus.textContent = "Reference images ready. Use Image 1, Image 2, etc. in your prompt.";
     generationStatus.className = "generation-status";
   }
 
@@ -806,17 +833,19 @@ export function initializeStudio() {
   listen(uploadBox, "click", () => {
     if (studioModels[activeModelId]?.canGenerate) referenceInput.click();
   });
-  listen(referenceInput, "change", () => setReferenceImage(referenceInput.files?.[0]));
+  referenceInput.multiple = true;
+  listen(referenceInput, "change", () => setReferenceImage(Array.from(referenceInput.files || [])));
   listen(referenceClear, "click", clearReferenceImage);
   async function runImageGeneration() {
     if (imageGenerationInFlight || activeModelId !== "gpt-image-2" || !prompt.value.trim() || creditInsufficient) return;
     const generationUsedPoseReference = poseReferenceActive;
     imageGenerationInFlight = true;
+    renderImageReferences();
     updateGenerateButton();
     updateGenerateButtonLabel();
     generationStatus.textContent = generationUsedPoseReference
       ? "Creating from your pose reference…"
-      : referenceFile
+      : imageReferences.length
         ? "Editing from your reference image…"
         : "Creating an image from your prompt…";
     generationStatus.className = "generation-status is-working";
@@ -827,7 +856,7 @@ export function initializeStudio() {
     try {
       const result = await requestImageGeneration({
         prompt: prompt.value,
-        referenceFile,
+        referenceFiles: imageReferences.map(item => item.file),
         quantity: normalizeImageQuantity(imageQuantity.value),
         resolution: imageQuality.value,
         size: sizeForAspectRatio(imageAspectRatio.value)
@@ -860,6 +889,7 @@ export function initializeStudio() {
     } finally {
       if (!destroyed) {
         imageGenerationInFlight = false;
+        renderImageReferences();
         updateImageContext();
         updateGenerateButtonLabel();
         updateGenerateButton();

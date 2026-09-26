@@ -359,7 +359,7 @@ test("generation rejects unsafe multipart shapes before provider work", async ()
     new Request(endpoint, {
       method: "POST",
       body: new FormData(),
-      headers: { "content-length": String(13 * 1024 * 1024) }
+      headers: { "content-length": String(27 * 1024 * 1024) }
     }),
     successEnv(),
     { fetchImpl }

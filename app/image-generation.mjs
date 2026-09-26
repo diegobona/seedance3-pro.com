@@ -1,6 +1,7 @@
 export async function requestImageGeneration({
   prompt,
   referenceFile = null,
+  referenceFiles = referenceFile ? [referenceFile] : [],
   quantity = 1,
   size = "1024x1024",
   fetchImpl = fetch,
@@ -11,8 +12,8 @@ export async function requestImageGeneration({
   form.set("quantity", String(quantity));
   form.set("resolution", "1K");
   form.set("size", String(size));
-  if (referenceFile) {
-    form.set("image", referenceFile, referenceFile.name || "reference.png");
+  for (const file of referenceFiles) {
+    form.append("image", file, file.name || "reference.png");
   }
 
   const response = await fetchImpl("/api/images/generate", {

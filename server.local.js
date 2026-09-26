@@ -34,7 +34,7 @@ const docxUpload = multer({
 });
 const imageGenerationUpload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 10 * 1024 * 1024, files: 1, fields: 4 }
+  limits: { fileSize: 10 * 1024 * 1024, files: 16, fields: 4 }
 });
 
 app.get("/admin", (_req, res) => {
@@ -51,7 +51,7 @@ app.post("/api/upload-images", upload.array("images", 12), (req, res) => {
 });
 
 app.post("/api/images/generate", (req, res) => {
-  imageGenerationUpload.single("image")(req, res, async (uploadError) => {
+  imageGenerationUpload.array("image", 16)(req, res, async (uploadError) => {
     if (uploadError) {
       const tooLarge = uploadError.code === "LIMIT_FILE_SIZE";
       res.status(tooLarge ? 413 : 400).json({
@@ -67,8 +67,8 @@ app.post("/api/images/generate", (req, res) => {
       form.set("quantity", String(req.body?.quantity || "1"));
       form.set("resolution", String(req.body?.resolution ?? "1K"));
       form.set("size", String(req.body?.size || "1024x1024"));
-      if (req.file) {
-        form.set("image", new Blob([req.file.buffer], { type: req.file.mimetype }), req.file.originalname || "reference.png");
+      for (const file of req.files || []) {
+        form.append("image", new Blob([file.buffer], { type: file.mimetype }), file.originalname || "reference.png");
       }
       const apiKey = await getLocalSecret("TUZI_API_KEY");
       const proxyResponse = await handleImageGenerationRequest(

@@ -1,3 +1,4 @@
+import { validateImageReferences } from '../app/image-references.mjs';
 const DEFAULT_API_BASE = "https://api.tu-zi.com";
 const MODEL_ID = "gpt-image-2";
 const DEFAULT_OUTPUT_SIZE = "1024x1024";
@@ -6,11 +7,10 @@ const PROVIDER_QUALITY = "medium";
 const DEFAULT_QUANTITY = 1;
 const MAX_PROMPT_LENGTH = 2500;
 const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
-const MAX_REQUEST_BYTES = 12 * 1024 * 1024;
+const MAX_REQUEST_BYTES = 26 * 1024 * 1024;
 const MAX_SUCCESS_BYTES = 16 * 1024 * 1024;
 const MAX_ERROR_BYTES = 64 * 1024;
 const UPSTREAM_TIMEOUT_MS = 120_000;
-const ALLOWED_IMAGE_TYPES = new Set(["image/png", "image/jpeg", "image/webp"]);
 const ALLOWED_QUANTITIES = new Set([1, 2, 3]);
 const ALLOWED_RESOLUTIONS = new Set([DEFAULT_RESOLUTION]);
 const ALLOWED_SIZES = new Set(["1024x1024", "1536x1024", "1024x1536"]);
@@ -64,9 +64,22 @@ export async function handleImageGenerationRequest(request, env = {}, options = 
   }
 
   let form;
+  let requestTooLarge = false;
   try {
-    form = await request.formData();
+    let bytes = 0;
+    const boundedBody = request.body?.pipeThrough(new TransformStream({
+      transform(chunk, controller) {
+        bytes += chunk.byteLength;
+        if (bytes > MAX_REQUEST_BYTES) {
+          requestTooLarge = true;
+          throw new Error('Request too large');
+        }
+        controller.enqueue(chunk);
+      }
+    }));
+    form = await new Response(boundedBody, { headers: { 'content-type': request.headers.get('content-type') || '' } }).formData();
   } catch {
+    if (requestTooLarge) return json({ success: false, message: 'Image generation request is too large.' }, 413);
     return json({ success: false, message: "Invalid multipart form data." }, 400);
   }
 
@@ -112,23 +125,14 @@ export async function handleImageGenerationRequest(request, env = {}, options = 
   const size = sizeResult.value;
 
   const imageValues = form.getAll("image");
-  if (imageValues.length > 1 || (imageValues.length === 1 && !isFileLike(imageValues[0]))) {
-    return json({ success: false, message: "Provide at most one reference image." }, 400);
-  }
-  const candidate = imageValues[0];
-  if (candidate && candidate.size === 0) {
-    return json({ success: false, message: "Reference image cannot be empty." }, 400);
-  }
-  const image = candidate || null;
-  if (image && !ALLOWED_IMAGE_TYPES.has(String(image.type || "").toLowerCase())) {
-    return json({ success: false, message: "Reference image must be PNG, JPEG, or WebP." }, 400);
-  }
-  if (image && image.size > MAX_IMAGE_BYTES) {
-    return json({ success: false, message: "Reference image cannot exceed 10 MB." }, 413);
+  const referenceError = validateImageReferences(imageValues);
+  if (referenceError) {
+    const tooLarge = imageValues.some(file => file?.size > MAX_IMAGE_BYTES) || referenceError.includes('total');
+    return json({ success: false, message: referenceError }, tooLarge ? 413 : 400);
   }
 
   try {
-    let images = await generateTuziImage({ prompt, image, quantity, size }, {
+    let images = await generateTuziImage({ prompt, referenceImages: imageValues, quantity, size }, {
       apiKey,
       apiBase: String(env.TUZI_API_BASE || DEFAULT_API_BASE),
       fetchImpl: options.fetchImpl || fetch,
@@ -137,7 +141,7 @@ export async function handleImageGenerationRequest(request, env = {}, options = 
     if (options.prepareImages) images = await options.prepareImages(images);
     return json({
       success: true,
-      mode: image ? "image-to-image" : "text-to-image",
+      mode: imageValues.length ? "image-to-image" : "text-to-image",
       image: images[0],
       images
     }, 200, { "x-seedance-validated-image-count": String(images.length) });
@@ -153,6 +157,7 @@ export async function handleImageGenerationRequest(request, env = {}, options = 
 export async function generateTuziImage({
   prompt,
   image,
+  referenceImages = image ? [image] : [],
   quantity = DEFAULT_QUANTITY,
   size = DEFAULT_OUTPUT_SIZE
 }, {
@@ -166,12 +171,12 @@ export async function generateTuziImage({
   let path;
   let body;
 
-  if (image) {
+  if (referenceImages.length) {
     path = "/v1/images/edits";
     body = new FormData();
     body.set("model", MODEL_ID);
     body.set("prompt", prompt);
-    body.set("image", image, image.name || "reference.png");
+    for (const file of referenceImages) body.append("image", file, file.name || "reference.png");
     body.set("n", String(quantity));
     body.set("quality", PROVIDER_QUALITY);
     body.set("size", size);

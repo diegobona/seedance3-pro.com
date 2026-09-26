@@ -45,7 +45,7 @@ const content = {
     description: 'Create an image from a text prompt or upload a PNG, JPEG or WebP image as a reference for editing. The current trial offers 1K output, 1 to 3 images per request, and square, landscape or portrait formats. The credit cost appears before you generate.',
     capabilities: [
       ['Text to image', 'Describe the subject, composition, lighting, style and details you need in the final image.'],
-      ['Reference editing', 'Upload one image and describe the change while naming the details to preserve.'],
+      ['Reference editing', 'Upload up to 16 reference images and describe the change while naming the details to preserve.'],
       ['Flexible output', 'Choose 1:1, 3:2 or 2:3 and generate up to three 1K images in one request.'],
     ],
     steps: [
@@ -54,7 +54,7 @@ const content = {
       'Review the credit cost, sign in, and generate your image.',
     ],
     questions: [
-      ['Can I edit an existing image?', 'Yes. Upload one reference image and describe what to change in the prompt.'],
+      ['Can I edit an existing image?', 'Yes. Upload up to 16 reference images and describe what to change in the prompt.'],
       ['What image sizes can I use?', 'The current trial generates 1K output in square, landscape or portrait formats.'],
       ['Can I control a character pose first?', 'Yes. Use Pose Control to arrange the pose, then send its capture to image generation.'],
     ],

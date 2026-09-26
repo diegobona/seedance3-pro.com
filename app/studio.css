@@ -62,6 +62,12 @@ textarea { width:100%; min-height:154px; resize:vertical; padding:15px; border:1
 .result-card { border-color:rgba(216,255,115,.2); background:linear-gradient(155deg,rgba(216,255,115,.055),var(--panel) 44%); }.result-heading { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }.result-heading span { color:var(--lime); font-size:9px; font-weight:800; letter-spacing:.12em; }.result-heading small { color:#73746f; font-size:8px; }.result-gallery { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr)); gap:12px; }.result-frame { display:grid; min-height:220px; place-items:center; overflow:hidden; border-radius:15px; background:#090a0c; }.result-frame img,.result-frame video { display:block; width:100%; max-height:560px; object-fit:contain; }.result-frame video { min-height:220px; background:#050607; }.result-item > a { display:inline-flex; margin-top:9px; color:var(--lime); font-size:9px; font-weight:750; }
 .pose-result-actions { display:flex; align-items:center; justify-content:space-between; gap:14px; margin-top:15px; padding:13px; border:1px solid rgba(216,255,115,.28); border-radius:13px; background:rgba(216,255,115,.06); }
 .pose-result-actions[hidden] { display:none; }
+.reference-preview.multiple-image-references { display:grid; grid-template-columns:repeat(auto-fill,minmax(100px,1fr)); gap:10px; padding:10px; }
+.reference-preview.multiple-image-references[hidden] { display:none; }
+.image-reference-item { position:relative; min-width:0; overflow:hidden; border:1px solid var(--line); border-radius:10px; background:#090b0d; }
+.image-reference-item img { display:block; width:100%; height:90px; object-fit:contain; border-radius:0; }
+.image-reference-item span { display:block; padding:7px; color:var(--lime); font-size:11px; font-weight:700; }
+.image-reference-item button { position:absolute; top:4px; right:4px; padding:2px 7px; font-size:17px; background:#101216e8; color:white; }
 .pose-result-actions > div:first-child { display:grid; gap:4px; }
 .pose-result-actions span { color:var(--lime); font-size:9px; font-weight:850; letter-spacing:.12em; }
 .pose-result-actions small { color:#90938a; font-size:9px; line-height:1.45; }
