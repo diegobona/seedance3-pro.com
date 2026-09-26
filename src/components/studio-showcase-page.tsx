@@ -12,17 +12,17 @@ export type StudioShowcaseModel = 'minimax-h3' | 'gpt-image-2' | 'seedance-3-0'
 const showcaseContent = {
   'minimax-h3': {
     label: 'AI VIDEO / VIDEO PROMPTS',
-    title: 'MiniMax H3 showcase',
-    description: 'Watch five original short videos, then open any scene for the exact prompt and a brief creative note.',
+    title: 'MiniMax H3 Prompt Library',
+    description: 'Explore MiniMax H3 video prompts through original scenes. Open a video for its exact prompt, or select Try Now to make your own version.',
   },
   'gpt-image-2': {
     label: 'AI IMAGE / IMAGE PROMPTS',
-    title: 'GPT Image 2 showcase',
-    description: 'Explore five original images in distinct styles. Open any image for its exact prompt and a short creative note.',
+    title: 'GPT Image 2 Prompt Library',
+    description: 'Explore GPT Image 2 prompts through original images in different styles. Open an image for its exact prompt, or select Try Now to make your own version.',
   },
   'seedance-3-0': {
     label: 'AI VIDEO / VIDEO PROMPTS',
-    title: 'Seedance 3.0 showcase',
+    title: 'Seedance 3.0 Prompt Library',
     description: 'This model-specific video prompt library is coming soon.',
   },
 } as const
@@ -84,7 +84,7 @@ function ShowcaseCard({ title, caseUrl, tryUrl, modelLabel, portrait, media }: {
     <article className="studio-showcase-card">
       <div className={`studio-showcase-media${portrait ? ' is-portrait' : ''}`}>
         {media}
-        <a className="studio-showcase-cover-link" href={caseUrl} aria-label={`Open ${title} and prompt`}><span className="studio-showcase-card-title">{title}</span></a>
+        <a className="studio-showcase-cover-link" href={caseUrl} aria-label={`Open ${title} and prompt`}><h2 className="studio-showcase-card-title">{title}</h2></a>
         <div className="studio-showcase-hover-actions">
           <button type="button" disabled aria-label="Like (coming soon)" title="Coming soon">♡</button>
           <a href={tryUrl} aria-label={`Try ${title} prompt in ${modelLabel}`}>Try Now</a>
@@ -115,7 +115,7 @@ function GptImageShowcaseGrid() {
 
 function FutureShowcase() {
   return (
-    <section className="studio-showcase-future" aria-label="Upcoming model showcase">
+    <section className="studio-showcase-future" aria-label="Upcoming prompt library">
       <span className="studio-showcase-future-badge">Coming soon</span>
       <h2>Seedance 3.0 video prompts are on their way.</h2>
       <p>This space is reserved for Seedance 3.0 examples and the prompts behind them.</p>
@@ -123,6 +123,29 @@ function FutureShowcase() {
         <a className="studio-showcase-primary" href="/showcase.html">Explore current showcase ↗</a>
         <a href="/minimax-h3-prompts">See current video prompts ↗</a>
       </div>
+    </section>
+  )
+}
+
+function PromptLibraryGuide({ model }: { model: 'minimax-h3' | 'gpt-image-2' }) {
+  const isVideo = model === 'minimax-h3'
+  return (
+    <section className="prompt-library-guide" aria-labelledby="prompt-library-guide-title">
+      <h2 id="prompt-library-guide-title">{isVideo ? 'How to use these MiniMax H3 prompts' : 'How to use these GPT Image 2 prompts'}</h2>
+      <p>{isVideo
+        ? 'Study how a prompt sets up the subject, action, camera movement and final visual joke. These original scenes explore playful product ideas, animals and everyday comedy.'
+        : 'Compare how subject, composition, lighting and material descriptions shape an image. Explore editorial cartoons, paper cut art, surreal product photography, woodblock prints and claymation.'}</p>
+      <ol>
+        <li>Open a work to see its full prompt and the creative choices behind the result.</li>
+        <li>Select Try Now on its card to load the prompt into the generator.</li>
+        <li>{isVideo ? 'Adapt the subject, action or camera direction, review the current video settings, then generate your variation.' : 'Adapt the subject, palette or composition, add reference images if useful, then review the current image settings and generate.'}</li>
+      </ol>
+      <nav aria-label="Related creative tools and prompt libraries">
+        <a href={isVideo ? '/app/video/minimax-h3' : '/app/image/gpt-image-2'}>{isVideo ? 'Open MiniMax H3 Video Generator' : 'Open GPT Image 2 Generator'}</a>
+        <a href={isVideo ? '/gpt-image-2-prompts' : '/minimax-h3-prompts'}>{isVideo ? 'GPT Image 2 Prompt Library' : 'MiniMax H3 Prompt Library'}</a>
+        <a href="/pose-to-image">Explore the 3D Pose Editor</a>
+        <a href="/showcase.html">Browse the creative Showcase</a>
+      </nav>
     </section>
   )
 }
@@ -160,10 +183,10 @@ export function StudioShowcasePage({ model }: { model: StudioShowcaseModel }) {
               <a className="model-button price-model" href="/app/image/gpt-image-2"><span className="model-symbol orange">G2</span><span><strong>GPT Image 2</strong><small>Generation &amp; editing</small></span><em className="price-badge">FROM <b>$0.01</b></em></a>
             </div>
             <div className="nav-section showcase-nav-section">
-              <div className="section-heading"><span>SHOWCASE</span><span>03</span></div>
-              <a className="showcase-nav-link" href="/minimax-h3-prompts" aria-current={model === 'minimax-h3' ? 'page' : undefined}><span className="model-symbol cyan">H3</span><span>MiniMax H3 showcase</span></a>
-              <a className="showcase-nav-link" href="/gpt-image-2-prompts" aria-current={model === 'gpt-image-2' ? 'page' : undefined}><span className="model-symbol orange">G2</span><span>GPT Image 2 showcase</span></a>
-              <a className="showcase-nav-link" href="/seedance-3-0-prompts" aria-current={model === 'seedance-3-0' ? 'page' : undefined}><img src="/assets/seedance-mark.svg" width="34" height="34" alt="" /><span>Seedance 3.0 showcase<small>Coming soon</small></span></a>
+              <div className="section-heading"><span>PROMPT LIBRARIES</span><span>03</span></div>
+              <a className="showcase-nav-link" href="/minimax-h3-prompts" aria-current={model === 'minimax-h3' ? 'page' : undefined}><span className="model-symbol cyan">H3</span><span>MiniMax H3 Prompt Library</span></a>
+              <a className="showcase-nav-link" href="/gpt-image-2-prompts" aria-current={model === 'gpt-image-2' ? 'page' : undefined}><span className="model-symbol orange">G2</span><span>GPT Image 2 Prompt Library</span></a>
+              <a className="showcase-nav-link" href="/seedance-3-0-prompts" aria-current={model === 'seedance-3-0' ? 'page' : undefined}><img src="/assets/seedance-mark.svg" width="34" height="34" alt="" /><span>Seedance 3.0 Prompt Library<small>Coming soon</small></span></a>
             </div>
           </nav>
           <div className="sidebar-foot"><a href="/">← Back to SEEDANCE 3.0</a></div>
@@ -181,6 +204,7 @@ export function StudioShowcasePage({ model }: { model: StudioShowcaseModel }) {
               <p>{content.description}</p>
             </div>
             {model === 'minimax-h3' ? <H3ShowcaseGrid /> : model === 'gpt-image-2' ? <GptImageShowcaseGrid /> : <FutureShowcase />}
+            {model !== 'seedance-3-0' && <PromptLibraryGuide model={model} />}
           </div>
         </main>
       </div>

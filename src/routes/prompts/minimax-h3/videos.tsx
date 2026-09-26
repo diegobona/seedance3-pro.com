@@ -2,8 +2,8 @@ import { createFileRoute } from '@tanstack/react-router'
 import { H3VideoCaseIndex } from '../../../components/h3-video-case-page'
 
 const url = 'https://seedance3-pro.com/prompts/minimax-h3/videos'
-const title = 'MiniMax H3 Video Prompt Library | Original Examples'
-const description = 'Watch five original MiniMax H3 videos and explore the exact text prompts used to create each short scene.'
+const title = 'MiniMax H3 Prompt Library | Original Examples'
+const description = 'Watch original MiniMax H3 videos and explore the exact text prompts used to create each short scene.'
 
 export const Route = createFileRoute('/prompts/minimax-h3/videos')({
   head: () => ({

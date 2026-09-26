@@ -2,8 +2,8 @@ import { createFileRoute } from '@tanstack/react-router'
 import { StudioPage } from './app'
 
 const url = 'https://seedance3-pro.com/app/video/minimax-h3'
-const title = 'MiniMax H3 AI Video Generator Online | Seedance'
-const description = 'Create MiniMax H3 videos from text or up to 9 reference images. Choose 5, 10 or 15 seconds and generate a 480p trial clip in the Seedance studio.'
+const title = 'MiniMax H3 Video Generator | Text & Image to Video'
+const description = 'Create MiniMax H3 videos online from text or reference images. Describe your scene, choose your settings, and explore original video prompts and examples.'
 
 export const Route = createFileRoute('/app_/video/minimax-h3')({
   head: () => ({
@@ -17,6 +17,9 @@ export const Route = createFileRoute('/app_/video/minimax-h3')({
       { property: 'og:url', content: url },
       { property: 'og:image', content: 'https://seedance3-pro.com/assets/seedance3-cinematic-hero.webp' },
       { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: title },
+      { name: 'twitter:description', content: description },
+      { name: 'twitter:image', content: 'https://seedance3-pro.com/assets/seedance3-cinematic-hero.webp' },
     ],
     links: [
       { rel: 'canonical', href: url },

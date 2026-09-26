@@ -3,14 +3,14 @@ import { StudioPage } from './app'
 
 const url = 'https://seedance3-pro.com/app/video/seedance-2-5'
 const title = 'Seedance 2.5 Video Studio Preview | Seedance'
-const description = 'Explore the Seedance 2.5 video workspace. Create a text-to-video trial clip in 5, 10 or 15 seconds at 480p.'
+const description = 'Explore the Seedance 2.5 video workspace. Describe a scene, choose the available output settings and create a video from your text prompt.'
 
 export const Route = createFileRoute('/app_/video/seedance-2-5')({
   head: () => ({
     meta: [
       { title },
       { name: 'description', content: description },
-      { name: 'robots', content: 'index,follow,max-image-preview:large,max-video-preview:-1' },
+      { name: 'robots', content: 'noindex,follow' },
       { property: 'og:type', content: 'website' },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },

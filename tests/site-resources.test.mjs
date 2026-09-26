@@ -191,13 +191,13 @@ test('five original GPT Image 2 images have published prompts and working case r
   assert.match(cases[0].creativeNote, /fictional|satire/i)
 })
 
-test('model sidebar links all three showcases while homepage Showcase keeps its current destination', () => {
+test('model sidebar links all three prompt libraries while homepage Showcase keeps its current destination', () => {
   const sidebar = read('src/routes/app.tsx')
   const homepage = read('index.html')
   for (const [label, path] of [
-    ['MiniMax H3 showcase', '/minimax-h3-prompts'],
-    ['GPT Image 2 showcase', '/gpt-image-2-prompts'],
-    ['Seedance 3.0 showcase', '/seedance-3-0-prompts'],
+    ['MiniMax H3 Prompt Library', '/minimax-h3-prompts'],
+    ['GPT Image 2 Prompt Library', '/gpt-image-2-prompts'],
+    ['Seedance 3.0 Prompt Library', '/seedance-3-0-prompts'],
   ]) {
     assert.ok(sidebar.includes(`href="${path}"`))
     assert.ok(sidebar.includes(label))

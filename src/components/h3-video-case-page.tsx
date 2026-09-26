@@ -16,7 +16,7 @@ function CaseHeader() {
       <nav aria-label="Primary navigation">
         <a href="/app/video/minimax-h3">H3 Video</a>
         <a href="/showcase">Showcase</a>
-        <a href="/minimax-h3-prompts" aria-current="page">Video Prompt Library</a>
+        <a href="/minimax-h3-prompts" aria-current="page">MiniMax H3 Prompt Library</a>
       </nav>
       <a className="video-case-header-cta" href="/app/video/minimax-h3">Start Creating ↗</a>
     </header>
@@ -43,11 +43,11 @@ export function H3VideoCaseIndex() {
     <main className="video-case-site">
       <CaseHeader />
       <div className="video-case-container">
-        <nav className="video-case-breadcrumbs" aria-label="Breadcrumb"><a href="/showcase">Showcase</a><span aria-hidden="true">/</span><span>Video Prompt Library</span></nav>
+        <nav className="video-case-breadcrumbs" aria-label="Breadcrumb"><a href="/showcase">Showcase</a><span aria-hidden="true">/</span><span>MiniMax H3 Prompt Library</span></nav>
         <section className="video-case-index-intro">
           <p className="video-case-eyebrow">Original video examples</p>
-          <h1>MiniMax H3 Video Prompt Library</h1>
-          <p>Five short scenes generated for this site. Watch each finished video, read the prompt used to create it, and explore the creative direction behind the shot.</p>
+          <h1>MiniMax H3 Prompt Library</h1>
+          <p>Original scenes generated for this site. Watch each finished video, read the prompt used to create it, and explore the creative direction behind the shot.</p>
         </section>
         <div className="video-case-index-grid">
           {h3VideoCases.map((videoCase) => <CaseCard key={videoCase.slug} videoCase={videoCase} />)}
@@ -95,12 +95,12 @@ export function H3VideoCaseDetail({ videoCase }: { videoCase: H3VideoCase }) {
   return (
     <main className="video-case-modal-stage">
       <div className="video-case-modal-backdrop" aria-hidden="true">
-        <div className="video-case-backdrop-brand">SEEDANCE 3.0 <span>Video Prompt Library</span></div>
+        <div className="video-case-backdrop-brand">SEEDANCE 3.0 <span>MiniMax H3 Prompt Library</span></div>
         <div className="video-case-backdrop-grid">{h3VideoCases.map((entry) => <img key={entry.slug} src={entry.posterUrl} alt="" />)}</div>
       </div>
       <article className="video-case-modal" role="dialog" aria-modal="true" aria-labelledby="video-case-title">
         <a className="video-case-close" href="/minimax-h3-prompts" aria-label="Close case and return to video library">×</a>
-        <nav className="video-case-breadcrumbs" aria-label="Breadcrumb"><a href="/showcase">Showcase</a><span aria-hidden="true">/</span><a href="/minimax-h3-prompts">Video Prompt Library</a></nav>
+        <nav className="video-case-breadcrumbs" aria-label="Breadcrumb"><a href="/showcase">Showcase</a><span aria-hidden="true">/</span><a href="/minimax-h3-prompts">MiniMax H3 Prompt Library</a></nav>
         <h1 id="video-case-title">{videoCase.title}</h1>
         <div className="video-case-modal-top">
           <div className={'video-case-player' + (videoCase.aspectRatio === '9:16' ? ' is-portrait' : '')}>
@@ -135,7 +135,7 @@ export function H3VideoCaseDetail({ videoCase }: { videoCase: H3VideoCase }) {
           <p>{videoCase.creativeNote}</p>
         </section>
         <section className="video-case-related" aria-labelledby="related-video-cases">
-          <div className="video-case-related-heading"><h2 id="related-video-cases">More original video prompts</h2><a href="/minimax-h3-prompts">View all five ↗</a></div>
+          <div className="video-case-related-heading"><h2 id="related-video-cases">More original video prompts</h2><a href="/minimax-h3-prompts">View all prompts ↗</a></div>
           <div className="video-case-related-grid">{related.map((entry) => <CaseCard key={entry.slug} videoCase={entry} />)}</div>
         </section>
       </article>

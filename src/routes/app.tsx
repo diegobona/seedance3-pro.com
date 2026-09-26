@@ -90,10 +90,10 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
               <button className={`model-button price-model${initiallyPose || initiallyVideo ? '' : ' is-active'}`} type="button" data-model="gpt-image-2"><span className="model-symbol orange">G2</span><span><strong>GPT Image 2</strong><small>Generation &amp; editing</small></span><em className="price-badge">FROM <b>$0.01</b></em></button>
             </div>
             <div className="nav-section showcase-nav-section">
-              <div className="section-heading"><span>SHOWCASE</span><span>03</span></div>
-              <a className="showcase-nav-link" href="/minimax-h3-prompts"><span className="model-symbol cyan">H3</span><span>MiniMax H3 showcase</span></a>
-              <a className="showcase-nav-link" href="/gpt-image-2-prompts"><span className="model-symbol orange">G2</span><span>GPT Image 2 showcase</span></a>
-              <a className="showcase-nav-link" href="/seedance-3-0-prompts"><img src="/assets/seedance-mark.svg" width="34" height="34" alt="" /><span>Seedance 3.0 showcase<small>Coming soon</small></span></a>
+              <div className="section-heading"><span>PROMPT LIBRARIES</span><span>03</span></div>
+              <a className="showcase-nav-link" href="/minimax-h3-prompts"><span className="model-symbol cyan">H3</span><span>MiniMax H3 Prompt Library</span></a>
+              <a className="showcase-nav-link" href="/gpt-image-2-prompts"><span className="model-symbol orange">G2</span><span>GPT Image 2 Prompt Library</span></a>
+              <a className="showcase-nav-link" href="/seedance-3-0-prompts"><img src="/assets/seedance-mark.svg" width="34" height="34" alt="" /><span>Seedance 3.0 Prompt Library<small>Coming soon</small></span></a>
             </div>
           </nav>
           <div className="sidebar-foot"><a href="/">← Back to SEEDANCE 3.0</a></div>
@@ -107,7 +107,7 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
 
           <div className="workspace-body">
             <div className="workspace-title"><div><p id="model-category">{initiallyPose ? 'AI IMAGE / POSE CONTROL' : initiallyVideo ? 'AI VIDEO / TEXT TO VIDEO' : 'AI IMAGE / GENERATE & EDIT'}</p><h1 id="model-name" data-landing-model={modelLanding ? initialModel : undefined}>{initiallyPose ? 'Pose Studio' : initiallySeedance25 ? 'Seedance 2.5 Video Generator' : initiallyH3 ? 'MiniMax H3 AI Video Generator' : modelLanding ? 'GPT Image 2 Generator & Editor' : 'GPT Image 2'}</h1></div><span className="model-status" id="model-status" hidden={initiallyPose}>{initiallyPose ? '' : initiallyVideo ? 'Video generator' : 'Image generator'}</span></div>
-            {modelLanding && <p className="model-landing-intro">{initiallySeedance25 ? 'Create a video from a text prompt in the Seedance 2.5 workspace. Choose a 5, 10 or 15 second trial clip in 480p, then follow the result here.' : initiallyH3 ? 'Create a video from text or up to 9 reference images with MiniMax H3. Choose a 5, 10 or 15 second trial clip in 480p.' : 'Generate or edit an image with GPT Image 2. Start from text or upload up to 16 reference images, choose your format and create a 1K trial image.'}</p>}
+            {modelLanding && <p className="model-landing-intro">{initiallySeedance25 ? 'Create a video from a text prompt in the Seedance 2.5 workspace. Choose your video settings and follow the result here.' : initiallyH3 ? <>Turn text or reference images into a MiniMax H3 video. Describe your scene, choose your settings, or start with an example from the <a href="/minimax-h3-prompts">MiniMax H3 Prompt Library</a>.</> : <>Create or edit images with GPT Image 2 using text and reference images. Describe your idea, combine visual references, or start with an example from the <a href="/gpt-image-2-prompts">GPT Image 2 Prompt Library</a>.</>}</p>}
             <div className="creation-grid" id="creation-grid" hidden={initiallyPose}>
               <section className="creation-panel">
                 <div className="model-select"><span className={`model-symbol ${initiallySeedance25 ? 'lime' : initiallyH3 ? 'cyan' : 'orange'}`} id="selected-symbol">{initiallySeedance25 ? 'S2' : initiallyH3 ? 'H3' : 'G2'}</span><div><small>Selected model</small><strong id="selected-name">{initiallySeedance25 ? 'SEEDANCE 2.5' : initiallyH3 ? 'MiniMax H3' : 'GPT Image 2'}</strong></div></div>
@@ -171,7 +171,7 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
                   <div className="result-frame"><img id="pose-scene-preview" alt="Your captured Pose Studio scene" /></div>
                   <p>Describe the characters, clothing, scene and style on the left, then generate your image.</p>
                 </section>
-                {initiallySeedance25 && modelLanding && <section className="context-card model-video-guide" aria-label="Video trial details"><p className="model-landing-eyebrow">Seedance 2.5 trial</p><h2>Direct your first shot</h2><p>Start with the subject and action, then add camera movement, setting and lighting. The current form accepts a text prompt and creates 480p clips.</p><ul><li>5, 10 or 15 seconds</li><li>Landscape, portrait or square</li><li>Credit cost shown before generation</li></ul><a href="#model-details">How this tool works ↓</a></section>}
+                {initiallySeedance25 && modelLanding && <section className="context-card model-video-guide" aria-label="Video trial details"><p className="model-landing-eyebrow">Seedance 2.5 trial</p><h2>Direct your first shot</h2><p>Start with the subject and action, then add camera movement, setting and lighting. Describe the scene you want to bring to life.</p><ul><li>Choose from the available video durations</li><li>Select a frame format for your scene</li><li>Credit cost shown before generation</li></ul><a href="#model-details">How this tool works ↓</a></section>}
                 <div className="context-card result-card" id="result-card" hidden>
                   <div className="result-heading"><span id="result-heading-label">GENERATED IMAGES</span><small id="result-model-label">GPT Image 2</small></div>
                   <div className="result-gallery" id="result-gallery" />

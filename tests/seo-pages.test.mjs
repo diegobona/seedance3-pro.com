@@ -43,7 +43,7 @@ function listHtmlFiles(directory = root) {
 
 test("homepage preserves the Seedance 3 primary search intent", () => {
   const html = read("index.html");
-  const title = "Seedance 3.0 AI Video Generator | Try It Free Online";
+  const title = "Seedance 3.0 | AI Video Generator &amp; Creative Studio";
   assert.equal(tagContent(html, "title"), title);
   assert.match(html, new RegExp(`<meta property="og:title" content="${escapeRegExp(title)}">`));
   assert.match(html, new RegExp(`<meta name="twitter:title" content="${escapeRegExp(title)}">`));
@@ -52,16 +52,17 @@ test("homepage preserves the Seedance 3 primary search intent", () => {
   assert.match(html, /<link rel="canonical" href="https:\/\/seedance3-pro\.com\/">/i);
 });
 
-test("homepage search metadata and hero lead surface price and pose editing", () => {
+test("homepage metadata describes the studio and hero retains video pricing and pose creation", () => {
   const html = read("index.html");
-  const description = "Generate AI video from $0.01 per second. Edit character poses and scenes online, combine multimodal references, and create cinematic results.";
+  const description = "Explore Seedance 3.0, create AI videos and images, and build editable 3D pose scenes. Browse original prompts and examples to start your next project.";
   const escapedDescription = escapeRegExp(description);
 
   assert.match(html, new RegExp(`<meta name="description" content="${escapedDescription}">`));
   assert.match(html, new RegExp(`<meta property="og:description" content="${escapedDescription}">`));
   assert.match(html, new RegExp(`<meta name="twitter:description" content="${escapedDescription}">`));
-  assert.equal((html.match(/Generate AI video from \$0\.01 per second\./g) ?? []).length >= 6, true);
-  assert.match(blockByClass(html, "section", "hero"), /Edit character poses and scenes online/i);
+  const hero = blockByClass(html, "section", "hero");
+  assert.match(hero, /AI videos from \$0\.01 per second/i);
+  assert.match(hero, /build a 3D pose scene/i);
 });
 
 test("homepage presents a creator-facing experience instead of release-state messaging", () => {
@@ -469,12 +470,6 @@ test("homepage uses distinct high-quality raster artwork", () => {
 });
 
 const publicPages = [
-  {
-    file: "nano-banana-2-lite.html",
-    title: /Nano Banana 2 Lite/i,
-    h1: /Nano Banana 2 Lite/i,
-    canonical: "https://seedance3-pro.com/nano-banana-2-lite.html",
-  },
   {
     file: "minimax-h3-vs-seedance-3.html",
     title: /MiniMax H3 vs Seedance 3/i,

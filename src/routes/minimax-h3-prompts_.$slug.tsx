@@ -13,7 +13,7 @@ export const Route = createFileRoute('/minimax-h3-prompts_/$slug')({
   head: ({ loaderData }) => {
     if (!loaderData) return {}
     const canonicalUrl = siteUrl + h3VideoCaseUrl(loaderData.slug)
-    const description = loaderData.summary + ' Watch the original five-second video and read the exact prompt used to create it.'
+    const description = loaderData.summary + ' Watch the original video and read the exact prompt used to create it.'
     return {
       meta: [
         { title: loaderData.seoTitle },

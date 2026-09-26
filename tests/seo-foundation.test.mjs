@@ -33,7 +33,7 @@ test('sitemap publishes new model pages and excludes redirects, workspace and em
     assert.ok(urls.includes(`https://seedance3-pro.com${path}`), path)
   }
   assert.ok(!urls.includes('https://seedance3-pro.com/app/'))
-  for (const path of ['/minimax-h3-ai-video-generator.html', '/gpt-image-2.html', '/prompt-guide', '/prompts/gpt-image-2/images', '/seedance-3-0-prompts']) {
+  for (const path of ['/minimax-h3-ai-video-generator.html', '/gpt-image-2.html', '/prompt-guide', '/prompts/gpt-image-2/images', '/seedance-3-0-prompts', '/pricing.html', '/nano-banana-2-lite.html', '/app/video/seedance-2-5']) {
     assert.ok(!urls.some(url => url.includes(path)), path)
   }
   assert.ok(urls.includes('https://seedance3-pro.com/minimax-h3-prompts'))
@@ -49,6 +49,9 @@ test('Pose content remains on its existing public URLs and generic workspace is 
   assert.match(read('src/routes/app.tsx'), /name: 'robots', content: 'noindex,follow'/)
   assert.match(read('admin/index.html'), /name="robots" content="noindex/)
   assert.match(read('app/legacy-preview.html'), /name="robots" content="noindex/)
+  for (const path of ['pricing.html', 'nano-banana-2-lite.html']) {
+    assert.match(read(path), /name="robots" content="noindex,follow"/)
+  }
 })
 
 test('the homepage directs model searches to distinct model tool pages', () => {

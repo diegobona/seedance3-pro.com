@@ -21,7 +21,8 @@ test('Seedance 2.5 direct URL remains functional while primary navigation hides 
     assert.ok(nav, `${file} primary navigation`)
     assert.doesNotMatch(nav, /Seedance 2\.5|seedance-2-5/i)
   }
-  assert.match(read('sitemap.xml'), /https:\/\/seedance3-pro\.com\/app\/video\/seedance-2-5<\/loc>/)
+  assert.match(route, /name: 'robots', content: 'noindex,follow'/)
+  assert.doesNotMatch(read('sitemap.xml'), /https:\/\/seedance3-pro\.com\/app\/video\/seedance-2-5<\/loc>/)
 })
 
 test('Seedance 2.5 is absent from the sidebar but its direct route still uses video generation', () => {

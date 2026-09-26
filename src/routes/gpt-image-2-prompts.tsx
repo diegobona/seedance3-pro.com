@@ -2,8 +2,8 @@ import { createFileRoute } from '@tanstack/react-router'
 import { StudioShowcasePage } from '../components/studio-showcase-page'
 
 const url = 'https://seedance3-pro.com/gpt-image-2-prompts'
-const title = 'GPT Image 2 Prompts & Image Showcase | Original Examples'
-const description = 'Explore five original GPT Image 2 images in distinct styles, with the exact text prompt and creative direction for each example.'
+const title = 'GPT Image 2 Prompt Library | Original Examples'
+const description = 'Browse GPT Image 2 prompts for illustrations, product images and more. Explore original examples, read the exact prompts, and try your own image in the generator.'
 
 export const Route = createFileRoute('/gpt-image-2-prompts')({
   head: () => ({
@@ -17,6 +17,9 @@ export const Route = createFileRoute('/gpt-image-2-prompts')({
       { property: 'og:url', content: url },
       { property: 'og:image', content: 'https://seedance3-pro.com/media/showcase-gpt-image-2/2026-09-26/summit-circus-satire.webp' },
       { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: title },
+      { name: 'twitter:description', content: description },
+      { name: 'twitter:image', content: 'https://seedance3-pro.com/media/showcase-gpt-image-2/2026-09-26/summit-circus-satire.webp' },
     ],
     links: [
       { rel: 'canonical', href: url },

@@ -2,8 +2,9 @@ import { createFileRoute } from '@tanstack/react-router'
 import { StudioPage } from './app'
 
 const url = 'https://seedance3-pro.com/app/image/gpt-image-2'
-const title = 'GPT Image 2 Generator & Editor Online | Seedance'
-const description = 'Generate and edit images with GPT Image 2 online. Start from a prompt or reference image, choose a format, and create 1K trial images in Seedance.'
+const title = 'GPT Image 2 Generator | AI Image Creation & Editing'
+const description = 'Generate and edit images with GPT Image 2 online. Combine reference images, describe your changes, or start with an original prompt from the Prompt Library.'
+const previewImage = 'https://seedance3-pro.com/media/showcase-gpt-image-2/2026-09-26/foldable-pocket-universe.webp'
 
 export const Route = createFileRoute('/app_/image/gpt-image-2')({
   head: () => ({
@@ -15,8 +16,11 @@ export const Route = createFileRoute('/app_/image/gpt-image-2')({
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
       { property: 'og:url', content: url },
-      { property: 'og:image', content: 'https://seedance3-pro.com/assets/seedance3-cinematic-hero.webp' },
+      { property: 'og:image', content: previewImage },
       { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: title },
+      { name: 'twitter:description', content: description },
+      { name: 'twitter:image', content: previewImage },
     ],
     links: [
       { rel: 'canonical', href: url },
