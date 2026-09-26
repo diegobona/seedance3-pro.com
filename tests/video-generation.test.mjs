@@ -3,6 +3,37 @@ import test from "node:test";
 
 const LOCAL_TASK_ID = "123e4567-e89b-42d3-a456-426614174000";
 
+test("image-to-video uploads references in order before submitting and polling", async () => {
+  const { requestVideoGeneration } = await import('../app/video-generation.mjs');
+  const ids = [crypto.randomUUID(), crypto.randomUUID()];
+  const files = [new File(['first'], 'a.png', { type: 'image/png' }), new File(['second'], 'b.webp', { type: 'image/webp' })];
+  let uploads = 0;
+  const result = await requestVideoGeneration({ prompt: 'Make a scene', referenceFiles: files, fetchImpl: async (url, init) => {
+    if (url === '/api/videos/references') {
+      assert.equal(init.body, files[uploads]);
+      return Response.json({ success: true, id: ids[uploads++] }, { status: 201 });
+    }
+    if (url === '/api/videos/generate') {
+      assert.equal(uploads, 2);
+      assert.deepEqual(JSON.parse(init.body).referenceImageIds, ids);
+      return Response.json({ success: true, task: { id: LOCAL_TASK_ID, status: 'queued' } }, { status: 202 });
+    }
+    return Response.json({ success: true, task: { id: LOCAL_TASK_ID, status: 'succeeded', resultUrl: 'https://media.example/result.mp4' } });
+  } });
+  assert.equal(result.status, 'succeeded');
+});
+
+test("a rejected upload never submits a paid video job", async () => {
+  const { requestVideoGeneration } = await import('../app/video-generation.mjs');
+  let calls = 0;
+  await assert.rejects(requestVideoGeneration({ prompt: 'Scene', referenceFiles: [new File(['data'], 'x.png', { type: 'image/png' })], fetchImpl: async (url) => {
+    calls++;
+    assert.equal(url, '/api/videos/references');
+    return Response.json({ success: false, message: 'Log in' }, { status: 401 });
+  } }), (error) => error.status === 401);
+  assert.equal(calls, 1);
+});
+
 function jsonResponse(payload, { status = 200, headers = {} } = {}) {
   return Response.json(payload, { status, headers });
 }

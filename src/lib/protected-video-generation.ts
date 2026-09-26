@@ -1,6 +1,7 @@
 import { withCreditHeaders } from './generation-credits'
 
 export const VIDEO_WORKFLOW_ID = 'minimax_h3_lightx2v_no_pic'
+export const REFERENCE_VIDEO_WORKFLOW_ID = 'minimax_h3_image_audio_to_video_v2_15s'
 
 export type VideoGenerationTaskStatus =
   | 'submitting'
@@ -16,6 +17,8 @@ export type VideoGenerationPayload = {
   duration: number
   resolution: string
   aspectRatio: string
+  referenceImageIds?: string[]
+  referenceImageUrls?: string[]
 }
 
 export type VideoGenerationPreflight =
@@ -24,7 +27,7 @@ export type VideoGenerationPreflight =
 
 type SessionLike = { user: { id: string } } | null
 
-export type VideoTaskMetadata = Omit<VideoGenerationPayload, 'prompt'> & { workflowId: string }
+export type VideoTaskMetadata = Pick<VideoGenerationPayload, 'duration' | 'resolution' | 'aspectRatio'> & { workflowId: string }
 
 export interface VideoGenerationTask {
   id: string
@@ -85,7 +88,7 @@ export type VideoProviderQueryResult =
 interface ProtectedVideoGenerationStartOptions {
   request: Request
   getSession: (request: Request) => Promise<SessionLike>
-  preflight: (request: Request) => Promise<VideoGenerationPreflight>
+  preflight: (request: Request, userId: string) => Promise<VideoGenerationPreflight>
   taskStore: VideoGenerationTaskStore
   submit: (payload: VideoGenerationPayload) => Promise<{ providerTaskId: string }>
 }
@@ -132,13 +135,13 @@ async function protectVideoGenerationStartUnsafe({
     })
   }
 
-  const validation = await preflight(request)
+  const validation = await preflight(request, session.user.id)
   if (!validation.ok) return validation.response
 
   const payload = validation.payload
   const creditCost = payload.duration
   const reservation = await taskStore.reserveAndCreate(session.user.id, creditCost, {
-    workflowId: VIDEO_WORKFLOW_ID,
+    workflowId: payload.referenceImageIds?.length ? REFERENCE_VIDEO_WORKFLOW_ID : VIDEO_WORKFLOW_ID,
     duration: payload.duration,
     resolution: payload.resolution,
     aspectRatio: payload.aspectRatio,

@@ -22,6 +22,7 @@ import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApiCreditsBalanceRouteImport } from './routes/api/credits/balance'
 import { Route as ApiImagesGenerateRouteImport } from './routes/api/images/generate'
 import { Route as ApiVideosGenerateRouteImport } from './routes/api/videos/generate'
+import { Route as ApiVideosReferencesRouteImport } from './routes/api/videos/references'
 import { Route as ApiVideosStatusRouteImport } from './routes/api/videos/status'
 import { Route as AppImageGptImage2RouteImport } from './routes/app_.image.gpt-image-2'
 import { Route as AppVideoMinimaxH3RouteImport } from './routes/app_.video.minimax-h3'
@@ -94,6 +95,11 @@ const ApiVideosGenerateRoute = ApiVideosGenerateRouteImport.update({
   path: '/api/videos/generate',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiVideosReferencesRoute = ApiVideosReferencesRouteImport.update({
+  id: '/api/videos/references',
+  path: '/api/videos/references',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiVideosStatusRoute = ApiVideosStatusRouteImport.update({
   id: '/api/videos/status',
   path: '/api/videos/status',
@@ -139,6 +145,7 @@ export interface FileRoutesByFullPath {
   '/api/credits/balance': typeof ApiCreditsBalanceRoute
   '/api/images/generate': typeof ApiImagesGenerateRoute
   '/api/videos/generate': typeof ApiVideosGenerateRoute
+  '/api/videos/references': typeof ApiVideosReferencesRoute
   '/api/videos/status': typeof ApiVideosStatusRoute
   '/app/image/gpt-image-2': typeof AppImageGptImage2Route
   '/app/video/minimax-h3': typeof AppVideoMinimaxH3Route
@@ -160,6 +167,7 @@ export interface FileRoutesByTo {
   '/api/credits/balance': typeof ApiCreditsBalanceRoute
   '/api/images/generate': typeof ApiImagesGenerateRoute
   '/api/videos/generate': typeof ApiVideosGenerateRoute
+  '/api/videos/references': typeof ApiVideosReferencesRoute
   '/api/videos/status': typeof ApiVideosStatusRoute
   '/app/image/gpt-image-2': typeof AppImageGptImage2Route
   '/app/video/minimax-h3': typeof AppVideoMinimaxH3Route
@@ -182,6 +190,7 @@ export interface FileRoutesById {
   '/api/credits/balance': typeof ApiCreditsBalanceRoute
   '/api/images/generate': typeof ApiImagesGenerateRoute
   '/api/videos/generate': typeof ApiVideosGenerateRoute
+  '/api/videos/references': typeof ApiVideosReferencesRoute
   '/api/videos/status': typeof ApiVideosStatusRoute
   '/app_/image/gpt-image-2': typeof AppImageGptImage2Route
   '/app_/video/minimax-h3': typeof AppVideoMinimaxH3Route
@@ -205,6 +214,7 @@ export interface FileRouteTypes {
     | '/api/credits/balance'
     | '/api/images/generate'
     | '/api/videos/generate'
+    | '/api/videos/references'
     | '/api/videos/status'
     | '/app/image/gpt-image-2'
     | '/app/video/minimax-h3'
@@ -226,6 +236,7 @@ export interface FileRouteTypes {
     | '/api/credits/balance'
     | '/api/images/generate'
     | '/api/videos/generate'
+    | '/api/videos/references'
     | '/api/videos/status'
     | '/app/image/gpt-image-2'
     | '/app/video/minimax-h3'
@@ -247,6 +258,7 @@ export interface FileRouteTypes {
     | '/api/credits/balance'
     | '/api/images/generate'
     | '/api/videos/generate'
+    | '/api/videos/references'
     | '/api/videos/status'
     | '/app_/image/gpt-image-2'
     | '/app_/video/minimax-h3'
@@ -269,6 +281,7 @@ export interface RootRouteChildren {
   ApiCreditsBalanceRoute: typeof ApiCreditsBalanceRoute
   ApiImagesGenerateRoute: typeof ApiImagesGenerateRoute
   ApiVideosGenerateRoute: typeof ApiVideosGenerateRoute
+  ApiVideosReferencesRoute: typeof ApiVideosReferencesRoute
   ApiVideosStatusRoute: typeof ApiVideosStatusRoute
   AppImageGptImage2Route: typeof AppImageGptImage2Route
   AppVideoMinimaxH3Route: typeof AppVideoMinimaxH3Route
@@ -370,6 +383,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiVideosGenerateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/videos/references': {
+      id: '/api/videos/references'
+      path: '/api/videos/references'
+      fullPath: '/api/videos/references'
+      preLoaderRoute: typeof ApiVideosReferencesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/videos/status': {
       id: '/api/videos/status'
       path: '/api/videos/status'
@@ -429,6 +449,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiCreditsBalanceRoute: ApiCreditsBalanceRoute,
   ApiImagesGenerateRoute: ApiImagesGenerateRoute,
   ApiVideosGenerateRoute: ApiVideosGenerateRoute,
+  ApiVideosReferencesRoute: ApiVideosReferencesRoute,
   ApiVideosStatusRoute: ApiVideosStatusRoute,
   AppImageGptImage2Route: AppImageGptImage2Route,
   AppVideoMinimaxH3Route: AppVideoMinimaxH3Route,

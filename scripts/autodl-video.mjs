@@ -12,7 +12,7 @@ const AUTODL_RESOLUTIONS = {
 };
 const MAX_VIDEO_REQUEST_BYTES = 16 * 1024;
 const MAX_PROMPT_LENGTH = 10_000;
-const VIDEO_REQUEST_FIELDS = new Set(["prompt", "duration", "resolution", "aspectRatio"]);
+const VIDEO_REQUEST_FIELDS = new Set(["prompt", "duration", "resolution", "aspectRatio", "referenceImageIds"]);
 const ALLOWED_DURATIONS = new Set([5, 10, 15]);
 const ALLOWED_RESOLUTIONS = new Set(["480p", "768p"]);
 const ALLOWED_ASPECT_RATIOS = new Set(["9:16", "16:9", "1:1"]);
@@ -23,6 +23,7 @@ const MAX_PROVIDER_ERROR_BYTES = 64 * 1024;
 const MAX_PROVIDER_MESSAGE_LENGTH = 500;
 
 export const AUTODL_WORKFLOW_ID = "minimax_h3_lightx2v_no_pic";
+export const AUTODL_REFERENCE_WORKFLOW_ID = "minimax_h3_image_audio_to_video_v2_15s";
 
 export class AutodlProviderError extends Error {
   constructor(message, {
@@ -106,6 +107,15 @@ export async function preflightVideoGenerationRequest(request) {
   if (!ALLOWED_ASPECT_RATIOS.has(payload.aspectRatio)) {
     return invalidRequest("Aspect ratio must be 9:16, 16:9, or 1:1.", 400);
   }
+  const ids = payload.referenceImageIds;
+  if (ids !== undefined && (!Array.isArray(ids) || ids.length < 1 || ids.length > 9
+    || new Set(ids).size !== ids.length
+    || ids.some((id) => typeof id !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(id)))) {
+    return invalidRequest("Choose 1 to 9 valid reference images.", 400);
+  }
+  if (ids && payload.aspectRatio === "1:1") {
+    return invalidRequest("Reference-to-video supports 16:9 or 9:16 only.", 400);
+  }
 
   return {
     ok: true,
@@ -113,7 +123,8 @@ export async function preflightVideoGenerationRequest(request) {
       prompt,
       duration: payload.duration,
       resolution: payload.resolution,
-      aspectRatio: payload.aspectRatio
+      aspectRatio: payload.aspectRatio,
+      ...(ids ? { referenceImageIds: ids } : {})
     }
   };
 }
@@ -124,7 +135,10 @@ export async function submitAutodlVideoTask(payload, options = {}) {
   const timeoutMs = options.timeoutMs ?? PROVIDER_TIMEOUT_MS;
   const signalFactory = options.signalFactory || ((milliseconds) => AbortSignal.timeout(milliseconds));
   const providerResolution = mapAutodlVideoResolution(payload?.resolution, payload?.aspectRatio);
-  if (!providerResolution) {
+  const references = payload?.referenceImageUrls;
+  if (!providerResolution || (payload?.referenceImageIds && !references)
+    || (references && (!Array.isArray(references) || references.length < 1 || references.length > 9
+      || payload.aspectRatio === "1:1" || references.some((url) => !String(url).startsWith("https://"))))) {
     throw new AutodlProviderError("Video provider request is invalid.", {
       code: "AUTODL_CONFIGURATION_ERROR"
     });
@@ -133,7 +147,7 @@ export async function submitAutodlVideoTask(payload, options = {}) {
   let response;
   try {
     response = await fetchImpl(
-      `${configuration.apiBase}/api/v1/comfyui/comfyui_workflow/${AUTODL_WORKFLOW_ID}`,
+      `${configuration.apiBase}/api/v1/comfyui/comfyui_workflow/${references ? AUTODL_REFERENCE_WORKFLOW_ID : AUTODL_WORKFLOW_ID}`,
       {
         method: "POST",
         headers: {
@@ -143,7 +157,8 @@ export async function submitAutodlVideoTask(payload, options = {}) {
         body: JSON.stringify({
           prompt: payload.prompt,
           duration: payload.duration,
-          resolution: providerResolution
+          resolution: providerResolution,
+          ...(references ? Object.fromEntries(references.map((url, index) => [`ref_image_${index}`, url])) : {})
         }),
         signal: signalFactory(timeoutMs)
       }

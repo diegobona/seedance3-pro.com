@@ -3,6 +3,32 @@ import test from "node:test";
 
 import * as autodlVideo from "../scripts/autodl-video.mjs";
 
+test("reference video validates up to nine IDs and rejects square format or arbitrary URLs", async () => {
+  const base = { prompt: "A scene", duration: 5, resolution: "480p", aspectRatio: "16:9" };
+  const ids = Array.from({ length: 9 }, () => crypto.randomUUID());
+  const accepted = await autodlVideo.preflightVideoGenerationRequest(videoRequest(JSON.stringify({ ...base, referenceImageIds: ids })));
+  assert.equal(accepted.ok, true);
+  assert.deepEqual(accepted.payload.referenceImageIds, ids);
+  for (const extra of [
+    { referenceImageIds: [] }, { referenceImageIds: [...ids, crypto.randomUUID()] },
+    { referenceImageIds: [ids[0], ids[0]] }, { referenceImageIds: ['https://arbitrary.example/image.png'] },
+    { referenceImageIds: ids, aspectRatio: '1:1' }, { referenceImageUrls: ['https://arbitrary.example/image.png'] },
+  ]) {
+    assert.equal((await autodlVideo.preflightVideoGenerationRequest(videoRequest(JSON.stringify({ ...base, ...extra })))).ok, false);
+  }
+});
+
+test("reference submission uses the multi-image workflow and exact ordered reference fields", async () => {
+  const urls = ['https://seedance3-pro.com/api/videos/references?id=first', 'https://seedance3-pro.com/api/videos/references?id=second'];
+  await autodlVideo.submitAutodlVideoTask({ prompt: 'Combine the images', duration: 5, resolution: '480p', aspectRatio: '16:9', referenceImageUrls: urls }, {
+    token: 'test-token', fetchImpl: async (url, init) => {
+      assert.ok(url.endsWith('/minimax_h3_image_audio_to_video_v2_15s'));
+      assert.deepEqual(JSON.parse(init.body), { prompt: 'Combine the images', duration: 5, resolution: '480p横', ref_image_0: urls[0], ref_image_1: urls[1] });
+      return Response.json({ code: 'Success', data: { task_id: 'test-provider-task', status: 'QUEUED' } });
+    },
+  });
+});
+
 const { mapAutodlVideoResolution } = autodlVideo;
 
 test("maps product resolution and aspect ratio to the exact AutoDL input", () => {

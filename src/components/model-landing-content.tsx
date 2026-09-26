@@ -21,11 +21,12 @@ const content = {
     ],
   },
   'minimax-h3': {
-    title: 'Create text-to-video clips with MiniMax H3',
-    description: 'This studio currently offers a text-to-video trial. Enter a scene description, choose 5, 10 or 15 seconds, and generate at 480p. The form shows the credit cost before you submit. Sign-in and available credits are required to run a job.',
+    title: 'Create videos from text or reference images with MiniMax H3',
+    description: 'Start with a text prompt or combine up to 9 reference images. Choose 5, 10 or 15 seconds and generate at 480p. The form shows the credit cost before you submit. Sign-in and available credits are required to run a job.',
     capabilities: [
       ['Text prompts', 'Describe the subject, action, setting, camera movement and lighting in one prompt.'],
-      ['Video format', 'Choose a 16:9, 9:16 or 1:1 frame and one of the available trial durations.'],
+      ['Reference images', 'Upload 1–9 PNG, JPEG or WebP images, up to 10 MB each. Describe their roles in your prompt.'],
+      ['Video format', 'Choose landscape or portrait. Text-to-video also supports a square frame.'],
       ['Task status', 'Follow the generation status in the workspace and open the completed video.'],
     ],
     steps: [
@@ -34,7 +35,7 @@ const content = {
       'Review the credit cost, sign in, then generate and check the result.',
     ],
     questions: [
-      ['Can I upload image, video or audio references here?', 'The current MiniMax H3 studio trial supports text prompts. Reference uploads are not enabled in this form.'],
+      ['Can I use multiple reference images?', 'Yes. Select Reference to video and upload up to 9 images. Image 1, Image 2 and so on follow the upload order. Video and audio uploads are not available in this form.'],
       ['What durations are available?', 'You can choose 5, 10 or 15 seconds. The trial output resolution is 480p.'],
       ['Does generating require an account?', 'Yes. The studio asks you to sign in and checks your available credits before generation.'],
     ],

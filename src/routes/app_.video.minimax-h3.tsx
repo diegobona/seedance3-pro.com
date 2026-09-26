@@ -3,7 +3,7 @@ import { StudioPage } from './app'
 
 const url = 'https://seedance3-pro.com/app/video/minimax-h3'
 const title = 'MiniMax H3 AI Video Generator Online | Seedance'
-const description = 'Create MiniMax H3 videos from text online. Choose 5, 10 or 15 seconds, generate a 480p trial clip, and follow the result in the Seedance studio.'
+const description = 'Create MiniMax H3 videos from text or up to 9 reference images. Choose 5, 10 or 15 seconds and generate a 480p trial clip in the Seedance studio.'
 
 export const Route = createFileRoute('/app_/video/minimax-h3')({
   head: () => ({

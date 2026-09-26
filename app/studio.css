@@ -170,3 +170,10 @@ textarea { width:100%; min-height:154px; resize:vertical; padding:15px; border:1
 @media(max-width:1120px){.pose-studio{grid-template-columns:1fr}.pose-control-panel{grid-template-columns:repeat(2,minmax(0,1fr))}.pose-intro-card{grid-column:span 2}.pose-canvas{min-height:600px}}
 @media(max-width:620px){.pose-control-panel{grid-template-columns:1fr}.pose-intro-card{grid-column:auto}.pose-toolbar{align-items:flex-start;flex-direction:column}.pose-history-controls{width:100%}.pose-history-controls button{flex:1}.pose-history-controls button span{display:none}.pose-canvas{min-height:520px}.pose-canvas-hint{top:10px;right:10px;font-size:10px;line-height:1.4}.pose-control-card{padding:16px}}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+.video-reference-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+.video-reference-item { position: relative; overflow: hidden; border-radius: 12px; border: 1px solid #34383c; background: #0b0d0e; }
+.video-reference-item img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.video-reference-item span { display: block; padding: 7px 10px; font-size: 12px; color: #c9d0d3; }
+.video-reference-item button { position: absolute; top: 5px; right: 5px; width: 28px; height: 28px; padding: 0; border: 1px solid #72787c; border-radius: 50%; background: #101214dd; color: white; font-size: 20px; cursor: pointer; }
+.video-reference-hint { margin: 12px 0 0; color: #a5adb1; font-size: 12px; line-height: 1.6; }
+#video-reference-add:disabled { opacity: .5; cursor: default; }

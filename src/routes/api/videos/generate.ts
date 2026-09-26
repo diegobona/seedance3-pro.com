@@ -8,6 +8,7 @@ import {
 import { createDb } from '../../../db'
 import { createVideoGenerationTaskStore } from '../../../db/video-generation-tasks'
 import { createAuth } from '../../../lib/auth'
+import { resolveVideoReferences } from '../../../lib/video-references'
 import {
   protectVideoGenerationStart,
   type VideoGenerationPreflight,
@@ -83,7 +84,7 @@ export const Route = createFileRoute('/api/videos/generate')({
             return session?.user?.id ? { user: { id: session.user.id } } : null
           },
           taskStore,
-          preflight: async (protectedRequest) => {
+          preflight: async (protectedRequest, userId) => {
             const validation = await preflightVideoGenerationRequest(protectedRequest) as VideoGenerationPreflight
             if (!validation.ok) return validation
             if (validation.payload.resolution !== '480p') {
@@ -113,6 +114,16 @@ export const Route = createFileRoute('/api/videos/generate')({
                   'GENERATION_RATE_LIMITED',
                   'Generation limit reached. Please wait a minute and try again.',
                 ),
+              }
+            }
+            if (validation.payload.referenceImageIds) {
+              try {
+                validation.payload.referenceImageUrls = await resolveVideoReferences(
+                  validation.payload.referenceImageIds, userId, env.VIDEO_REFERENCES,
+                )
+              } catch {
+                return { ok: false as const, response: jsonError(400, 'INVALID_VIDEO_REFERENCE',
+                  'A reference image expired or is unavailable. Please remove it and upload it again.') }
               }
             }
             return validation

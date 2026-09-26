@@ -45,10 +45,18 @@
   },
   "ratelimits": [
     {
+      "name": "VIDEO_UPLOAD_RATE_LIMITER",
+      "namespace_id": "31002",
+      "simple": { "limit": 20, "period": 60 }
+    },
+    {
       "name": "IMAGE_RATE_LIMITER",
       "namespace_id": "31001",
       "simple": { "limit": 2, "period": 60 }
     }
+  ],
+  "r2_buckets": [
+    { "binding": "VIDEO_REFERENCES", "bucket_name": "seedance3-video-references" }
   ],
   "kv_namespaces": [
     { "binding": "CMS_JOBS", "id": "fa1e1517a43444f899d34abb737486b2" }

@@ -14,7 +14,7 @@
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "cf-typegen": "wrangler types",
+    "cf-typegen": "wrangler types src/worker-bindings.d.ts --env-interface WorkerBindings",
     "start:cms": "node server.local.js",
     "dev:worker": "wrangler dev",
     "sync:worker-secrets": "wrangler secret bulk .env.local",

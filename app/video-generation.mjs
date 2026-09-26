@@ -232,6 +232,8 @@ export async function requestVideoGeneration({
   prompt,
   duration = 5,
   aspectRatio = "16:9",
+  referenceFiles = [],
+  onUpload = () => {},
   fetchImpl = globalThis.fetch,
   signal,
   onTask = () => {},
@@ -239,6 +241,23 @@ export async function requestVideoGeneration({
   ...pollOptions
 } = {}) {
   throwIfAborted(signal);
+  const referenceImageIds = [];
+  if (!Array.isArray(referenceFiles) || referenceFiles.length > 9) throw videoError("Choose up to 9 reference images.");
+  for (const [index, file] of referenceFiles.entries()) {
+    if (!["image/png", "image/jpeg", "image/webp"].includes(file.type) || !file.size || file.size > 10 * 1024 * 1024) {
+      throw videoError("Choose PNG, JPEG or WebP images, up to 10 MB each.");
+    }
+    onUpload({ index: index + 1, total: referenceFiles.length });
+    const upload = await fetchImpl("/api/videos/references", {
+      method: "POST", credentials: "same-origin",
+      headers: { "content-type": file.type, accept: "application/json" },
+      body: file, signal,
+    });
+    const result = await responsePayload(upload);
+    if (!upload.ok || !result?.success) throw errorFromResponse(upload, result);
+    if (!LOCAL_TASK_UUID_PATTERN.test(result.id)) throw videoError("Reference upload returned an invalid response.");
+    referenceImageIds.push(result.id);
+  }
   const response = await fetchImpl("/api/videos/generate", {
     method: "POST",
     credentials: "same-origin",
@@ -250,7 +269,8 @@ export async function requestVideoGeneration({
       prompt: String(prompt || "").trim(),
       duration: Number(duration),
       resolution: "480p",
-      aspectRatio: String(aspectRatio || "16:9")
+      aspectRatio: String(aspectRatio || "16:9"),
+      ...(referenceImageIds.length ? { referenceImageIds } : {})
     }),
     signal
   });

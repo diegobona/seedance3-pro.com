@@ -13,6 +13,18 @@ const validPayload = {
   aspectRatio: '16:9',
 }
 
+test('reference generation records the correct workflow while keeping duration-based credits', async () => {
+  const harness = startHarness({ preflight: async (_request: Request, userId: string) => {
+    assert.equal(userId, 'user-1')
+    return { ok: true, payload: { ...validPayload, referenceImageIds: [crypto.randomUUID()], referenceImageUrls: ['https://seedance3-pro.com/api/videos/references?id=test'] } }
+  } })
+  const response = await protectVideoGenerationStart(harness.options as never)
+  assert.equal(response.status, 202)
+  assert.deepEqual(harness.calls.reserve[0], ['user-1', 10, {
+    workflowId: 'minimax_h3_image_audio_to_video_v2_15s', duration: 10, resolution: '480p', aspectRatio: '16:9',
+  }])
+})
+
 function startHarness(overrides: Record<string, unknown> = {}) {
   const calls = {
     reserve: [] as unknown[][],

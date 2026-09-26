@@ -140,6 +140,14 @@ export function initializeStudio() {
   const videoDuration = document.getElementById("video-duration");
   const videoResolution = document.getElementById("video-resolution");
   const videoAspectRatio = document.getElementById("video-aspect-ratio");
+  const videoReferenceGroup = document.getElementById("video-reference-group");
+  const videoReferenceInput = document.getElementById("video-reference-input");
+  const videoReferenceAdd = document.getElementById("video-reference-add");
+  const videoReferenceGrid = document.getElementById("video-reference-grid");
+  const videoReferenceCount = document.getElementById("video-reference-count");
+  const videoModeButtons = document.querySelectorAll("[data-video-mode]");
+  let videoMode = "text";
+  let videoReferences = [];
   const imageQuantity = document.getElementById("image-quantity");
   const imageQuality = document.getElementById("image-quality");
   const imageAspectRatio = document.getElementById("image-aspect-ratio");
@@ -259,6 +267,53 @@ export function initializeStudio() {
     return activeModelId === "seedance-2-5" || activeModelId === "minimax-h3";
   }
 
+  function isReferenceVideo() {
+    return activeModelId === "minimax-h3" && videoMode === "reference";
+  }
+
+  function updateVideoMode() {
+    const enabled = activeModelId === "minimax-h3" && videoModeButtons.length > 0;
+    modeGroup.hidden = !enabled;
+    if (videoReferenceGroup) videoReferenceGroup.hidden = !isReferenceVideo();
+    videoModeButtons.forEach((button) => {
+      const selected = button.dataset.videoMode === videoMode;
+      button.classList.toggle("is-selected", selected);
+      button.setAttribute("aria-pressed", String(selected));
+      button.disabled = videoPolling;
+    });
+    const square = videoAspectRatio.querySelector('option[value="1:1"]');
+    if (square) square.disabled = isReferenceVideo();
+    if (isReferenceVideo() && videoAspectRatio.value === "1:1") videoAspectRatio.value = "16:9";
+    if (enabled) {
+      modelCategory.textContent = isReferenceVideo() ? "AI VIDEO / REFERENCE TO VIDEO" : "AI VIDEO / TEXT TO VIDEO";
+      modelStatus.textContent = isReferenceVideo() ? "Reference to video" : "Text to video";
+    }
+  }
+
+  function renderVideoReferences() {
+    if (!videoReferenceGrid) return;
+    videoReferenceGrid.replaceChildren();
+    videoReferenceCount.textContent = `${videoReferences.length} / 9`;
+    videoReferenceAdd.disabled = videoReferences.length >= 9 || videoPolling;
+    for (const [index, reference] of videoReferences.entries()) {
+      const card = document.createElement("div");
+      card.className = "video-reference-item";
+      const image = Object.assign(document.createElement("img"), { src: reference.url, alt: `Image ${index + 1}: ${reference.file.name}` });
+      const label = Object.assign(document.createElement("span"), { textContent: `Image ${index + 1}` });
+      const remove = Object.assign(document.createElement("button"), { type: "button", textContent: "×", disabled: videoPolling });
+      remove.setAttribute("aria-label", `Remove Image ${index + 1}`);
+      remove.onclick = () => {
+        if (videoPolling) return;
+        URL.revokeObjectURL(reference.url);
+        videoReferences = videoReferences.filter((item) => item !== reference);
+        renderVideoReferences();
+        updateGenerateButton();
+      };
+      card.append(image, label, remove);
+      videoReferenceGrid.append(card);
+    }
+  }
+
   function updateGenerateButtonLabel() {
     const model = studioModels[activeModelId];
     if (!model?.canGenerate) {
@@ -281,7 +336,8 @@ export function initializeStudio() {
     const generationBlocked = isVideoGenerationSelected()
       ? videoPolling || Boolean(activeVideoTaskId)
       : imageGenerationInFlight;
-    generateButton.disabled = !canGenerate || !prompt.value.trim() || generationBlocked || creditInsufficient;
+    generateButton.disabled = !canGenerate || !prompt.value.trim() || generationBlocked || creditInsufficient
+      || (isReferenceVideo() && videoReferences.length === 0);
     const disabled = generateButton.disabled;
     poseResultActionsController?.setGenerateState({
       disabled: disabled || !poseReferenceActive || activeModelId !== "gpt-image-2",
@@ -316,7 +372,7 @@ export function initializeStudio() {
     uploadHint.textContent = model.canGenerate ? "PNG, JPEG or WebP · max 10 MB" : "Interface preview only—files are not uploaded";
     uploadBox.classList.toggle("is-enabled", Boolean(model.canGenerate) && !videoModel);
     uploadGroup.hidden = model.type === "video";
-    modeGroup.hidden = true;
+    updateVideoMode();
     promptTools.hidden = videoModel;
     videoSettings.hidden = model.type !== "video";
     imageSettings.hidden = model.type !== "image";
@@ -422,12 +478,14 @@ export function initializeStudio() {
   async function runVideoTask({ resumeTaskId = "" } = {}) {
     if (videoPolling || destroyed || !(availableModelIds.has("minimax-h3") || availableModelIds.has("seedance-2-5"))) return;
     videoPolling = true;
+    updateVideoMode();
+    renderVideoReferences();
     videoAbortController = new AbortController();
     updateGenerateButtonLabel();
     updateGenerateButton();
     generationStatus.textContent = resumeTaskId
       ? "Resuming video generation status…"
-      : "Submitting your text-to-video prompt…";
+      : isReferenceVideo() ? "Preparing your reference images…" : "Submitting your text-to-video prompt…";
     generationStatus.className = "generation-status is-working";
     if (!resumeTaskId) {
       resultCard.hidden = true;
@@ -447,6 +505,10 @@ export function initializeStudio() {
             duration: creditCostForDuration(videoDuration.value),
             resolution: videoResolution.value || "480p",
             aspectRatio: videoAspectRatio.value,
+            referenceFiles: isReferenceVideo() ? videoReferences.map((item) => item.file) : [],
+            onUpload: ({ index, total }) => {
+              generationStatus.textContent = `Uploading reference image ${index} of ${total}…`;
+            },
             onTask: storeActiveVideoTask
           });
       if (destroyed) return;
@@ -479,6 +541,8 @@ export function initializeStudio() {
       videoPolling = false;
       videoAbortController = null;
       if (!destroyed) {
+        updateVideoMode();
+        renderVideoReferences();
         updateGenerateButtonLabel();
         creditSummaryController?.refresh();
         updateGenerateButton();
@@ -627,6 +691,35 @@ export function initializeStudio() {
     updateGenerateButton();
   });
   listen(videoDuration, "change", updateGenerateButtonLabel);
+  videoModeButtons.forEach((button) => listen(button, "click", () => {
+    if (videoPolling) return;
+    videoMode = button.dataset.videoMode;
+    updateVideoMode();
+    updateGenerateButton();
+  }));
+  if (videoReferenceAdd && videoReferenceInput) {
+    listen(videoReferenceAdd, "click", () => videoReferenceInput.click());
+    listen(videoReferenceInput, "change", () => {
+      const files = Array.from(videoReferenceInput.files || []);
+      videoReferenceInput.value = "";
+      if (videoPolling || !files.length) return;
+      let message = "";
+      if (files.length + videoReferences.length > 9) message = "You can add up to 9 reference images.";
+      else if (files.some((file) => !["image/png", "image/jpeg", "image/webp"].includes(file.type) || !file.size || file.size > 10 * 1024 * 1024)) {
+        message = "Choose PNG, JPEG or WebP images, up to 10 MB each.";
+      }
+      if (message) {
+        generationStatus.textContent = message;
+        generationStatus.className = "generation-status is-error";
+        return;
+      }
+      videoReferences.push(...files.map((file) => ({ file, url: URL.createObjectURL(file) })));
+      generationStatus.textContent = "Reference images ready.";
+      generationStatus.className = "generation-status";
+      renderVideoReferences();
+      updateGenerateButton();
+    });
+  }
   listen(uploadBox, "click", () => {
     if (studioModels[activeModelId]?.canGenerate) referenceInput.click();
   });
@@ -696,7 +789,7 @@ export function initializeStudio() {
     }
     await runImageGeneration();
   });
-  document.querySelectorAll(".segmented button").forEach((button) => listen(button, "click", () => {
+  document.querySelectorAll(".segmented button:not([data-video-mode])").forEach((button) => listen(button, "click", () => {
     button.parentElement.querySelectorAll("button").forEach((item) => item.classList.toggle("is-selected", item === button));
   }));
   listen(sidebarOpen, "click", () => sidebar.classList.add("is-open"));
@@ -717,6 +810,7 @@ export function initializeStudio() {
     poseStudioCleanup?.();
     while (cleanups.length) cleanups.pop()();
     clearReferenceImage();
+    videoReferences.forEach((item) => URL.revokeObjectURL(item.url));
   };
 }
 
