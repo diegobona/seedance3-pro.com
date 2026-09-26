@@ -8,17 +8,26 @@ const root = resolve(import.meta.dirname, '..')
 const read = (path) => readFileSync(resolve(root, path), 'utf8')
 
 test('legacy model URLs resolve to one canonical tool URL', () => {
+  const config = JSON.parse(read('wrangler.jsonc'))
   assert.equal(canonicalModelPath('minimax-h3'), '/app/video/minimax-h3')
   assert.equal(canonicalModelPath('gpt-image-2'), '/app/image/gpt-image-2')
   assert.equal(canonicalModelPath('pose-to-image'), null)
   assert.equal(canonicalModelPath('__proto__'), null)
   for (const [oldPath, expected] of [
     ['/minimax-h3-ai-video-generator.html', '/app/video/minimax-h3'],
+    ['/minimax-h3-ai-video-generator', '/app/video/minimax-h3'],
     ['/gpt-image-2.html', '/app/image/gpt-image-2'],
+    ['/gpt-image-2', '/app/image/gpt-image-2'],
     ['/app/?model=minimax-h3', '/app/video/minimax-h3'],
     ['/app/?model=gpt-image-2', '/app/image/gpt-image-2'],
   ]) {
     assert.equal(legacyModelRedirect(new URL(oldPath, 'https://seedance3-pro.com')), expected)
+    if (!oldPath.startsWith('/app')) {
+      for (const host of ['seedance3-pro.com', 'www.seedance3-pro.com']) {
+        assert.ok(config.routes.some(route => route.pattern === host + oldPath), `${host}${oldPath} must reach the redirect handler`)
+      }
+      assert.ok(config.assets.run_worker_first.includes(oldPath))
+    }
   }
   assert.equal(legacyModelRedirect(new URL('/gpt-image-2.html?utm_source=newsletter', 'https://seedance3-pro.com')), '/app/image/gpt-image-2')
   assert.equal(legacyModelRedirect(new URL('/app/?model=pose-to-image', 'https://seedance3-pro.com')), null)

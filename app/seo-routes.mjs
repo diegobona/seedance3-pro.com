@@ -5,7 +5,9 @@ const modelPaths = Object.freeze({
 })
 
 const legacyPaths = Object.freeze({
+  '/minimax-h3-ai-video-generator': modelPaths['minimax-h3'],
   '/minimax-h3-ai-video-generator.html': modelPaths['minimax-h3'],
+  '/gpt-image-2': modelPaths['gpt-image-2'],
   '/gpt-image-2.html': modelPaths['gpt-image-2'],
 })
 
