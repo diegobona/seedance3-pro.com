@@ -60,7 +60,7 @@ function normalizeGeneratedImage(image) {
     if (url.protocol !== "https:") {
       throw new Error("Image service returned an invalid image URL.");
     }
-    return { url: url.href };
+    return { url: url.href, ...(typeof image.animateId === "string" && /^[0-9a-f-]{36}$/.test(image.animateId) ? { animateId: image.animateId } : {}) };
   }
   if (!/^data:image\/(?:png|jpeg|webp);base64,[a-z0-9+/=]+$/i.test(String(image?.dataUrl || ""))) {
     throw new Error("Image service returned invalid image data.");

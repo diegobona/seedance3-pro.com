@@ -128,12 +128,13 @@ export async function handleImageGenerationRequest(request, env = {}, options = 
   }
 
   try {
-    const images = await generateTuziImage({ prompt, image, quantity, size }, {
+    let images = await generateTuziImage({ prompt, image, quantity, size }, {
       apiKey,
       apiBase: String(env.TUZI_API_BASE || DEFAULT_API_BASE),
       fetchImpl: options.fetchImpl || fetch,
       timeoutMs: options.timeoutMs || UPSTREAM_TIMEOUT_MS
     });
+    if (options.prepareImages) images = await options.prepareImages(images);
     return json({
       success: true,
       mode: image ? "image-to-image" : "text-to-image",

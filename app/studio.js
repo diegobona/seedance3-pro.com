@@ -1,6 +1,7 @@
 import { buildModelUrl, normalizeModelId } from "./model-routing.mjs";
 import { canonicalModelPath, modelIdFromPath } from "./seo-routes.mjs";
 import { requestImageGeneration } from "./image-generation.mjs";
+import { prepareImageForVideo, loadVideoReference } from "./image-to-video.mjs";
 import { pollVideoGenerationTask, requestVideoGeneration } from "./video-generation.mjs";
 import { createLaunchWaitlistController } from "./launch-waitlist.mjs";
 import { buildPoseReferencePrompt } from "./pose-transfer.mjs";
@@ -89,6 +90,8 @@ const activeVideoTaskStorageKey = "seedance:minimax-h3:active-task";
 export function initializeStudio() {
   const cleanups = [];
   let destroyed = false;
+  let imageTransferInFlight = false;
+  const imageTransferAbortController = new AbortController();
 
   function listen(target, type, listener, options) {
     target.addEventListener(type, listener, options);
@@ -285,6 +288,9 @@ export function initializeStudio() {
     if (square) square.disabled = isReferenceVideo();
     if (isReferenceVideo() && videoAspectRatio.value === "1:1") videoAspectRatio.value = "16:9";
     if (enabled) {
+      prompt.placeholder = isReferenceVideo()
+        ? "How should this image move? Describe the subject’s motion, camera movement, and what happens next…"
+        : "Describe the subject, action, setting, camera movement, lighting, and final shot…";
       modelCategory.textContent = isReferenceVideo() ? "AI VIDEO / REFERENCE TO VIDEO" : "AI VIDEO / TEXT TO VIDEO";
       modelStatus.textContent = isReferenceVideo() ? "Reference to video" : "Text to video";
     }
@@ -426,7 +432,40 @@ export function initializeStudio() {
         link.target = "_blank";
         link.textContent = `Open / save image ${index + 1} →`;
       }
-      item.append(frame, link);
+      const actions = document.createElement("div");
+      actions.className = "image-result-actions";
+      const animate = document.createElement("button");
+      animate.type = "button";
+      animate.className = "animate-image-button";
+      animate.textContent = "Animate this image ↗";
+      animate.setAttribute("aria-label", `Animate this image ${index + 1}`);
+      const transferStatus = document.createElement("p");
+      transferStatus.className = "image-transfer-status";
+      transferStatus.setAttribute("role", "status");
+      animate.onclick = async () => {
+        if (imageTransferInFlight || destroyed) return;
+        imageTransferInFlight = true;
+        resultGallery.querySelectorAll(".animate-image-button").forEach((button) => { button.disabled = true; });
+        animate.textContent = "Preparing image…";
+        transferStatus.textContent = "Saving your reference image for H3…";
+        try {
+          await element.decode();
+          const destination = await prepareImageForVideo({ image, width: element.naturalWidth, height: element.naturalHeight, signal: imageTransferAbortController.signal });
+          if (!destroyed) window.location.assign(destination);
+        } catch (error) {
+          if (destroyed) return;
+          transferStatus.textContent = error?.message || "Image transfer failed. Please try again.";
+          if (requiresAuthentication(error)) window.dispatchEvent(new CustomEvent("seedance:auth-required"));
+        } finally {
+          imageTransferInFlight = false;
+          if (!destroyed) {
+            resultGallery.querySelectorAll(".animate-image-button").forEach((button) => { button.disabled = false; });
+            animate.textContent = "Animate this image ↗";
+          }
+        }
+      };
+      actions.append(link, animate);
+      item.append(frame, actions, transferStatus);
       return item;
     });
     resultGallery.replaceChildren(...items);
@@ -657,6 +696,30 @@ export function initializeStudio() {
     titleElement: exampleTitle,
     descriptionElement: examplePrompt
   });
+  const transferredImageId = new URLSearchParams(window.location.search).get("reference");
+  if (activeModelId === "minimax-h3" && transferredImageId) {
+    videoMode = "reference";
+    videoAspectRatio.value = new URLSearchParams(window.location.search).get("aspect_ratio") === "9:16" ? "9:16" : "16:9";
+    prompt.value = "";
+    promptCount.textContent = "0";
+    updateVideoMode();
+    updateGenerateButton();
+    generationStatus.textContent = "Loading your reference image…";
+    void loadVideoReference(transferredImageId, { signal: imageTransferAbortController.signal }).then((file) => {
+      if (destroyed) return;
+      // The user may have added images while the transferred one was loading.
+      if (videoReferences.length >= 9) throw new Error("Remove an image before adding the transferred reference.");
+      videoReferences.unshift({ file, url: URL.createObjectURL(file) });
+      renderVideoReferences();
+      updateGenerateButton();
+      generationStatus.textContent = "Image ready. Describe the motion and camera movement, then generate when ready.";
+      generationStatus.className = "generation-status";
+    }).catch((error) => {
+      if (destroyed) return;
+      generationStatus.textContent = error?.message || "Could not load the image. Please upload it again.";
+      generationStatus.className = "generation-status is-error";
+    });
+  }
   void creditSummaryController.loadBalance();
   if ((availableModelIds.has("minimax-h3") || availableModelIds.has("seedance-2-5")) && activeVideoTaskId) void resumeStoredVideoTask();
 
@@ -802,6 +865,7 @@ export function initializeStudio() {
   return () => {
     if (destroyed) return;
     destroyed = true;
+    imageTransferAbortController.abort();
     videoAbortController?.abort();
     creditSummaryController.destroy();
     launchWaitlistController?.destroy();

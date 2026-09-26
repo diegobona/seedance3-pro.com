@@ -41,3 +41,18 @@ API and completed one 5-second multi-reference video. The API charged 5 credits
 once, returned a downloadable MP4, and the test account was removed afterward.
 
 Run `npm run cf-typegen` after changing Worker bindings.
+
+## Generated image handoff
+
+Every GPT Image 2 result (including Pose reference outputs) has an **Animate this
+image** action beside its download link. The selected image is uploaded to the
+same temporary reference storage before navigating to H3. Portrait images select
+9:16; other images select 16:9. The video prompt starts empty with motion/camera
+guidance. Transferring an image does not create a video task or charge credits.
+
+Inline image results use the existing reference upload endpoint. For URL results,
+image generation stores a user-bound provider source descriptor, and POST
+`/api/images/animate?image=<uuid>` transfers its bytes server-side without relying
+on browser CORS. That endpoint accepts only stored IDs, checks ownership and
+expiry, and follows no redirects. Both source descriptors and uploaded reference
+images expire under the existing one-day R2 lifecycle policy.

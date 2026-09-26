@@ -20,6 +20,7 @@ import { Route as GptImage2PromptsSlugRouteImport } from './routes/gpt-image-2-p
 import { Route as MinimaxH3PromptsSlugRouteImport } from './routes/minimax-h3-prompts_.$slug'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApiCreditsBalanceRouteImport } from './routes/api/credits/balance'
+import { Route as ApiImagesAnimateRouteImport } from './routes/api/images/animate'
 import { Route as ApiImagesGenerateRouteImport } from './routes/api/images/generate'
 import { Route as ApiVideosGenerateRouteImport } from './routes/api/videos/generate'
 import { Route as ApiVideosReferencesRouteImport } from './routes/api/videos/references'
@@ -85,6 +86,11 @@ const ApiCreditsBalanceRoute = ApiCreditsBalanceRouteImport.update({
   path: '/api/credits/balance',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiImagesAnimateRoute = ApiImagesAnimateRouteImport.update({
+  id: '/api/images/animate',
+  path: '/api/images/animate',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiImagesGenerateRoute = ApiImagesGenerateRouteImport.update({
   id: '/api/images/generate',
   path: '/api/images/generate',
@@ -143,6 +149,7 @@ export interface FileRoutesByFullPath {
   '/minimax-h3-prompts/$slug': typeof MinimaxH3PromptsSlugRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/credits/balance': typeof ApiCreditsBalanceRoute
+  '/api/images/animate': typeof ApiImagesAnimateRoute
   '/api/images/generate': typeof ApiImagesGenerateRoute
   '/api/videos/generate': typeof ApiVideosGenerateRoute
   '/api/videos/references': typeof ApiVideosReferencesRoute
@@ -165,6 +172,7 @@ export interface FileRoutesByTo {
   '/minimax-h3-prompts/$slug': typeof MinimaxH3PromptsSlugRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/credits/balance': typeof ApiCreditsBalanceRoute
+  '/api/images/animate': typeof ApiImagesAnimateRoute
   '/api/images/generate': typeof ApiImagesGenerateRoute
   '/api/videos/generate': typeof ApiVideosGenerateRoute
   '/api/videos/references': typeof ApiVideosReferencesRoute
@@ -188,6 +196,7 @@ export interface FileRoutesById {
   '/minimax-h3-prompts_/$slug': typeof MinimaxH3PromptsSlugRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/credits/balance': typeof ApiCreditsBalanceRoute
+  '/api/images/animate': typeof ApiImagesAnimateRoute
   '/api/images/generate': typeof ApiImagesGenerateRoute
   '/api/videos/generate': typeof ApiVideosGenerateRoute
   '/api/videos/references': typeof ApiVideosReferencesRoute
@@ -212,6 +221,7 @@ export interface FileRouteTypes {
     | '/minimax-h3-prompts/$slug'
     | '/api/auth/$'
     | '/api/credits/balance'
+    | '/api/images/animate'
     | '/api/images/generate'
     | '/api/videos/generate'
     | '/api/videos/references'
@@ -234,6 +244,7 @@ export interface FileRouteTypes {
     | '/minimax-h3-prompts/$slug'
     | '/api/auth/$'
     | '/api/credits/balance'
+    | '/api/images/animate'
     | '/api/images/generate'
     | '/api/videos/generate'
     | '/api/videos/references'
@@ -256,6 +267,7 @@ export interface FileRouteTypes {
     | '/minimax-h3-prompts_/$slug'
     | '/api/auth/$'
     | '/api/credits/balance'
+    | '/api/images/animate'
     | '/api/images/generate'
     | '/api/videos/generate'
     | '/api/videos/references'
@@ -279,6 +291,7 @@ export interface RootRouteChildren {
   MinimaxH3PromptsSlugRoute: typeof MinimaxH3PromptsSlugRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiCreditsBalanceRoute: typeof ApiCreditsBalanceRoute
+  ApiImagesAnimateRoute: typeof ApiImagesAnimateRoute
   ApiImagesGenerateRoute: typeof ApiImagesGenerateRoute
   ApiVideosGenerateRoute: typeof ApiVideosGenerateRoute
   ApiVideosReferencesRoute: typeof ApiVideosReferencesRoute
@@ -369,6 +382,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiCreditsBalanceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/images/animate': {
+      id: '/api/images/animate'
+      path: '/api/images/animate'
+      fullPath: '/api/images/animate'
+      preLoaderRoute: typeof ApiImagesAnimateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/images/generate': {
       id: '/api/images/generate'
       path: '/api/images/generate'
@@ -447,6 +467,7 @@ const rootRouteChildren: RootRouteChildren = {
   MinimaxH3PromptsSlugRoute: MinimaxH3PromptsSlugRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiCreditsBalanceRoute: ApiCreditsBalanceRoute,
+  ApiImagesAnimateRoute: ApiImagesAnimateRoute,
   ApiImagesGenerateRoute: ApiImagesGenerateRoute,
   ApiVideosGenerateRoute: ApiVideosGenerateRoute,
   ApiVideosReferencesRoute: ApiVideosReferencesRoute,
