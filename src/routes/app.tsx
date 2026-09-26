@@ -166,6 +166,11 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
               <aside className="context-panel">
                 {initiallyH3 && modelLanding && <H3VideoExamples />}
                 {showGptImageExamples && <GptImageExamples />}
+                <section className="context-card pose-reference-card" id="pose-reference-card" hidden>
+                  <div className="result-heading"><span>YOUR POSE SCENE</span><small>Pose Studio</small></div>
+                  <div className="result-frame"><img id="pose-scene-preview" alt="Your captured Pose Studio scene" /></div>
+                  <p>Describe the characters, clothing, scene and style on the left, then generate your image.</p>
+                </section>
                 {initiallySeedance25 && modelLanding && <section className="context-card model-video-guide" aria-label="Video trial details"><p className="model-landing-eyebrow">Seedance 2.5 trial</p><h2>Direct your first shot</h2><p>Start with the subject and action, then add camera movement, setting and lighting. The current form accepts a text prompt and creates 480p clips.</p><ul><li>5, 10 or 15 seconds</li><li>Landscape, portrait or square</li><li>Credit cost shown before generation</li></ul><a href="#model-details">How this tool works ↓</a></section>}
                 <div className="context-card result-card" id="result-card" hidden>
                   <div className="result-heading"><span id="result-heading-label">GENERATED IMAGES</span><small id="result-model-label">GPT Image 2</small></div>

@@ -131,6 +131,9 @@ export function initializeStudio() {
   const resultGallery = document.getElementById("result-gallery");
   const exampleCarousel = document.getElementById("example-carousel");
   const hasDedicatedImageExamples = Boolean(document.getElementById("gpt-image-examples"));
+  const imageExamples = document.getElementById("gpt-image-examples");
+  const poseReferenceCard = document.getElementById("pose-reference-card");
+  const poseScenePreview = document.getElementById("pose-scene-preview");
   const exampleCarouselSlides = document.querySelectorAll(".example-carousel-slide");
   const exampleCarouselDots = document.querySelectorAll("[data-carousel-dot]");
   const exampleCarouselPrevious = document.getElementById("example-carousel-previous");
@@ -369,6 +372,7 @@ export function initializeStudio() {
     const videoModel = model.type === "video";
     const poseModel = model.type === "pose";
     exampleCarousel.hidden = videoModel || hasDedicatedImageExamples;
+    updateImageContext();
     creationGrid.hidden = poseModel;
     if (poseStudio) poseStudio.hidden = !poseModel;
     if (poseModel) void ensurePoseStudio();
@@ -608,6 +612,17 @@ export function initializeStudio() {
       URL.revokeObjectURL(referencePreviewUrl);
       referencePreviewUrl = "";
     }
+    poseScenePreview?.removeAttribute("src");
+    updateImageContext();
+  }
+
+  function updateImageContext() {
+    const isImage = activeModelId === "gpt-image-2";
+    const showPose = isImage && poseReferenceActive && resultCard.hidden;
+    if (poseReferenceCard) poseReferenceCard.hidden = !showPose;
+    const hideExamples = !isImage || poseReferenceActive || !resultCard.hidden || imageGenerationInFlight;
+    if (imageExamples) imageExamples.hidden = hideExamples;
+    exampleCarousel.hidden = hideExamples || hasDedicatedImageExamples;
   }
 
   function setReferenceImage(file, { source = "upload" } = {}) {
@@ -629,6 +644,11 @@ export function initializeStudio() {
     referencePreviewImage.src = referencePreviewUrl;
     referenceFileName.textContent = file.name;
     referencePreview.hidden = false;
+    if (poseReferenceActive) {
+      resultCard.hidden = true;
+      if (poseScenePreview) poseScenePreview.src = referencePreviewUrl;
+    }
+    updateImageContext();
     generationStatus.textContent = "Reference image ready.";
     generationStatus.className = "generation-status";
   }
@@ -803,6 +823,7 @@ export function initializeStudio() {
     resultCard.hidden = true;
     poseResultActionsController?.setVisible(false);
     exampleCarousel.hidden = hasDedicatedImageExamples;
+    updateImageContext();
     try {
       const result = await requestImageGeneration({
         prompt: prompt.value,
@@ -816,6 +837,7 @@ export function initializeStudio() {
       resultCard.hidden = false;
       poseResultActionsController?.setVisible(generationUsedPoseReference);
       exampleCarousel.hidden = true;
+      updateImageContext();
       announceCredits(result.credits);
       const generatedCount = result.images.length;
       generationStatus.textContent = result.credits
@@ -838,6 +860,7 @@ export function initializeStudio() {
     } finally {
       if (!destroyed) {
         imageGenerationInFlight = false;
+        updateImageContext();
         updateGenerateButtonLabel();
         updateGenerateButton();
       }
