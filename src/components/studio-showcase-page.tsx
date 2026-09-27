@@ -3,6 +3,7 @@ import { AuthDialog } from './auth-dialog'
 import { UserMenu } from './user-menu'
 import { h3VideoCases, h3VideoCaseTryUrl, h3VideoCaseUrl } from '../data/h3-video-cases'
 import { gptImageCases, gptImageCaseTryUrl, gptImageCaseUrl } from '../data/gpt-image-cases'
+import { seedance3PlannedPrompts, seedance3PromptTryUrl } from '../data/seedance3-planned-prompts'
 import '../../app/studio.css'
 import '../styles/auth.css'
 import '../styles/studio-showcase.css'
@@ -23,7 +24,7 @@ const showcaseContent = {
   'seedance-3-0': {
     label: 'AI VIDEO / VIDEO PROMPTS',
     title: 'Seedance 3.0 Prompt Library',
-    description: 'This model-specific video prompt library is coming soon.',
+    description: '',
   },
 } as const
 
@@ -113,16 +114,23 @@ function GptImageShowcaseGrid() {
   )
 }
 
-function FutureShowcase() {
+function Seedance3PlannedGrid() {
   return (
-    <section className="studio-showcase-future" aria-label="Upcoming prompt library">
-      <span className="studio-showcase-future-badge">Coming soon</span>
-      <h2>Seedance 3.0 video prompts are on their way.</h2>
-      <p>This space is reserved for Seedance 3.0 examples and the prompts behind them.</p>
-      <div className="studio-showcase-actions">
-        <a className="studio-showcase-primary" href="/showcase">Explore current showcase ↗</a>
-        <a href="/minimax-h3-prompts">See current video prompts ↗</a>
-      </div>
+    <section className="studio-showcase-grid seedance3-planned-grid" aria-label="Planned Seedance 3.0 video prompt tests">
+      {seedance3PlannedPrompts.map((item) => (
+        <article className="studio-showcase-card seedance3-planned-card" key={item.slug}>
+          <div className="studio-showcase-media seedance3-planned-media" role="img" aria-label={`Video placeholder for ${item.title}; video not generated yet`}>
+            <span className="seedance3-planned-video-icon" aria-hidden="true">▶</span>
+            <span className="seedance3-planned-video-label">Video coming soon</span>
+            <h2 className="studio-showcase-card-title">{item.title}</h2>
+          </div>
+          <div className="seedance3-planned-card-body">
+            <span>{item.category} · Planned test</span>
+            <details><summary>Read planned prompt</summary><p>{item.prompt}</p></details>
+            <a href={seedance3PromptTryUrl(item)}>Open in Seedance 3.0 workspace ↗</a>
+          </div>
+        </article>
+      ))}
     </section>
   )
 }
@@ -172,7 +180,7 @@ export function StudioShowcasePage({ model }: { model: StudioShowcaseModel }) {
             <div className="nav-section">
               <div className="section-heading"><span>AI VIDEO</span><span>02</span></div>
               <a className="model-button price-model" href="/app/video/minimax-h3"><span className="model-symbol cyan">H3</span><span><strong>MiniMax H3</strong><small>Text-to-video</small></span><em className="price-badge">FROM <b>$0.01</b></em></a>
-              <button className="model-button release-model" type="button" disabled><img src="/assets/seedance-mark.svg" width="40" height="40" alt="" style={{ flexShrink: 0 }} /><span className="release-model-copy"><span className="release-title-row"><strong>SEEDANCE 3.0</strong><em className="release-status">Release Updates</em></span><small>Next-gen video</small></span></button>
+              <a className="model-button release-model" href="/app/video/seedance-3"><img src="/assets/seedance-mark.svg" width="40" height="40" alt="" style={{ flexShrink: 0 }} /><span className="release-model-copy"><span className="release-title-row"><strong>SEEDANCE 3.0</strong><em className="release-status">Release Updates</em></span><small>Workspace preview</small></span></a>
             </div>
             <div className="nav-section">
               <div className="section-heading"><span>AI IMAGE</span></div>
@@ -189,7 +197,7 @@ export function StudioShowcasePage({ model }: { model: StudioShowcaseModel }) {
               <div className="section-heading"><span>PROMPT LIBRARIES</span><span>03</span></div>
               <a className="showcase-nav-link" href="/minimax-h3-prompts" aria-current={model === 'minimax-h3' ? 'page' : undefined}><span className="model-symbol cyan">H3</span><span>MiniMax H3 Prompt Library</span></a>
               <a className="showcase-nav-link" href="/gpt-image-2-prompts" aria-current={model === 'gpt-image-2' ? 'page' : undefined}><span className="model-symbol orange">G2</span><span>GPT Image 2 Prompt Library</span></a>
-              <a className="showcase-nav-link" href="/seedance-3-0-prompts" aria-current={model === 'seedance-3-0' ? 'page' : undefined}><img src="/assets/seedance-mark.svg" width="34" height="34" alt="" /><span>Seedance 3.0 Prompt Library<small>Coming soon</small></span></a>
+              <a className="showcase-nav-link" href="/seedance-3-0-prompts" aria-current={model === 'seedance-3-0' ? 'page' : undefined}><img src="/assets/seedance-mark.svg" width="34" height="34" alt="" /><span>Seedance 3.0 Prompt Library<small>Planned tests</small></span></a>
             </div>
           </nav>
           <div className="sidebar-foot"><a href="/">← Back to SEEDANCE 3.0</a></div>
@@ -204,9 +212,9 @@ export function StudioShowcasePage({ model }: { model: StudioShowcaseModel }) {
             <div className="studio-showcase-intro">
               <p className="studio-showcase-eyebrow">{content.label}</p>
               <h1>{content.title}</h1>
-              <p>{content.description}</p>
+              {content.description && <p>{content.description}</p>}
             </div>
-            {model === 'minimax-h3' ? <H3ShowcaseGrid /> : model === 'gpt-image-2' ? <GptImageShowcaseGrid /> : <FutureShowcase />}
+            {model === 'minimax-h3' ? <H3ShowcaseGrid /> : model === 'gpt-image-2' ? <GptImageShowcaseGrid /> : <Seedance3PlannedGrid />}
             {model !== 'seedance-3-0' && <PromptLibraryGuide model={model} />}
           </div>
         </main>

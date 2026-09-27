@@ -32,6 +32,18 @@
 .studio-showcase-actions a { display:inline-flex; min-height:40px; align-items:center; padding:10px 15px; border:1px solid var(--line); border-radius:999px; color:var(--lime); font-size:12px; font-weight:800; }
 .studio-showcase-actions a:hover { border-color:var(--lime); }
 .studio-showcase-actions .studio-showcase-primary { border-color:var(--lime); background:var(--lime); color:#181a11; }
+.seedance3-planned-media { display:flex; align-items:center; justify-content:center; flex-direction:column; gap:9px; background:radial-gradient(circle at 50% 38%,rgba(216,255,115,.1),transparent 42%),linear-gradient(135deg,#1b241d,#090b0d); border-bottom:1px solid var(--line); }
+.seedance3-planned-video-icon { display:grid; width:48px; height:48px; place-items:center; border:1px solid rgba(216,255,115,.38); border-radius:50%; color:var(--lime); font-size:16px; }
+.seedance3-planned-video-label { color:#9ba994; font-size:11px; font-weight:700; }
+.seedance3-planned-media .studio-showcase-card-title { position:absolute; right:16px; bottom:15px; left:16px; }
+.seedance3-planned-card:hover .studio-showcase-card-title,.seedance3-planned-card:focus-within .studio-showcase-card-title { opacity:1; }
+.seedance3-planned-card-body { padding:15px 17px 18px; }
+.seedance3-planned-card-body > span { color:#a4ba8b; font-size:10px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; }
+.seedance3-planned-card-body details { margin-top:13px; color:#c6cbc0; font-size:12px; line-height:1.6; }
+.seedance3-planned-card-body summary { cursor:pointer; font-weight:750; }
+.seedance3-planned-card-body details p { margin:10px 0 0; color:#aeb4ab; }
+.seedance3-planned-card-body > a { display:inline-block; margin-top:15px; color:var(--lime); font-size:12px; font-weight:750; }
+.seedance3-planned-card-body > a:hover { text-decoration:underline; }
 .prompt-library-guide { margin-top:40px; padding-top:28px; border-top:1px solid var(--line); }
 .prompt-library-guide h2 { margin:0 0 14px; font-size:22px; line-height:1.3; }
 .prompt-library-guide p,.prompt-library-guide ol { max-width:800px; color:#b6b7b1; font-size:14px; line-height:1.7; }

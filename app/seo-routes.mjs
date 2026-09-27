@@ -1,6 +1,7 @@
 const modelPaths = Object.freeze({
   'seedance-2-5': '/app/video/seedance-2-5',
   'minimax-h3': '/app/video/minimax-h3',
+  'seedance-3': '/app/video/seedance-3',
   'gpt-image-2': '/app/image/gpt-image-2',
 })
 

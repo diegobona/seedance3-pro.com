@@ -74,7 +74,7 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
             <div className="nav-section">
               <div className="section-heading"><span>AI VIDEO</span><span>02</span></div>
               <button className={`model-button price-model${initiallyH3 ? ' is-active' : ''}`} type="button" data-model="minimax-h3"><span className="model-symbol cyan">H3</span><span><strong>MiniMax H3</strong><small>Text-to-video</small></span><em className="price-badge">FROM <b>$0.01</b></em></button>
-              <button className="model-button release-model" type="button" data-model="seedance-3" disabled><img src="/assets/seedance-mark.svg" width="40" height="40" alt="" style={{ flexShrink: 0 }} /><span className="release-model-copy"><span className="release-title-row"><strong>SEEDANCE 3.0</strong><em className="release-status">Release Updates</em></span><small>Next-gen video</small></span></button>
+              <a className="model-button release-model" href="/app/video/seedance-3"><img src="/assets/seedance-mark.svg" width="40" height="40" alt="" style={{ flexShrink: 0 }} /><span className="release-model-copy"><span className="release-title-row"><strong>SEEDANCE 3.0</strong><em className="release-status">Release Updates</em></span><small>Workspace preview</small></span></a>
             </div>
             <div className="nav-section">
               <div className="section-heading"><span>AI IMAGE</span></div>
@@ -93,7 +93,7 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
               <div className="section-heading"><span>PROMPT LIBRARIES</span><span>03</span></div>
               <a className="showcase-nav-link" href="/minimax-h3-prompts"><span className="model-symbol cyan">H3</span><span>MiniMax H3 Prompt Library</span></a>
               <a className="showcase-nav-link" href="/gpt-image-2-prompts"><span className="model-symbol orange">G2</span><span>GPT Image 2 Prompt Library</span></a>
-              <a className="showcase-nav-link" href="/seedance-3-0-prompts"><img src="/assets/seedance-mark.svg" width="34" height="34" alt="" /><span>Seedance 3.0 Prompt Library<small>Coming soon</small></span></a>
+              <a className="showcase-nav-link" href="/seedance-3-0-prompts"><img src="/assets/seedance-mark.svg" width="34" height="34" alt="" /><span>Seedance 3.0 Prompt Library<small>Planned tests</small></span></a>
             </div>
           </nav>
           <div className="sidebar-foot"><a href="/">← Back to SEEDANCE 3.0</a></div>

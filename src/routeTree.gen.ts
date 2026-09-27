@@ -28,6 +28,7 @@ import { Route as ApiVideosStatusRouteImport } from './routes/api/videos/status'
 import { Route as AppImageGptImage2RouteImport } from './routes/app_.image.gpt-image-2'
 import { Route as AppVideoMinimaxH3RouteImport } from './routes/app_.video.minimax-h3'
 import { Route as AppVideoSeedance25RouteImport } from './routes/app_.video.seedance-2-5'
+import { Route as AppVideoSeedance3RouteImport } from './routes/app_.video.seedance-3'
 import { Route as PromptsGptImage2ImagesRouteImport } from './routes/prompts/gpt-image-2/images'
 import { Route as PromptsMinimaxH3VideosRouteImport } from './routes/prompts/minimax-h3/videos'
 
@@ -126,6 +127,11 @@ const AppVideoSeedance25Route = AppVideoSeedance25RouteImport.update({
   path: '/app/video/seedance-2-5',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppVideoSeedance3Route = AppVideoSeedance3RouteImport.update({
+  id: '/app_/video/seedance-3',
+  path: '/app/video/seedance-3',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PromptsGptImage2ImagesRoute = PromptsGptImage2ImagesRouteImport.update({
   id: '/prompts/gpt-image-2/images',
   path: '/prompts/gpt-image-2/images',
@@ -157,6 +163,7 @@ export interface FileRoutesByFullPath {
   '/app/image/gpt-image-2': typeof AppImageGptImage2Route
   '/app/video/minimax-h3': typeof AppVideoMinimaxH3Route
   '/app/video/seedance-2-5': typeof AppVideoSeedance25Route
+  '/app/video/seedance-3': typeof AppVideoSeedance3Route
   '/prompts/gpt-image-2/images': typeof PromptsGptImage2ImagesRoute
   '/prompts/minimax-h3/videos': typeof PromptsMinimaxH3VideosRoute
 }
@@ -180,6 +187,7 @@ export interface FileRoutesByTo {
   '/app/image/gpt-image-2': typeof AppImageGptImage2Route
   '/app/video/minimax-h3': typeof AppVideoMinimaxH3Route
   '/app/video/seedance-2-5': typeof AppVideoSeedance25Route
+  '/app/video/seedance-3': typeof AppVideoSeedance3Route
   '/prompts/gpt-image-2/images': typeof PromptsGptImage2ImagesRoute
   '/prompts/minimax-h3/videos': typeof PromptsMinimaxH3VideosRoute
 }
@@ -204,6 +212,7 @@ export interface FileRoutesById {
   '/app_/image/gpt-image-2': typeof AppImageGptImage2Route
   '/app_/video/minimax-h3': typeof AppVideoMinimaxH3Route
   '/app_/video/seedance-2-5': typeof AppVideoSeedance25Route
+  '/app_/video/seedance-3': typeof AppVideoSeedance3Route
   '/prompts/gpt-image-2/images': typeof PromptsGptImage2ImagesRoute
   '/prompts/minimax-h3/videos': typeof PromptsMinimaxH3VideosRoute
 }
@@ -229,6 +238,7 @@ export interface FileRouteTypes {
     | '/app/image/gpt-image-2'
     | '/app/video/minimax-h3'
     | '/app/video/seedance-2-5'
+    | '/app/video/seedance-3'
     | '/prompts/gpt-image-2/images'
     | '/prompts/minimax-h3/videos'
   fileRoutesByTo: FileRoutesByTo
@@ -252,6 +262,7 @@ export interface FileRouteTypes {
     | '/app/image/gpt-image-2'
     | '/app/video/minimax-h3'
     | '/app/video/seedance-2-5'
+    | '/app/video/seedance-3'
     | '/prompts/gpt-image-2/images'
     | '/prompts/minimax-h3/videos'
   id:
@@ -275,6 +286,7 @@ export interface FileRouteTypes {
     | '/app_/image/gpt-image-2'
     | '/app_/video/minimax-h3'
     | '/app_/video/seedance-2-5'
+    | '/app_/video/seedance-3'
     | '/prompts/gpt-image-2/images'
     | '/prompts/minimax-h3/videos'
   fileRoutesById: FileRoutesById
@@ -299,6 +311,7 @@ export interface RootRouteChildren {
   AppImageGptImage2Route: typeof AppImageGptImage2Route
   AppVideoMinimaxH3Route: typeof AppVideoMinimaxH3Route
   AppVideoSeedance25Route: typeof AppVideoSeedance25Route
+  AppVideoSeedance3Route: typeof AppVideoSeedance3Route
   PromptsGptImage2ImagesRoute: typeof PromptsGptImage2ImagesRoute
   PromptsMinimaxH3VideosRoute: typeof PromptsMinimaxH3VideosRoute
 }
@@ -438,6 +451,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppVideoSeedance25RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app_/video/seedance-3': {
+      id: '/app_/video/seedance-3'
+      path: '/app/video/seedance-3'
+      fullPath: '/app/video/seedance-3'
+      preLoaderRoute: typeof AppVideoSeedance3RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/prompts/gpt-image-2/images': {
       id: '/prompts/gpt-image-2/images'
       path: '/prompts/gpt-image-2/images'
@@ -475,6 +495,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppImageGptImage2Route: AppImageGptImage2Route,
   AppVideoMinimaxH3Route: AppVideoMinimaxH3Route,
   AppVideoSeedance25Route: AppVideoSeedance25Route,
+  AppVideoSeedance3Route: AppVideoSeedance3Route,
   PromptsGptImage2ImagesRoute: PromptsGptImage2ImagesRoute,
   PromptsMinimaxH3VideosRoute: PromptsMinimaxH3VideosRoute,
 }
