@@ -74,6 +74,17 @@ export const launchWaitlist = pgTable('launch_waitlist', {
   check('launch_waitlist_bonus_credits_check', sql`${table.bonusCredits} > 0`),
 ])
 
+export const referralVisit = pgTable('referral_visit', {
+  visitId: text('visit_id').primaryKey(),
+  visitorId: text('visitor_id').notNull(),
+  source: text('source').default('anyposes').notNull(),
+  entryPath: text('entry_path').notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+}, (table) => [
+  index('referral_visit_source_created_at_idx').on(table.source, table.createdAt),
+  index('referral_visit_visitor_idx').on(table.visitorId),
+])
+
 export const session = pgTable('session', {
   id: text('id').primaryKey(),
   expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),

@@ -22,6 +22,7 @@ import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApiCreditsBalanceRouteImport } from './routes/api/credits/balance'
 import { Route as ApiImagesAnimateRouteImport } from './routes/api/images/animate'
 import { Route as ApiImagesGenerateRouteImport } from './routes/api/images/generate'
+import { Route as ApiReferralsAnyposesRouteImport } from './routes/api/referrals/anyposes'
 import { Route as ApiVideosGenerateRouteImport } from './routes/api/videos/generate'
 import { Route as ApiVideosReferencesRouteImport } from './routes/api/videos/references'
 import { Route as ApiVideosStatusRouteImport } from './routes/api/videos/status'
@@ -31,6 +32,7 @@ import { Route as AppVideoSeedance25RouteImport } from './routes/app_.video.seed
 import { Route as AppVideoSeedance3RouteImport } from './routes/app_.video.seedance-3'
 import { Route as PromptsGptImage2ImagesRouteImport } from './routes/prompts/gpt-image-2/images'
 import { Route as PromptsMinimaxH3VideosRouteImport } from './routes/prompts/minimax-h3/videos'
+import { Route as ApiAdminReferralsAnyposesRouteImport } from './routes/api/admin/referrals/anyposes'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -97,6 +99,11 @@ const ApiImagesGenerateRoute = ApiImagesGenerateRouteImport.update({
   path: '/api/images/generate',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiReferralsAnyposesRoute = ApiReferralsAnyposesRouteImport.update({
+  id: '/api/referrals/anyposes',
+  path: '/api/referrals/anyposes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiVideosGenerateRoute = ApiVideosGenerateRouteImport.update({
   id: '/api/videos/generate',
   path: '/api/videos/generate',
@@ -142,6 +149,12 @@ const PromptsMinimaxH3VideosRoute = PromptsMinimaxH3VideosRouteImport.update({
   path: '/prompts/minimax-h3/videos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAdminReferralsAnyposesRoute =
+  ApiAdminReferralsAnyposesRouteImport.update({
+    id: '/api/admin/referrals/anyposes',
+    path: '/api/admin/referrals/anyposes',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -157,6 +170,7 @@ export interface FileRoutesByFullPath {
   '/api/credits/balance': typeof ApiCreditsBalanceRoute
   '/api/images/animate': typeof ApiImagesAnimateRoute
   '/api/images/generate': typeof ApiImagesGenerateRoute
+  '/api/referrals/anyposes': typeof ApiReferralsAnyposesRoute
   '/api/videos/generate': typeof ApiVideosGenerateRoute
   '/api/videos/references': typeof ApiVideosReferencesRoute
   '/api/videos/status': typeof ApiVideosStatusRoute
@@ -166,6 +180,7 @@ export interface FileRoutesByFullPath {
   '/app/video/seedance-3': typeof AppVideoSeedance3Route
   '/prompts/gpt-image-2/images': typeof PromptsGptImage2ImagesRoute
   '/prompts/minimax-h3/videos': typeof PromptsMinimaxH3VideosRoute
+  '/api/admin/referrals/anyposes': typeof ApiAdminReferralsAnyposesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -181,6 +196,7 @@ export interface FileRoutesByTo {
   '/api/credits/balance': typeof ApiCreditsBalanceRoute
   '/api/images/animate': typeof ApiImagesAnimateRoute
   '/api/images/generate': typeof ApiImagesGenerateRoute
+  '/api/referrals/anyposes': typeof ApiReferralsAnyposesRoute
   '/api/videos/generate': typeof ApiVideosGenerateRoute
   '/api/videos/references': typeof ApiVideosReferencesRoute
   '/api/videos/status': typeof ApiVideosStatusRoute
@@ -190,6 +206,7 @@ export interface FileRoutesByTo {
   '/app/video/seedance-3': typeof AppVideoSeedance3Route
   '/prompts/gpt-image-2/images': typeof PromptsGptImage2ImagesRoute
   '/prompts/minimax-h3/videos': typeof PromptsMinimaxH3VideosRoute
+  '/api/admin/referrals/anyposes': typeof ApiAdminReferralsAnyposesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -206,6 +223,7 @@ export interface FileRoutesById {
   '/api/credits/balance': typeof ApiCreditsBalanceRoute
   '/api/images/animate': typeof ApiImagesAnimateRoute
   '/api/images/generate': typeof ApiImagesGenerateRoute
+  '/api/referrals/anyposes': typeof ApiReferralsAnyposesRoute
   '/api/videos/generate': typeof ApiVideosGenerateRoute
   '/api/videos/references': typeof ApiVideosReferencesRoute
   '/api/videos/status': typeof ApiVideosStatusRoute
@@ -215,6 +233,7 @@ export interface FileRoutesById {
   '/app_/video/seedance-3': typeof AppVideoSeedance3Route
   '/prompts/gpt-image-2/images': typeof PromptsGptImage2ImagesRoute
   '/prompts/minimax-h3/videos': typeof PromptsMinimaxH3VideosRoute
+  '/api/admin/referrals/anyposes': typeof ApiAdminReferralsAnyposesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -232,6 +251,7 @@ export interface FileRouteTypes {
     | '/api/credits/balance'
     | '/api/images/animate'
     | '/api/images/generate'
+    | '/api/referrals/anyposes'
     | '/api/videos/generate'
     | '/api/videos/references'
     | '/api/videos/status'
@@ -241,6 +261,7 @@ export interface FileRouteTypes {
     | '/app/video/seedance-3'
     | '/prompts/gpt-image-2/images'
     | '/prompts/minimax-h3/videos'
+    | '/api/admin/referrals/anyposes'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -256,6 +277,7 @@ export interface FileRouteTypes {
     | '/api/credits/balance'
     | '/api/images/animate'
     | '/api/images/generate'
+    | '/api/referrals/anyposes'
     | '/api/videos/generate'
     | '/api/videos/references'
     | '/api/videos/status'
@@ -265,6 +287,7 @@ export interface FileRouteTypes {
     | '/app/video/seedance-3'
     | '/prompts/gpt-image-2/images'
     | '/prompts/minimax-h3/videos'
+    | '/api/admin/referrals/anyposes'
   id:
     | '__root__'
     | '/'
@@ -280,6 +303,7 @@ export interface FileRouteTypes {
     | '/api/credits/balance'
     | '/api/images/animate'
     | '/api/images/generate'
+    | '/api/referrals/anyposes'
     | '/api/videos/generate'
     | '/api/videos/references'
     | '/api/videos/status'
@@ -289,6 +313,7 @@ export interface FileRouteTypes {
     | '/app_/video/seedance-3'
     | '/prompts/gpt-image-2/images'
     | '/prompts/minimax-h3/videos'
+    | '/api/admin/referrals/anyposes'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -305,6 +330,7 @@ export interface RootRouteChildren {
   ApiCreditsBalanceRoute: typeof ApiCreditsBalanceRoute
   ApiImagesAnimateRoute: typeof ApiImagesAnimateRoute
   ApiImagesGenerateRoute: typeof ApiImagesGenerateRoute
+  ApiReferralsAnyposesRoute: typeof ApiReferralsAnyposesRoute
   ApiVideosGenerateRoute: typeof ApiVideosGenerateRoute
   ApiVideosReferencesRoute: typeof ApiVideosReferencesRoute
   ApiVideosStatusRoute: typeof ApiVideosStatusRoute
@@ -314,6 +340,7 @@ export interface RootRouteChildren {
   AppVideoSeedance3Route: typeof AppVideoSeedance3Route
   PromptsGptImage2ImagesRoute: typeof PromptsGptImage2ImagesRoute
   PromptsMinimaxH3VideosRoute: typeof PromptsMinimaxH3VideosRoute
+  ApiAdminReferralsAnyposesRoute: typeof ApiAdminReferralsAnyposesRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -409,6 +436,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiImagesGenerateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/referrals/anyposes': {
+      id: '/api/referrals/anyposes'
+      path: '/api/referrals/anyposes'
+      fullPath: '/api/referrals/anyposes'
+      preLoaderRoute: typeof ApiReferralsAnyposesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/videos/generate': {
       id: '/api/videos/generate'
       path: '/api/videos/generate'
@@ -472,6 +506,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PromptsMinimaxH3VideosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/admin/referrals/anyposes': {
+      id: '/api/admin/referrals/anyposes'
+      path: '/api/admin/referrals/anyposes'
+      fullPath: '/api/admin/referrals/anyposes'
+      preLoaderRoute: typeof ApiAdminReferralsAnyposesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -489,6 +530,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiCreditsBalanceRoute: ApiCreditsBalanceRoute,
   ApiImagesAnimateRoute: ApiImagesAnimateRoute,
   ApiImagesGenerateRoute: ApiImagesGenerateRoute,
+  ApiReferralsAnyposesRoute: ApiReferralsAnyposesRoute,
   ApiVideosGenerateRoute: ApiVideosGenerateRoute,
   ApiVideosReferencesRoute: ApiVideosReferencesRoute,
   ApiVideosStatusRoute: ApiVideosStatusRoute,
@@ -498,6 +540,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppVideoSeedance3Route: AppVideoSeedance3Route,
   PromptsGptImage2ImagesRoute: PromptsGptImage2ImagesRoute,
   PromptsMinimaxH3VideosRoute: PromptsMinimaxH3VideosRoute,
+  ApiAdminReferralsAnyposesRoute: ApiAdminReferralsAnyposesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

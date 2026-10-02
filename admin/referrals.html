@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="same-origin">
+  <title>AnyPoses → GPT Image 2 引流统计 · SEEDANCE</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #f4f5ef; background: #090b0d; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    main { width: min(1100px, calc(100% - 40px)); margin: 40px auto 64px; }
+    a { color: #d6ff72; text-underline-offset: 4px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; color: #f4f5ef; text-decoration: none; font-weight: 700; letter-spacing: .04em; }
+    .brand img { width: 36px; height: 36px; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    h1 { margin: 32px 0 8px; font-size: clamp(26px, 4vw, 36px); letter-spacing: -.03em; }
+    h2 { margin: 0; font-size: 18px; }
+    p { color: #a8adb5; line-height: 1.7; margin: 8px 0; }
+    .panel { margin-top: 24px; padding: 24px; border: 1px solid #2b3036; border-radius: 18px; background: #111418; }
+    label { display: block; margin-bottom: 8px; font-size: 14px; }
+    .form-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    input { flex: 1 1 260px; min-width: 0; color: #f4f5ef; background: #090b0d; border: 1px solid #39414b; border-radius: 10px; padding: 12px 14px; font: inherit; }
+    input:focus-visible, button:focus-visible, a:focus-visible { outline: 2px solid #d6ff72; outline-offset: 3px; }
+    button { padding: 12px 18px; border-radius: 10px; border: 1px solid #39414b; background: #181d23; color: #f4f5ef; font: inherit; font-weight: 650; cursor: pointer; }
+    .primary { border-color: #d6ff72; background: #d6ff72; color: #11170a; }
+    button:disabled { opacity: .5; cursor: wait; }
+    .status { min-height: 24px; margin: 12px 0 0; font-size: 14px; }
+    .status[data-state="error"] { color: #ffac94; }
+    .status[data-state="success"] { color: #d6ff72; }
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 24px; }
+    .metric { padding: 22px; border: 1px solid #2b3036; border-radius: 16px; background: #111418; }
+    .metric h2 { font-size: 14px; color: #a8adb5; }
+    .value { display: block; font-size: 34px; font-weight: 750; line-height: 1.4; color: #d6ff72; }
+    .visits { font-size: 14px; color: #a8adb5; margin: 14px 0 0; }
+    .visits strong { color: #f4f5ef; }
+    .table-header { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 12px; }
+    .table-header span { font-size: 13px; color: #a8adb5; }
+    table { width: 100%; margin-top: 18px; border-collapse: collapse; text-align: left; font-size: 14px; }
+    th { color: #a8adb5; font-weight: 500; }
+    th, td { padding: 12px 4px; border-bottom: 1px solid #252b32; }
+    th:not(:first-child), td:not(:first-child) { text-align: right; }
+    .empty { color: #a8adb5; text-align: center; padding: 28px 4px; }
+    .notes { font-size: 13px; margin-top: 18px; }
+    @media (max-width: 800px) { .metrics { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { main { width: calc(100% - 28px); margin-top: 24px; } .panel, .metric { padding: 18px; } .value { font-size: 30px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <a class="brand" href="/"><img src="/assets/seedance-mark.svg" alt="" width="36" height="36"><span>SEEDANCE</span></a>
+      <a href="/admin/">Blog 管理</a>
+    </header>
+    <h1>AnyPoses → GPT Image 2 引流统计</h1>
+    <p>仅统计从 anyposes.com 进入 GPT Image 2 操作页的独立访客与访问次数。</p>
+
+    <section class="panel" aria-label="统计访问权限">
+      <form id="analytics-form" autocomplete="off">
+        <label for="analytics-token">统计查看令牌</label>
+        <div class="form-row">
+          <input id="analytics-token" type="password" required maxlength="256" autocomplete="off" spellcheck="false" placeholder="输入统计查看令牌">
+          <button class="primary" id="load-stats" type="submit">查看统计</button>
+          <button id="refresh-stats" type="submit">刷新</button>
+        </div>
+      </form>
+      <p class="status" id="analytics-status" role="status" aria-live="polite">令牌仅用于本次查看，不会保存到浏览器存储。</p>
+    </section>
+
+    <section class="metrics" aria-label="引流统计概览">
+      <article class="metric"><h2>累计独立访客</h2><strong class="value" id="total-visitors">—</strong><p class="visits">访问次数 <strong id="total-visits">—</strong></p></article>
+      <article class="metric"><h2>今日独立访客</h2><strong class="value" id="today-visitors">—</strong><p class="visits">访问次数 <strong id="today-visits">—</strong></p></article>
+      <article class="metric"><h2>近 7 天独立访客</h2><strong class="value" id="week-visitors">—</strong><p class="visits">访问次数 <strong id="week-visits">—</strong></p></article>
+      <article class="metric"><h2>近 30 天独立访客</h2><strong class="value" id="month-visitors">—</strong><p class="visits">访问次数 <strong id="month-visits">—</strong></p></article>
+    </section>
+
+    <section class="panel" aria-labelledby="daily-title">
+      <div class="table-header"><h2 id="daily-title">近 30 天每日统计</h2><span>北京时间 · Asia/Shanghai</span></div>
+      <table>
+        <thead><tr><th scope="col">日期</th><th scope="col">独立访客</th><th scope="col">访问次数</th></tr></thead>
+        <tbody id="daily-stats"><tr><td colspan="3" class="empty">输入令牌后查看统计</td></tr></tbody>
+      </table>
+      <p class="notes" id="tracked-since">统计从功能启用后开始，不补历史访问数据。</p>
+    </section>
+
+    <p class="notes">独立访客按匿名浏览器标识去重，同一浏览器重复访问不会增加累计独立访客。连续 30 分钟内的访问计为一次会话；更换浏览器、设备或清除标识后会计为新访客。日期均按北京时间计算。</p>
+  </main>
+  <script>
+    const form = document.getElementById('analytics-form');
+    const tokenInput = document.getElementById('analytics-token');
+    const status = document.getElementById('analytics-status');
+    const buttons = [document.getElementById('load-stats'), document.getElementById('refresh-stats')];
+    const dailyStats = document.getElementById('daily-stats');
+    const trackedSince = document.getElementById('tracked-since');
+    const numberFormat = new Intl.NumberFormat('zh-CN');
+    const dateTimeFormat = new Intl.DateTimeFormat('zh-CN', { timeZone: 'Asia/Shanghai', dateStyle: 'medium', timeStyle: 'short' });
+    let loading = false;
+    let hasResults = false;
+
+    function count(value) {
+      return numberFormat.format(Number.isSafeInteger(value) && value >= 0 ? value : 0);
+    }
+
+    function setStatus(message, state) {
+      status.textContent = message;
+      status.dataset.state = state;
+    }
+
+    function renderPeriod(prefix, values) {
+      document.getElementById(prefix + '-visitors').textContent = count(values?.visitors);
+      document.getElementById(prefix + '-visits').textContent = count(values?.visits);
+    }
+
+    function renderStats(data) {
+      renderPeriod('total', data.totals);
+      renderPeriod('today', data.today);
+      renderPeriod('week', data.last7Days);
+      renderPeriod('month', data.last30Days);
+      dailyStats.replaceChildren();
+      const days = Array.isArray(data.days) ? data.days.filter(day => /^\d{4}-\d{2}-\d{2}$/.test(day?.date ?? '')).sort((a, b) => b.date.localeCompare(a.date)).slice(0, 30) : [];
+      if (!days.length) {
+        const row = document.createElement('tr');
+        const cell = document.createElement('td');
+        cell.colSpan = 3;
+        cell.className = 'empty';
+        cell.textContent = '暂无来源访问记录';
+        row.append(cell);
+        dailyStats.append(row);
+      }
+      for (const day of days) {
+        const row = document.createElement('tr');
+        for (const value of [day.date, count(day.visitors), count(day.visits)]) {
+          const cell = document.createElement('td');
+          cell.textContent = value;
+          row.append(cell);
+        }
+        dailyStats.append(row);
+      }
+      const firstVisit = data.trackedSince ? new Date(data.trackedSince) : null;
+      trackedSince.textContent = firstVisit && !Number.isNaN(firstVisit.getTime())
+        ? '首条来源访问记录：' + dateTimeFormat.format(firstVisit) + '（北京时间）。不包含功能启用前的访问。'
+        : '统计从功能启用后开始，不补历史访问数据。';
+    }
+
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (loading) return;
+      const token = tokenInput.value.trim();
+      if (!token) {
+        setStatus('请输入统计查看令牌。', 'error');
+        tokenInput.focus();
+        return;
+      }
+      loading = true;
+      buttons.forEach(button => { button.disabled = true; });
+      setStatus('正在读取统计…', 'loading');
+      try {
+        const response = await fetch('/api/admin/referrals/anyposes', {
+          headers: { 'x-analytics-token': token },
+          cache: 'no-store',
+        });
+        if (response.status === 401) throw new Error('令牌无效，请检查统计查看令牌。');
+        if (!response.ok) throw new Error('无法读取统计，请稍后重试。');
+        const data = await response.json();
+        if (data.success !== true || data.source !== 'anyposes') throw new Error('统计返回异常，请稍后重试。');
+        renderStats(data);
+        hasResults = true;
+        setStatus('更新于 ' + dateTimeFormat.format(new Date()) + '（北京时间）', 'success');
+      } catch (error) {
+        const message = error instanceof Error && /^(令牌无效|无法读取统计|统计返回异常)/.test(error.message)
+          ? error.message : '无法读取统计，请检查网络连接后重试。';
+        setStatus(message + (hasResults ? ' 下方仍显示上次成功读取的结果。' : ''), 'error');
+      } finally {
+        loading = false;
+        buttons.forEach(button => { button.disabled = false; });
+      }
+    });
+  </script>
+</body>
+</html>
