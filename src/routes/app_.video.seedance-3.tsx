@@ -1,10 +1,11 @@
+import { localizeHead } from '../lib/site-i18n'
 import { createFileRoute } from '@tanstack/react-router'
 import { Seedance3PreviewPage } from '../components/seedance3-preview-page'
 
 const url = 'https://seedance3-pro.com/app/video/seedance-3'
 
 export const Route = createFileRoute('/app_/video/seedance-3')({
-  head: () => ({
+  head: () => (localizeHead({
     meta: [
       { title: 'Seedance 3.0 Video Workspace Preview | SEEDANCE' },
       { name: 'description', content: 'Preview the Seedance 3.0 video workspace and draft a prompt. Generation is coming soon.' },
@@ -15,6 +16,6 @@ export const Route = createFileRoute('/app_/video/seedance-3')({
       { rel: 'canonical', href: url },
       { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
     ],
-  }),
+  }, "/app/video/seedance-3", 'en')),
   component: Seedance3PreviewPage,
 })

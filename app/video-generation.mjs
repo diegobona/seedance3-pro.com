@@ -1,13 +1,14 @@
+import { t, localizedErrorMessage } from './i18n.mjs';
 const LOCAL_TASK_UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const TERMINAL_STATUSES = new Set(["succeeded", "failed", "expired", "submission_unknown"]);
 const RETRIABLE_HTTP_STATUSES = new Set([408, 425, 429, 500, 502, 503, 504]);
 
 function videoError(message, details = {}) {
-  return Object.assign(new Error(message), details);
+  return Object.assign(new Error(t(message)), details);
 }
 
 function abortError() {
-  return new DOMException("Video polling was aborted.", "AbortError");
+  return new DOMException(t("Video polling was aborted."), "AbortError");
 }
 
 function throwIfAborted(signal) {
@@ -27,7 +28,7 @@ async function responsePayload(response) {
   try {
     return await response.json();
   } catch {
-    throw videoError("Video service returned an invalid response.", {
+    throw videoError(t("Video service returned an invalid response."), {
       status: response.status,
       code: "INVALID_VIDEO_RESPONSE",
       terminal: false
@@ -38,7 +39,7 @@ async function responsePayload(response) {
 function validateLocalTaskId(value) {
   const taskId = String(value || "");
   if (!LOCAL_TASK_UUID_PATTERN.test(taskId)) {
-    throw videoError("Video service returned an invalid task.", {
+    throw videoError(t("Video service returned an invalid task."), {
       code: "INVALID_VIDEO_TASK",
       terminal: false
     });
@@ -49,7 +50,7 @@ function validateLocalTaskId(value) {
 function validateTaskPayload(payload, expectedTaskId) {
   const taskId = validateLocalTaskId(payload?.task?.id);
   if (expectedTaskId && taskId !== expectedTaskId) {
-    throw videoError("Video service returned an invalid task.", {
+    throw videoError(t("Video service returned an invalid task."), {
       code: "INVALID_VIDEO_TASK",
       terminal: false
     });
@@ -63,7 +64,7 @@ function validateVideoUrl(value) {
     if (url.protocol !== "https:" || url.username || url.password) throw new Error("unsafe");
     return url.href;
   } catch {
-    throw videoError("Video service returned an invalid video URL.", {
+    throw videoError(t("Video service returned an invalid video URL."), {
       code: "INVALID_VIDEO_RESULT",
       terminal: true,
       taskStatus: "succeeded"
@@ -105,7 +106,7 @@ function defaultWait(milliseconds, { signal } = {}) {
 
 function errorFromResponse(response, payload, credits) {
   const taskStatus = typeof payload?.task?.status === "string" ? payload.task.status : undefined;
-  return videoError(String(payload?.message || "Video generation failed."), {
+  return videoError(localizedErrorMessage(payload?.message, payload?.code, 'Video generation failed.'), {
     status: response.status,
     code: String(payload?.code || "VIDEO_GENERATION_FAILED"),
     ...(credits ? { credits } : {}),
@@ -138,7 +139,7 @@ export async function pollVideoGenerationTask({
     const elapsed = nowImpl() - startedAt;
     const remaining = boundedMaxDuration - elapsed;
     if (remaining <= 0) {
-      throw videoError("Video generation is still running. Return later to resume checking it.", {
+      throw videoError(t("Video generation is still running. Return later to resume checking it."), {
         code: "VIDEO_CLIENT_TIMEOUT",
         terminal: false,
         taskId: localTaskId
@@ -155,7 +156,7 @@ export async function pollVideoGenerationTask({
   while (true) {
     throwIfAborted(signal);
     if (nowImpl() - startedAt >= boundedMaxDuration) {
-      throw videoError("Video generation is still running. Return later to resume checking it.", {
+      throw videoError(t("Video generation is still running. Return later to resume checking it."), {
         code: "VIDEO_CLIENT_TIMEOUT",
         terminal: false,
         taskId: localTaskId
@@ -204,7 +205,7 @@ export async function pollVideoGenerationTask({
       };
     }
     if (TERMINAL_STATUSES.has(status)) {
-      throw videoError("Video generation failed. Your credits were refunded.", {
+      throw videoError(t("Video generation failed. Your credits were refunded."), {
         code: status === "expired" ? "VIDEO_TASK_EXPIRED" : "VIDEO_GENERATION_FAILED",
         taskStatus: status,
         terminal: true,
@@ -212,7 +213,7 @@ export async function pollVideoGenerationTask({
       });
     }
     if (status !== "queued" && status !== "running" && status !== "submitting") {
-      throw videoError("Video service returned an invalid task status.", {
+      throw videoError(t("Video service returned an invalid task status."), {
         code: "INVALID_VIDEO_RESPONSE",
         terminal: false
       });
@@ -242,10 +243,10 @@ export async function requestVideoGeneration({
 } = {}) {
   throwIfAborted(signal);
   const referenceImageIds = [];
-  if (!Array.isArray(referenceFiles) || referenceFiles.length > 9) throw videoError("Choose up to 9 reference images.");
+  if (!Array.isArray(referenceFiles) || referenceFiles.length > 9) throw videoError(t("Choose up to 9 reference images."));
   for (const [index, file] of referenceFiles.entries()) {
     if (!["image/png", "image/jpeg", "image/webp"].includes(file.type) || !file.size || file.size > 10 * 1024 * 1024) {
-      throw videoError("Choose PNG, JPEG or WebP images, up to 10 MB each.");
+      throw videoError(t("Choose PNG, JPEG or WebP images, up to 10 MB each."));
     }
     onUpload({ index: index + 1, total: referenceFiles.length });
     const upload = await fetchImpl("/api/videos/references", {
@@ -255,7 +256,7 @@ export async function requestVideoGeneration({
     });
     const result = await responsePayload(upload);
     if (!upload.ok || !result?.success) throw errorFromResponse(upload, result);
-    if (!LOCAL_TASK_UUID_PATTERN.test(result.id)) throw videoError("Reference upload returned an invalid response.");
+    if (!LOCAL_TASK_UUID_PATTERN.test(result.id)) throw videoError(t("Reference upload returned an invalid response."));
     referenceImageIds.push(result.id);
   }
   const response = await fetchImpl("/api/videos/generate", {

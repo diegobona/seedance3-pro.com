@@ -1,3 +1,4 @@
+import { useSiteI18n } from '../lib/site-i18n'
 import { useState } from 'react'
 import { getGptImageCase } from '../data/gpt-image-cases'
 import '../styles/h3-video-examples.css'
@@ -11,6 +12,7 @@ const examples = exampleSlugs.map((slug) => {
 })
 
 export function GptImageExamples() {
+  const { t } = useSiteI18n()
   const [selectedIndex, setSelectedIndex] = useState(0)
   const selected = examples[selectedIndex]
 
@@ -30,20 +32,20 @@ export function GptImageExamples() {
   }
 
   return (
-    <section className="context-card h3-examples gpt-image-examples" id="gpt-image-examples" aria-label="GPT Image 2 image examples">
-      <div className="h3-examples-heading"><span>IMAGE EXAMPLES</span><small>MADE WITH GPT IMAGE 2</small></div>
+    <section className="context-card h3-examples gpt-image-examples" id="gpt-image-examples" aria-label={t("GPT Image 2 image examples")}>
+      <div className="h3-examples-heading"><span>{t("IMAGE EXAMPLES")}</span><small>{t("MADE WITH GPT IMAGE 2")}</small></div>
       <div className="gpt-example-frame">
-        <img key={selected.slug} src={selected.imageUrl} alt={selected.summary} />
+        <img key={selected.slug} src={selected.imageUrl} alt={t(selected.summary)} />
       </div>
       <div className="h3-example-details">
-        <div className="h3-example-title"><div><span>{selected.style.toUpperCase()}</span><h2>{selected.title}</h2></div><button type="button" onClick={tryExample}>Try it ↗</button></div>
+        <div className="h3-example-title"><div><span>{t(selected.style.toUpperCase())}</span><h2>{t(selected.title)}</h2></div><button type="button" onClick={tryExample}>{t("Try it ↗")}</button></div>
         <p className="h3-example-prompt">{selected.prompt}</p>
       </div>
-      <div className="h3-example-options" aria-label="Choose an example image">
+      <div className="h3-example-options" aria-label={t("Choose an example image")}>
         {examples.map((imageCase, index) => (
-          <button key={imageCase.slug} className={index === selectedIndex ? 'is-selected' : ''} type="button" onClick={() => setSelectedIndex(index)} aria-pressed={index === selectedIndex} aria-label={`Show ${imageCase.title} example`}>
+          <button key={imageCase.slug} className={index === selectedIndex ? 'is-selected' : ''} type="button" onClick={() => setSelectedIndex(index)} aria-pressed={index === selectedIndex} aria-label={`${t("Show example")}: ${t(imageCase.title)}`}>
             <img src={imageCase.imageUrl} alt="" loading="lazy" />
-            <span>{imageCase.title}</span>
+            <span>{t(imageCase.title)}</span>
           </button>
         ))}
       </div>

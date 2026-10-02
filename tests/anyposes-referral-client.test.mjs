@@ -74,6 +74,15 @@ test('ordinary visits and an old Pose visibility flag do not become new referral
   assert.equal(tab.cookies.has('seedance_referral_visitor'), false);
 });
 
+test('Chinese landing records the same canonical path and visitor across locale switches', async () => {
+  const tab = browser();
+  await tab.visit('?ref=anyposes', '', '/zh/app/image/gpt-image-2');
+  assert.equal(tab.requests.length, 1);
+  assert.equal(tab.requests[0].body.entryPath, '/app/image/gpt-image-2');
+  await tab.visit('', 'https://seedance3-pro.com/zh/app/image/gpt-image-2', '/app/image/gpt-image-2');
+  assert.equal(tab.requests.length, 1);
+});
+
 test('AnyPoses referrals entering the homepage or H3 are excluded', async () => {
   const tab = browser();
   await tab.visit('?ref=anyposes', 'https://anyposes.com/', '/');

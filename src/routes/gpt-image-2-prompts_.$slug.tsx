@@ -1,3 +1,4 @@
+import { localizeHead } from '../lib/site-i18n'
 import { createFileRoute, notFound } from '@tanstack/react-router'
 import { GptImageCaseDetail } from '../components/gpt-image-case-page'
 import { getGptImageCase, gptImageCaseUrl } from '../data/gpt-image-cases'
@@ -14,7 +15,7 @@ export const Route = createFileRoute('/gpt-image-2-prompts_/$slug')({
     if (!loaderData) return {}
     const canonicalUrl = siteUrl + gptImageCaseUrl(loaderData.slug)
     const description = loaderData.summary + ' See the original image and the exact GPT Image 2 prompt used to create it.'
-    return {
+    return localizeHead({
       meta: [
         { title: loaderData.seoTitle },
         { name: 'description', content: description },
@@ -30,7 +31,7 @@ export const Route = createFileRoute('/gpt-image-2-prompts_/$slug')({
         { rel: 'canonical', href: canonicalUrl },
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
       ],
-    }
+    }, "/gpt-image-2-prompts/$slug", 'en')
   },
   component: () => <GptImageCaseDetail imageCase={Route.useLoaderData()} />,
 })

@@ -1,3 +1,4 @@
+import { t, localizedErrorMessage } from './i18n.mjs';
 export async function requestImageGeneration({
   prompt,
   referenceFile = null,
@@ -32,10 +33,10 @@ export async function requestImageGeneration({
   try {
     payload = await response.json();
   } catch {
-    throw new Error("Image service returned an invalid response.");
+    throw new Error(t("Image service returned an invalid response."));
   }
   if (!response.ok || !payload?.success || !payload?.image) {
-    const error = new Error(String(payload?.message || "Image generation failed."));
+    const error = new Error(localizedErrorMessage(payload?.message, payload?.code, 'Image generation failed.'));
     error.status = response.status;
     error.code = String(payload?.code || "");
     if (credits) error.credits = credits;
@@ -56,15 +57,15 @@ function normalizeGeneratedImage(image) {
     try {
       url = new URL(String(image.url));
     } catch {
-      throw new Error("Image service returned an invalid image URL.");
+      throw new Error(t("Image service returned an invalid image URL."));
     }
     if (url.protocol !== "https:") {
-      throw new Error("Image service returned an invalid image URL.");
+      throw new Error(t("Image service returned an invalid image URL."));
     }
     return { url: url.href, ...(typeof image.animateId === "string" && /^[0-9a-f-]{36}$/.test(image.animateId) ? { animateId: image.animateId } : {}) };
   }
   if (!/^data:image\/(?:png|jpeg|webp);base64,[a-z0-9+/=]+$/i.test(String(image?.dataUrl || ""))) {
-    throw new Error("Image service returned invalid image data.");
+    throw new Error(t("Image service returned invalid image data."));
   }
   return { dataUrl: String(image.dataUrl) };
 }

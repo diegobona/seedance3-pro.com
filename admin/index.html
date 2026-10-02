@@ -90,6 +90,15 @@
         <p class="mt-2 text-xs text-slate-400">提示：可一键导入完整 Word 文档，也可直接 Ctrl+V 粘贴内容；标题层级、编号、列表、粗斜体和图片会自动保留。</p>
       </div>
 
+      <details class="mt-6 rounded-xl border border-white/15 bg-slate-950 p-4" open>
+        <summary class="cursor-pointer text-sm font-semibold">中文版（与上面的英文版一起发布）</summary>
+        <div class="mt-4 grid gap-4">
+          <label class="text-sm">中文标题<input id="title-zh" type="text" class="mt-2 w-full rounded-lg border border-white/15 bg-slate-900 px-4 py-3" placeholder="填写中文标题"></label>
+          <label class="text-sm">中文摘要<input id="excerpt-zh" type="text" class="mt-2 w-full rounded-lg border border-white/15 bg-slate-900 px-4 py-3" placeholder="用于中文版文章卡片和搜索描述"></label>
+          <label class="text-sm">中文正文</label>
+          <div id="editor-zh" contenteditable="true" class="min-h-[280px] max-h-[70vh] overflow-y-auto rounded-lg border border-white/15 px-4 py-3 text-sm leading-7 outline-none" data-placeholder="填写或粘贴中文正文，支持段落、图片和格式。"></div>
+        </div>
+      </details>
       <div class="mt-6 flex flex-wrap gap-3">
         <button id="publish-btn" type="button" class="rounded-xl bg-indigo-500 px-5 py-3 text-sm font-semibold text-white hover:bg-indigo-400">发布文章并推送 GitHub</button>
         <button id="cancel-publish-btn" type="button" class="hidden rounded-xl border border-rose-300/40 bg-rose-500/20 px-5 py-3 text-sm font-semibold text-rose-100 hover:bg-rose-500/35">停止发布</button>
@@ -151,6 +160,9 @@
     const postsList = document.getElementById("posts-list");
     const clearFormatButton = document.getElementById("clear-format-btn");
     const translateEnButton = document.getElementById("translate-en-btn");
+    const chineseTitleInput = document.getElementById("title-zh");
+    const chineseExcerptInput = document.getElementById("excerpt-zh");
+    const chineseEditor = document.getElementById("editor-zh");
     const importDocxButton = document.getElementById("import-docx-btn");
     const docxFileInput = document.getElementById("docx-file-input");
     const insertLinkButton = document.getElementById("insert-link-btn");
@@ -222,8 +234,11 @@
 
     function setFormControlsBusy(isBusy) {
       editor.setAttribute("contenteditable", isBusy ? "false" : "true");
+      chineseEditor.setAttribute("contenteditable", isBusy ? "false" : "true");
       titleInput.disabled = isBusy;
       excerptInput.disabled = isBusy;
+      chineseTitleInput.disabled = isBusy;
+      chineseExcerptInput.disabled = isBusy;
       categoryInput.disabled = isBusy;
       publishButton.disabled = isBusy;
       refreshPostsButton.disabled = isBusy;
@@ -435,6 +450,11 @@
             excerpt: excerptInput.value.trim(),
             category: categoryInput.value,
             content,
+            chinese: {
+              title: document.getElementById("title-zh").value.trim(),
+              excerpt: document.getElementById("excerpt-zh").value.trim(),
+              content: normalizeEditorHtml(document.getElementById("editor-zh").innerHTML)
+            },
             fileName: activeEditFileName
           })
         });
@@ -800,6 +820,9 @@
         ensureCategoryOption(post.category || "Tutorial");
         categoryInput.value = post.category || "Tutorial";
         editor.innerHTML = post.content || "";
+        document.getElementById("title-zh").value = post.chinese?.title || "";
+        document.getElementById("excerpt-zh").value = post.chinese?.excerpt || "";
+        document.getElementById("editor-zh").innerHTML = post.chinese?.content || "";
         editFileName.textContent = activeEditFileName;
         editStatus.classList.remove("hidden");
         editStatus.classList.add("flex");
@@ -833,6 +856,9 @@
         excerptInput.value = "";
         categoryInput.value = "Tutorial";
         editor.innerHTML = "";
+        document.getElementById("title-zh").value = "";
+        document.getElementById("excerpt-zh").value = "";
+        document.getElementById("editor-zh").innerHTML = "";
       }
       updatePublishButtonLabel();
     }

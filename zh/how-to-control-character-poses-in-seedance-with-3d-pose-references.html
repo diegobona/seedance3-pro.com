@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  <script src="/assets/pose-entry-visibility.js"></script>
+  <link rel="stylesheet" href="/assets/pose-entry-visibility.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>如何用 3D 姿势参考控制 Seedance 中的人物姿态 | SEEDANCE 博客</title>
+  <meta name="description" content="在 Seedance 中构建 3D 姿势，将其用作图像生成参考，再优化人物图像。按步骤学习提示词示例和可选的图生视频流程。">
+  <meta name="keywords" content="3D 姿势参考,姿势生成图像,AI 姿势生成器,人物姿势教程">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <link rel="canonical" href="https://seedance3-pro.com/zh/how-to-control-character-poses-in-seedance-with-3d-pose-references">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="SEEDANCE 3.0">
+  <meta property="og:title" content="如何用 3D 姿势参考控制 Seedance 中的人物姿态">
+  <meta property="og:description" content="在 Seedance 中构建 3D 姿势，将其用作图像生成参考，再优化人物图像。按步骤学习提示词示例和可选的图生视频流程。">
+  <meta property="og:url" content="https://seedance3-pro.com/zh/how-to-control-character-poses-in-seedance-with-3d-pose-references">
+  <meta property="og:image" content="https://seedance3-pro.com/assets/pose-reference-demo-poster.webp?v=2">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="如何用 3D 姿势参考控制 Seedance 中的人物姿态">
+  <meta name="twitter:description" content="在 Seedance 中构建 3D 姿势，将其用作图像生成参考，再优化人物图像。按步骤学习提示词示例和可选的图生视频流程。">
+  <meta name="twitter:image" content="https://seedance3-pro.com/assets/pose-reference-demo-poster.webp?v=2">
+  <meta name="theme-color" content="#090a0c">
+  <link rel="stylesheet" href="/site.css">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+  <link rel="alternate" hreflang="en" href="https://seedance3-pro.com/how-to-control-character-poses-in-seedance-with-3d-pose-references">
+  <link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/how-to-control-character-poses-in-seedance-with-3d-pose-references">
+  <link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/how-to-control-character-poses-in-seedance-with-3d-pose-references">
+  <link rel="stylesheet" href="/assets/site-language.css">
+  <script src="/assets/site-language.js" defer></script>
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:locale:alternate" content="en_US">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container inner">
+      <a class="brand" href="/zh/" aria-label="SEEDANCE 3.0 首页">
+        <img class="brand-mark" src="/assets/seedance-mark.svg" width="40" height="40" alt="">
+        <span>SEEDANCE 3.0</span>
+      </a>
+      <nav class="desktop-nav compact-nav" aria-label="主导航">
+        <a href="/zh/">首页</a>
+        <a href="/zh/blog">博客</a>
+      </nav>
+      <nav class="site-language-switch" data-site-language-switch aria-label="网站语言"><a href="/zh/how-to-control-character-poses-in-seedance-with-3d-pose-references?lang=zh" data-language="zh" lang="zh-Hans" aria-current="true">中文</a><span aria-hidden="true">|</span><a href="/how-to-control-character-poses-in-seedance-with-3d-pose-references?lang=en" data-language="en" lang="en">EN</a></nav>
+    </div>
+  </header>
+
+  <main class="article-main">
+    <div class="container">
+      <article class="article-shell">
+        <p class="eyebrow article-category">教程</p>
+        <h1 class="article-title">如何用 3D 姿势参考控制 Seedance 中的人物姿态</h1>
+        <p class="article-lead">在 Seedance 中构建 3D 姿势，将其用作图像生成参考，再优化人物图像。按步骤学习提示词示例和可选的图生视频流程。</p>
+        <div class="article-content prose">
+          <p>当人物站姿或镜头角度很重要时，3D 人偶能给图像模型提供视觉参考。你可以在 Seedance 浏览器编辑器中摆好参考场景，直接将截图发送到图像工作区。生成结果仍可能需要修改：参考图用于引导模型，无法锁定每个关节，也无法保证人物身份始终一致。</p>
+          <p data-pose-entry><a href="/zh/pose-to-image">查看 AI 姿势生成器及其控件</a>，或 <a href="/zh/app/?model=pose-to-image">打开姿势工作室</a> 并跟随操作。更新于 <time datetime="2026-09-22">2026 年 9 月 22 日</time>.</p>
+
+          <h2>1. 从清楚易读的姿势开始</h2>
+          <p>选择接近目标站姿的预设。例如，跑步构图可以从 Jogging（慢跑）开始。拖动人偶控制点调整四肢，检查肩膀、髋部、弯曲的膝盖和脚与地面的接触位置。</p>
+          <p>使用当前在线编辑器中的单个人偶。保持轮廓清晰：手臂和腿互相重叠，会让参考图更难理解。</p>
+          <figure>
+            <img src="/assets/pose-reference-demo-poster.webp?v=2" width="1280" height="720" loading="lazy" decoding="async" alt="Seedance 姿势工作室中手腕抬起的人偶，周围显示姿势控制点">
+            <figcaption>姿势编辑演示中的真实编辑器截图。这是人偶参考图，并非 AI 生成人物图像。</figcaption>
+          </figure>
+
+          <h2>2. 截图前设置镜头</h2>
+          <p>环绕镜头，直到目标姿势清晰可见。即使人偶姿势相同，正面、侧面和四分之三侧面也会形成不同参考图。若想得到全身结果，手和脚周围应留出空间。</p>
+          <p>根据最终构图判断哪些细节最重要。手被遮挡或脚藏在另一条腿后面时，可能需要调整镜头角度，而不只是继续修改姿势。</p>
+
+          <h2>3. 将姿势发送到图像生成器</h2>
+          <p>选择 <strong>姿势生成图像</strong>。Seedance 会截取场景，并在图像工作区中附加为参考图。生成前检查参考缩略图，再描述想要的人物、服装、环境和视觉风格。</p>
+          <p>登录前可以探索姿势编辑器。图像生成需要登录和积分；提交前查看工作区显示的费用。</p>
+          <p>可以从以下提示词开始：</p>
+          <blockquote lang="en" translate="no"><p>Use the attached mannequin image as the pose and camera reference. Create a full-body image of [character] wearing [clothing], in [setting], with [lighting and style]. Follow the visible stance, limb placement, and framing. Render the mannequin as the described character.</p></blockquote>
+          <p>这是提示词示例，无法保证经过测试的固定输出。它直接使用附加图片，在此工作区中无需输入 <code lang="en" translate="no">@image1</code> 引用标记。</p>
+
+          <h2>4. 根据场景调整提示词</h2>
+          <p>这些示例用于说明可以尝试的做法，并非生成前后的案例对照。</p>
+          <h3>跑步人物</h3>
+          <p><strong>设置：</strong> 慢跑姿势、清楚可见的弯曲膝盖，以及人物前方的空间。</p>
+          <blockquote lang="en" translate="no"><p>Use the attached mannequin image as the pose and camera reference. Create a full-body editorial photograph of an adult runner wearing a red track jacket and black shorts on an outdoor track. Follow the visible running stance and framing, with soft morning light.</p></blockquote>
+          <h3>防御姿势</h3>
+          <p><strong>设置：</strong> 弯曲膝盖、抬起手臂，让双手不遮挡面部。</p>
+          <blockquote lang="en" translate="no"><p>Use the attached mannequin image as the pose and camera reference. Create a full-body concept illustration of an adult martial artist in a dark training outfit. Follow the visible defensive stance and camera angle. Use a simple studio background and clear directional lighting.</p></blockquote>
+          <h3>跪姿人物</h3>
+          <p><strong>设置：</strong> 使用 Kneeling（跪姿）预设，让弯曲的腿和双手清晰可见。</p>
+          <blockquote lang="en" translate="no"><p>Use the attached mannequin image as the pose and camera reference. Create an illustration of an adult explorer wearing a tan jacket and kneeling on a rocky trail. Follow the visible kneeling stance and camera framing, with soft overcast light.</p></blockquote>
+
+          <h2>5. 对比生成图像与参考图</h2>
+          <p>用于更大的项目之前，检查结果中的四肢位置、手脚、身体比例、人物数量和镜头角度。如果重要部分偏离预期，每次只修改一个变量再生成，便于判断调整是否有效。</p>
+          <ul>
+            <li><strong>手臂或腿粘连：</strong> 在姿势中将它们分开，或转动镜头以显露轮廓。</li>
+            <li><strong>手或脚被裁切：</strong> 将参考镜头拉远，并要求全身构图。</li>
+            <li><strong>模型添加了其他动作：</strong> 删除冲突的动作词，只描述一个静态姿势。</li>
+            <li><strong>结果仍然像人偶：</strong> 清楚描述目标人物与服装，并明确人偶只是姿势参考。</li>
+          </ul>
+          <p>姿势截图描述的是身体布局和构图，不是 OpenPose 骨架导出、身份参考或按时间编排的动作序列。</p>
+
+          <h2>可以把这个姿势变成视频吗？</h2>
+          <p>得到满意的完整图像后，在生成结果中选择 <strong>将这张图片变为视频</strong> ，将它作为参考送入 <a href="/zh/app/video/minimax-h3">MiniMax H3 视频生成器</a>。描述想要的动作，并在生成前检查可用设置。</p>
+          <p>在视频工具中描述一个短动作和镜头运动。例如： <em><span lang="en" translate="no">The runner takes two strides forward while the camera tracks alongside at waist height.</span></em> 起始图像能引导开头构图，但不会规定片段中每一时刻的姿势。基于参考视频的动作迁移属于另一种工作流程。</p>
+          <p>如果你已经使用其他 3D 编辑器，例如 <a href="https://anyposes.com/" target="_blank" rel="noopener noreferrer">Anyposes</a>，也可以将截图作为支持上传的工具中的图像参考。跟随视频教程前，先确认该工具的输入与动作控件。</p>
+
+          <p>寻找动作提示词灵感时，可以查看 <a href="/zh/minimax-h3-prompts/corgi-sprint">柯基冲刺视频及其运镜指令</a>，或浏览 <a href="/zh/minimax-h3-prompts">MiniMax H3 提示词库</a>。这些是可供研究的文字生成案例，并非姿势迁移演示。</p>
+
+          <h2>试试以姿势引导图像</h2>
+          <p>从一个易读姿势和简单场景开始。静态图像成功后，再加入更复杂的风格，或规划下一步的视频制作。</p>
+          <p data-pose-entry><a class="button primary" href="/zh/app/?model=pose-to-image">打开姿势工作室</a></p>
+          <p data-pose-entry><a href="/zh/pose-to-image">查看姿势生成图像流程与常见问题</a>，或 <a href="/zh/pose-reference-camera-angle-examples">探索包含人物、动物和道具的姿势参考案例</a>.</p>
+
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer article-footer">
+    <div class="container article-footer-inner">
+      <p>© 2026 SEEDANCE 3.0 · seedance3-pro.com</p>
+      <nav aria-label="页脚导航">
+        <a href="/zh/">首页</a>
+        <a href="/zh/blog">博客</a>
+      </nav>
+      <nav class="site-language-switch" data-site-language-switch data-language-footer aria-label="网站语言"><a href="/zh/how-to-control-character-poses-in-seedance-with-3d-pose-references?lang=zh" data-language="zh" lang="zh-Hans" aria-current="true">中文</a><span aria-hidden="true">|</span><a href="/how-to-control-character-poses-in-seedance-with-3d-pose-references?lang=en" data-language="en" lang="en">EN</a></nav>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,3 +1,4 @@
+import { localizeHead } from '../lib/site-i18n'
 import { createFileRoute } from '@tanstack/react-router'
 import { StudioPage } from './app'
 
@@ -7,7 +8,7 @@ const description = 'Generate and edit images with GPT Image 2 online. Combine r
 const previewImage = 'https://seedance3-pro.com/media/showcase-gpt-image-2/2026-09-26/foldable-pocket-universe.webp'
 
 export const Route = createFileRoute('/app_/image/gpt-image-2')({
-  head: () => ({
+  head: () => (localizeHead({
     meta: [
       { title },
       { name: 'description', content: description },
@@ -26,6 +27,6 @@ export const Route = createFileRoute('/app_/image/gpt-image-2')({
       { rel: 'canonical', href: url },
       { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
     ],
-  }),
+  }, "/app/image/gpt-image-2", 'en')),
   component: () => <StudioPage initialModel="gpt-image-2" modelLanding />,
 })

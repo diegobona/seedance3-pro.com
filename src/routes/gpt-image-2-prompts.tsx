@@ -1,3 +1,4 @@
+import { localizeHead } from '../lib/site-i18n'
 import { createFileRoute } from '@tanstack/react-router'
 import { StudioShowcasePage } from '../components/studio-showcase-page'
 
@@ -6,7 +7,7 @@ const title = 'GPT Image 2 Prompt Library | Original Examples'
 const description = 'Browse GPT Image 2 prompts for illustrations, product images and more. Explore original examples, read the exact prompts, and try your own image in the generator.'
 
 export const Route = createFileRoute('/gpt-image-2-prompts')({
-  head: () => ({
+  head: () => (localizeHead({
     meta: [
       { title },
       { name: 'description', content: description },
@@ -25,6 +26,6 @@ export const Route = createFileRoute('/gpt-image-2-prompts')({
       { rel: 'canonical', href: url },
       { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
     ],
-  }),
+  }, "/gpt-image-2-prompts", 'en')),
   component: () => <StudioShowcasePage model="gpt-image-2" />,
 })

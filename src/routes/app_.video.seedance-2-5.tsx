@@ -1,3 +1,4 @@
+import { localizeHead } from '../lib/site-i18n'
 import { createFileRoute } from '@tanstack/react-router'
 import { StudioPage } from './app'
 
@@ -6,7 +7,7 @@ const title = 'Seedance 2.5 Video Studio Preview | Seedance'
 const description = 'Explore the Seedance 2.5 video workspace. Describe a scene, choose the available output settings and create a video from your text prompt.'
 
 export const Route = createFileRoute('/app_/video/seedance-2-5')({
-  head: () => ({
+  head: () => (localizeHead({
     meta: [
       { title },
       { name: 'description', content: description },
@@ -22,6 +23,6 @@ export const Route = createFileRoute('/app_/video/seedance-2-5')({
       { rel: 'canonical', href: url },
       { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
     ],
-  }),
+  }, "/app/video/seedance-2-5", 'en')),
   component: () => <StudioPage initialModel="seedance-2-5" modelLanding />,
 })

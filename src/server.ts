@@ -2,6 +2,8 @@ import handler from '@tanstack/react-start/server-entry'
 import legacyWorker from '../worker.js'
 import { reconcileVideoGenerationTasks } from './lib/video-task-reconciler'
 import { legacyModelRedirect, modelIdFromPath } from '../app/seo-routes.mjs'
+import { localeFromPath, localizedPath, stripLocalePath, localeRedirect } from '../app/site-locale.mjs'
+import { fetchPublicPage, isStudioDocument } from './lib/site-static-proxy'
 
 interface WorkerContext {
   waitUntil(promise: Promise<unknown>): void
@@ -40,12 +42,16 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url)
     const { pathname } = url
+    const basePath = stripLocalePath(pathname)
     if (request.method === 'GET' || request.method === 'HEAD') {
-      const promptDestination = legacyPromptPaths[pathname]
-      if (promptDestination) return Response.redirect(`https://seedance3-pro.com${promptDestination}${url.search}`, 308)
-      if (pathname.startsWith(legacyH3VideoCasePrefix)) {
-        const slug = pathname.slice(legacyH3VideoCasePrefix.length)
-        if (slug && !slug.includes('/')) return Response.redirect(`https://seedance3-pro.com/minimax-h3-prompts/${slug}${url.search}`, 308)
+      const redirect = localeRedirect(request, request.cf?.country)
+      if (redirect) return redirect
+      const locale = localeFromPath(pathname)
+      const promptDestination = legacyPromptPaths[basePath]
+      if (promptDestination) return Response.redirect(`https://seedance3-pro.com${localizedPath(promptDestination, locale)}${url.search}`, 308)
+      if (basePath.startsWith(legacyH3VideoCasePrefix)) {
+        const slug = basePath.slice(legacyH3VideoCasePrefix.length)
+        if (slug && !slug.includes('/')) return Response.redirect(`https://seedance3-pro.com${localizedPath(`/minimax-h3-prompts/${slug}`, locale)}${url.search}`, 308)
       }
       const destination = legacyModelRedirect(url)
       if (destination) return Response.redirect(`https://seedance3-pro.com${destination}`, 308)
@@ -59,7 +65,15 @@ export default {
     if (isLegacyApiRequest(request) || request.method === 'OPTIONS') {
       return legacyWorker.fetch(request, env, ctx)
     }
-    return handler.fetch(request)
+    if (pathname.startsWith('/api/') || pathname.startsWith('/@tanstack-start/') || pathname.startsWith('/_serverFn/') || isStudioDocument(pathname)) {
+      const response = await handler.fetch(request)
+      if (!isStudioDocument(pathname)) return response
+      const headers = new Headers(response.headers)
+      headers.set('content-language', localeFromPath(pathname) === 'zh' ? 'zh-Hans' : 'en')
+      headers.set('cache-control', 'private, no-store')
+      return new Response(response.body, { status: response.status, headers })
+    }
+    return fetchPublicPage(request)
   },
   scheduled(controller, env, ctx) {
     const legacyScheduled = Promise.resolve(legacyWorker.scheduled(controller, env, ctx))

@@ -1,3 +1,5 @@
+import { localeFromPath, localizedPath, stripLocalePath } from './site-locale.mjs'
+
 const modelPaths = Object.freeze({
   'seedance-2-5': '/app/video/seedance-2-5',
   'minimax-h3': '/app/video/minimax-h3',
@@ -12,20 +14,22 @@ const legacyPaths = Object.freeze({
   '/gpt-image-2.html': modelPaths['gpt-image-2'],
 })
 
-export function canonicalModelPath(modelId) {
-  return Object.hasOwn(modelPaths, modelId) ? modelPaths[modelId] : null
+export function canonicalModelPath(modelId, locale = 'en') {
+  return Object.hasOwn(modelPaths, modelId) ? localizedPath(modelPaths[modelId], locale) : null
 }
 
 export function modelIdFromPath(pathname) {
-  return Object.keys(modelPaths).find(id => modelPaths[id] === pathname) ?? null
+  return Object.keys(modelPaths).find(id => modelPaths[id] === stripLocalePath(pathname)) ?? null
 }
 
 export function legacyModelRedirect(url) {
-  if (legacyPaths[url.pathname]) return legacyPaths[url.pathname]
-  if (url.pathname === '/app' || url.pathname === '/app/') {
+  const pathname = stripLocalePath(url.pathname)
+  const locale = localeFromPath(url.pathname)
+  if (legacyPaths[pathname]) return localizedPath(legacyPaths[pathname], locale) + url.search
+  if (pathname === '/app' || pathname === '/app/') {
     const modelId = url.searchParams.get('model')
     if (modelId && [...url.searchParams.keys()].every(key => key === 'model')) {
-      return canonicalModelPath(modelId)
+      return canonicalModelPath(modelId, locale)
     }
   }
   return null

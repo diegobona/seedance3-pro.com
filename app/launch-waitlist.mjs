@@ -1,3 +1,4 @@
+import { t, localizedErrorMessage } from './i18n.mjs';
 const DEFAULT_BONUS_CREDITS = 5;
 
 function readWaitlist(payload) {
@@ -26,13 +27,13 @@ export function createLaunchWaitlistController({
     container.hidden = !visible;
     container.dataset.joined = String(joined);
     button.textContent = joined
-      ? "You're on the launch list"
-      : `Notify me & claim ${bonusCredits} credits`;
+      ? t("You're on the launch list")
+      : t('Notify me & claim {credits} credits', { credits: bonusCredits });
     button.disabled = pending || joined;
   }
 
   function showStatus(message, tone = "") {
-    statusElement.textContent = message;
+    statusElement.textContent = t(message);
     statusElement.className = `launch-waitlist-status${tone ? ` is-${tone}` : ""}`;
   }
 
@@ -53,10 +54,10 @@ export function createLaunchWaitlistController({
     }
     if (response.status === 401 || payload?.code === "AUTH_REQUIRED") {
       eventTarget.dispatchEvent(new CustomEvent("seedance:auth-required"));
-      throw new Error("Log in to join the launch list.");
+      throw new Error(t("Log in to join the launch list."));
     }
     if (!response.ok || payload?.success !== true) {
-      throw new Error(String(payload?.message || "Launch notifications are temporarily unavailable."));
+      throw new Error(localizedErrorMessage(payload?.message, payload?.code, 'Launch notifications are temporarily unavailable.'));
     }
     return readWaitlist(payload);
   }
@@ -71,10 +72,10 @@ export function createLaunchWaitlistController({
       joined = status.joined;
       bonusCredits = status.bonusCredits;
       loaded = true;
-      if (joined) showStatus("We'll email you when paid plans open.", "success");
+      if (joined) showStatus(t("We'll email you when paid plans open."), "success");
     } catch (error) {
       if (destroyed || error?.name === "AbortError") return;
-      showStatus(String(error?.message || "Launch notifications are temporarily unavailable."), "error");
+      showStatus(localizedErrorMessage(error?.message, error?.code, 'Launch notifications are temporarily unavailable.'), "error");
     } finally {
       pending = false;
       if (!destroyed) render();
@@ -84,7 +85,7 @@ export function createLaunchWaitlistController({
   async function join() {
     if (destroyed || joined || pending) return;
     pending = true;
-    showStatus("Joining the launch list…");
+    showStatus(t("Joining the launch list…"));
     render();
     try {
       const status = await request("POST");
@@ -92,10 +93,10 @@ export function createLaunchWaitlistController({
       joined = status.joined;
       bonusCredits = status.bonusCredits;
       loaded = true;
-      showStatus("You're in. We'll email you when paid plans open.", "success");
+      showStatus(t("You're in. We'll email you when paid plans open."), "success");
     } catch (error) {
       if (destroyed || error?.name === "AbortError") return;
-      showStatus(String(error?.message || "Launch notifications are temporarily unavailable."), "error");
+      showStatus(localizedErrorMessage(error?.message, error?.code, 'Launch notifications are temporarily unavailable.'), "error");
     } finally {
       pending = false;
       if (!destroyed) render();

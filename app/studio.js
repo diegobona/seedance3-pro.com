@@ -1,3 +1,5 @@
+import { t, localizedErrorMessage, currentLocale } from './i18n.mjs';
+import { localizedPath } from './site-locale.mjs';
 import { buildModelUrl, normalizeModelId } from "./model-routing.mjs";
 import { canonicalModelPath, modelIdFromPath } from "./seo-routes.mjs";
 import { requestImageGeneration } from "./image-generation.mjs";
@@ -181,7 +183,7 @@ export function initializeStudio() {
     const poseMode = activeModelId === "pose-to-image";
     studioShell.classList.toggle("is-pose-mode", poseMode);
     studioShell.classList.toggle("is-sidebar-collapsed", poseMode && poseSidebarCollapsed);
-    const label = poseSidebarCollapsed ? "Expand menu" : "Collapse menu";
+    const label = poseSidebarCollapsed ? t("Expand menu") : t("Collapse menu");
     poseSidebarToggle.setAttribute("aria-expanded", String(!poseSidebarCollapsed));
     poseSidebarToggle.title = label;
     poseSidebarToggle.replaceChildren(document.createTextNode(poseSidebarCollapsed ? "› " : "‹ "), Object.assign(document.createElement("span"), { textContent: label }));
@@ -217,7 +219,7 @@ export function initializeStudio() {
             selectModel("gpt-image-2", { syncUrl: true });
             setReferenceImage(file, { source: "pose" });
             setPromptValue(buildPoseReferencePrompt(prompt.value));
-            generationStatus.textContent = "Pose reference ready · describe the character, clothing, scene, and style.";
+            generationStatus.textContent = t("Pose reference ready · describe the character, clothing, scene, and style.");
             generationStatus.className = "generation-status is-success";
             creationGrid?.scrollIntoView({ behavior: "smooth", block: "start" });
           }
@@ -225,7 +227,7 @@ export function initializeStudio() {
       })
       .catch(() => {
         const loading = document.getElementById("pose-canvas-loading");
-        if (loading) loading.textContent = "The 3D editor could not start. Refresh and try again.";
+        if (loading) loading.textContent = t("The 3D editor could not start. Refresh and try again.");
       })
       .finally(() => {
         poseStudioPromise = undefined;
@@ -261,12 +263,12 @@ export function initializeStudio() {
 
   function imageGenerationLabel() {
     const quantity = normalizeImageQuantity(imageQuantity?.value);
-    if (quantity === 1) return defaultImageGenerationLabel;
-    return `Generate ${quantity} images · ${creditCostForQuantity(quantity)} credits`;
+    if (quantity === 1) return t(defaultImageGenerationLabel);
+    return t('Generate {count} images · {cost} credits', { count: quantity, cost: creditCostForQuantity(quantity) });
   }
 
   function videoGenerationLabel() {
-    return `Generate video · ${creditCostForDuration(videoDuration?.value)} credits`;
+    return t('Generate video · {cost} credits', { cost: creditCostForDuration(videoDuration?.value) });
   }
 
   function isVideoGenerationSelected() {
@@ -292,10 +294,10 @@ export function initializeStudio() {
     if (isReferenceVideo() && videoAspectRatio.value === "1:1") videoAspectRatio.value = "16:9";
     if (enabled) {
       prompt.placeholder = isReferenceVideo()
-        ? "How should this image move? Describe the subject’s motion, camera movement, and what happens next…"
-        : "Describe the subject, action, setting, camera movement, lighting, and final shot…";
-      modelCategory.textContent = isReferenceVideo() ? "AI VIDEO / REFERENCE TO VIDEO" : "AI VIDEO / TEXT TO VIDEO";
-      modelStatus.textContent = isReferenceVideo() ? "Reference to video" : "Text to video";
+        ? t("How should this image move? Describe the subject’s motion, camera movement, and what happens next…")
+        : t("Describe the subject, action, setting, camera movement, lighting, and final shot…");
+      modelCategory.textContent = isReferenceVideo() ? t("AI VIDEO / REFERENCE TO VIDEO") : t("AI VIDEO / TEXT TO VIDEO");
+      modelStatus.textContent = isReferenceVideo() ? t("Reference to video") : t("Text to video");
     }
   }
 
@@ -307,10 +309,10 @@ export function initializeStudio() {
     for (const [index, reference] of videoReferences.entries()) {
       const card = document.createElement("div");
       card.className = "video-reference-item";
-      const image = Object.assign(document.createElement("img"), { src: reference.url, alt: `Image ${index + 1}: ${reference.file.name}` });
-      const label = Object.assign(document.createElement("span"), { textContent: `Image ${index + 1}` });
+      const image = Object.assign(document.createElement("img"), { src: reference.url, alt: t('Image {number}: {name}', { number: index + 1, name: reference.file.name }) });
+      const label = Object.assign(document.createElement("span"), { textContent: t('Image {number}', { number: index + 1 }) });
       const remove = Object.assign(document.createElement("button"), { type: "button", textContent: "×", disabled: videoPolling });
-      remove.setAttribute("aria-label", `Remove Image ${index + 1}`);
+      remove.setAttribute("aria-label", t('Remove Image {number}', { number: index + 1 }));
       remove.onclick = () => {
         if (videoPolling) return;
         URL.revokeObjectURL(reference.url);
@@ -326,13 +328,13 @@ export function initializeStudio() {
   function updateGenerateButtonLabel() {
     const model = studioModels[activeModelId];
     if (!model?.canGenerate) {
-      generateButtonLabel.textContent = "Generation coming soon";
+      generateButtonLabel.textContent = t("Generation coming soon");
     } else if (isVideoGenerationSelected()) {
       generateButtonLabel.textContent = activeVideoTaskId || videoPolling
-        ? "Video generation in progress…"
+        ? t("Video generation in progress…")
         : videoGenerationLabel();
     } else {
-      generateButtonLabel.textContent = imageGenerationInFlight ? "Generating…" : imageGenerationLabel();
+      generateButtonLabel.textContent = imageGenerationInFlight ? t("Generating…") : imageGenerationLabel();
     }
   }
 
@@ -360,15 +362,15 @@ export function initializeStudio() {
     activeModelId = normalizedModelId;
     updatePoseSidebar();
     modelButtons.forEach((button) => button.classList.toggle("is-active", button.dataset.model === normalizedModelId));
-    if (modelName.dataset.landingModel !== normalizedModelId) modelName.textContent = model.name;
-    modelCategory.textContent = model.category;
-    modelStatus.textContent = model.status;
+    if (modelName.dataset.landingModel !== normalizedModelId) modelName.textContent = t(model.name);
+    modelCategory.textContent = t(model.category);
+    modelStatus.textContent = t(model.status);
     modelStatus.hidden = model.type === "pose";
-    selectedName.textContent = model.name;
+    selectedName.textContent = t(model.name);
     selectedSymbol.textContent = model.symbol;
     selectedSymbol.className = `model-symbol ${model.tone}`;
-    exampleTitle.textContent = model.exampleTitle;
-    examplePrompt.textContent = model.examplePrompt;
+    exampleTitle.textContent = t(model.exampleTitle);
+    examplePrompt.textContent = t(model.examplePrompt);
     const videoModel = model.type === "video";
     const poseModel = model.type === "pose";
     exampleCarousel.hidden = videoModel || hasDedicatedImageExamples;
@@ -376,10 +378,10 @@ export function initializeStudio() {
     creationGrid.hidden = poseModel;
     if (poseStudio) poseStudio.hidden = !poseModel;
     if (poseModel) void ensurePoseStudio();
-    referenceLabel.textContent = model.canGenerate ? "Reference images" : "Reference files";
-    referenceMeta.textContent = model.canGenerate ? "Optional · enables image-to-image" : videoModel ? "Preview only" : "Reference images";
-    uploadTitle.textContent = model.canGenerate ? "Add reference images" : "Drop or choose reference media";
-    uploadHint.textContent = model.canGenerate ? "Up to 16 images · 10 MB each · 24 MB total" : "Interface preview only—files are not uploaded";
+    referenceLabel.textContent = model.canGenerate ? t("Reference images") : t("Reference files");
+    referenceMeta.textContent = model.canGenerate ? t("Optional · enables image-to-image") : videoModel ? t("Preview only") : t("Reference images");
+    uploadTitle.textContent = model.canGenerate ? t("Add reference images") : t("Drop or choose reference media");
+    uploadHint.textContent = model.canGenerate ? t("Up to 16 images · 10 MB each · 24 MB total") : t("Interface preview only—files are not uploaded");
     uploadBox.classList.toggle("is-enabled", Boolean(model.canGenerate) && !videoModel);
     uploadGroup.hidden = model.type === "video";
     updateVideoMode();
@@ -421,7 +423,7 @@ export function initializeStudio() {
       frame.className = "result-frame";
       const element = document.createElement("img");
       element.src = source;
-      element.alt = `Generated image result ${index + 1}`;
+      element.alt = t('Generated image result {number}', { number: index + 1 });
       frame.append(element);
 
       const link = document.createElement("a");
@@ -431,18 +433,18 @@ export function initializeStudio() {
         const mime = image.dataUrl.slice(5, image.dataUrl.indexOf(";"));
         const extension = mime === "image/jpeg" ? "jpg" : mime === "image/webp" ? "webp" : "png";
         link.download = `gpt-image-2-${index + 1}.${extension}`;
-        link.textContent = `Download image ${index + 1} →`;
+        link.textContent = t('Download image {number} →', { number: index + 1 });
       } else {
         link.target = "_blank";
-        link.textContent = `Open / save image ${index + 1} →`;
+        link.textContent = t('Open / save image {number} →', { number: index + 1 });
       }
       const actions = document.createElement("div");
       actions.className = "image-result-actions";
       const animate = document.createElement("button");
       animate.type = "button";
       animate.className = "animate-image-button";
-      animate.textContent = "Animate this image ↗";
-      animate.setAttribute("aria-label", `Animate this image ${index + 1}`);
+      animate.textContent = t("Animate this image ↗");
+      animate.setAttribute("aria-label", t('Animate this image {number}', { number: index + 1 }));
       const transferStatus = document.createElement("p");
       transferStatus.className = "image-transfer-status";
       transferStatus.setAttribute("role", "status");
@@ -450,21 +452,21 @@ export function initializeStudio() {
         if (imageTransferInFlight || destroyed) return;
         imageTransferInFlight = true;
         resultGallery.querySelectorAll(".animate-image-button").forEach((button) => { button.disabled = true; });
-        animate.textContent = "Preparing image…";
-        transferStatus.textContent = "Saving your reference image for H3…";
+        animate.textContent = t("Preparing image…");
+        transferStatus.textContent = t("Saving your reference image for H3…");
         try {
           await element.decode();
           const destination = await prepareImageForVideo({ image, width: element.naturalWidth, height: element.naturalHeight, signal: imageTransferAbortController.signal });
           if (!destroyed) window.location.assign(destination);
         } catch (error) {
           if (destroyed) return;
-          transferStatus.textContent = error?.message || "Image transfer failed. Please try again.";
+          transferStatus.textContent = localizedErrorMessage(error?.message, error?.code, 'Image transfer failed. Please try again.');
           if (requiresAuthentication(error)) window.dispatchEvent(new CustomEvent("seedance:auth-required"));
         } finally {
           imageTransferInFlight = false;
           if (!destroyed) {
             resultGallery.querySelectorAll(".animate-image-button").forEach((button) => { button.disabled = false; });
-            animate.textContent = "Animate this image ↗";
+            animate.textContent = t("Animate this image ↗");
           }
         }
       };
@@ -473,9 +475,9 @@ export function initializeStudio() {
       return item;
     });
     resultGallery.replaceChildren(...items);
-    resultHeadingLabel.textContent = "GENERATED IMAGES";
+    resultHeadingLabel.textContent = t("GENERATED IMAGES");
     resultModelLabel.textContent = "GPT Image 2";
-    resultNote.textContent = "Provider image links may expire. Open or download each result when it is ready.";
+    resultNote.textContent = t("Provider image links may expire. Open or download each result when it is ready.");
   }
 
   function renderGeneratedVideo(videoUrl) {
@@ -488,29 +490,29 @@ export function initializeStudio() {
     video.controls = true;
     video.playsInline = true;
     video.preload = "metadata";
-    video.setAttribute("aria-label", "Generated video");
+    video.setAttribute("aria-label", t("Generated video"));
     frame.append(video);
     const link = document.createElement("a");
     link.href = videoUrl;
     link.target = "_blank";
     link.rel = "noopener noreferrer";
     link.download = "minimax-h3-video.mp4";
-    link.textContent = "Open or download generated video →";
+    link.textContent = t("Open or download generated video →");
     item.append(frame, link);
     resultGallery.replaceChildren(item);
-    resultHeadingLabel.textContent = "GENERATED VIDEO";
-    resultModelLabel.textContent = activeModelId === "seedance-2-5" ? "Video result" : "MiniMax H3";
-    resultNote.textContent = "Video links may expire. Open or download your result when it is ready.";
+    resultHeadingLabel.textContent = t("GENERATED VIDEO");
+    resultModelLabel.textContent = activeModelId === "seedance-2-5" ? t("Video result") : "MiniMax H3";
+    resultNote.textContent = t("Video links may expire. Open or download your result when it is ready.");
   }
 
   function updateVideoStatus(update) {
     announceCredits(update?.credits);
     const status = update?.status;
     generationStatus.textContent = status === "queued" || status === "submitting"
-      ? "Video queued. Waiting for generation to start…"
+      ? t("Video queued. Waiting for generation to start…")
       : status === "running"
-        ? "Generating your video…"
-        : "Video service is busy. Retrying safely…";
+        ? t("Generating your video…")
+        : t("Video service is busy. Retrying safely…");
     generationStatus.className = "generation-status is-working";
   }
 
@@ -527,8 +529,8 @@ export function initializeStudio() {
     updateGenerateButtonLabel();
     updateGenerateButton();
     generationStatus.textContent = resumeTaskId
-      ? "Resuming video generation status…"
-      : isReferenceVideo() ? "Preparing your reference images…" : "Submitting your text-to-video prompt…";
+      ? t("Resuming video generation status…")
+      : isReferenceVideo() ? t("Preparing your reference images…") : t("Submitting your text-to-video prompt…");
     generationStatus.className = "generation-status is-working";
     if (!resumeTaskId) {
       resultCard.hidden = true;
@@ -550,7 +552,7 @@ export function initializeStudio() {
             aspectRatio: videoAspectRatio.value,
             referenceFiles: isReferenceVideo() ? videoReferences.map((item) => item.file) : [],
             onUpload: ({ index, total }) => {
-              generationStatus.textContent = `Uploading reference image ${index} of ${total}…`;
+              generationStatus.textContent = t('Uploading reference image {index} of {total}…', { index, total });
             },
             onTask: storeActiveVideoTask
           });
@@ -561,8 +563,8 @@ export function initializeStudio() {
       resultCard.hidden = false;
       exampleCarousel.hidden = true;
       generationStatus.textContent = result.credits
-        ? `Video generated · ${result.credits.remaining} credits remaining.`
-        : "Video generated.";
+        ? t('Video generated · {remaining} credits remaining.', { remaining: result.credits.remaining })
+        : t("Video generated.");
       generationStatus.className = "generation-status is-success";
     } catch (error) {
       if (destroyed || error?.name === "AbortError") return;
@@ -576,9 +578,9 @@ export function initializeStudio() {
       const requiredCredits = error?.credits?.cost || creditCostForDuration(videoDuration.value);
       generationStatus.textContent = error?.code === "INSUFFICIENT_CREDITS"
         ? error?.credits?.remaining === 0
-          ? trialCompleteMessage
-          : `You need ${requiredCredits} credits to generate. ${error.credits ? `Current balance: ${error.credits.remaining}.` : ""}`.trim()
-        : String(error?.message || "Video generation failed.");
+          ? t(trialCompleteMessage)
+          : `${t('You need {cost} credits to generate.', { cost: requiredCredits })} ${error.credits ? t('Current balance: {remaining}.', { remaining: error.credits.remaining }) : ""}`.trim()
+        : localizedErrorMessage(error?.message, error?.code, 'Video generation failed.');
       generationStatus.className = "generation-status is-error";
     } finally {
       videoPolling = false;
@@ -617,20 +619,20 @@ export function initializeStudio() {
     }
     referencePreview.classList.add("multiple-image-references");
     referencePreview.hidden = imageReferences.length === 0;
-    referenceMeta.textContent = `${imageReferences.length} / 16 · Optional`;
+    referenceMeta.textContent = t('{count} / 16 · Optional', { count: imageReferences.length });
     const items = imageReferences.map((item, index) => {
       const row = document.createElement("div");
       row.className = "image-reference-item";
       const thumbnail = document.createElement("img");
       thumbnail.src = item.url;
-      thumbnail.alt = `Reference image ${index + 1}`;
+      thumbnail.alt = t('Reference image {number}', { number: index + 1 });
       const caption = document.createElement("span");
-      caption.textContent = `Image ${index + 1}${item.source === "pose" ? " · Pose" : ""}`;
+      caption.textContent = t(item.source === 'pose' ? 'Image {number} · Pose' : 'Image {number}', { number: index + 1 });
       caption.title = item.file.name;
       const remove = document.createElement("button");
       remove.type = "button";
       remove.textContent = "×";
-      remove.setAttribute("aria-label", `Remove reference image ${index + 1}`);
+      remove.setAttribute("aria-label", t('Remove reference image {number}', { number: index + 1 }));
       remove.disabled = imageGenerationInFlight;
       remove.onclick = () => {
         if (imageGenerationInFlight) return;
@@ -676,7 +678,7 @@ export function initializeStudio() {
       imageReferences.push(...added);
     }
     renderImageReferences();
-    generationStatus.textContent = "Reference images ready. Use Image 1, Image 2, etc. in your prompt.";
+    generationStatus.textContent = t("Reference images ready. Use Image 1, Image 2, etc. in your prompt.");
     generationStatus.className = "generation-status";
   }
 
@@ -751,19 +753,19 @@ export function initializeStudio() {
     promptCount.textContent = "0";
     updateVideoMode();
     updateGenerateButton();
-    generationStatus.textContent = "Loading your reference image…";
+    generationStatus.textContent = t("Loading your reference image…");
     void loadVideoReference(transferredImageId, { signal: imageTransferAbortController.signal }).then((file) => {
       if (destroyed) return;
       // The user may have added images while the transferred one was loading.
-      if (videoReferences.length >= 9) throw new Error("Remove an image before adding the transferred reference.");
+      if (videoReferences.length >= 9) throw new Error(t("Remove an image before adding the transferred reference."));
       videoReferences.unshift({ file, url: URL.createObjectURL(file) });
       renderVideoReferences();
       updateGenerateButton();
-      generationStatus.textContent = "Image ready. Describe the motion and camera movement, then generate when ready.";
+      generationStatus.textContent = t("Image ready. Describe the motion and camera movement, then generate when ready.");
       generationStatus.className = "generation-status";
     }).catch((error) => {
       if (destroyed) return;
-      generationStatus.textContent = error?.message || "Could not load the image. Please upload it again.";
+      generationStatus.textContent = localizedErrorMessage(error?.message, error?.code, 'Could not load the image. Please upload it again.');
       generationStatus.className = "generation-status is-error";
     });
   }
@@ -774,7 +776,7 @@ export function initializeStudio() {
     const modelId = button.dataset.model;
     if (modelIdFromPath(window.location.pathname)) {
       if (modelId === modelFromLocation()) return;
-      window.location.assign(canonicalModelPath(modelId) || buildModelUrl(`${window.location.origin}/app/`, modelId));
+      window.location.assign(localizedPath(canonicalModelPath(modelId) || buildModelUrl(`${window.location.origin}/app/`, modelId), currentLocale()));
       return;
     }
     selectModel(modelId, { syncUrl: true });
@@ -786,14 +788,14 @@ export function initializeStudio() {
   });
   listen(promptStructureButton, "click", () => {
     setPromptValue(applyPromptStructure(prompt.value));
-    generationStatus.textContent = "Prompt structure added.";
+    generationStatus.textContent = t("Prompt structure added.");
     generationStatus.className = "generation-status";
   });
   listen(examplePromptButton, "click", () => {
     const value = examplePromptAt(exampleIndex);
     exampleIndex += 1;
     setPromptValue(value);
-    generationStatus.textContent = "Example prompt loaded. Click again for another.";
+    generationStatus.textContent = t("Example prompt loaded. Click again for another.");
     generationStatus.className = "generation-status";
   });
   listen(imageQuantity, "change", () => {
@@ -814,9 +816,9 @@ export function initializeStudio() {
       videoReferenceInput.value = "";
       if (videoPolling || !files.length) return;
       let message = "";
-      if (files.length + videoReferences.length > 9) message = "You can add up to 9 reference images.";
+      if (files.length + videoReferences.length > 9) message = t("You can add up to 9 reference images.");
       else if (files.some((file) => !["image/png", "image/jpeg", "image/webp"].includes(file.type) || !file.size || file.size > 10 * 1024 * 1024)) {
-        message = "Choose PNG, JPEG or WebP images, up to 10 MB each.";
+        message = t("Choose PNG, JPEG or WebP images, up to 10 MB each.");
       }
       if (message) {
         generationStatus.textContent = message;
@@ -824,7 +826,7 @@ export function initializeStudio() {
         return;
       }
       videoReferences.push(...files.map((file) => ({ file, url: URL.createObjectURL(file) })));
-      generationStatus.textContent = "Reference images ready.";
+      generationStatus.textContent = t("Reference images ready.");
       generationStatus.className = "generation-status";
       renderVideoReferences();
       updateGenerateButton();
@@ -844,10 +846,10 @@ export function initializeStudio() {
     updateGenerateButton();
     updateGenerateButtonLabel();
     generationStatus.textContent = generationUsedPoseReference
-      ? "Creating from your pose reference…"
+      ? t("Creating from your pose reference…")
       : imageReferences.length
-        ? "Editing from your reference image…"
-        : "Creating an image from your prompt…";
+        ? t("Editing from your reference image…")
+        : t("Creating an image from your prompt…");
     generationStatus.className = "generation-status is-working";
     resultCard.hidden = true;
     poseResultActionsController?.setVisible(false);
@@ -870,8 +872,8 @@ export function initializeStudio() {
       announceCredits(result.credits);
       const generatedCount = result.images.length;
       generationStatus.textContent = result.credits
-        ? `${generatedCount} image${generatedCount === 1 ? "" : "s"} generated · ${result.credits.remaining} credits remaining.`
-        : `${generatedCount} image${generatedCount === 1 ? "" : "s"} generated.`;
+        ? t('{count} image{plural} generated · {remaining} credits remaining.', { count: generatedCount, plural: generatedCount === 1 ? '' : 's', remaining: result.credits.remaining })
+        : t('{count} image{plural} generated.', { count: generatedCount, plural: generatedCount === 1 ? '' : 's' });
       generationStatus.className = "generation-status is-success";
     } catch (error) {
       if (destroyed) return;
@@ -882,9 +884,9 @@ export function initializeStudio() {
       const requiredCredits = error?.credits?.cost || creditCostForQuantity(imageQuantity.value);
       generationStatus.textContent = error?.code === "INSUFFICIENT_CREDITS"
         ? error?.credits?.remaining === 0
-          ? trialCompleteMessage
-          : `You need ${requiredCredits} credits to generate. ${error.credits ? `Current balance: ${error.credits.remaining}.` : ""}`.trim()
-        : String(error?.message || "Image generation failed.");
+          ? t(trialCompleteMessage)
+          : `${t('You need {cost} credits to generate.', { cost: requiredCredits })} ${error.credits ? t('Current balance: {remaining}.', { remaining: error.credits.remaining }) : ""}`.trim()
+        : localizedErrorMessage(error?.message, error?.code, 'Image generation failed.');
       generationStatus.className = "generation-status is-error";
     } finally {
       if (!destroyed) {

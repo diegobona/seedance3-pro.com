@@ -1,0 +1,13 @@
+{
+  "Close navigation": "关闭导航",
+  "Open navigation": "打开导航",
+  "View scene prompt for ${cardTitle}": "查看「${cardTitle}」的场景提示词",
+  "Prompt used for this video": "本视频使用的提示词",
+  "Inspired prompt · our interpretation": "灵感提示词 · 我们的解读",
+  "Copy prompt": "复制提示词",
+  "Copy failed": "复制失败",
+  "Copied": "已复制",
+  "infoButton.textContent = \"Prompt\"": "infoButton.textContent = \"提示词\"",
+  "Creator video": "创作者视频",
+  "Video unavailable here · Open original post ↗": "视频暂时无法播放 · 打开原帖 ↗"
+}

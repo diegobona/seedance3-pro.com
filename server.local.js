@@ -5,8 +5,9 @@ import fs from "fs/promises";
 import path from "path";
 import { spawn } from "child_process";
 import { fileURLToPath } from "url";
-import { extractEditableArticleData, renderArticleDocument, updateArticleDocument } from "./scripts/article-html.mjs";
+import { extractEditableArticleData, renderArticleDocument, sanitizeArticleHtml, updateArticleDocument } from "./scripts/article-html.mjs";
 import { parseBlogPosts, upsertBlogCardHtml, validateEditableBlogArticle } from "./scripts/blog-cms-html.mjs";
+import { prepareBilingualPublication } from "./scripts/bilingual-publishing.mjs";
 import { handleImageGenerationRequest } from "./scripts/tuzi-image.mjs";
 import { readReferralStatsForLocalAdmin } from "./scripts/referral-analytics-admin.mjs";
 
@@ -191,6 +192,11 @@ app.post("/api/publish", async (req, res) => {
   const content = String(req.body.content || "").trim();
   const category = String(req.body.category || "Tutorial").trim();
   const requestedFileName = String(req.body.fileName || "").trim();
+  const chinese = {
+    title: String(req.body.chinese?.title || "").trim(),
+    excerpt: String(req.body.chinese?.excerpt || "").trim(),
+    content: String(req.body.chinese?.content || "").trim()
+  };
 
   if (!title || !content) {
     res.status(400).json({ success: false, message: "Title and content are required." });
@@ -198,6 +204,10 @@ app.post("/api/publish", async (req, res) => {
   }
 
   let editFileName = "";
+  if (!chinese.title || !chinese.excerpt || !chinese.content) {
+    res.status(400).json({ success: false, message: "请填写中文标题、摘要和正文，双语版本将一起发布。" });
+    return;
+  }
   let editExcerpt = excerpt;
   if (requestedFileName) {
     try {
@@ -224,7 +234,7 @@ app.post("/api/publish", async (req, res) => {
     canceled: false
   });
 
-  publishJob(jobId, { title, excerpt: editExcerpt, content, category, fileName: editFileName }).catch(() => {});
+  publishJob(jobId, { title, excerpt: editExcerpt, content, category, chinese, fileName: editFileName }).catch(() => {});
   res.status(202).json({
     success: true,
     queued: true,
@@ -290,6 +300,8 @@ app.get("/api/post", async (req, res) => {
       : null;
     const fileName = validateEditableBlogArticle({ fileName: requestedFileName, blogHtml, articleHtml });
     const article = extractEditableArticleData(articleHtml);
+    const chineseHtml = await fs.readFile(path.join(ROOT_DIR, "zh", fileName), "utf8").catch(() => "");
+    const chinese = chineseHtml ? extractEditableArticleData(chineseHtml) : {};
     res.json({
       success: true,
       post: {
@@ -298,7 +310,8 @@ app.get("/api/post", async (req, res) => {
         title: article.title || post.title,
         excerpt: post.excerpt || article.excerpt,
         category: post.category || article.category,
-        content: article.content
+        content: article.content,
+        chinese
       }
     });
   } catch (error) {
@@ -395,12 +408,29 @@ async function publishJob(jobId, payload) {
     await fs.writeFile(path.join(ROOT_DIR, fileName), articleHtml, "utf8");
     await upsertBlogCard({ fileName, title: payload.title, excerpt: safeExcerpt, category: payload.category });
     await upsertSitemap({ fileName });
+    await prepareBilingualPublication({
+      rootDirectory: ROOT_DIR,
+      article: {
+        fileName,
+        englishTitle: payload.title,
+        englishExcerpt: safeExcerpt,
+        chineseTitle: payload.chinese.title,
+        chineseExcerpt: payload.chinese.excerpt,
+        chineseHtml: buildArticleHtml({
+          title: payload.chinese.title,
+          excerpt: payload.chinese.excerpt,
+          category: payload.category,
+          content: sanitizeArticleHtml(payload.chinese.content),
+          canonical: articleUrl
+        })
+      }
+    });
     job.status = "pushing";
     job.output = { articleUrl: `.${publicArticlePath(fileName)}`, localPublished: true, githubPushed: false };
 
     ensureJobActive(job);
     const branch = (await runGit(["rev-parse", "--abbrev-ref", "HEAD"])).stdout.trim() || "main";
-    await runGit(["add", "--", fileName, "blog.html", "sitemap.xml", ...imageRes.files]);
+    await runGit(["add", "--", fileName, "blog.html", "sitemap.xml", "zh", "scripts/i18n/zh-Hans.json", "scripts/i18n/article-overrides.json", "assets/main.zh.js", ...imageRes.files]);
     const commitResult = await runGit(["commit", "-m", `feat-blog-publish-${slugBase}`], true);
     if (!commitResult.ok && !/nothing to commit|no changes added/i.test(commitResult.stderr)) {
       throw new Error(commitResult.stderr || commitResult.stdout || "Git commit failed");
@@ -445,6 +475,11 @@ async function deletePostJob(jobId, payload) {
 
     await removeBlogCardByFileName(fileName);
     await removeSitemapByFileName(fileName);
+    await fs.unlink(path.join(ROOT_DIR, "zh", fileName)).catch(() => {});
+    await prepareBilingualPublication({
+      rootDirectory: ROOT_DIR,
+      deleteFileName: fileName
+    });
 
     const branch = (await runGit(["rev-parse", "--abbrev-ref", "HEAD"])).stdout.trim() || "main";
     await runGit(["add", "."]);

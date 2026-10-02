@@ -1,3 +1,4 @@
+import { localizeHead } from '../lib/site-i18n'
 import { createFileRoute } from '@tanstack/react-router'
 import { StudioPage } from './app'
 
@@ -6,7 +7,7 @@ const title = 'MiniMax H3 Video Generator | Text & Image to Video'
 const description = 'Create MiniMax H3 videos online from text or reference images. Describe your scene, choose your settings, and explore original video prompts and examples.'
 
 export const Route = createFileRoute('/app_/video/minimax-h3')({
-  head: () => ({
+  head: () => (localizeHead({
     meta: [
       { title },
       { name: 'description', content: description },
@@ -25,6 +26,6 @@ export const Route = createFileRoute('/app_/video/minimax-h3')({
       { rel: 'canonical', href: url },
       { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
     ],
-  }),
+  }, "/app/video/minimax-h3", 'en')),
   component: () => <StudioPage initialModel="minimax-h3" modelLanding />,
 })

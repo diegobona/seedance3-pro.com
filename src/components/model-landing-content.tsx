@@ -1,3 +1,4 @@
+import { useSiteI18n } from '../lib/site-i18n'
 type ModelId = 'seedance-2-5' | 'minimax-h3' | 'gpt-image-2'
 
 const content = {
@@ -70,32 +71,33 @@ const content = {
 } as const
 
 export function ModelLandingContent({ modelId }: { modelId: string }) {
+  const { t, path } = useSiteI18n()
   if (!(modelId in content)) return null
   const page = content[modelId as ModelId]
   return (
-    <section className="model-landing-content" id="model-details" aria-label={`${modelId} information`}>
+    <section className="model-landing-content" id="model-details" aria-label={`${modelId} — ${t("About this tool")}`}>
       <div className="model-landing-inner">
-        <p className="model-landing-eyebrow">About this tool</p>
-        <h2>{page.title}</h2>
-        <p className="model-landing-summary">{page.description}</p>
+        <p className="model-landing-eyebrow">{t("About this tool")}</p>
+        <h2>{t(page.title)}</h2>
+        <p className="model-landing-summary">{t(page.description)}</p>
         <div className="model-landing-grid">
-          {page.capabilities.map(([title, text]) => <article key={title}><h3>{title}</h3><p>{text}</p></article>)}
+          {page.capabilities.map(([title, text]) => <article key={title}><h3>{t(title)}</h3><p>{t(text)}</p></article>)}
         </div>
-        <h2>How to use this generator</h2>
-        <ol className="model-landing-steps">{page.steps.map(step => <li key={step}>{step}</li>)}</ol>
-        {modelId === 'minimax-h3' && <p className="model-learning-links">For a worked example, explore the <a href="/minimax-h3-prompts/foldable-origami-crane">foldable phone video and its exact prompt</a>. Read the <a href="/precise-application-of-seedance-prompts">camera movement and video prompting guide</a> for ideas to adapt to your next scene.</p>}
-        {modelId === 'gpt-image-2' && <p className="model-learning-links">Explore the <a href="/gpt-image-2-prompts/foldable-pocket-universe">surreal product image and its exact prompt</a>, or follow the <a href="/how-to-control-character-poses-in-seedance-with-3d-pose-references">3D pose reference tutorial</a> to plan a character image before generating.</p>}
-        <h2>Questions about this tool</h2>
-        <div className="model-landing-faq">{page.questions.map(([question, answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}</div>
-        <nav className="model-landing-links" aria-label="Explore related tools">
-          <a href="/">Seedance home</a>
-          <a href="/app/video/minimax-h3">MiniMax H3 video</a>
-          <a href="/app/image/gpt-image-2">GPT Image 2 image</a>
-          <a href="/pose-to-image">Pose Control</a>
-          <a href="/showcase">Showcase</a>
-          {modelId === 'minimax-h3' && <a href="/minimax-h3-prompts">MiniMax H3 Prompt Library</a>}
-          {modelId === 'gpt-image-2' && <a href="/gpt-image-2-prompts">GPT Image 2 Prompt Library</a>}
-          <a href="/blog">Blog</a>
+        <h2>{t("How to use this generator")}</h2>
+        <ol className="model-landing-steps">{page.steps.map(step => <li key={step}>{t(step)}</li>)}</ol>
+        {modelId === 'minimax-h3' && <p className="model-learning-links">{t("For a worked example, explore the ")}<a href={path("/minimax-h3-prompts/foldable-origami-crane")}>{t("foldable phone video and its exact prompt")}</a>{t(". Read the ")}<a href={path("/precise-application-of-seedance-prompts")}>{t("camera movement and video prompting guide")}</a>{t(" for ideas to adapt to your next scene.")}</p>}
+        {modelId === 'gpt-image-2' && <p className="model-learning-links">{t("Explore the ")}<a href={path("/gpt-image-2-prompts/foldable-pocket-universe")}>{t("surreal product image and its exact prompt")}</a>{t(", or follow the ")}<a href={path("/how-to-control-character-poses-in-seedance-with-3d-pose-references")}>{t("3D pose reference tutorial")}</a>{t(" to plan a character image before generating.")}</p>}
+        <h2>{t("Questions about this tool")}</h2>
+        <div className="model-landing-faq">{page.questions.map(([question, answer]) => <details key={question}><summary>{t(question)}</summary><p>{t(answer)}</p></details>)}</div>
+        <nav className="model-landing-links" aria-label={t("Explore related tools")}>
+          <a href={path("/")}>{t("Seedance home")}</a>
+          <a href={path("/app/video/minimax-h3")}>{t("MiniMax H3 video")}</a>
+          <a href={path("/app/image/gpt-image-2")}>{t("GPT Image 2 image")}</a>
+          <a href={path("/pose-to-image")}>{t("Pose Control")}</a>
+          <a href={path("/showcase")}>{t("Showcase")}</a>
+          {modelId === 'minimax-h3' && <a href={path("/minimax-h3-prompts")}>{t("MiniMax H3 Prompt Library")}</a>}
+          {modelId === 'gpt-image-2' && <a href={path("/gpt-image-2-prompts")}>{t("GPT Image 2 Prompt Library")}</a>}
+          <a href={path("/blog")}>{t("Blog")}</a>
         </nav>
       </div>
     </section>

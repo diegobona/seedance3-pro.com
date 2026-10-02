@@ -182,7 +182,9 @@ test("every Blog article detail page uses the homepage shell and only Home and B
       { href: "./", text: "Home" },
       { href: "./blog", text: "Blog" },
     ], `${articlePath} should expose only Home and Blog in its header navigation`);
-    assert.doesNotMatch(header, /Start Creating|Features|Pricing/i, `${articlePath} should not expose legacy header actions`);
+    const contentHeader = header.replace(/<nav\b[^>]*data-site-language-switch[^>]*>[\s\S]*?<\/nav>/gi, "");
+    assert.doesNotMatch(contentHeader, /Start Creating|Features|Pricing/i, `${articlePath} should not expose legacy header actions`);
+    assert.match(header, /data-site-language-switch/, `${articlePath} should offer a language switch`);
     assert.match(html, /<main class="article-main"[^>]*>/i, `${articlePath} should use the shared article layout`);
     assert.match(html, /<article class="(?:article-shell|article-content prose)(?: [^"]*)?">/i, `${articlePath} should use the shared article shell`);
     assert.match(html, /<(?:div|article) class="article-content prose(?: [^"]*)?">/i, `${articlePath} should use shared long-form typography`);
@@ -243,7 +245,7 @@ test("Seedance 2.5 owns the current image-to-video guide intent while 2.0 remain
   assert.ok(legacyCardIndex > currentCardIndex, "Current guide should appear before the legacy guide");
   assert.match(blog, /<h2>Seedance 2\.5 Image-to-Video Guide: Prompts, Settings &amp; Examples<\/h2>[\s\S]*?href="\.\/seedance-2-5-image-to-video-guide"/i);
   assert.match(blog, /<h2>Seedance 2\.0 Image-to-Video Tutorial \(Legacy Guide\)<\/h2>[\s\S]*?href="\.\/seedance-2-0-complete-tutorial"[^>]*>Read article<\/a>/i);
-  assert.equal((sitemap.match(new RegExp(currentUrl.replaceAll(".", "\\."), "g")) ?? []).length, 1);
+  assert.equal((sitemap.match(new RegExp(`<loc>${escapeRegExp(currentUrl)}</loc>`, "g")) ?? []).length, 1);
 });
 
 test("homepage video showcase uses the supplied clips in order", () => {
@@ -337,7 +339,7 @@ test("the API guide has one indexable primary URL", () => {
   assert.match(alias, new RegExp(`(?:url=|location\\.replace\\()[^>]*${primaryPath.replace(/\.html$/, "").replaceAll(".", "\\.")}`, "i"));
   assert.equal((blog.match(new RegExp(primaryPath.replace(/\.html$/, "").replaceAll(".", "\\."), "g")) ?? []).length, 1);
   assert.equal((blog.match(new RegExp(aliasPath.replaceAll(".", "\\."), "g")) ?? []).length, 0);
-  assert.equal((sitemap.match(new RegExp(primaryUrl.replaceAll(".", "\\."), "g")) ?? []).length, 1);
+  assert.equal((sitemap.match(new RegExp(`<loc>${escapeRegExp(primaryUrl)}</loc>`, "g")) ?? []).length, 1);
   assert.equal((sitemap.match(new RegExp(aliasPath.replaceAll(".", "\\."), "g")) ?? []).length, 0);
 });
 

@@ -1,3 +1,4 @@
+import { useSiteI18n } from '../lib/site-i18n'
 import { useState } from 'react'
 import cinematicVideo from '../../assets/h3-example-cinematic.mp4'
 import productVideo from '../../assets/h3-example-product.mp4'
@@ -29,6 +30,7 @@ const examples = [
 ]
 
 export function H3VideoExamples() {
+  const { t } = useSiteI18n()
   const [selectedIndex, setSelectedIndex] = useState(0)
   const selected = examples[selectedIndex]
 
@@ -53,18 +55,18 @@ export function H3VideoExamples() {
   }
 
   return (
-    <section className="context-card h3-examples" aria-label="MiniMax H3 video examples">
-      <div className="h3-examples-heading"><span>VIDEO EXAMPLES</span><small>MADE WITH MINIMAX H3</small></div>
-      <video key={selected.id} className="h3-example-player" src={selected.src} controls playsInline preload="metadata" aria-label={`${selected.title} example video`} />
+    <section className="context-card h3-examples" aria-label={t("MiniMax H3 video examples")}>
+      <div className="h3-examples-heading"><span>{t("VIDEO EXAMPLES")}</span><small>{t("MADE WITH MINIMAX H3")}</small></div>
+      <video key={selected.id} className="h3-example-player" src={selected.src} controls playsInline preload="metadata" aria-label={`${t(selected.title)} — ${t("Example video")}`} />
       <div className="h3-example-details">
-        <div className="h3-example-title"><div><span>{selected.style}</span><h2>{selected.title}</h2></div><button type="button" onClick={tryExample}>Try it ↗</button></div>
+        <div className="h3-example-title"><div><span>{t(selected.style)}</span><h2>{t(selected.title)}</h2></div><button type="button" onClick={tryExample}>{t("Try it ↗")}</button></div>
         <p className="h3-example-prompt">{selected.prompt}</p>
       </div>
-      <div className="h3-example-options" aria-label="Choose an example video">
+      <div className="h3-example-options" aria-label={t("Choose an example video")}>
         {examples.map((example, index) => (
-          <button key={example.id} className={index === selectedIndex ? 'is-selected' : ''} type="button" onClick={() => setSelectedIndex(index)} aria-pressed={index === selectedIndex} aria-label={`Show ${example.title} example`}>
+          <button key={example.id} className={index === selectedIndex ? 'is-selected' : ''} type="button" onClick={() => setSelectedIndex(index)} aria-pressed={index === selectedIndex} aria-label={`${t("Show example")}: ${t(example.title)}`}>
             <video src={`${example.src}#t=0.1`} muted playsInline preload="metadata" aria-hidden="true" tabIndex={-1} />
-            <span>{example.title}</span>
+            <span>{t(example.title)}</span>
           </button>
         ))}
       </div>

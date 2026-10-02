@@ -1,5 +1,14 @@
 import { PROP_CATALOG } from './pose-props.mjs';
 import { ANIMAL_CATALOG } from './pose-animals.mjs';
+import { localeFromPath, localizedPath } from './site-locale.mjs';
+
+export function buildPoseShareUrl(currentUrl, encodedScene) {
+  const url = new URL(currentUrl);
+  url.pathname = localizedPath('/app/', localeFromPath(url.pathname));
+  url.search = '?model=pose-to-image';
+  url.hash = `pose=${encodedScene}`;
+  return url.href;
+}
 
 const ASPECTS = ['auto', '1 / 1', '3 / 4', '9 / 16', '16 / 9'];
 const MAX_BYTES = 2_000_000;

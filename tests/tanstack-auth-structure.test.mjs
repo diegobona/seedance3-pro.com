@@ -40,19 +40,19 @@ test("TanStack Start owns the studio and API routes without replacing the homepa
   const wranglerConfig = JSON.parse(wrangler);
   assert.match(wrangler, /"main"\s*:\s*"\.\/src\/server\.ts"/);
   assert.match(wrangler, /"nodejs_compat"/);
-  assert.match(wrangler, /seedance3-pro\.com\/app\*/);
-  assert.match(wrangler, /seedance3-pro\.com\/app-assets\/\*/);
-  assert.match(wrangler, /seedance3-pro\.com\/api\/\*/);
+  assert.match(wrangler, /seedance3-pro\.com\/\*/);
+  assert.match(server, /isStudioDocument\(pathname\)/);
+  assert.match(server, /fetchPublicPage\(request\)/);
   assert.doesNotMatch(wrangler, /REPLACE_WITH_KV_NAMESPACE_ID/);
   assert.match(wrangler, /"traces"\s*:\s*\{\s*"enabled"\s*:\s*true\s*\}/);
   assert.equal(wranglerConfig.assets?.binding, "ASSETS");
   assert.deepEqual(
     wranglerConfig.assets?.run_worker_first,
-    ["/api/*", "/app", "/app/", "/app/video/*", "/app/image/*", "/minimax-h3-ai-video-generator.html", "/gpt-image-2.html", "/prompt-guide", "/minimax-h3-prompts", "/minimax-h3-prompts/*", "/gpt-image-2-prompts", "/gpt-image-2-prompts/*", "/seedance-3-0-prompts", "/prompts/*"],
-    "API, model pages, legacy redirects, and Coming Soon resources must reach the Worker",
+    ["/*"],
+    "All public documents and API paths must reach the bilingual Worker",
   );
   assert.equal(wranglerConfig.routes.some(({ pattern }) => pattern === "seedance3-pro.com/app"), false);
-  assert.equal(wranglerConfig.routes.some(({ pattern }) => pattern === "seedance3-pro.com/app*"), true);
+  assert.equal(wranglerConfig.routes.some(({ pattern }) => pattern === "seedance3-pro.com/*"), true);
 
   assert.match(server, /pathname\.startsWith\(['"]\/app-assets\/['"]\)/);
   assert.match(server, /env\.ASSETS\.fetch\(request\)/);

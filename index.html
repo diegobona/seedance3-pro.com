@@ -15,14 +15,11 @@
   <meta property="og:description" content="Explore Seedance 3.0, create AI videos and images, and build editable 3D pose scenes. Browse original prompts and examples to start your next project.">
   <meta property="og:url" content="https://seedance3-pro.com/">
   <meta property="og:image" content="https://seedance3-pro.com/assets/seedance3-cinematic-hero.webp">
-  <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Seedance 3.0 | AI Video Generator &amp; Creative Studio">
   <meta name="twitter:description" content="Explore Seedance 3.0, create AI videos and images, and build editable 3D pose scenes. Browse original prompts and examples to start your next project.">
   <meta name="twitter:image" content="https://seedance3-pro.com/assets/seedance3-cinematic-hero.webp">
   <meta name="theme-color" content="#090a0c">
-  <link rel="alternate" hreflang="en" href="https://seedance3-pro.com/">
-  <link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/">
   <link rel="stylesheet" href="./site.css">
   <script type="application/ld+json">
   {
@@ -48,6 +45,13 @@
   <link rel="icon" type="image/svg+xml" href="./favicon.svg">
   <link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="./favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
+  <link rel="alternate" hreflang="en" href="https://seedance3-pro.com/">
+  <link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/">
+  <link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/">
+  <link rel="stylesheet" href="/assets/site-language.css">
+  <script src="/assets/site-language.js" defer></script>
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="zh_CN">
 </head>
 <body>
   <header class="site-header">
@@ -65,6 +69,7 @@
         <a href="./blog">Blog</a>
       </nav>
       <div class="header-actions">
+        <nav class="site-language-switch" data-site-language-switch aria-label="Site language"><a href="/zh/?lang=zh" data-language="zh" lang="zh-Hans">中文</a><span aria-hidden="true">|</span><a href="/?lang=en" data-language="en" lang="en" aria-current="true">EN</a></nav>
         <a class="button small" href="./app/video/minimax-h3">Start for Free</a>
         <button class="menu-button" type="button" aria-label="Open navigation" aria-controls="mobile-navigation" aria-expanded="false">☰</button>
       </div>
@@ -247,7 +252,9 @@
       <div><h3>Coming soon</h3><a href="./prompt-guide">Prompt guide</a><a href="./seedance-3-0-prompts">Seedance 3.0 Prompt Library</a></div>
     </div>
     <div class="copyright"><span>© 2026 SEEDANCE 3.0 · seedance3-pro.com</span></div>
-  </div></footer>
+  </div>
+<div class="site-language-footer-control"><nav class="site-language-switch" data-site-language-switch data-language-footer aria-label="Site language"><a href="/zh/?lang=zh" data-language="zh" lang="zh-Hans">中文</a><span aria-hidden="true">|</span><a href="/?lang=en" data-language="en" lang="en" aria-current="true">EN</a></nav></div>
+</footer>
   <script src="./main.js"></script>
 </body>
 </html>

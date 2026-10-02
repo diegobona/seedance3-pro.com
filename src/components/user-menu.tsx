@@ -1,3 +1,4 @@
+import { useSiteI18n } from '../lib/site-i18n'
 import { useEffect, useRef, useState } from 'react'
 import { authClient } from '../lib/auth-client'
 
@@ -16,6 +17,7 @@ interface CreditState extends CreditSummary {
 }
 
 export function UserMenu({ onLogin }: UserMenuProps) {
+  const { t } = useSiteI18n()
   const { data: session, isPending, error } = authClient.useSession()
   const [open, setOpen] = useState(false)
   const [credits, setCredits] = useState<CreditState | null>(null)
@@ -92,10 +94,10 @@ export function UserMenu({ onLogin }: UserMenuProps) {
     }
   }, [session?.user?.id])
 
-  if (isPending && !error) return <span className="auth-loading" aria-label="Loading account" />
+  if (isPending && !error) return <span className="auth-loading" aria-label={t("Loading account")} />
 
   if (!session?.user) {
-    return <button className="login-entry" type="button" onClick={onLogin}>Log in</button>
+    return <button className="login-entry" type="button" onClick={onLogin}>{t("Log in")}</button>
   }
 
   const displayName = session.user.name || session.user.email
@@ -104,21 +106,20 @@ export function UserMenu({ onLogin }: UserMenuProps) {
 
   return (
     <div className="auth-user-menu" ref={containerRef}>
-      <span className="credit-pill" aria-label={`${currentCredits?.remaining ?? 'Unknown'} credits remaining`}>
-        <b>{currentCredits?.remaining ?? '—'}</b> credits
-      </span>
-      <button className="user-avatar-button" type="button" onClick={() => setOpen((value) => !value)} aria-expanded={open} aria-label="Open account menu">
+      <span className="credit-pill" aria-label={`${currentCredits?.remaining ?? t("Unknown")} ${t("credits remaining")}`}>
+        <b>{currentCredits?.remaining ?? '—'}</b>{t("credits")}</span>
+      <button className="user-avatar-button" type="button" onClick={() => setOpen((value) => !value)} aria-expanded={open} aria-label={t("Open account menu")}>
         {session.user.image ? <img src={session.user.image} alt="" referrerPolicy="no-referrer" /> : <span>{initial}</span>}
       </button>
       {open && (
         <div className="user-menu-panel">
           <strong>{displayName}</strong>
           <small>{session.user.email}</small>
-          <div className="user-menu-credit-row"><span>Credits</span><strong>{currentCredits?.remaining ?? '—'}</strong></div>
+          <div className="user-menu-credit-row"><span>{t("Credits")}</span><strong>{currentCredits?.remaining ?? '—'}</strong></div>
           <button type="button" onClick={async () => {
             await authClient.signOut()
             setOpen(false)
-          }}>Log out</button>
+          }}>{t("Log out")}</button>
         </div>
       )}
     </div>

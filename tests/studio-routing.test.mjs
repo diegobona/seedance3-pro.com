@@ -8,7 +8,7 @@ const root = resolve(import.meta.dirname, "..");
 function assertTrialResolutionControl(markup, shellName) {
   const select = markup.match(/<select\b(?=[^>]*\bid=["']image-quality["'])[^>]*>[\s\S]*?<\/select>/i)?.[0];
   assert.ok(select, `${shellName} should use a resolution dropdown`);
-  assert.match(select, /<option\b(?=[^>]*\bvalue=["']1K["'])[^>]*\bselected\b[^>]*>\s*1K\s*<\/option>|<option\b(?=[^>]*\bvalue=["']1K["'])[^>]*>\s*1K\s*<\/option>/i);
+  assert.match(select, /<option\b(?=[^>]*\bvalue=["']1K["'])[^>]*>\s*(?:1K|\{t\(["']1K["']\)\})\s*<\/option>/i);
   assert.match(select, /<option\b(?=[^>]*\bvalue=["']2K["'])(?=[^>]*\bdisabled\b)[^>]*>[^<]*2K[^<]*Locked[^<]*<\/option>/i);
   assert.match(select, /<option\b(?=[^>]*\bvalue=["']4K["'])(?=[^>]*\bdisabled\b)[^>]*>[^<]*4K[^<]*Locked[^<]*<\/option>/i);
   assert.doesNotMatch(markup, /id=["']image-resolution-options["']/i, `${shellName} should remove resolution buttons`);
@@ -124,7 +124,7 @@ test("studio initialization is explicit, repeatable, and cleaned up by React", (
   assert.match(script, /["']pageshow["'][\s\S]*?persisted[\s\S]*?initializeStudio/i);
 });
 
-test("H3 is text-to-video only in TanStack while legacy preview keeps it disabled", () => {
+test("TanStack enables H3 and links the Seedance workspace preview while legacy models stay disabled", () => {
   const html = readFileSync(resolve(root, "app", "legacy-preview.html"), "utf8");
   const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
   const script = readFileSync(resolve(root, "app", "studio.js"), "utf8");
@@ -138,14 +138,16 @@ test("H3 is text-to-video only in TanStack while legacy preview keeps it disable
   assert.match(html, /<div class="section-heading"><span>AI IMAGE<\/span><\/div>/i);
   assert.match(html, /<div class="section-heading image-models-heading"><span>IMAGE MODELS<\/span><span>01<\/span><\/div>/i);
   assert.match(html, /class="model-button pose-workflow-button"[^>]+data-model="pose-to-image"/i);
-  for (const modelId of ["seedance-3"]) {
-    const disabledModel = new RegExp(`data-model=["']${modelId}["'][^>]*disabled`, "i");
-    assert.match(html, disabledModel, `${modelId} should be disabled in the legacy preview`);
-    assert.match(route, disabledModel, `${modelId} should be disabled in the TanStack route`);
-  }
+  assert.match(html, /data-model=["']seedance-3["'][^>]*disabled/i, "Seedance 3 should be disabled in the legacy preview");
+  const seedancePreviewLink = route.match(/<a\b[^>]*className=["']model-button release-model["'][^>]*href=\{path\(["']\/app\/video\/seedance-3["']\)\}[^>]*>[\s\S]*?<\/a>/i)?.[0];
+  assert.ok(seedancePreviewLink, "React should link to the Seedance 3 workspace preview");
+  assert.doesNotMatch(seedancePreviewLink, /\bdisabled\b/i);
+  assert.match(seedancePreviewLink, /Workspace preview/i);
+  assert.match(seedancePreviewLink, /Release Updates/i);
+  assert.doesNotMatch(seedancePreviewLink, /Coming Soon/i);
+  assert.match(modelButtonMarkup(html, "seedance-3"), /Release Updates/i);
+  assert.doesNotMatch(modelButtonMarkup(html, "seedance-3"), /Coming Soon/i);
   for (const markup of [html, route]) {
-    assert.match(modelButtonMarkup(markup, "seedance-3"), /Release Updates/i);
-    assert.doesNotMatch(modelButtonMarkup(markup, "seedance-3"), /Coming Soon/i);
     assert.doesNotMatch(markup, /data-model="nano-banana-2-lite"/i);
   }
   assert.match(route, /data-model=["']pose-to-image["'](?![^>]*disabled)/i);
@@ -172,7 +174,7 @@ test("available model detection follows the rendered enabled buttons", () => {
   assert.match(script, /normalizeModelId\(modelId,\s*availableModelIds\)/i);
 });
 
-test("H3 trial controls expose only text, 5\/10\/15 seconds, 480p, and safe aspect ratios", () => {
+test("H3 trial controls expose text and reference modes, 5\/10\/15 seconds, 480p, and safe aspect ratios", () => {
   const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
   const videoSettings = route.match(/<div[^>]+id="video-settings"[\s\S]*?<\/div>/i)?.[0] || "";
 
@@ -188,7 +190,9 @@ test("H3 trial controls expose only text, 5\/10\/15 seconds, 480p, and safe aspe
 
   const script = readFileSync(resolve(root, "app", "studio.js"), "utf8");
   assert.match(script, /uploadGroup\.hidden\s*=\s*[^;]*type\s*===\s*["']video["']/i);
-  assert.match(script, /modeGroup\.hidden\s*=\s*true|modeGroup\.hidden\s*=\s*[^;]*type\s*===\s*["']video["']/i);
+  assert.match(script, /const enabled\s*=\s*activeModelId\s*===\s*["']minimax-h3["']\s*&&\s*videoModeButtons\.length\s*>\s*0;\s*modeGroup\.hidden\s*=\s*!enabled/i);
+  assert.match(route, /data-video-mode=["']text["']/i);
+  assert.match(route, /data-video-mode=["']reference["']/i);
 });
 
 test("studio routes H3 through the video client and renders an accessible video result", () => {
@@ -206,15 +210,15 @@ test("studio routes H3 through the video client and renders an accessible video 
   assert.match(script, /\.controls\s*=\s*true/i);
   assert.match(script, /\.playsInline\s*=\s*true/i);
   assert.match(script, /Open or download generated video/i);
-  assert.match(route, /id="result-heading-label"[^>]*>GENERATED IMAGES/i);
-  assert.match(route, /id="result-model-label"[^>]*>GPT Image 2/i);
+  assert.match(route, /id="result-heading-label"[^>]*>(?:GENERATED IMAGES|\{t\(["']GENERATED IMAGES["']\)\})/i);
+  assert.match(route, /id="result-model-label"[^>]*>(?:GPT Image 2|\{t\(["']GPT Image 2["']\)\})/i);
 });
 
 test("H3 duration drives credit and generate labels without changing GPT Image behavior", () => {
   const script = readFileSync(resolve(root, "app", "studio.js"), "utf8");
 
   assert.match(script, /creditCostForDuration/);
-  assert.match(script, /Generate video\s*·\s*\$\{[^}]+\}\s*credits/i);
+  assert.match(script, /Generate video\s*·\s*(?:\$\{[^}]+\}|\{cost\})\s*credits/i);
   assert.match(script, /Generate image\s*·\s*5 credits/i);
   assert.match(script, /requestImageGeneration/);
   assert.match(script, /quantity:\s*normalizeImageQuantity\(imageQuantity\.value\)/i);
@@ -235,7 +239,7 @@ test("GPT Image 2 is the only image model in both studio sidebars", () => {
 test("only H3 and GPT Image 2 show their entry price in the studio sidebar", () => {
   const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
   for (const modelId of ["minimax-h3", "gpt-image-2"])
-    assert.match(modelButtonMarkup(route, modelId), /<em className="price-badge">FROM <b>\$0\.01<\/b><\/em>/i);
+    assert.match(modelButtonMarkup(route, modelId), /<em className="price-badge">(?:FROM |\{t\(["']FROM ["']\)\})<b>\$0\.01<\/b><\/em>/i);
   assert.doesNotMatch(route, /data-model="seedance-2-5"/i);
 });
 
@@ -243,7 +247,7 @@ test("selected reference images use a prominent ready-state card", () => {
   const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
   const css = readFileSync(resolve(root, "app", "studio.css"), "utf8");
 
-  assert.match(route, /className=["']reference-attached-badge["']>REFERENCE READY</i);
+  assert.match(route, /className=["']reference-attached-badge["']>(?:REFERENCE READY|\{t\(["']REFERENCE READY["']\)\})</i);
   assert.match(css, /\.reference-preview\s*\{[^}]*grid-template-columns:92px/i);
   assert.match(css, /\.reference-attached-badge/);
 });
@@ -362,7 +366,7 @@ test("Pose Studio exposes only the focused ragdoll IK workspace in the TanStack 
   assert.match(route, /anyposes-crossed-arms\.png/i);
   assert.match(route, /anyposes-kneeling\.png/i);
   assert.match(route, /anyposes-jogging\.png/i);
-  assert.match(route, /aria-label="Interactive 3D characters/i);
+  assert.match(route, /aria-label=(?:"Interactive 3D characters|\{t\(["']Interactive 3D characters)/i);
   assert.doesNotMatch(route, /FK mode|OpenPose settings|joint hierarchy/i);
   assert.match(script, /import\(["']\.\/pose-studio\.mjs["']\)/i);
   assert.match(script, /initializePoseStudio/i);
@@ -438,10 +442,10 @@ test("exhausted trials offer one-click launch notification and five bonus credit
 
   for (const markup of [html, route]) {
     assert.match(markup, /id=["']launch-waitlist["'][^>]*hidden/i);
-    assert.match(markup, /from\s*<strong>\$0\.01\/sec<\/strong>/i);
+    assert.match(markup, /(?:from\s*|\{t\(["']Video generation from ["']\)\})<strong>(?:\$0\.01\/sec|\{t\(["']\$0\.01\/sec["']\)\})<\/strong>/i);
     assert.match(markup, /5 bonus credits/i);
     assert.match(markup, /id=["']launch-waitlist-button["']/i);
-    assert.match(markup, /Notify me &amp; claim 5 credits/i);
+    assert.match(markup, /Notify me &(?:amp;)? claim 5 credits/i);
   }
   assert.match(script, /createLaunchWaitlistController/);
   assert.match(script, /setVisible\(summary\.currentBalance\s*===\s*0\)/);

@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  <script src="/assets/pose-entry-visibility.js"></script>
+  <link rel="stylesheet" href="/assets/pose-entry-visibility.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Seedance 2.5 图生视频指南：提示词、设置与示例</title>
+  <meta name="description" content="通过实用提示词、参考控制、推荐设置、编辑技巧、示例和问题排查，学习 Seedance 2.5 图生视频。">
+  <meta name="keywords" content="Seedance 2.5 图生视频,Seedance 2.5 提示词,Seedance 2.5 设置,Seedance 图生视频指南">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <link rel="canonical" href="https://seedance3-pro.com/zh/seedance-2-5-image-to-video-guide">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="SEEDANCE 3.0">
+  <meta property="og:title" content="Seedance 2.5 图生视频指南">
+  <meta property="og:description" content="将参考图转换为可控 Seedance 2.5 视频的实用流程。">
+  <meta property="og:url" content="https://seedance3-pro.com/zh/seedance-2-5-image-to-video-guide">
+  <meta property="og:image" content="https://seedance3-pro.com/og-cover.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Seedance 2.5 图生视频指南">
+  <meta name="twitter:description" content="Seedance 2.5 图生视频流程的提示词、设置、参考控制、示例与修正方法。">
+  <meta name="twitter:image" content="https://seedance3-pro.com/og-cover.svg">
+  <meta name="theme-color" content="#090a0c">
+  <link rel="stylesheet" href="/site.css">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Seedance 2.5 图生视频指南：提示词、设置与示例",
+  "description": "实用 Seedance 2.5 图生视频流程，涵盖提示词、参考、设置、编辑、示例和问题排查。",
+  "datePublished": "2026-09-12",
+  "dateModified": "2026-09-12",
+  "mainEntityOfPage": "https://seedance3-pro.com/zh/seedance-2-5-image-to-video-guide",
+  "image": "https://seedance3-pro.com/og-cover.svg",
+  "author": {
+    "@type": "Organization",
+    "name": "SEEDANCE 3.0"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SEEDANCE 3.0",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://seedance3-pro.com/assets/seedance-mark.svg"
+    }
+  },
+  "inLanguage": "zh-Hans"
+}
+</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Seedance 2.5 能把一张图片变成视频吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "可以。将图像作为视觉锚点，再用提示词指定主体动作、镜头路径、环境响应、时长与一致性约束。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Seedance 2.5 视频最长多久？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Seedance 2.5 官方页面列出单次生成最多 30 秒，并支持延长。短草稿仍是验证新想法最快的方式。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Seedance 2.5 的提示词应如何组织？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "使用：主体锚点、动作、运镜、时间安排、环境响应、视觉风格、音频指令与一致性约束。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "应该用上所有可用参考吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不必。只使用控制某项具体属性所需的参考。过多重叠参考会让优先级模糊。"
+      }
+    }
+  ],
+  "inLanguage": "zh-Hans"
+}
+</script>
+  <link rel="alternate" hreflang="en" href="https://seedance3-pro.com/seedance-2-5-image-to-video-guide">
+  <link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/seedance-2-5-image-to-video-guide">
+  <link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/seedance-2-5-image-to-video-guide">
+  <link rel="stylesheet" href="/assets/site-language.css">
+  <script src="/assets/site-language.js" defer></script>
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:locale:alternate" content="en_US">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container inner">
+      <a class="brand" href="/zh/" aria-label="SEEDANCE 3.0 首页">
+        <img class="brand-mark" src="/assets/seedance-mark.svg" width="40" height="40" alt="">
+        <span>SEEDANCE 3.0</span>
+      </a>
+      <nav class="desktop-nav compact-nav" aria-label="主导航">
+        <a href="/zh/">首页</a>
+        <a href="/zh/blog">博客</a>
+      </nav>
+      <nav class="site-language-switch" data-site-language-switch aria-label="网站语言"><a href="/zh/seedance-2-5-image-to-video-guide?lang=zh" data-language="zh" lang="zh-Hans" aria-current="true">中文</a><span aria-hidden="true">|</span><a href="/seedance-2-5-image-to-video-guide?lang=en" data-language="en" lang="en">EN</a></nav>
+    </div>
+  </header>
+
+  <main class="article-main">
+    <section class="page-hero">
+      <div class="container">
+        <nav class="breadcrumbs" aria-label="面包屑导航">
+          <a href="/zh/">首页</a><span>/</span><a href="/zh/blog">博客</a><span>/</span><span>Seedance 2.5 图生视频</span>
+        </nav>
+        <p class="eyebrow">更新于 2026 年 9 月 12 日</p>
+        <h1 class="display">Seedance 2.5 图生视频指南</h1>
+        <p class="lead">把静态图当作视觉锚点，把提示词当作动作规划，就能创作更可控的视频。本指南介绍关键流程、提示词结构、设置、示例与修正方法。</p>
+        <div class="fact-grid" aria-label="Seedance 2.5 关键能力">
+          <div class="fact"><strong>30 秒</strong><span>单次生成上限</span></div>
+          <div class="fact"><strong>30 张图片</strong><span>图像参考上限</span></div>
+          <div class="fact"><strong>10 段视频</strong><span>视频参考上限</span></div>
+          <div class="fact"><strong>10 段音频</strong><span>音频参考上限</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container">
+        <article class="article-content prose">
+          <p><strong>快速解答：</strong> 从一张清楚的高分辨率图片开始；描述一个主要动作；指定一种运镜；设置目标时长与比例；再加入保持身份、服装、物体形状和背景结构的约束。先生成短草稿，每次只改变一个变量。</p>
+
+          <div class="status-panel">
+            <span class="tag lime">更新了什么</span>
+            <h3>Seedance 2.5 面向更长、更可控的视频创作</h3>
+            <p>字节跳动表示，Seedance 2.5 单次可生成最多 30 秒视频，接受最多 30 张图片、10 段视频和 10 段音频作为参考，并支持时间戳级编辑。这让参考规划和按时间编写提示词，比短片段流程中更加重要。</p>
+            <p><a class="card-link" href="https://seed.bytedance.com/en/blog/one-take-creation-flexible-referencing-introducing-seedance-2-5" target="_blank" rel="noopener noreferrer">阅读 Seedance 2.5 发布公告</a></p>
+          </div>
+
+          <h2>如何用 Seedance 2.5 进行图生视频</h2>
+
+          <h3>1. 选择适合制作的参考图</h3>
+          <p>来源图像建立人物身份、构图、光线、服装和物体结构。选择主体清楚、身体自然、运动空间足够，且没有多余文字或瑕疵的图像。如果输入中的脸或产品已经变形，运动通常会放大问题。</p>
+          <ul>
+            <li>使用清晰图像，让主体与背景分离。</li>
+            <li>尽量让来源图的画面比例匹配最终平台。</li>
+            <li>在主体或镜头将移动的方向留出空间。</li>
+            <li>避免要求紧凑人像一步变成远景全身镜头。</li>
+          </ul>
+
+          <h3>2. 确定一个视觉目标</h3>
+          <p>写提示词前，确定片段必须实现什么：让肖像动起来、揭晓产品、展示地点、复现运镜，或形成短暂叙事节点。一个片段可包含多个镜头，但每个镜头都应服务于同一目标。</p>
+
+          <h3>3. 描述动作，而非重复图像</h3>
+          <p>模型已经能看到参考图。把提示词用于描述随时间改变的内容：眼神、手部动作、布料反应、镜头路径、环境运动、声音与最后的姿势。使用具体动词和清楚顺序。</p>
+
+          <h3>4. 添加运镜与时间安排</h3>
+          <p>选择一种主要运动，例如缓慢推进、横向跟拍、可控环绕、上摇或固定镜头。较长片段按时间范围安排动作，时间戳指令有助于区分叙事节点，减少相互矛盾的运动。</p>
+
+          <h3>5. 添加一致性约束</h3>
+          <p>说明哪些内容不得改变，例如主体五官、身体比例、发型、服装细节、产品标识位置、背景布局和光线方向。约束应简短而具体。</p>
+
+          <h3>6. 先生成短片，评估后再延长</h3>
+          <p>先用短草稿验证身份与动作。检查首尾帧、手、面部细节、镜头稳定性、背景结构与音画同步，优先修正最大问题。动作描述生效后，再制作长版本或通过延长继续序列。</p>
+
+          <h2>Seedance 2.5 提示词公式</h2>
+          <p>可靠的图生视频提示词可按以下顺序组合：</p>
+          <div class="prompt-box" lang="en" translate="no">[Subject anchor] + [primary action] + [camera movement] + [timing] + [environmental response] + [visual style] + [audio direction] + [consistency constraints]</div>
+          <p>示例：</p>
+          <div class="prompt-box" lang="en" translate="no">Use @Image 1 as the exact visual reference. The woman slowly turns toward the window and lifts the curtain with her right hand. The camera makes a subtle dolly in from a medium shot to a medium close-up over 8 seconds. Morning light grows warmer across her face while the curtain and loose hair move gently in the breeze. Natural cinematic realism, restrained motion, quiet room ambience. Preserve her facial features, red dress, body proportions, balcony geometry, and lighting direction. No sudden cuts, no extra fingers, no text.</div>
+
+          <h2>推荐设置</h2>
+          <p>具体控件可能因界面而异。以下选项是制作目标，而非必须遵守的固定默认值。</p>
+          <table class="comparison">
+            <thead>
+              <tr><th>设置</th><th>起始选择</th><th>何时调整</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>时长</td><td>草稿采用 5–10 秒</td><td>动作和身份稳定后，再增加到 15–30 秒。</td></tr>
+              <tr><td>画面比例</td><td>匹配参考图</td><td>Shorts / Reels / TikTok 使用 9:16；横屏视频使用 16:9；方形版位使用 1:1。</td></tr>
+              <tr><td>镜头运动</td><td>一种主要运镜</td><td>只有转场具有明确叙事目的时，才加入第二种运镜。</td></tr>
+              <tr><td>参考数量</td><td>一张高质量图片</td><td>仅在需要控制特定人物、物体、地点、动作或声音时添加参考。</td></tr>
+              <tr><td>提示词时间安排</td><td>一个连续动作</td><td>多个镜头或精确变化使用时间戳范围。</td></tr>
+              <tr><td>变体策略</td><td>每个创意三个版本</td><td>各版本只改变动作、镜头或节奏，让结果保持可比。</td></tr>
+            </tbody>
+          </table>
+
+          <h2>提示词示例</h2>
+
+          <h3>细微自然动作的人像</h3>
+          <div class="prompt-box" lang="en" translate="no">Use @Image 1 as the identity and composition reference. The subject blinks naturally, takes a slow breath, and turns her eyes toward the light. Locked camera with an almost imperceptible push in. Soft hair movement from a gentle breeze, realistic skin texture, shallow depth of field. Preserve facial identity, hairstyle, earrings, clothing, and background. No talking, no exaggerated expression, no camera shake.</div>
+
+          <h3>产品揭晓</h3>
+          <div class="prompt-box" lang="en" translate="no">Use @Image 1 as the exact product reference. Begin with the bottle in silhouette, then move a narrow highlight from left to right across the glass as the camera performs a smooth 20-degree orbit. Fine condensation forms on the surface and the background mist drifts slowly. Premium studio advertising, crisp reflections, controlled black-and-lime palette. Keep the bottle shape, cap, label, typography, and logo unchanged.</div>
+
+          <h3>按时间安排的电影场景</h3>
+          <div class="prompt-box" lang="en" translate="no">Use @Image 1 for the character and location. 0–4s: medium shot, the character looks across the empty station as paper moves along the platform. 4–8s: the camera tracks laterally while the character begins walking. 8–12s: a train light appears in the distance and the camera slowly pulls back to a wide shot. Moody cinematic realism, cool night lighting, distant rail ambience. Preserve face, coat, station layout, and screen direction across the sequence.</div>
+
+          <h3>动作参考流程</h3>
+          <div class="prompt-box" lang="en" translate="no">Use @Image 1 for the subject's exact appearance and @Video 1 only for camera path, pacing, and body movement. Recreate the same controlled arc and final framing while keeping the character, wardrobe, location, and color palette from @Image 1. Do not copy the identity, background, or styling from @Video 1.</div>
+
+          <h2>如何控制参考而不制造冲突</h2>
+          <p>更多参考不会自动带来更好结果。为每份素材分配一项任务，并在提示词中明确用途。例如，一张图用于身份，另一张用于服装，一段视频用于动作，一段音频用于节奏。如果两份参考对同一属性有分歧，应明确优先级。</p>
+          <p>Seedance 2.5 官方文档介绍了对图像、视频、音频、动作、创意、泥模与编辑参考的更强控制。实际优势不在文件数量上限，而在于能准确告诉模型应从每份文件借用哪项属性。</p>
+
+          <h2>时间戳编辑与延长</h2>
+          <p>较长片段先写简单分镜时间表，再写完整提示词。每个区间安排一个动作和一个镜头指令。如果只有一处失败，要求在对应时间段局部修改并保留其他内容。延长时再次说明必须延续的人物、环境、风格、运动方向和声音连续性。</p>
+          <div class="prompt-box" lang="en" translate="no">Edit @Video 1. Keep the character, wardrobe, setting, lighting, and audio unchanged. Adjust only 6–9s: replace the sudden camera turn with a slow stabilized pan to the right, ending on the same final composition.</div>
+
+          <h2>问题排查</h2>
+
+          <h3>脸或产品发生变化</h3>
+          <p>减少姿势变化幅度，使用更清晰参考，缩短初稿，并重复必须固定的准确细节。产品应分别说明形状、材质、标签位置、标志与瓶盖。</p>
+
+          <h3>动作显得僵硬</h3>
+          <p>将“优雅移动”等抽象词换成可观察动作：重心移到左脚、转动肩膀、抬起右手，再看向镜头。主要动作成功后，再加入次要运动。</p>
+
+          <h3>镜头跳动或忽略方向</h3>
+          <p>删除竞争性的运镜，描述一条连续路径并给出起始和结束构图。“从中景缓慢推进至特写”比同时列出变焦、环绕、摇镜头、手持晃动和升降镜头更可控。</p>
+
+          <h3>背景扭曲</h3>
+          <p>缩短移动范围，避免用平面来源图制造极端视差，并要求保持建筑、地平线、直线与空间布局。较宽的来源图通常能给镜头更多空间。</p>
+
+          <h3>片段过于繁忙或不连贯</h3>
+          <p>减少主体、动作、场景变化和风格修饰词。把故事拆成稳定节点，各节点成功后再延长或编辑。</p>
+
+          <h2>Seedance 2.0 与 Seedance 2.5</h2>
+          <table class="comparison">
+            <thead>
+              <tr><th>流程方面</th><th>Seedance 2.0 方式</th><th>Seedance 2.5 方式</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>片段规划</td><td>优先短片段提示词</td><td>最多 30 秒序列，叙事节点更清楚</td></tr>
+              <tr><td>参考素材</td><td>保持参考集精简</td><td>为更多多模态参考分配职责</td></tr>
+              <tr><td>提示词结构</td><td>主体、动作、镜头、风格</td><td>加入时间戳区间与针对素材的指令</td></tr>
+              <tr><td>修改方式</td><td>重新生成或延长</td><td>使用局部时间戳编辑、延长与参考驱动的修改</td></tr>
+              <tr><td>制作使用</td><td>独立镜头与短概念</td><td>更长叙事和更可控的编辑流程</td></tr>
+            </tbody>
+          </table>
+          <p>如果仍使用旧流程，核心经验依然有用：清晰素材、精确动作动词、简单运镜与可控迭代。阅读 <a class="card-link" href="/zh/seedance-2-0-complete-tutorial">Seedance 2.0 历史版本教程</a> 了解早期流程。</p>
+
+          <h2>Seedance 2.5 图生视频检查清单</h2>
+          <ul>
+            <li>参考图清晰，并匹配目标构图。</li>
+            <li>提示词包含一个主要动作和一种主要运镜。</li>
+            <li>每份参考素材都有明确职责。</li>
+            <li>时间区间不包含冲突动作。</li>
+            <li>身份、服装、物体与背景约束明确。</li>
+            <li>首个草稿足够短，便于快速分析。</li>
+            <li>测试生成之间只改变一个变量。</li>
+            <li>最终检查覆盖首尾帧、手、脸、结构、动作和声音。</li>
+          </ul>
+
+          <h2>常见问题</h2>
+          <div class="faq">
+            <details>
+              <summary>Seedance 2.5 能把一张图片变成视频吗？</summary>
+              <p>可以。将图像作为视觉锚点，再用提示词指定主体动作、镜头路径、环境响应、时长与一致性约束。</p>
+            </details>
+            <details>
+              <summary>Seedance 2.5 视频最长多久？</summary>
+              <p>Seedance 2.5 官方页面列出单次生成最多 30 秒，并支持延长。短草稿仍是验证新想法最快的方式。</p>
+            </details>
+            <details>
+              <summary>Seedance 2.5 的提示词应如何组织？</summary>
+              <p>使用：主体锚点、动作、运镜、时间安排、环境响应、视觉风格、音频指令与一致性约束。</p>
+            </details>
+            <details>
+              <summary>应该用上所有可用参考吗？</summary>
+              <p>不必。只使用控制某项具体属性所需的参考。过多重叠参考会让优先级模糊。</p>
+            </details>
+          </div>
+
+          <h2>在本站尝试图生视频流程</h2>
+          <p>要制作参考图，可探索 <a href="/zh/gpt-image-2-prompts/foldable-pocket-universe">超现实折叠手机图像及其实际提示词</a>，再在 <a href="/zh/app/image/gpt-image-2">GPT Image 2 图像生成器</a>中改写这个创意。 <a href="/zh/gpt-image-2-prompts">GPT Image 2 提示词库</a> 中还有其他视觉风格可探索。</p>
+          <p>图像准备好后，使用 <a href="/zh/app/video/minimax-h3">MiniMax H3 视频生成器</a> 加入动作与运镜。它与上文介绍的 Seedance 流程是独立工具；生成前请查看当前输入和输出控件。</p>
+
+          <h2>资料来源与延伸阅读</h2>
+          <ul>
+            <li><a class="card-link" href="https://seed.bytedance.com/en/blog/one-take-creation-flexible-referencing-introducing-seedance-2-5" target="_blank" rel="noopener noreferrer">Introducing Seedance 2.5 — ByteDance Seed 发布介绍</a></li>
+            <li><a class="card-link" href="https://seed.bytedance.com/en/seedance2_5" target="_blank" rel="noopener noreferrer">Seedance 2.5 模型页面 — ByteDance Seed</a></li>
+            <li><a class="card-link" href="/zh/precise-application-of-seedance-prompts">更多 Seedance 提示词技巧</a></li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer article-footer">
+    <div class="container article-footer-inner">
+      <p>© 2026 SEEDANCE 3.0 · seedance3-pro.com</p>
+      <nav aria-label="页脚导航">
+        <a href="/zh/">首页</a>
+        <a href="/zh/blog">博客</a>
+      </nav>
+      <nav class="site-language-switch" data-site-language-switch data-language-footer aria-label="网站语言"><a href="/zh/seedance-2-5-image-to-video-guide?lang=zh" data-language="zh" lang="zh-Hans" aria-current="true">中文</a><span aria-hidden="true">|</span><a href="/seedance-2-5-image-to-video-guide?lang=en" data-language="en" lang="en">EN</a></nav>
+    </div>
+  </footer>
+</body>
+</html>

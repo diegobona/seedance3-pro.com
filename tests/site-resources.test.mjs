@@ -3,9 +3,25 @@ import assert from 'node:assert/strict'
 import { existsSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { validateSharedScene } from '../app/pose-share.mjs'
+import { localizedPath, localeRedirect } from '../app/site-locale.mjs'
 
 const root = resolve(import.meta.dirname, '..')
 const read = (path) => readFileSync(resolve(root, path), 'utf8')
+
+function wildcardMatches(pattern, path) {
+  const escaped = pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replaceAll('\\*', '.*')
+  return new RegExp('^' + escaped + '$').test(path)
+}
+
+function assertWorkerCoverage(config, path) {
+  for (const locale of ['en', 'zh']) {
+    const pathname = localizedPath(path, locale)
+    for (const host of ['seedance3-pro.com', 'www.seedance3-pro.com']) {
+      assert.ok(config.routes.some(route => wildcardMatches(route.pattern, host + pathname)), `${host}${pathname} needs Worker route coverage`)
+    }
+    assert.ok(config.assets.run_worker_first.some(pattern => wildcardMatches(pattern, pathname)), `${pathname} should reach the Worker before assets`)
+  }
+}
 
 test('showcase features editable Pose scenes before the Video Prompt Library', () => {
   const showcase = read('showcase.html')
@@ -88,14 +104,13 @@ test('video masonry keeps 10 short clips, 20 films, playable tiles and model-neu
   assert.match(read('showcase.css'), /\.community-video-body\{position:absolute/)
 })
 
-test('remaining Coming Soon resources are real noindex routes with explicit Worker coverage', () => {
+test('remaining Coming Soon resources are real noindex routes with bilingual Worker coverage', () => {
   const routes = [
     ['src/routes/prompt-guide.tsx', '/prompt-guide'],
     ['src/routes/seedance-3-0-prompts.tsx', '/seedance-3-0-prompts'],
   ]
   const sitemap = read('sitemap.xml')
   const config = JSON.parse(read('wrangler.jsonc'))
-  const routePatterns = config.routes.map(route => route.pattern)
 
   for (const [sourceFile, path] of routes) {
     const source = read(sourceFile)
@@ -103,20 +118,19 @@ test('remaining Coming Soon resources are real noindex routes with explicit Work
     assert.match(source, /ComingSoonPage|StudioShowcasePage/)
     assert.ok(!sitemap.includes(`https://seedance3-pro.com${path}<`), `${path} should stay out of the sitemap`)
   }
-  assert.ok(routePatterns.includes('seedance3-pro.com/prompt-guide'))
-  assert.ok(routePatterns.includes('seedance3-pro.com/prompts/*'))
-  assert.ok(config.assets.run_worker_first.includes('/prompt-guide'))
-  assert.ok(config.assets.run_worker_first.includes('/prompts/*'))
-  for (const path of ['/minimax-h3-prompts', '/gpt-image-2-prompts', '/seedance-3-0-prompts']) {
-    assert.ok(routePatterns.includes(`seedance3-pro.com${path}`))
-    assert.ok(routePatterns.includes(`www.seedance3-pro.com${path}`))
-    assert.ok(config.assets.run_worker_first.includes(path))
+  for (const path of ['/prompt-guide', '/prompts/minimax-h3/videos', '/minimax-h3-prompts', '/gpt-image-2-prompts', '/seedance-3-0-prompts']) {
+    assertWorkerCoverage(config, path)
+  }
+
+  for (const path of ['/api/images/generate', '/api/videos/status?task=example', '/media/example.png']) {
+    assert.equal(localizedPath(path, 'zh'), path, `${path} must remain language neutral`)
+    assert.equal(localeRedirect(new Request('https://seedance3-pro.com' + path), 'CN'), null)
   }
 
   const component = read('src/components/coming-soon-page.tsx')
   assert.match(component, /Coming soon/i)
-  assert.match(component, /href="\/app\/video\/minimax-h3"/)
-  assert.match(component, /href="\/app\/image\/gpt-image-2"/)
+  assert.match(component, /href=\{path\("\/app\/video\/minimax-h3"\)\}/)
+  assert.match(component, /href=\{path\("\/app\/image\/gpt-image-2"\)\}/)
 })
 
 test('five original H3 videos have linked, indexable cases with their submitted prompts', () => {
@@ -137,7 +151,8 @@ test('five original H3 videos have linked, indexable cases with their submitted 
   assert.match(showcasePage, /studio-shell studio-showcase-shell/)
   assert.match(showcasePage, /workspace-header/)
   assert.match(showcasePage, /H3ShowcaseGrid/)
-  assert.match(showcasePage, /FutureShowcase/)
+  assert.match(showcasePage, /function Seedance3PlannedGrid\(\)/)
+  assert.match(showcasePage, /<Seedance3PlannedGrid\s*\/>/)
   assert.equal(Object.keys(manifest.scenes).length, 5)
   assert.equal(originalCards.length, 5)
   assert.match(previewCode, /new IntersectionObserver\(\(entries\)/)
@@ -177,8 +192,7 @@ test('five original GPT Image 2 images have published prompts and working case r
   assert.match(showcase, /gptImageCaseTryUrl/)
   assert.match(studio, /imageAspectRatio\.value = aspectRatio/)
   assert.match(read('src/components/gpt-image-case-page.tsx'), /application\/ld\+json/)
-  assert.ok(config.routes.some((route) => route.pattern === 'seedance3-pro.com/gpt-image-2-prompts/*'))
-  assert.ok(config.assets.run_worker_first.includes('/gpt-image-2-prompts/*'))
+  assertWorkerCoverage(config, '/gpt-image-2-prompts/example-case')
   assert.ok(sitemap.includes('<loc>https://seedance3-pro.com/gpt-image-2-prompts</loc>'))
   for (const imageCase of cases) {
     const imagePath = imageCase.imageUrl.slice(1)
@@ -199,7 +213,7 @@ test('model sidebar links all three prompt libraries while homepage Showcase kee
     ['GPT Image 2 Prompt Library', '/gpt-image-2-prompts'],
     ['Seedance 3.0 Prompt Library', '/seedance-3-0-prompts'],
   ]) {
-    assert.ok(sidebar.includes(`href="${path}"`))
+    assert.ok(sidebar.includes(`href={path("${path}")}`), `${path} should use the localized navigation helper`)
     assert.ok(sidebar.includes(label))
   }
   assert.match(homepage, /<a href="\.\/showcase">Showcase<\/a>/)
@@ -209,6 +223,5 @@ test('model sidebar links all three prompt libraries while homepage Showcase kee
   assert.match(server, /legacyH3VideoCasePrefix/)
   assert.match(server, /\/minimax-h3-prompts\/\$\{slug\}/)
   const config = JSON.parse(read('wrangler.jsonc'))
-  assert.ok(config.routes.some(route => route.pattern === 'seedance3-pro.com/minimax-h3-prompts/*'))
-  assert.ok(config.assets.run_worker_first.includes('/minimax-h3-prompts/*'))
+  assertWorkerCoverage(config, '/minimax-h3-prompts/example-case')
 })

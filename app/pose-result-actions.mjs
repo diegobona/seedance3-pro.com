@@ -1,3 +1,4 @@
+import { t } from './i18n.mjs';
 export function createPoseResultActionsController({
   container,
   editButton,
@@ -16,7 +17,7 @@ export function createPoseResultActionsController({
     },
     setGenerateState({ disabled, cost }) {
       generateAgainButton.disabled = Boolean(disabled);
-      generateAgainButton.textContent = `Generate again · ${cost} credits`;
+      generateAgainButton.textContent = t('Generate again · {cost} credits', { cost });
     },
     destroy() {
       editButton.removeEventListener("click", handleEdit);

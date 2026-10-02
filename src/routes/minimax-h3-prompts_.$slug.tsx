@@ -1,3 +1,4 @@
+import { localizeHead } from '../lib/site-i18n'
 import { createFileRoute, notFound } from '@tanstack/react-router'
 import { H3VideoCaseDetail } from '../components/h3-video-case-page'
 import { getH3VideoCase, h3VideoCaseUrl } from '../data/h3-video-cases'
@@ -14,7 +15,7 @@ export const Route = createFileRoute('/minimax-h3-prompts_/$slug')({
     if (!loaderData) return {}
     const canonicalUrl = siteUrl + h3VideoCaseUrl(loaderData.slug)
     const description = loaderData.summary + ' Watch the original video and read the exact prompt used to create it.'
-    return {
+    return localizeHead({
       meta: [
         { title: loaderData.seoTitle },
         { name: 'description', content: description },
@@ -31,7 +32,7 @@ export const Route = createFileRoute('/minimax-h3-prompts_/$slug')({
         { rel: 'canonical', href: canonicalUrl },
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
       ],
-    }
+    }, "/minimax-h3-prompts/$slug", 'en')
   },
   component: () => <H3VideoCaseDetail videoCase={Route.useLoaderData()} />,
 })

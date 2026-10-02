@@ -53,7 +53,7 @@
       var host = new URL(document.referrer).hostname.toLowerCase();
       incoming = incoming || host === 'anyposes.com' || host.endsWith('.anyposes.com');
     } catch (_) {}
-    var entryPath = window.location.pathname.replace(/\/$/, '') || '/';
+    var entryPath = window.location.pathname.replace(/^\/zh(?=\/|$)/, '').replace(/\/$/, '') || '/';
     incoming = incoming && entryPath === '/app/image/gpt-image-2';
 
     function readCookie(name) {

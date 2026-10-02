@@ -16,14 +16,11 @@
   <meta property="og:description" content="Understand what SEEDANCE 3.0 can do for creative teams and video-first brands.">
   <meta property="og:url" content="https://seedance3-pro.com/features">
   <meta property="og:image" content="https://seedance3-pro.com/og-cover.svg">
-  <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="SEEDANCE 3.0 Features">
   <meta name="twitter:description" content="Multi-modal AI video generation features for creators and teams.">
   <meta name="twitter:image" content="https://seedance3-pro.com/og-cover.svg">
   <meta name="theme-color" content="#080c1f">
-  <link rel="alternate" hreflang="en" href="https://seedance3-pro.com/features">
-  <link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/features">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -42,6 +39,13 @@
   <link rel="icon" type="image/svg+xml" href="./favicon.svg">
   <link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="./favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
+  <link rel="alternate" hreflang="en" href="https://seedance3-pro.com/features">
+  <link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/features">
+  <link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/features">
+  <link rel="stylesheet" href="/assets/site-language.css">
+  <script src="/assets/site-language.js" defer></script>
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="zh_CN">
 </head>
 <body class="bg-slate-950 text-slate-100 antialiased">
   <header class="sticky top-0 z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl">
@@ -57,6 +61,7 @@
         <a href="./faq" class="hover:text-white">FAQ</a>
         <a href="./blog" class="hover:text-white">Blog</a>
       </nav>
+      <nav class="site-language-switch" data-site-language-switch aria-label="Site language"><a href="/zh/features?lang=zh" data-language="zh" lang="zh-Hans">中文</a><span aria-hidden="true">|</span><a href="/features?lang=en" data-language="en" lang="en" aria-current="true">EN</a></nav>
       <a href="./app/video/minimax-h3" class="rounded-full border border-indigo-300/40 bg-indigo-500/20 px-4 py-2 text-sm font-semibold text-indigo-100 transition hover:bg-indigo-500/35">Start Creating</a>
     </div>
   </header>
@@ -117,6 +122,7 @@
         <a href="./blog" class="hover:text-slate-200">Blog</a>
       </div>
     </div>
-  </footer>
+<div class="site-language-footer-control"><nav class="site-language-switch" data-site-language-switch data-language-footer aria-label="Site language"><a href="/zh/features?lang=zh" data-language="zh" lang="zh-Hans">中文</a><span aria-hidden="true">|</span><a href="/features?lang=en" data-language="en" lang="en" aria-current="true">EN</a></nav></div>
+</footer>
 </body>
 </html>

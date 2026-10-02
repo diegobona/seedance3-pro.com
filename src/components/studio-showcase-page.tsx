@@ -1,3 +1,5 @@
+import { SiteLanguageSwitch } from './site-language-switch'
+import { useSiteI18n } from '../lib/site-i18n'
 import { useCallback, useEffect, useState, type ReactNode } from 'react'
 import { AuthDialog } from './auth-dialog'
 import { UserMenu } from './user-menu'
@@ -29,6 +31,7 @@ const showcaseContent = {
 } as const
 
 function H3ShowcaseGrid() {
+  const { t } = useSiteI18n()
   useEffect(() => {
     const videos = Array.from(document.querySelectorAll<HTMLVideoElement>('.studio-showcase-video'))
     if (!('IntersectionObserver' in window)) {
@@ -57,7 +60,7 @@ function H3ShowcaseGrid() {
   }, [])
 
   return (
-    <section className="studio-showcase-grid" aria-label="Original MiniMax H3 video prompts">
+    <section className="studio-showcase-grid" aria-label={t("Original MiniMax H3 video prompts")}>
       {h3VideoCases.map((videoCase) => (
         <ShowcaseCard
           key={videoCase.slug}
@@ -81,15 +84,16 @@ function ShowcaseCard({ title, caseUrl, tryUrl, modelLabel, portrait, media }: {
   portrait: boolean
   media: ReactNode
 }) {
+  const { t, path } = useSiteI18n()
   return (
     <article className="studio-showcase-card">
       <div className={`studio-showcase-media${portrait ? ' is-portrait' : ''}`}>
         {media}
-        <a className="studio-showcase-cover-link" href={caseUrl} aria-label={`Open ${title} and prompt`}><h2 className="studio-showcase-card-title">{title}</h2></a>
+        <a className="studio-showcase-cover-link" href={path(caseUrl)} aria-label={`${t("Open prompt")}: ${t(title)}`}><h2 className="studio-showcase-card-title">{t(title)}</h2></a>
         <div className="studio-showcase-hover-actions">
-          <button type="button" disabled aria-label="Like (coming soon)" title="Coming soon">♡</button>
-          <a href={tryUrl} aria-label={`Try ${title} prompt in ${modelLabel}`}>Try Now</a>
-          <button type="button" disabled aria-label="Share (coming soon)" title="Coming soon">↗</button>
+          <button type="button" disabled aria-label={t("Like (coming soon)")} title={t("Coming soon")}>♡</button>
+          <a href={path(tryUrl)} aria-label={`${t("Try Now")}: ${t(title)} — ${modelLabel}`}>{t("Try Now")}</a>
+          <button type="button" disabled aria-label={t("Share (coming soon)")} title={t("Coming soon")}>↗</button>
         </div>
       </div>
     </article>
@@ -97,8 +101,9 @@ function ShowcaseCard({ title, caseUrl, tryUrl, modelLabel, portrait, media }: {
 }
 
 function GptImageShowcaseGrid() {
+  const { t } = useSiteI18n()
   return (
-    <section className="studio-showcase-grid" aria-label="Original GPT Image 2 image prompts">
+    <section className="studio-showcase-grid" aria-label={t("Original GPT Image 2 image prompts")}>
       {gptImageCases.map((imageCase) => (
         <ShowcaseCard
           key={imageCase.slug}
@@ -107,7 +112,7 @@ function GptImageShowcaseGrid() {
           tryUrl={gptImageCaseTryUrl(imageCase)}
           modelLabel="GPT Image 2"
           portrait={imageCase.aspectRatio === '2:3'}
-          media={<img src={imageCase.imageUrl} alt={imageCase.summary} loading="lazy" width={imageCase.aspectRatio === '2:3' ? 1024 : imageCase.aspectRatio === '3:2' ? 1536 : 1024} height={imageCase.aspectRatio === '2:3' ? 1536 : imageCase.aspectRatio === '3:2' ? 1024 : 1024} />}
+          media={<img src={imageCase.imageUrl} alt={t(imageCase.summary)} loading="lazy" width={imageCase.aspectRatio === '2:3' ? 1024 : imageCase.aspectRatio === '3:2' ? 1536 : 1024} height={imageCase.aspectRatio === '2:3' ? 1536 : imageCase.aspectRatio === '3:2' ? 1024 : 1024} />}
         />
       ))}
     </section>
@@ -115,19 +120,20 @@ function GptImageShowcaseGrid() {
 }
 
 function Seedance3PlannedGrid() {
+  const { t, path } = useSiteI18n()
   return (
-    <section className="studio-showcase-grid seedance3-planned-grid" aria-label="Planned Seedance 3.0 video prompt tests">
+    <section className="studio-showcase-grid seedance3-planned-grid" aria-label={t("Planned Seedance 3.0 video prompt tests")}>
       {seedance3PlannedPrompts.map((item) => (
         <article className="studio-showcase-card seedance3-planned-card" key={item.slug}>
-          <div className="studio-showcase-media seedance3-planned-media" role="img" aria-label={`Video placeholder for ${item.title}; video not generated yet`}>
+          <div className="studio-showcase-media seedance3-planned-media" role="img" aria-label={`${t(item.title)} — ${t("Video coming soon")}`}>
             <span className="seedance3-planned-video-icon" aria-hidden="true">▶</span>
-            <span className="seedance3-planned-video-label">Video coming soon</span>
-            <h2 className="studio-showcase-card-title">{item.title}</h2>
+            <span className="seedance3-planned-video-label">{t("Video coming soon")}</span>
+            <h2 className="studio-showcase-card-title">{t(item.title)}</h2>
           </div>
           <div className="seedance3-planned-card-body">
-            <span>{item.category} · Planned test</span>
-            <details><summary>Read planned prompt</summary><p>{item.prompt}</p></details>
-            <a href={seedance3PromptTryUrl(item)}>Open in Seedance 3.0 workspace ↗</a>
+            <span>{t(item.category)}{t(" · Planned test")}</span>
+            <details><summary>{t("Read planned prompt")}</summary><p>{item.prompt}</p></details>
+            <a href={path(seedance3PromptTryUrl(item))}>{t("Open in Seedance 3.0 workspace ↗")}</a>
           </div>
         </article>
       ))}
@@ -136,32 +142,34 @@ function Seedance3PlannedGrid() {
 }
 
 function PromptLibraryGuide({ model }: { model: 'minimax-h3' | 'gpt-image-2' }) {
+  const { t, path } = useSiteI18n()
   const isVideo = model === 'minimax-h3'
   return (
     <section className="prompt-library-guide" aria-labelledby="prompt-library-guide-title">
-      <h2 id="prompt-library-guide-title">{isVideo ? 'How to use these MiniMax H3 prompts' : 'How to use these GPT Image 2 prompts'}</h2>
+      <h2 id="prompt-library-guide-title">{isVideo ? t("How to use these MiniMax H3 prompts") : t("How to use these GPT Image 2 prompts")}</h2>
       <p>{isVideo
-        ? 'Study how a prompt sets up the subject, action, camera movement and final visual joke. These original scenes explore playful product ideas, animals and everyday comedy.'
-        : 'Compare how subject, composition, lighting and material descriptions shape an image. Explore editorial cartoons, paper cut art, surreal product photography, woodblock prints and claymation.'}</p>
+        ? t("Study how a prompt sets up the subject, action, camera movement and final visual joke. These original scenes explore playful product ideas, animals and everyday comedy.")
+        : t("Compare how subject, composition, lighting and material descriptions shape an image. Explore editorial cartoons, paper cut art, surreal product photography, woodblock prints and claymation.")}</p>
       <ol>
-        <li>Open a work to see its full prompt and the creative choices behind the result.</li>
-        <li>Select Try Now on its card to load the prompt into the generator.</li>
-        <li>{isVideo ? 'Adapt the subject, action or camera direction, review the current video settings, then generate your variation.' : 'Adapt the subject, palette or composition, add reference images if useful, then review the current image settings and generate.'}</li>
+        <li>{t("Open a work to see its full prompt and the creative choices behind the result.")}</li>
+        <li>{t("Select Try Now on its card to load the prompt into the generator.")}</li>
+        <li>{isVideo ? t("Adapt the subject, action or camera direction, review the current video settings, then generate your variation.") : t("Adapt the subject, palette or composition, add reference images if useful, then review the current image settings and generate.")}</li>
       </ol>
       <p>{isVideo
-        ? <>For more ways to describe a shot, read the <a href="/precise-application-of-seedance-prompts">camera movement and video prompting guide</a>. Apply the ideas to a prompt here and compare the result.</>
-        : <>To plan a character composition, follow the <a href="/how-to-control-character-poses-in-seedance-with-3d-pose-references">3D pose reference tutorial</a>. To add movement to a finished image, read the <a href="/seedance-2-5-image-to-video-guide">image-to-video workflow guide</a>.</>}</p>
-      <nav aria-label="Related creative tools and prompt libraries">
-        <a href={isVideo ? '/app/video/minimax-h3' : '/app/image/gpt-image-2'}>{isVideo ? 'Open MiniMax H3 Video Generator' : 'Open GPT Image 2 Generator'}</a>
-        <a href={isVideo ? '/gpt-image-2-prompts' : '/minimax-h3-prompts'}>{isVideo ? 'GPT Image 2 Prompt Library' : 'MiniMax H3 Prompt Library'}</a>
-        <a href="/pose-to-image">Explore the 3D Pose Editor</a>
-        <a href="/showcase">Browse the creative Showcase</a>
+        ? <>{t("For more ways to describe a shot, read the ")}<a href={path("/precise-application-of-seedance-prompts")}>{t("camera movement and video prompting guide")}</a>{t(". Apply the ideas to a prompt here and compare the result.")}</>
+        : <>{t("To plan a character composition, follow the ")}<a href={path("/how-to-control-character-poses-in-seedance-with-3d-pose-references")}>{t("3D pose reference tutorial")}</a>{t(". To add movement to a finished image, read the ")}<a href={path("/seedance-2-5-image-to-video-guide")}>{t("image-to-video workflow guide")}</a>.</>}</p>
+      <nav aria-label={t("Related creative tools and prompt libraries")}>
+        <a href={path(isVideo ? '/app/video/minimax-h3' : '/app/image/gpt-image-2')}>{isVideo ? t("Open MiniMax H3 Video Generator") : t("Open GPT Image 2 Generator")}</a>
+        <a href={path(isVideo ? '/gpt-image-2-prompts' : '/minimax-h3-prompts')}>{isVideo ? t("GPT Image 2 Prompt Library") : t("MiniMax H3 Prompt Library")}</a>
+        <a href={path("/pose-to-image")}>{t("Explore the 3D Pose Editor")}</a>
+        <a href={path("/showcase")}>{t("Browse the creative Showcase")}</a>
       </nav>
     </section>
   )
 }
 
 export function StudioShowcasePage({ model }: { model: StudioShowcaseModel }) {
+  const { t, path } = useSiteI18n()
   const [authOpen, setAuthOpen] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const closeAuth = useCallback(() => setAuthOpen(false), [])
@@ -174,45 +182,45 @@ export function StudioShowcasePage({ model }: { model: StudioShowcaseModel }) {
     <>
       <div className="studio-shell studio-showcase-shell">
         <aside className={`sidebar${sidebarOpen ? ' is-open' : ''}`} id="studio-sidebar">
-          <a className="studio-brand" href="/"><img src="/assets/seedance-mark.svg" width="40" height="40" alt="" /><strong>SEEDANCE<br /><small>CREATIVE STUDIO</small></strong></a>
-          <button className="sidebar-close" type="button" aria-label="Close model navigation" onClick={() => setSidebarOpen(false)}>×</button>
-          <nav aria-label="Model navigation">
+          <a className="studio-brand" href={path("/")}><img src="/assets/seedance-mark.svg" width="40" height="40" alt="" /><strong>{t("SEEDANCE")}<br /><small>{t("CREATIVE STUDIO")}</small></strong></a>
+          <button className="sidebar-close" type="button" aria-label={t("Close model navigation")} onClick={() => setSidebarOpen(false)}>×</button>
+          <nav aria-label={t("Model navigation")}>
             <div className="nav-section">
-              <div className="section-heading"><span>AI VIDEO</span><span>02</span></div>
-              <a className="model-button price-model" href="/app/video/minimax-h3"><span className="model-symbol cyan">H3</span><span><strong>MiniMax H3</strong><small>Text-to-video</small></span><em className="price-badge">FROM <b>$0.01</b></em></a>
-              <a className="model-button release-model" href="/app/video/seedance-3"><img src="/assets/seedance-mark.svg" width="40" height="40" alt="" style={{ flexShrink: 0 }} /><span className="release-model-copy"><span className="release-title-row"><strong>SEEDANCE 3.0</strong><em className="release-status">Release Updates</em></span><small>Workspace preview</small></span></a>
+              <div className="section-heading"><span>{t("AI VIDEO")}</span><span>02</span></div>
+              <a className="model-button price-model" href={path("/app/video/minimax-h3")}><span className="model-symbol cyan">{t("H3")}</span><span><strong>{t("MiniMax H3")}</strong><small>{t("Text-to-video")}</small></span><em className="price-badge">{t("FROM ")}<b>$0.01</b></em></a>
+              <a className="model-button release-model" href={path("/app/video/seedance-3")}><img src="/assets/seedance-mark.svg" width="40" height="40" alt="" style={{ flexShrink: 0 }} /><span className="release-model-copy"><span className="release-title-row"><strong>{t("SEEDANCE 3.0")}</strong><em className="release-status">{t("Release Updates")}</em></span><small>{t("Workspace preview")}</small></span></a>
             </div>
             <div className="nav-section">
-              <div className="section-heading"><span>AI IMAGE</span></div>
-              <a className="model-button pose-workflow-button" href="/app/?model=pose-to-image">
+              <div className="section-heading"><span>{t("AI IMAGE")}</span></div>
+              <a className="model-button pose-workflow-button" href={path("/app/?model=pose-to-image")}>
                 <span className="pose-symbol" aria-hidden="true"><svg viewBox="0 0 32 32" role="presentation"><circle cx="16" cy="5.5" r="3" /><path d="M16 9v9m0-6-7 4m7-4 7 3m-7 3-5 9m5-9 6 9" /><circle cx="9" cy="16" r="1.25" /><circle cx="23" cy="15" r="1.25" /><circle cx="11" cy="27" r="1.25" /><circle cx="22" cy="27" r="1.25" /></svg></span>
-                <span className="pose-workflow-copy"><strong>Pose to Image</strong><small>Build poses in 3D</small></span>
-                <em className="signature">SIGNATURE</em>
-                <span className="workflow-cta">Open Pose Studio <b>↗</b></span>
+                <span className="pose-workflow-copy"><strong>{t("Pose to Image")}</strong><small>{t("Build poses in 3D")}</small></span>
+                <em className="signature">{t("SIGNATURE")}</em>
+                <span className="workflow-cta">{t("Open Pose Studio ")}<b>↗</b></span>
               </a>
-              <div className="section-heading image-models-heading"><span>IMAGE MODELS</span><span>01</span></div>
-              <a className="model-button price-model" href="/app/image/gpt-image-2"><span className="model-symbol orange">G2</span><span><strong>GPT Image 2</strong><small>Generation &amp; editing</small></span><em className="price-badge">FROM <b>$0.01</b></em></a>
+              <div className="section-heading image-models-heading"><span>{t("IMAGE MODELS")}</span><span>01</span></div>
+              <a className="model-button price-model" href={path("/app/image/gpt-image-2")}><span className="model-symbol orange">{t("G2")}</span><span><strong>{t("GPT Image 2")}</strong><small>{t("Generation & editing")}</small></span><em className="price-badge">{t("FROM ")}<b>$0.01</b></em></a>
             </div>
             <div className="nav-section showcase-nav-section">
-              <div className="section-heading"><span>PROMPT LIBRARIES</span><span>03</span></div>
-              <a className="showcase-nav-link" href="/minimax-h3-prompts" aria-current={model === 'minimax-h3' ? 'page' : undefined}><span className="model-symbol cyan">H3</span><span>MiniMax H3 Prompt Library</span></a>
-              <a className="showcase-nav-link" href="/gpt-image-2-prompts" aria-current={model === 'gpt-image-2' ? 'page' : undefined}><span className="model-symbol orange">G2</span><span>GPT Image 2 Prompt Library</span></a>
-              <a className="showcase-nav-link" href="/seedance-3-0-prompts" aria-current={model === 'seedance-3-0' ? 'page' : undefined}><img src="/assets/seedance-mark.svg" width="34" height="34" alt="" /><span>Seedance 3.0 Prompt Library<small>Planned tests</small></span></a>
+              <div className="section-heading"><span>{t("PROMPT LIBRARIES")}</span><span>03</span></div>
+              <a className="showcase-nav-link" href={path("/minimax-h3-prompts")} aria-current={model === 'minimax-h3' ? 'page' : undefined}><span className="model-symbol cyan">{t("H3")}</span><span>{t("MiniMax H3 Prompt Library")}</span></a>
+              <a className="showcase-nav-link" href={path("/gpt-image-2-prompts")} aria-current={model === 'gpt-image-2' ? 'page' : undefined}><span className="model-symbol orange">{t("G2")}</span><span>{t("GPT Image 2 Prompt Library")}</span></a>
+              <a className="showcase-nav-link" href={path("/seedance-3-0-prompts")} aria-current={model === 'seedance-3-0' ? 'page' : undefined}><img src="/assets/seedance-mark.svg" width="34" height="34" alt="" /><span>{t("Seedance 3.0 Prompt Library")}<small>{t("Planned tests")}</small></span></a>
             </div>
           </nav>
-          <div className="sidebar-foot"><a href="/">← Back to SEEDANCE 3.0</a></div>
+          <div className="sidebar-foot"><a href={path("/")}>{t("← Back to SEEDANCE 3.0")}</a></div>
         </aside>
 
         <main className="workspace">
           <header className="workspace-header">
-            <div><button className="sidebar-open" type="button" aria-label="Open model navigation" onClick={() => setSidebarOpen(true)}>☰</button><a href="/">Home</a></div>
-            <div className="workspace-header-account"><UserMenu onLogin={() => setAuthOpen(true)} /></div>
+            <div><button className="sidebar-open" type="button" aria-label={t("Open model navigation")} onClick={() => setSidebarOpen(true)}>☰</button><a href={path("/")}>{t("Home")}</a></div>
+            <div className="workspace-header-account"><SiteLanguageSwitch /><UserMenu onLogin={() => setAuthOpen(true)} /></div>
           </header>
           <div className="workspace-body studio-showcase-body">
             <div className="studio-showcase-intro">
-              <p className="studio-showcase-eyebrow">{content.label}</p>
-              <h1>{content.title}</h1>
-              {content.description && <p>{content.description}</p>}
+              <p className="studio-showcase-eyebrow">{t(content.label)}</p>
+              <h1>{t(content.title)}</h1>
+              {content.description && <p>{t(content.description)}</p>}
             </div>
             {model === 'minimax-h3' ? <H3ShowcaseGrid /> : model === 'gpt-image-2' ? <GptImageShowcaseGrid /> : <Seedance3PlannedGrid />}
             {model !== 'seedance-3-0' && <PromptLibraryGuide model={model} />}

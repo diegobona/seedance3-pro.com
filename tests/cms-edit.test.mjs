@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { runInNewContext } from "node:vm";
 import {
   extractEditableArticleData,
   extractEditableArticleContent,
@@ -275,7 +276,30 @@ test("local publisher stops retrying GitHub indefinitely and reports a terminal 
   assert.match(publishJob, /job\.status = "failed";/);
   assert.doesNotMatch(publishJob, /scheduleRetry\(/);
   assert.doesNotMatch(publishJob, /runGit\(\["add", "\."\]\)/);
-  assert.match(publishJob, /runGit\(\["add", "--", fileName, "blog\.html", "sitemap\.xml", \.\.\.imageRes\.files\]\)/);
+  assert.match(publishJob, /runGit\(\["add", "--", fileName, "blog\.html", "sitemap\.xml", "zh", "scripts\/i18n\/zh-Hans\.json", "scripts\/i18n\/article-overrides\.json", "assets\/main\.zh\.js", \.\.\.imageRes\.files\]\)/);
+  assert.match(server, /import\s*\{[^}]*\bsanitizeArticleHtml\b[^}]*\}\s*from\s*["']\.\/scripts\/article-html\.mjs["']/);
+});
+
+test("the CMS protects both authored editions while saving or loading a post", () => {
+  const admin = read("admin/index.html");
+  const setFormControlsBusy = admin.match(/function setFormControlsBusy\(isBusy\) \{([\s\S]*?)\r?\n    \}\r?\n\r?\n    function log/)?.[0].replace(/\r?\n\r?\n    function log$/, "") || "";
+  assert.ok(setFormControlsBusy, "expected the CMS form lock");
+  const editable = () => ({ attributes: {}, setAttribute(name, value) { this.attributes[name] = value; } });
+  const bindings = {
+    editor: editable(), chineseEditor: editable(),
+    titleInput: {}, excerptInput: {}, categoryInput: {}, chineseTitleInput: {}, chineseExcerptInput: {},
+    publishButton: {}, refreshPostsButton: {}, cancelEditButton: {}, editorToolbarButtons: [],
+    postsList: { querySelectorAll() { return []; } },
+  };
+  runInNewContext(`${setFormControlsBusy}\nsetFormControlsBusy(true);`, bindings);
+  assert.equal(bindings.editor.attributes.contenteditable, "false");
+  assert.equal(bindings.chineseEditor.attributes.contenteditable, "false");
+  assert.equal(bindings.chineseTitleInput.disabled, true);
+  assert.equal(bindings.chineseExcerptInput.disabled, true);
+  runInNewContext(`${setFormControlsBusy}\nsetFormControlsBusy(false);`, bindings);
+  assert.equal(bindings.chineseEditor.attributes.contenteditable, "true");
+  assert.equal(bindings.chineseTitleInput.disabled, false);
+  assert.equal(bindings.chineseExcerptInput.disabled, false);
 });
 
 test("editor links support a custom label and normalize safe website URLs", () => {

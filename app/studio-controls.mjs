@@ -1,3 +1,4 @@
+import { t } from './i18n.mjs';
 export const IMAGE_EXAMPLE_PROMPTS = [
   "A cinematic portrait of a fashion designer in a sunlit studio, natural pose, editorial composition, warm rim light, premium magazine photography.",
   "A premium product photograph of a translucent citrus perfume bottle on pale stone, soft morning shadows, clean luxury campaign styling, 3:2 landscape composition.",
@@ -63,8 +64,8 @@ export function createExampleCarouselController({
       dot.setAttribute?.("aria-current", String(active));
     });
     const activeSlide = items[activeIndex];
-    if (titleElement) titleElement.textContent = activeSlide.dataset?.title || "";
-    if (descriptionElement) descriptionElement.textContent = activeSlide.dataset?.description || "";
+    if (titleElement) titleElement.textContent = t(activeSlide.dataset?.title || "");
+    if (descriptionElement) descriptionElement.textContent = t(activeSlide.dataset?.description || "");
   }
 
   function restartTimer() {
@@ -172,8 +173,8 @@ export function createCreditSummaryController({
     const summary = typeof getCost === "function"
       ? creditSummaryForCost(balance, getCost())
       : creditSummaryFor(balance, quantityControl?.value);
-    costElement.textContent = `${summary.cost} credits`;
-    currentBalanceElement.textContent = summary.currentBalance === null ? "— credits" : `${summary.currentBalance} credits`;
+    costElement.textContent = t('{cost} credits', { cost: summary.cost });
+    currentBalanceElement.textContent = summary.currentBalance === null ? t("— credits") : t('{cost} credits', { cost: summary.currentBalance });
     container.classList.toggle("is-insufficient", summary.insufficient);
     container.classList.toggle("is-exhausted", summary.currentBalance === 0);
     onChange(summary);

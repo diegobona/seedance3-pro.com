@@ -18,18 +18,21 @@ test('legacy model URLs resolve to one canonical tool URL', () => {
     ['/minimax-h3-ai-video-generator', '/app/video/minimax-h3'],
     ['/gpt-image-2.html', '/app/image/gpt-image-2'],
     ['/gpt-image-2', '/app/image/gpt-image-2'],
+    ['/zh/minimax-h3-ai-video-generator.html', '/zh/app/video/minimax-h3'],
+    ['/zh/gpt-image-2.html', '/zh/app/image/gpt-image-2'],
     ['/app/?model=minimax-h3', '/app/video/minimax-h3'],
     ['/app/?model=gpt-image-2', '/app/image/gpt-image-2'],
   ]) {
     assert.equal(legacyModelRedirect(new URL(oldPath, 'https://seedance3-pro.com')), expected)
     if (!oldPath.startsWith('/app')) {
       for (const host of ['seedance3-pro.com', 'www.seedance3-pro.com']) {
-        assert.ok(config.routes.some(route => route.pattern === host + oldPath), `${host}${oldPath} must reach the redirect handler`)
+        assert.ok(config.routes.some(route => route.pattern === host + oldPath || route.pattern === `${host}/*`), `${host}${oldPath} must reach the redirect handler`)
       }
-      assert.ok(config.assets.run_worker_first.includes(oldPath))
+      assert.ok(config.assets.run_worker_first.includes(oldPath) || config.assets.run_worker_first.includes('/*'))
     }
   }
-  assert.equal(legacyModelRedirect(new URL('/gpt-image-2.html?utm_source=newsletter', 'https://seedance3-pro.com')), '/app/image/gpt-image-2')
+  assert.equal(legacyModelRedirect(new URL('/gpt-image-2.html?utm_source=newsletter', 'https://seedance3-pro.com')), '/app/image/gpt-image-2?utm_source=newsletter')
+  assert.equal(legacyModelRedirect(new URL('/zh/gpt-image-2.html?utm_source=newsletter', 'https://seedance3-pro.com')), '/zh/app/image/gpt-image-2?utm_source=newsletter')
   assert.equal(legacyModelRedirect(new URL('/app/?model=pose-to-image', 'https://seedance3-pro.com')), null)
   assert.equal(legacyModelRedirect(new URL('/app/?model=gpt-image-2&prompt=example', 'https://seedance3-pro.com')), null)
 })

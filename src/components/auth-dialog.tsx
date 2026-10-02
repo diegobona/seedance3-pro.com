@@ -1,3 +1,4 @@
+import { useSiteI18n } from '../lib/site-i18n'
 import { useEffect, useState, type FormEvent } from 'react'
 import { authClient } from '../lib/auth-client'
 
@@ -10,6 +11,7 @@ interface AuthDialogProps {
 }
 
 export function AuthDialog({ open, onClose, onAuthenticated }: AuthDialogProps) {
+  const { t, locale } = useSiteI18n()
   const [mode, setMode] = useState<AuthMode>('login')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -28,6 +30,11 @@ export function AuthDialog({ open, onClose, onAuthenticated }: AuthDialogProps) 
 
   if (!open) return null
 
+  function authFailure(message: string | undefined, fallback: string) {
+    const localized = t(message || fallback)
+    return locale === 'zh' && message && localized === message ? t(fallback) : localized
+  }
+
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setError('')
@@ -40,13 +47,13 @@ export function AuthDialog({ open, onClose, onAuthenticated }: AuthDialogProps) 
         : await authClient.signUp.email({ name, email, password, callbackURL })
 
       if (result.error) {
-        setError(result.error.message || 'Authentication failed. Please try again.')
+        setError(authFailure(result.error.message, 'Authentication failed. Please try again.'))
         return
       }
       onAuthenticated?.()
       onClose()
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : 'Authentication failed. Please try again.')
+      setError(authFailure(caught instanceof Error ? caught.message : undefined, 'Authentication failed. Please try again.'))
     } finally {
       setPending(false)
     }
@@ -60,9 +67,12 @@ export function AuthDialog({ open, onClose, onAuthenticated }: AuthDialogProps) 
         provider: 'google',
         callbackURL: window.location.href,
       })
-      if (result?.error) setError(result.error.message || 'Google sign-in failed.')
+      if (result?.error) {
+        setError(authFailure(result.error.message, 'Google sign-in failed.'))
+        setPending(false)
+      }
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : 'Google sign-in failed.')
+      setError(authFailure(caught instanceof Error ? caught.message : undefined, 'Google sign-in failed.'))
       setPending(false)
     }
   }
@@ -72,39 +82,32 @@ export function AuthDialog({ open, onClose, onAuthenticated }: AuthDialogProps) 
       if (event.target === event.currentTarget) onClose()
     }}>
       <section className="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="auth-dialog-title">
-        <button className="auth-dialog-close" type="button" onClick={onClose} aria-label="Close login dialog">×</button>
-        <span className="auth-eyebrow">SEEDANCE ACCOUNT</span>
-        <h2 id="auth-dialog-title">{mode === 'login' ? 'Welcome back' : 'Create your account'}</h2>
-        <p>Sign in to generate and edit images. Your account will also hold future credits and plan limits.</p>
+        <button className="auth-dialog-close" type="button" onClick={onClose} aria-label={t("Close login dialog")}>×</button>
+        <span className="auth-eyebrow">{t("SEEDANCE ACCOUNT")}</span>
+        <h2 id="auth-dialog-title">{mode === 'login' ? t("Welcome back") : t("Create your account")}</h2>
+        <p>{t("Sign in to generate and edit images. Your account will also hold future credits and plan limits.")}</p>
 
-        <div className="auth-mode-tabs" role="tablist" aria-label="Authentication mode">
-          <button type="button" className={mode === 'login' ? 'is-active' : ''} onClick={() => { setMode('login'); setError('') }}>Log in</button>
-          <button type="button" className={mode === 'register' ? 'is-active' : ''} onClick={() => { setMode('register'); setError('') }}>Register</button>
+        <div className="auth-mode-tabs" role="tablist" aria-label={t("Authentication mode")}>
+          <button type="button" className={mode === 'login' ? 'is-active' : ''} onClick={() => { setMode('login'); setError('') }}>{t("Log in")}</button>
+          <button type="button" className={mode === 'register' ? 'is-active' : ''} onClick={() => { setMode('register'); setError('') }}>{t("Register")}</button>
         </div>
 
         <button className="google-auth-button" type="button" onClick={signInWithGoogle} disabled={pending}>
-          <span aria-hidden="true">G</span> Continue with Google
-        </button>
-        <div className="auth-divider"><span>or use email</span></div>
+          <span aria-hidden="true">{t("G")}</span>{t("Continue with Google")}</button>
+        <div className="auth-divider"><span>{t("or use email")}</span></div>
 
         <form onSubmit={submit}>
           {mode === 'register' && (
-            <label>
-              Name
-              <input name="name" autoComplete="name" value={name} onChange={(event) => setName(event.target.value)} required />
+            <label>{t("Name")}<input name="name" autoComplete="name" value={name} onChange={(event) => setName(event.target.value)} required />
             </label>
           )}
-          <label>
-            Email
-            <input name="email" type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
+          <label>{t("Email")}<input name="email" type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
           </label>
-          <label>
-            Password
-            <input name="password" type="password" minLength={8} autoComplete={mode === 'login' ? 'current-password' : 'new-password'} value={password} onChange={(event) => setPassword(event.target.value)} required />
+          <label>{t("Password")}<input name="password" type="password" minLength={8} autoComplete={mode === 'login' ? 'current-password' : 'new-password'} value={password} onChange={(event) => setPassword(event.target.value)} required />
           </label>
-          {error && <div className="auth-error" role="alert">{error}</div>}
+          {error && <div className="auth-error" role="alert">{t(error)}</div>}
           <button className="auth-submit" type="submit" disabled={pending}>
-            {pending ? 'Please wait…' : mode === 'login' ? 'Log in' : 'Create account'}
+            {pending ? t("Please wait…") : mode === 'login' ? t("Log in") : t("Create account")}
           </button>
         </form>
       </section>

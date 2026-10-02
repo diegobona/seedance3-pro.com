@@ -1,3 +1,4 @@
+import { t } from './i18n.mjs';
 import * as THREE from "three";
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -21,7 +22,7 @@ import { prepareHumanPresetBindings, applyHumanPresetDirections } from './pose-h
 import { capturePoseReference } from "./pose-transfer.mjs";
 import { POSE_LIBRARY, presetPreview, setActorColor, setActorMirrored } from './pose-library.mjs';
 import { PROP_CATALOG, createProp } from './pose-props.mjs';
-import { encodeSharedScene, decodeSharedScene, validateSharedScene } from './pose-share.mjs';
+import { encodeSharedScene, decodeSharedScene, validateSharedScene, buildPoseShareUrl } from './pose-share.mjs';
 import twoFriendsSceneUrl from '../media/pose-cases/2026-09-23/scenes/two-friends.json?url';
 import cafeConversationSceneUrl from '../media/pose-cases/2026-09-23/scenes/cafe-conversation.json?url';
 import dogTrainingSceneUrl from '../media/pose-cases/2026-09-23/scenes/dog-training.json?url';
@@ -89,7 +90,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   const resetButton = container.querySelector('[data-pose-action="reset"]');
   const usePoseButton = container.querySelector('[data-pose-action="use"]');
   const presetGrid = container.querySelector('.pose-preset-grid');
-  if (presetGrid) presetGrid.innerHTML = POSE_LIBRARY.map(p => `<button type="button" data-pose-preset="${p.key}" data-category="${p.category}" title="${p.label}"><span class="pose-preset-diagram">${presetPreview(p)}</span>${p.label}</button>`).join('');
+  if (presetGrid) presetGrid.innerHTML = POSE_LIBRARY.map(p => `<button type="button" data-pose-preset="${p.key}" data-category="${p.category}" title="${t(p.label)}"><span class="pose-preset-diagram">${presetPreview(p)}</span>${t(p.label)}</button>`).join('');
   let presetButtons = Array.from(container.querySelectorAll("[data-pose-preset]"));
   const downloadButton = container.querySelector('[data-pose-action="download"]');
   const copyButton = container.querySelector('[data-pose-action="copy"]');
@@ -211,7 +212,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
   const scratchRotation = new THREE.Quaternion();
 
   function setHint(message) {
-    if (hint) hint.textContent = message;
+    if (hint) hint.textContent = t(message);
   }
 
   function updateHistoryButtons() {
@@ -278,10 +279,10 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     updateHandlePositions();
     syncTransformTool();
     const hints = {
-      pose: "Drag a joint to pose · Click another character to select it",
-      translate: "Drag an arrow or plane to move · Drag the center to move freely",
-      rotate: "Drag a colored ring to rotate the selected object",
-      scale: "Drag a scale handle to resize proportionally",
+      pose: t("Drag a joint to pose · Click another character to select it"),
+      translate: t("Drag an arrow or plane to move · Drag the center to move freely"),
+      rotate: t("Drag a colored ring to rotate the selected object"),
+      scale: t("Drag a scale handle to resize proportionally"),
     };
     setHint(hints[tool]);
   }
@@ -514,7 +515,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
         const actor = actors.find(({ model }) => model === root);
         if (actor && actor.id !== selectedId) {
           selectActor(actor.id);
-          setHint(`${actor.label} selected · choose Pose, Move, Rotate or Scale`);
+          setHint(t('{actor} selected · choose Pose, Move, Rotate or Scale', { actor: actor.label }));
         }
       } else {
         emptyPress = { x: event.clientX, y: event.clientY, pointerId: event.pointerId };
@@ -532,7 +533,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     drag = { handle, pointerId: event.pointerId, before: captureSnapshot() };
     handle.scale.setScalar(1.26);
     canvasHost.classList.add("is-dragging-pose");
-    setHint(`Moving ${handle.userData.spec.label} · release to set the pose`);
+    setHint(t('Moving {joint} · release to set the pose', { joint: t(handle.userData.spec.label) }));
   }
 
   function onPointerMove(event) {
@@ -623,8 +624,8 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     const animal = actor?.kind === 'animal';
     const library = animal ? getAnimalPresets(actor.modelKey) : POSE_LIBRARY;
     const category = container.querySelector('#pose-preset-category');
-    category.replaceChildren(...(animal ? ['All',...new Set(library.map(p => p.category))] : ['All','Standing','Gesture','Action','Seated','Floor']).map(value => new Option(value,value)));
-    presetGrid.innerHTML = library.map(p => `<button type="button" data-pose-preset="${p.key}" data-category="${p.category}" title="${p.label}"><span class="pose-preset-diagram">${animal ? animalPresetPreview(p, actor.modelKey, actor) : presetPreview(p)}</span>${p.label}</button>`).join('');
+    category.replaceChildren(...(animal ? ['All',...new Set(library.map(p => p.category))] : ['All','Standing','Gesture','Action','Seated','Floor']).map(value => new Option(t(value),value)));
+    presetGrid.innerHTML = library.map(p => `<button type="button" data-pose-preset="${p.key}" data-category="${p.category}" title="${t(p.label)}"><span class="pose-preset-diagram">${animal ? animalPresetPreview(p, actor.modelKey, actor) : presetPreview(p)}</span>${t(p.label)}</button>`).join('');
     presetButtons = Array.from(presetGrid.querySelectorAll('[data-pose-preset]'));
   }
 
@@ -660,7 +661,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     syncTransformTool();
     pushHistory(before);
     presetButtons.forEach((button) => button.classList.toggle("is-active", button.dataset.posePreset === name));
-    setHint(`${preset.label} · drag a handle to refine it`);
+    setHint(t('{preset} · drag a handle to refine it', { preset: t(preset.label) }));
   }
 
   function restoreNeutralPose() {
@@ -714,7 +715,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
 
   function registerProp(kind, model = createProp(kind)) {
     const id = String(nextActorId++);
-    const actor = { id, kind: 'prop', modelKey: kind, label: `${PROP_CATALOG[kind]} · ${id}`, model, bones: [], color: '#8997a8' };
+    const actor = { id, kind: 'prop', modelKey: kind, label: `${t(PROP_CATALOG[kind])} · ${id}`, model, bones: [], color: '#8997a8' };
     model.position.fromArray(nextActorPosition(actors));
     scene.add(model);
     actors.push(actor); actorRecords.set(id, actor);
@@ -729,7 +730,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     registerProp(kind);
     frameScene(); syncTransformTool();
     pushHistory(before);
-    setHint(`${PROP_CATALOG[kind]} added · use Move, Rotate or Scale to place it`);
+    setHint(t('{prop} added · use Move, Rotate or Scale to place it', { prop: t(PROP_CATALOG[kind]) }));
   }
 
   let shareRequestId = 0;
@@ -744,13 +745,11 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
         camera: { position: camera.position.toArray(), target: controls.target.toArray() } };
       const encoded = await encodeSharedScene(saved);
       if (destroyed || requestId !== shareRequestId) return;
-      const url = new URL(window.location.href);
-      url.search = '?model=pose-to-image';
-      url.hash = `pose=${encoded}`;
+      const shareUrl = buildPoseShareUrl(window.location.href, encoded);
       shareField.hidden = false;
-      shareField.value = url.href;
+      shareField.value = shareUrl;
       try {
-        await navigator.clipboard.writeText(url.href);
+        await navigator.clipboard.writeText(shareUrl);
         if (destroyed || requestId !== shareRequestId) return;
         setHint('Link copied · anyone with it can open and edit this scene');
       } catch {
@@ -793,7 +792,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     poseCaptureInFlight = true;
     controls.enabled = false;
     updateSceneButtons();
-    usePoseButton.textContent = "Capturing pose…";
+    usePoseButton.textContent = t("Capturing pose…");
     const handleVisibility = handles.map((handle) => handle.visible);
     const gridVisible = grid.visible;
     const groundVisible = ground.visible;
@@ -847,7 +846,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
       if (!destroyed) {
         controls.enabled = true;
         updateSceneButtons();
-        usePoseButton.textContent = "Pose to Image";
+        usePoseButton.textContent = t("Pose to Image");
       }
     }
   }
@@ -975,7 +974,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
       if (part.userData.rigRevision === 2) rigVersion = 2;
     });
     const actor = {
-      id, modelKey, kind: animal ? 'animal' : 'mannequin', label: `${MODEL_CATALOG[modelKey].label} · ${id}`,
+      id, modelKey, kind: animal ? 'animal' : 'mannequin', label: `${t(MODEL_CATALOG[modelKey].label)} · ${id}`,
       ...(animal ? { rigVersion } : {}),
       model: mannequin, bones: mannequinBones, byName: bonesByName,
       bindings: presetBindings, neutral: neutralSnapshot,
@@ -1016,7 +1015,7 @@ export function initializePoseStudio({ container, canvasHost, onUsePose }) {
     const loadingTimer = setTimeout(() => {
       if (loading && !destroyed) {
         loading.hidden = false;
-        loading.innerHTML = "<span></span> Loading character…";
+        loading.innerHTML = `<span></span> ${t('Loading character…')}`;
       }
     }, 180);
     try {
