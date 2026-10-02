@@ -1,5 +1,7 @@
 import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
+import poseEntryVisibility from '../../assets/pose-entry-visibility.js?raw'
+import '../../assets/pose-entry-visibility.css'
 
 export const Route = createRootRoute({
   head: () => ({
@@ -14,9 +16,10 @@ export const Route = createRootRoute({
 
 function RootDocument({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
+        <script dangerouslySetInnerHTML={{ __html: poseEntryVisibility }} />
       </head>
       <body>
         {children}

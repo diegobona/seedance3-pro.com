@@ -1,0 +1,16 @@
+/* Applies to static pages and React route changes without rewriting the DOM. */
+html.pose-entries-hidden :is(
+  [data-pose-entry],
+  [data-model="pose-to-image"],
+  .pose-workflow-button,
+  #edit-pose-button,
+  a[href*="/pose-to-image"],
+  a[href*="/pose-reference-camera-angle-examples"],
+  a[href*="/how-to-control-character-poses-in-seedance-with-3d-pose-references"],
+  a[href*="?model=pose-to-image"],
+  a[href*="&model=pose-to-image"],
+  a[href="#pose"],
+  a[href="#pose-control"]
+) {
+  display: none !important;
+}

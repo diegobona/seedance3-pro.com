@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script src="/assets/pose-entry-visibility.js"></script>
+  <link rel="stylesheet" href="/assets/pose-entry-visibility.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AI Pose Reference Examples: People, Pets &amp; Props | Seedance</title>
   <meta name="description" content="Build AI image references with multiple people, cats, dogs, horses and props. See nine scene ideas, before-and-after images, and simple ways to choose a camera angle.">
@@ -73,7 +75,7 @@
         </header>
         <div class="article-content prose study-intro">
           <p>You know the picture you want. One person is sitting, another is standing behind them, and the dog belongs at the front—not hidden behind a chair. Explaining all of that in a prompt can take longer than simply showing it.</p>
-          <p><a href="./app?model=pose-to-image">Pose Studio</a> lets you arrange people, animals and everyday props in one 3D scene. Pick a pose, move things into place, choose your view, and use that picture as your AI image reference.</p>
+          <p data-pose-entry><a href="./app?model=pose-to-image">Pose Studio</a> lets you arrange people, animals and everyday props in one 3D scene. Pick a pose, move things into place, choose your view, and use that picture as your AI image reference.</p>
         </div>
         <div class="study-capabilities" aria-label="What you can arrange">
           <div><strong>People, together</strong><p>Add male and female figures. Start with 36 human poses, from sitting and walking to gestures and action.</p></div>
@@ -183,7 +185,7 @@
 <h2>A few small choices make a big difference</h2><ul><li>Leave a gap between subjects when their arms, legs or tails overlap too much.</li><li>Check the view from the camera you will actually use. A good pose can disappear behind a table.</li><li>Use body and background colors to make your reference easy to read.</li><li>After generation, check the details that matter to you—especially hands, pet count, furniture and the crop. A reference guides the image; it does not lock every detail.</li></ul>
 <details class="study-details"><summary>About these examples</summary><p>The nine new reference-to-image examples use Pose Studio’s current character models, pose presets and props, arranged for this article. The references were rendered from saved scene setups and sent to the site’s image service using developer API credits. Each new example shows its first generated image, without retouching. Ten requests were submitted; one timed out and is not shown as a finished example. The earlier six examples use captures from the previous single-person editor.</p><p>Results vary with the image model and prompt. These examples show possibilities, not a guarantee of exact poses or object placement.</p><p>Reference model credits: cat by <a href="https://blendswap.com/blend/18519">JonasDichelle</a>, horse by <a href="https://blendswap.com/blend/13903">b2przemo</a>, <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>; source conversion by <a href="https://github.com/nrz/ylikuutio">Antti Nuortimo</a>. Dog by <a href="https://opengameart.org/content/dog-low-poly-rigged">crownjoshua</a>, CC0. Models adapted and rigged for Pose Studio.</p></details>
 </section>
-<aside class="study-next" aria-labelledby="next-title"><div><p class="eyebrow">Make the picture you have in mind</p><h2 id="next-title">Arrange it. See it. Bring it to life.</h2><p>Start with a pose, add your cast and props, and find the angle that tells your story. Editing and downloading a reference do not require sign-in.</p></div><div class="study-next-actions"><a class="button primary" href="./app?model=pose-to-image">Build your scene ↗</a><a href="./pose-to-image">Explore Pose to Image →</a><a href="./how-to-control-character-poses-in-seedance-with-3d-pose-references">Read the step-by-step guide →</a></div></aside>
+<aside class="study-next" aria-labelledby="next-title" data-pose-entry><div><p class="eyebrow">Make the picture you have in mind</p><h2 id="next-title">Arrange it. See it. Bring it to life.</h2><p>Start with a pose, add your cast and props, and find the angle that tells your story. Editing and downloading a reference do not require sign-in.</p></div><div class="study-next-actions"><a class="button primary" href="./app?model=pose-to-image">Build your scene ↗</a><a href="./pose-to-image">Explore Pose to Image →</a><a href="./how-to-control-character-poses-in-seedance-with-3d-pose-references">Read the step-by-step guide →</a></div></aside>
       </article>
     </div>
   </main>

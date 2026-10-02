@@ -7,7 +7,7 @@ const ALLOWED_ELEMENTS = new Set([
 
 const VOID_ELEMENTS = new Set(["br", "hr", "img", "source"]);
 const BOOLEAN_ATTRIBUTES = new Set(["autoplay", "controls", "loop", "muted", "playsinline", "reversed"]);
-const GLOBAL_ATTRIBUTES = new Set(["class", "style"]);
+const GLOBAL_ATTRIBUTES = new Set(["class", "style", "data-pose-entry"]);
 const SAFE_STYLE_PROPERTIES = new Set([
   "line-height", "text-indent", "text-align", "margin", "margin-left", "margin-right",
   "margin-top", "margin-bottom", "padding-left", "padding-right", "padding-top",
@@ -143,6 +143,25 @@ const ARTICLE_FOOTER = `  <footer class="site-footer article-footer">
     </div>
   </footer>`;
 
+export function ensurePoseEntryVisibilityAssets(html) {
+  let output = String(html || "");
+  if (!/<head\b/i.test(output)) return output;
+  const assets = [];
+  if (!output.includes('/assets/pose-entry-visibility.js')) {
+    assets.push('<script src="/assets/pose-entry-visibility.js"></script>');
+  }
+  if (!output.includes('/assets/pose-entry-visibility.css')) {
+    assets.push('<link rel="stylesheet" href="/assets/pose-entry-visibility.css">');
+  }
+  if (!assets.length) return output;
+  const assetHtml = `\n  ${assets.join("\n  ")}`;
+  const charsetPattern = /<meta\s+charset\s*=\s*["'][^"']+["']\s*\/?>/i;
+  if (charsetPattern.test(output)) {
+    return output.replace(charsetPattern, (charset) => `${charset}${assetHtml}`);
+  }
+  return output.replace(/<head\b[^>]*>/i, (head) => `${head}${assetHtml}`);
+}
+
 function escapeHtml(input) {
   return String(input || "")
     .replaceAll("&", "&amp;")
@@ -260,7 +279,7 @@ export function extractEditableArticleData(html) {
 }
 
 export function updateArticleDocument(html, { title, excerpt, category, content, modifiedDate = new Date().toISOString().slice(0, 10) }) {
-  let output = String(html || "");
+  let output = ensurePoseEntryVisibilityAssets(html);
   const nextTitle = String(title || "").trim();
   const nextExcerpt = String(excerpt || "").trim() || metaContent(output, "name", "description") || nextTitle;
   const safeTitle = escapeHtml(nextTitle);
@@ -331,6 +350,7 @@ function normalizeLegacyArticleMain(source) {
 export function normalizeBlogArticleDocument(html) {
   let output = String(html || "");
   if (!/<meta\s+property="og:type"\s+content="article">/i.test(output)) return output;
+  output = ensurePoseEntryVisibilityAssets(output);
 
   if (/cdn\.tailwindcss\.com/i.test(output)) {
     output = output.replace(/\s*<script\s+src="https:\/\/cdn\.tailwindcss\.com"><\/script>/i, '\n  <link rel="stylesheet" href="./site.css">');
@@ -366,6 +386,8 @@ export function renderArticleDocument({ title, excerpt, category, content, canon
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script src="/assets/pose-entry-visibility.js"></script>
+  <link rel="stylesheet" href="/assets/pose-entry-visibility.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${safeTitle} | SEEDANCE Blog</title>
   <meta name="description" content="${safeExcerpt}">

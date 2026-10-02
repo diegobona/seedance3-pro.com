@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script src="/assets/pose-entry-visibility.js"></script>
+  <link rel="stylesheet" href="/assets/pose-entry-visibility.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>How to Control Character Poses in Seedance with 3D Pose References | SEEDANCE Blog</title>
   <meta name="description" content="Build a 3D pose in Seedance, use it as an image-generation reference, and refine your character image. Follow the steps, prompt examples, and optional image-to-video workflow.">
@@ -46,7 +48,7 @@
         <p class="article-lead">Build a 3D pose in Seedance, use it as an image-generation reference, and refine your character image. Follow the steps, prompt examples, and optional image-to-video workflow.</p>
         <div class="article-content prose">
           <p>When a character's stance or camera angle matters, a 3D mannequin gives the image model a visual reference. In Seedance, you can arrange that reference in the browser and send a capture directly to the image workspace. The generated image may still need revisions: a reference guides the model, but does not lock every joint or preserve a character's identity.</p>
-          <p><a href="./pose-to-image">See the AI pose generator and its controls</a>, or <a href="./app/?model=pose-to-image">open Pose Studio</a> to follow along. Updated <time datetime="2026-09-22">September 22, 2026</time>.</p>
+          <p data-pose-entry><a href="./pose-to-image">See the AI pose generator and its controls</a>, or <a href="./app/?model=pose-to-image">open Pose Studio</a> to follow along. Updated <time datetime="2026-09-22">September 22, 2026</time>.</p>
 
           <h2>1. Start with a pose you can read clearly</h2>
           <p>Choose a preset close to the stance you need. For example, start with Jogging for a running composition. Drag the mannequin's control points to adjust the limbs. Check the shoulders, hips, bent knees, and where the feet meet the floor.</p>
@@ -98,8 +100,8 @@
 
           <h2>Try a pose-led image</h2>
           <p>Start with one readable pose and a simple scene. Once the still image works, add more complex styling or plan the next video step.</p>
-          <p><a class="button primary" href="./app/?model=pose-to-image">Open Pose Studio</a></p>
-          <p><a href="./pose-to-image">Review the pose-to-image workflow and FAQs</a>, or <a href="./pose-reference-camera-angle-examples">explore pose reference examples with people, animals and props</a>.</p>
+          <p data-pose-entry><a class="button primary" href="./app/?model=pose-to-image">Open Pose Studio</a></p>
+          <p data-pose-entry><a href="./pose-to-image">Review the pose-to-image workflow and FAQs</a>, or <a href="./pose-reference-camera-angle-examples">explore pose reference examples with people, animals and props</a>.</p>
 
         </div>
       </article>

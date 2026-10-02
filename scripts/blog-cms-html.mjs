@@ -1,4 +1,5 @@
 import { articleFileFromCard, publicArticlePath } from "./public-urls.mjs";
+import { ensurePoseEntryVisibilityAssets } from "./article-html.mjs";
 
 const ARTICLE_FILE_PATTERN = /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.html$/i;
 
@@ -82,10 +83,14 @@ export function validateEditableBlogArticle({ fileName, blogHtml, articleHtml })
 }
 
 function renderBlogCard({ fileName, title, excerpt, category }) {
+  const poseEntryAttribute = [
+    'how-to-control-character-poses-in-seedance-with-3d-pose-references.html',
+    'pose-reference-camera-angle-examples.html',
+  ].includes(fileName) ? ' data-pose-entry' : '';
   const excerptHtml = excerpt
     ? `\n        <p class="blog-card-excerpt">${escapeHtml(excerpt)}</p>`
     : "";
-  return `<article class="blog-card card card-pad">
+  return `<article class="blog-card card card-pad"${poseEntryAttribute}>
         <p class="blog-card-category tag lime">${escapeHtml(category || "Tutorial")}</p>
         <h2>${escapeHtml(title)}</h2>${excerptHtml}
         <a href=".${publicArticlePath(fileName)}" class="card-link">Read article</a>
@@ -93,7 +98,7 @@ function renderBlogCard({ fileName, title, excerpt, category }) {
 }
 
 export function upsertBlogCardHtml(html, post) {
-  const source = String(html || "");
+  const source = ensurePoseEntryVisibilityAssets(html);
   const blockMatch = blogPostBlock(source);
   const block = blockMatch[1];
   const cards = block.match(/<article\b[\s\S]*?<\/article>/gi) || [];

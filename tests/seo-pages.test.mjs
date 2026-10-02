@@ -158,7 +158,7 @@ test("blog uses the homepage design system without the highlighted intro copy", 
   assert.doesNotMatch(header, /Start Creating/i);
   assert.doesNotMatch(html, /Tutorial Center|Seedance Tutorials and Long-Tail Guides|This blog section helps Seedance 3\.0 build topical authority/i);
   assert.match(html, /<!-- BLOG_POSTS_START -->[\s\S]*<!-- BLOG_POSTS_END -->/i);
-  assert.equal((html.match(/<article class="blog-card card card-pad">/g) ?? []).length, expectedArticles.length);
+  assert.equal((html.match(/<article class="blog-card card card-pad"[^>]*>/g) ?? []).length, expectedArticles.length);
   const articleBlock = html.match(/<!-- BLOG_POSTS_START -->([\s\S]*?)<!-- BLOG_POSTS_END -->/i)?.[1] ?? "";
   const articleLinks = linksIn(articleBlock).map(({ href, text }) => [href, text]);
   assert.deepEqual(articleLinks, expectedArticles);
@@ -449,7 +449,7 @@ test("CMS blog publishers emit and parse the shared Blog card classes", () => {
   const worker = read("worker.js");
   const sharedBlogHtml = read("scripts/blog-cms-html.mjs");
 
-  assert.match(sharedBlogHtml, /<article class="blog-card card card-pad">/);
+  assert.match(sharedBlogHtml, /<article class="blog-card card card-pad"[^>]*>/);
   assert.match(sharedBlogHtml, /class="blog-card-category tag lime"/);
   assert.match(sharedBlogHtml, /class="blog-card-excerpt"/);
   assert.match(sharedBlogHtml, /class="card-link"/);

@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script src="/assets/pose-entry-visibility.js"></script>
+  <link rel="stylesheet" href="/assets/pose-entry-visibility.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Seedance 3.0 | AI Video Generator &amp; Creative Studio</title>
   <meta name="description" content="Explore Seedance 3.0, create AI videos and images, and build editable 3D pose scenes. Browse original prompts and examples to start your next project.">
@@ -95,7 +97,7 @@
       </div>
     </section>
 
-    <section class="pose-feature" id="pose-control" aria-labelledby="pose-feature-title">
+    <section class="pose-feature" id="pose-control" aria-labelledby="pose-feature-title" data-pose-entry>
       <div class="container">
         <div class="pose-feature-header">
           <div>
@@ -207,7 +209,7 @@
         <div class="grid-4 model-grid">
           <article class="card card-pad model-card featured"><div class="card-top"><div class="model-icon">H3</div><span class="tag lime">Video tool</span></div><h3>MiniMax H3</h3><p>Turn text or reference images into a video with your choice of scene, action and camera movement.</p><div class="meta"><span class="tag">Video</span><span class="tag">Text + images</span></div><a class="card-link" href="./app/video/minimax-h3">Open MiniMax H3 video generator</a><a class="card-link" href="./minimax-h3-prompts">MiniMax H3 Prompt Library</a></article>
           <article class="card card-pad model-card"><div class="card-top"><div class="model-icon" style="color:#ff9e80">S3</div><span class="tag orange">Prompt guide</span></div><h3>SEEDANCE 3.0</h3><p>Explore reference-led prompting, cinematic shot structure, creative workflows, and practical production ideas.</p><div class="meta"><span class="tag">Video</span><span class="tag">Creative guide</span></div><a class="card-link" href="./blog">Explore SEEDANCE guides</a></article>
-          <article class="card card-pad model-card"><div class="card-top"><div class="model-icon" style="color:#bcb3ff">3D</div><span class="tag violet">Pose tool</span></div><h3>Pose Studio</h3><p>Arrange people, animals and props. Adjust their poses and camera view, then use the scene as an image reference.</p><a class="card-link" href="./pose-to-image">Explore the 3D pose editor</a><a class="card-link" href="./pose-reference-camera-angle-examples">See pose reference examples</a></article>
+          <article class="card card-pad model-card" data-pose-entry><div class="card-top"><div class="model-icon" style="color:#bcb3ff">3D</div><span class="tag violet">Pose tool</span></div><h3>Pose Studio</h3><p>Arrange people, animals and props. Adjust their poses and camera view, then use the scene as an image reference.</p><a class="card-link" href="./pose-to-image">Explore the 3D pose editor</a><a class="card-link" href="./pose-reference-camera-angle-examples">See pose reference examples</a></article>
           <article class="card card-pad model-card"><div class="card-top"><div class="model-icon" style="color:#72d8e8">G2</div><span class="tag">Image tool</span></div><h3>GPT Image 2</h3><p>Generate or edit an image with a text prompt and reference images.</p><a class="card-link" href="./app/image/gpt-image-2">Open GPT Image 2 generator</a><a class="card-link" href="./gpt-image-2-prompts">GPT Image 2 Prompt Library</a></article>
         </div>
       </div>
