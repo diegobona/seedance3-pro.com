@@ -5,15 +5,18 @@ import vm from 'node:vm';
 
 const html = readFileSync(new URL('../admin/referrals.html', import.meta.url), 'utf8');
 const script = html.match(/<script>([\s\S]*?)<\/script>/)[1];
+const successfulResponse = {
+  status: 200, ok: true,
+  json: async () => ({ success: true, source: 'anyposes', totals: { visitors: 2, visits: 4 }, today: { visitors: 0, visits: 0 }, days: [{ date: '2026-10-02', visitors: 2, visits: 4 }, { date: '<img src=x>', visitors: 999, visits: 999 }], trackedSince: null }),
+};
 
 function page(response) {
   function element() {
     return {
-      value: '', textContent: '', dataset: {}, children: [], disabled: false, listeners: {},
+      textContent: '', dataset: {}, children: [], disabled: false, listeners: {},
       addEventListener(name, listener) { this.listeners[name] = listener; },
       append(child) { this.children.push(child); },
       replaceChildren() { this.children = []; },
-      focus() {},
     };
   }
   const nodes = Object.fromEntries([...html.matchAll(/\bid="([^"]+)"/g)].map((match) => [match[1], element()]));
@@ -22,55 +25,87 @@ function page(response) {
     document: { getElementById: id => nodes[id], createElement: element },
     fetch: async (...args) => { calls.push(args); return typeof response === 'function' ? response() : response; },
     Intl, Date, Error,
-    get localStorage() { throw new Error('Do not persist the analytics token'); },
-    get sessionStorage() { throw new Error('Do not persist the analytics token'); },
+    get localStorage() { throw new Error('Statistics must use the current admin session'); },
+    get sessionStorage() { throw new Error('Statistics must use the current admin session'); },
   });
   return {
     nodes, calls,
-    submit: () => nodes['analytics-form'].listeners.submit({ preventDefault() {} }),
+    settled: () => new Promise(resolve => setImmediate(resolve)),
+    refresh: () => nodes['refresh-stats'].listeners.click(),
   };
 }
 
-test('statistics are never fetched automatically or without a viewing token', async () => {
-  const view = page({ status: 200, ok: true });
-  assert.equal(view.calls.length, 0);
-  await view.submit();
-  assert.equal(view.calls.length, 0);
-  assert.match(view.nodes['analytics-status'].textContent, /请输入统计查看令牌/);
+test('statistics load automatically using the current admin session', async () => {
+  const view = page(successfulResponse);
+  assert.equal(view.calls.length, 1);
+  assert.equal(view.calls[0][0], '/api/admin/referrals/anyposes');
+  assert.equal(view.calls[0][1].credentials, 'same-origin');
+  assert.equal(view.calls[0][1].cache, 'no-store');
+  assert.equal(view.calls[0][1].headers?.['x-analytics-token'], undefined);
+  assert.doesNotMatch(html, /analytics-token|analytics-form|load-stats|type="password"|查看令牌/);
+  assert.equal([...html.matchAll(/<button\b/g)].length, 1);
+  await view.settled();
 });
 
-test('a submitted token reads private statistics and renders zero values and daily results', async () => {
-  const view = page({
-    status: 200, ok: true,
-    json: async () => ({ success: true, source: 'anyposes', totals: { visitors: 2, visits: 4 }, today: { visitors: 0, visits: 0 }, days: [{ date: '2026-10-02', visitors: 2, visits: 4 }, { date: '<img src=x>', visitors: 999, visits: 999 }], trackedSince: null }),
-  });
-  view.nodes['analytics-token'].value = 'private-token';
-  await view.submit();
-  assert.equal(view.calls[0][0], '/api/admin/referrals/anyposes');
-  assert.equal(view.calls[0][1].headers['x-analytics-token'], 'private-token');
-  assert.equal(view.calls[0][1].cache, 'no-store');
+test('automatic loading renders zero values and safe daily results', async () => {
+  const view = page(successfulResponse);
+  await view.settled();
   assert.equal(view.nodes['total-visitors'].textContent, '2');
   assert.equal(view.nodes['total-visits'].textContent, '4');
   assert.equal(view.nodes['today-visitors'].textContent, '0');
   assert.equal(view.nodes['month-visits'].textContent, '0');
   assert.equal(view.nodes['daily-stats'].children.length, 1);
   assert.equal(view.nodes['daily-stats'].children[0].children[0].textContent, '2026-10-02');
-  assert.equal(view.nodes['load-stats'].disabled, false);
-});
-
-test('invalid tokens explain the authorization failure and do not show successful results', async () => {
-  const view = page({ status: 401, ok: false });
-  view.nodes['analytics-token'].value = 'wrong-token';
-  await view.submit();
-  assert.match(view.nodes['analytics-status'].textContent, /令牌无效/);
-  assert.equal(view.nodes['analytics-status'].dataset.state, 'error');
+  assert.equal(view.nodes['analytics-status'].dataset.state, 'success');
   assert.equal(view.nodes['refresh-stats'].disabled, false);
 });
 
+test('refresh loads current statistics again', async () => {
+  let visitors = 2;
+  const view = page(() => ({ status: 200, ok: true, json: async () => ({ success: true, source: 'anyposes', totals: { visitors }, days: [] }) }));
+  await view.settled();
+  visitors = 3;
+  await view.refresh();
+  assert.equal(view.calls.length, 2);
+  assert.equal(view.nodes['total-visitors'].textContent, '3');
+  assert.equal(view.nodes['daily-stats'].children[0].children[0].textContent, '暂无来源访问记录');
+  assert.equal(view.nodes['refresh-stats'].disabled, false);
+});
+
+test('refresh stays disabled and avoids concurrent requests while loading', async () => {
+  let finishRequest;
+  const view = page(() => new Promise(resolve => { finishRequest = resolve; }));
+  assert.equal(view.nodes['refresh-stats'].disabled, true);
+  await view.refresh();
+  assert.equal(view.calls.length, 1);
+  finishRequest(successfulResponse);
+  await view.settled();
+  assert.equal(view.nodes['refresh-stats'].disabled, false);
+});
+
+for (const [status, message] of [[401, '请先登录后台后再查看统计。'], [403, '当前账号没有后台统计权限。']]) {
+  test(`HTTP ${status} explains the current admin session requirement`, async () => {
+    const view = page({ status, ok: false });
+    await view.settled();
+    assert.equal(view.nodes['analytics-status'].textContent, message);
+    assert.equal(view.nodes['analytics-status'].dataset.state, 'error');
+    assert.equal(view.nodes['refresh-stats'].disabled, false);
+  });
+}
+
 test('network errors explain that statistics could not be read', async () => {
   const view = page(() => { throw new Error('Network failure'); });
-  view.nodes['analytics-token'].value = 'private-token';
-  await view.submit();
-  assert.match(view.nodes['analytics-status'].textContent, /无法读取统计/);
-  assert.equal(view.nodes['load-stats'].disabled, false);
+  await view.settled();
+  assert.equal(view.nodes['analytics-status'].textContent, '无法读取统计，请检查网络连接后重试。');
+  assert.equal(view.nodes['refresh-stats'].disabled, false);
+});
+
+test('a failed refresh explains that the previous results remain visible', async () => {
+  let failing = false;
+  const view = page(() => failing ? { status: 503, ok: false } : successfulResponse);
+  await view.settled();
+  failing = true;
+  await view.refresh();
+  assert.match(view.nodes['analytics-status'].textContent, /无法读取统计.*下方仍显示上次成功读取的结果/);
+  assert.equal(view.nodes['total-visitors'].textContent, '2');
 });

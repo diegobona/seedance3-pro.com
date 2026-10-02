@@ -19,10 +19,7 @@
     h2 { margin: 0; font-size: 18px; }
     p { color: #a8adb5; line-height: 1.7; margin: 8px 0; }
     .panel { margin-top: 24px; padding: 24px; border: 1px solid #2b3036; border-radius: 18px; background: #111418; }
-    label { display: block; margin-bottom: 8px; font-size: 14px; }
-    .form-row { display: flex; gap: 10px; flex-wrap: wrap; }
-    input { flex: 1 1 260px; min-width: 0; color: #f4f5ef; background: #090b0d; border: 1px solid #39414b; border-radius: 10px; padding: 12px 14px; font: inherit; }
-    input:focus-visible, button:focus-visible, a:focus-visible { outline: 2px solid #d6ff72; outline-offset: 3px; }
+    button:focus-visible, a:focus-visible { outline: 2px solid #d6ff72; outline-offset: 3px; }
     button { padding: 12px 18px; border-radius: 10px; border: 1px solid #39414b; background: #181d23; color: #f4f5ef; font: inherit; font-weight: 650; cursor: pointer; }
     .primary { border-color: #d6ff72; background: #d6ff72; color: #11170a; }
     button:disabled { opacity: .5; cursor: wait; }
@@ -56,16 +53,9 @@
     <h1>AnyPoses → GPT Image 2 引流统计</h1>
     <p>仅统计从 anyposes.com 进入 GPT Image 2 操作页的独立访客与访问次数。</p>
 
-    <section class="panel" aria-label="统计访问权限">
-      <form id="analytics-form" autocomplete="off">
-        <label for="analytics-token">统计查看令牌</label>
-        <div class="form-row">
-          <input id="analytics-token" type="password" required maxlength="256" autocomplete="off" spellcheck="false" placeholder="输入统计查看令牌">
-          <button class="primary" id="load-stats" type="submit">查看统计</button>
-          <button id="refresh-stats" type="submit">刷新</button>
-        </div>
-      </form>
-      <p class="status" id="analytics-status" role="status" aria-live="polite">令牌仅用于本次查看，不会保存到浏览器存储。</p>
+    <section class="panel" aria-label="统计更新">
+      <button class="primary" id="refresh-stats" type="button">刷新</button>
+      <p class="status" id="analytics-status" role="status" aria-live="polite">正在读取统计…</p>
     </section>
 
     <section class="metrics" aria-label="引流统计概览">
@@ -79,7 +69,7 @@
       <div class="table-header"><h2 id="daily-title">近 30 天每日统计</h2><span>北京时间 · Asia/Shanghai</span></div>
       <table>
         <thead><tr><th scope="col">日期</th><th scope="col">独立访客</th><th scope="col">访问次数</th></tr></thead>
-        <tbody id="daily-stats"><tr><td colspan="3" class="empty">输入令牌后查看统计</td></tr></tbody>
+        <tbody id="daily-stats"><tr><td colspan="3" class="empty">正在读取统计…</td></tr></tbody>
       </table>
       <p class="notes" id="tracked-since">统计从功能启用后开始，不补历史访问数据。</p>
     </section>
@@ -87,10 +77,8 @@
     <p class="notes">独立访客按匿名浏览器标识去重，同一浏览器重复访问不会增加累计独立访客。连续 30 分钟内的访问计为一次会话；更换浏览器、设备或清除标识后会计为新访客。日期均按北京时间计算。</p>
   </main>
   <script>
-    const form = document.getElementById('analytics-form');
-    const tokenInput = document.getElementById('analytics-token');
     const status = document.getElementById('analytics-status');
-    const buttons = [document.getElementById('load-stats'), document.getElementById('refresh-stats')];
+    const refreshButton = document.getElementById('refresh-stats');
     const dailyStats = document.getElementById('daily-stats');
     const trackedSince = document.getElementById('tracked-since');
     const numberFormat = new Intl.NumberFormat('zh-CN');
@@ -143,24 +131,18 @@
         : '统计从功能启用后开始，不补历史访问数据。';
     }
 
-    form.addEventListener('submit', async event => {
-      event.preventDefault();
+    async function loadStats() {
       if (loading) return;
-      const token = tokenInput.value.trim();
-      if (!token) {
-        setStatus('请输入统计查看令牌。', 'error');
-        tokenInput.focus();
-        return;
-      }
       loading = true;
-      buttons.forEach(button => { button.disabled = true; });
+      refreshButton.disabled = true;
       setStatus('正在读取统计…', 'loading');
       try {
         const response = await fetch('/api/admin/referrals/anyposes', {
-          headers: { 'x-analytics-token': token },
+          credentials: 'same-origin',
           cache: 'no-store',
         });
-        if (response.status === 401) throw new Error('令牌无效，请检查统计查看令牌。');
+        if (response.status === 401) throw new Error('请先登录后台后再查看统计。');
+        if (response.status === 403) throw new Error('当前账号没有后台统计权限。');
         if (!response.ok) throw new Error('无法读取统计，请稍后重试。');
         const data = await response.json();
         if (data.success !== true || data.source !== 'anyposes') throw new Error('统计返回异常，请稍后重试。');
@@ -168,14 +150,17 @@
         hasResults = true;
         setStatus('更新于 ' + dateTimeFormat.format(new Date()) + '（北京时间）', 'success');
       } catch (error) {
-        const message = error instanceof Error && /^(令牌无效|无法读取统计|统计返回异常)/.test(error.message)
+        const message = error instanceof Error && /^(请先登录后台|当前账号没有后台统计权限|无法读取统计|统计返回异常)/.test(error.message)
           ? error.message : '无法读取统计，请检查网络连接后重试。';
         setStatus(message + (hasResults ? ' 下方仍显示上次成功读取的结果。' : ''), 'error');
       } finally {
         loading = false;
-        buttons.forEach(button => { button.disabled = false; });
+        refreshButton.disabled = false;
       }
-    });
+    }
+
+    refreshButton.addEventListener('click', loadStats);
+    loadStats();
   </script>
 </body>
 </html>

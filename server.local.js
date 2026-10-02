@@ -8,6 +8,7 @@ import { fileURLToPath } from "url";
 import { extractEditableArticleData, renderArticleDocument, updateArticleDocument } from "./scripts/article-html.mjs";
 import { parseBlogPosts, upsertBlogCardHtml, validateEditableBlogArticle } from "./scripts/blog-cms-html.mjs";
 import { handleImageGenerationRequest } from "./scripts/tuzi-image.mjs";
+import { readReferralStatsForLocalAdmin } from "./scripts/referral-analytics-admin.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -40,6 +41,16 @@ const imageGenerationUpload = multer({
 
 app.get("/admin", (_req, res) => {
   res.sendFile(path.join(ROOT_DIR, "admin", "index.html"));
+});
+
+
+
+
+
+app.get("/api/admin/referrals/anyposes", async (_req, res) => {
+  const result = await readReferralStatsForLocalAdmin({ getSecret: getLocalSecret });
+  res.setHeader("Cache-Control", "no-store");
+  res.status(result.status).json(result.body);
 });
 
 app.post("/api/upload-images", upload.array("images", 12), (req, res) => {

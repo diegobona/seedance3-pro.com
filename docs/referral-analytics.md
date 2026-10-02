@@ -1,6 +1,6 @@
 # AnyPoses referral statistics
 
-View `/admin/referrals` and enter the `ANALYTICS_ADMIN_TOKEN` value from the ignored `.env.local` file. The token grants read-only referral statistics and is separate from the Blog CMS token. It is deployed as a Worker secret, never included in public assets or saved by the dashboard.
+Open the existing local Blog CMS and follow the AnyPoses statistics link (`http://localhost:4310/admin/referrals`). Statistics load automatically; there is no viewing token to enter. The loopback-only CMS uses its configured service credential to read the private Worker endpoint. That credential remains in the ignored `.env.local` file and the Worker secrets, never in public assets or the browser request.
 
 Only AnyPoses referrals entering `/app/image/gpt-image-2` are counted. Partner links should include `?ref=anyposes`:
 `https://seedance3-pro.com/app/image/gpt-image-2?ref=anyposes`.
