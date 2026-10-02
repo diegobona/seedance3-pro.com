@@ -6,18 +6,25 @@ type AuthMode = 'login' | 'register'
 
 interface AuthDialogProps {
   open: boolean
+  initialMode?: AuthMode
   onClose: () => void
   onAuthenticated?: () => void
 }
 
-export function AuthDialog({ open, onClose, onAuthenticated }: AuthDialogProps) {
+export function AuthDialog({ open, initialMode = 'login', onClose, onAuthenticated }: AuthDialogProps) {
   const { t, locale } = useSiteI18n()
-  const [mode, setMode] = useState<AuthMode>('login')
+  const [mode, setMode] = useState<AuthMode>(initialMode)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [pending, setPending] = useState(false)
+
+  useEffect(() => {
+    if (!open) return
+    setMode(initialMode)
+    setError('')
+  }, [initialMode, open])
 
   useEffect(() => {
     if (!open) return

@@ -187,8 +187,8 @@ export function StudioShowcasePage({ model }: { model: StudioShowcaseModel }) {
           <nav aria-label={t("Model navigation")}>
             <div className="nav-section">
               <div className="section-heading"><span>{t("AI VIDEO")}</span><span>02</span></div>
-              <a className="model-button price-model" href={path("/app/video/minimax-h3")}><span className="model-symbol cyan">{t("H3")}</span><span><strong>{t("MiniMax H3")}</strong><small>{t("Text-to-video")}</small></span><em className="price-badge">{t("FROM ")}<b>$0.01</b></em></a>
-              <a className="model-button release-model" href={path("/app/video/seedance-3")}><img src="/assets/seedance-mark.svg" width="40" height="40" alt="" style={{ flexShrink: 0 }} /><span className="release-model-copy"><span className="release-title-row"><strong>{t("SEEDANCE 3.0")}</strong><em className="release-status">{t("Release Updates")}</em></span><small>{t("Workspace preview")}</small></span></a>
+              <a className="model-button price-model" href={path("/app/video/minimax-h3")}><span className="model-symbol cyan">{t("H3")}</span><span><strong>{t("MiniMax H3")}</strong><small>{t("Text-to-video, image-to-video")}</small></span><em className="price-badge">{t("FROM ")}<b>$0.01</b></em></a>
+              <a className="model-button release-model" href={path("/app/video/seedance-3")}><img src="/assets/seedance-mark.svg" width="40" height="40" alt="" style={{ flexShrink: 0 }} /><span className="release-model-copy"><span className="release-title-row"><strong>{t("SEEDANCE 3.0")}</strong><em className="release-status">{t("Coming soon")}</em></span><small>{t("Workspace preview")}</small></span></a>
             </div>
             <div className="nav-section">
               <div className="section-heading"><span>{t("AI IMAGE")}</span></div>

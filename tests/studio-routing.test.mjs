@@ -143,8 +143,7 @@ test("TanStack enables H3 and links the Seedance workspace preview while legacy 
   assert.ok(seedancePreviewLink, "React should link to the Seedance 3 workspace preview");
   assert.doesNotMatch(seedancePreviewLink, /\bdisabled\b/i);
   assert.match(seedancePreviewLink, /Workspace preview/i);
-  assert.match(seedancePreviewLink, /Release Updates/i);
-  assert.doesNotMatch(seedancePreviewLink, /Coming Soon/i);
+  assert.match(seedancePreviewLink, /Coming soon/i);
   assert.match(modelButtonMarkup(html, "seedance-3"), /Release Updates/i);
   assert.doesNotMatch(modelButtonMarkup(html, "seedance-3"), /Coming Soon/i);
   for (const markup of [html, route]) {
