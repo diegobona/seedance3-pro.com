@@ -16,11 +16,11 @@ export const Route = createFileRoute('/zh/gpt-image-2-prompts')({
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
       { property: 'og:url', content: url },
-      { property: 'og:image', content: 'https://seedance3-pro.com/media/showcase-gpt-image-2/2026-09-26/summit-circus-satire.webp' },
+      { property: 'og:image', content: 'https://seedance3-pro.com/media/showcase-gpt-image-2/2026-09-26/cat-barista-coffee-cartoon.webp' },
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
-      { name: 'twitter:image', content: 'https://seedance3-pro.com/media/showcase-gpt-image-2/2026-09-26/summit-circus-satire.webp' },
+      { name: 'twitter:image', content: 'https://seedance3-pro.com/media/showcase-gpt-image-2/2026-09-26/cat-barista-coffee-cartoon.webp' },
     ],
     links: [
       { rel: 'canonical', href: url },

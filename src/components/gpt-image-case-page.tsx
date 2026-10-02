@@ -28,7 +28,9 @@ function RelatedCaseCard({ imageCase }: { imageCase: GptImageCase }) {
 }
 
 export function GptImageCaseDetail({ imageCase }: { imageCase: GptImageCase }) {
-  const { t, path } = useSiteI18n()
+  const { t, path, locale } = useSiteI18n()
+  const createdAt = imageCase.createdAt || '2026-09-26'
+  const createdLabel = new Date(createdAt + 'T00:00:00Z').toLocaleDateString(locale === 'zh' ? 'zh-CN' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })
   const [copyLabel, setCopyLabel] = useState('Copy prompt')
   const related = gptImageCases.filter((entry) => entry.slug !== imageCase.slug).slice(0, 3)
   const structuredData = {
@@ -38,7 +40,7 @@ export function GptImageCaseDetail({ imageCase }: { imageCase: GptImageCase }) {
     description: t(imageCase.summary),
     contentUrl: siteUrl + imageCase.imageUrl,
     thumbnailUrl: siteUrl + imageCase.imageUrl,
-    uploadDate: '2026-09-26',
+    uploadDate: createdAt,
     creator: { '@type': 'Organization', name: 'SEEDANCE 3.0' },
     url: siteUrl + path(gptImageCaseUrl(imageCase.slug)),
   }
@@ -78,7 +80,7 @@ export function GptImageCaseDetail({ imageCase }: { imageCase: GptImageCase }) {
           <aside className="video-case-facts" aria-label={t("Image details")}>
             <p className="video-case-facts-heading">{t("Original image")}</p>
             <dl>
-              <div><dt>{t("Created")}</dt><dd>{t("September 26, 2026")}</dd></div>
+              <div><dt>{t("Created")}</dt><dd>{createdLabel}</dd></div>
               <div><dt>{t("Model")}</dt><dd>{t("GPT Image 2")}</dd></div>
               <div><dt>{t("Style")}</dt><dd>{t(imageCase.style)}</dd></div>
               <div><dt>{t("Format")}</dt><dd>{imageCase.aspectRatio}</dd></div>
@@ -99,7 +101,7 @@ export function GptImageCaseDetail({ imageCase }: { imageCase: GptImageCase }) {
           <span className="video-case-details-label">{t("Creative direction")}</span>
           <h2>{t("How this image was framed")}</h2>
           <p>{t(imageCase.creativeNote)}</p>
-          <p><a href={path(imageCase.sourceUrl)} target="_blank" rel="noopener noreferrer">{t("Topic reference ↗")}</a></p>
+          {imageCase.sourceUrl && <p><a href={path(imageCase.sourceUrl)} target="_blank" rel="noopener noreferrer">{t("Topic reference ↗")}</a></p>}
         </section>
         <section className="video-case-related" aria-labelledby="related-image-cases">
           <div className="video-case-related-heading"><h2 id="related-image-cases">{t("More original image prompts")}</h2><a href={path("/gpt-image-2-prompts")}>{t("GPT Image 2 Prompt Library ↗")}</a></div>

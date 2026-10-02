@@ -10,6 +10,7 @@ export interface GptImageCase {
   style: string
   topic: string
   sourceUrl: string
+  createdAt?: string
   aspectRatio: '3:2' | '2:3' | '1:1'
   size: '1536x1024' | '1024x1536' | '1024x1024'
   imageUrl: string

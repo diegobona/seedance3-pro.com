@@ -202,7 +202,7 @@ test('five original GPT Image 2 images have published prompts and working case r
     assert.ok(existsSync(resolve(root, originalPath)), imageCase.slug + ' needs the original API result')
     assert.ok(sitemap.includes('<loc>https://seedance3-pro.com/gpt-image-2-prompts/' + imageCase.slug + '</loc>'))
   }
-  assert.match(cases[0].creativeNote, /fictional|satire/i)
+  assert.ok(cases.every((entry) => entry.creativeNote.length > 50), 'every original case needs a creative note')
 })
 
 test('model sidebar links all three prompt libraries while homepage Showcase keeps its current destination', () => {

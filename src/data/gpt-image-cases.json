@@ -1,17 +1,18 @@
 [
   {
-    "slug": "summit-circus-satire",
-    "title": "A summit becomes a circus",
-    "seoTitle": "Summit Circus Editorial Cartoon Prompt | GPT Image 2",
-    "summary": "A fictional political cartoon turns a diplomatic photo-op into a clownish visual gag.",
-    "creativeNote": "This is an invented editorial satire, not a depiction of what happened at the meeting. The ink lines, flat colors and exaggerated clown costume make that distinction visible at a glance.",
-    "prompt": "Create an unmistakably fictional editorial political cartoon inspired by a US-China leaders' meeting. Donald Trump, recognizable in caricature, is behaving like an over-the-top clown in oversized shoes and a bright red clown nose, juggling blank briefing folders while trying to greet Xi Jinping. Xi Jinping, recognizable in caricature, stands calmly in a dark suit and raises one eyebrow. A generic diplomatic meeting room, no real insignia. Bold hand-inked outlines, witty newspaper-cartoon exaggeration, flat limited red-blue-cream palette, visible paper texture, clear comic staging. Put a small clearly legible SATIRE label in the upper left. This is a fictional joke, not a record of actual conduct. Absolutely no photorealism, no fake news headline, no official seal.",
+    "slug": "cat-barista-coffee-cartoon",
+    "title": "The cat runs the coffee shop",
+    "seoTitle": "Cat Barista Hand-Drawn Cartoon Prompt | GPT Image 2",
+    "summary": "A serious orange cat serves fish-shaped latte art while a sleepy customer tries not to laugh.",
+    "creativeNote": "An everyday coffee order becomes a visual joke through an unlikely barista and fish-shaped latte art. Bold ink lines, exaggerated expressions and warm paper texture keep the scene playful and readable.",
+    "prompt": "A playful hand-drawn editorial cartoon of a fluffy orange tabby cat working as a very serious barista in a cozy neighborhood coffee shop. The cat wears a plain cream apron and stands behind a wooden counter, proudly presenting a ceramic cappuccino cup with immaculate fish-shaped latte art. A fictional sleepy young adult customer in a casual blue sweater leans toward the cup with an amused, surprised expression. A compact espresso machine, coffee beans and stacked cups establish the setting. Bold hand-inked outlines, expressive newspaper-cartoon exaggeration, flat limited terracotta-orange, muted blue and warm cream palette, visible textured paper, charming character acting and clear comic staging. Landscape 3:2 composition, medium-wide view, both characters and the latte clearly visible. No real people, no political figures, no national flags, no logos, no letters, no captions, no watermarks.",
     "style": "Editorial cartoon",
-    "topic": "US–China summit satire",
-    "sourceUrl": "https://isa.china-mission.gov.cn/eng/zgyw/202609/t20260925_12031181.htm",
+    "topic": "Coffee shop comedy",
+    "sourceUrl": "",
+    "createdAt": "2026-10-02",
     "aspectRatio": "3:2",
     "size": "1536x1024",
-    "imageUrl": "/media/showcase-gpt-image-2/2026-09-26/summit-circus-satire.webp"
+    "imageUrl": "/media/showcase-gpt-image-2/2026-09-26/cat-barista-coffee-cartoon.webp"
   },
   {
     "slug": "climate-week-rooftops",
