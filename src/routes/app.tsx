@@ -8,6 +8,7 @@ import { UserMenu } from '../components/user-menu'
 import { ModelLandingContent } from '../components/model-landing-content'
 import { H3VideoExamples } from '../components/h3-video-examples'
 import { GptImageExamples } from '../components/gpt-image-examples'
+import { TRIAL_CREDIT_GRANT } from '../lib/generation-credits'
 import '../../app/studio.css'
 import '../styles/auth.css'
 import '../styles/model-landing.css'
@@ -95,9 +96,9 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
             </div>
             <div className="nav-section showcase-nav-section">
               <div className="section-heading"><span>{t("PROMPT LIBRARIES")}</span><span>03</span></div>
-              <a className="showcase-nav-link" href={path("/minimax-h3-prompts")}><span className="model-symbol cyan">{t("H3")}</span><span>{t("MiniMax H3 Prompt Library")}</span></a>
-              <a className="showcase-nav-link" href={path("/gpt-image-2-prompts")}><span className="model-symbol orange">{t("G2")}</span><span>{t("GPT Image 2 Prompt Library")}</span></a>
-              <a className="showcase-nav-link" href={path("/seedance-3-0-prompts")}><img src="/assets/seedance-mark.svg" width="34" height="34" alt="" /><span>{t("Seedance 3.0 Prompt Library")}<small>{t("Planned tests")}</small></span></a>
+              <a className="showcase-nav-link" href={path("/minimax-h3-prompts")} target="_blank" rel="noopener"><span className="model-symbol cyan">{t("H3")}</span><span>{t("MiniMax H3 Prompt Library")}</span></a>
+              <a className="showcase-nav-link" href={path("/gpt-image-2-prompts")} target="_blank" rel="noopener"><span className="model-symbol orange">{t("G2")}</span><span>{t("GPT Image 2 Prompt Library")}</span></a>
+              <a className="showcase-nav-link" href={path("/seedance-3-0-prompts")} target="_blank" rel="noopener"><img src="/assets/seedance-mark.svg" width="34" height="34" alt="" /><span>{t("Seedance 3.0 Prompt Library")}<small>{t("Planned tests")}</small></span></a>
             </div>
           </nav>
           <div className="sidebar-foot"><a href={path("/")}>{t("← Back to SEEDANCE 3.0")}</a></div>
@@ -111,7 +112,11 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
 
           <div className="workspace-body">
             <div className="workspace-title"><div><p id="model-category">{initiallyPose ? t("AI IMAGE / POSE CONTROL") : initiallyVideo ? t("AI VIDEO / TEXT TO VIDEO") : t("AI IMAGE / GENERATE & EDIT")}</p><h1 id="model-name" data-landing-model={modelLanding ? initialModel : undefined}>{initiallyPose ? t("Pose Studio") : initiallySeedance25 ? t("Seedance 2.5 Video Generator") : initiallyH3 ? t("MiniMax H3 AI Video Generator") : modelLanding ? t("GPT Image 2 Generator & Editor") : t("GPT Image 2")}</h1></div><span className="model-status" id="model-status" hidden={initiallyPose}>{initiallyPose ? '' : initiallyVideo ? t("Video generator") : t("Image generator")}</span></div>
-            {modelLanding && <p className="model-landing-intro">{initiallySeedance25 ? t("Create a video from a text prompt in the Seedance 2.5 workspace. Choose your video settings and follow the result here.") : initiallyH3 ? <>{t("Turn text or reference images into a MiniMax H3 video. Describe your scene, choose your settings, or start with an example from the ")}<a href={path("/minimax-h3-prompts")}>{t("MiniMax H3 Prompt Library")}</a>.</> : <>{t("Create or edit images with GPT Image 2 using text and reference images. Describe your idea, combine visual references, or start with an example from the ")}<a href={path("/gpt-image-2-prompts")}>{t("GPT Image 2 Prompt Library")}</a>.</>}</p>}
+            {modelLanding && <p className="model-landing-intro">{initiallySeedance25 ? t("Create a video from a text prompt in the Seedance 2.5 workspace. Choose your video settings and follow the result here.") : initiallyH3 ? <>{t("Turn text or reference images into a MiniMax H3 video. Describe your scene, choose your settings, or start with an example from the ")}<a href={path("/minimax-h3-prompts")} target="_blank" rel="noopener">{t("MiniMax H3 Prompt Library")}</a>.</> : <>{t("Create or edit images with GPT Image 2 using text and reference images. Describe your idea, combine visual references, or start with an example from the ")}<a href={path("/gpt-image-2-prompts")} target="_blank" rel="noopener">{t("GPT Image 2 Prompt Library")}</a>.</>}</p>}
+            <aside className="studio-trial-notice" role="note" aria-label={t("Free trial")}>
+              <span className="studio-trial-icon" aria-hidden="true">✦</span>
+              <div><strong>{t("Free trial")}</strong><span>{t("Sign up for {credits} free credits per account.").replace('{credits}', String(TRIAL_CREDIT_GRANT))}</span><p>{t("Image and video generation share your balance. Credit cost is shown before generation.")}</p></div>
+            </aside>
             <div className="creation-grid" id="creation-grid" hidden={initiallyPose}>
               <section className="creation-panel">
                 <div className="model-select"><span className={`model-symbol ${initiallySeedance25 ? 'lime' : initiallyH3 ? 'cyan' : 'orange'}`} id="selected-symbol">{initiallySeedance25 ? t("S2") : initiallyH3 ? t("H3") : t("G2")}</span><div><small>{t("Selected model")}</small><strong id="selected-name">{initiallySeedance25 ? t("SEEDANCE 2.5") : initiallyH3 ? t("MiniMax H3") : t("GPT Image 2")}</strong></div></div>
@@ -120,6 +125,7 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
                   <div className="label-line"><label htmlFor="video-reference-input">{t("Reference images")}</label><span id="video-reference-count">0 / 9</span></div>
                   <input id="video-reference-input" type="file" accept="image/png,image/jpeg,image/webp" multiple hidden />
                   <button className="upload-box is-enabled" id="video-reference-add" type="button"><span>＋</span><strong>{t("Add reference images")}</strong><small>{t("1–9 images · PNG, JPEG or WebP · max 10 MB each")}</small></button>
+                  <p className="reference-paste-hint"><strong>{t("Paste reference images")}</strong><span>{t("Copy an image, then press")} <kbd>Ctrl + V</kbd> / <kbd>⌘ + V</kbd> {t("anywhere on this page.")}</span></p>
                   <div className="video-reference-grid" id="video-reference-grid" />
                   <p className="video-reference-hint">{t("Describe how the subjects in Image 1, Image 2, etc. should interact. Images are numbered in upload order.")}</p>
                 </div>
@@ -127,6 +133,7 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
                   <div className="label-line"><label id="reference-label">{t("Reference image")}</label><span id="reference-meta">{t("Optional · enables image-to-image")}</span></div>
                   <input id="reference-input" type="file" accept="image/png,image/jpeg,image/webp" multiple hidden />
                   <button className="upload-box is-enabled" id="upload-box" type="button"><span>＋</span><strong id="upload-title">{t("Choose a reference image")}</strong><small id="upload-hint">{t("PNG, JPEG or WebP · max 10 MB")}</small></button>
+                  <p className="reference-paste-hint"><strong>{t("Paste reference images")}</strong><span>{t("Copy an image, then press")} <kbd>Ctrl + V</kbd> / <kbd>⌘ + V</kbd> {t("anywhere on this page.")}</span></p>
                   <div className="reference-preview" id="reference-preview" hidden><img id="reference-preview-image" alt={t("Reference image preview")} /><div><span className="reference-attached-badge">{t("REFERENCE READY")}</span><strong id="reference-file-name" /><small>{t("Used for image-to-image generation")}</small></div><button id="reference-clear" type="button">{t("Remove")}</button></div>
                 </div>
                 <div className="field-group">

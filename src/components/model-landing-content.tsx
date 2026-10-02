@@ -95,8 +95,8 @@ export function ModelLandingContent({ modelId }: { modelId: string }) {
           <a href={path("/app/image/gpt-image-2")}>{t("GPT Image 2 image")}</a>
           <a href={path("/pose-to-image")}>{t("Pose Control")}</a>
           <a href={path("/showcase")}>{t("Showcase")}</a>
-          {modelId === 'minimax-h3' && <a href={path("/minimax-h3-prompts")}>{t("MiniMax H3 Prompt Library")}</a>}
-          {modelId === 'gpt-image-2' && <a href={path("/gpt-image-2-prompts")}>{t("GPT Image 2 Prompt Library")}</a>}
+          {modelId === 'minimax-h3' && <a href={path("/minimax-h3-prompts")} target="_blank" rel="noopener noreferrer">{t("MiniMax H3 Prompt Library")}</a>}
+          {modelId === 'gpt-image-2' && <a href={path("/gpt-image-2-prompts")} target="_blank" rel="noopener noreferrer">{t("GPT Image 2 Prompt Library")}</a>}
           <a href={path("/blog")}>{t("Blog")}</a>
         </nav>
       </div>

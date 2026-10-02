@@ -19,7 +19,7 @@ function CaseHeader() {
       <nav aria-label={t("Primary navigation")}>
         <a href={path("/app/video/minimax-h3")}>{t("H3 Video")}</a>
         <a href={path("/showcase")}>{t("Showcase")}</a>
-        <a href={path("/minimax-h3-prompts")} aria-current="page">{t("MiniMax H3 Prompt Library")}</a>
+        <a href={path("/minimax-h3-prompts")} aria-current="page" target="_blank" rel="noopener noreferrer">{t("MiniMax H3 Prompt Library")}</a>
       </nav>
       <a className="video-case-header-cta" href={path("/app/video/minimax-h3")}>{t("Start Creating ↗")}</a>
       <SiteLanguageSwitch />
@@ -108,7 +108,7 @@ export function H3VideoCaseDetail({ videoCase }: { videoCase: H3VideoCase }) {
       <article className="video-case-modal" role="dialog" aria-modal="true" aria-labelledby="video-case-title">
         <SiteLanguageSwitch />
         <a className="video-case-close" href={path("/minimax-h3-prompts")} aria-label={t("Close case and return to video library")}>×</a>
-        <nav className="video-case-breadcrumbs" aria-label={t("Breadcrumb")}><a href={path("/")}>{t("Home")}</a><span aria-hidden="true">/</span><a href={path("/showcase")}>{t("Showcase")}</a><span aria-hidden="true">/</span><a href={path("/minimax-h3-prompts")}>{t("MiniMax H3 Prompt Library")}</a></nav>
+        <nav className="video-case-breadcrumbs" aria-label={t("Breadcrumb")}><a href={path("/")}>{t("Home")}</a><span aria-hidden="true">/</span><a href={path("/showcase")}>{t("Showcase")}</a><span aria-hidden="true">/</span><a href={path("/minimax-h3-prompts")} target="_blank" rel="noopener noreferrer">{t("MiniMax H3 Prompt Library")}</a></nav>
         <h1 id="video-case-title">{t(videoCase.title)}</h1>
         <div className="video-case-modal-top">
           <div className={'video-case-player' + (videoCase.aspectRatio === '9:16' ? ' is-portrait' : '')}>
@@ -141,7 +141,7 @@ export function H3VideoCaseDetail({ videoCase }: { videoCase: H3VideoCase }) {
           <p>{t(videoCase.creativeNote)}</p>
         </section>
         <section className="video-case-related" aria-labelledby="related-video-cases">
-          <div className="video-case-related-heading"><h2 id="related-video-cases">{t("More original video prompts")}</h2><a href={path("/minimax-h3-prompts")}>{t("MiniMax H3 Prompt Library ↗")}</a></div>
+          <div className="video-case-related-heading"><h2 id="related-video-cases">{t("More original video prompts")}</h2><a href={path("/minimax-h3-prompts")} target="_blank" rel="noopener noreferrer">{t("MiniMax H3 Prompt Library ↗")}</a></div>
           <div className="video-case-related-grid">{related.map((entry) => <CaseCard key={entry.slug} videoCase={entry} />)}</div>
         </section>
       </article>

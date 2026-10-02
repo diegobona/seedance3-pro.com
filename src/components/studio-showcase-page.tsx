@@ -160,7 +160,7 @@ function PromptLibraryGuide({ model }: { model: 'minimax-h3' | 'gpt-image-2' }) 
         : <>{t("To plan a character composition, follow the ")}<a href={path("/how-to-control-character-poses-in-seedance-with-3d-pose-references")}>{t("3D pose reference tutorial")}</a>{t(". To add movement to a finished image, read the ")}<a href={path("/seedance-2-5-image-to-video-guide")}>{t("image-to-video workflow guide")}</a>.</>}</p>
       <nav aria-label={t("Related creative tools and prompt libraries")}>
         <a href={path(isVideo ? '/app/video/minimax-h3' : '/app/image/gpt-image-2')}>{isVideo ? t("Open MiniMax H3 Video Generator") : t("Open GPT Image 2 Generator")}</a>
-        <a href={path(isVideo ? '/gpt-image-2-prompts' : '/minimax-h3-prompts')}>{isVideo ? t("GPT Image 2 Prompt Library") : t("MiniMax H3 Prompt Library")}</a>
+        <a href={path(isVideo ? '/gpt-image-2-prompts' : '/minimax-h3-prompts')} target="_blank" rel="noopener noreferrer">{isVideo ? t("GPT Image 2 Prompt Library") : t("MiniMax H3 Prompt Library")}</a>
         <a href={path("/pose-to-image")}>{t("Explore the 3D Pose Editor")}</a>
         <a href={path("/showcase")}>{t("Browse the creative Showcase")}</a>
       </nav>
@@ -203,9 +203,9 @@ export function StudioShowcasePage({ model }: { model: StudioShowcaseModel }) {
             </div>
             <div className="nav-section showcase-nav-section">
               <div className="section-heading"><span>{t("PROMPT LIBRARIES")}</span><span>03</span></div>
-              <a className="showcase-nav-link" href={path("/minimax-h3-prompts")} aria-current={model === 'minimax-h3' ? 'page' : undefined}><span className="model-symbol cyan">{t("H3")}</span><span>{t("MiniMax H3 Prompt Library")}</span></a>
-              <a className="showcase-nav-link" href={path("/gpt-image-2-prompts")} aria-current={model === 'gpt-image-2' ? 'page' : undefined}><span className="model-symbol orange">{t("G2")}</span><span>{t("GPT Image 2 Prompt Library")}</span></a>
-              <a className="showcase-nav-link" href={path("/seedance-3-0-prompts")} aria-current={model === 'seedance-3-0' ? 'page' : undefined}><img src="/assets/seedance-mark.svg" width="34" height="34" alt="" /><span>{t("Seedance 3.0 Prompt Library")}<small>{t("Planned tests")}</small></span></a>
+              <a className="showcase-nav-link" href={path("/minimax-h3-prompts")} target="_blank" rel="noopener noreferrer" aria-current={model === 'minimax-h3' ? 'page' : undefined}><span className="model-symbol cyan">{t("H3")}</span><span>{t("MiniMax H3 Prompt Library")}</span></a>
+              <a className="showcase-nav-link" href={path("/gpt-image-2-prompts")} target="_blank" rel="noopener noreferrer" aria-current={model === 'gpt-image-2' ? 'page' : undefined}><span className="model-symbol orange">{t("G2")}</span><span>{t("GPT Image 2 Prompt Library")}</span></a>
+              <a className="showcase-nav-link" href={path("/seedance-3-0-prompts")} target="_blank" rel="noopener noreferrer" aria-current={model === 'seedance-3-0' ? 'page' : undefined}><img src="/assets/seedance-mark.svg" width="34" height="34" alt="" /><span>{t("Seedance 3.0 Prompt Library")}<small>{t("Planned tests")}</small></span></a>
             </div>
           </nav>
           <div className="sidebar-foot"><a href={path("/")}>{t("← Back to SEEDANCE 3.0")}</a></div>

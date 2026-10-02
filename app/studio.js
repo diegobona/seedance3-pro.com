@@ -90,6 +90,24 @@ const defaultImageGenerationLabel = "Generate image · 5 credits";
 const trialCompleteMessage = "Your free trial is complete. Full launch is coming soon — video generation from $0.01/sec.";
 const activeVideoTaskStorageKey = "seedance:minimax-h3:active-task";
 
+export function clipboardReferenceImages(clipboardData) {
+  const itemFiles = Array.from(clipboardData?.items || [])
+    .filter((item) => item.kind === "file" && item.type.startsWith("image/"))
+    .map((item) => item.getAsFile())
+    .filter(Boolean);
+  // Some browsers provide only files; using both lists would duplicate images.
+  return itemFiles.length ? itemFiles : Array.from(clipboardData?.files || [])
+    .filter((file) => file.type.startsWith("image/"));
+}
+
+export function handleReferenceImagePaste(event, addImages) {
+  if (event.defaultPrevented) return false;
+  const files = clipboardReferenceImages(event.clipboardData);
+  if (!files.length || !addImages(files)) return false;
+  event.preventDefault();
+  return true;
+}
+
 export function initializeStudio() {
   const cleanups = [];
   let destroyed = false;
@@ -323,6 +341,26 @@ export function initializeStudio() {
       card.append(image, label, remove);
       videoReferenceGrid.append(card);
     }
+  }
+
+  function addVideoReferenceImages(files) {
+    if (videoPolling || activeVideoTaskId || !files.length) return false;
+    let message = "";
+    if (files.length + videoReferences.length > 9) message = t("You can add up to 9 reference images.");
+    else if (files.some((file) => !["image/png", "image/jpeg", "image/webp"].includes(file.type) || !file.size || file.size > 10 * 1024 * 1024)) {
+      message = t("Choose PNG, JPEG or WebP images, up to 10 MB each.");
+    }
+    if (message) {
+      generationStatus.textContent = message;
+      generationStatus.className = "generation-status is-error";
+      return false;
+    }
+    videoReferences.push(...files.map((file) => ({ file, url: URL.createObjectURL(file) })));
+    generationStatus.textContent = t("Reference images ready.");
+    generationStatus.className = "generation-status";
+    renderVideoReferences();
+    updateGenerateButton();
+    return true;
   }
 
   function updateGenerateButtonLabel() {
@@ -659,14 +697,14 @@ export function initializeStudio() {
 
   function setReferenceImage(file, { source = "upload" } = {}) {
     const files = Array.isArray(file) ? file : file ? [file] : [];
-    if (!files.length || imageGenerationInFlight) return;
+    if (!files.length || imageGenerationInFlight) return false;
     const retained = source === "pose" ? imageReferences.filter(item => item.source !== "pose") : imageReferences;
     const error = validateImageReferences([...retained.map(item => item.file), ...files]);
     referenceInput.value = "";
     if (error) {
       generationStatus.textContent = error;
       generationStatus.className = "generation-status is-error";
-      return;
+      return false;
     }
     const added = files.map(file => ({ file, source, url: URL.createObjectURL(file) }));
     if (source === "pose") {
@@ -680,6 +718,7 @@ export function initializeStudio() {
     renderImageReferences();
     generationStatus.textContent = t("Reference images ready. Use Image 1, Image 2, etc. in your prompt.");
     generationStatus.className = "generation-status";
+    return true;
   }
 
   if (launchWaitlist && launchWaitlistButton && launchWaitlistStatus) {
@@ -814,24 +853,21 @@ export function initializeStudio() {
     listen(videoReferenceInput, "change", () => {
       const files = Array.from(videoReferenceInput.files || []);
       videoReferenceInput.value = "";
-      if (videoPolling || !files.length) return;
-      let message = "";
-      if (files.length + videoReferences.length > 9) message = t("You can add up to 9 reference images.");
-      else if (files.some((file) => !["image/png", "image/jpeg", "image/webp"].includes(file.type) || !file.size || file.size > 10 * 1024 * 1024)) {
-        message = t("Choose PNG, JPEG or WebP images, up to 10 MB each.");
-      }
-      if (message) {
-        generationStatus.textContent = message;
-        generationStatus.className = "generation-status is-error";
-        return;
-      }
-      videoReferences.push(...files.map((file) => ({ file, url: URL.createObjectURL(file) })));
-      generationStatus.textContent = t("Reference images ready.");
-      generationStatus.className = "generation-status";
-      renderVideoReferences();
-      updateGenerateButton();
+      addVideoReferenceImages(files);
     });
   }
+  listen(document, "paste", (event) => {
+    if (destroyed || creationGrid.hidden) return;
+    // Leave account dialogs and other editable fields outside the workspace alone.
+    if (event.target?.closest?.("[role='dialog'], dialog")) return;
+    const editable = event.target?.closest?.("input, textarea, [contenteditable='true']");
+    if (editable && editable !== prompt) return;
+    if (activeModelId === "gpt-image-2" && !uploadGroup.hidden && !referenceInput.disabled && !imageGenerationInFlight) {
+      handleReferenceImagePaste(event, setReferenceImage);
+    } else if (isReferenceVideo() && videoReferenceGroup && !videoReferenceGroup.hidden && !videoReferenceInput.disabled && !videoPolling && !activeVideoTaskId) {
+      handleReferenceImagePaste(event, addVideoReferenceImages);
+    }
+  });
   listen(uploadBox, "click", () => {
     if (studioModels[activeModelId]?.canGenerate) referenceInput.click();
   });

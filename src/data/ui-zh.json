@@ -540,5 +540,11 @@
   "Email not verified": "邮箱尚未验证",
   "Password is too long": "密码过长",
   "User already exists. Use another email.": "此账户已存在，请使用其他邮箱。",
-  "Too many requests": "请求过于频繁，请稍后重试"
+  "Too many requests": "请求过于频繁，请稍后重试",
+  "Free trial": "免费试用中",
+  "Sign up for {credits} free credits per account.": "注册即可获得 {credits} 积分，每个账户一次。",
+  "Image and video generation share your balance. Credit cost is shown before generation.": "图片与视频生成共用积分，每次生成所需积分会提前显示。",
+  "Paste reference images": "也可直接粘贴参考图",
+  "Copy an image, then press": "复制图片后，按",
+  "anywhere on this page.": "即可粘贴到本页。"
 }
