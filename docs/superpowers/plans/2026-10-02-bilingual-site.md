@@ -41,5 +41,9 @@ Files: scripts/generate-zh-site.mjs, scripts/i18n, zh/*.html, assets/site-langua
 
 - [x] Run focused behavioral tests plus required build/type checks.
 - [x] Smoke-test both languages, manual switch, form input and popup navigation in an isolated browser.
-- [ ] Commit scoped changes; deploy Pages content and the Worker; verify live routes and metadata.
-- [ ] Report completed behavior, deployment status and any concrete limitations.
+- [x] Commit scoped changes; deploy Pages content and the Worker; verify live routes and metadata.
+- [x] Report completed behavior, deployment status and any concrete limitations.
+
+Release completed on 2026-10-02. Pages production deployed source commit `b3d24ed`; Worker version `4118cb41-0b7f-40ae-8aab-a0033189b57f` serves both production hostnames. Live checks passed for both homepages, Chinese blog, model generators, all three prompt libraries, case detail, language preference redirects, preserved referral/prompt queries, true 404 responses and the bilingual sitemap. An isolated browser verified language switching, prompt handoff and AnyPoses entrance visibility without runtime errors.
+
+Validation: 268 Node tests and 68 offline TypeScript tests passed; production build and type check passed. Unrelated live Neon database integration tests could not connect under the sandbox network policy and were excluded from the offline check. No paid image/video generation was triggered.
