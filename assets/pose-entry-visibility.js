@@ -4,8 +4,13 @@
   var hide = false;
 
   try {
+    // Partner links can use noreferrer, so allow an explicit referral marker.
+    hide = new URLSearchParams(window.location.search).get('ref') === 'anyposes';
+  } catch (_) {}
+
+  try {
     var hostname = new URL(document.referrer).hostname.toLowerCase();
-    hide = hostname === 'anyposes.com' || hostname.endsWith('.anyposes.com');
+    hide = hide || hostname === 'anyposes.com' || hostname.endsWith('.anyposes.com');
   } catch (_) {
     // An absent or invalid referrer cannot identify the visitor's source.
   }

@@ -6,7 +6,7 @@ import vm from 'node:vm';
 const sourcePath = new URL('../assets/pose-entry-visibility.js', import.meta.url);
 const script = existsSync(sourcePath) ? readFileSync(sourcePath, 'utf8') : '';
 
-function visit({ referrer = '', cookie = '', storage = new Map(), blockedStorage = false, hostname = 'seedance3-pro.com' } = {}) {
+function visit({ referrer = '', search = '', cookie = '', storage = new Map(), blockedStorage = false, hostname = 'seedance3-pro.com' } = {}) {
   const classes = new Set();
   const writes = [];
   const document = {
@@ -22,7 +22,7 @@ function visit({ referrer = '', cookie = '', storage = new Map(), blockedStorage
     },
   };
   const window = {
-    location: { hostname, protocol: 'https:' },
+    location: { hostname, protocol: 'https:', search },
     sessionStorage: {
       getItem(key) {
         if (blockedStorage) throw new Error('Storage unavailable');
@@ -34,13 +34,27 @@ function visit({ referrer = '', cookie = '', storage = new Map(), blockedStorage
       },
     },
   };
-  vm.runInNewContext(script, { document, window, URL });
+  vm.runInNewContext(script, { document, window, URL, URLSearchParams });
   return { hidden: classes.has('pose-entries-hidden'), writes, storage };
 }
 
 test('AnyPoses referrals, including subdomains, hide Pose entrances', () => {
   for (const referrer of ['https://anyposes.com/', 'https://www.anyposes.com/editor', 'https://ANYPOSES.COM/?link=studio']) {
     assert.equal(visit({ referrer }).hidden, true, referrer);
+  }
+});
+
+test('an explicit AnyPoses referral marker works even when noreferrer hides the referrer', () => {
+  const initial = visit({ search: '?ref=anyposes' });
+  assert.equal(initial.hidden, true);
+  assert.equal(visit({ search: '?model=minimax-h3&ref=anyposes' }).hidden, true);
+  const home = visit({ referrer: 'https://seedance3-pro.com/app/video/minimax-h3?ref=anyposes', cookie: initial.writes[0]?.split(';')[0], storage: initial.storage });
+  assert.equal(home.hidden, true);
+});
+
+test('unrelated referral markers do not hide Pose entrances', () => {
+  for (const search of ['?ref=showcase', '?ref=notanyposes', '?ref=anyposes.com.evil.example']) {
+    assert.equal(visit({ search }).hidden, false, search);
   }
 });
 
