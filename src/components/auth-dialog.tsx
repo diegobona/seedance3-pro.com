@@ -14,15 +14,16 @@ interface AuthDialogProps {
 export function AuthDialog({ open, initialMode = 'login', onClose, onAuthenticated }: AuthDialogProps) {
   const { t, locale } = useSiteI18n()
   const [mode, setMode] = useState<AuthMode>(initialMode)
-  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
   const [pending, setPending] = useState(false)
 
   useEffect(() => {
     if (!open) return
     setMode(initialMode)
+    setConfirmPassword('')
     setError('')
   }, [initialMode, open])
 
@@ -45,13 +46,17 @@ export function AuthDialog({ open, initialMode = 'login', onClose, onAuthenticat
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setError('')
+    if (mode === 'register' && password !== confirmPassword) {
+      setError(t('Passwords do not match.'))
+      return
+    }
     setPending(true)
     const callbackURL = window.location.href
 
     try {
       const result = mode === 'login'
         ? await authClient.signIn.email({ email, password, callbackURL })
-        : await authClient.signUp.email({ name, email, password, callbackURL })
+        : await authClient.signUp.email({ name: email.split('@')[0], email, password, callbackURL })
 
       if (result.error) {
         setError(authFailure(result.error.message, 'Authentication failed. Please try again.'))
@@ -95,8 +100,8 @@ export function AuthDialog({ open, initialMode = 'login', onClose, onAuthenticat
         <p>{t("Sign in to generate and edit images. Your account will also hold future credits and plan limits.")}</p>
 
         <div className="auth-mode-tabs" role="tablist" aria-label={t("Authentication mode")}>
-          <button type="button" className={mode === 'login' ? 'is-active' : ''} onClick={() => { setMode('login'); setError('') }}>{t("Log in")}</button>
-          <button type="button" className={mode === 'register' ? 'is-active' : ''} onClick={() => { setMode('register'); setError('') }}>{t("Register")}</button>
+          <button type="button" className={mode === 'login' ? 'is-active' : ''} onClick={() => { setMode('login'); setConfirmPassword(''); setError('') }}>{t("Log in")}</button>
+          <button type="button" className={mode === 'register' ? 'is-active' : ''} onClick={() => { setMode('register'); setConfirmPassword(''); setError('') }}>{t("Register")}</button>
         </div>
 
         <button className="google-auth-button" type="button" onClick={signInWithGoogle} disabled={pending}>
@@ -104,14 +109,14 @@ export function AuthDialog({ open, initialMode = 'login', onClose, onAuthenticat
         <div className="auth-divider"><span>{t("or use email")}</span></div>
 
         <form onSubmit={submit}>
-          {mode === 'register' && (
-            <label>{t("Name")}<input name="name" autoComplete="name" value={name} onChange={(event) => setName(event.target.value)} required />
-            </label>
-          )}
           <label>{t("Email")}<input name="email" type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
           </label>
           <label>{t("Password")}<input name="password" type="password" minLength={8} autoComplete={mode === 'login' ? 'current-password' : 'new-password'} value={password} onChange={(event) => setPassword(event.target.value)} required />
           </label>
+          {mode === 'register' && (
+            <label>{t("Confirm password")}<input name="confirmPassword" type="password" minLength={8} autoComplete="new-password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} required />
+            </label>
+          )}
           {error && <div className="auth-error" role="alert">{t(error)}</div>}
           <button className="auth-submit" type="submit" disabled={pending}>
             {pending ? t("Please wait…") : mode === 'login' ? t("Log in") : t("Create account")}

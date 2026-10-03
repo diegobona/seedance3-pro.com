@@ -188,6 +188,8 @@
   "Name": "姓名",
   "Email": "邮箱",
   "Password": "密码",
+  "Confirm password": "确认密码",
+  "Passwords do not match.": "两次输入的密码不一致。",
   "Welcome back": "欢迎回来",
   "Create your account": "创建你的账户",
   "Please wait…": "请稍候…",
