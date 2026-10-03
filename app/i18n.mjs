@@ -17,7 +17,7 @@ export const ZH_MESSAGES = Object.freeze({
   'Text to video': "文生视频",
   'Reference to video': "参考图生视频",
   'Release Updates': "发布动态",
-  'Coming Soon': '即将上线',
+  'Coming Soon': '即将发布',
   'Image generator': "图像生成器",
   'Cinematic story scene': '电影感故事场景',
   'Cinematic product reveal': '电影感产品展示',

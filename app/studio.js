@@ -46,7 +46,7 @@ const studioModels = {
   "seedance-3": {
     category: "AI VIDEO / RELEASE TRACKER",
     name: "SEEDANCE 3.0",
-    status: "Release Updates",
+    status: "Coming Soon",
     symbol: "S3",
     tone: "lime",
     exampleTitle: "Reference-led story scene",

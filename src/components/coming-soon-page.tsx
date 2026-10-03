@@ -16,7 +16,7 @@ export function ComingSoonPage({ kind, title, description, primaryHref, primaryL
         <a className="resource-brand" href={path("/")}><img src="/assets/seedance-mark.svg" width="38" height="38" alt="" /><span>{t("SEEDANCE 3.0")}</span></a>
         <SiteLanguageSwitch />
         <nav aria-label={t("Explore published pages")}>
-          <a href={path("/")}>{t("Seedance 3.0 ")}<span className="release-badge">{t("Release Updates")}</span></a>
+          <a href={path("/")}>{t("Seedance 3.0 ")}<span className="release-badge">{t("Coming Soon")}</span></a>
           <a href={path("/app/video/minimax-h3")}>{t("H3 Video")}</a>
           <a href={path("/app/image/gpt-image-2")}>{t("GPT Image 2")}</a>
           <a href={path("/showcase")}>{t("Showcase")}</a>

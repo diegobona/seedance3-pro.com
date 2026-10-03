@@ -100,7 +100,7 @@ test("homepage navigation reaches live tools and content on desktop and mobile",
   const navigation = blockByClass(header, "nav", "compact-nav");
 
   assert.deepEqual(linksIn(navigation), [
-    { href: "./", text: "Seedance 3.0 Release Updates" },
+    { href: "./", text: "Seedance 3.0 Coming Soon" },
     { href: "./app/video/minimax-h3", text: "H3 Video" },
     { href: "./app/image/gpt-image-2", text: "GPT Image 2" },
     { href: "./pose-to-image", text: "Pose Control" },
@@ -151,7 +151,7 @@ test("blog uses the homepage design system without the highlighted intro copy", 
   assert.match(html, /<link rel="stylesheet" href="\.\/site\.css">/i);
   assert.doesNotMatch(html, /cdn\.tailwindcss\.com|bg-slate-|text-indigo-/i);
   assert.deepEqual(linksIn(navigation), [
-    { href: "./", text: "Seedance 3.0 Release Updates" },
+    { href: "./", text: "Seedance 3.0 Coming Soon" },
     { href: "./blog", text: "Blog" },
   ]);
   assert.doesNotMatch(html, /href="\.\/showcase"/i);
