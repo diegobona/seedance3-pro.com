@@ -9,7 +9,7 @@ import { main, runPoseCase } from '../scripts/generate-pose-cases.mjs';
 const IDS = ['crossed-arms-front', 'crossed-arms-low', 'kneeling-three-quarter', 'kneeling-high', 'jogging-side', 'jogging-three-quarter'];
 const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Wl6XIoAAAAASUVORK5CYII=', 'base64');
 const sha256 = value => createHash('sha256').update(value).digest('hex');
-const SETTINGS = { endpoint: 'https://api.tu-zi.com/v1/images/edits', model: 'gpt-image-2', quality: 'medium', n: 1, size: '1024x1024', response_format: 'b64_json', seed: null };
+const SETTINGS = { endpoint: 'https://api.tu-zi.com/v1/images/generations', model: 'gpt-image-2', quality: 'medium', n: 1, size: '1024x1024', response_format: 'b64_json', seed: null };
 
 async function fixture(t, maxRequestUsd = 0.15) {
   const directory = await mkdtemp(join(tmpdir(), 'pose-case-budget-'));
@@ -59,9 +59,10 @@ test('a request is durably reserved before fetch and preserves exact first PNG a
     assert.equal(ledger.attempts[0].status, 'reserved');
     assert.equal(url, SETTINGS.endpoint);
     assert.equal(init.redirect, 'error');
-    assert.equal(init.body.get('quality'), 'medium');
-    assert.equal(init.body.get('n'), '1');
-    assert.equal(init.body.get('model'), 'gpt-image-2');
+    const payload = JSON.parse(init.body);
+    assert.equal(payload.quality, 'medium');
+    assert.equal(payload.n, 1);
+    assert.equal(payload.model, 'gpt-image-2');
     return imageResponse();
   } });
   assert.equal(calls, 1);

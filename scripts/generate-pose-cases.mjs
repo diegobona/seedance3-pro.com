@@ -21,7 +21,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { generateTuziImage } from './tuzi-image.mjs';
 
 const CASE_IDS = Object.freeze(['crossed-arms-front', 'crossed-arms-low', 'kneeling-three-quarter', 'kneeling-high', 'jogging-side', 'jogging-three-quarter']);
-const SETTINGS = Object.freeze({ endpoint: 'https://api.tu-zi.com/v1/images/edits', model: 'gpt-image-2', quality: 'medium', n: 1, size: '1024x1024', response_format: 'b64_json', seed: null });
+const SETTINGS = Object.freeze({ endpoint: 'https://api.tu-zi.com/v1/images/generations', model: 'gpt-image-2', quality: 'medium', n: 1, size: '1024x1024', response_format: 'b64_json', seed: null });
 const BUDGET_MICROS = 1_000_000;
 const MAX_RESPONSE_BYTES = 16 * 1024 * 1024;
 const DEFAULT_LEDGER_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '../.pose-case-run');
@@ -253,10 +253,13 @@ export async function runPoseCase({ manifestPath, billingPath, caseId, execute =
       const images = await generateTuziImage({ prompt: selected.prompt, image: new File([selected.bytes], basename(selected.reference.file), { type: 'image/png' }), quantity: 1, size: SETTINGS.size }, {
         apiKey, apiBase: 'https://api.tu-zi.com', fetchImpl: async (url, init) => {
           // Check the adapter's actual wire fields against the verified billing settings.
-          if (url !== SETTINGS.endpoint || init.method !== 'POST' || !(init.body instanceof FormData)
-            || [...init.body.keys()].sort().join(',') !== 'image,model,n,prompt,quality,response_format,size'
-            || ['model', 'quality', 'size', 'response_format'].some(key => init.body.get(key) !== SETTINGS[key])
-            || init.body.get('n') !== '1' || init.body.get('prompt') !== selected.prompt) {
+          const payload = typeof init.body === 'string' ? JSON.parse(init.body) : {};
+          if (url !== SETTINGS.endpoint || init.method !== 'POST' || init.headers['Content-Type'] !== 'application/json'
+            || Object.keys(payload).sort().join(',') !== 'image,model,n,prompt,quality,response_format,size'
+            || ['model', 'quality', 'size', 'response_format'].some(key => payload[key] !== SETTINGS[key])
+            || payload.n !== 1 || payload.prompt !== selected.prompt
+            || !Array.isArray(payload.image) || payload.image.length !== 1
+            || payload.image[0] !== `data:image/png;base64,${selected.bytes.toString('base64')}`) {
             fail('ADAPTER_MISMATCH', 'Adapter request does not match the verified settings.');
           }
           evidence.requestStartedAt = now();

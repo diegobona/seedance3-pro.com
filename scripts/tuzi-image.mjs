@@ -1,3 +1,4 @@
+import { Buffer } from 'node:buffer';
 import { validateImageReferences } from '../app/image-references.mjs';
 const DEFAULT_API_BASE = "https://api.tu-zi.com";
 const MODEL_ID = "gpt-image-2";
@@ -167,36 +168,12 @@ export async function generateTuziImage({
   timeoutMs = UPSTREAM_TIMEOUT_MS
 } = {}) {
   const normalizedBase = String(apiBase || DEFAULT_API_BASE).replace(/\/$/, "");
-  const headers = { Authorization: `Bearer ${apiKey}` };
-  let path;
-  let body;
-
-  if (referenceImages.length) {
-    path = "/v1/images/edits";
-    body = new FormData();
-    body.set("model", MODEL_ID);
-    body.set("prompt", prompt);
-    for (const file of referenceImages) body.append("image", file, file.name || "reference.png");
-    body.set("n", String(quantity));
-    body.set("quality", PROVIDER_QUALITY);
-    body.set("size", size);
-    body.set("response_format", "b64_json");
-  } else {
-    path = "/v1/images/generations";
-    headers["Content-Type"] = "application/json";
-    body = JSON.stringify({
-      model: MODEL_ID,
-      prompt,
-      n: quantity,
-      quality: PROVIDER_QUALITY,
-      size,
-      response_format: "b64_json"
-    });
-  }
+  const headers = { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" };
+  const body = await createGenerationBody({ prompt, referenceImages, quantity, size });
 
   let response;
   try {
-    response = await fetchImpl(`${normalizedBase}${path}`, {
+    response = await fetchImpl(`${normalizedBase}/v1/images/generations`, {
       method: "POST",
       headers,
       body,
@@ -243,6 +220,26 @@ export async function generateTuziImage({
     throw providerError("Image provider did not return the requested number of images.", 502);
   }
   return images;
+}
+
+async function createGenerationBody({ prompt, referenceImages, quantity, size }) {
+  const payload = {
+    model: MODEL_ID,
+    prompt,
+    n: quantity,
+    quality: PROVIDER_QUALITY,
+    size,
+    response_format: "b64_json"
+  };
+  if (referenceImages.length) {
+    // Tuzi's generations endpoint accepts a singular `image` key with data URL values.
+    payload.image = [];
+    for (const file of referenceImages) {
+      const encoded = Buffer.from(await file.arrayBuffer()).toString('base64');
+      payload.image.push(`data:${file.type};base64,${encoded}`);
+    }
+  }
+  return JSON.stringify(payload);
 }
 
 function normalizeBase64Image(value) {

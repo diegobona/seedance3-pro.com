@@ -109,7 +109,7 @@ test("text-to-image maps the trial 1K resolution to a supported Tuzi quality", a
   });
 });
 
-test("image-to-image calls Tuzi edits with multipart image input", async () => {
+test("image-to-image calls Tuzi generations with JSON data URL input", async () => {
   const calls = [];
   const fetchImpl = async (url, init) => {
     calls.push({ url, init });
@@ -118,7 +118,7 @@ test("image-to-image calls Tuzi edits with multipart image input", async () => {
       { b64_json: "iVBORw0KGgo=" }
     ] });
   };
-  const reference = new Blob([new Uint8Array([137, 80, 78, 71])], { type: "image/png" });
+  const reference = new Blob([new Uint8Array([137, 80, 78, 71, 0, 255])], { type: "image/png" });
 
   const response = await workerModule.handleImageGenerationRequest(
     imageRequest({
@@ -135,17 +135,18 @@ test("image-to-image calls Tuzi edits with multipart image input", async () => {
 
   assert.equal(response.status, 200);
   assert.equal(calls.length, 1);
-  assert.equal(calls[0].url, "https://api.tu-zi.com/v1/images/edits");
+  assert.equal(calls[0].url, "https://api.tu-zi.com/v1/images/generations");
   assert.equal(calls[0].init.headers.Authorization, "Bearer test-tuzi-key");
-  assert.equal(calls[0].init.headers["Content-Type"], undefined);
-  assert.ok(calls[0].init.body instanceof FormData);
-  assert.equal(calls[0].init.body.get("model"), "gpt-image-2");
-  assert.equal(calls[0].init.body.get("prompt"), "Keep the subject and add neon rain");
-  assert.equal(calls[0].init.body.get("n"), "2");
-  assert.equal(calls[0].init.body.get("quality"), "medium");
-  assert.equal(calls[0].init.body.get("size"), "1024x1536");
-  assert.equal(calls[0].init.body.get("response_format"), "b64_json");
-  assert.equal(calls[0].init.body.get("image").type, "image/png");
+  assert.equal(calls[0].init.headers["Content-Type"], "application/json");
+  assert.deepEqual(JSON.parse(calls[0].init.body), {
+    model: "gpt-image-2",
+    prompt: "Keep the subject and add neon rain",
+    image: ["data:image/png;base64,iVBORwD/"],
+    n: 2,
+    quality: "medium",
+    size: "1024x1536",
+    response_format: "b64_json"
+  });
   assert.deepEqual(body, {
     success: true,
     mode: "image-to-image",
