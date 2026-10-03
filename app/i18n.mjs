@@ -3,6 +3,8 @@ import { localeFromPath } from './site-locale.mjs';
 // Keys remain readable English; prompts, model IDs and provider enum values are
 // deliberately kept out of this dictionary's automatic UI translation path.
 export const ZH_MESSAGES = Object.freeze({
+  'Launching soon. Image generation from $0.01/image.': '即将正式上线，图片生成低至0.01美元/张',
+  'Launching soon. Video generation from $0.01/second.': '即将正式上线，视频生成低至0.01美元/秒',
   'Expand menu': '展开菜单',
   'Collapse menu': "收起菜单",
   'Pose Studio': "姿势工作室",

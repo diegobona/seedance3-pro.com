@@ -6,7 +6,6 @@ import { requestImageGeneration } from "./image-generation.mjs";
 import { prepareImageForVideo, loadVideoReference } from "./image-to-video.mjs";
 import { validateImageReferences } from "./image-references.mjs";
 import { pollVideoGenerationTask, requestVideoGeneration } from "./video-generation.mjs";
-import { createLaunchWaitlistController } from "./launch-waitlist.mjs";
 import { buildPoseReferencePrompt } from "./pose-transfer.mjs";
 import { createPoseResultActionsController } from "./pose-result-actions.mjs";
 import {
@@ -87,7 +86,6 @@ const studioModels = {
 };
 
 const defaultImageGenerationLabel = "Generate image · 5 credits";
-const trialCompleteMessage = "Your free trial is complete. Full launch is coming soon — video generation from $0.01/sec.";
 const activeVideoTaskStorageKey = "seedance:minimax-h3:active-task";
 
 export function clipboardReferenceImages(clipboardData) {
@@ -181,9 +179,7 @@ export function initializeStudio() {
   const creditSummary = document.getElementById("credit-summary");
   const generationCreditCost = document.getElementById("generation-credit-cost");
   const currentCreditBalance = document.getElementById("current-credit-balance");
-  const launchWaitlist = document.getElementById("launch-waitlist");
-  const launchWaitlistButton = document.getElementById("launch-waitlist-button");
-  const launchWaitlistStatus = document.getElementById("launch-waitlist-status");
+  const launchNotice = document.getElementById("launch-notice");
   const resultHeadingLabel = document.getElementById("result-heading-label");
   const resultModelLabel = document.getElementById("result-model-label");
   const resultNote = document.getElementById("result-note");
@@ -219,7 +215,6 @@ export function initializeStudio() {
   let exampleIndex = 0;
   let creditInsufficient = false;
   let creditSummaryController;
-  let launchWaitlistController;
   let poseStudioCleanup;
   let poseStudioPromise;
   let poseResultActionsController;
@@ -616,7 +611,7 @@ export function initializeStudio() {
       const requiredCredits = error?.credits?.cost || creditCostForDuration(videoDuration.value);
       generationStatus.textContent = error?.code === "INSUFFICIENT_CREDITS"
         ? error?.credits?.remaining === 0
-          ? t(trialCompleteMessage)
+          ? t("Launching soon. Video generation from $0.01/second.")
           : `${t('You need {cost} credits to generate.', { cost: requiredCredits })} ${error.credits ? t('Current balance: {remaining}.', { remaining: error.credits.remaining }) : ""}`.trim()
         : localizedErrorMessage(error?.message, error?.code, 'Video generation failed.');
       generationStatus.className = "generation-status is-error";
@@ -721,14 +716,6 @@ export function initializeStudio() {
     return true;
   }
 
-  if (launchWaitlist && launchWaitlistButton && launchWaitlistStatus) {
-    launchWaitlistController = createLaunchWaitlistController({
-      container: launchWaitlist,
-      button: launchWaitlistButton,
-      statusElement: launchWaitlistStatus
-    });
-  }
-
   if (poseResultActions && editPoseButton && generateAgainButton) {
     poseResultActionsController = createPoseResultActionsController({
       container: poseResultActions,
@@ -753,7 +740,12 @@ export function initializeStudio() {
       : creditCostForQuantity(imageQuantity.value),
     onChange: (summary) => {
       creditInsufficient = summary.insufficient;
-      void launchWaitlistController?.setVisible(summary.currentBalance === 0);
+      if (launchNotice) {
+        launchNotice.hidden = summary.currentBalance !== 0;
+        launchNotice.textContent = isVideoGenerationSelected()
+          ? t("Launching soon. Video generation from $0.01/second.")
+          : t("Launching soon. Image generation from $0.01/image.");
+      }
       updateGenerateButton();
     }
   });
@@ -920,7 +912,7 @@ export function initializeStudio() {
       const requiredCredits = error?.credits?.cost || creditCostForQuantity(imageQuantity.value);
       generationStatus.textContent = error?.code === "INSUFFICIENT_CREDITS"
         ? error?.credits?.remaining === 0
-          ? t(trialCompleteMessage)
+          ? t("Launching soon. Image generation from $0.01/image.")
           : `${t('You need {cost} credits to generate.', { cost: requiredCredits })} ${error.credits ? t('Current balance: {remaining}.', { remaining: error.credits.remaining }) : ""}`.trim()
         : localizedErrorMessage(error?.message, error?.code, 'Image generation failed.');
       generationStatus.className = "generation-status is-error";
@@ -959,7 +951,6 @@ export function initializeStudio() {
     imageTransferAbortController.abort();
     videoAbortController?.abort();
     creditSummaryController.destroy();
-    launchWaitlistController?.destroy();
     exampleCarouselController.destroy();
     poseResultActionsController?.destroy();
     poseStudioCleanup?.();

@@ -173,14 +173,7 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
                   <div className="credit-summary-panel credit-summary-cost"><span>{t("THIS GENERATION")}</span><strong id="generation-credit-cost" className="credit-summary-value">{t("5 credits")}</strong></div>
                   <div className="credit-summary-panel credit-summary-balance"><span>{t("YOUR BALANCE")}</span><strong id="current-credit-balance" className="credit-summary-value">{t("— credits")}</strong></div>
                 </section>
-                <section className="launch-waitlist" id="launch-waitlist" aria-labelledby="launch-waitlist-title" hidden>
-                  <span className="launch-waitlist-eyebrow">{t("EARLY ACCESS")}</span>
-                  <h2 id="launch-waitlist-title">{t("Full launch is coming soon")}</h2>
-                  <p>{t("Video generation from ")}<strong>{t("$0.01/sec")}</strong>{t(". Join the launch list and receive ")}<strong>{t("5 bonus credits")}</strong>{t(" when we go live.")}</p>
-                  <button id="launch-waitlist-button" type="button">{t("Notify me & claim 5 credits")}</button>
-                  <small>{t("We'll email your account address once paid plans open. No spam.")}</small>
-                  <div className="launch-waitlist-status" id="launch-waitlist-status" role="status" aria-live="polite" />
-                </section>
+                <p className="launch-notice" id="launch-notice" role="note" hidden>{initiallyVideo ? t("Launching soon. Video generation from $0.01/second.") : t("Launching soon. Image generation from $0.01/image.")}</p>
                 <button className="generate-button" id="generate-button" type="button" disabled><span id="generate-button-label">{initiallyVideo ? t("Generate video · 5 credits") : t("Generate image · 5 credits")}</span></button>
                 <div className="generation-status" id="generation-status" role="status" aria-live="polite" />
               </section>

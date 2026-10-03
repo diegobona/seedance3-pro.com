@@ -327,9 +327,9 @@ test("credit summaries stay visible and visually prominent in both studio shells
     : Number(minimumSize[1]);
   assert.ok(pixels >= 20, `credit value font size should be at least 20px, got ${pixels}px`);
 
-  const trialCompleteMessage = "Your free trial is complete. Full launch is coming soon — video generation from $0.01/sec.";
+  const trialCompleteMessage = "Launching soon. Image generation from $0.01/image.";
   assert.match(readFileSync(resolve(root, "app", "studio.js"), "utf8"), new RegExp(trialCompleteMessage.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"));
-  assert.doesNotMatch(css, /\.credit-summary\.is-exhausted::after/i, "the real waitlist panel should replace generated pseudo-content");
+  assert.doesNotMatch(css, /\.credit-summary\.is-exhausted::after/i, "the real launch notice should replace generated pseudo-content");
 });
 
 test("GPT Image 2 landing uses three original non-political examples with prompt handoff", () => {
@@ -433,22 +433,19 @@ test("studio wires the credit summary controller to its actual DOM nodes", () =>
   );
 });
 
-test("exhausted trials offer one-click launch notification and five bonus credits", () => {
+test("exhausted trials show a model-specific launch notice without subscriptions", () => {
   const html = readFileSync(resolve(root, "app", "legacy-preview.html"), "utf8");
   const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
   const script = readFileSync(resolve(root, "app", "studio.js"), "utf8");
-  const css = readFileSync(resolve(root, "app", "studio.css"), "utf8");
-
   for (const markup of [html, route]) {
-    assert.match(markup, /id=["']launch-waitlist["'][^>]*hidden/i);
-    assert.match(markup, /(?:from\s*|\{t\(["']Video generation from ["']\)\})<strong>(?:\$0\.01\/sec|\{t\(["']\$0\.01\/sec["']\)\})<\/strong>/i);
-    assert.match(markup, /5 bonus credits/i);
-    assert.match(markup, /id=["']launch-waitlist-button["']/i);
-    assert.match(markup, /Notify me &(?:amp;)? claim 5 credits/i);
+    assert.match(markup, /id="launch-notice"[^>]*hidden/);
+    assert.ok(markup.includes("Launching soon. Image generation from $0.01/image."));
+    assert.doesNotMatch(markup, /launch-waitlist|Notify me|bonus credits/);
   }
-  assert.match(script, /createLaunchWaitlistController/);
-  assert.match(script, /setVisible\(summary\.currentBalance\s*===\s*0\)/);
-  assert.match(css, /\.launch-waitlist\s*\{/);
+  assert.ok(route.includes("Launching soon. Video generation from $0.01/second."));
+  assert.ok(script.includes('launchNotice.hidden = summary.currentBalance !== 0'));
+  assert.ok(script.includes('launchNotice.textContent = isVideoGenerationSelected()'));
+  assert.doesNotMatch(script, /launch-waitlist|createLaunchWaitlistController/);
 });
 
 test("successful email authentication tells the studio to refresh its credit balance", () => {
