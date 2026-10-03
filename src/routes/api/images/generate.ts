@@ -1,6 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
 import '@tanstack/react-start'
 import { env } from 'cloudflare:workers'
+import { connect } from 'cloudflare:sockets'
+import { createTuziTlsFetch } from '../../../../scripts/tuzi-tls-fetch.mjs'
 import {
   getRequestedImageQuantity,
   handleImageGenerationRequest,
@@ -34,7 +36,7 @@ export const Route = createFileRoute('/api/images/generate')({
           generate: async (protectedRequest) => handleImageGenerationRequest(
             protectedRequest,
             env,
-            { skipPreflight: true, prepareImages: (images: Array<{ url?: string; dataUrl?: string }>) =>
+            { skipPreflight: true, fetchImpl: createTuziTlsFetch(connect), prepareImages: (images: Array<{ url?: string; dataUrl?: string }>) =>
               prepareImageAnimation(images, userId, env.VIDEO_REFERENCES) },
           ),
         })
