@@ -43,6 +43,62 @@
         "inLanguage": "zh-Hans"
       },
       "inLanguage": "zh-Hans"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://seedance3-pro.com/zh/#faq",
+      "url": "https://seedance3-pro.com/zh/",
+      "inLanguage": "zh-Hans",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Seedance 3.0 什么时候发布？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "发布时间页整理了官方来源、注明日期的公告时间线，以及价格和使用入口的解答。 查看 Seedance 3.0 发布时间追踪"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Seedance 3.0 会免费吗？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "截至 2026 年 10 月，在已核对的 官方模型目录 中，仍无法确认 Seedance 3.0 是否提供免费方案或试用。 查看 Seedance 3.0 发布动态"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Seedance 3.0 多少钱？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "在已核对的 官方模型目录 中，截至 2026 年 10 月，Seedance 3.0 的订阅和 API 价格仍未得到确认。 查看 Seedance 3.0 价格动态"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "在 Seedance 工作室里可以创作什么？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "用 MiniMax H3制作视频，用 GPT Image 2生成或编辑图像，并在 姿势工作室中构建可编辑的 3D 参考。浏览 Seedance 指南 获取提示词与工作流程灵感。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "在哪里寻找提示词和案例？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "浏览 创意作品展示 ，获取视频灵感和可编辑场景。想查看原作及其实际生成提示词，可以前往 MiniMax H3 提示词库 或 GPT Image 2 提示词库."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "如何把姿势变成 AI 图像？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "安排人物和道具，应用姿势预设，再调整关节与镜头。截取场景，并附上主体、环境和风格描述，发送到图像工作区。查看 姿势参考案例 了解最终结果。"
+          }
+        }
+      ]
     }
   ]
 }
@@ -57,6 +113,14 @@
   <script src="/assets/site-language.js" defer></script>
   <meta property="og:locale" content="zh_CN">
   <meta property="og:locale:alternate" content="en_US">
+  <style id="homepage-faq-links">
+    #faq details p a { color: var(--lime); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .2em; border-radius: 4px; transition: color .16s ease; }
+    #faq details p a:hover { color: var(--lime-strong); text-decoration-thickness: 2px; }
+    #faq details p a:focus-visible { outline: 2px solid var(--lime); outline-offset: 4px; }
+    #faq p.faq-release-answer { padding-bottom: 8px; }
+    #faq .faq-article-link { display: inline-flex; align-items: center; gap: 10px; max-width: 100%; min-height: 44px; font-weight: 700; line-height: 1.5; }
+    #faq .faq-article-link::after { content: "→"; flex: 0 0 auto; }
+  </style>
 </head>
 <body>
   <header class="site-header">
@@ -66,7 +130,7 @@
         <span>SEEDANCE 3.0</span>
       </a>
       <nav class="desktop-nav compact-nav" aria-label="主导航">
-        <a class="release-nav-link" href="/zh/">Seedance 3.0 <span class="release-badge">即将发布</span></a>
+        <a class="release-nav-link" href="/zh/seedance-3-0-release-date">Seedance 3.0 <span class="release-badge">即将发布</span></a>
         <a href="/zh/app/video/minimax-h3">H3 视频</a>
         <a href="/zh/app/image/gpt-image-2">GPT Image 2</a>
         <a href="/zh/pose-to-image">姿势控制</a>
@@ -80,7 +144,7 @@
       </div>
     </div>
     <nav class="mobile-nav" id="mobile-navigation" aria-label="移动端导航">
-      <a class="release-nav-link" href="/zh/">Seedance 3.0 <span class="release-badge">即将发布</span></a>
+      <a class="release-nav-link" href="/zh/seedance-3-0-release-date">Seedance 3.0 <span class="release-badge">即将发布</span></a>
       <a href="/zh/app/video/minimax-h3">H3 视频</a>
       <a href="/zh/app/image/gpt-image-2">GPT Image 2</a>
       <a href="/zh/pose-to-image">姿势控制</a>
@@ -96,9 +160,12 @@
           <p class="eyebrow">视频、图像与姿势创作</p>
           <h1 class="display">SEEDANCE 3.0<br><span class="outline">AI 视频生成器</span></h1>
           <p class="lead">探索 Seedance 3.0，让下一个创意成为现实。AI 视频每秒低至 $0.01，还可生成图像，或搭建 3D 姿势场景来引导构图。</p>
+          <!-- FACT-CHECK: Recheck the official Seed model catalog before changing the unconfirmed Seedance 3.0 release date status. -->
+          <p class="section-copy" id="release-status">截至 2026 年 10 月，在已核对的 <a href="https://seed.bytedance.com/en/models" target="_blank" rel="noopener noreferrer">官方模型目录</a> 中，Seedance 3.0 的发布时间仍未得到确认。</p>
           <div class="hero-actions">
             <a class="button primary" href="/zh/app/video/minimax-h3">生成你的第一个 AI 视频 <span aria-hidden="true">↗</span></a>
           </div>
+          <a class="card-link" href="/zh/seedance-3-0-release-date">查看发布时间与已知信息</a>
         </div>
         <figure class="hero-media">
           <img class="hero-art" src="/assets/seedance3-cinematic-hero.webp" alt="时尚人物在雨光映照的未来城市中运动的电影画面" width="1536" height="1024" fetchpriority="high" decoding="async">
@@ -239,6 +306,11 @@
     <section class="section" id="faq">
       <div class="container"><p class="eyebrow">SEEDANCE 3.0 常见问题</p><h2 class="section-title">开始下一次创作。</h2>
         <div class="faq">
+          <details><summary>Seedance 3.0 什么时候发布？</summary><p class="faq-release-answer">发布时间页整理了官方来源、注明日期的公告时间线，以及价格和使用入口的解答。</p><p class="faq-article-action"><a class="faq-article-link" href="/zh/seedance-3-0-release-date">查看 Seedance 3.0 发布时间追踪</a></p></details>
+          <!-- FACT-CHECK: Seedance 3.0 free access and trial terms remain unconfirmed in the reviewed official sources. -->
+          <details><summary>Seedance 3.0 会免费吗？</summary><p class="faq-release-answer">截至 2026 年 10 月，在已核对的 <a href="https://seed.bytedance.com/en/models" target="_blank" rel="noopener noreferrer">官方模型目录</a> 中，仍无法确认 Seedance 3.0 是否提供免费方案或试用。</p><p class="faq-article-action"><a class="faq-article-link" href="/zh/seedance-3-0-release-date#release-faq">查看 Seedance 3.0 发布动态</a></p></details>
+          <!-- FACT-CHECK: Seedance 3.0 subscription and API prices remain unconfirmed in the reviewed official sources. -->
+          <details><summary>Seedance 3.0 多少钱？</summary><p class="faq-release-answer">在已核对的 <a href="https://seed.bytedance.com/en/models" target="_blank" rel="noopener noreferrer">官方模型目录</a> 中，截至 2026 年 10 月，Seedance 3.0 的订阅和 API 价格仍未得到确认。</p><p class="faq-article-action"><a class="faq-article-link" href="/zh/seedance-3-0-release-date#release-faq">查看 Seedance 3.0 价格动态</a></p></details>
           <details><summary>在 Seedance 工作室里可以创作什么？</summary><p>用 <a href="/zh/app/video/minimax-h3">MiniMax H3</a>制作视频，用 <a href="/zh/app/image/gpt-image-2">GPT Image 2</a>生成或编辑图像，并在 <a href="/zh/pose-to-image">姿势工作室</a>中构建可编辑的 3D 参考。浏览 <a href="/zh/blog">Seedance 指南</a> 获取提示词与工作流程灵感。</p></details>
           <details><summary>在哪里寻找提示词和案例？</summary><p>浏览 <a href="/zh/showcase">创意作品展示</a> ，获取视频灵感和可编辑场景。想查看原作及其实际生成提示词，可以前往 <a href="/zh/minimax-h3-prompts" target="_blank" rel="noopener noreferrer">MiniMax H3 提示词库</a> 或 <a href="/zh/gpt-image-2-prompts" target="_blank" rel="noopener noreferrer">GPT Image 2 提示词库</a>.</p></details>
           <details><summary>如何把姿势变成 AI 图像？</summary><p>安排人物和道具，应用姿势预设，再调整关节与镜头。截取场景，并附上主体、环境和风格描述，发送到图像工作区。查看 <a href="/zh/pose-reference-camera-angle-examples">姿势参考案例</a> 了解最终结果。</p></details>

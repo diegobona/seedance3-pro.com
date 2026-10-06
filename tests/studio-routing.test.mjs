@@ -418,7 +418,7 @@ test("studio wires the credit summary controller to its actual DOM nodes", () =>
     /import\s*\{[\s\S]*?\bcreateCreditSummaryController\b[\s\S]*?\}\s*from\s*["']\.\/studio-controls\.mjs["']/i
   );
   const controllerCall = script.match(
-    /\b([a-z_$][\w$]*)\s*=\s*createCreditSummaryController\(\s*\{([\s\S]*?)\}\s*\)/i
+    /\b([a-z_$][\w$]*)\s*=\s*createCreditSummaryController\(\s*\{([\s\S]*?)\n\s*\}\s*\);/i
   );
   assert.ok(controllerCall, "expected studio to create and retain the credit summary controller");
   for (const nodeName of [containerNode, costNode, currentNode, quantityNode]) {
@@ -433,7 +433,7 @@ test("studio wires the credit summary controller to its actual DOM nodes", () =>
   );
 });
 
-test("exhausted trials show a model-specific launch notice without subscriptions", () => {
+test("exhausted daily credits show the reset time and a model-specific launch notice without subscriptions", () => {
   const html = readFileSync(resolve(root, "app", "legacy-preview.html"), "utf8");
   const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
   const script = readFileSync(resolve(root, "app", "studio.js"), "utf8");
@@ -444,7 +444,9 @@ test("exhausted trials show a model-specific launch notice without subscriptions
   }
   assert.ok(route.includes("Launching soon. Video generation from $0.01/second."));
   assert.ok(script.includes('launchNotice.hidden = summary.currentBalance !== 0'));
-  assert.ok(script.includes('launchNotice.textContent = isVideoGenerationSelected()'));
+  assert.match(script, /launchNotice\.textContent = dailyCreditsUsedMessage\(\) \+ " " \+ \(isVideoGenerationSelected\(\)/);
+  assert.ok(script.includes('t("Launching soon. Video generation from $0.01/second.")'));
+  assert.ok(script.includes('t("Launching soon. Image generation from $0.01/image.")'));
   assert.doesNotMatch(script, /launch-waitlist|createLaunchWaitlistController/);
 });
 

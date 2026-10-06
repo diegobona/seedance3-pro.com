@@ -20,7 +20,7 @@ test('anonymous balance requests are rejected without reading the database', asy
   assert.equal(response.headers.get('cache-control'), 'no-store')
 })
 
-test('authenticated balance requests expose trial grant and image cost', async () => {
+test('authenticated balance requests expose the daily allowance, expiry and image cost', async () => {
   const response = await getCreditBalanceResponse({
     request,
     getSession: async () => ({ user: { id: 'user-1' } }),
@@ -34,6 +34,6 @@ test('authenticated balance requests expose trial grant and image cost', async (
   assert.equal(response.headers.get('cache-control'), 'no-store')
   assert.deepEqual(await response.json(), {
     success: true,
-    credits: { remaining: 15, generationCost: 5, trialGrant: 15 },
+    credits: { remaining: 15, generationCost: 5, dailyGrant: 15, resetTimeZone: 'Asia/Shanghai', expiresDaily: true },
   })
 })

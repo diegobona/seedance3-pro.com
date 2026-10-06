@@ -28,6 +28,7 @@ import { Route as ApiCreditsBalanceRouteImport } from './routes/api/credits/bala
 import { Route as ApiImagesAnimateRouteImport } from './routes/api/images/animate'
 import { Route as ApiImagesGenerateRouteImport } from './routes/api/images/generate'
 import { Route as ApiReferralsAnyposesRouteImport } from './routes/api/referrals/anyposes'
+import { Route as ApiReferralsPixal3dRouteImport } from './routes/api/referrals/pixal3d'
 import { Route as ApiVideosGenerateRouteImport } from './routes/api/videos/generate'
 import { Route as ApiVideosReferencesRouteImport } from './routes/api/videos/references'
 import { Route as ApiVideosStatusRouteImport } from './routes/api/videos/status'
@@ -40,6 +41,7 @@ import { Route as PromptsMinimaxH3VideosRouteImport } from './routes/prompts/min
 import { Route as ZhGptImage2PromptsSlugRouteImport } from './routes/zh.gpt-image-2-prompts_.$slug'
 import { Route as ZhMinimaxH3PromptsSlugRouteImport } from './routes/zh.minimax-h3-prompts_.$slug'
 import { Route as ApiAdminReferralsAnyposesRouteImport } from './routes/api/admin/referrals/anyposes'
+import { Route as ApiAdminReferralsPixal3dRouteImport } from './routes/api/admin/referrals/pixal3d'
 import { Route as ZhAppImageGptImage2RouteImport } from './routes/zh.app_.image.gpt-image-2'
 import { Route as ZhAppVideoMinimaxH3RouteImport } from './routes/zh.app_.video.minimax-h3'
 import { Route as ZhAppVideoSeedance25RouteImport } from './routes/zh.app_.video.seedance-2-5'
@@ -140,6 +142,11 @@ const ApiReferralsAnyposesRoute = ApiReferralsAnyposesRouteImport.update({
   path: '/api/referrals/anyposes',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiReferralsPixal3dRoute = ApiReferralsPixal3dRouteImport.update({
+  id: '/api/referrals/pixal3d',
+  path: '/api/referrals/pixal3d',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiVideosGenerateRoute = ApiVideosGenerateRouteImport.update({
   id: '/api/videos/generate',
   path: '/api/videos/generate',
@@ -201,6 +208,12 @@ const ApiAdminReferralsAnyposesRoute =
     path: '/api/admin/referrals/anyposes',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiAdminReferralsPixal3dRoute =
+  ApiAdminReferralsPixal3dRouteImport.update({
+    id: '/api/admin/referrals/pixal3d',
+    path: '/api/admin/referrals/pixal3d',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ZhAppImageGptImage2Route = ZhAppImageGptImage2RouteImport.update({
   id: '/zh/app_/image/gpt-image-2',
   path: '/zh/app/image/gpt-image-2',
@@ -242,6 +255,7 @@ export interface FileRoutesByFullPath {
   '/api/images/animate': typeof ApiImagesAnimateRoute
   '/api/images/generate': typeof ApiImagesGenerateRoute
   '/api/referrals/anyposes': typeof ApiReferralsAnyposesRoute
+  '/api/referrals/pixal3d': typeof ApiReferralsPixal3dRoute
   '/api/videos/generate': typeof ApiVideosGenerateRoute
   '/api/videos/references': typeof ApiVideosReferencesRoute
   '/api/videos/status': typeof ApiVideosStatusRoute
@@ -254,6 +268,7 @@ export interface FileRoutesByFullPath {
   '/zh/gpt-image-2-prompts/$slug': typeof ZhGptImage2PromptsSlugRoute
   '/zh/minimax-h3-prompts/$slug': typeof ZhMinimaxH3PromptsSlugRoute
   '/api/admin/referrals/anyposes': typeof ApiAdminReferralsAnyposesRoute
+  '/api/admin/referrals/pixal3d': typeof ApiAdminReferralsPixal3dRoute
   '/zh/app/image/gpt-image-2': typeof ZhAppImageGptImage2Route
   '/zh/app/video/minimax-h3': typeof ZhAppVideoMinimaxH3Route
   '/zh/app/video/seedance-2-5': typeof ZhAppVideoSeedance25Route
@@ -279,6 +294,7 @@ export interface FileRoutesByTo {
   '/api/images/animate': typeof ApiImagesAnimateRoute
   '/api/images/generate': typeof ApiImagesGenerateRoute
   '/api/referrals/anyposes': typeof ApiReferralsAnyposesRoute
+  '/api/referrals/pixal3d': typeof ApiReferralsPixal3dRoute
   '/api/videos/generate': typeof ApiVideosGenerateRoute
   '/api/videos/references': typeof ApiVideosReferencesRoute
   '/api/videos/status': typeof ApiVideosStatusRoute
@@ -291,6 +307,7 @@ export interface FileRoutesByTo {
   '/zh/gpt-image-2-prompts/$slug': typeof ZhGptImage2PromptsSlugRoute
   '/zh/minimax-h3-prompts/$slug': typeof ZhMinimaxH3PromptsSlugRoute
   '/api/admin/referrals/anyposes': typeof ApiAdminReferralsAnyposesRoute
+  '/api/admin/referrals/pixal3d': typeof ApiAdminReferralsPixal3dRoute
   '/zh/app/image/gpt-image-2': typeof ZhAppImageGptImage2Route
   '/zh/app/video/minimax-h3': typeof ZhAppVideoMinimaxH3Route
   '/zh/app/video/seedance-2-5': typeof ZhAppVideoSeedance25Route
@@ -317,6 +334,7 @@ export interface FileRoutesById {
   '/api/images/animate': typeof ApiImagesAnimateRoute
   '/api/images/generate': typeof ApiImagesGenerateRoute
   '/api/referrals/anyposes': typeof ApiReferralsAnyposesRoute
+  '/api/referrals/pixal3d': typeof ApiReferralsPixal3dRoute
   '/api/videos/generate': typeof ApiVideosGenerateRoute
   '/api/videos/references': typeof ApiVideosReferencesRoute
   '/api/videos/status': typeof ApiVideosStatusRoute
@@ -329,6 +347,7 @@ export interface FileRoutesById {
   '/zh/gpt-image-2-prompts_/$slug': typeof ZhGptImage2PromptsSlugRoute
   '/zh/minimax-h3-prompts_/$slug': typeof ZhMinimaxH3PromptsSlugRoute
   '/api/admin/referrals/anyposes': typeof ApiAdminReferralsAnyposesRoute
+  '/api/admin/referrals/pixal3d': typeof ApiAdminReferralsPixal3dRoute
   '/zh/app_/image/gpt-image-2': typeof ZhAppImageGptImage2Route
   '/zh/app_/video/minimax-h3': typeof ZhAppVideoMinimaxH3Route
   '/zh/app_/video/seedance-2-5': typeof ZhAppVideoSeedance25Route
@@ -356,6 +375,7 @@ export interface FileRouteTypes {
     | '/api/images/animate'
     | '/api/images/generate'
     | '/api/referrals/anyposes'
+    | '/api/referrals/pixal3d'
     | '/api/videos/generate'
     | '/api/videos/references'
     | '/api/videos/status'
@@ -368,6 +388,7 @@ export interface FileRouteTypes {
     | '/zh/gpt-image-2-prompts/$slug'
     | '/zh/minimax-h3-prompts/$slug'
     | '/api/admin/referrals/anyposes'
+    | '/api/admin/referrals/pixal3d'
     | '/zh/app/image/gpt-image-2'
     | '/zh/app/video/minimax-h3'
     | '/zh/app/video/seedance-2-5'
@@ -393,6 +414,7 @@ export interface FileRouteTypes {
     | '/api/images/animate'
     | '/api/images/generate'
     | '/api/referrals/anyposes'
+    | '/api/referrals/pixal3d'
     | '/api/videos/generate'
     | '/api/videos/references'
     | '/api/videos/status'
@@ -405,6 +427,7 @@ export interface FileRouteTypes {
     | '/zh/gpt-image-2-prompts/$slug'
     | '/zh/minimax-h3-prompts/$slug'
     | '/api/admin/referrals/anyposes'
+    | '/api/admin/referrals/pixal3d'
     | '/zh/app/image/gpt-image-2'
     | '/zh/app/video/minimax-h3'
     | '/zh/app/video/seedance-2-5'
@@ -430,6 +453,7 @@ export interface FileRouteTypes {
     | '/api/images/animate'
     | '/api/images/generate'
     | '/api/referrals/anyposes'
+    | '/api/referrals/pixal3d'
     | '/api/videos/generate'
     | '/api/videos/references'
     | '/api/videos/status'
@@ -442,6 +466,7 @@ export interface FileRouteTypes {
     | '/zh/gpt-image-2-prompts_/$slug'
     | '/zh/minimax-h3-prompts_/$slug'
     | '/api/admin/referrals/anyposes'
+    | '/api/admin/referrals/pixal3d'
     | '/zh/app_/image/gpt-image-2'
     | '/zh/app_/video/minimax-h3'
     | '/zh/app_/video/seedance-2-5'
@@ -468,6 +493,7 @@ export interface RootRouteChildren {
   ApiImagesAnimateRoute: typeof ApiImagesAnimateRoute
   ApiImagesGenerateRoute: typeof ApiImagesGenerateRoute
   ApiReferralsAnyposesRoute: typeof ApiReferralsAnyposesRoute
+  ApiReferralsPixal3dRoute: typeof ApiReferralsPixal3dRoute
   ApiVideosGenerateRoute: typeof ApiVideosGenerateRoute
   ApiVideosReferencesRoute: typeof ApiVideosReferencesRoute
   ApiVideosStatusRoute: typeof ApiVideosStatusRoute
@@ -480,6 +506,7 @@ export interface RootRouteChildren {
   ZhGptImage2PromptsSlugRoute: typeof ZhGptImage2PromptsSlugRoute
   ZhMinimaxH3PromptsSlugRoute: typeof ZhMinimaxH3PromptsSlugRoute
   ApiAdminReferralsAnyposesRoute: typeof ApiAdminReferralsAnyposesRoute
+  ApiAdminReferralsPixal3dRoute: typeof ApiAdminReferralsPixal3dRoute
   ZhAppImageGptImage2Route: typeof ZhAppImageGptImage2Route
   ZhAppVideoMinimaxH3Route: typeof ZhAppVideoMinimaxH3Route
   ZhAppVideoSeedance25Route: typeof ZhAppVideoSeedance25Route
@@ -621,6 +648,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiReferralsAnyposesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/referrals/pixal3d': {
+      id: '/api/referrals/pixal3d'
+      path: '/api/referrals/pixal3d'
+      fullPath: '/api/referrals/pixal3d'
+      preLoaderRoute: typeof ApiReferralsPixal3dRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/videos/generate': {
       id: '/api/videos/generate'
       path: '/api/videos/generate'
@@ -705,6 +739,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAdminReferralsAnyposesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/admin/referrals/pixal3d': {
+      id: '/api/admin/referrals/pixal3d'
+      path: '/api/admin/referrals/pixal3d'
+      fullPath: '/api/admin/referrals/pixal3d'
+      preLoaderRoute: typeof ApiAdminReferralsPixal3dRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/zh/app_/image/gpt-image-2': {
       id: '/zh/app_/image/gpt-image-2'
       path: '/zh/app/image/gpt-image-2'
@@ -756,6 +797,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiImagesAnimateRoute: ApiImagesAnimateRoute,
   ApiImagesGenerateRoute: ApiImagesGenerateRoute,
   ApiReferralsAnyposesRoute: ApiReferralsAnyposesRoute,
+  ApiReferralsPixal3dRoute: ApiReferralsPixal3dRoute,
   ApiVideosGenerateRoute: ApiVideosGenerateRoute,
   ApiVideosReferencesRoute: ApiVideosReferencesRoute,
   ApiVideosStatusRoute: ApiVideosStatusRoute,
@@ -768,6 +810,7 @@ const rootRouteChildren: RootRouteChildren = {
   ZhGptImage2PromptsSlugRoute: ZhGptImage2PromptsSlugRoute,
   ZhMinimaxH3PromptsSlugRoute: ZhMinimaxH3PromptsSlugRoute,
   ApiAdminReferralsAnyposesRoute: ApiAdminReferralsAnyposesRoute,
+  ApiAdminReferralsPixal3dRoute: ApiAdminReferralsPixal3dRoute,
   ZhAppImageGptImage2Route: ZhAppImageGptImage2Route,
   ZhAppVideoMinimaxH3Route: ZhAppVideoMinimaxH3Route,
   ZhAppVideoSeedance25Route: ZhAppVideoSeedance25Route,

@@ -43,7 +43,7 @@ function validVisit(value: unknown): value is ReferralVisit {
     && visit.entryPath === '/app/image/gpt-image-2'
 }
 
-export async function recordAnyposesReferralResponse(
+export async function recordReferralResponse(
   request: Request,
   record: (visit: ReferralVisit) => Promise<void>,
 ) {
@@ -65,7 +65,7 @@ export async function recordAnyposesReferralResponse(
   }
 }
 
-export async function getAnyposesReferralStatsResponse(
+export async function getReferralStatsResponse(
   request: Request,
   configuredToken: string,
   getStats: () => Promise<object>,
@@ -81,3 +81,6 @@ export async function getAnyposesReferralStatsResponse(
     return unavailable()
   }
 }
+
+export const recordAnyposesReferralResponse = recordReferralResponse
+export const getAnyposesReferralStatsResponse = getReferralStatsResponse

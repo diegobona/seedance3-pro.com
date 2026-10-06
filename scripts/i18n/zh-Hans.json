@@ -7181,6 +7181,402 @@
     {
       "source": "Explore the showcase",
       "translation": "探索作品展示"
+    },
+    {
+      "source": "Seedance 3.0 Release Date",
+      "translation": "Seedance 3.0 发布时间"
+    },
+    {
+      "source": "· Official sources, confirmed announcements, and dated news updates.",
+      "translation": "· 官方来源、已确认公告与注明日期的最新动态。"
+    },
+    {
+      "source": "When is Seedance 3.0 coming out?",
+      "translation": "Seedance 3.0 什么时候发布？"
+    },
+    {
+      "source": "Check the",
+      "translation": "查看"
+    },
+    {
+      "source": "Seedance 3.0 release date tracker",
+      "translation": "Seedance 3.0 发布时间追踪"
+    },
+    {
+      "source": "for official sources, the dated announcement timeline, and answers about pricing and access.",
+      "translation": "，阅读官方来源、注明日期的公告时间线，以及价格和使用入口的解答。"
+    },
+    {
+      "source": "Seedance 3.0 Release Date: What's Confirmed So Far",
+      "translation": "Seedance 3.0 发布时间：目前已确认的信息"
+    },
+    {
+      "source": "When is Seedance 3.0 coming out? Check official sources, dated news, pricing FAQs, the Seedance 2.5 comparison, and tools you can use while waiting.",
+      "translation": "Seedance 3.0 什么时候发布？查看官方来源和带日期的发布动态，了解截至 2026 年 10 月仍待确认的上线消息。这里也整理了免费试用、订阅与 API 价格的常见问题，以及 Seedance 2.5 已公布的能力，方便你了解目前能比较哪些信息，并找到现在可用的视频、图像和姿势创作工具。"
+    },
+    {
+      "source": "As of October 2026, the ByteDance Seed model catalog and visual blog we reviewed do not give us a confirmed Seedance 3.0 release date. We cannot confirm a launch month, estimated release window, or countdown. Links to the official sources are in the timeline above.",
+      "translation": "截至 2026 年 10 月，从本页核对的字节跳动 Seed 官方模型目录和视觉博客，还无法确认 Seedance 3.0 的发布时间。具体月份、预计发布时段和倒计时都无法确定，相关官方来源见上方时间线。"
+    },
+    {
+      "source": "Will Seedance 3.0 be free?",
+      "translation": "Seedance 3.0 会免费吗？"
+    },
+    {
+      "source": "We have not confirmed a Seedance 3.0 free plan or trial in the official sources reviewed as of October 2026. Free credits for other models or platforms do not establish a Seedance 3.0 offer.",
+      "translation": "截至 2026 年 10 月，在已核对的官方资料中，还无法确认 Seedance 3.0 是否提供免费方案或试用。其他模型或平台的免费额度，不能视为 Seedance 3.0 的优惠政策。"
+    },
+    {
+      "source": "How much will Seedance 3.0 cost?",
+      "translation": "Seedance 3.0 多少钱？"
+    },
+    {
+      "source": "Seedance 3.0 subscription and API prices remain unconfirmed in the official sources reviewed as of October 2026. We will add them with a link to the original source once they are announced. Prices for existing tools do not establish what 3.0 will cost.",
+      "translation": "Seedance 3.0 的订阅和 API 价格，截至 2026 年 10 月仍未在本页核对的官方资料中得到确认。官方公布后，我们会补充价格，并附上原始来源链接。现有工具的价格不能当作 3.0 的定价。"
+    },
+    {
+      "source": "How will Seedance 3.0 compare with Seedance 2.5?",
+      "translation": "Seedance 3.0 和 Seedance 2.5 相比如何？"
+    },
+    {
+      "source": "Seedance 2.5's official documentation covers 30-second generation, multimodal references, and editing. As of October 2026, we have not confirmed comparable Seedance 3.0 specifications or benchmarks in the sources reviewed. We cannot yet say whether it will offer better quality, faster generation, or lower costs.",
+      "translation": "Seedance 2.5 的官方文档已公布 30 秒生成、多模态参考和编辑能力。截至 2026 年 10 月，本页核对的资料尚未确认 Seedance 3.0 的对应规格或评测，因此还不能判断它在画质、速度或成本上是否更有优势。"
+    },
+    {
+      "source": "Release tracker",
+      "translation": "发布时间追踪"
+    },
+    {
+      "source": "As of October 2026, we have not confirmed an official Seedance 3.0 release date in the sources reviewed for this page.",
+      "translation": "截至 2026 年 10 月，在本页核对的官方资料中，Seedance 3.0 的发布时间仍未得到确认。"
+    },
+    {
+      "source": "ByteDance currently lists Seedance 2.5 in its model catalog. The timeline below links to the announcements and sources we checked.",
+      "translation": "字节跳动的模型目录目前列有 Seedance 2.5，相关公告和来源见下方时间线。"
+    },
+    {
+      "source": "Last updated:",
+      "translation": "Last updated:"
+    },
+    {
+      "source": "See the dated source review in the timeline below.",
+      "translation": "请查看下方时间线中注明日期的来源核查记录。"
+    },
+    {
+      "source": "Seedance 3.0 news and official announcements",
+      "translation": "Seedance 3.0 最新动态与官方公告"
+    },
+    {
+      "source": "The dates below mark official announcements and our source review. Release dates for earlier versions do not tell us when Seedance 3.0 will launch.",
+      "translation": "下列日期分别对应官方公告和本页的来源核查。旧版本的发布日期不能用来推算 Seedance 3.0 的发布时间。"
+    },
+    {
+      "source": "Official announcements and source review",
+      "translation": "官方公告与来源核查记录"
+    },
+    {
+      "source": "Date",
+      "translation": "日期"
+    },
+    {
+      "source": "Source",
+      "translation": "来源"
+    },
+    {
+      "source": "What it confirms",
+      "translation": "已确认的信息"
+    },
+    {
+      "source": "ByteDance Seed: Seedance 2.0 launch",
+      "translation": "字节跳动 Seed：Seedance 2.0 发布公告"
+    },
+    {
+      "source": "ByteDance announced Seedance 2.0. This is a 2.0 announcement, not a 3.0 release date.",
+      "translation": "字节跳动宣布发布 Seedance 2.0。这是 2.0 的公告，不是 3.0 的发布时间。"
+    },
+    {
+      "source": "ByteDance Seed: Seedance 2.5 launch",
+      "translation": "字节跳动 Seed：Seedance 2.5 发布公告"
+    },
+    {
+      "source": "ByteDance announced Seedance 2.5, including longer generation, reference control, and editing.",
+      "translation": "字节跳动宣布发布 Seedance 2.5，介绍了更长片段生成、参考控制与编辑能力。"
+    },
+    {
+      "source": "October 2026 review",
+      "translation": "2026 年 10 月核查"
+    },
+    {
+      "source": "Official model catalog",
+      "translation": "官方模型目录"
+    },
+    {
+      "source": "Official visual blog",
+      "translation": "官方视觉博客"
+    },
+    {
+      "source": "Both official pages list Seedance 2.5. As of October 2026, we have not confirmed a Seedance 3.0 announcement or release date in these sources.",
+      "translation": "这两个官方页面列有 Seedance 2.5。截至 2026 年 10 月，Seedance 3.0 的发布公告和具体日期仍未在这些资料中得到确认。"
+    },
+    {
+      "source": "A model announcement, platform rollout, and API availability can happen separately. We will record each milestone when official 3.0 information is available.",
+      "translation": "模型发布、平台上线与 API 开放可能分别发生。3.0 官方信息公布后，本页会分别标注这些节点。"
+    },
+    {
+      "source": "Tools you can use while waiting",
+      "translation": "等待发布时可用的工具"
+    },
+    {
+      "source": "You can prepare your project with the tools currently available in this studio. They are separate tools, so their availability does not mean Seedance 3.0 is open for use.",
+      "translation": "你可以先用工作室现有的工具准备项目。这些工具各自独立，当前可用不代表 Seedance 3.0 已开放使用。"
+    },
+    {
+      "source": "MiniMax H3 video generator",
+      "translation": "MiniMax H3 视频生成器"
+    },
+    {
+      "source": ": create a video from your idea or prepared references.",
+      "translation": "：根据创意或准备好的参考素材制作视频。"
+    },
+    {
+      "source": "GPT Image 2 image generator",
+      "translation": "GPT Image 2 图像生成器"
+    },
+    {
+      "source": ": prepare or edit image references for a scene.",
+      "translation": "：准备或编辑场景所需的图像参考。"
+    },
+    {
+      "source": ": arrange characters, poses, props, and camera framing before capturing a reference.",
+      "translation": "：安排人物、姿势、道具与镜头构图，再截取参考图。"
+    },
+    {
+      "source": "For more on how the two compare, read",
+      "translation": "想了解两者的区别，可以阅读"
+    },
+    {
+      "source": "features overview",
+      "translation": "功能概览"
+    },
+    {
+      "source": "provide related workflow resources.",
+      "translation": "提供相关工作流程资料。"
+    },
+    {
+      "source": "Seedance 3.0 vs 2.5: what can be compared?",
+      "translation": "Seedance 3.0 与 2.5：目前能比较什么？"
+    },
+    {
+      "source": "The",
+      "translation": ""
+    },
+    {
+      "source": "official Seedance 2.5 page",
+      "translation": "Seedance 2.5 官方页面"
+    },
+    {
+      "source": "documents its capabilities, which we can use for future comparisons. Seedance 3.0's specifications are still unconfirmed, so we cannot yet say how it will compare.",
+      "translation": "已公布相关能力，可作为后续对比的依据。3.0 的对应规格仍待核实，目前无法确认它会有哪些改进。"
+    },
+    {
+      "source": "Seedance 2.5's documented capabilities and unconfirmed 3.0 details",
+      "translation": "Seedance 2.5 已公布的能力与 3.0 待确认的信息"
+    },
+    {
+      "source": "Seedance 2.5: documented capabilities",
+      "translation": "Seedance 2.5：已公布信息"
+    },
+    {
+      "source": "Seedance 3.0: as of October 2026",
+      "translation": "Seedance 3.0：截至 2026 年 10 月"
+    },
+    {
+      "source": "Up to 30 seconds per generation, with extension support.",
+      "translation": "单次生成最长 30 秒，并支持视频延长。"
+    },
+    {
+      "source": "Duration remains unconfirmed in the official sources we reviewed.",
+      "translation": "在本页核对的官方资料中，时长仍待确认。"
+    },
+    {
+      "source": "Reference control",
+      "translation": "参考控制"
+    },
+    {
+      "source": "Multimodal references and more precise interpretation of reference videos.",
+      "translation": "支持多模态参考，并能更精细地理解参考视频。"
+    },
+    {
+      "source": "Input types and limits still await official confirmation.",
+      "translation": "输入类型和数量限制仍待官方确认。"
+    },
+    {
+      "source": "Audio/video editing, white-model control, and green-screen editing.",
+      "translation": "音视频编辑、白模控制与绿幕编辑。"
+    },
+    {
+      "source": "Editing controls still await official confirmation.",
+      "translation": "编辑控制能力仍待官方确认。"
+    },
+    {
+      "source": "Quality and speed",
+      "translation": "画质与速度"
+    },
+    {
+      "source": "Use the official 2.5 examples as a starting point for evaluation.",
+      "translation": "可从官方 2.5 案例开始评估。"
+    },
+    {
+      "source": "No verified 3.0 benchmark supports a quality or speed claim.",
+      "translation": "尚无经核实的 3.0 评测可支持画质或速度结论。"
+    },
+    {
+      "source": "Pricing and access",
+      "translation": "价格与使用入口"
+    },
+    {
+      "source": "Check the chosen provider's current terms and rates.",
+      "translation": "查看所选服务提供方的当前条款与费率。"
+    },
+    {
+      "source": "We have not confirmed 3.0 pricing or access terms in the sources reviewed here.",
+      "translation": "3.0 定价与使用条款仍待官方确认。"
+    },
+    {
+      "source": "We will compare subject consistency, motion, how well results follow references, editing, generation time, and cost using the same tasks. Seedance 3.0's capabilities in these areas still need official confirmation.",
+      "translation": "后续会用相同任务来比较主体是否保持一致、动作表现、生成结果是否符合参考素材、编辑能力、生成耗时和成本。Seedance 3.0 在这些方面的能力仍待官方信息确认。"
+    },
+    {
+      "source": "Seedance 3.0 release FAQ",
+      "translation": "Seedance 3.0 发布时间常见问题"
+    },
+    {
+      "source": "These answers draw on the",
+      "translation": "以下解答依据本页核对的"
+    },
+    {
+      "source": "official model catalog",
+      "translation": "官方模型目录"
+    },
+    {
+      "source": "visual blog",
+      "translation": "视觉博客"
+    },
+    {
+      "source": "reviewed for this page. Seedance 2.5 details come from its official model page linked above.",
+      "translation": "；2.5 的信息来自上方链接的官方模型页面。"
+    },
+    {
+      "source": "Official news will be added promptly",
+      "translation": "有官方消息会第一时间更新"
+    },
+    {
+      "source": "We will update this page promptly once official Seedance 3.0 news is published and verified. Updates will link to the original announcement and add a dated timeline entry. We will record model launch, platform access, and API availability separately, and replace the relevant unconfirmed entries when pricing or specifications are confirmed.",
+      "translation": "Seedance 3.0 官方消息经核实后，我们会第一时间更新本页，附上原始公告链接，并在时间线中注明日期。模型发布、平台上线与 API 开放会分别记录；价格和规格一旦确认，也会替换对应的待确认内容。"
+    },
+    {
+      "source": "Bookmark this page and check Last updated to see when it last changed.",
+      "translation": "可以收藏本页，通过 Last updated 查看最近一次更新时间。"
+    },
+    {
+      "source": "You can find workflow guidance in the",
+      "translation": "更多用法见"
+    },
+    {
+      "source": "As of October 2026, the",
+      "translation": "截至 2026 年 10 月，在已核对的"
+    },
+    {
+      "source": "we reviewed does not confirm a Seedance 3.0 release date.",
+      "translation": "中，Seedance 3.0 的发布时间仍未得到确认。"
+    },
+    {
+      "source": "View the release date and known details",
+      "translation": "查看发布时间与已知信息"
+    },
+    {
+      "source": "As of October 2026, we have not confirmed a Seedance 3.0 free plan or trial in the",
+      "translation": "截至 2026 年 10 月，在已核对的"
+    },
+    {
+      "source": "we reviewed. Check the",
+      "translation": "中，仍无法确认 Seedance 3.0 是否提供免费方案或试用。查看"
+    },
+    {
+      "source": "for updates.",
+      "translation": "了解后续消息。"
+    },
+    {
+      "source": "Seedance 3.0 subscription and API prices remain unconfirmed in the",
+      "translation": "在已核对的"
+    },
+    {
+      "source": "we reviewed as of October 2026. See the",
+      "translation": "中，截至 2026 年 10 月，Seedance 3.0 的订阅和 API 价格仍未得到确认。查看"
+    },
+    {
+      "source": "for pricing updates.",
+      "translation": "了解后续价格消息。"
+    },
+    {
+      "source": "Check the Seedance 3.0 release date tracker for official sources, the dated announcement timeline, and answers about pricing and access.",
+      "translation": "查看 Seedance 3.0 发布时间追踪 ，阅读官方来源、注明日期的公告时间线，以及价格和使用入口的解答。"
+    },
+    {
+      "source": "As of October 2026, we have not confirmed a Seedance 3.0 free plan or trial in the official model catalog we reviewed. Check the Seedance 3.0 release FAQ for updates.",
+      "translation": "截至 2026 年 10 月，在已核对的 官方模型目录 中，仍无法确认 Seedance 3.0 是否提供免费方案或试用。查看 Seedance 3.0 发布时间常见问题 了解后续消息。"
+    },
+    {
+      "source": "Seedance 3.0 subscription and API prices remain unconfirmed in the official model catalog we reviewed as of October 2026. See the Seedance 3.0 release FAQ for pricing updates.",
+      "translation": "在已核对的 官方模型目录 中，截至 2026 年 10 月，Seedance 3.0 的订阅和 API 价格仍未得到确认。查看 Seedance 3.0 发布时间常见问题 了解后续价格消息。"
+    },
+    {
+      "source": "Create videos with MiniMax H3, generate or edit images with GPT Image 2, and build editable 3D references in Pose Studio. Explore the Seedance guides for prompting and workflow ideas.",
+      "translation": "用 MiniMax H3制作视频，用 GPT Image 2生成或编辑图像，并在 姿势工作室中构建可编辑的 3D 参考。浏览 Seedance 指南 获取提示词与工作流程灵感。"
+    },
+    {
+      "source": "Browse the creative showcase for video ideas and editable scenes. For original works with the exact generation prompts, visit the MiniMax H3 Prompt Library or GPT Image 2 Prompt Library.",
+      "translation": "浏览 创意作品展示 ，获取视频灵感和可编辑场景。想查看原作及其实际生成提示词，可以前往 MiniMax H3 提示词库 或 GPT Image 2 提示词库."
+    },
+    {
+      "source": "Arrange your characters and props, apply a pose preset, then adjust the joints and camera. Capture the scene and send it to the image workspace with a description of the subjects, setting and style. See the pose reference examples for finished results.",
+      "translation": "安排人物和道具，应用姿势预设，再调整关节与镜头。截取场景，并附上主体、环境和风格描述，发送到图像工作区。查看 姿势参考案例 了解最终结果。"
+    },
+    {
+      "source": "The release-date guide includes official sources, a dated announcement timeline, and answers about pricing and access.",
+      "translation": "发布时间页整理了官方来源、注明日期的公告时间线，以及价格和使用入口的解答。"
+    },
+    {
+      "source": "View the Seedance 3.0 release date tracker",
+      "translation": "查看 Seedance 3.0 发布时间追踪"
+    },
+    {
+      "source": "Check Seedance 3.0 release updates",
+      "translation": "查看 Seedance 3.0 发布动态"
+    },
+    {
+      "source": "View Seedance 3.0 pricing updates",
+      "translation": "查看 Seedance 3.0 价格动态"
+    },
+    {
+      "source": "we reviewed.",
+      "translation": "中，仍无法确认 Seedance 3.0 是否提供免费方案或试用。"
+    },
+    {
+      "source": "we reviewed as of October 2026.",
+      "translation": "中，截至 2026 年 10 月，Seedance 3.0 的订阅和 API 价格仍未得到确认。"
+    },
+    {
+      "source": "The release-date guide includes official sources, a dated announcement timeline, and answers about pricing and access. View the Seedance 3.0 release date tracker",
+      "translation": "发布时间页整理了官方来源、注明日期的公告时间线，以及价格和使用入口的解答。 查看 Seedance 3.0 发布时间追踪"
+    },
+    {
+      "source": "As of October 2026, we have not confirmed a Seedance 3.0 free plan or trial in the official model catalog we reviewed. Check Seedance 3.0 release updates",
+      "translation": "截至 2026 年 10 月，在已核对的 官方模型目录 中，仍无法确认 Seedance 3.0 是否提供免费方案或试用。 查看 Seedance 3.0 发布动态"
+    },
+    {
+      "source": "Seedance 3.0 subscription and API prices remain unconfirmed in the official model catalog we reviewed as of October 2026. View Seedance 3.0 pricing updates",
+      "translation": "在已核对的 官方模型目录 中，截至 2026 年 10 月，Seedance 3.0 的订阅和 API 价格仍未得到确认。 查看 Seedance 3.0 价格动态"
     }
   ]
 }

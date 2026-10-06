@@ -6,12 +6,12 @@ import vm from 'node:vm';
 const sourcePath = new URL('../assets/pose-entry-visibility.js', import.meta.url);
 const script = existsSync(sourcePath) ? readFileSync(sourcePath, 'utf8') : '';
 
-function visit({ referrer = '', search = '', cookie = '', storage = new Map(), blockedStorage = false, hostname = 'seedance3-pro.com' } = {}) {
-  const classes = new Set();
+function visit({ referrer = '', search = '', cookie = '', storage = new Map(), blockedStorage = false, hostname = 'seedance3-pro.com', navigationType = 'navigate', previouslyHidden = false } = {}) {
+  const classes = new Set(previouslyHidden ? ['pose-entries-hidden'] : []);
   const writes = [];
   const document = {
     referrer,
-    documentElement: { classList: { add: value => classes.add(value) } },
+    documentElement: { classList: { add: value => classes.add(value), remove: value => classes.delete(value) } },
     get cookie() {
       if (blockedStorage) throw new Error('Cookies unavailable');
       return cookie;
@@ -23,6 +23,7 @@ function visit({ referrer = '', search = '', cookie = '', storage = new Map(), b
   };
   const window = {
     location: { hostname, protocol: 'https:', search },
+    performance: { getEntriesByType: () => [{ type: navigationType }] },
     sessionStorage: {
       getItem(key) {
         if (blockedStorage) throw new Error('Storage unavailable');
@@ -31,6 +32,10 @@ function visit({ referrer = '', search = '', cookie = '', storage = new Map(), b
       setItem(key, value) {
         if (blockedStorage) throw new Error('Storage unavailable');
         storage.set(key, value);
+      },
+      removeItem(key) {
+        if (blockedStorage) throw new Error('Storage unavailable');
+        storage.delete(key);
       },
     },
   };
@@ -68,17 +73,54 @@ test('other referrals, lookalike hosts and missing referrers retain Pose entranc
 
 test('the referral choice survives internal navigation and a new tab through a session cookie', () => {
   const initial = visit({ referrer: 'https://anyposes.com/' });
-  assert.match(initial.writes[0] ?? '', /seedance_pose_entries_hidden=1;.*Path=\/;.*SameSite=Lax/);
+  assert.match(initial.writes[0] ?? '', /seedance_pose_entries_hidden_v2=1;.*Path=\/;.*SameSite=Lax/);
   assert.match(initial.writes[0], /Secure/);
   assert.match(initial.writes[0], /Domain=seedance3-pro\.com/);
   assert.equal(visit({ referrer: 'https://seedance3-pro.com/', cookie: initial.writes[0].split(';')[0] }).hidden, true);
-  assert.equal(visit({ cookie: initial.writes[0].split(';')[0], hostname: 'www.seedance3-pro.com' }).hidden, true);
+  assert.equal(visit({ referrer: 'https://seedance3-pro.com/app', cookie: initial.writes[0].split(';')[0], hostname: 'www.seedance3-pro.com' }).hidden, true);
   assert.equal(visit({ cookie: 'other_seedance_pose_entries_hidden=1' }).hidden, false);
 });
 
 test('session storage keeps the choice during internal navigation if a cookie is absent', () => {
   const initial = visit({ referrer: 'https://anyposes.com/' });
   assert.equal(visit({ referrer: 'https://seedance3-pro.com/app', storage: initial.storage }).hidden, true);
+});
+
+test('a fresh direct entry restores Pose entrances after an AnyPoses visit in the same browser', () => {
+  const initial = visit({ search: '?ref=anyposes' });
+  const direct = visit({ cookie: initial.writes[0].split(';')[0], storage: initial.storage, previouslyHidden: true });
+  assert.equal(direct.hidden, false);
+  assert.equal(direct.storage.has('seedance_pose_entries_hidden_v2'), false);
+  assert.ok(direct.writes.some(cookie => /seedance_pose_entries_hidden_v2=;.*Max-Age=0/.test(cookie)));
+});
+
+test('Pixal3D and unrelated external entries override a previous AnyPoses journey', () => {
+  for (const entry of [
+    { search: '?ref=pixal3d' },
+    { referrer: 'https://pixal3d.net/' },
+    { referrer: 'https://google.com/' },
+    { referrer: 'https://seedance3-pro.com.evil.example/' },
+  ]) {
+    const initial = visit({ search: '?ref=anyposes' });
+    assert.equal(visit({ ...entry, cookie: initial.writes[0].split(';')[0], storage: initial.storage }).hidden, false);
+  }
+});
+
+test('legacy hidden flags are cleared even on reload instead of suppressing normal visitors', () => {
+  for (const navigationType of ['navigate', 'reload', 'back_forward']) {
+    const storage = new Map([['seedance_pose_entries_hidden', '1']]);
+    const result = visit({ cookie: 'seedance_pose_entries_hidden=1', storage, navigationType });
+    assert.equal(result.hidden, false);
+    assert.equal(storage.has('seedance_pose_entries_hidden'), false);
+    assert.ok(result.writes.some(cookie => /seedance_pose_entries_hidden=;.*Max-Age=0/.test(cookie)));
+  }
+});
+
+test('reloading or revisiting an active AnyPoses page retains its scoped choice', () => {
+  for (const navigationType of ['reload', 'back_forward']) {
+    const initial = visit({ search: '?ref=anyposes' });
+    assert.equal(visit({ cookie: initial.writes[0].split(';')[0], storage: initial.storage, navigationType }).hidden, true);
+  }
 });
 
 test('a storage restriction does not prevent hiding a recognizable referral', () => {

@@ -56,6 +56,7 @@ button,textarea,select { font:inherit; } a { color:inherit; text-decoration:none
 .studio-trial-icon { display:grid; width:38px; height:38px; flex:0 0 auto; place-items:center; border-radius:11px; background:var(--lime); color:#15190c; font-size:24px; }
 .studio-trial-notice strong { display:inline-block; margin-right:12px; color:var(--lime); font-size:16px; font-weight:850; }
 .studio-trial-notice div > span { color:var(--text); font-size:15px; font-weight:750; }
+.studio-trial-notice .studio-trial-daily { display:inline-block; margin:0 3px; padding:2px 8px; border-radius:6px; background:var(--lime); color:#15170f; font-size:1.1em; font-weight:900; line-height:1.3; }
 .studio-trial-notice p { margin:6px 0 0; color:#b4bba8; font-size:12px; line-height:1.5; }
 .studio-trial-register { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 22px; border:0; border-radius:10px; background:var(--lime); color:#16180f; font-size:14px; font-weight:850; white-space:nowrap; cursor:pointer; }
 .studio-trial-register:hover { background:#e3ff9d; }

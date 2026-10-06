@@ -17,13 +17,15 @@ function page(response) {
       addEventListener(name, listener) { this.listeners[name] = listener; },
       append(child) { this.children.push(child); },
       replaceChildren() { this.children = []; },
+      setAttribute(name, value) { this[name] = value; },
+      focus() {},
     };
   }
   const nodes = Object.fromEntries([...html.matchAll(/\bid="([^"]+)"/g)].map((match) => [match[1], element()]));
   const calls = [];
   vm.runInNewContext(script, {
     document: { getElementById: id => nodes[id], createElement: element },
-    fetch: async (...args) => { calls.push(args); return typeof response === 'function' ? response() : response; },
+    fetch: async (...args) => { calls.push(args); return typeof response === 'function' ? response(...args) : response; },
     Intl, Date, Error,
     get localStorage() { throw new Error('Statistics must use the current admin session'); },
     get sessionStorage() { throw new Error('Statistics must use the current admin session'); },
@@ -32,6 +34,7 @@ function page(response) {
     nodes, calls,
     settled: () => new Promise(resolve => setImmediate(resolve)),
     refresh: () => nodes['refresh-stats'].listeners.click(),
+    select: source => nodes['tab-' + source].listeners.click(),
   };
 }
 
@@ -43,8 +46,41 @@ test('statistics load automatically using the current admin session', async () =
   assert.equal(view.calls[0][1].cache, 'no-store');
   assert.equal(view.calls[0][1].headers?.['x-analytics-token'], undefined);
   assert.doesNotMatch(html, /analytics-token|analytics-form|load-stats|type="password"|查看令牌/);
-  assert.equal([...html.matchAll(/<button\b/g)].length, 1);
+  assert.equal([...html.matchAll(/<button\b/g)].length, 3);
   await view.settled();
+});
+
+test('source tabs default to AnyPoses and display Pixal3D counts separately', async () => {
+  const view = page(url => ({ status: 200, ok: true, json: async () => ({
+    success: true, source: url.endsWith('/pixal3d') ? 'pixal3d' : 'anyposes',
+    totals: { visitors: url.endsWith('/pixal3d') ? 7 : 2 }, days: [],
+  }) }));
+  await view.settled();
+  assert.equal(view.nodes['total-visitors'].textContent, '2');
+  await view.select('pixal3d');
+  await view.settled();
+  assert.equal(view.calls.at(-1)[0], '/api/admin/referrals/pixal3d');
+  assert.equal(view.nodes['total-visitors'].textContent, '7');
+  assert.equal(view.nodes['tab-pixal3d']['aria-selected'], 'true');
+  assert.match(view.nodes['source-description'].textContent, /pixal3d.net/);
+});
+
+test('switching sources ignores late requests and never shows the old source on failure', async () => {
+  const pending = [];
+  const view = page(url => new Promise(resolve => pending.push({ url, resolve })));
+  view.select('pixal3d');
+  assert.equal(pending.length, 2);
+  pending[1].resolve({ status: 200, ok: true, json: async () => ({ success: true, source: 'pixal3d', totals: { visitors: 7 }, days: [] }) });
+  await view.settled();
+  pending[0].resolve(successfulResponse);
+  await view.settled();
+  assert.equal(view.nodes['total-visitors'].textContent, '7');
+  view.select('anyposes');
+  pending[2].resolve({ status: 503, ok: false });
+  await view.settled();
+  assert.equal(view.nodes['total-visitors'].textContent, '—');
+  assert.equal(view.nodes['analytics-status'].dataset.state, 'error');
+  assert.doesNotMatch(view.nodes['analytics-status'].textContent, /上次成功/);
 });
 
 test('automatic loading renders zero values and safe daily results', async () => {

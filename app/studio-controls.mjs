@@ -1,4 +1,5 @@
 import { t } from './i18n.mjs';
+import { millisecondsUntilCreditReset } from './daily-credits.mjs';
 export const IMAGE_EXAMPLE_PROMPTS = [
   "A cinematic portrait of a fashion designer in a sunlit studio, natural pose, editorial composition, warm rim light, premium magazine photography.",
   "A premium product photograph of a translucent citrus perfume bottle on pale stone, soft morning shadows, clean luxury campaign styling, 3:2 landscape composition.",
@@ -156,12 +157,23 @@ export function createCreditSummaryController({
   getCost,
   eventTarget = globalThis,
   fetchImpl = globalThis.fetch,
+  setTimeoutImpl = globalThis.setTimeout,
+  clearTimeoutImpl = globalThis.clearTimeout,
+  nowImpl = Date.now,
+  onBalanceLoaded = () => {},
   onChange = () => {}
 }) {
   let balance = null;
   let destroyed = false;
   let loadVersion = 0;
   let loadAbortController = null;
+  let dailyResetTimer = null;
+
+  function scheduleDailyReset() {
+    if (dailyResetTimer !== null) clearTimeoutImpl(dailyResetTimer);
+    dailyResetTimer = setTimeoutImpl(() => { void loadBalance(); }, millisecondsUntilCreditReset(nowImpl()));
+    dailyResetTimer?.unref?.();
+  }
 
   function invalidateLoad() {
     loadVersion += 1;
@@ -212,12 +224,17 @@ export function createCreditSummaryController({
     loadAbortController = null;
     balance = loadedBalance;
     render();
+    if (loadedBalance !== null) {
+      scheduleDailyReset();
+      onBalanceLoaded(loadedBalance);
+    }
   }
 
   quantityControl.addEventListener("change", render);
   additionalCostControls.forEach((control) => control.addEventListener("change", render));
   eventTarget.addEventListener("seedance:credits-updated", handleCreditsUpdated);
   eventTarget.addEventListener("seedance:auth-changed", handleAuthChanged);
+  eventTarget.addEventListener("focus", handleAuthChanged);
   render();
 
   return {
@@ -227,10 +244,12 @@ export function createCreditSummaryController({
       if (destroyed) return;
       destroyed = true;
       invalidateLoad();
+      if (dailyResetTimer !== null) clearTimeoutImpl(dailyResetTimer);
       quantityControl.removeEventListener("change", render);
       additionalCostControls.forEach((control) => control.removeEventListener("change", render));
       eventTarget.removeEventListener("seedance:credits-updated", handleCreditsUpdated);
       eventTarget.removeEventListener("seedance:auth-changed", handleAuthChanged);
+      eventTarget.removeEventListener("focus", handleAuthChanged);
     }
   };
 }

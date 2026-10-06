@@ -15,6 +15,29 @@ test('the local CMS obtains its own service credential without requiring browser
   assert.doesNotMatch(JSON.stringify(result), /secret/);
 });
 
+test('Pixal3D reads its own statistics and rejects mixed-source responses', async () => {
+  const options = {
+    source: 'pixal3d', getSecret: async () => 'private',
+    fetchImpl: async url => {
+      assert.equal(url, 'https://seedance3-pro.com/api/admin/referrals/pixal3d');
+      return { ok: true, json: async () => ({ success: true, source: 'pixal3d', totals: { visitors: 0, visits: 0 } }) };
+    },
+  };
+  assert.equal((await readReferralStatsForLocalAdmin(options)).status, 200);
+  const mismatch = await readReferralStatsForLocalAdmin({ ...options,
+    fetchImpl: async () => ({ ok: true, json: async () => ({ success: true, source: 'anyposes' }) }),
+  });
+  assert.equal(mismatch.status, 503);
+});
+
+test('unrecognized sources cannot trigger a credentialed request', async () => {
+  const result = await readReferralStatsForLocalAdmin({ source: '../private',
+    getSecret: async () => assert.fail('unknown source must not read secrets'),
+    fetchImpl: async () => assert.fail('unknown source must not fetch'),
+  });
+  assert.equal(result.status, 400);
+});
+
 test('service configuration and network failures show a generic error without leaking the credential', async () => {
   for (const options of [
     { getSecret: async () => '', fetchImpl: async () => assert.fail('missing configuration cannot fetch') },

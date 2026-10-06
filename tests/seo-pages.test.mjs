@@ -100,7 +100,7 @@ test("homepage navigation reaches live tools and content on desktop and mobile",
   const navigation = blockByClass(header, "nav", "compact-nav");
 
   assert.deepEqual(linksIn(navigation), [
-    { href: "./", text: "Seedance 3.0 Coming Soon" },
+    { href: "./seedance-3-0-release-date", text: "Seedance 3.0 Coming Soon" },
     { href: "./app/video/minimax-h3", text: "H3 Video" },
     { href: "./app/image/gpt-image-2", text: "GPT Image 2" },
     { href: "./pose-to-image", text: "Pose Control" },

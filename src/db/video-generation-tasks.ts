@@ -8,6 +8,9 @@ import type {
 } from '../lib/protected-video-generation'
 import type { Database } from './index'
 import { user, videoGenerationTask } from './schema'
+import { availableDailyCredits, creditDay, creditRefundAccount, effectiveCreditBalance, reservationRefundFields } from './daily-credit-sql'
+import { getCurrentCreditBalance } from './generation-credits'
+import { DAILY_FREE_CREDIT_GRANT } from '../lib/generation-credits'
 
 const TERMINAL_STATUSES = new Set<VideoGenerationTaskStatus>([
   'submission_unknown',
@@ -97,7 +100,7 @@ export function getVideoPollDelayMs(pollAttempts: number, retryAfterSeconds?: nu
 async function taskAndBalance(db: Database, localTaskId: string): Promise<VideoTaskTransitionResult> {
   const rows = await db.select({
     task: videoGenerationTask,
-    remainingCredits: user.creditBalance,
+    remainingCredits: sql<number>`${effectiveCreditBalance('user')}`,
   }).from(videoGenerationTask)
     .innerJoin(user, eq(user.id, videoGenerationTask.userId))
     .where(eq(videoGenerationTask.id, localTaskId))
@@ -167,30 +170,37 @@ export function createVideoGenerationTaskStore(db: Database): VideoGenerationTas
               WHERE video."reservation_id" = reservation."id"
                 AND video."status" IN ('submitting', 'queued', 'running')
             )
-          RETURNING "credits"
+          RETURNING ${reservationRefundFields('reservation')}
         ), refund_total AS (
-          SELECT COALESCE(SUM("credits"), 0)::integer AS "credits"
+          SELECT COALESCE(SUM("permanent_credits"), 0)::integer AS "permanent_credits",
+                 COALESCE(SUM("today_free_credits"), 0)::integer AS "today_free_credits"
           FROM stale
         ), account_plan AS MATERIALIZED (
-          SELECT account."id", refund_total."credits" AS "refund_credits",
-                 account."credit_balance" + refund_total."credits" >= ${credits} AS "can_reserve"
+          SELECT account."id",
+                 ${effectiveCreditBalance('account')} + refund_total."permanent_credits"
+                   + LEAST(${DAILY_FREE_CREDIT_GRANT} - (${availableDailyCredits('account')}), refund_total."today_free_credits") AS "balance",
+                 LEAST(${DAILY_FREE_CREDIT_GRANT}, (${availableDailyCredits('account')}) + refund_total."today_free_credits") AS "daily_credits"
           FROM "user" AS account
           CROSS JOIN refund_total
           WHERE account."id" = ${userId}
           FOR UPDATE OF account
         ), debited AS (
           UPDATE "user" AS account
-          SET "credit_balance" = account."credit_balance" + account_plan."refund_credits"
-                - CASE WHEN account_plan."can_reserve" THEN ${credits} ELSE 0 END,
+          SET "credit_balance" = account_plan."balance"
+                - CASE WHEN account_plan."balance" >= ${credits} THEN ${credits} ELSE 0 END,
+              "daily_free_credits" = GREATEST(account_plan."daily_credits"
+                - CASE WHEN account_plan."balance" >= ${credits} THEN ${credits} ELSE 0 END, 0),
+              "daily_credit_date" = ${creditDay},
               "updated_at" = now()
           FROM account_plan
           WHERE account."id" = account_plan."id"
-          RETURNING account."id", account."credit_balance", account_plan."can_reserve"
+          RETURNING account."id", account."credit_balance", account_plan."balance" >= ${credits} AS "can_reserve",
+                    LEAST(${credits}, account_plan."daily_credits") AS "daily_debit"
         ), reservation AS (
           INSERT INTO "generation_credit_reservation" (
-            "id", "user_id", "credits", "status", "created_at", "updated_at"
+            "id", "user_id", "credits", "daily_free_credits", "daily_credit_date", "status", "created_at", "updated_at"
           )
-          SELECT ${reservationId}, "id", ${credits}, 'reserved', now(), now()
+          SELECT ${reservationId}, "id", ${credits}, "daily_debit", ${creditDay}, 'reserved', now(), now()
           FROM debited
           WHERE "can_reserve"
           RETURNING "id", "user_id"
@@ -257,14 +267,9 @@ export function createVideoGenerationTaskStore(db: Database): VideoGenerationTas
           FROM finalized
           WHERE reservation."id" = finalized."reservation_id"
             AND reservation."status" = 'reserved'
-          RETURNING reservation."user_id", reservation."credits"
+          RETURNING ${reservationRefundFields('reservation')}
         ), credited AS (
-          UPDATE "user" AS account
-          SET "credit_balance" = account."credit_balance" + refunded."credits",
-              "updated_at" = now()
-          FROM refunded
-          WHERE account."id" = refunded."user_id"
-          RETURNING account."credit_balance"
+          ${creditRefundAccount('refunded')}
         )
         SELECT finalized.*, credited."credit_balance" AS "remaining_credits"
         FROM finalized, credited
@@ -362,7 +367,7 @@ export function createVideoGenerationTaskStore(db: Database): VideoGenerationTas
               "updated_at" = now()
           FROM settled
           WHERE account."id" = settled."user_id"
-          RETURNING account."credit_balance"
+          RETURNING ${effectiveCreditBalance('account')} AS "credit_balance"
         )
         SELECT finalized.*, counted."credit_balance" AS "remaining_credits"
         FROM finalized, counted
@@ -393,14 +398,9 @@ export function createVideoGenerationTaskStore(db: Database): VideoGenerationTas
           FROM finalized
           WHERE reservation."id" = finalized."reservation_id"
             AND reservation."status" = 'reserved'
-          RETURNING reservation."user_id", reservation."credits"
+          RETURNING ${reservationRefundFields('reservation')}
         ), credited AS (
-          UPDATE "user" AS account
-          SET "credit_balance" = account."credit_balance" + refunded."credits",
-              "updated_at" = now()
-          FROM refunded
-          WHERE account."id" = refunded."user_id"
-          RETURNING account."credit_balance"
+          ${creditRefundAccount('refunded')}
         )
         SELECT finalized.*, credited."credit_balance" AS "remaining_credits"
         FROM finalized, credited
@@ -428,17 +428,14 @@ export function createVideoGenerationTaskStore(db: Database): VideoGenerationTas
           FROM expired
           WHERE reservation."id" = expired."reservation_id"
             AND reservation."status" = 'reserved'
-          RETURNING reservation."user_id", reservation."credits"
+          RETURNING ${reservationRefundFields('reservation')}
         ), refund_totals AS (
-          SELECT "user_id", SUM("credits")::integer AS "credits"
+          SELECT "user_id", SUM("permanent_credits")::integer AS "permanent_credits",
+                 SUM("today_free_credits")::integer AS "today_free_credits"
           FROM refunded
           GROUP BY "user_id"
         ), credited AS (
-          UPDATE "user" AS account
-          SET "credit_balance" = account."credit_balance" + refund_totals."credits",
-              "updated_at" = ${now}
-          FROM refund_totals
-          WHERE account."id" = refund_totals."user_id"
+          ${creditRefundAccount('refund_totals')}
         )
         SELECT * FROM expired ORDER BY "created_at", "id"
       `)
@@ -446,9 +443,7 @@ export function createVideoGenerationTaskStore(db: Database): VideoGenerationTas
     },
 
     async getBalance(userId) {
-      const accounts = await db.select({ balance: user.creditBalance }).from(user)
-        .where(eq(user.id, userId)).limit(1)
-      return accounts[0] ? numericBalance(accounts[0].balance) : 0
+      return getCurrentCreditBalance(db, userId)
     },
   }
 }

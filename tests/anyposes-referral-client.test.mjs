@@ -12,7 +12,7 @@ function browser() {
   let succeeds = true;
   const document = {
     referrer: '',
-    documentElement: { classList: { add() {} } },
+    documentElement: { classList: { add() {}, remove() {} } },
     get cookie() {
       return [...cookies].filter(([, value]) => value.expires > now)
         .map(([key, value]) => `${key}=${value.value}`).join('; ');
@@ -65,11 +65,35 @@ test('explicit or actual referrals record anonymous IDs and only the entry path'
   }
 });
 
+test('Pixal3D markers and referrers collect separately without hiding Pose Studio', async () => {
+  for (const referrer of ['', 'https://www.pixal3d.net/']) {
+    const tab = browser();
+    await tab.visit(referrer ? '' : '?ref=pixal3d', referrer);
+    assert.equal(tab.requests.length, 1);
+    assert.equal(tab.requests[0].url, '/api/referrals/pixal3d');
+    assert.equal(tab.cookies.has('seedance_pose_entries_hidden'), false);
+    await tab.visit('', 'https://seedance3-pro.com/', '/');
+    assert.equal(tab.requests.length, 1);
+  }
+});
+
+test('one browser keeps independent source sessions and one shared visitor identity', async () => {
+  const tab = browser();
+  await tab.visit('?ref=anyposes');
+  await tab.visit('?ref=pixal3d');
+  await tab.visit('?ref=anyposes');
+  await tab.visit('?ref=pixal3d');
+  assert.equal(tab.requests.length, 2);
+  assert.equal(tab.requests[0].body.visitorId, tab.requests[1].body.visitorId);
+  assert.notEqual(tab.requests[0].body.visitId, tab.requests[1].body.visitId);
+});
+
 test('ordinary visits and an old Pose visibility flag do not become new referrals', async () => {
   const tab = browser();
   tab.cookies.set('seedance_pose_entries_hidden', { value: '1', expires: Infinity });
   await tab.visit('', 'https://google.com/');
   await tab.visit('?ref=other', 'https://anyposes.com.evil.example/');
+  await tab.visit('', 'https://pixal3d.net.evil.example/');
   assert.equal(tab.requests.length, 0);
   assert.equal(tab.cookies.has('seedance_referral_visitor'), false);
 });
@@ -124,7 +148,7 @@ test('tracking skips browsers that block cookies instead of inflating unique vis
   let count = 0;
   const document = {
     referrer: 'https://anyposes.com/',
-    documentElement: { classList: { add() {} } },
+    documentElement: { classList: { add() {}, remove() {} } },
     get cookie() { return ''; },
     set cookie(_) {},
   };

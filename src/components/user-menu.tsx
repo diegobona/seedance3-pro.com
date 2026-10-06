@@ -1,6 +1,7 @@
 import { useSiteI18n } from '../lib/site-i18n'
 import { useEffect, useRef, useState } from 'react'
 import { authClient } from '../lib/auth-client'
+import { millisecondsUntilCreditReset } from '../../app/daily-credits.mjs'
 
 interface UserMenuProps {
   onLogin: () => void
@@ -9,7 +10,7 @@ interface UserMenuProps {
 interface CreditSummary {
   remaining: number
   generationCost: number
-  trialGrant: number
+  dailyGrant: number
 }
 
 interface CreditState extends CreditSummary {
@@ -43,8 +44,11 @@ export function UserMenu({ onLogin }: UserMenuProps) {
     announcedRemainingRef.current = null
     setCredits(null)
     let active = true
+    let creditVersion = 0
+    let dailyResetTimer: number | undefined
     const controller = new AbortController()
     const loadCredits = async () => {
+      const requestVersion = creditVersion
       try {
         const response = await fetch('/api/credits/balance', {
           headers: { accept: 'application/json' },
@@ -60,14 +64,16 @@ export function UserMenu({ onLogin }: UserMenuProps) {
           && Number.isSafeInteger(summary.remaining)
           && summary.remaining >= 0
           && typeof summary.generationCost === 'number'
-          && typeof summary.trialGrant === 'number'
+          && typeof summary.dailyGrant === 'number'
         ) {
           setCredits({
             userId,
-            remaining: announcedRemainingRef.current ?? summary.remaining,
+            remaining: creditVersion === requestVersion ? summary.remaining : announcedRemainingRef.current ?? summary.remaining,
             generationCost: summary.generationCost,
-            trialGrant: summary.trialGrant,
+            dailyGrant: summary.dailyGrant,
           })
+          window.clearTimeout(dailyResetTimer)
+          dailyResetTimer = window.setTimeout(() => { void loadCredits() }, millisecondsUntilCreditReset())
         }
       } catch (fetchError) {
         if (fetchError instanceof DOMException && fetchError.name === 'AbortError') return
@@ -77,19 +83,24 @@ export function UserMenu({ onLogin }: UserMenuProps) {
       const detail = (event as CustomEvent<{ remaining?: unknown }>).detail
       if (typeof detail?.remaining !== 'number' || !Number.isSafeInteger(detail.remaining) || detail.remaining < 0) return
       announcedRemainingRef.current = detail.remaining
+      creditVersion += 1
       setCredits((current) => ({
         userId,
         remaining: detail.remaining as number,
         generationCost: current?.generationCost ?? 5,
-        trialGrant: current?.trialGrant ?? 15,
+        dailyGrant: current?.dailyGrant ?? 15,
       }))
     }
 
     void loadCredits()
+    const refreshCredits = () => { void loadCredits() }
+    window.addEventListener('focus', refreshCredits)
     window.addEventListener('seedance:credits-updated', updateCredits)
     return () => {
       active = false
       controller.abort()
+      window.clearTimeout(dailyResetTimer)
+      window.removeEventListener('focus', refreshCredits)
       window.removeEventListener('seedance:credits-updated', updateCredits)
     }
   }, [session?.user?.id])

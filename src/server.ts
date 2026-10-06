@@ -4,6 +4,7 @@ import { reconcileVideoGenerationTasks } from './lib/video-task-reconciler'
 import { legacyModelRedirect, modelIdFromPath } from '../app/seo-routes.mjs'
 import { localeFromPath, localizedPath, stripLocalePath, localeRedirect } from '../app/site-locale.mjs'
 import { fetchPublicPage, isStudioDocument } from './lib/site-static-proxy'
+import poseEntryVisibility from '../assets/pose-entry-visibility.js?raw'
 
 interface WorkerContext {
   waitUntil(promise: Promise<unknown>): void
@@ -43,6 +44,12 @@ export default {
     const url = new URL(request.url)
     const { pathname } = url
     const basePath = stripLocalePath(pathname)
+    // Static Pages and React workspaces must use the same referral guard version.
+    if (pathname === '/assets/pose-entry-visibility.js' && (request.method === 'GET' || request.method === 'HEAD')) {
+      return new Response(request.method === 'HEAD' ? null : poseEntryVisibility, {
+        headers: { 'content-type': 'text/javascript; charset=utf-8', 'cache-control': 'no-store' },
+      })
+    }
     if (request.method === 'GET' || request.method === 'HEAD') {
       const redirect = localeRedirect(request, request.cf?.country)
       if (redirect) return redirect

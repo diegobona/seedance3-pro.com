@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://seedance3-pro.com/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/"/>
@@ -11,7 +11,7 @@
   </url>
   <url>
     <loc>https://seedance3-pro.com/zh/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/"/>
@@ -56,7 +56,7 @@
   </url>
   <url>
     <loc>https://seedance3-pro.com/faq</loc>
-    <lastmod>2026-09-26</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/faq"/>
@@ -65,7 +65,7 @@
   </url>
   <url>
     <loc>https://seedance3-pro.com/zh/faq</loc>
-    <lastmod>2026-09-26</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/faq"/>
@@ -74,7 +74,7 @@
   </url>
   <url>
     <loc>https://seedance3-pro.com/blog</loc>
-    <lastmod>2026-09-26</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/blog"/>
@@ -83,7 +83,7 @@
   </url>
   <url>
     <loc>https://seedance3-pro.com/zh/blog</loc>
-    <lastmod>2026-09-26</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/blog"/>
@@ -629,5 +629,23 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/gpt-image-2-prompts/ai-classroom-claymation"/>
     <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/gpt-image-2-prompts/ai-classroom-claymation"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/gpt-image-2-prompts/ai-classroom-claymation"/>
+  </url>
+  <url>
+    <loc>https://seedance3-pro.com/seedance-3-0-release-date</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/seedance-3-0-release-date"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/seedance-3-0-release-date"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/seedance-3-0-release-date"/>
+  </url>
+  <url>
+    <loc>https://seedance3-pro.com/zh/seedance-3-0-release-date</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/seedance-3-0-release-date"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/seedance-3-0-release-date"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/seedance-3-0-release-date"/>
   </url>
 </urlset>

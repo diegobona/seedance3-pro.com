@@ -1,4 +1,5 @@
-export const TRIAL_CREDIT_GRANT = 15
+export const DAILY_FREE_CREDIT_GRANT = 15
+export const DAILY_CREDIT_TIME_ZONE = 'Asia/Shanghai'
 export const GPT_IMAGE_2_CREDIT_COST = 5
 
 export interface CreditReservation {

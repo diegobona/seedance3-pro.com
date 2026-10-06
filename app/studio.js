@@ -1,4 +1,5 @@
 import { t, localizedErrorMessage, currentLocale } from './i18n.mjs';
+import { formatCreditResetTime } from './daily-credits.mjs';
 import { localizedPath } from './site-locale.mjs';
 import { buildModelUrl, normalizeModelId } from "./model-routing.mjs";
 import { canonicalModelPath, modelIdFromPath } from "./seo-routes.mjs";
@@ -146,6 +147,7 @@ export function initializeStudio() {
   const generateButton = document.getElementById("generate-button");
   const generateButtonLabel = document.getElementById("generate-button-label");
   const generationStatus = document.getElementById("generation-status");
+  const dailyCreditResetNotice = document.getElementById("daily-credit-reset-notice");
   const resultCard = document.getElementById("result-card");
   const resultGallery = document.getElementById("result-gallery");
   const exampleCarousel = document.getElementById("example-carousel");
@@ -611,7 +613,7 @@ export function initializeStudio() {
       const requiredCredits = error?.credits?.cost || creditCostForDuration(videoDuration.value);
       generationStatus.textContent = error?.code === "INSUFFICIENT_CREDITS"
         ? error?.credits?.remaining === 0
-          ? t("Launching soon. Video generation from $0.01/second.")
+          ? dailyCreditsUsedMessage()
           : `${t('You need {cost} credits to generate.', { cost: requiredCredits })} ${error.credits ? t('Current balance: {remaining}.', { remaining: error.credits.remaining }) : ""}`.trim()
         : localizedErrorMessage(error?.message, error?.code, 'Video generation failed.');
       generationStatus.className = "generation-status is-error";
@@ -729,6 +731,21 @@ export function initializeStudio() {
     });
   }
 
+  function dailyResetTime() {
+    return formatCreditResetTime({ locale: currentLocale() === 'zh' ? 'zh-CN' : 'en' });
+  }
+
+  function dailyCreditsUsedMessage() {
+    return t("Today’s free credits are used up. Daily reset: {time} (local time).", { time: dailyResetTime() });
+  }
+
+  function updateDailyResetNotice() {
+    if (dailyCreditResetNotice) {
+      dailyCreditResetNotice.textContent = t("Daily reset: {time} (local time). Unused credits expire at reset and do not accumulate.", { time: dailyResetTime() });
+    }
+  }
+
+  updateDailyResetNotice();
   creditSummaryController = createCreditSummaryController({
     container: creditSummary,
     costElement: generationCreditCost,
@@ -738,13 +755,21 @@ export function initializeStudio() {
     getCost: () => isVideoGenerationSelected()
       ? creditCostForDuration(videoDuration.value)
       : creditCostForQuantity(imageQuantity.value),
+    onBalanceLoaded: (remaining) => {
+      announceCredits({ remaining });
+      updateDailyResetNotice();
+      if (remaining > 0 && generationStatus.textContent.startsWith(t("Today’s free credits are used up."))) {
+        generationStatus.textContent = "";
+        generationStatus.className = "generation-status";
+      }
+    },
     onChange: (summary) => {
       creditInsufficient = summary.insufficient;
       if (launchNotice) {
         launchNotice.hidden = summary.currentBalance !== 0;
-        launchNotice.textContent = isVideoGenerationSelected()
+        launchNotice.textContent = dailyCreditsUsedMessage() + " " + (isVideoGenerationSelected()
           ? t("Launching soon. Video generation from $0.01/second.")
-          : t("Launching soon. Image generation from $0.01/image.");
+          : t("Launching soon. Image generation from $0.01/image."));
       }
       updateGenerateButton();
     }
@@ -912,7 +937,7 @@ export function initializeStudio() {
       const requiredCredits = error?.credits?.cost || creditCostForQuantity(imageQuantity.value);
       generationStatus.textContent = error?.code === "INSUFFICIENT_CREDITS"
         ? error?.credits?.remaining === 0
-          ? t("Launching soon. Image generation from $0.01/image.")
+          ? dailyCreditsUsedMessage()
           : `${t('You need {cost} credits to generate.', { cost: requiredCredits })} ${error.credits ? t('Current balance: {remaining}.', { remaining: error.credits.remaining }) : ""}`.trim()
         : localizedErrorMessage(error?.message, error?.code, 'Image generation failed.');
       generationStatus.className = "generation-status is-error";

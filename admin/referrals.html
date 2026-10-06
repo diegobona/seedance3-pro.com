@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
   <meta name="referrer" content="same-origin">
-  <title>AnyPoses → GPT Image 2 引流统计 · SEEDANCE</title>
+  <title>来源引流统计 · SEEDANCE</title>
   <style>
     :root { color-scheme: dark; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #f4f5ef; background: #090b0d; }
     * { box-sizing: border-box; }
@@ -22,6 +22,8 @@
     button:focus-visible, a:focus-visible { outline: 2px solid #d6ff72; outline-offset: 3px; }
     button { padding: 12px 18px; border-radius: 10px; border: 1px solid #39414b; background: #181d23; color: #f4f5ef; font: inherit; font-weight: 650; cursor: pointer; }
     .primary { border-color: #d6ff72; background: #d6ff72; color: #11170a; }
+    .source-tabs { display: flex; gap: 10px; margin-top: 24px; }
+    .source-tabs [aria-selected="true"] { border-color: #d6ff72; background: #d6ff72; color: #11170a; }
     button:disabled { opacity: .5; cursor: wait; }
     .status { min-height: 24px; margin: 12px 0 0; font-size: 14px; }
     .status[data-state="error"] { color: #ffac94; }
@@ -50,9 +52,14 @@
       <a class="brand" href="/"><img src="/assets/seedance-mark.svg" alt="" width="36" height="36"><span>SEEDANCE</span></a>
       <a href="/admin/">Blog 管理</a>
     </header>
-    <h1>AnyPoses → GPT Image 2 引流统计</h1>
-    <p>仅统计从 anyposes.com 进入 GPT Image 2 操作页的独立访客与访问次数。</p>
+    <h1 id="source-title">AnyPoses → GPT Image 2 引流统计</h1>
+    <p id="source-description">仅统计从 anyposes.com 进入 GPT Image 2 操作页的独立访客与访问次数。</p>
+    <div class="source-tabs" role="tablist" aria-label="访问来源">
+      <button id="tab-anyposes" type="button" role="tab" aria-selected="true" aria-controls="referral-results">AnyPoses</button>
+      <button id="tab-pixal3d" type="button" role="tab" aria-selected="false" aria-controls="referral-results" tabindex="-1">Pixal3D</button>
+    </div>
 
+    <div id="referral-results" role="tabpanel" aria-labelledby="tab-anyposes" tabindex="0">
     <section class="panel" aria-label="统计更新">
       <button class="primary" id="refresh-stats" type="button">刷新</button>
       <p class="status" id="analytics-status" role="status" aria-live="polite">正在读取统计…</p>
@@ -73,6 +80,7 @@
       </table>
       <p class="notes" id="tracked-since">统计从功能启用后开始，不补历史访问数据。</p>
     </section>
+    </div>
 
     <p class="notes">独立访客按匿名浏览器标识去重，同一浏览器重复访问不会增加累计独立访客。连续 30 分钟内的访问计为一次会话；更换浏览器、设备或清除标识后会计为新访客。日期均按北京时间计算。</p>
   </main>
@@ -81,10 +89,16 @@
     const refreshButton = document.getElementById('refresh-stats');
     const dailyStats = document.getElementById('daily-stats');
     const trackedSince = document.getElementById('tracked-since');
+    const sources = {
+      anyposes: { name: 'AnyPoses', domain: 'anyposes.com', tab: document.getElementById('tab-anyposes') },
+      pixal3d: { name: 'Pixal3D', domain: 'pixal3d.net', tab: document.getElementById('tab-pixal3d') },
+    };
     const numberFormat = new Intl.NumberFormat('zh-CN');
     const dateTimeFormat = new Intl.DateTimeFormat('zh-CN', { timeZone: 'Asia/Shanghai', dateStyle: 'medium', timeStyle: 'short' });
     let loading = false;
     let hasResults = false;
+    let activeSource = 'anyposes';
+    let requestVersion = 0;
 
     function count(value) {
       return numberFormat.format(Number.isSafeInteger(value) && value >= 0 ? value : 0);
@@ -131,35 +145,72 @@
         : '统计从功能启用后开始，不补历史访问数据。';
     }
 
-    async function loadStats() {
-      if (loading) return;
+    async function loadStats(force = false) {
+      if (loading && !force) return;
+      const source = activeSource;
+      const version = ++requestVersion;
       loading = true;
       refreshButton.disabled = true;
       setStatus('正在读取统计…', 'loading');
       try {
-        const response = await fetch('/api/admin/referrals/anyposes', {
+        const response = await fetch('/api/admin/referrals/' + source, {
           credentials: 'same-origin',
           cache: 'no-store',
         });
+        if (version !== requestVersion) return;
         if (response.status === 401) throw new Error('请先登录后台后再查看统计。');
         if (response.status === 403) throw new Error('当前账号没有后台统计权限。');
         if (!response.ok) throw new Error('无法读取统计，请稍后重试。');
         const data = await response.json();
-        if (data.success !== true || data.source !== 'anyposes') throw new Error('统计返回异常，请稍后重试。');
+        if (version !== requestVersion) return;
+        if (data.success !== true || data.source !== source) throw new Error('统计返回异常，请稍后重试。');
         renderStats(data);
         hasResults = true;
         setStatus('更新于 ' + dateTimeFormat.format(new Date()) + '（北京时间）', 'success');
       } catch (error) {
+        if (version !== requestVersion) return;
         const message = error instanceof Error && /^(请先登录后台|当前账号没有后台统计权限|无法读取统计|统计返回异常)/.test(error.message)
           ? error.message : '无法读取统计，请检查网络连接后重试。';
         setStatus(message + (hasResults ? ' 下方仍显示上次成功读取的结果。' : ''), 'error');
       } finally {
-        loading = false;
-        refreshButton.disabled = false;
+        if (version === requestVersion) {
+          loading = false;
+          refreshButton.disabled = false;
+        }
       }
     }
 
-    refreshButton.addEventListener('click', loadStats);
+    function selectSource(source) {
+      if (source === activeSource) return;
+      activeSource = source;
+      hasResults = false;
+      for (const [key, config] of Object.entries(sources)) {
+        config.tab.setAttribute('aria-selected', String(key === source));
+        config.tab.tabIndex = key === source ? 0 : -1;
+      }
+      document.getElementById('referral-results').setAttribute('aria-labelledby', 'tab-' + source);
+      document.getElementById('source-title').textContent = sources[source].name + ' → GPT Image 2 引流统计';
+      document.getElementById('source-description').textContent = '仅统计从 ' + sources[source].domain + ' 进入 GPT Image 2 操作页的独立访客与访问次数。';
+      for (const prefix of ['total', 'today', 'week', 'month']) {
+        document.getElementById(prefix + '-visitors').textContent = '—';
+        document.getElementById(prefix + '-visits').textContent = '—';
+      }
+      dailyStats.replaceChildren();
+      trackedSince.textContent = '统计从功能启用后开始，不补历史访问数据。';
+      void loadStats(true);
+    }
+
+    for (const [source, config] of Object.entries(sources)) {
+      config.tab.addEventListener('click', () => selectSource(source));
+      config.tab.addEventListener('keydown', event => {
+        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+        event.preventDefault();
+        const next = event.key === 'Home' ? 'anyposes' : event.key === 'End' ? 'pixal3d' : source === 'anyposes' ? 'pixal3d' : 'anyposes';
+        selectSource(next);
+        sources[next].tab.focus();
+      });
+    }
+    refreshButton.addEventListener('click', () => loadStats());
     loadStats();
   </script>
 </body>

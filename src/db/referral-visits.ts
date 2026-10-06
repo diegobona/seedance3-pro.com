@@ -9,6 +9,7 @@ export type Visit = {
 }
 
 export type ReferralVisit = Visit
+export type ReferralSource = 'anyposes' | 'pixal3d'
 
 export type ReferralCounts = {
   visitors: number
@@ -16,7 +17,7 @@ export type ReferralCounts = {
 }
 
 export type ReferralStats = {
-  source: 'anyposes'
+  source: ReferralSource
   timeZone: 'Asia/Shanghai'
   trackedSince: string | null
   totals: ReferralCounts
@@ -66,13 +67,13 @@ function counts(visitors: CountValue, visits: CountValue): ReferralCounts {
   return { visitors: normalizeCount(visitors), visits: normalizeCount(visits) }
 }
 
-export function createReferralVisitStore(db: Database): ReferralVisitStore {
+export function createReferralVisitStore(db: Database, source: ReferralSource = 'anyposes'): ReferralVisitStore {
   return {
     async recordVisit(visit) {
       await db.insert(referralVisit).values({
         visitId: visit.visitId,
         visitorId: visit.visitorId,
-        source: 'anyposes',
+        source,
         entryPath: visit.entryPath,
       }).onConflictDoNothing()
     },
@@ -109,14 +110,14 @@ export function createReferralVisitStore(db: Database): ReferralVisitStore {
             WHERE "created_at" >= ${last30Start}::timestamptz AND "created_at" < ${tomorrowStart}::timestamptz
           ) AS "last30_visits"
         FROM "referral_visit"
-        WHERE "source" = 'anyposes'
+        WHERE "source" = ${source}
           AND "entry_path" = '/app/image/gpt-image-2'
       `)
       const daily = await db.execute<DailyRow>(sql`
         SELECT TO_CHAR("created_at" AT TIME ZONE 'Asia/Shanghai', 'YYYY-MM-DD') AS "date",
           COUNT(DISTINCT "visitor_id") AS "visitors", COUNT(*) AS "visits"
         FROM "referral_visit"
-        WHERE "source" = 'anyposes'
+        WHERE "source" = ${source}
           AND "entry_path" = '/app/image/gpt-image-2'
           AND "created_at" >= ${last30Start}::timestamptz
           AND "created_at" < ${tomorrowStart}::timestamptz
@@ -133,7 +134,7 @@ export function createReferralVisitStore(db: Database): ReferralVisitStore {
       })
 
       return {
-        source: 'anyposes',
+        source,
         timeZone: 'Asia/Shanghai',
         trackedSince: row.tracked_since === null ? null : new Date(row.tracked_since).toISOString(),
         totals: counts(row.total_visitors, row.total_visits),

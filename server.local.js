@@ -48,8 +48,8 @@ app.get("/admin", (_req, res) => {
 
 
 
-app.get("/api/admin/referrals/anyposes", async (_req, res) => {
-  const result = await readReferralStatsForLocalAdmin({ getSecret: getLocalSecret });
+app.get("/api/admin/referrals/:source", async (req, res) => {
+  const result = await readReferralStatsForLocalAdmin({ getSecret: getLocalSecret, source: req.params.source });
   res.setHeader("Cache-Control", "no-store");
   res.status(result.status).json(result.body);
 });

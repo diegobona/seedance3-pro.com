@@ -1,6 +1,6 @@
 import { GPT_IMAGE_2_CREDIT_COST, type GenerationCreditStore, withCreditHeaders } from './generation-credits'
 
-const TRIAL_COMPLETE_MESSAGE = 'Your free trial is complete. More credits and ultra-affordable creator plans are coming soon.'
+const DAILY_CREDITS_USED_MESSAGE = 'Today’s free credits are used up. Your daily allowance will refresh at the next reset.'
 
 type SessionLike = { user: { id: string } } | null
 
@@ -97,7 +97,7 @@ export async function protectImageGeneration({ request, getSession, creditStore,
       success: false,
       code: 'INSUFFICIENT_CREDITS',
       message: remainingCredits === 0
-        ? TRIAL_COMPLETE_MESSAGE
+        ? DAILY_CREDITS_USED_MESSAGE
         : `You need ${creditCost} credits to generate this image.`,
       credits: { cost: creditCost, remaining: remainingCredits },
     }, {

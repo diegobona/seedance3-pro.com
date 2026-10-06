@@ -36,6 +36,13 @@
       "when": 1790942344981,
       "tag": "0004_curly_nightcrawler",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1791079336586,
+      "tag": "0005_natural_iron_monger",
+      "breakpoints": true
     }
   ]
 }

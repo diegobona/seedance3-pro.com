@@ -51,6 +51,7 @@ test('Neon video store atomically reserves, owns, attaches, leases, and settles 
     id: userId,
     name: 'Video Task Test',
     email: `${userId}@example.test`,
+    plan: 'paid',
     creditBalance: 15,
   })
 
@@ -122,6 +123,7 @@ test('Neon failure, stale cleanup exclusion, ordered claims, and expiry are cred
     id: userId,
     name: 'Video Expiry Test',
     email: `${userId}@example.test`,
+    plan: 'paid',
     creditBalance: 50,
   })
 

@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm'
-import { boolean, check, index, integer, pgTable, text, timestamp, uniqueIndex } from 'drizzle-orm/pg-core'
+import { boolean, check, date, index, integer, pgTable, text, timestamp, uniqueIndex } from 'drizzle-orm/pg-core'
 
 export const user = pgTable('user', {
   id: text('id').primaryKey(),
@@ -17,22 +17,29 @@ export const user = pgTable('user', {
   monthlyGenerationCount: integer('monthly_generation_count').default(0).notNull(),
   generationLimit: integer('generation_limit').default(0).notNull(),
   creditBalance: integer('credit_balance').default(15).notNull(),
+  dailyFreeCredits: integer('daily_free_credits').default(0).notNull(),
+  dailyCreditDate: date('daily_credit_date'),
   trialCreditsGrantedAt: timestamp('trial_credits_granted_at', { withTimezone: true }).defaultNow().notNull(),
   paymentCustomerId: text('payment_customer_id'),
   subscriptionStatus: text('subscription_status').default('inactive').notNull(),
   subscriptionExpiresAt: timestamp('subscription_expires_at', { withTimezone: true }),
-})
+}, (table) => [
+  check('user_daily_free_credits_check', sql`${table.dailyFreeCredits} >= 0 AND ${table.dailyFreeCredits} <= ${table.creditBalance}`),
+])
 
 export const generationCreditReservation = pgTable('generation_credit_reservation', {
   id: text('id').primaryKey(),
   userId: text('user_id').notNull().references(() => user.id, { onDelete: 'cascade' }),
   credits: integer('credits').notNull(),
+  dailyFreeCredits: integer('daily_free_credits').default(0).notNull(),
+  dailyCreditDate: date('daily_credit_date'),
   status: text('status').default('reserved').notNull(),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 }, (table) => [
   index('generation_credit_reservation_user_idx').on(table.userId),
   index('generation_credit_reservation_status_idx').on(table.status),
+  check('reservation_daily_free_credits_check', sql`${table.dailyFreeCredits} >= 0 AND ${table.dailyFreeCredits} <= ${table.credits}`),
 ])
 
 export const videoGenerationTask = pgTable('video_generation_task', {

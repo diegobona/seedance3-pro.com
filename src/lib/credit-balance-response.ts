@@ -1,4 +1,4 @@
-import { GPT_IMAGE_2_CREDIT_COST, TRIAL_CREDIT_GRANT } from './generation-credits'
+import { GPT_IMAGE_2_CREDIT_COST, DAILY_FREE_CREDIT_GRANT, DAILY_CREDIT_TIME_ZONE } from './generation-credits'
 
 type SessionLike = { user: { id: string } } | null
 
@@ -27,7 +27,9 @@ export async function getCreditBalanceResponse({ request, getSession, getBalance
     credits: {
       remaining,
       generationCost: GPT_IMAGE_2_CREDIT_COST,
-      trialGrant: TRIAL_CREDIT_GRANT,
+      dailyGrant: DAILY_FREE_CREDIT_GRANT,
+      resetTimeZone: DAILY_CREDIT_TIME_ZONE,
+      expiresDaily: true,
     },
   }, {
     headers: { 'cache-control': 'no-store' },

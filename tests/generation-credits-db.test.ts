@@ -18,6 +18,7 @@ test('Neon atomically prevents concurrent overspend and duplicate refunds', { sk
     id: userId,
     name: 'Credit Test',
     email: `${userId}@example.test`,
+    plan: 'paid',
     creditBalance: 5,
   })
 

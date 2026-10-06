@@ -9,7 +9,7 @@ import { UserMenu } from '../components/user-menu'
 import { ModelLandingContent } from '../components/model-landing-content'
 import { H3VideoExamples } from '../components/h3-video-examples'
 import { GptImageExamples } from '../components/gpt-image-examples'
-import { TRIAL_CREDIT_GRANT } from '../lib/generation-credits'
+import { DAILY_FREE_CREDIT_GRANT } from '../lib/generation-credits'
 import '../../app/studio.css'
 import '../styles/auth.css'
 import '../styles/model-landing.css'
@@ -43,6 +43,7 @@ function AppPage() {
 
 export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false }: { initialModel?: string; modelLanding?: boolean }) {
   const { t, path } = useSiteI18n()
+  const [dailyTrialBefore, dailyTrialAfter] = t("Free accounts get {credits} credits {daily}, shared across images and videos.").replace('{credits}', String(DAILY_FREE_CREDIT_GRANT)).split('{daily}')
   const initiallyPose = initialModel === 'pose-to-image'
   const initiallyH3 = initialModel === 'minimax-h3'
   const initiallySeedance25 = initialModel === 'seedance-2-5'
@@ -125,7 +126,7 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
             {modelLanding && <p className="model-landing-intro">{initiallySeedance25 ? t("Create a video from a text prompt in the Seedance 2.5 workspace. Choose your video settings and follow the result here.") : initiallyH3 ? <>{t("Turn text or reference images into a MiniMax H3 video. Describe your scene, choose your settings, or start with an example from the ")}<a href={path("/minimax-h3-prompts")} target="_blank" rel="noopener">{t("MiniMax H3 Prompt Library")}</a>.</> : <>{t("Create or edit images with GPT Image 2 using text and reference images. Describe your idea, combine visual references, or start with an example from the ")}<a href={path("/gpt-image-2-prompts")} target="_blank" rel="noopener">{t("GPT Image 2 Prompt Library")}</a>.</>}</p>}
             <aside className="studio-trial-notice" role="note" aria-label={t("Free trial")}>
               <span className="studio-trial-icon" aria-hidden="true">✦</span>
-              <div><strong>{t("Free trial")}</strong><span>{t("Sign up for {credits} free credits per account.").replace('{credits}', String(TRIAL_CREDIT_GRANT))}</span><p>{t("Credit cost is shown before generation.")}</p></div>
+              <div><strong>{t("Free trial")}</strong><span>{dailyTrialBefore}<strong className="studio-trial-daily">{t("daily")}</strong>{dailyTrialAfter}</span><p id="daily-credit-reset-notice">{t("Daily credits refresh each day. Unused credits expire at the next reset and do not accumulate.")}</p></div>
               {!session?.user && <button className="studio-trial-register" type="button" onClick={() => openAuth('register')}>{t("Register")} <span aria-hidden="true">↗</span></button>}
             </aside>
             <div className="creation-grid" id="creation-grid" hidden={initiallyPose}>

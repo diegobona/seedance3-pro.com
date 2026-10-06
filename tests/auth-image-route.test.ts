@@ -141,7 +141,7 @@ test('insufficient credits reject generation before provider work', async () => 
   assert.deepEqual(await response.json(), {
     success: false,
     code: 'INSUFFICIENT_CREDITS',
-    message: 'Your free trial is complete. More credits and ultra-affordable creator plans are coming soon.',
+    message: 'Today’s free credits are used up. Your daily allowance will refresh at the next reset.',
     credits: { cost: 5, remaining: 0 },
   })
 })

@@ -47,6 +47,22 @@ test('recording a visit persists only the fixed source and ignores duplicate vis
   assert.deepEqual(queries[0].params, [visit.visitId, visit.visitorId, 'anyposes', visit.entryPath])
 })
 
+test('Pixal3D records a fixed source and filters every aggregate by that source', async () => {
+  const { db, queries } = databaseWithResults([[], [{
+    tracked_since: null, total_visitors: 0, total_visits: 0,
+    today_visitors: 0, today_visits: 0, last7_visitors: 0, last7_visits: 0,
+    last30_visitors: 0, last30_visits: 0,
+  }], []]);
+  const store = createReferralVisitStore(db, 'pixal3d');
+  await store.recordVisit({ visitId: 'pixal-visit', visitorId: 'shared-browser', entryPath: '/app/image/gpt-image-2' });
+  assert.equal(queries[0].params[2], 'pixal3d');
+  assert.equal((await store.getStats()).source, 'pixal3d');
+  for (const query of queries.slice(1)) {
+    assert.ok(query.params.includes('pixal3d'));
+    assert.equal(query.params.includes('anyposes'), false);
+  }
+});
+
 test('stats use Beijing calendar windows and distinct aggregate counts instead of summing daily visitors', async () => {
   const { db, queries } = databaseWithResults([
     [{
@@ -76,7 +92,7 @@ test('stats use Beijing calendar windows and distinct aggregate counts instead o
   assert.ok(query.params.includes('2026-09-25T16:00:00.000Z'))
   assert.ok(query.params.includes('2026-09-02T16:00:00.000Z'))
   assert.ok(query.params.includes('2026-10-02T16:00:00.000Z'))
-  assert.equal(queries.every((entry) => /"source" = 'anyposes'/.test(entry.sql)), true)
+  assert.equal(queries.every((entry) => /"source" = \$\d+/.test(entry.sql) && entry.params.includes('anyposes')), true)
   assert.equal(queries.every((entry) => /"entry_path" = '\/app\/image\/gpt-image-2'/.test(entry.sql)), true)
   assert.match(queries[1].sql, /at time zone 'Asia\/Shanghai'/i)
   assert.match(queries[1].sql, /group by/i)
