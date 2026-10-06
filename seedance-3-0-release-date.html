@@ -23,6 +23,10 @@
   <meta name="twitter:image:alt" content="Seedance 3.0 release date guide">
   <meta name="theme-color" content="#090a0c">
   <link rel="stylesheet" href="./site.css">
+  <style id="daily-news-layout">
+    #latest-news { scroll-margin-top: 110px; }
+    #seedance-news a { overflow-wrap: anywhere; }
+  </style>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg">
   <link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="./favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
@@ -33,7 +37,7 @@
   <meta property="og:locale:alternate" content="zh_CN">
   <link rel="stylesheet" href="/assets/site-language.css">
   <script src="/assets/site-language.js" defer></script>
-  <!-- Date maintenance: edit Article.dateModified below; the visible review dates read this single value. Keep datePublished as the original publication date. -->
+  <!-- Date maintenance: edit Article.dateModified for editorial changes. Daily checks have a separate timestamp; changed official news updates dateModified at the edge. Keep datePublished and the historical review date intact. -->
   <script type="application/ld+json" id="release-date-schema">
   {
     "@context": "https://schema.org",
@@ -92,7 +96,14 @@
         <p class="article-lead"><strong>As of October 2026, we have not confirmed an official Seedance 3.0 release date in the sources reviewed for this page.</strong> ByteDance currently lists Seedance 2.5 in its model catalog. The timeline below links to the announcements and sources we checked.</p>
         <p class="section-copy">Last updated: <time data-release-updated>2026-10-06</time></p>
         <div class="article-content prose">
-          <h2 id="release-timeline">Seedance 3.0 news and official announcements</h2>
+          <h2 id="latest-news">Daily official updates</h2>
+          <p>Official sources are checked once a day at 09:00 Beijing time. New Seedance 3.0 entries appear here after a successful inspection. Source publication dates and first-seen dates are shown separately; neither is automatically treated as a model release date.</p>
+          <!-- FACT-CHECK: Publish only identifiable Seed official records. A mention or model listing alone does not confirm a launch date, pricing, or availability. -->
+          <div id="seedance-news" aria-live="polite">
+            <p>The automatic inspection has not run yet. The timeline below records this page's earlier source review.</p>
+            <p>Sources monitored: <a href="https://seed.bytedance.com/en/blog_list/visual" target="_blank" rel="noopener noreferrer">Seed visual blog</a> · <a href="https://seed.bytedance.com/en/models" target="_blank" rel="noopener noreferrer">Official model catalog</a> · <a href="https://seed.bytedance.com/zh/blog_list/visual" target="_blank" rel="noopener noreferrer">Official visual blog (Chinese)</a> · <a href="https://seed.bytedance.com/zh/models" target="_blank" rel="noopener noreferrer">Official model catalog (Chinese)</a></p>
+          </div>
+          <h2 id="release-timeline">Earlier announcements and editorial source review</h2>
           <p>The dates below mark official announcements and our source review. Release dates for earlier versions do not tell us when Seedance 3.0 will launch.</p>
           <table>
             <caption>Official announcements and source review</caption>
@@ -101,7 +112,7 @@
               <tr><td>2026-02-12</td><td><a href="https://seed.bytedance.com/en/blog/seedance-2-0-official-launch" target="_blank" rel="noopener noreferrer">ByteDance Seed: Seedance 2.0 launch</a></td><td>ByteDance announced Seedance 2.0. This is a 2.0 announcement, not a 3.0 release date.</td></tr>
               <tr><td>2026-07-31</td><td><a href="https://seed.bytedance.com/en/blog/one-take-creation-flexible-referencing-introducing-seedance-2-5" target="_blank" rel="noopener noreferrer">ByteDance Seed: Seedance 2.5 launch</a></td><td>ByteDance announced Seedance 2.5, including longer generation, reference control, and editing.</td></tr>
               <!-- FACT-CHECK: The following is this page's review date, not a Seedance 3.0 announcement or launch date. -->
-              <tr><td><time data-release-updated>2026-10-06</time></td><td><a href="https://seed.bytedance.com/en/models" target="_blank" rel="noopener noreferrer">Official model catalog</a> · <a href="https://seed.bytedance.com/en/blog_list/visual" target="_blank" rel="noopener noreferrer">Official visual blog</a></td><td>Both official pages list Seedance 2.5. As of October 2026, we have not confirmed a Seedance 3.0 announcement or release date in these sources.</td></tr>
+              <tr><td><time data-release-reviewed datetime="2026-10-06">2026-10-06</time></td><td><a href="https://seed.bytedance.com/en/models" target="_blank" rel="noopener noreferrer">Official model catalog</a> · <a href="https://seed.bytedance.com/en/blog_list/visual" target="_blank" rel="noopener noreferrer">Official visual blog</a></td><td>Both official pages list Seedance 2.5. As of October 2026, we have not confirmed a Seedance 3.0 announcement or release date in these sources.</td></tr>
             </tbody>
           </table>
           <p>A model announcement, platform rollout, and API availability can happen separately. We will record each milestone when official 3.0 information is available.</p>
@@ -117,9 +128,9 @@
           <p>You can find workflow guidance in the <a href="./features">features overview</a> and <a href="./faq">FAQ</a>.</p>
 
           <h2 id="seedance-25-comparison">Seedance 3.0 vs 2.5: what can be compared?</h2>
-          <p>The <a href="https://seed.bytedance.com/en/seedance2_5" target="_blank" rel="noopener noreferrer">official Seedance 2.5 page</a> documents its capabilities, which we can use for future comparisons. Seedance 3.0's specifications are still unconfirmed, so we cannot yet say how it will compare.</p>
+          <p id="seedance-comparison-note">The <a href="https://seed.bytedance.com/en/seedance2_5" target="_blank" rel="noopener noreferrer">official Seedance 2.5 page</a> documents its capabilities, which we can use for future comparisons. Seedance 3.0's specifications are still unconfirmed, so we cannot yet say how it will compare.</p>
           <!-- FACT-CHECK: Seedance 3.0 duration, inputs, editing, benchmarks, and pricing require first-party confirmation. Do not extrapolate 2.5 specifications. -->
-          <table>
+          <table id="seedance-comparison-table">
             <caption>Seedance 2.5's documented capabilities and unconfirmed 3.0 details</caption>
             <thead><tr><th scope="col">Area</th><th scope="col">Seedance 2.5: documented capabilities</th><th scope="col">Seedance 3.0: as of October 2026</th></tr></thead>
             <tbody>
@@ -130,11 +141,11 @@
               <tr><th scope="row">Pricing and access</th><td>Check the chosen provider's current terms and rates.</td><td>We have not confirmed 3.0 pricing or access terms in the sources reviewed here.</td></tr>
             </tbody>
           </table>
-          <p>We will compare subject consistency, motion, how well results follow references, editing, generation time, and cost using the same tasks. Seedance 3.0's capabilities in these areas still need official confirmation.</p>
+          <p id="seedance-comparison-plan">We will compare subject consistency, motion, how well results follow references, editing, generation time, and cost using the same tasks. Seedance 3.0's capabilities in these areas still need official confirmation.</p>
 
           <h2 id="release-faq">Seedance 3.0 release FAQ</h2>
           <p>These answers draw on the <a href="https://seed.bytedance.com/en/models" target="_blank" rel="noopener noreferrer">official model catalog</a> and <a href="https://seed.bytedance.com/en/blog_list/visual" target="_blank" rel="noopener noreferrer">visual blog</a> reviewed for this page. Seedance 2.5 details come from its official model page linked above.</p>
-          <div class="faq">
+          <div class="faq" id="release-faq-answers">
             <!-- FACT-CHECK: Confirm any 3.0 launch date against an official announcement before revising this answer. -->
             <details open><summary>When is Seedance 3.0 coming out?</summary><p>As of October 2026, the ByteDance Seed model catalog and visual blog we reviewed do not give us a confirmed Seedance 3.0 release date. We cannot confirm a launch month, estimated release window, or countdown. Links to the official sources are in the timeline above.</p></details>
             <!-- FACT-CHECK: Seedance 3.0 free access and trial terms are not verified. -->
@@ -145,8 +156,8 @@
             <details><summary>How will Seedance 3.0 compare with Seedance 2.5?</summary><p>Seedance 2.5's official documentation covers 30-second generation, multimodal references, and editing. As of October 2026, we have not confirmed comparable Seedance 3.0 specifications or benchmarks in the sources reviewed. We cannot yet say whether it will offer better quality, faster generation, or lower costs.</p></details>
           </div>
 
-          <h2 id="updates">Official news will be added promptly</h2>
-          <p>We will update this page promptly once official Seedance 3.0 news is published and verified. Updates will link to the original announcement and add a dated timeline entry. We will record model launch, platform access, and API availability separately, and replace the relevant unconfirmed entries when pricing or specifications are confirmed.</p>
+          <h2 id="updates">How this page is updated</h2>
+          <p>The daily inspection adds official titles and source links to the updates above. If a source cannot be checked, saved messages remain visible and the inspection is marked incomplete. Dates, prices, and specifications are not inferred from a model name or announcement headline.</p>
           <p>Bookmark this page and check Last updated to see when it last changed.</p>
         </div>
       </article>

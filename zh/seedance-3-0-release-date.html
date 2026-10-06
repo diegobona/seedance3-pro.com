@@ -23,10 +23,14 @@
   <meta name="twitter:image:alt" content="Seedance 3.0 release date guide">
   <meta name="theme-color" content="#090a0c">
   <link rel="stylesheet" href="/site.css">
+  <style id="daily-news-layout">
+    #latest-news { scroll-margin-top: 110px; }
+    #seedance-news a { overflow-wrap: anywhere; }
+  </style>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="/favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
-  <!-- Date maintenance: edit Article.dateModified below; the visible review dates read this single value. Keep datePublished as the original publication date. -->
+  <!-- Date maintenance: edit Article.dateModified for editorial changes. Daily checks have a separate timestamp; changed official news updates dateModified at the edge. Keep datePublished and the historical review date intact. -->
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -145,7 +149,14 @@
         <p class="article-lead"><strong>截至 2026 年 10 月，在本页核对的官方资料中，Seedance 3.0 的发布时间仍未得到确认。</strong> 字节跳动的模型目录目前列有 Seedance 2.5，相关公告和来源见下方时间线。</p>
         <p class="section-copy">Last updated: <time data-release-updated>2026-10-06</time></p>
         <div class="article-content prose">
-          <h2 id="release-timeline">Seedance 3.0 最新动态与官方公告</h2>
+          <h2 id="latest-news">每日官方动态</h2>
+          <p>每天北京时间上午 9 点检查一次官方来源。发现 Seedance 3.0 相关消息后，成功检查的结果会显示在这里。原文发布日期和首次发现时间分别标注，不会直接当作模型的上线日期。</p>
+          <!-- FACT-CHECK: Publish only identifiable Seed official records. A mention or model listing alone does not confirm a launch date, pricing, or availability. -->
+          <div id="seedance-news" aria-live="polite">
+            <p>自动检查尚未运行。下方时间线记录的是本页此前的人工核查结果。</p>
+            <p>监测来源：<a href="https://seed.bytedance.com/en/blog_list/visual" target="_blank" rel="noopener noreferrer">Seed 官方视觉博客</a> · <a href="https://seed.bytedance.com/en/models" target="_blank" rel="noopener noreferrer">官方模型目录</a> · <a href="https://seed.bytedance.com/zh/blog_list/visual" target="_blank" rel="noopener noreferrer">官方视觉博客（中文）</a> · <a href="https://seed.bytedance.com/zh/models" target="_blank" rel="noopener noreferrer">官方模型目录（中文）</a></p>
+          </div>
+          <h2 id="release-timeline">历史公告与人工核查记录</h2>
           <p>下列日期分别对应官方公告和本页的来源核查。旧版本的发布日期不能用来推算 Seedance 3.0 的发布时间。</p>
           <table>
             <caption>官方公告与来源核查记录</caption>
@@ -154,7 +165,7 @@
               <tr><td>2026-02-12</td><td><a href="https://seed.bytedance.com/en/blog/seedance-2-0-official-launch" target="_blank" rel="noopener noreferrer">字节跳动 Seed：Seedance 2.0 发布公告</a></td><td>字节跳动宣布发布 Seedance 2.0。这是 2.0 的公告，不是 3.0 的发布时间。</td></tr>
               <tr><td>2026-07-31</td><td><a href="https://seed.bytedance.com/en/blog/one-take-creation-flexible-referencing-introducing-seedance-2-5" target="_blank" rel="noopener noreferrer">字节跳动 Seed：Seedance 2.5 发布公告</a></td><td>字节跳动宣布发布 Seedance 2.5，介绍了更长片段生成、参考控制与编辑能力。</td></tr>
               <!-- FACT-CHECK: The following is this page's review date, not a Seedance 3.0 announcement or launch date. -->
-              <tr><td><time data-release-updated>2026-10-06</time></td><td><a href="https://seed.bytedance.com/en/models" target="_blank" rel="noopener noreferrer">官方模型目录</a> · <a href="https://seed.bytedance.com/en/blog_list/visual" target="_blank" rel="noopener noreferrer">官方视觉博客</a></td><td>这两个官方页面列有 Seedance 2.5。截至 2026 年 10 月，Seedance 3.0 的发布公告和具体日期仍未在这些资料中得到确认。</td></tr>
+              <tr><td><time data-release-reviewed datetime="2026-10-06">2026-10-06</time></td><td><a href="https://seed.bytedance.com/en/models" target="_blank" rel="noopener noreferrer">官方模型目录</a> · <a href="https://seed.bytedance.com/en/blog_list/visual" target="_blank" rel="noopener noreferrer">官方视觉博客</a></td><td>这两个官方页面列有 Seedance 2.5。截至 2026 年 10 月，Seedance 3.0 的发布公告和具体日期仍未在这些资料中得到确认。</td></tr>
             </tbody>
           </table>
           <p>模型发布、平台上线与 API 开放可能分别发生。3.0 官方信息公布后，本页会分别标注这些节点。</p>
@@ -170,9 +181,9 @@
           <p>更多用法见 <a href="/zh/features">功能概览</a>和<a href="/zh/faq">常见问题</a>。</p>
 
           <h2 id="seedance-25-comparison">Seedance 3.0 与 2.5：目前能比较什么？</h2>
-          <p><a href="https://seed.bytedance.com/en/seedance2_5" target="_blank" rel="noopener noreferrer">Seedance 2.5 官方页面</a>已公布相关能力，可作为后续对比的依据。3.0 的对应规格仍待核实，目前无法确认它会有哪些改进。</p>
+          <p id="seedance-comparison-note"><a href="https://seed.bytedance.com/en/seedance2_5" target="_blank" rel="noopener noreferrer">Seedance 2.5 官方页面</a>已公布相关能力，可作为后续对比的依据。3.0 的对应规格仍待核实，目前无法确认它会有哪些改进。</p>
           <!-- FACT-CHECK: Seedance 3.0 duration, inputs, editing, benchmarks, and pricing require first-party confirmation. Do not extrapolate 2.5 specifications. -->
-          <table>
+          <table id="seedance-comparison-table">
             <caption>Seedance 2.5 已公布的能力与 3.0 待确认的信息</caption>
             <thead><tr><th scope="col">项目</th><th scope="col">Seedance 2.5：已公布信息</th><th scope="col">Seedance 3.0：截至 2026 年 10 月</th></tr></thead>
             <tbody>
@@ -183,11 +194,11 @@
               <tr><th scope="row">价格与使用入口</th><td>查看所选服务提供方的当前条款与费率。</td><td>3.0 定价与使用条款仍待官方确认。</td></tr>
             </tbody>
           </table>
-          <p>后续会用相同任务来比较主体是否保持一致、动作表现、生成结果是否符合参考素材、编辑能力、生成耗时和成本。Seedance 3.0 在这些方面的能力仍待官方信息确认。</p>
+          <p id="seedance-comparison-plan">后续会用相同任务来比较主体是否保持一致、动作表现、生成结果是否符合参考素材、编辑能力、生成耗时和成本。Seedance 3.0 在这些方面的能力仍待官方信息确认。</p>
 
           <h2 id="release-faq">Seedance 3.0 发布时间常见问题</h2>
           <p>以下解答依据本页核对的 <a href="https://seed.bytedance.com/en/models" target="_blank" rel="noopener noreferrer">官方模型目录</a> 和 <a href="https://seed.bytedance.com/en/blog_list/visual" target="_blank" rel="noopener noreferrer">视觉博客</a>；2.5 的信息来自上方链接的官方模型页面。</p>
-          <div class="faq">
+          <div class="faq" id="release-faq-answers">
             <!-- FACT-CHECK: Confirm any 3.0 launch date against an official announcement before revising this answer. -->
             <details open><summary>Seedance 3.0 什么时候发布？</summary><p>截至 2026 年 10 月，从本页核对的字节跳动 Seed 官方模型目录和视觉博客，还无法确认 Seedance 3.0 的发布时间。具体月份、预计发布时段和倒计时都无法确定，相关官方来源见上方时间线。</p></details>
             <!-- FACT-CHECK: Seedance 3.0 free access and trial terms are not verified. -->
@@ -198,8 +209,8 @@
             <details><summary>Seedance 3.0 和 Seedance 2.5 相比如何？</summary><p>Seedance 2.5 的官方文档已公布 30 秒生成、多模态参考和编辑能力。截至 2026 年 10 月，本页核对的资料尚未确认 Seedance 3.0 的对应规格或评测，因此还不能判断它在画质、速度或成本上是否更有优势。</p></details>
           </div>
 
-          <h2 id="updates">有官方消息会第一时间更新</h2>
-          <p>Seedance 3.0 官方消息经核实后，我们会第一时间更新本页，附上原始公告链接，并在时间线中注明日期。模型发布、平台上线与 API 开放会分别记录；价格和规格一旦确认，也会替换对应的待确认内容。</p>
+          <h2 id="updates">本页如何更新</h2>
+          <p>每日检查会把官方标题和原文链接加入上方动态。某个来源暂时无法检查时，已保存的消息会保留，同时标明本次检查未完成。日期、价格和规格不会根据模型名称或公告标题推测。</p>
           <p>可以收藏本页，通过 Last updated 查看最近一次更新时间。</p>
         </div>
       </article>

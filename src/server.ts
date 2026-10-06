@@ -5,6 +5,8 @@ import { legacyModelRedirect, modelIdFromPath } from '../app/seo-routes.mjs'
 import { localeFromPath, localizedPath, stripLocalePath, localeRedirect } from '../app/site-locale.mjs'
 import { fetchPublicPage, isStudioDocument } from './lib/site-static-proxy'
 import poseEntryVisibility from '../assets/pose-entry-visibility.js?raw'
+import { collectSeedanceNews, NEWS_CRON, readNewsState } from './lib/seedance-news'
+import { newsDocument, newsPageRequest, rewriteNewsResponse } from './lib/seedance-news-page'
 
 interface WorkerContext {
   waitUntil(promise: Promise<unknown>): void
@@ -80,9 +82,23 @@ export default {
       headers.set('cache-control', 'private, no-store')
       return new Response(response.body, { status: response.status, headers })
     }
+    if (request.method === 'GET' && newsDocument(pathname) && env.CMS_JOBS) {
+      const [response, state] = await Promise.all([
+        fetchPublicPage(newsPageRequest(request)),
+        readNewsState(env.CMS_JOBS).catch(() => {
+          console.warn(JSON.stringify({ event: 'seedance_news_read_failed' }))
+          return null
+        }),
+      ])
+      return rewriteNewsResponse(request, response, state)
+    }
     return fetchPublicPage(request)
   },
   scheduled(controller, env, ctx) {
+    if (controller.cron === NEWS_CRON) {
+      if (!env.CMS_JOBS) throw new Error('Official news storage is not configured')
+      return collectSeedanceNews(env.CMS_JOBS).then(() => undefined)
+    }
     const legacyScheduled = Promise.resolve(legacyWorker.scheduled(controller, env, ctx))
     ctx.waitUntil(reconcileVideoGenerationTasks(env))
     return legacyScheduled

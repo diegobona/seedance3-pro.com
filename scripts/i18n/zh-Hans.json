@@ -7577,6 +7577,50 @@
     {
       "source": "Seedance 3.0 subscription and API prices remain unconfirmed in the official model catalog we reviewed as of October 2026. View Seedance 3.0 pricing updates",
       "translation": "在已核对的 官方模型目录 中，截至 2026 年 10 月，Seedance 3.0 的订阅和 API 价格仍未得到确认。 查看 Seedance 3.0 价格动态"
+    },
+    {
+      "source": "Daily official updates",
+      "translation": "每日官方动态"
+    },
+    {
+      "source": "Official sources are checked once a day at 09:00 Beijing time. New Seedance 3.0 entries appear here after a successful inspection. Source publication dates and first-seen dates are shown separately; neither is automatically treated as a model release date.",
+      "translation": "每天北京时间上午 9 点检查一次官方来源。发现 Seedance 3.0 相关消息后，成功检查的结果会显示在这里。原文发布日期和首次发现时间分别标注，不会直接当作模型的上线日期。"
+    },
+    {
+      "source": "The automatic inspection has not run yet. The timeline below records this page's earlier source review.",
+      "translation": "自动检查尚未运行。下方时间线记录的是本页此前的人工核查结果。"
+    },
+    {
+      "source": "Sources checked:",
+      "translation": "检查来源："
+    },
+    {
+      "source": "Seed visual blog",
+      "translation": "Seed 官方视觉博客"
+    },
+    {
+      "source": "Earlier announcements and editorial source review",
+      "translation": "历史公告与人工核查记录"
+    },
+    {
+      "source": "How this page is updated",
+      "translation": "本页如何更新"
+    },
+    {
+      "source": "The daily inspection adds official titles and source links to the updates above. If a source cannot be checked, saved messages remain visible and the inspection is marked incomplete. Dates, prices, and specifications are not inferred from a model name or announcement headline.",
+      "translation": "每日检查会把官方标题和原文链接加入上方动态。某个来源暂时无法检查时，已保存的消息会保留，同时标明本次检查未完成。日期、价格和规格不会根据模型名称或公告标题推测。"
+    },
+    {
+      "source": "Sources monitored:",
+      "translation": "监测来源："
+    },
+    {
+      "source": "Official visual blog (Chinese)",
+      "translation": "官方视觉博客（中文）"
+    },
+    {
+      "source": "Official model catalog (Chinese)",
+      "translation": "官方模型目录（中文）"
     }
   ]
 }

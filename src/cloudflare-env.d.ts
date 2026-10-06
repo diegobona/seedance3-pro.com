@@ -1,4 +1,5 @@
 interface Env {
+  CMS_JOBS?: WorkerBindings['CMS_JOBS']
   VIDEO_REFERENCES?: WorkerBindings['VIDEO_REFERENCES']
   VIDEO_UPLOAD_RATE_LIMITER?: WorkerBindings['VIDEO_UPLOAD_RATE_LIMITER']
   ASSETS: { fetch(request: Request): Promise<Response> }
