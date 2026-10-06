@@ -13,9 +13,12 @@ test('static sitemap destinations agree with canonical and Open Graph URLs', () 
   const urls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]);
   assert.equal(new Set(urls).size, urls.length);
   for (const url of urls) {
-    const pathname = new URL(url).pathname;
+    const parsedUrl = new URL(url);
+    assert.equal(parsedUrl.origin, 'https://seedance3-pro.com', url);
+    assert.equal(parsedUrl.search, '', url);
+    const pathname = parsedUrl.pathname;
     assert.ok(!pathname.endsWith('.html'), url);
-    const file = resolve(root, pathname === '/' ? 'index.html' : `${pathname.slice(1)}.html`);
+    const file = resolve(root, pathname === '/' ? 'index.html' : pathname === '/zh/' ? 'zh/index.html' : `${pathname.slice(1)}.html`);
     if (!existsSync(file)) continue; // Dynamic model and case routes have their own SEO tests.
     const html = readFileSync(file, 'utf8');
     assert.ok(html.includes(`<link rel="canonical" href="${url}">`), url);

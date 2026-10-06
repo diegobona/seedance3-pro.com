@@ -1,6 +1,26 @@
-import { localeFromPath, stripLocalePath } from '../../app/site-locale.mjs'
+import { isLanguageNeutralPath, localeFromPath, stripLocalePath } from '../../app/site-locale.mjs'
+import { legacyModelRedirect } from '../../app/seo-routes.mjs'
 
 export const PUBLIC_PAGES_ORIGIN = 'https://seedance3-pro-com.pages.dev'
+
+export function canonicalSiteRedirect(request: Request): Response | null {
+  if (request.method !== 'GET' && request.method !== 'HEAD') return null
+  const url = new URL(request.url)
+  if (url.hostname !== 'seedance3-pro.com' && url.hostname !== 'www.seedance3-pro.com') return null
+  // Authentication callbacks and server calls must retain their cookie origin.
+  if (/^\/(?:api|_serverFn|@tanstack-start)(?:\/|$)/.test(stripLocalePath(url.pathname))) return null
+  const htmlAlias = !isLanguageNeutralPath(url.pathname) && /\.html$/i.test(url.pathname)
+  if (url.hostname !== 'www.seedance3-pro.com' && !htmlAlias) return null
+
+  // Resolve old model aliases directly, avoiding an intermediate clean guide URL.
+  const modelDestination = legacyModelRedirect(url)
+  if (modelDestination) return Response.redirect(`https://seedance3-pro.com${modelDestination}`, 301)
+  url.protocol = 'https:'
+  url.hostname = 'seedance3-pro.com'
+  url.port = ''
+  if (htmlAlias) url.pathname = url.pathname.replace(/\/index\.html$/i, '/').replace(/\.html$/i, '')
+  return Response.redirect(url.href, 301)
+}
 
 export function isStudioDocument(pathname: string) {
   const path = stripLocalePath(pathname)

@@ -1,9 +1,9 @@
 import handler from '@tanstack/react-start/server-entry'
 import legacyWorker from '../worker.js'
 import { reconcileVideoGenerationTasks } from './lib/video-task-reconciler'
-import { legacyModelRedirect, modelIdFromPath } from '../app/seo-routes.mjs'
+import { legacyModelRedirect } from '../app/seo-routes.mjs'
 import { localeFromPath, localizedPath, stripLocalePath, localeRedirect } from '../app/site-locale.mjs'
-import { fetchPublicPage, isStudioDocument } from './lib/site-static-proxy'
+import { canonicalSiteRedirect, fetchPublicPage, isStudioDocument } from './lib/site-static-proxy'
 import poseEntryVisibility from '../assets/pose-entry-visibility.js?raw'
 import { collectSeedanceNews, NEWS_CRON, readNewsState } from './lib/seedance-news'
 import { newsDocument, newsPageRequest, rewriteNewsResponse } from './lib/seedance-news-page'
@@ -46,6 +46,8 @@ export default {
     const url = new URL(request.url)
     const { pathname } = url
     const basePath = stripLocalePath(pathname)
+    const canonicalRedirect = canonicalSiteRedirect(request)
+    if (canonicalRedirect) return canonicalRedirect
     // Static Pages and React workspaces must use the same referral guard version.
     if (pathname === '/assets/pose-entry-visibility.js' && (request.method === 'GET' || request.method === 'HEAD')) {
       return new Response(request.method === 'HEAD' ? null : poseEntryVisibility, {
@@ -64,9 +66,6 @@ export default {
       }
       const destination = legacyModelRedirect(url)
       if (destination) return Response.redirect(`https://seedance3-pro.com${destination}`, 308)
-      if (url.hostname === 'www.seedance3-pro.com' && modelIdFromPath(pathname)) {
-        return Response.redirect(`https://seedance3-pro.com${pathname}${url.search}`, 308)
-      }
     }
     if (pathname.startsWith('/app-assets/')) {
       return env.ASSETS.fetch(request)
