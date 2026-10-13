@@ -60,7 +60,7 @@
       "name": "Seedance 2.5 能把一张图片变成视频吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "可以。将图像作为视觉锚点，再用提示词指定主体动作、镜头路径、环境响应、时长与一致性约束。"
+        "text": "可以。用图片确定画面，再说明主体的动作、镜头路径、环境要发生哪些变化、时长，以及需要保持一致的细节。"
       }
     },
     {
@@ -76,7 +76,7 @@
       "name": "Seedance 2.5 的提示词应如何组织？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "使用：主体锚点、动作、运镜、时间安排、环境响应、视觉风格、音频指令与一致性约束。"
+        "text": "先写主体，再写动作、运镜和时间安排，然后补充环境中的变化、视觉风格、音频指令，以及需要保持一致的细节。"
       }
     },
     {
@@ -84,7 +84,7 @@
       "name": "应该用上所有可用参考吗？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "不必。只使用控制某项具体属性所需的参考。过多重叠参考会让优先级模糊。"
+        "text": "只用控制某项属性所需的参考就可以了。如果多份参考都在规定同一些细节，模型可能难以分清优先级。"
       }
     }
   ],
@@ -122,7 +122,7 @@
         </nav>
         <p class="eyebrow">更新于 2026 年 9 月 12 日</p>
         <h1 class="display">Seedance 2.5 图生视频指南</h1>
-        <p class="lead">把静态图当作视觉锚点，把提示词当作动作规划，就能创作更可控的视频。本指南介绍关键流程、提示词结构、设置、示例与修正方法。</p>
+        <p class="lead">做图生视频时，静态图决定画面是什么样，提示词则说明画面要怎么动。本指南介绍操作流程、提示词结构和设置，并提供示例和常见问题的处理方法。</p>
         <div class="fact-grid" aria-label="Seedance 2.5 关键能力">
           <div class="fact"><strong>30 秒</strong><span>单次生成上限</span></div>
           <div class="fact"><strong>30 张图片</strong><span>图像参考上限</span></div>
@@ -139,45 +139,45 @@
 
           <div class="status-panel">
             <span class="tag lime">更新了什么</span>
-            <h3>Seedance 2.5 面向更长、更可控的视频创作</h3>
-            <p>字节跳动表示，Seedance 2.5 单次可生成最多 30 秒视频，接受最多 30 张图片、10 段视频和 10 段音频作为参考，并支持时间戳级编辑。这让参考规划和按时间编写提示词，比短片段流程中更加重要。</p>
+            <h3>Seedance 2.5 支持更长片段和更多控制方式</h3>
+            <p>字节跳动表示，Seedance 2.5 单次可生成最多 30 秒视频，使用最多 30 张图片、10 段视频和 10 段音频作为参考，并支持时间戳级编辑。片段更长、参考更多，也就需要更仔细地安排素材用途和每个动作发生的时间。</p>
             <p><a class="card-link" href="https://seed.bytedance.com/en/blog/one-take-creation-flexible-referencing-introducing-seedance-2-5" target="_blank" rel="noopener noreferrer">阅读 Seedance 2.5 发布公告</a></p>
           </div>
 
           <h2>如何用 Seedance 2.5 进行图生视频</h2>
 
-          <h3>1. 选择适合制作的参考图</h3>
-          <p>来源图像建立人物身份、构图、光线、服装和物体结构。选择主体清楚、身体自然、运动空间足够，且没有多余文字或瑕疵的图像。如果输入中的脸或产品已经变形，运动通常会放大问题。</p>
+          <h3>1. 选择清晰的参考图</h3>
+          <p>参考图决定主体身份、构图、光线、服装和物体形状。选择主体清楚、身体结构自然的图片，并给计划中的动作留出空间。也要检查多余文字和图像瑕疵：输入中的脸或产品如果已经变形，动起来后通常会更明显。</p>
           <ul>
             <li>使用清晰图像，让主体与背景分离。</li>
             <li>尽量让来源图的画面比例匹配最终平台。</li>
             <li>在主体或镜头将移动的方向留出空间。</li>
-            <li>避免要求紧凑人像一步变成远景全身镜头。</li>
+            <li>尽量别让一张紧凑的人像近景，一步变成远处的全身镜头。</li>
           </ul>
 
           <h3>2. 确定一个视觉目标</h3>
-          <p>写提示词前，确定片段必须实现什么：让肖像动起来、揭晓产品、展示地点、复现运镜，或形成短暂叙事节点。一个片段可包含多个镜头，但每个镜头都应服务于同一目标。</p>
+          <p>写提示词前，先想清楚片段要做什么：让肖像动起来、展示产品、交代地点、复现某种运镜，或表现一个短暂的故事情节。片段可以包含多个镜头，只要它们服务于同一个目标。</p>
 
-          <h3>3. 描述动作，而非重复图像</h3>
-          <p>模型已经能看到参考图。把提示词用于描述随时间改变的内容：眼神、手部动作、布料反应、镜头路径、环境运动、声音与最后的姿势。使用具体动词和清楚顺序。</p>
+          <h3>3. 描述画面要怎么动</h3>
+          <p>模型已经能看到参考图，提示词可以重点说明哪些内容要变化：眼睛看向哪里、手和布料怎么动、镜头怎么走、环境中有哪些运动、声音是什么，以及最后停在什么姿势。动作尽量写具体，并交代先后顺序。</p>
 
           <h3>4. 添加运镜与时间安排</h3>
-          <p>选择一种主要运动，例如缓慢推进、横向跟拍、可控环绕、上摇或固定镜头。较长片段按时间范围安排动作，时间戳指令有助于区分叙事节点，减少相互矛盾的运动。</p>
+          <p>选择一种主要运镜，比如缓慢推进、横向跟拍、可控环绕、上摇或固定镜头。片段较长时，可以为每个动作分配时间区间。时间戳有助于分清各段情节，也能减少相互冲突的动作指令。</p>
 
           <h3>5. 添加一致性约束</h3>
-          <p>说明哪些内容不得改变，例如主体五官、身体比例、发型、服装细节、产品标识位置、背景布局和光线方向。约束应简短而具体。</p>
+          <p>写清楚哪些细节要保持不变：五官、身体比例、发型、服装细节、产品标识的位置、背景布局和光线方向。约束尽量简短、具体。</p>
 
           <h3>6. 先生成短片，评估后再延长</h3>
-          <p>先用短草稿验证身份与动作。检查首尾帧、手、面部细节、镜头稳定性、背景结构与音画同步，优先修正最大问题。动作描述生效后，再制作长版本或通过延长继续序列。</p>
+          <p>先生成短片，检查主体有没有变样、动作是否符合预期。查看首尾帧、手、脸、镜头稳定性、背景结构和音画同步，优先修正最明显的问题。动作没问题后，再生成长版本或延长片段。</p>
 
           <h2>Seedance 2.5 提示词公式</h2>
-          <p>可靠的图生视频提示词可按以下顺序组合：</p>
+          <p>图生视频提示词可以按这个顺序组织：</p>
           <div class="prompt-box" lang="en" translate="no">[Subject anchor] + [primary action] + [camera movement] + [timing] + [environmental response] + [visual style] + [audio direction] + [consistency constraints]</div>
           <p>示例：</p>
           <div class="prompt-box" lang="en" translate="no">Use @Image 1 as the exact visual reference. The woman slowly turns toward the window and lifts the curtain with her right hand. The camera makes a subtle dolly in from a medium shot to a medium close-up over 8 seconds. Morning light grows warmer across her face while the curtain and loose hair move gently in the breeze. Natural cinematic realism, restrained motion, quiet room ambience. Preserve her facial features, red dress, body proportions, balcony geometry, and lighting direction. No sudden cuts, no extra fingers, no text.</div>
 
           <h2>推荐设置</h2>
-          <p>具体控件可能因界面而异。以下选项是制作目标，而非必须遵守的固定默认值。</p>
+          <p>不同界面提供的控件可能不同。下面的设置可以作为起点，再根据要制作的片段调整。</p>
           <table class="comparison">
             <thead>
               <tr><th>设置</th><th>起始选择</th><th>何时调整</th></tr>
@@ -207,17 +207,17 @@
           <div class="prompt-box" lang="en" translate="no">Use @Image 1 for the subject's exact appearance and @Video 1 only for camera path, pacing, and body movement. Recreate the same controlled arc and final framing while keeping the character, wardrobe, location, and color palette from @Image 1. Do not copy the identity, background, or styling from @Video 1.</div>
 
           <h2>如何控制参考而不制造冲突</h2>
-          <p>更多参考不会自动带来更好结果。为每份素材分配一项任务，并在提示词中明确用途。例如，一张图用于身份，另一张用于服装，一段视频用于动作，一段音频用于节奏。如果两份参考对同一属性有分歧，应明确优先级。</p>
-          <p>Seedance 2.5 官方文档介绍了对图像、视频、音频、动作、创意、泥模与编辑参考的更强控制。实际优势不在文件数量上限，而在于能准确告诉模型应从每份文件借用哪项属性。</p>
+          <p>为每份参考素材指定清楚的用途，并在提示词里说明。例如，一张图确定人物身份，另一张确定服装，视频提供动作，音频提供节奏。文件更多不一定效果更好；如果两份参考在同一项细节上有冲突，要说明以哪份为准。</p>
+          <p>Seedance 2.5 官方文档介绍了对图像、视频、音频、动作、创意、泥模和编辑参考的更强控制。你可以说明模型应从每份文件中采用哪项属性。在实际使用中，把用途写清楚比填满所有参考位置更有意义。</p>
 
           <h2>时间戳编辑与延长</h2>
-          <p>较长片段先写简单分镜时间表，再写完整提示词。每个区间安排一个动作和一个镜头指令。如果只有一处失败，要求在对应时间段局部修改并保留其他内容。延长时再次说明必须延续的人物、环境、风格、运动方向和声音连续性。</p>
+          <p>较长片段先写简单分镜时间表，再补充完整提示词。每个时间区间安排一个动作和一个镜头指令。如果只有一段有问题，就要求修改该时间段，保留其余内容。延长片段时，再次说明需要延续的人物、环境、画面风格、运动方向和声音。</p>
           <div class="prompt-box" lang="en" translate="no">Edit @Video 1. Keep the character, wardrobe, setting, lighting, and audio unchanged. Adjust only 6–9s: replace the sudden camera turn with a slow stabilized pan to the right, ending on the same final composition.</div>
 
           <h2>问题排查</h2>
 
           <h3>脸或产品发生变化</h3>
-          <p>减少姿势变化幅度，使用更清晰参考，缩短初稿，并重复必须固定的准确细节。产品应分别说明形状、材质、标签位置、标志与瓶盖。</p>
+          <p>可以先减小姿势变化幅度，换用更清楚的参考图，并缩短初稿。把必须保持的细节再写清楚。产品的形状、材质、标签位置、标识和瓶盖，最好分别说明。</p>
 
           <h3>动作显得僵硬</h3>
           <p>将“优雅移动”等抽象词换成可观察动作：重心移到左脚、转动肩膀、抬起右手，再看向镜头。主要动作成功后，再加入次要运动。</p>
@@ -226,10 +226,10 @@
           <p>删除竞争性的运镜，描述一条连续路径并给出起始和结束构图。“从中景缓慢推进至特写”比同时列出变焦、环绕、摇镜头、手持晃动和升降镜头更可控。</p>
 
           <h3>背景扭曲</h3>
-          <p>缩短移动范围，避免用平面来源图制造极端视差，并要求保持建筑、地平线、直线与空间布局。较宽的来源图通常能给镜头更多空间。</p>
+          <p>缩短移动范围，尽量别要求一张平面参考图产生极大的视差。说明建筑、地平线、直线和空间布局需要保持不变。参考图取景更宽时，通常能给镜头移动留出更多空间。</p>
 
-          <h3>片段过于繁忙或不连贯</h3>
-          <p>减少主体、动作、场景变化和风格修饰词。把故事拆成稳定节点，各节点成功后再延长或编辑。</p>
+          <h3>片段太杂乱，或情节不连贯</h3>
+          <p>减少主体、动作、场景变化和风格修饰词。把故事拆成几段，先让每一段稳定下来，再延长或编辑片段。</p>
 
           <h2>Seedance 2.0 与 Seedance 2.5</h2>
           <table class="comparison">
@@ -262,7 +262,7 @@
           <div class="faq">
             <details>
               <summary>Seedance 2.5 能把一张图片变成视频吗？</summary>
-              <p>可以。将图像作为视觉锚点，再用提示词指定主体动作、镜头路径、环境响应、时长与一致性约束。</p>
+              <p>可以。用图片确定画面，再说明主体的动作、镜头路径、环境要发生哪些变化、时长，以及需要保持一致的细节。</p>
             </details>
             <details>
               <summary>Seedance 2.5 视频最长多久？</summary>
@@ -270,11 +270,11 @@
             </details>
             <details>
               <summary>Seedance 2.5 的提示词应如何组织？</summary>
-              <p>使用：主体锚点、动作、运镜、时间安排、环境响应、视觉风格、音频指令与一致性约束。</p>
+              <p>先写主体，再写动作、运镜和时间安排，然后补充环境中的变化、视觉风格、音频指令，以及需要保持一致的细节。</p>
             </details>
             <details>
               <summary>应该用上所有可用参考吗？</summary>
-              <p>不必。只使用控制某项具体属性所需的参考。过多重叠参考会让优先级模糊。</p>
+              <p>只用控制某项属性所需的参考就可以了。如果多份参考都在规定同一些细节，模型可能难以分清优先级。</p>
             </details>
           </div>
 

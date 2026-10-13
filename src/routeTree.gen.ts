@@ -13,6 +13,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as GptImage2PromptsRouteImport } from './routes/gpt-image-2-prompts'
 import { Route as MinimaxH3PromptsRouteImport } from './routes/minimax-h3-prompts'
+import { Route as MuseImagePromptsRouteImport } from './routes/muse-image-prompts'
+import { Route as MuseVideoPromptsRouteImport } from './routes/muse-video-prompts'
 import { Route as PromptGuideRouteImport } from './routes/prompt-guide'
 import { Route as Seedance30PromptsRouteImport } from './routes/seedance-3-0-prompts'
 import { Route as ApiLaunchWaitlistRouteImport } from './routes/api/launch-waitlist'
@@ -21,6 +23,8 @@ import { Route as MinimaxH3PromptsSlugRouteImport } from './routes/minimax-h3-pr
 import { Route as ZhAppRouteImport } from './routes/zh.app'
 import { Route as ZhGptImage2PromptsRouteImport } from './routes/zh.gpt-image-2-prompts'
 import { Route as ZhMinimaxH3PromptsRouteImport } from './routes/zh.minimax-h3-prompts'
+import { Route as ZhMuseImagePromptsRouteImport } from './routes/zh.muse-image-prompts'
+import { Route as ZhMuseVideoPromptsRouteImport } from './routes/zh.muse-video-prompts'
 import { Route as ZhPromptGuideRouteImport } from './routes/zh.prompt-guide'
 import { Route as ZhSeedance30PromptsRouteImport } from './routes/zh.seedance-3-0-prompts'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
@@ -33,7 +37,9 @@ import { Route as ApiVideosGenerateRouteImport } from './routes/api/videos/gener
 import { Route as ApiVideosReferencesRouteImport } from './routes/api/videos/references'
 import { Route as ApiVideosStatusRouteImport } from './routes/api/videos/status'
 import { Route as AppImageGptImage2RouteImport } from './routes/app_.image.gpt-image-2'
+import { Route as AppImageMuseImageRouteImport } from './routes/app_.image.muse-image'
 import { Route as AppVideoMinimaxH3RouteImport } from './routes/app_.video.minimax-h3'
+import { Route as AppVideoMuseVideoRouteImport } from './routes/app_.video.muse-video'
 import { Route as AppVideoSeedance25RouteImport } from './routes/app_.video.seedance-2-5'
 import { Route as AppVideoSeedance3RouteImport } from './routes/app_.video.seedance-3'
 import { Route as PromptsGptImage2ImagesRouteImport } from './routes/prompts/gpt-image-2/images'
@@ -43,7 +49,9 @@ import { Route as ZhMinimaxH3PromptsSlugRouteImport } from './routes/zh.minimax-
 import { Route as ApiAdminReferralsAnyposesRouteImport } from './routes/api/admin/referrals/anyposes'
 import { Route as ApiAdminReferralsPixal3dRouteImport } from './routes/api/admin/referrals/pixal3d'
 import { Route as ZhAppImageGptImage2RouteImport } from './routes/zh.app_.image.gpt-image-2'
+import { Route as ZhAppImageMuseImageRouteImport } from './routes/zh.app_.image.muse-image'
 import { Route as ZhAppVideoMinimaxH3RouteImport } from './routes/zh.app_.video.minimax-h3'
+import { Route as ZhAppVideoMuseVideoRouteImport } from './routes/zh.app_.video.muse-video'
 import { Route as ZhAppVideoSeedance25RouteImport } from './routes/zh.app_.video.seedance-2-5'
 import { Route as ZhAppVideoSeedance3RouteImport } from './routes/zh.app_.video.seedance-3'
 
@@ -65,6 +73,16 @@ const GptImage2PromptsRoute = GptImage2PromptsRouteImport.update({
 const MinimaxH3PromptsRoute = MinimaxH3PromptsRouteImport.update({
   id: '/minimax-h3-prompts',
   path: '/minimax-h3-prompts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MuseImagePromptsRoute = MuseImagePromptsRouteImport.update({
+  id: '/muse-image-prompts',
+  path: '/muse-image-prompts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MuseVideoPromptsRoute = MuseVideoPromptsRouteImport.update({
+  id: '/muse-video-prompts',
+  path: '/muse-video-prompts',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PromptGuideRoute = PromptGuideRouteImport.update({
@@ -105,6 +123,16 @@ const ZhGptImage2PromptsRoute = ZhGptImage2PromptsRouteImport.update({
 const ZhMinimaxH3PromptsRoute = ZhMinimaxH3PromptsRouteImport.update({
   id: '/zh/minimax-h3-prompts',
   path: '/zh/minimax-h3-prompts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ZhMuseImagePromptsRoute = ZhMuseImagePromptsRouteImport.update({
+  id: '/zh/muse-image-prompts',
+  path: '/zh/muse-image-prompts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ZhMuseVideoPromptsRoute = ZhMuseVideoPromptsRouteImport.update({
+  id: '/zh/muse-video-prompts',
+  path: '/zh/muse-video-prompts',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ZhPromptGuideRoute = ZhPromptGuideRouteImport.update({
@@ -167,9 +195,19 @@ const AppImageGptImage2Route = AppImageGptImage2RouteImport.update({
   path: '/app/image/gpt-image-2',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppImageMuseImageRoute = AppImageMuseImageRouteImport.update({
+  id: '/app_/image/muse-image',
+  path: '/app/image/muse-image',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppVideoMinimaxH3Route = AppVideoMinimaxH3RouteImport.update({
   id: '/app_/video/minimax-h3',
   path: '/app/video/minimax-h3',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppVideoMuseVideoRoute = AppVideoMuseVideoRouteImport.update({
+  id: '/app_/video/muse-video',
+  path: '/app/video/muse-video',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppVideoSeedance25Route = AppVideoSeedance25RouteImport.update({
@@ -219,9 +257,19 @@ const ZhAppImageGptImage2Route = ZhAppImageGptImage2RouteImport.update({
   path: '/zh/app/image/gpt-image-2',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ZhAppImageMuseImageRoute = ZhAppImageMuseImageRouteImport.update({
+  id: '/zh/app_/image/muse-image',
+  path: '/zh/app/image/muse-image',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ZhAppVideoMinimaxH3Route = ZhAppVideoMinimaxH3RouteImport.update({
   id: '/zh/app_/video/minimax-h3',
   path: '/zh/app/video/minimax-h3',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ZhAppVideoMuseVideoRoute = ZhAppVideoMuseVideoRouteImport.update({
+  id: '/zh/app_/video/muse-video',
+  path: '/zh/app/video/muse-video',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ZhAppVideoSeedance25Route = ZhAppVideoSeedance25RouteImport.update({
@@ -240,6 +288,8 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRoute
   '/gpt-image-2-prompts': typeof GptImage2PromptsRoute
   '/minimax-h3-prompts': typeof MinimaxH3PromptsRoute
+  '/muse-image-prompts': typeof MuseImagePromptsRoute
+  '/muse-video-prompts': typeof MuseVideoPromptsRoute
   '/prompt-guide': typeof PromptGuideRoute
   '/seedance-3-0-prompts': typeof Seedance30PromptsRoute
   '/api/launch-waitlist': typeof ApiLaunchWaitlistRoute
@@ -248,6 +298,8 @@ export interface FileRoutesByFullPath {
   '/zh/app': typeof ZhAppRoute
   '/zh/gpt-image-2-prompts': typeof ZhGptImage2PromptsRoute
   '/zh/minimax-h3-prompts': typeof ZhMinimaxH3PromptsRoute
+  '/zh/muse-image-prompts': typeof ZhMuseImagePromptsRoute
+  '/zh/muse-video-prompts': typeof ZhMuseVideoPromptsRoute
   '/zh/prompt-guide': typeof ZhPromptGuideRoute
   '/zh/seedance-3-0-prompts': typeof ZhSeedance30PromptsRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -260,7 +312,9 @@ export interface FileRoutesByFullPath {
   '/api/videos/references': typeof ApiVideosReferencesRoute
   '/api/videos/status': typeof ApiVideosStatusRoute
   '/app/image/gpt-image-2': typeof AppImageGptImage2Route
+  '/app/image/muse-image': typeof AppImageMuseImageRoute
   '/app/video/minimax-h3': typeof AppVideoMinimaxH3Route
+  '/app/video/muse-video': typeof AppVideoMuseVideoRoute
   '/app/video/seedance-2-5': typeof AppVideoSeedance25Route
   '/app/video/seedance-3': typeof AppVideoSeedance3Route
   '/prompts/gpt-image-2/images': typeof PromptsGptImage2ImagesRoute
@@ -270,7 +324,9 @@ export interface FileRoutesByFullPath {
   '/api/admin/referrals/anyposes': typeof ApiAdminReferralsAnyposesRoute
   '/api/admin/referrals/pixal3d': typeof ApiAdminReferralsPixal3dRoute
   '/zh/app/image/gpt-image-2': typeof ZhAppImageGptImage2Route
+  '/zh/app/image/muse-image': typeof ZhAppImageMuseImageRoute
   '/zh/app/video/minimax-h3': typeof ZhAppVideoMinimaxH3Route
+  '/zh/app/video/muse-video': typeof ZhAppVideoMuseVideoRoute
   '/zh/app/video/seedance-2-5': typeof ZhAppVideoSeedance25Route
   '/zh/app/video/seedance-3': typeof ZhAppVideoSeedance3Route
 }
@@ -279,6 +335,8 @@ export interface FileRoutesByTo {
   '/app': typeof AppRoute
   '/gpt-image-2-prompts': typeof GptImage2PromptsRoute
   '/minimax-h3-prompts': typeof MinimaxH3PromptsRoute
+  '/muse-image-prompts': typeof MuseImagePromptsRoute
+  '/muse-video-prompts': typeof MuseVideoPromptsRoute
   '/prompt-guide': typeof PromptGuideRoute
   '/seedance-3-0-prompts': typeof Seedance30PromptsRoute
   '/api/launch-waitlist': typeof ApiLaunchWaitlistRoute
@@ -287,6 +345,8 @@ export interface FileRoutesByTo {
   '/zh/app': typeof ZhAppRoute
   '/zh/gpt-image-2-prompts': typeof ZhGptImage2PromptsRoute
   '/zh/minimax-h3-prompts': typeof ZhMinimaxH3PromptsRoute
+  '/zh/muse-image-prompts': typeof ZhMuseImagePromptsRoute
+  '/zh/muse-video-prompts': typeof ZhMuseVideoPromptsRoute
   '/zh/prompt-guide': typeof ZhPromptGuideRoute
   '/zh/seedance-3-0-prompts': typeof ZhSeedance30PromptsRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -299,7 +359,9 @@ export interface FileRoutesByTo {
   '/api/videos/references': typeof ApiVideosReferencesRoute
   '/api/videos/status': typeof ApiVideosStatusRoute
   '/app/image/gpt-image-2': typeof AppImageGptImage2Route
+  '/app/image/muse-image': typeof AppImageMuseImageRoute
   '/app/video/minimax-h3': typeof AppVideoMinimaxH3Route
+  '/app/video/muse-video': typeof AppVideoMuseVideoRoute
   '/app/video/seedance-2-5': typeof AppVideoSeedance25Route
   '/app/video/seedance-3': typeof AppVideoSeedance3Route
   '/prompts/gpt-image-2/images': typeof PromptsGptImage2ImagesRoute
@@ -309,7 +371,9 @@ export interface FileRoutesByTo {
   '/api/admin/referrals/anyposes': typeof ApiAdminReferralsAnyposesRoute
   '/api/admin/referrals/pixal3d': typeof ApiAdminReferralsPixal3dRoute
   '/zh/app/image/gpt-image-2': typeof ZhAppImageGptImage2Route
+  '/zh/app/image/muse-image': typeof ZhAppImageMuseImageRoute
   '/zh/app/video/minimax-h3': typeof ZhAppVideoMinimaxH3Route
+  '/zh/app/video/muse-video': typeof ZhAppVideoMuseVideoRoute
   '/zh/app/video/seedance-2-5': typeof ZhAppVideoSeedance25Route
   '/zh/app/video/seedance-3': typeof ZhAppVideoSeedance3Route
 }
@@ -319,6 +383,8 @@ export interface FileRoutesById {
   '/app': typeof AppRoute
   '/gpt-image-2-prompts': typeof GptImage2PromptsRoute
   '/minimax-h3-prompts': typeof MinimaxH3PromptsRoute
+  '/muse-image-prompts': typeof MuseImagePromptsRoute
+  '/muse-video-prompts': typeof MuseVideoPromptsRoute
   '/prompt-guide': typeof PromptGuideRoute
   '/seedance-3-0-prompts': typeof Seedance30PromptsRoute
   '/api/launch-waitlist': typeof ApiLaunchWaitlistRoute
@@ -327,6 +393,8 @@ export interface FileRoutesById {
   '/zh/app': typeof ZhAppRoute
   '/zh/gpt-image-2-prompts': typeof ZhGptImage2PromptsRoute
   '/zh/minimax-h3-prompts': typeof ZhMinimaxH3PromptsRoute
+  '/zh/muse-image-prompts': typeof ZhMuseImagePromptsRoute
+  '/zh/muse-video-prompts': typeof ZhMuseVideoPromptsRoute
   '/zh/prompt-guide': typeof ZhPromptGuideRoute
   '/zh/seedance-3-0-prompts': typeof ZhSeedance30PromptsRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -339,7 +407,9 @@ export interface FileRoutesById {
   '/api/videos/references': typeof ApiVideosReferencesRoute
   '/api/videos/status': typeof ApiVideosStatusRoute
   '/app_/image/gpt-image-2': typeof AppImageGptImage2Route
+  '/app_/image/muse-image': typeof AppImageMuseImageRoute
   '/app_/video/minimax-h3': typeof AppVideoMinimaxH3Route
+  '/app_/video/muse-video': typeof AppVideoMuseVideoRoute
   '/app_/video/seedance-2-5': typeof AppVideoSeedance25Route
   '/app_/video/seedance-3': typeof AppVideoSeedance3Route
   '/prompts/gpt-image-2/images': typeof PromptsGptImage2ImagesRoute
@@ -349,7 +419,9 @@ export interface FileRoutesById {
   '/api/admin/referrals/anyposes': typeof ApiAdminReferralsAnyposesRoute
   '/api/admin/referrals/pixal3d': typeof ApiAdminReferralsPixal3dRoute
   '/zh/app_/image/gpt-image-2': typeof ZhAppImageGptImage2Route
+  '/zh/app_/image/muse-image': typeof ZhAppImageMuseImageRoute
   '/zh/app_/video/minimax-h3': typeof ZhAppVideoMinimaxH3Route
+  '/zh/app_/video/muse-video': typeof ZhAppVideoMuseVideoRoute
   '/zh/app_/video/seedance-2-5': typeof ZhAppVideoSeedance25Route
   '/zh/app_/video/seedance-3': typeof ZhAppVideoSeedance3Route
 }
@@ -360,6 +432,8 @@ export interface FileRouteTypes {
     | '/app'
     | '/gpt-image-2-prompts'
     | '/minimax-h3-prompts'
+    | '/muse-image-prompts'
+    | '/muse-video-prompts'
     | '/prompt-guide'
     | '/seedance-3-0-prompts'
     | '/api/launch-waitlist'
@@ -368,6 +442,8 @@ export interface FileRouteTypes {
     | '/zh/app'
     | '/zh/gpt-image-2-prompts'
     | '/zh/minimax-h3-prompts'
+    | '/zh/muse-image-prompts'
+    | '/zh/muse-video-prompts'
     | '/zh/prompt-guide'
     | '/zh/seedance-3-0-prompts'
     | '/api/auth/$'
@@ -380,7 +456,9 @@ export interface FileRouteTypes {
     | '/api/videos/references'
     | '/api/videos/status'
     | '/app/image/gpt-image-2'
+    | '/app/image/muse-image'
     | '/app/video/minimax-h3'
+    | '/app/video/muse-video'
     | '/app/video/seedance-2-5'
     | '/app/video/seedance-3'
     | '/prompts/gpt-image-2/images'
@@ -390,7 +468,9 @@ export interface FileRouteTypes {
     | '/api/admin/referrals/anyposes'
     | '/api/admin/referrals/pixal3d'
     | '/zh/app/image/gpt-image-2'
+    | '/zh/app/image/muse-image'
     | '/zh/app/video/minimax-h3'
+    | '/zh/app/video/muse-video'
     | '/zh/app/video/seedance-2-5'
     | '/zh/app/video/seedance-3'
   fileRoutesByTo: FileRoutesByTo
@@ -399,6 +479,8 @@ export interface FileRouteTypes {
     | '/app'
     | '/gpt-image-2-prompts'
     | '/minimax-h3-prompts'
+    | '/muse-image-prompts'
+    | '/muse-video-prompts'
     | '/prompt-guide'
     | '/seedance-3-0-prompts'
     | '/api/launch-waitlist'
@@ -407,6 +489,8 @@ export interface FileRouteTypes {
     | '/zh/app'
     | '/zh/gpt-image-2-prompts'
     | '/zh/minimax-h3-prompts'
+    | '/zh/muse-image-prompts'
+    | '/zh/muse-video-prompts'
     | '/zh/prompt-guide'
     | '/zh/seedance-3-0-prompts'
     | '/api/auth/$'
@@ -419,7 +503,9 @@ export interface FileRouteTypes {
     | '/api/videos/references'
     | '/api/videos/status'
     | '/app/image/gpt-image-2'
+    | '/app/image/muse-image'
     | '/app/video/minimax-h3'
+    | '/app/video/muse-video'
     | '/app/video/seedance-2-5'
     | '/app/video/seedance-3'
     | '/prompts/gpt-image-2/images'
@@ -429,7 +515,9 @@ export interface FileRouteTypes {
     | '/api/admin/referrals/anyposes'
     | '/api/admin/referrals/pixal3d'
     | '/zh/app/image/gpt-image-2'
+    | '/zh/app/image/muse-image'
     | '/zh/app/video/minimax-h3'
+    | '/zh/app/video/muse-video'
     | '/zh/app/video/seedance-2-5'
     | '/zh/app/video/seedance-3'
   id:
@@ -438,6 +526,8 @@ export interface FileRouteTypes {
     | '/app'
     | '/gpt-image-2-prompts'
     | '/minimax-h3-prompts'
+    | '/muse-image-prompts'
+    | '/muse-video-prompts'
     | '/prompt-guide'
     | '/seedance-3-0-prompts'
     | '/api/launch-waitlist'
@@ -446,6 +536,8 @@ export interface FileRouteTypes {
     | '/zh/app'
     | '/zh/gpt-image-2-prompts'
     | '/zh/minimax-h3-prompts'
+    | '/zh/muse-image-prompts'
+    | '/zh/muse-video-prompts'
     | '/zh/prompt-guide'
     | '/zh/seedance-3-0-prompts'
     | '/api/auth/$'
@@ -458,7 +550,9 @@ export interface FileRouteTypes {
     | '/api/videos/references'
     | '/api/videos/status'
     | '/app_/image/gpt-image-2'
+    | '/app_/image/muse-image'
     | '/app_/video/minimax-h3'
+    | '/app_/video/muse-video'
     | '/app_/video/seedance-2-5'
     | '/app_/video/seedance-3'
     | '/prompts/gpt-image-2/images'
@@ -468,7 +562,9 @@ export interface FileRouteTypes {
     | '/api/admin/referrals/anyposes'
     | '/api/admin/referrals/pixal3d'
     | '/zh/app_/image/gpt-image-2'
+    | '/zh/app_/image/muse-image'
     | '/zh/app_/video/minimax-h3'
+    | '/zh/app_/video/muse-video'
     | '/zh/app_/video/seedance-2-5'
     | '/zh/app_/video/seedance-3'
   fileRoutesById: FileRoutesById
@@ -478,6 +574,8 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRoute
   GptImage2PromptsRoute: typeof GptImage2PromptsRoute
   MinimaxH3PromptsRoute: typeof MinimaxH3PromptsRoute
+  MuseImagePromptsRoute: typeof MuseImagePromptsRoute
+  MuseVideoPromptsRoute: typeof MuseVideoPromptsRoute
   PromptGuideRoute: typeof PromptGuideRoute
   Seedance30PromptsRoute: typeof Seedance30PromptsRoute
   ApiLaunchWaitlistRoute: typeof ApiLaunchWaitlistRoute
@@ -486,6 +584,8 @@ export interface RootRouteChildren {
   ZhAppRoute: typeof ZhAppRoute
   ZhGptImage2PromptsRoute: typeof ZhGptImage2PromptsRoute
   ZhMinimaxH3PromptsRoute: typeof ZhMinimaxH3PromptsRoute
+  ZhMuseImagePromptsRoute: typeof ZhMuseImagePromptsRoute
+  ZhMuseVideoPromptsRoute: typeof ZhMuseVideoPromptsRoute
   ZhPromptGuideRoute: typeof ZhPromptGuideRoute
   ZhSeedance30PromptsRoute: typeof ZhSeedance30PromptsRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
@@ -498,7 +598,9 @@ export interface RootRouteChildren {
   ApiVideosReferencesRoute: typeof ApiVideosReferencesRoute
   ApiVideosStatusRoute: typeof ApiVideosStatusRoute
   AppImageGptImage2Route: typeof AppImageGptImage2Route
+  AppImageMuseImageRoute: typeof AppImageMuseImageRoute
   AppVideoMinimaxH3Route: typeof AppVideoMinimaxH3Route
+  AppVideoMuseVideoRoute: typeof AppVideoMuseVideoRoute
   AppVideoSeedance25Route: typeof AppVideoSeedance25Route
   AppVideoSeedance3Route: typeof AppVideoSeedance3Route
   PromptsGptImage2ImagesRoute: typeof PromptsGptImage2ImagesRoute
@@ -508,7 +610,9 @@ export interface RootRouteChildren {
   ApiAdminReferralsAnyposesRoute: typeof ApiAdminReferralsAnyposesRoute
   ApiAdminReferralsPixal3dRoute: typeof ApiAdminReferralsPixal3dRoute
   ZhAppImageGptImage2Route: typeof ZhAppImageGptImage2Route
+  ZhAppImageMuseImageRoute: typeof ZhAppImageMuseImageRoute
   ZhAppVideoMinimaxH3Route: typeof ZhAppVideoMinimaxH3Route
+  ZhAppVideoMuseVideoRoute: typeof ZhAppVideoMuseVideoRoute
   ZhAppVideoSeedance25Route: typeof ZhAppVideoSeedance25Route
   ZhAppVideoSeedance3Route: typeof ZhAppVideoSeedance3Route
 }
@@ -541,6 +645,20 @@ declare module '@tanstack/react-router' {
       path: '/minimax-h3-prompts'
       fullPath: '/minimax-h3-prompts'
       preLoaderRoute: typeof MinimaxH3PromptsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/muse-image-prompts': {
+      id: '/muse-image-prompts'
+      path: '/muse-image-prompts'
+      fullPath: '/muse-image-prompts'
+      preLoaderRoute: typeof MuseImagePromptsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/muse-video-prompts': {
+      id: '/muse-video-prompts'
+      path: '/muse-video-prompts'
+      fullPath: '/muse-video-prompts'
+      preLoaderRoute: typeof MuseVideoPromptsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/prompt-guide': {
@@ -597,6 +715,20 @@ declare module '@tanstack/react-router' {
       path: '/zh/minimax-h3-prompts'
       fullPath: '/zh/minimax-h3-prompts'
       preLoaderRoute: typeof ZhMinimaxH3PromptsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/zh/muse-image-prompts': {
+      id: '/zh/muse-image-prompts'
+      path: '/zh/muse-image-prompts'
+      fullPath: '/zh/muse-image-prompts'
+      preLoaderRoute: typeof ZhMuseImagePromptsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/zh/muse-video-prompts': {
+      id: '/zh/muse-video-prompts'
+      path: '/zh/muse-video-prompts'
+      fullPath: '/zh/muse-video-prompts'
+      preLoaderRoute: typeof ZhMuseVideoPromptsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/zh/prompt-guide': {
@@ -683,11 +815,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppImageGptImage2RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app_/image/muse-image': {
+      id: '/app_/image/muse-image'
+      path: '/app/image/muse-image'
+      fullPath: '/app/image/muse-image'
+      preLoaderRoute: typeof AppImageMuseImageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/app_/video/minimax-h3': {
       id: '/app_/video/minimax-h3'
       path: '/app/video/minimax-h3'
       fullPath: '/app/video/minimax-h3'
       preLoaderRoute: typeof AppVideoMinimaxH3RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app_/video/muse-video': {
+      id: '/app_/video/muse-video'
+      path: '/app/video/muse-video'
+      fullPath: '/app/video/muse-video'
+      preLoaderRoute: typeof AppVideoMuseVideoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app_/video/seedance-2-5': {
@@ -753,11 +899,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ZhAppImageGptImage2RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/zh/app_/image/muse-image': {
+      id: '/zh/app_/image/muse-image'
+      path: '/zh/app/image/muse-image'
+      fullPath: '/zh/app/image/muse-image'
+      preLoaderRoute: typeof ZhAppImageMuseImageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/zh/app_/video/minimax-h3': {
       id: '/zh/app_/video/minimax-h3'
       path: '/zh/app/video/minimax-h3'
       fullPath: '/zh/app/video/minimax-h3'
       preLoaderRoute: typeof ZhAppVideoMinimaxH3RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/zh/app_/video/muse-video': {
+      id: '/zh/app_/video/muse-video'
+      path: '/zh/app/video/muse-video'
+      fullPath: '/zh/app/video/muse-video'
+      preLoaderRoute: typeof ZhAppVideoMuseVideoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/zh/app_/video/seedance-2-5': {
@@ -782,6 +942,8 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRoute,
   GptImage2PromptsRoute: GptImage2PromptsRoute,
   MinimaxH3PromptsRoute: MinimaxH3PromptsRoute,
+  MuseImagePromptsRoute: MuseImagePromptsRoute,
+  MuseVideoPromptsRoute: MuseVideoPromptsRoute,
   PromptGuideRoute: PromptGuideRoute,
   Seedance30PromptsRoute: Seedance30PromptsRoute,
   ApiLaunchWaitlistRoute: ApiLaunchWaitlistRoute,
@@ -790,6 +952,8 @@ const rootRouteChildren: RootRouteChildren = {
   ZhAppRoute: ZhAppRoute,
   ZhGptImage2PromptsRoute: ZhGptImage2PromptsRoute,
   ZhMinimaxH3PromptsRoute: ZhMinimaxH3PromptsRoute,
+  ZhMuseImagePromptsRoute: ZhMuseImagePromptsRoute,
+  ZhMuseVideoPromptsRoute: ZhMuseVideoPromptsRoute,
   ZhPromptGuideRoute: ZhPromptGuideRoute,
   ZhSeedance30PromptsRoute: ZhSeedance30PromptsRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
@@ -802,7 +966,9 @@ const rootRouteChildren: RootRouteChildren = {
   ApiVideosReferencesRoute: ApiVideosReferencesRoute,
   ApiVideosStatusRoute: ApiVideosStatusRoute,
   AppImageGptImage2Route: AppImageGptImage2Route,
+  AppImageMuseImageRoute: AppImageMuseImageRoute,
   AppVideoMinimaxH3Route: AppVideoMinimaxH3Route,
+  AppVideoMuseVideoRoute: AppVideoMuseVideoRoute,
   AppVideoSeedance25Route: AppVideoSeedance25Route,
   AppVideoSeedance3Route: AppVideoSeedance3Route,
   PromptsGptImage2ImagesRoute: PromptsGptImage2ImagesRoute,
@@ -812,7 +978,9 @@ const rootRouteChildren: RootRouteChildren = {
   ApiAdminReferralsAnyposesRoute: ApiAdminReferralsAnyposesRoute,
   ApiAdminReferralsPixal3dRoute: ApiAdminReferralsPixal3dRoute,
   ZhAppImageGptImage2Route: ZhAppImageGptImage2Route,
+  ZhAppImageMuseImageRoute: ZhAppImageMuseImageRoute,
   ZhAppVideoMinimaxH3Route: ZhAppVideoMinimaxH3Route,
+  ZhAppVideoMuseVideoRoute: ZhAppVideoMuseVideoRoute,
   ZhAppVideoSeedance25Route: ZhAppVideoSeedance25Route,
   ZhAppVideoSeedance3Route: ZhAppVideoSeedance3Route,
 }

@@ -5,6 +5,8 @@ const modelPaths = Object.freeze({
   'minimax-h3': '/app/video/minimax-h3',
   'seedance-3': '/app/video/seedance-3',
   'gpt-image-2': '/app/image/gpt-image-2',
+  'muse-video': '/app/video/muse-video',
+  'muse-image': '/app/image/muse-image',
 })
 
 const legacyPaths = Object.freeze({
@@ -28,6 +30,12 @@ export function legacyModelRedirect(url) {
   if (legacyPaths[pathname]) return localizedPath(legacyPaths[pathname], locale) + url.search
   if (pathname === '/app' || pathname === '/app/') {
     const modelId = url.searchParams.get('model')
+    if (modelId === 'muse-video' || modelId === 'muse-image') {
+      const search = new URLSearchParams(url.search)
+      search.delete('model')
+      const query = search.toString()
+      return canonicalModelPath(modelId, locale) + (query ? '?' + query : '')
+    }
     if (modelId && [...url.searchParams.keys()].every(key => key === 'model')) {
       return canonicalModelPath(modelId, locale)
     }

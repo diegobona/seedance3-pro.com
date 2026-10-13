@@ -51,7 +51,7 @@
       {
         "@type": "Question",
         "name": "Can Seedance 2.5 turn one image into a video?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Yes. Use the image as the visual anchor, then prompt the desired subject motion, camera path, environment response, duration, and consistency constraints." }
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. Use the image to define the scene, then describe the subject’s motion, camera path, how the environment should respond, duration and details that need to stay consistent." }
       },
       {
         "@type": "Question",
@@ -61,12 +61,12 @@
       {
         "@type": "Question",
         "name": "What is the best Seedance 2.5 prompt structure?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Use: subject anchor, action, camera movement, timing, environment response, visual style, audio direction, and consistency constraints." }
+        "acceptedAnswer": { "@type": "Answer", "text": "Describe the subject first, followed by the action, camera movement and timing. Then add the environment’s response, visual style, audio direction and details that must remain consistent." }
       },
       {
         "@type": "Question",
         "name": "Should I use all available references?",
-        "acceptedAnswer": { "@type": "Answer", "text": "No. Use only the references needed to control a specific property. Too many overlapping references can make priorities unclear." }
+        "acceptedAnswer": { "@type": "Answer", "text": "Use the references you need to control a specific property. Too many references covering the same details can leave their priority unclear." }
       }
     ]
   }
@@ -102,7 +102,7 @@
         </nav>
         <p class="eyebrow">Updated September 12, 2026</p>
         <h1 class="display">Seedance 2.5 Image-to-Video Guide</h1>
-        <p class="lead">Turn a still image into a controlled video by treating the image as your visual anchor and the prompt as a motion plan. This guide covers the workflow, prompt structure, settings, examples, and fixes that matter most.</p>
+        <p class="lead">For image-to-video, the still image defines what the scene looks like; the prompt describes how it moves. This guide walks through the workflow, prompt structure and settings, with examples and ways to fix common problems.</p>
         <div class="fact-grid" aria-label="Seedance 2.5 key capabilities">
           <div class="fact"><strong>30 sec</strong><span>Maximum single generation</span></div>
           <div class="fact"><strong>30 images</strong><span>Maximum image references</span></div>
@@ -119,45 +119,45 @@
 
           <div class="status-panel">
             <span class="tag lime">What changed</span>
-            <h3>Seedance 2.5 is built for longer, more controllable video creation</h3>
-            <p>ByteDance says Seedance 2.5 can generate up to 30 seconds in one pass, accept up to 30 images, 10 videos, and 10 audio clips as references, and apply timestamp-level editing. Those capabilities make reference planning and time-based prompting more important than they were in shorter workflows.</p>
+            <h3>Seedance 2.5 supports longer clips and more control</h3>
+            <p>ByteDance says Seedance 2.5 can generate up to 30 seconds in one pass, use up to 30 images, 10 videos and 10 audio clips as references, and edit at specific timestamps. Longer clips and more references call for closer planning of which assets to use and when each action happens.</p>
             <p><a class="card-link" href="https://seed.bytedance.com/en/blog/one-take-creation-flexible-referencing-introducing-seedance-2-5" target="_blank" rel="noopener noreferrer">Read the Seedance 2.5 launch announcement</a></p>
           </div>
 
           <h2>How to use Seedance 2.5 for image-to-video</h2>
 
-          <h3>1. Choose a production-ready reference image</h3>
-          <p>Your source image establishes identity, composition, lighting, wardrobe, and object geometry. Use an image with a clearly visible subject, natural anatomy, enough space for the intended motion, and no accidental text or visual artifacts. If the face or product is already distorted in the input, motion will usually amplify the problem.</p>
+          <h3>1. Choose a clear reference image</h3>
+          <p>The source image sets the subject’s identity, composition, lighting, clothing and object shapes. Choose one where the subject is clear, the anatomy looks natural and there is room for the planned motion. Check for stray text and visual artifacts too. A distorted face or product in the input will usually look worse once it moves.</p>
           <ul>
             <li>Use a sharp image with the subject separated from the background.</li>
             <li>Match the source aspect ratio to the final platform whenever possible.</li>
             <li>Leave visual space in the direction the subject or camera will move.</li>
-            <li>Avoid asking a tight portrait to become a distant full-body shot in one step.</li>
+            <li>Avoid turning a tightly framed portrait into a distant full-body shot in a single step.</li>
           </ul>
 
           <h3>2. Define one visual objective</h3>
-          <p>Decide what the clip must accomplish before writing the prompt: animate a portrait, reveal a product, establish a location, reproduce a camera move, or create a short narrative beat. One clip can contain multiple shots, but every shot should support the same objective.</p>
+          <p>Before writing the prompt, decide what you need from the clip: a moving portrait, a product reveal, a view of a location, a specific camera move or a short story moment. A clip can include several shots, as long as they serve that same goal.</p>
 
-          <h3>3. Describe motion, not the image</h3>
-          <p>The model can already see the reference. Spend prompt space on what changes over time: eye movement, hand motion, fabric response, camera path, environmental motion, sound, and the final pose. Use concrete verbs and a clear sequence.</p>
+          <h3>3. Describe how the image should move</h3>
+          <p>The model can see the reference image, so use the prompt to explain what changes: where the eyes look, how the hands and fabric move, the camera path, movement in the environment, sound and the final pose. Use concrete verbs and put the actions in order.</p>
 
           <h3>4. Add camera direction and timing</h3>
-          <p>Choose one main movement such as a slow dolly in, lateral tracking shot, controlled orbit, tilt up, or locked-off shot. For longer clips, assign actions to time ranges. Timestamp instructions help separate narrative beats and reduce contradictory motion.</p>
+          <p>Choose one main camera movement, such as a slow dolly in, a lateral tracking shot, a controlled orbit, a tilt up or a locked-off shot. For longer clips, give each action a time range. Timestamps help keep story moments separate and reduce conflicting motion instructions.</p>
 
           <h3>5. Add consistency constraints</h3>
-          <p>State what must not change. Useful constraints include: preserve the subject's facial features, body proportions, hairstyle, clothing details, product logo placement, background layout, and lighting direction. Constraints work best when they are specific and short.</p>
+          <p>List the details that must stay the same: facial features, body proportions, hairstyle, clothing details, product logo placement, background layout and lighting direction. Keep these constraints short and specific.</p>
 
           <h3>6. Generate short, evaluate, and extend</h3>
-          <p>Begin with a short draft to validate identity and motion. Review the first and final frames, hands, facial details, camera stability, background geometry, and audio synchronization. Fix the largest problem first. Once the motion language works, create the longer version or use extension to continue the sequence.</p>
+          <p>Start with a short draft to check the subject’s identity and movement. Look at the first and last frames, hands, face, camera stability, background geometry and audio synchronization. Fix the biggest problem first. Once the motion works, generate a longer version or extend the sequence.</p>
 
           <h2>Seedance 2.5 prompt formula</h2>
-          <p>A reliable image-to-video prompt can be assembled in this order:</p>
+          <p>You can build an image-to-video prompt in this order:</p>
           <div class="prompt-box">[Subject anchor] + [primary action] + [camera movement] + [timing] + [environmental response] + [visual style] + [audio direction] + [consistency constraints]</div>
           <p>Example:</p>
           <div class="prompt-box">Use @Image 1 as the exact visual reference. The woman slowly turns toward the window and lifts the curtain with her right hand. The camera makes a subtle dolly in from a medium shot to a medium close-up over 8 seconds. Morning light grows warmer across her face while the curtain and loose hair move gently in the breeze. Natural cinematic realism, restrained motion, quiet room ambience. Preserve her facial features, red dress, body proportions, balcony geometry, and lighting direction. No sudden cuts, no extra fingers, no text.</div>
 
           <h2>Recommended settings</h2>
-          <p>The exact controls available can vary by interface. Use these choices as production targets rather than rigid defaults.</p>
+          <p>Available controls vary by interface. Treat the choices below as starting points and adjust them to the clip you want to make.</p>
           <table class="comparison">
             <thead>
               <tr><th>Setting</th><th>Starting point</th><th>When to change it</th></tr>
@@ -187,17 +187,17 @@
           <div class="prompt-box">Use @Image 1 for the subject's exact appearance and @Video 1 only for camera path, pacing, and body movement. Recreate the same controlled arc and final framing while keeping the character, wardrobe, location, and color palette from @Image 1. Do not copy the identity, background, or styling from @Video 1.</div>
 
           <h2>How to control references without creating conflicts</h2>
-          <p>More references do not automatically produce a better result. Assign one job to each asset and name that job in the prompt. For example, use one image for identity, another for wardrobe, one video for motion, and one audio clip for rhythm. If two references disagree about the same feature, choose a priority explicitly.</p>
-          <p>Seedance 2.5's official documentation describes stronger control over image, video, audio, motion, creative, clay-render, and editing references. The practical advantage is not the maximum number of files—it is the ability to tell the model exactly which property to borrow from each file.</p>
+          <p>Give each reference a clear role and name it in the prompt. For example, one image can define the character’s identity, another their clothing, a video the motion, and an audio clip the rhythm. Adding more files will not necessarily improve the result. If references disagree on the same feature, say which one takes priority.</p>
+          <p>Seedance 2.5’s official documentation describes stronger control over image, video, audio, motion, creative, clay-render and editing references. This lets you specify which property the model should take from each file, which matters more in practice than filling every available reference slot.</p>
 
           <h2>Timestamp editing and extensions</h2>
-          <p>For a longer clip, write a simple shot schedule before the full prose prompt. Give each interval one action and one camera instruction. If only one part fails, request a targeted change for that time range while preserving the rest of the sequence. For extensions, restate the character, environment, visual style, motion direction, and sound continuity that must carry forward.</p>
+          <p>For a longer clip, sketch out the shot schedule before writing the full prompt. Give each time interval one action and one camera instruction. If one section fails, ask for a change to that time range while keeping the rest. When extending a clip, restate the character, environment, visual style, motion direction and sound that need to continue.</p>
           <div class="prompt-box">Edit @Video 1. Keep the character, wardrobe, setting, lighting, and audio unchanged. Adjust only 6–9s: replace the sudden camera turn with a slow stabilized pan to the right, ending on the same final composition.</div>
 
           <h2>Troubleshooting</h2>
 
           <h3>The face or product changes</h3>
-          <p>Reduce the size of the pose change, use a clearer reference, shorten the first draft, and repeat the exact visual details that must remain fixed. For products, identify shape, material, label position, logo, and cap separately.</p>
+          <p>Try a smaller pose change, a clearer reference and a shorter first draft. Repeat the visual details that must stay fixed. For a product, describe its shape, material, label position, logo and cap separately.</p>
 
           <h3>Motion looks stiff</h3>
           <p>Replace abstract verbs such as “moves beautifully” with observable movement: shifts weight to the left foot, turns the shoulders, raises the right hand, then looks toward camera. Add secondary motion only after the main action works.</p>
@@ -206,10 +206,10 @@
           <p>Remove competing moves and describe one continuous path with a start frame and end frame. “Slow dolly in from medium shot to close-up” is more controllable than a list containing zoom, orbit, pan, handheld shake, and crane movement.</p>
 
           <h3>The background warps</h3>
-          <p>Use a shorter movement, avoid extreme parallax from a flat source image, and instruct the model to preserve architecture, horizon, straight lines, and spatial layout. A wider source image usually gives the camera more room.</p>
+          <p>Keep the movement shorter and avoid asking a flat source image to produce extreme parallax. Tell the model to preserve buildings, the horizon, straight lines and the spatial layout. A wider source image usually leaves more room for the camera to move.</p>
 
-          <h3>The clip feels busy or incoherent</h3>
-          <p>Reduce the number of subjects, actions, scene changes, and style modifiers. Create the story as separate stable beats, then extend or edit after each beat works.</p>
+          <h3>The clip is too busy or hard to follow</h3>
+          <p>Use fewer subjects, actions, scene changes and style modifiers. Split the story into separate moments; get each one working before extending or editing the sequence.</p>
 
           <h2>Seedance 2.0 vs Seedance 2.5</h2>
           <table class="comparison">
@@ -242,7 +242,7 @@
           <div class="faq">
             <details>
               <summary>Can Seedance 2.5 turn one image into a video?</summary>
-              <p>Yes. Use the image as the visual anchor, then prompt the desired subject motion, camera path, environment response, duration, and consistency constraints.</p>
+              <p>Yes. Use the image to define the scene, then describe the subject’s motion, camera path, how the environment should respond, duration and details that need to stay consistent.</p>
             </details>
             <details>
               <summary>How long can a Seedance 2.5 video be?</summary>
@@ -250,11 +250,11 @@
             </details>
             <details>
               <summary>What is the best Seedance 2.5 prompt structure?</summary>
-              <p>Use: subject anchor, action, camera movement, timing, environment response, visual style, audio direction, and consistency constraints.</p>
+              <p>Describe the subject first, followed by the action, camera movement and timing. Then add the environment’s response, visual style, audio direction and details that must remain consistent.</p>
             </details>
             <details>
               <summary>Should I use all available references?</summary>
-              <p>No. Use only the references needed to control a specific property. Too many overlapping references can make priorities unclear.</p>
+              <p>Use the references you need to control a specific property. Too many references covering the same details can leave their priority unclear.</p>
             </details>
           </div>
 

@@ -8,6 +8,8 @@ This map records the page that owns each search intent. Primary navigation and `
 | Seedance 2.5 video workspace | `/app/video/seedance-2-5` | Functional direct URL; hidden from navigation, noindex, absent from sitemap |
 | MiniMax H3 text-to-video and image-to-video tool | `/app/video/minimax-h3` | Published, indexable |
 | GPT Image 2 generation and editing tool | `/app/image/gpt-image-2` | Published, indexable |
+| Muse Video workspace | `/app/video/muse-video` | Editable workspace preview; generation unavailable, noindex, absent from sitemap |
+| Muse Image workspace | `/app/image/muse-image` | Editable workspace preview; generation unavailable, noindex, absent from sitemap |
 | Pose to Image explanation | `/pose-to-image` | Published, indexable; existing URL retained |
 | Pose reference examples | `/pose-reference-camera-angle-examples` | Published, indexable; existing URL retained |
 | Generic and Pose workspace | `/app/` and `/app/?model=pose-to-image` | Functional, noindex |
@@ -17,6 +19,8 @@ This map records the page that owns each search intent. Primary navigation and `
 | Prompt guide | `/prompt-guide` | Coming Soon page; noindex, absent from sitemap |
 | MiniMax H3 Prompt Library | `/minimax-h3-prompts` | Published, indexable; original H3 examples inside the studio layout |
 | GPT Image 2 Prompt Library | `/gpt-image-2-prompts` | Published, indexable; original images inside the studio layout |
+| Muse Video Prompt Library | `/muse-video-prompts` | Starter video templates with workspace prefill; no generated examples, noindex, absent from sitemap |
+| Muse Image Prompt Library | `/muse-image-prompts` | Starter image templates with workspace prefill; no generated examples, noindex, absent from sitemap |
 | Seedance 3.0 Prompt Library | `/seedance-3-0-prompts` | Reserved Coming Soon content inside the studio layout; noindex, absent from sitemap |
 | Original H3 video cases | `/minimax-h3-prompts/{slug}` | Five published, indexable video-first modal pages; linked from Showcase |
 | Original GPT Image 2 cases | `/gpt-image-2-prompts/{slug}` | Five published, indexable image-first modal pages; linked from the GPT Image 2 showcase |
@@ -31,5 +35,7 @@ The legacy pricing page is noindex and absent from the sitemap; direct access re
 The prompt guide and Seedance 3.0 prompt index remain Coming Soon, noindex, and absent from the sitemap. The H3 video index and five detail pages use the original prompts recorded in `media/showcase-h3/2026-09-25/generation.json`; each detail URL is directly accessible and renders as a large modal over a subdued video gallery. The GPT Image 2 index and five detail pages use the prompts in `src/data/gpt-image-cases.json`, with original API images and optimized WebP assets in `media/showcase-gpt-image-2/2026-09-26/`. Both model showcases share the same card hover actions and Try Now handoff to the matching generator.
 
 ## Contextual internal links
+
+Muse workspaces and libraries also have `/zh` equivalents. Studio and preview navigation link to all four pages. Muse `/app/?model=...` aliases redirect to the matching preview, preserving prompt drafts and other query parameters.
 
 Model generators and Prompt Libraries link to relevant prompting or pose-reference tutorials. Those tutorials link back to published tools, libraries and selected original cases using descriptive text. Case dialogs retain related works, their parent library and prompt handoff to the generator, and include a Home breadcrumb. The Blog index offers video, image and pose workflow entry points. These links render in HTML and use the canonical extensionless destinations.

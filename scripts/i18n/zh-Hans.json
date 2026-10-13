@@ -7621,6 +7621,482 @@
     {
       "source": "Official model catalog (Chinese)",
       "translation": "官方模型目录（中文）"
+    },
+    {
+      "source": "Arrange two friends at a café, a runner with a dog, or a group surrounded by pets and furniture. Set up the picture you have in mind, then use AI to create the image.",
+      "translation": "咖啡馆里的两位朋友、带狗跑步的人，或与宠物和家具同框的一群人，都可以先摆好位置，再用 AI 生成想要的图像。"
+    },
+    {
+      "source": "Suppose you want one person sitting, another standing behind them, and a dog at the front where a chair cannot hide it. Arranging that scene can take less time than explaining every position in a prompt.",
+      "translation": "比如，你想让一个人坐着，另一个人站在身后，狗在前面，还不能被椅子挡住。直接把场景摆出来，可能比在提示词里逐个解释位置更省时间。"
+    },
+    {
+      "source": "Add male and female figures and choose from 36 human poses, including sitting, walking, gestures and action poses.",
+      "translation": "可以添加男性和女性人偶，并从 36 种人物姿势中选择坐姿、走路、手势或动作。"
+    },
+    {
+      "source": "Add cats, dogs and horses, including several of the same animal. Each animal has suitable poses such as sitting, walking and running.",
+      "translation": "猫、狗和马都可以添加，同一种动物也能放入多个。每种动物都有适用的姿势，例如坐着、走路和跑步。"
+    },
+    {
+      "source": "Arrange a complete scene",
+      "translation": "摆好完整的场景"
+    },
+    {
+      "source": "Choose the people and animals, set their poses, and place the props around them. The whole arrangement becomes a single reference image.",
+      "translation": "选好人物和动物，设置姿势，再把道具放到合适的位置。整组布局会出现在同一张参考图里。"
+    },
+    {
+      "source": "Before writing the prompt, arrange two people, a horse, a dog and a cat, with boxes and a stool around them. Leave enough space to see each subject clearly.",
+      "translation": "写提示词前，先摆好两个人、一匹马、一只狗和一只猫，再在旁边放上箱子和凳子。主体之间留出空隙，方便看清每一个。"
+    },
+    {
+      "source": "Arrange three friends, a dog, a cat, a table, two chairs and a ball before generating the image. Raise the camera to show the table and keep the whole group in view.",
+      "translation": "生成图像前，先摆好三位朋友、一只狗、一只猫、一张桌子、两把椅子和一个球。抬高镜头，有助于看清桌子，也让整组主体都进入画面。"
+    },
+    {
+      "source": "You can add several of the same animal. In this scene, two horses stand on either side of two people, with boxes in the foreground.",
+      "translation": "同一种动物可以添加多个。这个场景里，两匹马站在两个人的两侧，箱子放在前景。"
+    },
+    {
+      "source": "The two horses remain on opposite sides of the two people, with both boxes in the foreground. The horses have different proportions in the generated image.",
+      "translation": "两匹马仍在两个人的两侧，两个箱子也保留在前景。生成图中，马的比例有所变化。"
+    },
+    {
+      "source": "Choose each person’s pose and adjust the space between them. The same controls work for a standing portrait or a seated conversation.",
+      "translation": "分别选择人物姿势，再调整两人之间的距离。站立合影和坐着交谈，都可以用同一套控件来安排。"
+    },
+    {
+      "source": "Place each seated figure on a chair, then add a table between them to connect the two poses in one scene.",
+      "translation": "给两位坐着的人各放一把椅子，再在中间摆张桌子，就能把两个独立姿势连成同一个场景。"
+    },
+    {
+      "source": "The two chairs and central table form a café scene. The people turn toward each other, with some changes to their arms and legs.",
+      "translation": "两把椅子和中间的桌子组成了咖啡馆场景。两个人转向彼此，手臂和腿的姿势也略有变化。"
+    },
+    {
+      "source": "A kneeling person, a sitting dog and a ball suggest an interaction. Place the ball where you want the viewer to look.",
+      "translation": "一个跪着的人、一只坐着的狗和一个球，就能让人看出它们之间的互动。把球放在你希望观众注意的位置。"
+    },
+    {
+      "source": "Arrange three animals together",
+      "translation": "把三只动物摆在一起"
+    },
+    {
+      "source": "Check spacing, visibility and detail",
+      "translation": "检查间距、遮挡和细节"
+    },
+    {
+      "source": "After generation, check the details that matter to you, especially hands, pet count, furniture and the crop. The reference guides the image, so some details can still change.",
+      "translation": "生成后，检查你在意的细节，尤其是手、宠物数量、家具和裁切。参考图用来引导生成，部分细节仍可能变化。"
+    },
+    {
+      "source": "Build a scene for your image",
+      "translation": "为图像摆好场景"
+    },
+    {
+      "source": "Start with a pose, add the people, animals and props you need, then choose a camera angle for your scene. You can edit and download the reference without signing in.",
+      "translation": "从一个姿势开始，添加需要的人物、动物和道具，再选择适合场景的镜头角度。编辑和下载参考图都无需登录。"
+    },
+    {
+      "source": "H3 leads the image-to-video Arena snapshot used here and has the lowest published API price in this comparison. Seedance 2.5 supports 30-second generation, a much larger set of references and timestamp editing. Kling 3.0 focuses on storyboards, dialogue and multi-shot scenes.",
+      "translation": "在本文采用的图生视频 Arena 排名快照中，H3 领先，公开 API 价格也是三者中最低的。Seedance 2.5 支持 30 秒生成、更多参考素材和时间戳编辑。Kling 3.0 则侧重分镜、对白和多镜头场景。"
+    },
+    {
+      "source": "published first-party API rates at 720p/768p. Seedance is a 720p estimate based on BytePlus ModelArk token billing without video input (assuming 1280×720 at 24 fps). H3 is 768p; Kling is 720p with native audio. These are the closest public rates for comparison, though the output specifications differ.",
+      "translation": "按第一方公开的 720p/768p API 费率比较。Seedance 的 720p 费用根据 BytePlus ModelArk token 计费估算，不包含视频输入，假设输出为 1280×720、24 fps。H3 为 768p；Kling 为带原生音频的 720p。这是最接近的公开费率对比，但输出规格并不完全一致。"
+    },
+    {
+      "source": "At roughly comparable resolutions, a 10-second clip costs about $0.80 with H3, $1.26 with Kling 3.0 and native audio, or $2.31 with Seedance 2.5, based on published first-party API rates.",
+      "translation": "按第一方公开 API 费率，在近似分辨率下生成 10 秒片段，H3 约为 $0.80，带原生音频的 Kling 3.0 为 $1.26，Seedance 2.5 约为 $2.31。"
+    },
+    {
+      "source": "BytePlus has different billing routes.",
+      "translation": "BytePlus 的不同入口采用不同费率。"
+    },
+    {
+      "source": "you need a 20 to 30 second scene, many references, or the ability to revise part of a clip without regenerating the whole thing.",
+      "translation": "需要 20 至 30 秒的场景、大量参考素材，或希望只修改片段的一部分，避免整段重新生成。"
+    },
+    {
+      "source": "clips are limited to 15 seconds. The initial open release also excludes MiniMax’s hosted Context-IR preprocessing and 2K regeneration components.",
+      "translation": "片段最长为 15 秒。最初开放发布的内容还不包含 MiniMax 托管的 Context-IR 预处理和 2K 重新生成组件。"
+    },
+    {
+      "source": "your scenes follow a shot list, dialogue beats and camera directions.",
+      "translation": "场景需要按分镜表、对白节奏和运镜指令来制作。"
+    },
+    {
+      "source": "its public I2V score in this comparison is below H3 and Seedance 2.5.",
+      "translation": "本文采用的公开图生视频分数低于 H3 和 Seedance 2.5。"
+    },
+    {
+      "source": "For a default model, choose H3 for value and I2V, or Seedance 2.5 for production control. Kling 3.0 is a more specialized choice for scenes planned around a storyboard.",
+      "translation": "如果要选一个常用模型，重视性价比和图生视频可以选 H3，重视制作控制可以选 Seedance 2.5。按分镜制作场景时，Kling 3.0 更有针对性。"
+    },
+    {
+      "source": "If you are adding AI video features to your app in 2026, Seedance is an API to consider. Its documentation on Volcengine Ark covers API keys, authentication, file uploads, task creation and lookup, with separate pricing pages and official developer tutorials.",
+      "translation": "如果你想在 2026 年为应用加入 AI 视频功能，可以了解一下 Seedance API。火山引擎方舟的文档涵盖 API 密钥、身份验证、文件上传、任务创建和查询，也提供单独的价格页面和官方开发教程。"
+    },
+    {
+      "source": "Seedance uses an asynchronous task flow. You create a video generation task, receive a task ID, then query it until the output is ready. The docs also include a Files API for passing reference images, audio or video when a text prompt alone is not enough.",
+      "translation": "Seedance 采用异步任务流程：先创建视频生成任务，拿到任务 ID，再查询任务，直到输出完成。如果只用文字提示词不够，还可以通过文档中的 Files API 传入图像、音频或视频参考。"
+    },
+    {
+      "source": "Seedance is a family of video generation models available through Volcengine Ark. The official model and release pages describe image, video and audio references, along with video editing and extension, for newer releases. These capabilities let you use it beyond basic text-to-video demos.",
+      "translation": "Seedance 是火山引擎方舟提供的视频生成模型系列。官方模型页面和发布说明介绍了较新版本支持的图像、视频和音频参考，以及视频编辑、延长等功能。这些能力可以用于基础文生视频演示以外的场景。"
+    },
+    {
+      "source": "Products that can use the Seedance API include:",
+      "translation": "Seedance API 可以用于这些产品："
+    },
+    {
+      "source": "The official API reference covers API key setup and authentication. Video generation prices are listed on a separate page and updated independently, so check the cost before designing your production workflow.",
+      "translation": "官方 API 文档介绍了密钥设置和身份验证。视频生成价格列在单独的页面中，并独立更新，因此设计生产流程前，先确认所用模型的费用。"
+    },
+    {
+      "source": "The workflow has these steps:",
+      "translation": "接入流程包括以下步骤："
+    },
+    {
+      "source": "The official API docs document file operations, video task creation and task queries separately.",
+      "translation": "官方 API 文档分别介绍了文件操作、视频任务创建和任务查询。"
+    },
+    {
+      "source": "Build your integration around video jobs: creation and completion happen in separate requests.",
+      "translation": "接入时要围绕视频任务来设计：创建任务和获取完成结果需要分别请求。"
+    },
+    {
+      "source": "A basic integration needs to create the task, store its ID, poll its status and handle either success or failure.",
+      "translation": "基础接入需要完成任务创建、保存 ID、轮询状态，并处理成功或失败的结果。"
+    },
+    {
+      "source": "For reference-based generation, upload files first and reuse their IDs across requests. The official docs cover file upload, retrieval, listing and deletion, which suggests that reusing assets is part of the intended workflow.",
+      "translation": "如果要用参考素材生成视频，可以先上传文件，再在不同请求中复用文件 ID。官方文档介绍了文件上传、查询、列表和删除操作，看起来素材复用也是这套流程考虑的用法。"
+    },
+    {
+      "source": "Uploading the same files repeatedly takes extra time, complicates the workflow and makes problems harder to trace.",
+      "translation": "反复上传同一份文件会花费额外时间，让流程更复杂，也更难排查问题。"
+    },
+    {
+      "source": "It is easy to underestimate how much prompt structure affects the result. Volcengine publishes Seedance prompt guides and video generation tutorials alongside the API docs, suggesting that the way you write instructions has a large effect on output quality.",
+      "translation": "提示词结构对结果的影响容易被低估。火山引擎在 API 文档之外，还提供 Seedance 提示词指南和视频生成教程，这也说明指令的写法对输出质量有较大影响。"
+    },
+    {
+      "source": "A useful Seedance prompt usually includes:",
+      "translation": "一条好用的 Seedance 提示词通常会写清楚："
+    },
+    {
+      "source": "Concrete visual instructions give the model more to work with than a vague request like “make it look amazing and cinematic.”",
+      "translation": "具体的视觉指令能让模型更清楚地理解需求，比含糊地写一句“make it look amazing and cinematic.”更有用。"
+    },
+    {
+      "source": "Most Seedance API mistakes come from basic integration choices.",
+      "translation": "Seedance API 接入中的常见问题，大多出在基础流程的处理上。"
+    },
+    {
+      "source": "A common mistake is expecting a video request to return the finished result immediately. The documented workflow is task-based, so your code needs polling, retries and status handling.",
+      "translation": "一个常见误区是以为发出视频请求后，就能立即拿到生成结果。文档采用任务式流程，因此代码需要处理轮询、重试和任务状态。"
+    },
+    {
+      "source": "Check costs before choosing a model for production. Seedance prices are maintained on a separate page, and video generation costs can vary by model tier.",
+      "translation": "选择生产环境使用的模型前，先确认费用。Seedance 的价格在单独的页面中维护，不同模型档位的视频生成成本可能不同。"
+    },
+    {
+      "source": "Avoid packing incompatible camera moves, styles and scene changes into the same prompt. Asking for too much at once usually lowers output quality.",
+      "translation": "提示词里尽量别同时塞入相互冲突的镜头动作、风格和场景变化。一条指令要求得太多，通常会影响输出质量。"
+    },
+    {
+      "source": "Use reusable file references where possible; uploading the same source assets for every job adds unnecessary work.",
+      "translation": "尽量复用文件引用；每个任务都重新上传相同素材，会增加不必要的工作。"
+    },
+    {
+      "source": "For a production integration, keep the architecture simple:",
+      "translation": "在生产环境中接入时，尽量保持架构简单："
+    },
+    {
+      "source": "The official SDK and tutorials can help you build a cleaner integration than making every HTTP call by hand.",
+      "translation": "官方 SDK 和教程有助于简化接入，减少手动编写每个 HTTP 请求的工作。"
+    },
+    {
+      "source": "API integration architecture",
+      "translation": "API 接入架构"
+    },
+    {
+      "source": "Start with a small working integration",
+      "translation": "先跑通最小接入流程"
+    },
+    {
+      "source": "The Volcengine Ark docs describe a clear integration flow: authenticate, upload files if needed, create a video generation task, poll its status and return the result to your app. Video generation takes multiple requests, but the sequence is straightforward. Dedicated pricing pages, prompt guides and official tutorials also make development easier than assembling scattered examples.",
+      "translation": "火山引擎方舟的文档给出了清楚的接入流程：完成身份验证，按需上传文件，创建视频生成任务，轮询状态，再把结果返回应用。生成视频需要多次请求，但流程本身不复杂。单独的价格页面、提示词指南和官方教程，也让开发者更容易完成接入，省去拼凑零散示例的麻烦。"
+    },
+    {
+      "source": "To ship quickly, start with one model, one prompt template, one task queue and one polling flow. Get that loop working before optimizing the rest of the integration.",
+      "translation": "如果想尽快上线，可以先用一个模型、一套提示词模板、一个任务队列和一套轮询流程。先跑通这条链路，再逐步优化其他部分。"
+    },
+    {
+      "source": "For image-to-video, the still image defines what the scene looks like; the prompt describes how it moves. This guide walks through the workflow, prompt structure and settings, with examples and ways to fix common problems.",
+      "translation": "做图生视频时，静态图决定画面是什么样，提示词则说明画面要怎么动。本指南介绍操作流程、提示词结构和设置，并提供示例和常见问题的处理方法。"
+    },
+    {
+      "source": "Seedance 2.5 supports longer clips and more control",
+      "translation": "Seedance 2.5 支持更长片段和更多控制方式"
+    },
+    {
+      "source": "ByteDance says Seedance 2.5 can generate up to 30 seconds in one pass, use up to 30 images, 10 videos and 10 audio clips as references, and edit at specific timestamps. Longer clips and more references call for closer planning of which assets to use and when each action happens.",
+      "translation": "字节跳动表示，Seedance 2.5 单次可生成最多 30 秒视频，使用最多 30 张图片、10 段视频和 10 段音频作为参考，并支持时间戳级编辑。片段更长、参考更多，也就需要更仔细地安排素材用途和每个动作发生的时间。"
+    },
+    {
+      "source": "1. Choose a clear reference image",
+      "translation": "1. 选择清晰的参考图"
+    },
+    {
+      "source": "The source image sets the subject’s identity, composition, lighting, clothing and object shapes. Choose one where the subject is clear, the anatomy looks natural and there is room for the planned motion. Check for stray text and visual artifacts too. A distorted face or product in the input will usually look worse once it moves.",
+      "translation": "参考图决定主体身份、构图、光线、服装和物体形状。选择主体清楚、身体结构自然的图片，并给计划中的动作留出空间。也要检查多余文字和图像瑕疵：输入中的脸或产品如果已经变形，动起来后通常会更明显。"
+    },
+    {
+      "source": "Avoid turning a tightly framed portrait into a distant full-body shot in a single step.",
+      "translation": "尽量别让一张紧凑的人像近景，一步变成远处的全身镜头。"
+    },
+    {
+      "source": "Before writing the prompt, decide what you need from the clip: a moving portrait, a product reveal, a view of a location, a specific camera move or a short story moment. A clip can include several shots, as long as they serve that same goal.",
+      "translation": "写提示词前，先想清楚片段要做什么：让肖像动起来、展示产品、交代地点、复现某种运镜，或表现一个短暂的故事情节。片段可以包含多个镜头，只要它们服务于同一个目标。"
+    },
+    {
+      "source": "3. Describe how the image should move",
+      "translation": "3. 描述画面要怎么动"
+    },
+    {
+      "source": "The model can see the reference image, so use the prompt to explain what changes: where the eyes look, how the hands and fabric move, the camera path, movement in the environment, sound and the final pose. Use concrete verbs and put the actions in order.",
+      "translation": "模型已经能看到参考图，提示词可以重点说明哪些内容要变化：眼睛看向哪里、手和布料怎么动、镜头怎么走、环境中有哪些运动、声音是什么，以及最后停在什么姿势。动作尽量写具体，并交代先后顺序。"
+    },
+    {
+      "source": "Choose one main camera movement, such as a slow dolly in, a lateral tracking shot, a controlled orbit, a tilt up or a locked-off shot. For longer clips, give each action a time range. Timestamps help keep story moments separate and reduce conflicting motion instructions.",
+      "translation": "选择一种主要运镜，比如缓慢推进、横向跟拍、可控环绕、上摇或固定镜头。片段较长时，可以为每个动作分配时间区间。时间戳有助于分清各段情节，也能减少相互冲突的动作指令。"
+    },
+    {
+      "source": "List the details that must stay the same: facial features, body proportions, hairstyle, clothing details, product logo placement, background layout and lighting direction. Keep these constraints short and specific.",
+      "translation": "写清楚哪些细节要保持不变：五官、身体比例、发型、服装细节、产品标识的位置、背景布局和光线方向。约束尽量简短、具体。"
+    },
+    {
+      "source": "Start with a short draft to check the subject’s identity and movement. Look at the first and last frames, hands, face, camera stability, background geometry and audio synchronization. Fix the biggest problem first. Once the motion works, generate a longer version or extend the sequence.",
+      "translation": "先生成短片，检查主体有没有变样、动作是否符合预期。查看首尾帧、手、脸、镜头稳定性、背景结构和音画同步，优先修正最明显的问题。动作没问题后，再生成长版本或延长片段。"
+    },
+    {
+      "source": "You can build an image-to-video prompt in this order:",
+      "translation": "图生视频提示词可以按这个顺序组织："
+    },
+    {
+      "source": "Available controls vary by interface. Treat the choices below as starting points and adjust them to the clip you want to make.",
+      "translation": "不同界面提供的控件可能不同。下面的设置可以作为起点，再根据要制作的片段调整。"
+    },
+    {
+      "source": "Give each reference a clear role and name it in the prompt. For example, one image can define the character’s identity, another their clothing, a video the motion, and an audio clip the rhythm. Adding more files will not necessarily improve the result. If references disagree on the same feature, say which one takes priority.",
+      "translation": "为每份参考素材指定清楚的用途，并在提示词里说明。例如，一张图确定人物身份，另一张确定服装，视频提供动作，音频提供节奏。文件更多不一定效果更好；如果两份参考在同一项细节上有冲突，要说明以哪份为准。"
+    },
+    {
+      "source": "Seedance 2.5’s official documentation describes stronger control over image, video, audio, motion, creative, clay-render and editing references. This lets you specify which property the model should take from each file, which matters more in practice than filling every available reference slot.",
+      "translation": "Seedance 2.5 官方文档介绍了对图像、视频、音频、动作、创意、泥模和编辑参考的更强控制。你可以说明模型应从每份文件中采用哪项属性。在实际使用中，把用途写清楚比填满所有参考位置更有意义。"
+    },
+    {
+      "source": "For a longer clip, sketch out the shot schedule before writing the full prompt. Give each time interval one action and one camera instruction. If one section fails, ask for a change to that time range while keeping the rest. When extending a clip, restate the character, environment, visual style, motion direction and sound that need to continue.",
+      "translation": "较长片段先写简单分镜时间表，再补充完整提示词。每个时间区间安排一个动作和一个镜头指令。如果只有一段有问题，就要求修改该时间段，保留其余内容。延长片段时，再次说明需要延续的人物、环境、画面风格、运动方向和声音。"
+    },
+    {
+      "source": "Try a smaller pose change, a clearer reference and a shorter first draft. Repeat the visual details that must stay fixed. For a product, describe its shape, material, label position, logo and cap separately.",
+      "translation": "可以先减小姿势变化幅度，换用更清楚的参考图，并缩短初稿。把必须保持的细节再写清楚。产品的形状、材质、标签位置、标识和瓶盖，最好分别说明。"
+    },
+    {
+      "source": "Keep the movement shorter and avoid asking a flat source image to produce extreme parallax. Tell the model to preserve buildings, the horizon, straight lines and the spatial layout. A wider source image usually leaves more room for the camera to move.",
+      "translation": "缩短移动范围，尽量别要求一张平面参考图产生极大的视差。说明建筑、地平线、直线和空间布局需要保持不变。参考图取景更宽时，通常能给镜头移动留出更多空间。"
+    },
+    {
+      "source": "The clip is too busy or hard to follow",
+      "translation": "片段太杂乱，或情节不连贯"
+    },
+    {
+      "source": "Use fewer subjects, actions, scene changes and style modifiers. Split the story into separate moments; get each one working before extending or editing the sequence.",
+      "translation": "减少主体、动作、场景变化和风格修饰词。把故事拆成几段，先让每一段稳定下来，再延长或编辑片段。"
+    },
+    {
+      "source": "Yes. Use the image to define the scene, then describe the subject’s motion, camera path, movement in the environment, duration and details that need to stay consistent.",
+      "translation": "可以。用图片确定画面，再说明主体的动作、镜头路径、环境中的运动、时长，以及需要保持一致的细节。"
+    },
+    {
+      "source": "Describe the subject first, followed by the action, camera movement and timing. Then add the environment’s response, visual style, audio direction and details that must remain consistent.",
+      "translation": "先写主体，再写动作、运镜和时间安排，然后补充环境中的变化、视觉风格、音频指令，以及需要保持一致的细节。"
+    },
+    {
+      "source": "Use the references you need to control a specific property. Too many references covering the same details can leave their priority unclear.",
+      "translation": "只用控制某项属性所需的参考就可以了。如果多份参考都在规定同一些细节，模型可能难以分清优先级。"
+    },
+    {
+      "source": "Seedance Prompt Examples for Scenes and Camera Moves",
+      "translation": "Seedance 场景与运镜提示词示例"
+    },
+    {
+      "source": "The examples below cover Seedance scene prompts and camera directions for cinematic, anime, fantasy and everyday settings. Adjust the composition, lighting and motion to suit your idea.",
+      "translation": "下面的示例涵盖电影、动漫、奇幻和日常场景的 Seedance 提示词，以及不同的运镜方式。可以按自己的创意调整构图、光线和动作。"
+    },
+    {
+      "source": "See how the camera and action choices work in",
+      "translation": "可以看看这些镜头与动作如何用在"
+    },
+    {
+      "source": ". Both are original MiniMax H3 videos, with the exact prompts used to generate them.",
+      "translation": "中。这两部 MiniMax H3 原创视频都附有生成时使用的原始提示词。"
+    },
+    {
+      "source": ". Adjust the camera ideas in this guide to suit the controls that tool provides.",
+      "translation": "中尝试自己的分镜描述，并按工具提供的控件调整这里的运镜思路。"
+    },
+    {
+      "source": "Both tools can produce strong visuals. The differences become clearer when you need consistent control across many outputs. This comparison looks at day-to-day production, where a single polished demo does not tell you enough.",
+      "translation": "两者都能生成不错的画面。需要批量制作、持续控制输出时，差别才更容易看出来。本页关注日常制作流程，单看一条精美的演示视频，还不足以判断哪个更合适。"
+    },
+    {
+      "source": "Seedance workflows use explicit references for multimodal control, making it easier to carry the same campaign approach across several variants. Kling can produce strong individual results, though you may need to adjust the prompt wording to keep outputs consistent.",
+      "translation": "Seedance 流程通过明确指定参考素材来控制不同模态，便于把同一套广告思路用在多个版本中。Kling 的单次生成效果也可以很好，但想保持多次输出一致，可能需要调整提示词的写法。"
+    },
+    {
+      "source": "When you use camera and style references together, Seedance-style reference mapping often helps the output stay closer to them. Consider this if your workflow depends on reusing references predictably.",
+      "translation": "同时使用镜头和风格参考时，Seedance 式的参考映射通常有助于减少输出偏离。如果你的流程需要反复使用同一组参考，并得到较稳定的结果，这一点值得考虑。"
+    },
+    {
+      "source": "For TikTok and Reels, reusable 9:16 prompt templates often matter more than a single cinematic clip. Seedance templates that put the hook first can make repeated ad testing easier.",
+      "translation": "制作 TikTok 和 Reels 内容时，可复用的 9:16 提示词模板，往往比一条电影感很强的片段更有用。把开头吸引点写进 Seedance 模板，有助于反复制作和测试广告版本。"
+    },
+    {
+      "source": "For a team, clear iteration logs help explain why an output changed and speed up creative work. When everyone uses the same prompt structure, Seedance workflows are easier to standardize. A model that supports that process is usually the better fit.",
+      "translation": "对团队来说，清楚的迭代记录有助于判断输出为什么变了，也能加快创意制作。所有人使用同一套提示词结构时，Seedance 流程更容易统一。能支持这套工作方式的模型，通常更适合团队。"
+    },
+    {
+      "source": "Choose according to how you work. Seedance-style workflows are often stronger when you need repeatable results and production guided by references. For more open-ended exploration with fewer operational constraints, test both models with your own benchmark prompts before deciding.",
+      "translation": "按自己的工作方式来选。如果需要较强的可重复性，并主要依靠参考素材制作，Seedance 式流程往往更合适。如果更重视开放式探索，对操作流程的限制较少，可以先用自己的基准提示词测试两个模型，再决定。"
+    },
+    {
+      "source": "Performance marketing needs a way to produce and test ad variants repeatedly. A few isolated “good-looking” clips are not enough. This guide explains how to use Seedance workflows to make 9:16 variants in volume for testing.",
+      "translation": "做效果营销，需要能反复制作和测试不同的广告版本。偶尔生成几条“好看”的片段还不够。本指南介绍如何用 Seedance 流程批量制作 9:16 广告版本，用于测试。"
+    },
+    {
+      "source": "1) Write the opening first",
+      "translation": "1）先写开场"
+    },
+    {
+      "source": "Start with the first two seconds. Decide what viewers should notice, what emotion the opening should convey and how the product appears. Put those three elements in one prompt sentence.",
+      "translation": "先写前两秒：观众要注意什么、开场要传达什么情绪、产品怎么出现。把这三项放进提示词的同一句话里。"
+    },
+    {
+      "source": "For most direct-response tests, use a 9:16 aspect ratio and a duration of 6 to 12 seconds. Deliver social videos at 1080p and keep the main subject centered so cropping does not cut it off.",
+      "translation": "多数以直接转化为目标的测试，可以使用 9:16 比例、6 至 12 秒时长。发布到社交平台时采用 1080p，并让主要主体居中，减少裁切时被截掉的风险。"
+    },
+    {
+      "source": "3) Use motion references for an opening that catches attention",
+      "translation": "3）用动作参考做一个吸引注意的开场"
+    },
+    {
+      "source": "Use one reference clip to define the camera movement and one reference image to keep the product recognizable. Name both references in the prompt so the model has a clear guide for the motion.",
+      "translation": "用一段参考视频确定运镜，用一张参考图保持产品特征。在提示词中明确引用这两份素材，让模型按指定方式运动，减少随机发挥。"
+    },
+    {
+      "source": "Make a “safe” variant, a “high-energy” variant and a “UGC-style” variant. Keep the offer and CTA the same across all three, so differences in performance are easier to trace to the creative approach.",
+      "translation": "做一个稳妥版本、一个节奏强烈的版本，再做一个 UGC 风格版本。三个版本的优惠信息和行动号召保持一致，这样更容易判断效果差异是否来自创意本身。"
+    },
+    {
+      "source": "When music drives the ad, mark the beats in the prompt and place scene changes at the drops. This often improves completion rates and can make the opening more effective at stopping the scroll.",
+      "translation": "如果广告主要靠音乐带动，可以在提示词中标出节拍，让场景变化对上重拍。这通常有助于提高完播率，也可能让开场更容易留住正在滑动的观众。"
+    },
+    {
+      "source": "Check whether the opening is clear, the product is recognizable, the pacing works and the CTA is visible. Use the same criteria for every batch so the team can compare creative quality objectively.",
+      "translation": "检查开场是否清楚、产品是否容易辨认、节奏是否合适，以及行动号召是否可见。每一批都按同样的标准检查，团队才方便客观比较创意质量。"
+    },
+    {
+      "source": "Official sources are checked once a day at 09:00 Beijing time. If a completed check finds new Seedance 3.0 entries, they appear here with their source publication dates and the dates we first found them. Those dates are listed separately and do not establish when the model was released.",
+      "translation": "每天北京时间上午 9 点检查一次官方来源。检查完成后，新发现的 Seedance 3.0 消息会显示在这里，并分别标注原文发布日期和首次发现时间。这些日期不代表模型的上线日期。"
+    },
+    {
+      "source": "The first automatic check is still pending. The timeline below contains the sources reviewed earlier for this page.",
+      "translation": "自动检查还未运行。下方时间线列出的是本页此前核对过的来源。"
+    },
+    {
+      "source": "Each daily check adds official titles and source links to the updates above. If a source is unavailable, earlier messages stay visible and the check is marked incomplete. A model name or announcement headline alone does not confirm dates, prices or specifications.",
+      "translation": "每日检查会把官方标题和原文链接加入上方动态。如果某个来源无法访问，之前保存的消息仍会显示，同时标明本次检查未完成。仅凭模型名称或公告标题，无法确认日期、价格或规格。"
+    },
+    {
+      "source": "MiniMax H3 is a released multimodal video model. This page compares its published capabilities with what we can verify about SEEDANCE 3.0, which stays marked Coming Soon until official public specifications are confirmed.",
+      "translation": "MiniMax H3 是已发布的多模态视频模型。本页根据已公布的信息，把它与 SEEDANCE 3.0 对照。在官方公开规格得到核实前，本站仍将后者标记为“即将推出”。"
+    },
+    {
+      "source": "Use an available model, or follow release updates",
+      "translation": "先用已开放的模型，或关注发布消息"
+    },
+    {
+      "source": "MiniMax H3 has published capabilities and an official access route. This site is still tracking the release of SEEDANCE 3.0, so there is not enough confirmed information to compare their video quality.",
+      "translation": "MiniMax H3 已公布能力，也有官方使用入口。本站仍在追踪 SEEDANCE 3.0 的发布消息，目前还没有足够的已确认信息来比较两者的画质。"
+    },
+    {
+      "source": "Published multimodal capabilities",
+      "translation": "已公布的多模态能力"
+    },
+    {
+      "source": "MiniMax H3 is worth considering if you need a mix of visual and audio references, native sound, vertical or landscape formats, and a documented duration range.",
+      "translation": "如果你需要混合使用视觉和音频参考、生成原生声音、采用竖屏或横屏格式，并希望时长范围有明确文档可查，可以了解一下 MiniMax H3。"
+    },
+    {
+      "source": "Its published specifications provide a basis for writing guides and prompt examples, and for planning production.",
+      "translation": "它已公布的规格，可以作为编写指南、提示词示例和规划制作的依据。"
+    },
+    {
+      "source": "Check the facts before planning production",
+      "translation": "根据可核实的信息安排制作"
+    },
+    {
+      "source": "SEEDANCE 3.0 is the main focus of this site. Its product preview leaves output limits, pricing, model access and commercial rights unconfirmed where those details have not been verified.",
+      "translation": "SEEDANCE 3.0 是本站的主要主题。对于尚未核实的输出限制、价格、模型入口和商业使用权，产品预览会保留待确认状态。"
+    },
+    {
+      "source": "Once verifiable information is available, we will update the comparison using the same fields as MiniMax H3. That will give creators a clearer basis for choosing between them.",
+      "translation": "有可核实的信息后，本页会按 MiniMax H3 的相同维度补充对比，方便创作者据此选择。"
+    },
+    {
+      "source": "See original MiniMax H3 videos",
+      "translation": "看看 MiniMax H3 原创视频"
+    },
+    {
+      "source": "The official API reference has separate sections for file operations, video task creation and task queries.",
+      "translation": "官方 API 文档分别介绍了文件操作、视频任务创建和任务查询。"
+    },
+    {
+      "source": "For reference-based generation, upload files first and reuse their IDs across requests. The official docs cover file upload, retrieval, listing and deletion, which strongly suggests that reusing assets is part of the intended workflow.",
+      "translation": "如果要用参考素材生成视频，可以先上传文件，再在不同请求中复用文件 ID。官方文档介绍了文件上传、查询、列表和删除操作，这些设计很可能也考虑了素材复用。"
+    },
+    {
+      "source": "Yes. Use the image to define the scene, then describe the subject’s motion, camera path, how the environment should respond, duration and details that need to stay consistent.",
+      "translation": "可以。用图片确定画面，再说明主体的动作、镜头路径、环境要发生哪些变化、时长，以及需要保持一致的细节。"
+    },
+    {
+      "source": "Performance marketing needs repeatable creative production. This guide explains how to use Seedance workflows to generate 9:16 ad variants in volume for testing.",
+      "translation": "做效果营销，需要能反复制作和测试不同的广告版本。本指南介绍如何用 Seedance 流程批量制作 9:16 广告版本，用于测试。"
+    },
+    {
+      "source": ".",
+      "translation": "。"
+    },
+    {
+      "source": "Muse Video workspace",
+      "translation": "Muse Video 工作台"
+    },
+    {
+      "source": "Muse Image workspace",
+      "translation": "Muse Image 工作台"
+    },
+    {
+      "source": "Muse Video Prompt Library",
+      "translation": "Muse Video 提示词库"
+    },
+    {
+      "source": "Muse Image Prompt Library",
+      "translation": "Muse Image 提示词库"
     }
   ]
 }

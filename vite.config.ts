@@ -27,6 +27,7 @@ export default defineConfig(({ command }) => ({
           '/api/*', '/_serverFn/*', '/app', '/app/', '/app/video/*', '/app/image/*', '/zh/app', '/zh/app/', '/zh/app/video/*', '/zh/app/image/*',
           '/prompt-guide', '/zh/prompt-guide', '/minimax-h3-prompts*', '/gpt-image-2-prompts*', '/seedance-3-0-prompts*',
           '/zh/minimax-h3-prompts*', '/zh/gpt-image-2-prompts*', '/zh/seedance-3-0-prompts*',
+          '/muse-video-prompts*', '/muse-image-prompts*', '/zh/muse-video-prompts*', '/zh/muse-image-prompts*',
         ] }
       } : undefined,
     }),

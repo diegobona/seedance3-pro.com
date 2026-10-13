@@ -10,7 +10,7 @@ const ATTR_PATTERN = /([\w:-]+)\s*=\s*("([^"]*)"|'([^']*)')/g;
 const TEXT_ATTRIBUTES = new Set(['alt', 'aria-label', 'title', 'placeholder']);
 const SCHEMA_TEXT_KEYS = new Set(['name', 'headline', 'description', 'text', 'articleBody', 'keywords', 'caption']);
 const RESOURCE_PREFIX = /^\/(?:assets|media|blog-assets|api|admin|app\/pose-assets)(?:\/|$)/;
-const PUBLIC_DYNAMIC_PREFIX = /^\/(?:app(?:\/|$)|minimax-h3-prompts(?:\/|$)|gpt-image-2-prompts(?:\/|$)|nano-banana-2-lite-prompts(?:\/|$)|seedance-3-0-prompts(?:\/|$)|prompt-guide(?:\/|$)|login(?:\/|$)|account(?:\/|$)|signup(?:\/|$))/;
+const PUBLIC_DYNAMIC_PREFIX = /^\/(?:app(?:\/|$)|minimax-h3-prompts(?:\/|$)|gpt-image-2-prompts(?:\/|$)|muse-video-prompts(?:\/|$)|muse-image-prompts(?:\/|$)|nano-banana-2-lite-prompts(?:\/|$)|seedance-3-0-prompts(?:\/|$)|prompt-guide(?:\/|$)|login(?:\/|$)|account(?:\/|$)|signup(?:\/|$))/;
 const VOID_ELEMENTS = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr']);
 
 export function decodeText(text) {

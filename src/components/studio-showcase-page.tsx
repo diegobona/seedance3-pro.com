@@ -6,11 +6,13 @@ import { UserMenu } from './user-menu'
 import { h3VideoCases, h3VideoCaseTryUrl, h3VideoCaseUrl } from '../data/h3-video-cases'
 import { gptImageCases, gptImageCaseTryUrl, gptImageCaseUrl } from '../data/gpt-image-cases'
 import { seedance3PlannedPrompts, seedance3PromptTryUrl } from '../data/seedance3-planned-prompts'
+import { museImagePrompts, museVideoPrompts, musePromptTryUrl, type MuseModel } from '../data/muse-prompts'
 import '../../app/studio.css'
 import '../styles/auth.css'
 import '../styles/studio-showcase.css'
+import '../styles/muse-workspace.css'
 
-export type StudioShowcaseModel = 'minimax-h3' | 'gpt-image-2' | 'seedance-3-0'
+export type StudioShowcaseModel = 'minimax-h3' | 'gpt-image-2' | 'seedance-3-0' | MuseModel
 
 const showcaseContent = {
   'minimax-h3': {
@@ -27,6 +29,16 @@ const showcaseContent = {
     label: 'AI VIDEO / VIDEO PROMPTS',
     title: 'Seedance 3.0 Prompt Library',
     description: '',
+  },
+  'muse-video': {
+    label: 'AI VIDEO / VIDEO PROMPTS',
+    title: 'Muse Video Prompt Library',
+    description: 'Start a video draft with these writing templates for scenes, camera movement and visual storytelling. Read a prompt and open it in the Muse Video workspace. Generation is not available in this workspace yet.',
+  },
+  'muse-image': {
+    label: 'AI IMAGE / IMAGE PROMPTS',
+    title: 'Muse Image Prompt Library',
+    description: 'Start an image draft with these writing templates for composition, lighting and visual style. Read a prompt and open it in the Muse Image workspace. Generation is not available in this workspace yet.',
   },
 } as const
 
@@ -141,6 +153,26 @@ function Seedance3PlannedGrid() {
   )
 }
 
+function MusePromptGrid({ model }: { model: MuseModel }) {
+  const { t, path } = useSiteI18n()
+  const isVideo = model === 'muse-video'
+  const prompts = isVideo ? museVideoPrompts : museImagePrompts
+  return (
+    <section className={`studio-showcase-grid muse-template-grid ${isVideo ? 'is-video' : 'is-image'}`} aria-label={t(isVideo ? 'Muse Video prompt templates' : 'Muse Image prompt templates')}>
+      {prompts.map((item) => (
+        <article className="studio-showcase-card muse-template-card" key={item.slug}>
+          <div className="muse-template-card-heading"><span>{t(item.category)}</span><h2>{t(item.title)}</h2><p>{t(item.summary)}</p></div>
+          <div className="seedance3-planned-card-body">
+            <span>{t('Starter template · No generated result')}</span>
+            <details><summary>{t('Read prompt')}</summary><p>{item.prompt}</p></details>
+            <a href={path(musePromptTryUrl(model, item.prompt))}>{t(isVideo ? 'Open in Muse Video workspace ↗' : 'Open in Muse Image workspace ↗')}</a>
+          </div>
+        </article>
+      ))}
+    </section>
+  )
+}
+
 function PromptLibraryGuide({ model }: { model: 'minimax-h3' | 'gpt-image-2' }) {
   const { t, path } = useSiteI18n()
   const isVideo = model === 'minimax-h3'
@@ -186,8 +218,9 @@ export function StudioShowcasePage({ model }: { model: StudioShowcaseModel }) {
           <button className="sidebar-close" type="button" aria-label={t("Close model navigation")} onClick={() => setSidebarOpen(false)}>×</button>
           <nav aria-label={t("Model navigation")}>
             <div className="nav-section">
-              <div className="section-heading"><span>{t("AI VIDEO")}</span><span>02</span></div>
+              <div className="section-heading"><span>{t("AI VIDEO")}</span><span>03</span></div>
               <a className="model-button price-model" href={path("/app/video/minimax-h3")}><span className="model-symbol cyan">{t("H3")}</span><span><strong>{t("MiniMax H3")}</strong><small>{t("Text-to-video, image-to-video")}</small></span><em className="price-badge">{t("FROM ")}<b>$0.01</b></em></a>
+              <a className="model-button release-model" href={path('/app/video/muse-video')}><span className="model-symbol cyan">MV</span><span className="release-model-copy"><span className="release-title-row"><strong>{t('Muse Video')}</strong><em className="release-status">{t('Coming soon')}</em></span><small>{t('Workspace preview')}</small></span></a>
               <a className="model-button release-model" href={path("/app/video/seedance-3")}><img src="/assets/seedance-mark.svg" width="40" height="40" alt="" style={{ flexShrink: 0 }} /><span className="release-model-copy"><span className="release-title-row"><strong>{t("SEEDANCE 3.0")}</strong><em className="release-status">{t("Coming soon")}</em></span><small>{t("Workspace preview")}</small></span></a>
             </div>
             <div className="nav-section">
@@ -198,13 +231,16 @@ export function StudioShowcasePage({ model }: { model: StudioShowcaseModel }) {
                 <em className="signature">{t("SIGNATURE")}</em>
                 <span className="workflow-cta">{t("Open Pose Studio ")}<b>↗</b></span>
               </a>
-              <div className="section-heading image-models-heading"><span>{t("IMAGE MODELS")}</span><span>01</span></div>
+              <div className="section-heading image-models-heading"><span>{t("IMAGE MODELS")}</span><span>02</span></div>
               <a className="model-button price-model" href={path("/app/image/gpt-image-2")}><span className="model-symbol orange">{t("G2")}</span><span><strong>{t("GPT Image 2")}</strong><small>{t("Generation & editing")}</small></span><em className="price-badge">{t("FROM ")}<b>$0.01</b></em></a>
+              <a className="model-button release-model" href={path('/app/image/muse-image')}><span className="model-symbol orange">MI</span><span className="release-model-copy"><span className="release-title-row"><strong>{t('Muse Image')}</strong><em className="release-status">{t('Coming soon')}</em></span><small>{t('Workspace preview')}</small></span></a>
             </div>
             <div className="nav-section showcase-nav-section">
-              <div className="section-heading"><span>{t("PROMPT LIBRARIES")}</span><span>03</span></div>
+              <div className="section-heading"><span>{t("PROMPT LIBRARIES")}</span><span>05</span></div>
               <a className="showcase-nav-link" href={path("/minimax-h3-prompts")} target="_blank" rel="noopener noreferrer" aria-current={model === 'minimax-h3' ? 'page' : undefined}><span className="model-symbol cyan">{t("H3")}</span><span>{t("MiniMax H3 Prompt Library")}</span></a>
               <a className="showcase-nav-link" href={path("/gpt-image-2-prompts")} target="_blank" rel="noopener noreferrer" aria-current={model === 'gpt-image-2' ? 'page' : undefined}><span className="model-symbol orange">{t("G2")}</span><span>{t("GPT Image 2 Prompt Library")}</span></a>
+              <a className="showcase-nav-link" href={path('/muse-video-prompts')} target="_blank" rel="noopener noreferrer" aria-current={model === 'muse-video' ? 'page' : undefined}><span className="model-symbol cyan">MV</span><span>{t('Muse Video Prompt Library')}</span></a>
+              <a className="showcase-nav-link" href={path('/muse-image-prompts')} target="_blank" rel="noopener noreferrer" aria-current={model === 'muse-image' ? 'page' : undefined}><span className="model-symbol orange">MI</span><span>{t('Muse Image Prompt Library')}</span></a>
               <a className="showcase-nav-link" href={path("/seedance-3-0-prompts")} target="_blank" rel="noopener noreferrer" aria-current={model === 'seedance-3-0' ? 'page' : undefined}><img src="/assets/seedance-mark.svg" width="34" height="34" alt="" /><span>{t("Seedance 3.0 Prompt Library")}<small>{t("Planned tests")}</small></span></a>
             </div>
           </nav>
@@ -222,8 +258,8 @@ export function StudioShowcasePage({ model }: { model: StudioShowcaseModel }) {
               <h1>{t(content.title)}</h1>
               {content.description && <p>{t(content.description)}</p>}
             </div>
-            {model === 'minimax-h3' ? <H3ShowcaseGrid /> : model === 'gpt-image-2' ? <GptImageShowcaseGrid /> : <Seedance3PlannedGrid />}
-            {model !== 'seedance-3-0' && <PromptLibraryGuide model={model} />}
+            {model === 'minimax-h3' ? <H3ShowcaseGrid /> : model === 'gpt-image-2' ? <GptImageShowcaseGrid /> : model === 'seedance-3-0' ? <Seedance3PlannedGrid /> : <MusePromptGrid model={model} />}
+            {(model === 'minimax-h3' || model === 'gpt-image-2') && <PromptLibraryGuide model={model} />}
           </div>
         </main>
       </div>

@@ -25,7 +25,7 @@ export function canonicalSiteRedirect(request: Request): Response | null {
 export function isStudioDocument(pathname: string) {
   const path = stripLocalePath(pathname)
   return path === '/app' || path.startsWith('/app/') || path === '/prompt-guide'
-    || /^\/(?:minimax-h3|gpt-image-2|seedance-3-0)-prompts(?:\/|$)/.test(path)
+    || /^\/(?:minimax-h3|gpt-image-2|seedance-3-0|muse-video|muse-image)-prompts(?:\/|$)/.test(path)
 }
 
 // A separate Pages origin avoids re-entering this Worker's all-site route.

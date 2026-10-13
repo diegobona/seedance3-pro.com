@@ -1,0 +1,24 @@
+.muse-prompt-examples { border-color:rgba(130,223,240,.25); background:linear-gradient(145deg,rgba(130,223,240,.06),var(--panel) 40%); }
+.muse-examples-heading { display:flex; align-items:center; justify-content:space-between; gap:14px; }
+.muse-examples-heading > span { color:var(--lime); font-size:10px; font-weight:800; letter-spacing:.12em; }
+.muse-examples-heading a { color:var(--lime); font-size:11px; font-weight:750; }
+.muse-template-note { margin:14px 0 20px; font-size:11px; }
+.muse-template-detail > span,.muse-template-card-heading > span { color:#9eafbd; font-size:10px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }
+.muse-template-detail h2 { margin-top:8px; }
+.muse-template-detail blockquote { margin:18px 0; padding:17px; border-left:2px solid var(--lime); border-radius:0 10px 10px 0; background:rgba(0,0,0,.16); color:#b8c0c5; font-size:13px; line-height:1.7; }
+.muse-template-detail > button { padding:10px 15px; border:0; border-radius:10px; background:var(--lime); color:#16180f; font:inherit; font-size:12px; font-weight:800; cursor:pointer; }
+.muse-template-options { display:grid; gap:8px; padding-top:18px; border-top:1px solid var(--line); }
+.muse-template-options button { display:flex; align-items:center; gap:12px; padding:12px; border:1px solid var(--line); border-radius:11px; background:var(--panel-2); color:#c2c6c3; font:inherit; font-size:12px; text-align:left; cursor:pointer; }
+.muse-template-options button > span:first-child { color:#78857b; font-size:10px; font-weight:800; }
+.muse-template-options button.is-selected { border-color:var(--lime); color:#fff; }
+.muse-template-detail button:focus-visible,.muse-template-options button:focus-visible { outline:2px solid var(--lime); outline-offset:3px; }
+.muse-template-card { display:flex; flex-direction:column; }
+.muse-template-card-heading { padding:24px 20px 0; }
+.muse-template-card-heading h2 { margin:12px 0 0; font-size:22px; line-height:1.3; letter-spacing:-.025em; }
+.muse-template-card-heading p { color:#aeb8b1; font-size:13px; line-height:1.65; }
+.muse-template-card .seedance3-planned-card-body { display:flex; flex:1; flex-direction:column; padding:5px 20px 22px; }
+.muse-template-card .seedance3-planned-card-body > a { align-self:flex-start; margin-top:auto; padding-top:18px; }
+.muse-template-card details { margin-bottom:18px; }
+.muse-template-grid.is-image .muse-template-card { border-top-color:rgba(255,161,112,.45); }
+.muse-template-grid.is-video .muse-template-card { border-top-color:rgba(130,223,240,.45); }
+@media(max-width:620px) { .muse-examples-heading { align-items:flex-start; flex-direction:column; gap:8px; } }

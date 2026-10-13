@@ -93,6 +93,8 @@ export function ModelLandingContent({ modelId }: { modelId: string }) {
           <a href={path("/")}>{t("Seedance home")}</a>
           <a href={path("/app/video/minimax-h3")}>{t("MiniMax H3 video")}</a>
           <a href={path("/app/image/gpt-image-2")}>{t("GPT Image 2 image")}</a>
+          <a href={path("/app/video/muse-video")}>Muse Video</a>
+          <a href={path("/app/image/muse-image")}>Muse Image</a>
           <a href={path("/pose-to-image")}>{t("Pose Control")}</a>
           <a href={path("/showcase")}>{t("Showcase")}</a>
           {modelId === 'minimax-h3' && <a href={path("/minimax-h3-prompts")} target="_blank" rel="noopener noreferrer">{t("MiniMax H3 Prompt Library")}</a>}
