@@ -9,7 +9,7 @@ export const Route = createFileRoute('/app_/video/seedance-3')({
     meta: [
       { title: 'Seedance 3.0 Video Workspace Preview | SEEDANCE' },
       { name: 'description', content: 'Preview the Seedance 3.0 video workspace and draft a prompt. Generation is coming soon.' },
-      { name: 'robots', content: 'noindex,follow' },
+      { name: 'robots', content: 'index,follow,max-image-preview:large,max-video-preview:-1' },
       { property: 'og:url', content: url },
     ],
     links: [

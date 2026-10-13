@@ -11,7 +11,7 @@ export const Route = createFileRoute('/zh/muse-video-prompts')({
     meta: [
       { title },
       { name: 'description', content: description },
-      { name: 'robots', content: 'noindex,follow' },
+      { name: 'robots', content: 'index,follow,max-image-preview:large,max-video-preview:-1' },
       { property: 'og:type', content: 'website' },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },

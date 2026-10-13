@@ -107,7 +107,6 @@ test('video masonry keeps 10 short clips, 20 films, playable tiles and model-neu
 test('remaining Coming Soon resources are real noindex routes with bilingual Worker coverage', () => {
   const routes = [
     ['src/routes/prompt-guide.tsx', '/prompt-guide'],
-    ['src/routes/seedance-3-0-prompts.tsx', '/seedance-3-0-prompts'],
   ]
   const sitemap = read('sitemap.xml')
   const config = JSON.parse(read('wrangler.jsonc'))

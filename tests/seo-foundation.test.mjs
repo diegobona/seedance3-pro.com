@@ -41,11 +41,12 @@ test('sitemap publishes new model pages and excludes redirects, workspace and em
   const sitemap = read('sitemap.xml')
   const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1])
   assert.equal(new Set(urls).size, urls.length)
-  for (const path of ['/app/video/minimax-h3', '/app/image/gpt-image-2', '/pose-to-image']) {
+  for (const path of ['/app/video/minimax-h3', '/app/image/gpt-image-2', '/pose-to-image', '/app/video/muse-video', '/app/image/muse-image', '/app/video/seedance-3', '/muse-video-prompts', '/muse-image-prompts', '/seedance-3-0-prompts']) {
     assert.ok(urls.includes(`https://seedance3-pro.com${path}`), path)
+    assert.ok(urls.includes(`https://seedance3-pro.com/zh${path}`), 'Chinese edition of ' + path)
   }
   assert.ok(!urls.includes('https://seedance3-pro.com/app/'))
-  for (const path of ['/minimax-h3-ai-video-generator.html', '/gpt-image-2.html', '/prompt-guide', '/prompts/gpt-image-2/images', '/seedance-3-0-prompts', '/pricing.html', '/nano-banana-2-lite.html', '/app/video/seedance-2-5']) {
+  for (const path of ['/minimax-h3-ai-video-generator.html', '/gpt-image-2.html', '/prompt-guide', '/prompts/gpt-image-2/images', '/pricing.html', '/nano-banana-2-lite.html', '/app/video/seedance-2-5']) {
     assert.ok(!urls.some(url => url.includes(path)), path)
   }
   assert.ok(urls.includes('https://seedance3-pro.com/minimax-h3-prompts'))

@@ -9,7 +9,7 @@ export const Route = createFileRoute('/zh/app_/image/muse-image')({
     meta: [
       { title: 'Muse Image Workspace Preview | SEEDANCE' },
       { name: 'description', content: 'Preview the Muse Image workspace and draft an image prompt. Generation is not available in this workspace yet.' },
-      { name: 'robots', content: 'noindex,follow' },
+      { name: 'robots', content: 'index,follow,max-image-preview:large' },
       { property: 'og:url', content: url },
     ],
     links: [

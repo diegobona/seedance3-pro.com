@@ -648,4 +648,112 @@
     <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/seedance-3-0-release-date"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/seedance-3-0-release-date"/>
   </url>
+  <url>
+    <loc>https://seedance3-pro.com/app/video/muse-video</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/app/video/muse-video"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/app/video/muse-video"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/app/video/muse-video"/>
+  </url>
+  <url>
+    <loc>https://seedance3-pro.com/zh/app/video/muse-video</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/app/video/muse-video"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/app/video/muse-video"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/app/video/muse-video"/>
+  </url>
+  <url>
+    <loc>https://seedance3-pro.com/app/image/muse-image</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/app/image/muse-image"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/app/image/muse-image"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/app/image/muse-image"/>
+  </url>
+  <url>
+    <loc>https://seedance3-pro.com/zh/app/image/muse-image</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/app/image/muse-image"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/app/image/muse-image"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/app/image/muse-image"/>
+  </url>
+  <url>
+    <loc>https://seedance3-pro.com/app/video/seedance-3</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/app/video/seedance-3"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/app/video/seedance-3"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/app/video/seedance-3"/>
+  </url>
+  <url>
+    <loc>https://seedance3-pro.com/zh/app/video/seedance-3</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/app/video/seedance-3"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/app/video/seedance-3"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/app/video/seedance-3"/>
+  </url>
+  <url>
+    <loc>https://seedance3-pro.com/muse-video-prompts</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/muse-video-prompts"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/muse-video-prompts"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/muse-video-prompts"/>
+  </url>
+  <url>
+    <loc>https://seedance3-pro.com/zh/muse-video-prompts</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/muse-video-prompts"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/muse-video-prompts"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/muse-video-prompts"/>
+  </url>
+  <url>
+    <loc>https://seedance3-pro.com/muse-image-prompts</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/muse-image-prompts"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/muse-image-prompts"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/muse-image-prompts"/>
+  </url>
+  <url>
+    <loc>https://seedance3-pro.com/zh/muse-image-prompts</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/muse-image-prompts"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/muse-image-prompts"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/muse-image-prompts"/>
+  </url>
+  <url>
+    <loc>https://seedance3-pro.com/seedance-3-0-prompts</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/seedance-3-0-prompts"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/seedance-3-0-prompts"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/seedance-3-0-prompts"/>
+  </url>
+  <url>
+    <loc>https://seedance3-pro.com/zh/seedance-3-0-prompts</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/seedance-3-0-prompts"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/seedance-3-0-prompts"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/seedance-3-0-prompts"/>
+  </url>
 </urlset>

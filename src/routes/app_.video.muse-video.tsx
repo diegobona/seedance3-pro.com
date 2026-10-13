@@ -9,7 +9,7 @@ export const Route = createFileRoute('/app_/video/muse-video')({
     meta: [
       { title: 'Muse Video Workspace Preview | SEEDANCE' },
       { name: 'description', content: 'Preview the Muse Video workspace and draft a video prompt. Generation is not available in this workspace yet.' },
-      { name: 'robots', content: 'noindex,follow' },
+      { name: 'robots', content: 'index,follow,max-image-preview:large,max-video-preview:-1' },
       { property: 'og:url', content: url },
     ],
     links: [
