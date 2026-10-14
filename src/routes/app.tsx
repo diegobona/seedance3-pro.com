@@ -10,6 +10,7 @@ import { ModelLandingContent } from '../components/model-landing-content'
 import { H3VideoExamples } from '../components/h3-video-examples'
 import { GptImageExamples } from '../components/gpt-image-examples'
 import { DAILY_FREE_CREDIT_GRANT } from '../lib/generation-credits'
+import { getImageModel } from '../../app/image-models.mjs'
 import '../../app/studio.css'
 import '../styles/auth.css'
 import '../styles/model-landing.css'
@@ -47,7 +48,9 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
   const initiallyPose = initialModel === 'pose-to-image'
   const initiallyH3 = initialModel === 'minimax-h3'
   const initiallySeedance25 = initialModel === 'seedance-2-5'
+  const initiallyGpt25 = initialModel === 'gpt-image-2-5-1k'
   const initiallyVideo = initiallyH3 || initiallySeedance25
+  const imageSizes = getImageModel(initialModel)?.sizes ?? getImageModel('gpt-image-2')!.sizes
   const showGptImageExamples = initialModel === 'gpt-image-2' && modelLanding
   const [authOpen, setAuthOpen] = useState(false)
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login')
@@ -103,12 +106,14 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
                 <em className="signature">{t("SIGNATURE")}</em>
                 <span className="workflow-cta">{t("Open Pose Studio ")}<b>↗</b></span>
               </button>
-              <div className="section-heading image-models-heading"><span>{t("IMAGE MODELS")}</span><span>02</span></div>
-              <button className={`model-button price-model${initiallyPose || initiallyVideo ? '' : ' is-active'}`} type="button" data-model="gpt-image-2"><span className="model-symbol orange">{t("G2")}</span><span><strong>{t("GPT Image 2")}</strong><small>{t("Generation & editing")}</small></span><em className="price-badge">{t("FROM ")}<b>$0.01</b></em></button>
+              <div className="section-heading image-models-heading"><span>{t("IMAGE MODELS")}</span><span>03</span></div>
+              <button className={`model-button price-model${initiallyPose || initiallyVideo || initiallyGpt25 ? '' : ' is-active'}`} type="button" data-model="gpt-image-2"><span className="model-symbol orange">{t("G2")}</span><span><strong>{t("GPT Image 2")}</strong><small>{t("Generation & editing")}</small></span><em className="price-badge">{t("FROM ")}<b>$0.01</b></em></button>
+              <button className={`model-button price-model${initiallyGpt25 ? ' is-active' : ''}`} type="button" data-model="gpt-image-2-5-1k"><span className="model-symbol orange">G2.5</span><span><strong>{t("GPT Image 2.5")}</strong><small>{t("Generation & editing")}</small></span><em className="price-badge">{t("5 credits/image")}</em></button>
               <a className="model-button release-model" href={path("/app/image/muse-image")}><span className="model-symbol orange">MI</span><span className="release-model-copy"><span className="release-title-row"><strong>Muse Image</strong><em className="release-status">{t("Coming soon")}</em></span><small>{t("Workspace preview")}</small></span></a>
             </div>
             <div className="nav-section showcase-nav-section">
-              <div className="section-heading"><span>{t("PROMPT LIBRARIES")}</span><span>05</span></div>
+              <div className="section-heading"><span>{t("PROMPT LIBRARIES")}</span><span>06</span></div>
+              <a className="showcase-nav-link" href={path("/ai-christmas-photo-prompt")}><span className="model-symbol orange">CP</span><span>{t("Christmas Photo Prompts")}<small>{t("Seasonal collection")}</small></span></a>
               <a className="showcase-nav-link" href={path("/minimax-h3-prompts")} target="_blank" rel="noopener"><span className="model-symbol cyan">{t("H3")}</span><span>{t("MiniMax H3 Prompt Library")}</span></a>
               <a className="showcase-nav-link" href={path("/gpt-image-2-prompts")} target="_blank" rel="noopener"><span className="model-symbol orange">{t("G2")}</span><span>{t("GPT Image 2 Prompt Library")}</span></a>
               <a className="showcase-nav-link" href={path("/muse-video-prompts")} target="_blank" rel="noopener"><span className="model-symbol cyan">MV</span><span>{t("Muse Video Prompt Library")}</span></a>
@@ -126,8 +131,8 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
           </header>
 
           <div className="workspace-body">
-            <div className="workspace-title"><div><p id="model-category">{initiallyPose ? t("AI IMAGE / POSE CONTROL") : initiallyVideo ? t("AI VIDEO / TEXT TO VIDEO") : t("AI IMAGE / GENERATE & EDIT")}</p><h1 id="model-name" data-landing-model={modelLanding ? initialModel : undefined}>{initiallyPose ? t("Pose Studio") : initiallySeedance25 ? t("Seedance 2.5 Video Generator") : initiallyH3 ? t("MiniMax H3 AI Video Generator") : modelLanding ? t("GPT Image 2 Generator & Editor") : t("GPT Image 2")}</h1></div><span className="model-status" id="model-status" hidden={initiallyPose}>{initiallyPose ? '' : initiallyVideo ? t("Video generator") : t("Image generator")}</span></div>
-            {modelLanding && <p className="model-landing-intro">{initiallySeedance25 ? t("Create a video from a text prompt in the Seedance 2.5 workspace. Choose your video settings and follow the result here.") : initiallyH3 ? <>{t("Turn text or reference images into a MiniMax H3 video. Describe your scene, choose your settings, or start with an example from the ")}<a href={path("/minimax-h3-prompts")} target="_blank" rel="noopener">{t("MiniMax H3 Prompt Library")}</a>.</> : <>{t("Create or edit images with GPT Image 2 using text and reference images. Describe your idea, combine visual references, or start with an example from the ")}<a href={path("/gpt-image-2-prompts")} target="_blank" rel="noopener">{t("GPT Image 2 Prompt Library")}</a>.</>}</p>}
+            <div className="workspace-title"><div><p id="model-category">{initiallyPose ? t("AI IMAGE / POSE CONTROL") : initiallyVideo ? t("AI VIDEO / TEXT TO VIDEO") : t("AI IMAGE / GENERATE & EDIT")}</p><h1 id="model-name" data-landing-model={modelLanding ? initialModel : undefined}>{initiallyPose ? t("Pose Studio") : initiallySeedance25 ? t("Seedance 2.5 Video Generator") : initiallyH3 ? t("MiniMax H3 AI Video Generator") : initiallyGpt25 ? t(modelLanding ? "GPT Image 2.5 Generator & Editor" : "GPT Image 2.5") : modelLanding ? t("GPT Image 2 Generator & Editor") : t("GPT Image 2")}</h1></div><span className="model-status" id="model-status" hidden={initiallyPose}>{initiallyPose ? '' : initiallyVideo ? t("Video generator") : t("Image generator")}</span></div>
+            {modelLanding && <p className="model-landing-intro">{initiallySeedance25 ? t("Create a video from a text prompt in the Seedance 2.5 workspace. Choose your video settings and follow the result here.") : initiallyH3 ? <>{t("Turn text or reference images into a MiniMax H3 video. Describe your scene, choose your settings, or start with an example from the ")}<a href={path("/minimax-h3-prompts")} target="_blank" rel="noopener">{t("MiniMax H3 Prompt Library")}</a>.</> : initiallyGpt25 ? t("Generate or edit images through Tuzi's gpt-image-2.5-1k routing alias. Choose a fixed 1K size, add up to four reference images, and review the five-credit cost per image.") : <>{t("Create or edit images with GPT Image 2 using text and reference images. Describe your idea, combine visual references, or start with an example from the ")}<a href={path("/gpt-image-2-prompts")} target="_blank" rel="noopener">{t("GPT Image 2 Prompt Library")}</a>.</>}</p>}
             <aside className="studio-trial-notice" role="note" aria-label={t("Free trial")}>
               <span className="studio-trial-icon" aria-hidden="true">✦</span>
               <div><strong>{t("Free trial")}</strong><span>{dailyTrialBefore}<strong className="studio-trial-daily">{t("daily")}</strong>{dailyTrialAfter}</span><p id="daily-credit-reset-notice">{t("Daily credits refresh each day. Unused credits expire at the next reset and do not accumulate.")}</p></div>
@@ -135,7 +140,7 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
             </aside>
             <div className="creation-grid" id="creation-grid" hidden={initiallyPose}>
               <section className="creation-panel">
-                <div className="model-select"><span className={`model-symbol ${initiallySeedance25 ? 'lime' : initiallyH3 ? 'cyan' : 'orange'}`} id="selected-symbol">{initiallySeedance25 ? t("S2") : initiallyH3 ? t("H3") : t("G2")}</span><div><small>{t("Selected model")}</small><strong id="selected-name">{initiallySeedance25 ? t("SEEDANCE 2.5") : initiallyH3 ? t("MiniMax H3") : t("GPT Image 2")}</strong></div></div>
+                <div className="model-select"><span className={`model-symbol ${initiallySeedance25 ? 'lime' : initiallyH3 ? 'cyan' : 'orange'}`} id="selected-symbol">{initiallySeedance25 ? t("S2") : initiallyH3 ? t("H3") : initiallyGpt25 ? 'G2.5' : t("G2")}</span><div><small>{t("Selected model")}</small><strong id="selected-name">{initiallySeedance25 ? t("SEEDANCE 2.5") : initiallyH3 ? t("MiniMax H3") : initiallyGpt25 ? t("GPT Image 2.5") : t("GPT Image 2")}</strong></div></div>
                 <div className="field-group" id="mode-group" hidden={!initiallyH3}><label>{t("Create from")}</label><div className="segmented"><button className="is-selected" type="button" data-video-mode="text" aria-pressed="true">{t("Text to video")}</button><button type="button" data-video-mode="reference" aria-pressed="false">{t("Reference to video")}</button></div></div>
                 <div className="field-group" id="video-reference-group" hidden>
                   <div className="label-line"><label htmlFor="video-reference-input">{t("Reference images")}</label><span id="video-reference-count">0 / 9</span></div>
@@ -146,9 +151,9 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
                   <p className="video-reference-hint">{t("Describe how the subjects in Image 1, Image 2, etc. should interact. Images are numbered in upload order.")}</p>
                 </div>
                 <div className="field-group" id="upload-group" hidden={initiallyVideo}>
-                  <div className="label-line"><label id="reference-label">{t("Reference image")}</label><span id="reference-meta">{t("Optional · enables image-to-image")}</span></div>
+                  <div className="label-line"><label id="reference-label">{t(initiallyGpt25 ? "Reference images" : "Reference image")}</label><span id="reference-meta">{t(initiallyGpt25 ? "Optional · up to 4 images" : "Optional · enables image-to-image")}</span></div>
                   <input id="reference-input" type="file" accept="image/png,image/jpeg,image/webp" multiple hidden />
-                  <button className="upload-box is-enabled" id="upload-box" type="button"><span>＋</span><strong id="upload-title">{t("Choose a reference image")}</strong><small id="upload-hint">{t("PNG, JPEG or WebP · max 10 MB")}</small></button>
+                  <button className="upload-box is-enabled" id="upload-box" type="button"><span>＋</span><strong id="upload-title">{t("Choose a reference image")}</strong><small id="upload-hint">{t(initiallyGpt25 ? "Up to 4 images · 10 MB each · 24 MB total" : "PNG, JPEG or WebP · max 10 MB")}</small></button>
                   <p className="reference-paste-hint"><strong>{t("Paste reference images")}</strong><span>{t("Copy an image, then press")} <kbd>Ctrl + V</kbd> / <kbd>⌘ + V</kbd> {t("anywhere on this page.")}</span></p>
                   <div className="reference-preview" id="reference-preview" hidden><img id="reference-preview-image" alt={t("Reference image preview")} /><div><span className="reference-attached-badge">{t("REFERENCE READY")}</span><strong id="reference-file-name" /><small>{t("Used for image-to-image generation")}</small></div><button id="reference-clear" type="button">{t("Remove")}</button></div>
                 </div>
@@ -172,13 +177,13 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
                       <option value="4K" disabled>{t("4K · Locked")}</option>
                     </select>
                   </label>
-                  <label>{t("Aspect ratio")}<select id="image-aspect-ratio"><option value="1:1">1:1</option><option value="3:2">{t("3:2 landscape")}</option><option value="2:3">{t("2:3 portrait")}</option></select></label>
+                  <label>{t("Aspect ratio")}<select id="image-aspect-ratio">{Object.entries(imageSizes).map(([ratio, size]) => <option key={ratio} value={ratio}>{initiallyGpt25 ? `${ratio} · ${size}` : ratio === '3:2' ? t("3:2 landscape") : ratio === '2:3' ? t("2:3 portrait") : ratio}</option>)}</select></label>
                 </div>
                 <section id="credit-summary" className="credit-summary" aria-label={t("Generation credit summary")} aria-live="polite">
                   <div className="credit-summary-panel credit-summary-cost"><span>{t("THIS GENERATION")}</span><strong id="generation-credit-cost" className="credit-summary-value">{t("5 credits")}</strong></div>
                   <div className="credit-summary-panel credit-summary-balance"><span>{t("YOUR BALANCE")}</span><strong id="current-credit-balance" className="credit-summary-value">{t("— credits")}</strong></div>
                 </section>
-                <p className="launch-notice" id="launch-notice" role="note" hidden>{initiallyVideo ? t("Launching soon. Video generation from $0.01/second.") : t("Launching soon. Image generation from $0.01/image.")}</p>
+                <p className="launch-notice" id="launch-notice" role="note" hidden>{initiallyVideo ? t("Launching soon. Video generation from $0.01/second.") : initiallyGpt25 ? t("GPT Image 2.5 uses 5 trial credits per image.") : t("Launching soon. Image generation from $0.01/image.")}</p>
                 <button className="generate-button" id="generate-button" type="button" disabled><span id="generate-button-label">{initiallyVideo ? t("Generate video · 5 credits") : t("Generate image · 5 credits")}</span></button>
                 <div className="generation-status" id="generation-status" role="status" aria-live="polite" />
               </section>
@@ -186,6 +191,7 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
               <aside className="context-panel">
                 {initiallyH3 && modelLanding && <H3VideoExamples />}
                 {showGptImageExamples && <GptImageExamples />}
+                {initiallyGpt25 && <section className="context-card model-video-guide" aria-label={t("GPT Image 2.5 quick start")}><p className="model-landing-eyebrow">{t("5 credits/image")}</p><h2>{t("Describe your image or edit")}</h2><p>{t("Start with a text prompt or add up to four references. Describe what to change and what to preserve, then choose the aspect ratio and image count.")}</p><p>{t("Find a starting point in the GPT Image 2 prompts or Christmas templates, then adapt it to your subject.")}</p><a href={path('/gpt-image-2-prompts')}>{t("GPT Image 2 Prompt Library")}</a>{' · '}<a href={path('/ai-christmas-photo-prompt')}>{t("Christmas Photo Prompts")}</a></section>}
                 <section className="context-card pose-reference-card" id="pose-reference-card" hidden>
                   <div className="result-heading"><span>{t("YOUR POSE SCENE")}</span><small>{t("Pose Studio")}</small></div>
                   <div className="result-frame"><img id="pose-scene-preview" alt={t("Your captured Pose Studio scene")} /></div>
@@ -193,7 +199,7 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
                 </section>
                 {initiallySeedance25 && modelLanding && <section className="context-card model-video-guide" aria-label={t("Video trial details")}><p className="model-landing-eyebrow">{t("Seedance 2.5 trial")}</p><h2>{t("Direct your first shot")}</h2><p>{t("Start with the subject and action, then add camera movement, setting and lighting. Describe the scene you want to bring to life.")}</p><ul><li>{t("Choose from the available video durations")}</li><li>{t("Select a frame format for your scene")}</li><li>{t("Credit cost shown before generation")}</li></ul><a href="#model-details">{t("How this tool works ↓")}</a></section>}
                 <div className="context-card result-card" id="result-card" hidden>
-                  <div className="result-heading"><span id="result-heading-label">{t("GENERATED IMAGES")}</span><small id="result-model-label">{t("GPT Image 2")}</small></div>
+                  <div className="result-heading"><span id="result-heading-label">{t("GENERATED IMAGES")}</span><small id="result-model-label">{t(initiallyGpt25 ? "GPT Image 2.5" : "GPT Image 2")}</small></div>
                   <div className="result-gallery" id="result-gallery" />
                   <div className="pose-result-actions" id="pose-result-actions" hidden>
                     <div><span>{t("POSE GUIDED")}</span><small>{t("Keep refining this pose or create another variation.")}</small></div>
@@ -204,7 +210,7 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
                   </div>
                   <p id="result-note">{t("Provider image links may expire. Open or download each result when it is ready.")}</p>
                 </div>
-                <section className="context-card example-carousel" id="example-carousel" aria-labelledby="example-carousel-heading" hidden={initiallyVideo || showGptImageExamples}>
+                <section className="context-card example-carousel" id="example-carousel" aria-labelledby="example-carousel-heading" hidden={initiallyVideo || showGptImageExamples || initiallyGpt25}>
                   <div className="result-heading"><span id="example-carousel-heading">{t("IMAGE PREVIEW")}</span><small>{t("3 DISTINCT STYLES")}</small></div>
                   <div className="example-carousel-viewport">
                     <figure className="example-carousel-slide" data-title={t("Editorial architecture")} data-description={t("Photoreal fashion direction with strong geometry and cinematic light.")}><img src="/assets/gpt-image-2-editorial-fashion.webp" alt={t("Editorial fashion portrait inside a futuristic gallery")} /></figure>

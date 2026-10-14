@@ -1,9 +1,11 @@
 import { useRouterState } from '@tanstack/react-router'
 import translations from '../data/ui-zh.json'
+import christmasPhotoTranslations from '../data/christmas-photo-zh.json'
+import gptImage25Translations from '../data/gpt-image-25-zh.json'
 import { localeFromPath as resolveLocale, localizedPath as resolvePath } from '../../app/site-locale.mjs'
 
 export type SiteLocale = 'en' | 'zh'
-const dictionary: Record<string, string> = translations
+const dictionary: Record<string, string> = { ...translations, ...christmasPhotoTranslations, ...gptImage25Translations }
 const lowercaseDictionary = Object.fromEntries(Object.entries(dictionary).map(([key, value]) => [key.toLowerCase(), value]))
 
 export function localeFromPath(pathname: string): SiteLocale {

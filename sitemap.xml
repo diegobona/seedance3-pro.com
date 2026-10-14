@@ -325,6 +325,24 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/app/image/gpt-image-2"/>
   </url>
   <url>
+    <loc>https://seedance3-pro.com/app/image/gpt-image-2-5-1k</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/app/image/gpt-image-2-5-1k"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/app/image/gpt-image-2-5-1k"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/app/image/gpt-image-2-5-1k"/>
+  </url>
+  <url>
+    <loc>https://seedance3-pro.com/zh/app/image/gpt-image-2-5-1k</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/app/image/gpt-image-2-5-1k"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/app/image/gpt-image-2-5-1k"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/app/image/gpt-image-2-5-1k"/>
+  </url>
+  <url>
     <loc>https://seedance3-pro.com/minimax-h3-vs-seedance-3</loc>
     <lastmod>2026-09-26</lastmod>
     <changefreq>weekly</changefreq>
@@ -755,5 +773,23 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/seedance-3-0-prompts"/>
     <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/seedance-3-0-prompts"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/seedance-3-0-prompts"/>
+  </url>
+  <url>
+    <loc>https://seedance3-pro.com/ai-christmas-photo-prompt</loc>
+    <lastmod>2026-10-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/ai-christmas-photo-prompt"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/ai-christmas-photo-prompt"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/ai-christmas-photo-prompt"/>
+  </url>
+  <url>
+    <loc>https://seedance3-pro.com/zh/ai-christmas-photo-prompt</loc>
+    <lastmod>2026-10-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/ai-christmas-photo-prompt"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/ai-christmas-photo-prompt"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/ai-christmas-photo-prompt"/>
   </url>
 </urlset>

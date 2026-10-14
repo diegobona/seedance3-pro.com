@@ -24,7 +24,7 @@ export function canonicalSiteRedirect(request: Request): Response | null {
 
 export function isStudioDocument(pathname: string) {
   const path = stripLocalePath(pathname)
-  return path === '/app' || path.startsWith('/app/') || path === '/prompt-guide'
+  return path === '/app' || path.startsWith('/app/') || path === '/prompt-guide' || path === '/ai-christmas-photo-prompt'
     || /^\/(?:minimax-h3|gpt-image-2|seedance-3-0|muse-video|muse-image)-prompts(?:\/|$)/.test(path)
 }
 

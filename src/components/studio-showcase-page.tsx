@@ -7,12 +7,14 @@ import { h3VideoCases, h3VideoCaseTryUrl, h3VideoCaseUrl } from '../data/h3-vide
 import { gptImageCases, gptImageCaseTryUrl, gptImageCaseUrl } from '../data/gpt-image-cases'
 import { seedance3PlannedPrompts, seedance3PromptTryUrl } from '../data/seedance3-planned-prompts'
 import { museImagePrompts, museVideoPrompts, musePromptTryUrl, type MuseModel } from '../data/muse-prompts'
+import { ChristmasPhotoPrompts } from './christmas-photo-prompts'
 import '../../app/studio.css'
 import '../styles/auth.css'
 import '../styles/studio-showcase.css'
 import '../styles/muse-workspace.css'
+import '../styles/christmas-photo-prompts.css'
 
-export type StudioShowcaseModel = 'minimax-h3' | 'gpt-image-2' | 'seedance-3-0' | MuseModel
+export type StudioShowcaseModel = 'minimax-h3' | 'gpt-image-2' | 'seedance-3-0' | 'christmas-photo' | MuseModel
 
 const showcaseContent = {
   'minimax-h3': {
@@ -24,6 +26,11 @@ const showcaseContent = {
     label: 'AI IMAGE / IMAGE PROMPTS',
     title: 'GPT Image 2 Prompt Library',
     description: 'Explore GPT Image 2 prompts through original images in different styles. Open an image for its exact prompt, or select Try Now to make your own version.',
+  },
+  'christmas-photo': {
+    label: 'SEASONAL COLLECTION / CHRISTMAS 2026',
+    title: 'AI Christmas Photo Prompts',
+    description: 'Twelve photoreal photo prompt templates for portraits, couples, families, pets and holiday cards. Choose a scene, make it yours and open it in GPT Image 2. Add a reference photo in the generator if you want to keep a familiar face.',
   },
   'seedance-3-0': {
     label: 'AI VIDEO / VIDEO PROMPTS',
@@ -190,6 +197,7 @@ function PromptLibraryGuide({ model }: { model: 'minimax-h3' | 'gpt-image-2' }) 
       <p>{isVideo
         ? <>{t("For more ways to describe a shot, read the ")}<a href={path("/precise-application-of-seedance-prompts")}>{t("camera movement and video prompting guide")}</a>{t(". Apply the ideas to a prompt here and compare the result.")}</>
         : <>{t("To plan a character composition, follow the ")}<a href={path("/how-to-control-character-poses-in-seedance-with-3d-pose-references")}>{t("3D pose reference tutorial")}</a>{t(". To add movement to a finished image, read the ")}<a href={path("/seedance-2-5-image-to-video-guide")}>{t("image-to-video workflow guide")}</a>.</>}</p>
+      {!isVideo && <div className="prompt-library-seasonal"><div><h3>{t('Planning your Christmas photos?')}</h3><p>{t('Explore portraits, couples, families, pets and cards in our seasonal Christmas photo prompt collection.')}</p></div><a href={path('/ai-christmas-photo-prompt')}>{t('Christmas Photo Prompts')} ↗</a></div>}
       <nav aria-label={t("Related creative tools and prompt libraries")}>
         <a href={path(isVideo ? '/app/video/minimax-h3' : '/app/image/gpt-image-2')}>{isVideo ? t("Open MiniMax H3 Video Generator") : t("Open GPT Image 2 Generator")}</a>
         <a href={path(isVideo ? '/gpt-image-2-prompts' : '/minimax-h3-prompts')} target="_blank" rel="noopener noreferrer">{isVideo ? t("GPT Image 2 Prompt Library") : t("MiniMax H3 Prompt Library")}</a>
@@ -212,7 +220,7 @@ export function StudioShowcasePage({ model }: { model: StudioShowcaseModel }) {
 
   return (
     <>
-      <div className="studio-shell studio-showcase-shell">
+      <div className={`studio-shell studio-showcase-shell${model === 'christmas-photo' ? ' christmas-showcase-shell' : ''}`}>
         <aside className={`sidebar${sidebarOpen ? ' is-open' : ''}`} id="studio-sidebar">
           <a className="studio-brand" href={path("/")}><img src="/assets/seedance-mark.svg" width="40" height="40" alt="" /><strong>{t("SEEDANCE")}<br /><small>{t("CREATIVE STUDIO")}</small></strong></a>
           <button className="sidebar-close" type="button" aria-label={t("Close model navigation")} onClick={() => setSidebarOpen(false)}>×</button>
@@ -231,14 +239,16 @@ export function StudioShowcasePage({ model }: { model: StudioShowcaseModel }) {
                 <em className="signature">{t("SIGNATURE")}</em>
                 <span className="workflow-cta">{t("Open Pose Studio ")}<b>↗</b></span>
               </a>
-              <div className="section-heading image-models-heading"><span>{t("IMAGE MODELS")}</span><span>02</span></div>
+              <div className="section-heading image-models-heading"><span>{t("IMAGE MODELS")}</span><span>03</span></div>
               <a className="model-button price-model" href={path("/app/image/gpt-image-2")}><span className="model-symbol orange">{t("G2")}</span><span><strong>{t("GPT Image 2")}</strong><small>{t("Generation & editing")}</small></span><em className="price-badge">{t("FROM ")}<b>$0.01</b></em></a>
+              <a className="model-button price-model" href={path("/app/image/gpt-image-2-5-1k")}><span className="model-symbol orange">G2.5</span><span><strong>{t("GPT Image 2.5")}</strong><small>{t("Generation & editing")}</small></span><em className="price-badge">{t("5 credits/image")}</em></a>
               <a className="model-button release-model" href={path('/app/image/muse-image')}><span className="model-symbol orange">MI</span><span className="release-model-copy"><span className="release-title-row"><strong>{t('Muse Image')}</strong><em className="release-status">{t('Coming soon')}</em></span><small>{t('Workspace preview')}</small></span></a>
             </div>
             <div className="nav-section showcase-nav-section">
-              <div className="section-heading"><span>{t("PROMPT LIBRARIES")}</span><span>05</span></div>
+              <div className="section-heading"><span>{t("PROMPT LIBRARIES")}</span><span>06</span></div>
               <a className="showcase-nav-link" href={path("/minimax-h3-prompts")} target="_blank" rel="noopener noreferrer" aria-current={model === 'minimax-h3' ? 'page' : undefined}><span className="model-symbol cyan">{t("H3")}</span><span>{t("MiniMax H3 Prompt Library")}</span></a>
               <a className="showcase-nav-link" href={path("/gpt-image-2-prompts")} target="_blank" rel="noopener noreferrer" aria-current={model === 'gpt-image-2' ? 'page' : undefined}><span className="model-symbol orange">{t("G2")}</span><span>{t("GPT Image 2 Prompt Library")}</span></a>
+              <a className="showcase-nav-link christmas-showcase-link" href={path('/ai-christmas-photo-prompt')} aria-current={model === 'christmas-photo' ? 'page' : undefined}><span className="model-symbol christmas-symbol">CP</span><span>{t('Christmas Photo Prompts')}<small>{t('Seasonal collection')}</small></span></a>
               <a className="showcase-nav-link" href={path('/muse-video-prompts')} target="_blank" rel="noopener noreferrer" aria-current={model === 'muse-video' ? 'page' : undefined}><span className="model-symbol cyan">MV</span><span>{t('Muse Video Prompt Library')}</span></a>
               <a className="showcase-nav-link" href={path('/muse-image-prompts')} target="_blank" rel="noopener noreferrer" aria-current={model === 'muse-image' ? 'page' : undefined}><span className="model-symbol orange">MI</span><span>{t('Muse Image Prompt Library')}</span></a>
               <a className="showcase-nav-link" href={path("/seedance-3-0-prompts")} target="_blank" rel="noopener noreferrer" aria-current={model === 'seedance-3-0' ? 'page' : undefined}><img src="/assets/seedance-mark.svg" width="34" height="34" alt="" /><span>{t("Seedance 3.0 Prompt Library")}<small>{t("Planned tests")}</small></span></a>
@@ -258,7 +268,7 @@ export function StudioShowcasePage({ model }: { model: StudioShowcaseModel }) {
               <h1>{t(content.title)}</h1>
               {content.description && <p>{t(content.description)}</p>}
             </div>
-            {model === 'minimax-h3' ? <H3ShowcaseGrid /> : model === 'gpt-image-2' ? <GptImageShowcaseGrid /> : model === 'seedance-3-0' ? <Seedance3PlannedGrid /> : <MusePromptGrid model={model} />}
+            {model === 'minimax-h3' ? <H3ShowcaseGrid /> : model === 'gpt-image-2' ? <GptImageShowcaseGrid /> : model === 'seedance-3-0' ? <Seedance3PlannedGrid /> : model === 'christmas-photo' ? <ChristmasPhotoPrompts /> : <MusePromptGrid model={model} />}
             {(model === 'minimax-h3' || model === 'gpt-image-2') && <PromptLibraryGuide model={model} />}
           </div>
         </main>

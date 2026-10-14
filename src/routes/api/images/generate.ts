@@ -4,14 +4,13 @@ import { env } from 'cloudflare:workers'
 import { connect } from 'cloudflare:sockets'
 import { createTuziTlsFetch } from '../../../../scripts/tuzi-tls-fetch.mjs'
 import {
-  getRequestedImageQuantity,
+  getRequestedImageCreditCost,
   handleImageGenerationRequest,
   preflightImageGenerationRequest,
 } from '../../../../scripts/tuzi-image.mjs'
 import { createDb } from '../../../db'
 import { createGenerationCreditStore } from '../../../db/generation-credits'
 import { createAuth } from '../../../lib/auth'
-import { GPT_IMAGE_2_CREDIT_COST } from '../../../lib/generation-credits'
 import { protectImageGeneration } from '../../../lib/protected-image-generation'
 import { prepareImageAnimation } from '../../../lib/image-to-video'
 
@@ -30,9 +29,7 @@ export const Route = createFileRoute('/api/images/generate')({
           },
           creditStore,
           preflight: (protectedRequest) => preflightImageGenerationRequest(protectedRequest, env),
-          getCreditCost: (protectedRequest) => (
-            GPT_IMAGE_2_CREDIT_COST * getRequestedImageQuantity(protectedRequest)
-          ),
+          getCreditCost: getRequestedImageCreditCost,
           generate: async (protectedRequest) => handleImageGenerationRequest(
             protectedRequest,
             env,

@@ -1,25 +1,30 @@
 import { t, localizedErrorMessage } from './i18n.mjs';
+import { DEFAULT_IMAGE_MODEL, IMAGE_MODEL_HEADER, getImageModel } from './image-models.mjs';
 export async function requestImageGeneration({
+  model = DEFAULT_IMAGE_MODEL,
   prompt,
   referenceFile = null,
   referenceFiles = referenceFile ? [referenceFile] : [],
   quantity = 1,
-  size = "1024x1024",
+  size,
   fetchImpl = fetch,
   signal
 } = {}) {
+  const selectedModel = getImageModel(model);
+  if (!selectedModel) throw new Error(t('Image model is not supported.'));
   const form = new FormData();
+  form.set('model', model);
   form.set("prompt", String(prompt || "").trim());
   form.set("quantity", String(quantity));
   form.set("resolution", "1K");
-  form.set("size", String(size));
+  form.set("size", String(size || selectedModel.sizes['1:1']));
   for (const file of referenceFiles) {
     form.append("image", file, file.name || "reference.png");
   }
 
   const response = await fetchImpl("/api/images/generate", {
     method: "POST",
-    headers: { "x-seedance-image-quantity": String(quantity) },
+    headers: { "x-seedance-image-quantity": String(quantity), [IMAGE_MODEL_HEADER]: model },
     body: form,
     signal
   });

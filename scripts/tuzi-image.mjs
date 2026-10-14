@@ -1,10 +1,8 @@
 import { Buffer } from 'node:buffer';
 import { validateImageReferences } from '../app/image-references.mjs';
+import { DEFAULT_IMAGE_MODEL, IMAGE_MODEL_HEADER, getImageModel } from '../app/image-models.mjs';
 const DEFAULT_API_BASE = "https://api.tu-zi.com";
-const MODEL_ID = "gpt-image-2";
-const DEFAULT_OUTPUT_SIZE = "1024x1024";
 const DEFAULT_RESOLUTION = "1K";
-const PROVIDER_QUALITY = "medium";
 const DEFAULT_QUANTITY = 1;
 const MAX_PROMPT_LENGTH = 2500;
 const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
@@ -14,8 +12,13 @@ const MAX_ERROR_BYTES = 64 * 1024;
 const UPSTREAM_TIMEOUT_MS = 120_000;
 const ALLOWED_QUANTITIES = new Set([1, 2, 3]);
 const ALLOWED_RESOLUTIONS = new Set([DEFAULT_RESOLUTION]);
-const ALLOWED_SIZES = new Set(["1024x1024", "1536x1024", "1024x1536"]);
 const QUANTITY_HEADER = "x-seedance-image-quantity";
+
+export function getRequestedImageCreditCost(request) {
+  const modelId = request.headers.get(IMAGE_MODEL_HEADER) ?? DEFAULT_IMAGE_MODEL;
+  const model = getImageModel(modelId);
+  return model ? model.creditCost * getRequestedImageQuantity(request) : 0;
+}
 
 export function getRequestedImageQuantity(request) {
   const value = request.headers.get(QUANTITY_HEADER);
@@ -38,6 +41,10 @@ export async function preflightImageGenerationRequest(request, env = {}, options
   const quantityValue = request.headers.get(QUANTITY_HEADER);
   if (quantityValue !== null && !ALLOWED_QUANTITIES.has(Number(quantityValue))) {
     return json({ success: false, message: "Quantity must be 1, 2, or 3." }, 400);
+  }
+
+  if (!getImageModel(request.headers.get(IMAGE_MODEL_HEADER) ?? DEFAULT_IMAGE_MODEL)) {
+    return json({ success: false, message: 'Image model is not supported.' }, 400);
   }
 
   if (!options.skipRateLimit) {
@@ -85,9 +92,18 @@ export async function handleImageGenerationRequest(request, env = {}, options = 
   }
 
   const fieldNames = [...new Set(form.keys())];
-  const allowedFields = new Set(["prompt", "image", "quantity", "resolution", "size"]);
+  const allowedFields = new Set(["model", "prompt", "image", "quantity", "resolution", "size"]);
   if (fieldNames.some((name) => !allowedFields.has(name))) {
     return json({ success: false, message: "Unexpected image generation field." }, 400);
+  }
+
+  const modelResult = readSingleTextField(form, 'model', DEFAULT_IMAGE_MODEL);
+  const model = modelResult.ok ? getImageModel(modelResult.value) : null;
+  if (!model) return json({ success: false, message: 'Image model is not supported.' }, 400);
+  const modelHeader = request.headers.get(IMAGE_MODEL_HEADER);
+  if ((modelHeader === null && modelResult.value !== DEFAULT_IMAGE_MODEL)
+    || (modelHeader !== null && modelHeader !== modelResult.value)) {
+    return json({ success: false, message: 'Image model does not match the request header.' }, 400);
   }
 
   const promptValues = form.getAll("prompt");
@@ -119,13 +135,16 @@ export async function handleImageGenerationRequest(request, env = {}, options = 
     return json({ success: false, message: "Trial generation supports 1K only." }, 400);
   }
 
-  const sizeResult = readSingleTextField(form, "size", DEFAULT_OUTPUT_SIZE);
-  if (!sizeResult.ok || !ALLOWED_SIZES.has(sizeResult.value)) {
+  const sizeResult = readSingleTextField(form, "size", model.sizes['1:1']);
+  if (!sizeResult.ok || !Object.values(model.sizes).includes(sizeResult.value)) {
     return json({ success: false, message: "Image size is not supported." }, 400);
   }
   const size = sizeResult.value;
 
   const imageValues = form.getAll("image");
+  if (imageValues.length > model.maxReferences) {
+    return json({ success: false, message: `This image model supports up to ${model.maxReferences} reference images.` }, 400);
+  }
   const referenceError = validateImageReferences(imageValues);
   if (referenceError) {
     const tooLarge = imageValues.some(file => file?.size > MAX_IMAGE_BYTES) || referenceError.includes('total');
@@ -133,7 +152,7 @@ export async function handleImageGenerationRequest(request, env = {}, options = 
   }
 
   try {
-    let images = await generateTuziImage({ prompt, referenceImages: imageValues, quantity, size }, {
+    let images = await generateTuziImage({ model: modelResult.value, prompt, referenceImages: imageValues, quantity, size }, {
       apiKey,
       apiBase: String(env.TUZI_API_BASE || DEFAULT_API_BASE),
       fetchImpl: options.fetchImpl || fetch,
@@ -156,20 +175,23 @@ export async function handleImageGenerationRequest(request, env = {}, options = 
 }
 
 export async function generateTuziImage({
+  model = DEFAULT_IMAGE_MODEL,
   prompt,
   image,
   referenceImages = image ? [image] : [],
   quantity = DEFAULT_QUANTITY,
-  size = DEFAULT_OUTPUT_SIZE
+  size
 }, {
   apiKey,
   apiBase = DEFAULT_API_BASE,
   fetchImpl = fetch,
   timeoutMs = UPSTREAM_TIMEOUT_MS
 } = {}) {
+  const selectedModel = getImageModel(model);
+  if (!selectedModel) throw providerError('Image model is not supported.', 400);
   const normalizedBase = String(apiBase || DEFAULT_API_BASE).replace(/\/$/, "");
   const headers = { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" };
-  const body = await createGenerationBody({ prompt, referenceImages, quantity, size });
+  const body = await createGenerationBody({ model, selectedModel, prompt, referenceImages, quantity, size: size || selectedModel.sizes['1:1'] });
 
   let response;
   try {
@@ -222,22 +244,25 @@ export async function generateTuziImage({
   return images;
 }
 
-async function createGenerationBody({ prompt, referenceImages, quantity, size }) {
+async function createGenerationBody({ model, selectedModel, prompt, referenceImages, quantity, size }) {
   const payload = {
-    model: MODEL_ID,
+    model: selectedModel.providerModel,
     prompt,
     n: quantity,
-    quality: PROVIDER_QUALITY,
+    quality: selectedModel.quality,
     size,
     response_format: "b64_json"
   };
   if (referenceImages.length) {
-    // Tuzi's generations endpoint accepts a singular `image` key with data URL values.
-    payload.image = [];
+    // Preserve GPT Image 2's existing protocol. Tuzi's 2.5 synchronous tester uses image/images.
+    const dataUrls = [];
     for (const file of referenceImages) {
       const encoded = Buffer.from(await file.arrayBuffer()).toString('base64');
-      payload.image.push(`data:${file.type};base64,${encoded}`);
+      dataUrls.push(`data:${file.type};base64,${encoded}`);
     }
+    if (model === DEFAULT_IMAGE_MODEL) payload.image = dataUrls;
+    else if (dataUrls.length === 1) payload.image = dataUrls[0];
+    else payload.images = dataUrls;
   }
   return JSON.stringify(payload);
 }

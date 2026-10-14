@@ -8,6 +8,7 @@ This map records the page that owns each search intent. Primary navigation and `
 | Seedance 2.5 video workspace | `/app/video/seedance-2-5` | Functional direct URL; hidden from navigation, noindex, absent from sitemap |
 | MiniMax H3 text-to-video and image-to-video tool | `/app/video/minimax-h3` | Published, indexable |
 | GPT Image 2 generation and editing tool | `/app/image/gpt-image-2` | Published, indexable |
+| GPT Image 2.5 generation and editing tool | `/app/image/gpt-image-2-5-1k` and `/zh/app/image/gpt-image-2-5-1k` | Tuzi routing alias `gpt-image-2.5-1k`; independently selectable, indexable, included in bilingual sitemap; 5 credits/image per image |
 | Muse Video workspace | `/app/video/muse-video` | Editable workspace preview; generation unavailable, indexable, included in bilingual sitemap |
 | Muse Image workspace | `/app/image/muse-image` | Editable workspace preview; generation unavailable, indexable, included in bilingual sitemap |
 | Seedance 3.0 workspace | `/app/video/seedance-3` | Editable workspace preview; generation coming soon, indexable, included in bilingual sitemap |
@@ -20,6 +21,7 @@ This map records the page that owns each search intent. Primary navigation and `
 | Prompt guide | `/prompt-guide` | Coming Soon page; noindex, absent from sitemap |
 | MiniMax H3 Prompt Library | `/minimax-h3-prompts` | Published, indexable; original H3 examples inside the studio layout |
 | GPT Image 2 Prompt Library | `/gpt-image-2-prompts` | Published, indexable; original images inside the studio layout |
+| AI Christmas photo prompts | `/ai-christmas-photo-prompt` | Seasonal photo template collection; indexable, included in bilingual sitemap |
 | Muse Video Prompt Library | `/muse-video-prompts` | Starter video templates with workspace prefill; no generated examples, indexable, included in bilingual sitemap |
 | Muse Image Prompt Library | `/muse-image-prompts` | Starter image templates with workspace prefill; no generated examples, indexable, included in bilingual sitemap |
 | Seedance 3.0 Prompt Library | `/seedance-3-0-prompts` | Reserved Coming Soon content inside the studio layout; indexable, included in bilingual sitemap |
@@ -31,11 +33,15 @@ The two former model guides, `/minimax-h3-ai-video-generator.html` and `/gpt-ima
 
 Published tool pages contain the generation interface, visible explanation, steps, FAQs and links to related tools. Their introductory copy stays independent of changing specifications; the generation controls display the current options and limits. Each page emits its own title, description, H1, canonical, social metadata and index directive from server-rendered HTML. The generic workspace remains noindex because its model-query variants use the same interface without a stable, distinct search intent.
 
+GPT Image 2.5 is the website label for Tuzi's `gpt-image-2.5-1k` routing alias, rather than an announcement of an official model release. Its English and Chinese pages use self canonicals and reciprocal language alternates. Homepage navigation and the dedicated model card link directly to its workspace and show the website's five-credit cost without inferring a dollar price. Existing GPT Image 2 example images remain attributed to GPT Image 2; the new route uses the site's brand mark for social metadata.
+
 The legacy pricing page is noindex and absent from the sitemap; direct access remains available. Existing pricing and API-related articles retain their separate editorial URLs. A dedicated API product page is deferred.
 
 The prompt guide remains Coming Soon, noindex, and absent from the sitemap. The Seedance 3.0 prompt index remains clearly labeled Coming Soon and is indexable alongside its workspace in the bilingual sitemap. The H3 video index and five detail pages use the original prompts recorded in `media/showcase-h3/2026-09-25/generation.json`; each detail URL is directly accessible and renders as a large modal over a subdued video gallery. The GPT Image 2 index and five detail pages use the prompts in `src/data/gpt-image-cases.json`, with original API images and optimized WebP assets in `media/showcase-gpt-image-2/2026-09-26/`. Both model showcases share the same card hover actions and Try Now handoff to the matching generator.
 
 ## Contextual internal links
+
+The Christmas photo prompt collection uses a year-independent URL with a `/zh` edition. It is featured below the homepage hero, in the Explore footer and studio prompt-library navigation, and from the GPT Image 2 image library. Its original photo templates cover portraits, couples, families, pets and cards; handoff links preserve the prompt and supported aspect ratio in the image workspace.
 
 Muse and Seedance 3.0 workspaces and libraries have indexable `/zh` equivalents, with both languages included in `sitemap.xml`. Studio and preview navigation link to these pages. Muse `/app/?model=...` aliases redirect to the matching preview, preserving prompt drafts and other query parameters.
 

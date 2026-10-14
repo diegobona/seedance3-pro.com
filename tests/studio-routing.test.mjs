@@ -210,7 +210,7 @@ test("studio routes H3 through the video client and renders an accessible video 
   assert.match(script, /\.playsInline\s*=\s*true/i);
   assert.match(script, /Open or download generated video/i);
   assert.match(route, /id="result-heading-label"[^>]*>(?:GENERATED IMAGES|\{t\(["']GENERATED IMAGES["']\)\})/i);
-  assert.match(route, /id="result-model-label"[^>]*>(?:GPT Image 2|\{t\(["']GPT Image 2["']\)\})/i);
+  assert.match(route, /id="result-model-label"[^>]*>(?:GPT Image 2|\{t\([^}]*["']GPT Image 2["']\)\})/i);
 });
 
 test("H3 duration drives credit and generate labels without changing GPT Image behavior", () => {
@@ -257,7 +257,7 @@ test("empty studios expose a three-image interactive example carousel", () => {
   const script = readFileSync(resolve(root, "app", "studio.js"), "utf8");
 
   assert.match(html, /id=["']example-carousel["'](?![^>]*hidden)/i, "legacy studio should show the empty-state carousel");
-  assert.match(route, /id=["']example-carousel["'][^>]*hidden=\{initiallyVideo \|\| showGptImageExamples\}/i, "model landing pages should hide the generic image carousel on first render");
+  assert.match(route, /id=["']example-carousel["'][^>]*hidden=\{initiallyVideo \|\| showGptImageExamples(?: \|\| initiallyGpt25)?\}/i, "model landing pages should hide the generic image carousel on first render");
   for (const [shellName, markup] of [["legacy studio", html], ["TanStack studio", route]]) {
     const slides = markup.match(/class(?:Name)?=["'][^"']*\bexample-carousel-slide\b[^"']*["']/gi) || [];
     assert.equal(slides.length, 3, `${shellName} should provide three example slides`);

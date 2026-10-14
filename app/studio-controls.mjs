@@ -1,16 +1,11 @@
 import { t } from './i18n.mjs';
+import { DEFAULT_IMAGE_MODEL, getImageModel, imageSizeForAspectRatio } from './image-models.mjs';
 import { millisecondsUntilCreditReset } from './daily-credits.mjs';
 export const IMAGE_EXAMPLE_PROMPTS = [
   "A cinematic portrait of a fashion designer in a sunlit studio, natural pose, editorial composition, warm rim light, premium magazine photography.",
   "A premium product photograph of a translucent citrus perfume bottle on pale stone, soft morning shadows, clean luxury campaign styling, 3:2 landscape composition.",
   "A whimsical editorial illustration of a tiny astronaut tending a rooftop garden at dusk, expressive pose, layered city depth, soft gouache texture and vivid accent colors."
 ];
-
-const SIZE_BY_ASPECT_RATIO = {
-  "1:1": "1024x1024",
-  "3:2": "1536x1024",
-  "2:3": "1024x1536"
-};
 
 export function applyPromptStructure(value = "") {
   const subject = String(value || "").trim();
@@ -113,8 +108,8 @@ export function normalizeImageQuantity(value) {
   return Number.isSafeInteger(quantity) && quantity >= 1 && quantity <= 3 ? quantity : 1;
 }
 
-export function creditCostForQuantity(value) {
-  return normalizeImageQuantity(value) * 5;
+export function creditCostForQuantity(value, modelId = DEFAULT_IMAGE_MODEL) {
+  return normalizeImageQuantity(value) * (getImageModel(modelId)?.creditCost ?? 5);
 }
 
 export function creditCostForDuration(value) {
@@ -254,6 +249,6 @@ export function createCreditSummaryController({
   };
 }
 
-export function sizeForAspectRatio(value) {
-  return SIZE_BY_ASPECT_RATIO[value] || SIZE_BY_ASPECT_RATIO["1:1"];
+export function sizeForAspectRatio(value, modelId = DEFAULT_IMAGE_MODEL) {
+  return imageSizeForAspectRatio(value, modelId);
 }

@@ -1,5 +1,5 @@
 import { useSiteI18n } from '../lib/site-i18n'
-type ModelId = 'seedance-2-5' | 'minimax-h3' | 'gpt-image-2'
+type ModelId = 'seedance-2-5' | 'minimax-h3' | 'gpt-image-2' | 'gpt-image-2-5-1k'
 
 const content = {
   'seedance-2-5': {
@@ -68,6 +68,30 @@ const content = {
       ['Do I need an account or credits?', 'Sign in to generate. The form shows the credit cost for your selected settings and your available balance before submission.'],
     ],
   },
+  'gpt-image-2-5-1k': {
+    title: 'GPT Image 2.5 image generation and reference editing',
+    description: "This workspace uses Tuzi's gpt-image-2.5-1k routing alias for text-to-image and reference editing. Choose a fixed 1K output size and review the five-credit trial cost per image before submitting.",
+    capabilities: [
+      ['Text to image', 'Describe the subject, composition, lighting, style and details you need in the final image.'],
+      ['Reference editing', 'Use up to four reference images. Explain the role of each numbered image and describe what to change or preserve.'],
+      ['Fixed 1K sizes', 'Choose from eleven aspect ratios. Each ratio maps to a fixed pixel size; square output is 1254x1254.'],
+      ['Five credits per image', 'The trial costs five credits per image. Review the total for your selected image count and sign in to generate.'],
+    ],
+    steps: [
+      'Start with a text prompt, or upload the images you want to use as references.',
+      'Describe the subject, setting and style. For reference editing, name each image by its displayed number and explain what to change or preserve.',
+      'Select the image count and one of the fixed 1K aspect ratios shown in the form.',
+      'Review the credit cost, sign in, and generate your image.',
+    ],
+    questions: [
+      ['What does the GPT Image 2.5 name refer to?', "It identifies Tuzi's gpt-image-2.5-1k routing alias used by this workspace. Tuzi provides the model route and its supported output sizes."],
+      ['Can I generate an image without uploading a reference?', 'Yes. Enter a text prompt describing the subject, composition, lighting and style, then choose your output settings. Reference images are optional.'],
+      ['How many reference images can I add?', 'Add up to four PNG, JPEG or WebP images, up to 10 MB each and 24 MB combined. Identify each reference by its image number in the prompt.'],
+      ['What image sizes can I use?', 'This route uses fixed 1K sizes across eleven aspect ratios, including square, portrait, landscape and wide formats. The aspect ratio menu shows each exact pixel size.'],
+      ['How many credits does an image cost?', 'Each generated image uses five trial credits. Select the image count and review the total cost and available balance before generating.'],
+      ['Where can I find prompts to try?', 'Use the GPT Image 2 Prompt Library or Christmas Photo Prompts for writing ideas. Adapt a template in this workspace to create your own image.'],
+    ],
+  },
 } as const
 
 export function ModelLandingContent({ modelId }: { modelId: string }) {
@@ -93,12 +117,14 @@ export function ModelLandingContent({ modelId }: { modelId: string }) {
           <a href={path("/")}>{t("Seedance home")}</a>
           <a href={path("/app/video/minimax-h3")}>{t("MiniMax H3 video")}</a>
           <a href={path("/app/image/gpt-image-2")}>{t("GPT Image 2 image")}</a>
+          <a href={path("/app/image/gpt-image-2-5-1k")}>{t("GPT Image 2.5")}</a>
           <a href={path("/app/video/muse-video")}>Muse Video</a>
           <a href={path("/app/image/muse-image")}>Muse Image</a>
           <a href={path("/pose-to-image")}>{t("Pose Control")}</a>
           <a href={path("/showcase")}>{t("Showcase")}</a>
           {modelId === 'minimax-h3' && <a href={path("/minimax-h3-prompts")} target="_blank" rel="noopener noreferrer">{t("MiniMax H3 Prompt Library")}</a>}
-          {modelId === 'gpt-image-2' && <a href={path("/gpt-image-2-prompts")} target="_blank" rel="noopener noreferrer">{t("GPT Image 2 Prompt Library")}</a>}
+          {(modelId === 'gpt-image-2' || modelId === 'gpt-image-2-5-1k') && <a href={path("/gpt-image-2-prompts")} target="_blank" rel="noopener noreferrer">{t("GPT Image 2 Prompt Library")}</a>}
+          {(modelId === 'gpt-image-2' || modelId === 'gpt-image-2-5-1k') && <a href={path("/ai-christmas-photo-prompt")}>{t("Christmas Photo Prompts")}</a>}
           <a href={path("/blog")}>{t("Blog")}</a>
         </nav>
       </div>

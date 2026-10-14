@@ -427,8 +427,12 @@ test("provider failures are bounded and never expose the API key", async () => {
 });
 
 test("local Express route proxies a text-to-image request through the shared adapter", async (t) => {
-  const upstream = createServer((request, response) => {
+  const providerRequests = [];
+  const upstream = createServer(async (request, response) => {
     assert.equal(request.url, "/v1/images/generations");
+    const chunks = [];
+    for await (const chunk of request) chunks.push(chunk);
+    providerRequests.push(JSON.parse(Buffer.concat(chunks).toString()));
     response.writeHead(200, { "content-type": "application/json" });
     response.end(JSON.stringify({ data: [{ url: "https://cdn.example/local.png" }] }));
   });
@@ -480,6 +484,16 @@ test("local Express route proxies a text-to-image request through the shared ada
   assert.equal(response.status, 200);
   assert.deepEqual(body.image, { url: "https://cdn.example/local.png" });
   assert.deepEqual(body.images, [{ url: "https://cdn.example/local.png" }]);
+
+  const { requestImageGeneration } = await import('../app/image-generation.mjs');
+  const newResult = await requestImageGeneration({
+    model: 'gpt-image-2-5-1k', prompt: 'A local new-model test', size: '1254x1254',
+    fetchImpl: (url, init) => fetch(`http://127.0.0.1:${localPort}${url}`, init),
+  });
+  assert.equal(newResult.image.url, 'https://cdn.example/local.png');
+  assert.equal(providerRequests[0].model, 'gpt-image-2');
+  assert.equal(providerRequests[1].model, 'gpt-image-2.5-1k');
+  assert.equal(providerRequests[1].size, '1254x1254');
 });
 
 test("local Express route rejects an explicitly empty resolution before provider work", async (t) => {

@@ -3,6 +3,15 @@ import { localeFromPath } from './site-locale.mjs';
 // Keys remain readable English; prompts, model IDs and provider enum values are
 // deliberately kept out of this dictionary's automatic UI translation path.
 export const ZH_MESSAGES = Object.freeze({
+  'Create with GPT Image 2.5': '使用 GPT Image 2.5创作',
+  'Describe the subject, composition and lighting, or add reference images to guide your edit.': '描述主体、构图和光线，也可以添加参考图来指导编辑。',
+  'Up to 4 images · 10 MB each · 24 MB total': '最多 4 张图片 · 每张 10 MB · 总计 24 MB',
+  'Optional · up to 4 images': '可选 · 最多 4 张图片',
+  'GPT Image 2.5 uses 5 trial credits per image.': 'GPT Image 2.5试用每张消耗 5 积分。',
+  'This image model supports up to {count} reference images.': '此图像模型最多支持 {count} 张参考图。',
+  'This image model supports up to 4 reference images.': '此图像模型最多支持 4 张参考图。',
+  'Image model is not supported.': '不支持此图像模型。',
+  'Image model does not match the request header.': '图像模型与请求参数不一致，请刷新后重试。',
   'Launching soon. Image generation from $0.01/image.': '即将正式上线，图片生成低至0.01美元/张',
   'Launching soon. Video generation from $0.01/second.': '即将正式上线，视频生成低至0.01美元/秒',
   'Expand menu': '展开菜单',
@@ -91,6 +100,7 @@ export const ZH_MESSAGES = Object.freeze({
   '{count} image{plural} generated · {remaining} credits remaining.': '已生成 {count} 张图片 · 剩余 {remaining} 积分。',
   '{count} image{plural} generated.': '已生成 {count} 张图片。',
   '{count} / 16 · Optional': '{count} / 16 · 选填',
+  '{count} / {limit} · Optional': '{count} / {limit} · 选填',
   'Reference images ready. Use Image 1, Image 2, etc. in your prompt.': '参考图片已就绪，可在提示词中使用 Image 1、Image 2 等编号。',
   'Loading your reference image…': '正在加载参考图片…',
   'Remove an image before adding the transferred reference.': '请先移除一张图片，再添加传入的参考图。',

@@ -504,7 +504,7 @@ function withImageCors(response, request) {
     headers.set("Access-Control-Allow-Origin", origin);
     headers.set("Vary", "Origin");
   }
-  headers.set("Access-Control-Allow-Headers", "Content-Type, x-seedance-image-quantity");
+  headers.set("Access-Control-Allow-Headers", "Content-Type, x-seedance-image-quantity, x-seedance-image-model");
   headers.set("Access-Control-Allow-Methods", "POST,OPTIONS");
   return new Response(response.body, {
     status: response.status,

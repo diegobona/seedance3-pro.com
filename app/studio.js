@@ -4,6 +4,7 @@ import { localizedPath } from './site-locale.mjs';
 import { buildModelUrl, normalizeModelId } from "./model-routing.mjs";
 import { canonicalModelPath, modelIdFromPath } from "./seo-routes.mjs";
 import { requestImageGeneration } from "./image-generation.mjs";
+import { getImageModel } from './image-models.mjs';
 import { prepareImageForVideo, loadVideoReference } from "./image-to-video.mjs";
 import { validateImageReferences } from "./image-references.mjs";
 import { pollVideoGenerationTask, requestVideoGeneration } from "./video-generation.mjs";
@@ -72,6 +73,17 @@ const studioModels = {
     exampleTitle: "Fast campaign variants",
     examplePrompt: "Lock composition and product identity, then vary one background, palette, or crop at a time.",
     type: "image"
+  },
+  "gpt-image-2-5-1k": {
+    category: 'AI IMAGE / GENERATE & EDIT',
+    name: 'GPT Image 2.5',
+    status: 'Image generator',
+    symbol: 'G2.5',
+    tone: 'orange',
+    exampleTitle: 'Create with GPT Image 2.5',
+    examplePrompt: 'Describe the subject, composition and lighting, or add reference images to guide your edit.',
+    type: 'image',
+    canGenerate: true
   },
   "gpt-image-2": {
     category: "AI IMAGE / GENERATE & EDIT",
@@ -279,7 +291,7 @@ export function initializeStudio() {
   function imageGenerationLabel() {
     const quantity = normalizeImageQuantity(imageQuantity?.value);
     if (quantity === 1) return t(defaultImageGenerationLabel);
-    return t('Generate {count} images · {cost} credits', { count: quantity, cost: creditCostForQuantity(quantity) });
+    return t('Generate {count} images · {cost} credits', { count: quantity, cost: creditCostForQuantity(quantity, activeModelId) });
   }
 
   function videoGenerationLabel() {
@@ -386,8 +398,8 @@ export function initializeStudio() {
       || (isReferenceVideo() && videoReferences.length === 0);
     const disabled = generateButton.disabled;
     poseResultActionsController?.setGenerateState({
-      disabled: disabled || !poseReferenceActive || activeModelId !== "gpt-image-2",
-      cost: creditCostForQuantity(imageQuantity.value),
+      disabled: disabled || !poseReferenceActive || !getImageModel(activeModelId),
+      cost: creditCostForQuantity(imageQuantity.value, activeModelId),
     });
   }
 
@@ -414,15 +426,30 @@ export function initializeStudio() {
     if (poseStudio) poseStudio.hidden = !poseModel;
     if (poseModel) void ensurePoseStudio();
     referenceLabel.textContent = model.canGenerate ? t("Reference images") : t("Reference files");
-    referenceMeta.textContent = model.canGenerate ? t("Optional · enables image-to-image") : videoModel ? t("Preview only") : t("Reference images");
+    referenceMeta.textContent = model.canGenerate ? t(getImageModel(normalizedModelId)?.maxReferences === 4
+      ? 'Optional · up to 4 images' : 'Optional · enables image-to-image') : videoModel ? t("Preview only") : t("Reference images");
     uploadTitle.textContent = model.canGenerate ? t("Add reference images") : t("Drop or choose reference media");
-    uploadHint.textContent = model.canGenerate ? t("Up to 16 images · 10 MB each · 24 MB total") : t("Interface preview only—files are not uploaded");
+    uploadHint.textContent = model.canGenerate ? t(getImageModel(normalizedModelId)?.maxReferences === 4
+      ? 'Up to 4 images · 10 MB each · 24 MB total'
+      : 'Up to 16 images · 10 MB each · 24 MB total') : t("Interface preview only—files are not uploaded");
     uploadBox.classList.toggle("is-enabled", Boolean(model.canGenerate) && !videoModel);
     uploadGroup.hidden = model.type === "video";
     updateVideoMode();
     promptTools.hidden = videoModel;
     videoSettings.hidden = model.type !== "video";
     imageSettings.hidden = model.type !== "image";
+    const imageModel = getImageModel(normalizedModelId);
+    if (imageModel) {
+      const selectedAspectRatio = imageAspectRatio.value;
+      imageAspectRatio.replaceChildren(...Object.keys(imageModel.sizes).map(ratio => {
+        const option = document.createElement('option');
+        option.value = ratio;
+        option.textContent = normalizedModelId === 'gpt-image-2-5-1k'
+          ? `${ratio} · ${imageModel.sizes[ratio].replace('x', '×')}` : ratio;
+        return option;
+      }));
+      imageAspectRatio.value = Object.hasOwn(imageModel.sizes, selectedAspectRatio) ? selectedAspectRatio : '1:1';
+    }
     updateGenerateButtonLabel();
     if (!isVideoGenerationSelected() || !activeVideoTaskId) {
       generationStatus.textContent = "";
@@ -448,7 +475,7 @@ export function initializeStudio() {
     window.dispatchEvent(new CustomEvent("seedance:credits-updated", { detail: credits }));
   }
 
-  function renderGeneratedImages(images) {
+  function renderGeneratedImages(images, modelId = activeModelId) {
     const items = images.map((image, index) => {
       const source = image.url || image.dataUrl;
       const item = document.createElement("div");
@@ -467,7 +494,7 @@ export function initializeStudio() {
       if (image.dataUrl) {
         const mime = image.dataUrl.slice(5, image.dataUrl.indexOf(";"));
         const extension = mime === "image/jpeg" ? "jpg" : mime === "image/webp" ? "webp" : "png";
-        link.download = `gpt-image-2-${index + 1}.${extension}`;
+        link.download = `${modelId}-${index + 1}.${extension}`;
         link.textContent = t('Download image {number} →', { number: index + 1 });
       } else {
         link.target = "_blank";
@@ -511,7 +538,7 @@ export function initializeStudio() {
     });
     resultGallery.replaceChildren(...items);
     resultHeadingLabel.textContent = t("GENERATED IMAGES");
-    resultModelLabel.textContent = "GPT Image 2";
+    resultModelLabel.textContent = getImageModel(modelId)?.name || studioModels[modelId]?.name || '';
     resultNote.textContent = t("Provider image links may expire. Open or download each result when it is ready.");
   }
 
@@ -654,7 +681,9 @@ export function initializeStudio() {
     }
     referencePreview.classList.add("multiple-image-references");
     referencePreview.hidden = imageReferences.length === 0;
-    referenceMeta.textContent = t('{count} / 16 · Optional', { count: imageReferences.length });
+    referenceMeta.textContent = t('{count} / {limit} · Optional', {
+      count: imageReferences.length, limit: getImageModel(activeModelId)?.maxReferences ?? 16,
+    });
     const items = imageReferences.map((item, index) => {
       const row = document.createElement("div");
       row.className = "image-reference-item";
@@ -684,10 +713,10 @@ export function initializeStudio() {
   }
 
   function updateImageContext() {
-    const isImage = activeModelId === "gpt-image-2";
+    const isImage = Boolean(getImageModel(activeModelId));
     const showPose = isImage && poseReferenceActive && resultCard.hidden;
     if (poseReferenceCard) poseReferenceCard.hidden = !showPose;
-    const hideExamples = !isImage || poseReferenceActive || !resultCard.hidden || imageGenerationInFlight;
+    const hideExamples = activeModelId !== 'gpt-image-2' || poseReferenceActive || !resultCard.hidden || imageGenerationInFlight;
     if (imageExamples) imageExamples.hidden = hideExamples;
     exampleCarousel.hidden = hideExamples || hasDedicatedImageExamples;
   }
@@ -696,6 +725,13 @@ export function initializeStudio() {
     const files = Array.isArray(file) ? file : file ? [file] : [];
     if (!files.length || imageGenerationInFlight) return false;
     const retained = source === "pose" ? imageReferences.filter(item => item.source !== "pose") : imageReferences;
+    const maxReferences = getImageModel(activeModelId)?.maxReferences ?? 16;
+    if (retained.length + files.length > maxReferences) {
+      referenceInput.value = '';
+      generationStatus.textContent = t('This image model supports up to {count} reference images.', { count: maxReferences });
+      generationStatus.className = 'generation-status is-error';
+      return false;
+    }
     const error = validateImageReferences([...retained.map(item => item.file), ...files]);
     referenceInput.value = "";
     if (error) {
@@ -754,7 +790,7 @@ export function initializeStudio() {
     additionalCostControls: [videoDuration],
     getCost: () => isVideoGenerationSelected()
       ? creditCostForDuration(videoDuration.value)
-      : creditCostForQuantity(imageQuantity.value),
+      : creditCostForQuantity(imageQuantity.value, activeModelId),
     onBalanceLoaded: (remaining) => {
       announceCredits({ remaining });
       updateDailyResetNotice();
@@ -769,13 +805,15 @@ export function initializeStudio() {
         launchNotice.hidden = summary.currentBalance !== 0;
         launchNotice.textContent = dailyCreditsUsedMessage() + " " + (isVideoGenerationSelected()
           ? t("Launching soon. Video generation from $0.01/second.")
-          : t("Launching soon. Image generation from $0.01/image."));
+          : activeModelId === 'gpt-image-2-5-1k'
+            ? t('GPT Image 2.5 uses 5 trial credits per image.')
+            : t("Launching soon. Image generation from $0.01/image."));
       }
       updateGenerateButton();
     }
   });
   selectModel(modelFromLocation());
-  if (activeModelId === "minimax-h3" || activeModelId === "gpt-image-2") {
+  if (activeModelId === "minimax-h3" || getImageModel(activeModelId)) {
     const showcaseSearch = new URLSearchParams(window.location.search);
     const showcasePrompt = showcaseSearch.get("prompt");
     if (showcasePrompt) {
@@ -785,7 +823,7 @@ export function initializeStudio() {
       if (activeModelId === "minimax-h3") {
         if (["5", "10", "15"].includes(duration)) videoDuration.value = duration;
         if (["16:9", "9:16", "1:1"].includes(aspectRatio)) videoAspectRatio.value = aspectRatio;
-      } else if (["1:1", "3:2", "2:3"].includes(aspectRatio)) {
+      } else if (Object.hasOwn(getImageModel(activeModelId)?.sizes || {}, aspectRatio)) {
         imageAspectRatio.value = aspectRatio;
       }
       creditSummaryController?.refresh();
@@ -879,7 +917,7 @@ export function initializeStudio() {
     if (event.target?.closest?.("[role='dialog'], dialog")) return;
     const editable = event.target?.closest?.("input, textarea, [contenteditable='true']");
     if (editable && editable !== prompt) return;
-    if (activeModelId === "gpt-image-2" && !uploadGroup.hidden && !referenceInput.disabled && !imageGenerationInFlight) {
+    if (getImageModel(activeModelId) && !uploadGroup.hidden && !referenceInput.disabled && !imageGenerationInFlight) {
       handleReferenceImagePaste(event, setReferenceImage);
     } else if (isReferenceVideo() && videoReferenceGroup && !videoReferenceGroup.hidden && !videoReferenceInput.disabled && !videoPolling && !activeVideoTaskId) {
       handleReferenceImagePaste(event, addVideoReferenceImages);
@@ -892,7 +930,14 @@ export function initializeStudio() {
   listen(referenceInput, "change", () => setReferenceImage(Array.from(referenceInput.files || [])));
   listen(referenceClear, "click", clearReferenceImage);
   async function runImageGeneration() {
-    if (imageGenerationInFlight || activeModelId !== "gpt-image-2" || !prompt.value.trim() || creditInsufficient) return;
+    if (imageGenerationInFlight || !getImageModel(activeModelId) || !prompt.value.trim() || creditInsufficient) return;
+    const maxReferences = getImageModel(activeModelId).maxReferences;
+    if (imageReferences.length > maxReferences) {
+      generationStatus.textContent = t('This image model supports up to {count} reference images.', { count: maxReferences });
+      generationStatus.className = 'generation-status is-error';
+      return;
+    }
+    const generationModelId = activeModelId;
     const generationUsedPoseReference = poseReferenceActive;
     imageGenerationInFlight = true;
     renderImageReferences();
@@ -910,14 +955,15 @@ export function initializeStudio() {
     updateImageContext();
     try {
       const result = await requestImageGeneration({
+        model: generationModelId,
         prompt: prompt.value,
         referenceFiles: imageReferences.map(item => item.file),
         quantity: normalizeImageQuantity(imageQuantity.value),
         resolution: imageQuality.value,
-        size: sizeForAspectRatio(imageAspectRatio.value)
+        size: sizeForAspectRatio(imageAspectRatio.value, generationModelId)
       });
       if (destroyed) return;
-      renderGeneratedImages(result.images);
+      renderGeneratedImages(result.images, generationModelId);
       resultCard.hidden = false;
       poseResultActionsController?.setVisible(generationUsedPoseReference);
       exampleCarousel.hidden = true;
@@ -934,7 +980,7 @@ export function initializeStudio() {
       if (error?.status === 401 || error?.code === "AUTH_REQUIRED") {
         window.dispatchEvent(new CustomEvent("seedance:auth-required"));
       }
-      const requiredCredits = error?.credits?.cost || creditCostForQuantity(imageQuantity.value);
+      const requiredCredits = error?.credits?.cost || creditCostForQuantity(imageQuantity.value, generationModelId);
       generationStatus.textContent = error?.code === "INSUFFICIENT_CREDITS"
         ? error?.credits?.remaining === 0
           ? dailyCreditsUsedMessage()

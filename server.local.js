@@ -37,7 +37,7 @@ const docxUpload = multer({
 });
 const imageGenerationUpload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 10 * 1024 * 1024, files: 16, fields: 4 }
+  limits: { fileSize: 10 * 1024 * 1024, files: 16, fields: 5 }
 });
 
 app.get("/admin", (_req, res) => {
@@ -77,9 +77,10 @@ app.post("/api/images/generate", (req, res) => {
     try {
       const form = new FormData();
       form.set("prompt", String(req.body?.prompt || ""));
+      form.set('model', String(req.body?.model ?? 'gpt-image-2'));
       form.set("quantity", String(req.body?.quantity || "1"));
       form.set("resolution", String(req.body?.resolution ?? "1K"));
-      form.set("size", String(req.body?.size || "1024x1024"));
+      if (req.body?.size) form.set('size', String(req.body.size));
       for (const file of req.files || []) {
         form.append("image", new Blob([file.buffer], { type: file.mimetype }), file.originalname || "reference.png");
       }
@@ -88,7 +89,10 @@ app.post("/api/images/generate", (req, res) => {
         new Request("http://localhost/api/images/generate", {
           method: "POST",
           body: form,
-          headers: { "x-seedance-image-quantity": String(req.body?.quantity || "1") }
+          headers: {
+            'x-seedance-image-quantity': req.get('x-seedance-image-quantity') ?? String(req.body?.quantity || '1'),
+            'x-seedance-image-model': req.get('x-seedance-image-model') ?? String(req.body?.model ?? 'gpt-image-2'),
+          }
         }),
         {
           TUZI_API_KEY: apiKey,
