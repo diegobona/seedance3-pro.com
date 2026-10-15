@@ -83,7 +83,8 @@ test('every existing studio shell discovers the new image workspace without drop
     const html = await renderPage('/zh/app/image/muse-image', component)
     assert.match(html, /href="\/zh\/app\/image\/gpt-image-2-5-1k"/)
     assert.match(html, /GPT Image 2\.5/)
-    assert.match(html, /5 积分\/张/)
+    const image25Link = html.match(/<a\b[^>]*href="\/zh\/app\/image\/gpt-image-2-5-1k"[^>]*>[\s\S]*?<\/a>/)?.[0] ?? ''
+    assert.match(image25Link, /class="price-badge">.*?<b>\$0\.01<\/b>/)
     assert.match(html, /href="\/zh\/ai-christmas-photo-prompt"/)
   }
 })

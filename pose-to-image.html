@@ -5,22 +5,22 @@
   <script src="/assets/pose-entry-visibility.js"></script>
   <link rel="stylesheet" href="/assets/pose-entry-visibility.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI Pose Generator &amp; 3D Pose Editor | Seedance</title>
-  <meta name="description" content="Build pose references with an online 3D pose editor. Arrange people, animals and props, adjust the camera, and turn your scene into an AI image with Seedance.">
+  <title>AI Pose Generator | Seedance</title>
+  <meta name="description" content="Create pose references with an AI pose generator. Arrange people, animals and props, choose camera angles, and turn your 3D scene into an AI image.">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
   <link rel="canonical" href="https://seedance3-pro.com/pose-to-image">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SEEDANCE 3.0">
-  <meta property="og:title" content="AI Pose Generator &amp; 3D Pose Editor | Seedance">
-  <meta property="og:description" content="Build pose references with an online 3D pose editor. Arrange people, animals and props, adjust the camera, and turn your scene into an AI image with Seedance.">
+  <meta property="og:title" content="AI Pose Generator | Seedance">
+  <meta property="og:description" content="Create pose references with an AI pose generator. Arrange people, animals and props, choose camera angles, and turn your 3D scene into an AI image.">
   <meta property="og:url" content="https://seedance3-pro.com/pose-to-image">
   <meta property="og:image" content="https://seedance3-pro.com/assets/pose-reference-demo-poster.webp?v=3">
   <meta property="og:image:width" content="1280">
   <meta property="og:image:height" content="720">
   <meta property="og:image:alt" content="A five-object Pose Studio scene beside a countryside AI visualization">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="AI Pose Generator &amp; 3D Pose Editor | Seedance">
-  <meta name="twitter:description" content="Build pose references with an online 3D pose editor. Arrange people, animals and props, adjust the camera, and turn your scene into an AI image with Seedance.">
+  <meta name="twitter:title" content="AI Pose Generator | Seedance">
+  <meta name="twitter:description" content="Create pose references with an AI pose generator. Arrange people, animals and props, choose camera angles, and turn your 3D scene into an AI image.">
   <meta name="twitter:image" content="https://seedance3-pro.com/assets/pose-reference-demo-poster.webp?v=3">
   <meta name="twitter:image:alt" content="A five-object Pose Studio scene beside a countryside AI visualization">
   <meta name="theme-color" content="#090a0c">
@@ -29,29 +29,108 @@
   <link rel="stylesheet" href="./site.css">
   <link rel="stylesheet" href="./pose-to-image.css">
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebPage",
-        "@id": "https://seedance3-pro.com/pose-to-image#webpage",
-        "url": "https://seedance3-pro.com/pose-to-image",
-        "name": "AI Pose Generator & 3D Pose Editor | Seedance",
-        "description": "Build pose references with an online 3D pose editor. Arrange people, animals and props, adjust the camera, and turn your scene into an AI image with Seedance.",
-        "inLanguage": "en",
-        "isPartOf": { "@type": "WebSite", "name": "SEEDANCE 3.0", "url": "https://seedance3-pro.com/" },
-        "breadcrumb": { "@id": "https://seedance3-pro.com/pose-to-image#breadcrumb" }
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://seedance3-pro.com/pose-to-image#webpage",
+      "url": "https://seedance3-pro.com/pose-to-image",
+      "name": "AI Pose Generator | Seedance",
+      "description": "Create pose references with an AI pose generator. Arrange people, animals and props, choose camera angles, and turn your 3D scene into an AI image.",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "SEEDANCE 3.0",
+        "url": "https://seedance3-pro.com/"
       },
-      {
-        "@type": "BreadcrumbList",
-        "@id": "https://seedance3-pro.com/pose-to-image#breadcrumb",
-        "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://seedance3-pro.com/" },
-          { "@type": "ListItem", "position": 2, "name": "Pose to Image", "item": "https://seedance3-pro.com/pose-to-image" }
-        ]
+      "breadcrumb": {
+        "@id": "https://seedance3-pro.com/pose-to-image#breadcrumb"
+      },
+      "hasPart": {
+        "@id": "https://seedance3-pro.com/pose-to-image#faq"
       }
-    ]
-  }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://seedance3-pro.com/pose-to-image#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://seedance3-pro.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "AI Pose Generator",
+          "item": "https://seedance3-pro.com/pose-to-image"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://seedance3-pro.com/pose-to-image#faq",
+      "url": "https://seedance3-pro.com/pose-to-image#faq",
+      "name": "AI Pose Generator FAQ",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://seedance3-pro.com/pose-to-image#webpage"
+      },
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What does this AI pose generator do?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Seedance combines a manual 3D pose editor with reference-guided image generation. You pose the mannequin and choose the camera view, then attach a capture in the image workspace and describe the image you want. The image model interprets that reference when generating."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use the pose editor without generating an image?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can open the editor, adjust the mannequin and camera, and prepare a reference without submitting a generation request. Image generation is a separate action that requires sign-in and sufficient credits."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I pose multiple characters at once?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Add people and animals to the same scene, select each character to adjust its pose, and arrange props around them. Capture the composition as a shared reference. Browse the editable pose scenes for a starting point."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Will the image match the pose exactly?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Exact matching is not guaranteed. The reference guides body pose and camera framing, but the model can reinterpret anatomy, overlaps, and placement. The mannequin also does not establish a person's identity. Refine the reference and prompt if the output misses your intention."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the editor export OpenPose data?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. This workflow captures a rendered image of the 3D scene. It does not provide an OpenPose skeleton, keypoint file, or ControlNet pose map export."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I turn my generated image into a video?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Generate an image from your pose scene, then use the image result's video action to carry it into the image-to-video workspace as a reference. Describe the action and camera movement you want before generating the video."
+          }
+        }
+      ]
+    }
+  ]
+}
   </script>
   <link rel="alternate" hreflang="en" href="https://seedance3-pro.com/pose-to-image">
   <link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/pose-to-image">
@@ -84,12 +163,12 @@
     <section class="pose-hero" aria-labelledby="pose-title">
       <div class="container">
         <nav class="breadcrumbs" aria-label="Breadcrumb">
-          <a href="./">Home</a><span aria-hidden="true">/</span><span aria-current="page">Pose to Image</span>
+          <a href="./">Home</a><span aria-hidden="true">/</span><span aria-current="page">AI Pose Generator</span>
         </nav>
         <div class="pose-hero-grid">
           <div class="pose-hero-copy">
             <p class="eyebrow">Pose first. Create next.</p>
-            <h1 id="pose-title">AI pose generator <span>&amp; 3D pose editor.</span></h1>
+            <h1 id="pose-title">AI <span>pose generator</span></h1>
             <p class="lead">Arrange people, animals and props in a 3D scene. Apply pose presets, adjust joints and frame the camera, then use your scene as a reference for AI image generation.</p>
             <div class="hero-actions">
               <a class="button primary" href="./app/?model=pose-to-image">Build Your Pose <span aria-hidden="true">↗</span></a>
@@ -171,7 +250,7 @@
 
     <section class="pose-section pose-faq-section" id="faq" aria-labelledby="faq-title">
       <div class="container pose-faq-layout">
-        <div><p class="eyebrow">Pose to Image FAQ</p><h2 id="faq-title">Before your<br>first pose.</h2></div>
+        <div><p class="eyebrow">AI Pose Generator FAQ</p><h2 id="faq-title">Before your<br>first pose.</h2></div>
         <div class="faq pose-faq">
           <details><summary>What does this AI pose generator do?</summary><p>Seedance combines a manual 3D pose editor with reference-guided image generation. You pose the mannequin and choose the camera view, then attach a capture in the image workspace and describe the image you want. The image model interprets that reference when generating.</p></details>
           <details><summary>Can I use the pose editor without generating an image?</summary><p>Yes. You can open the editor, adjust the mannequin and camera, and prepare a reference without submitting a generation request. Image generation is a separate action that requires sign-in and sufficient credits.</p></details>

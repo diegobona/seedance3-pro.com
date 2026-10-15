@@ -108,7 +108,7 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
               </button>
               <div className="section-heading image-models-heading"><span>{t("IMAGE MODELS")}</span><span>03</span></div>
               <button className={`model-button price-model${initiallyPose || initiallyVideo || initiallyGpt25 ? '' : ' is-active'}`} type="button" data-model="gpt-image-2"><span className="model-symbol orange">{t("G2")}</span><span><strong>{t("GPT Image 2")}</strong><small>{t("Generation & editing")}</small></span><em className="price-badge">{t("FROM ")}<b>$0.01</b></em></button>
-              <button className={`model-button price-model${initiallyGpt25 ? ' is-active' : ''}`} type="button" data-model="gpt-image-2-5-1k"><span className="model-symbol orange">G2.5</span><span><strong>{t("GPT Image 2.5")}</strong><small>{t("Generation & editing")}</small></span><em className="price-badge">{t("5 credits/image")}</em></button>
+              <button className={`model-button price-model${initiallyGpt25 ? ' is-active' : ''}`} type="button" data-model="gpt-image-2-5-1k"><span className="model-symbol orange">G2.5</span><span><strong>{t("GPT Image 2.5")}</strong><small>{t("Generation & editing")}</small></span><em className="price-badge">{t("FROM ")}<b>$0.01</b></em></button>
               <a className="model-button release-model" href={path("/app/image/muse-image")}><span className="model-symbol orange">MI</span><span className="release-model-copy"><span className="release-title-row"><strong>Muse Image</strong><em className="release-status">{t("Coming soon")}</em></span><small>{t("Workspace preview")}</small></span></a>
             </div>
             <div className="nav-section showcase-nav-section">

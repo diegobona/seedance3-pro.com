@@ -8137,6 +8137,42 @@
     {
       "source": "GPT Image 2.5 image",
       "translation": "GPT Image 2.5 图像"
+    },
+    {
+      "source": "AI Pose Generator | Seedance",
+      "translation": "AI 姿势生成器 | Seedance"
+    },
+    {
+      "source": "Create pose references with an AI pose generator. Arrange people, animals and props, choose camera angles, and turn your 3D scene into an AI image.",
+      "translation": "使用 AI 姿势生成器创建姿势参考，安排人物、动物与道具，选择镜头角度，再将 3D 场景转为 AI 图像。"
+    },
+    {
+      "source": "AI",
+      "translation": "AI"
+    },
+    {
+      "source": "pose generator",
+      "translation": "姿势生成器"
+    },
+    {
+      "source": "AI Pose Generator",
+      "translation": "AI 姿势生成器"
+    },
+    {
+      "source": "AI Pose Generator FAQ",
+      "translation": "AI 姿势生成器常见问题"
+    },
+    {
+      "source": "Explore the AI pose generator →",
+      "translation": "探索 AI 姿势生成器 →"
+    },
+    {
+      "source": "Yes. Add people and animals to the same scene, select each character to adjust its pose, and arrange props around them. Capture the composition as a shared reference. Browse the editable pose scenes for a starting point.",
+      "translation": "可以。将人物和动物加入同一个场景，选择各自调整姿势，并在周围安排道具。截取整个构图作为共同参考。浏览 可编辑姿势场景 ，选择起点。"
+    },
+    {
+      "source": "Yes. Generate an image from your pose scene, then use the image result's video action to carry it into the image-to-video workspace as a reference. Describe the action and camera movement you want before generating the video.",
+      "translation": "可以。根据姿势场景生成图像，再使用结果上的视频操作，将图像送入 图生视频工作区 作为参考。生成视频前描述想要的动作与运镜。"
     }
   ]
 }

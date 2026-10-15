@@ -12,7 +12,7 @@ This map records the page that owns each search intent. Primary navigation and `
 | Muse Video workspace | `/app/video/muse-video` | Editable workspace preview; generation unavailable, indexable, included in bilingual sitemap |
 | Muse Image workspace | `/app/image/muse-image` | Editable workspace preview; generation unavailable, indexable, included in bilingual sitemap |
 | Seedance 3.0 workspace | `/app/video/seedance-3` | Editable workspace preview; generation coming soon, indexable, included in bilingual sitemap |
-| Pose to Image explanation | `/pose-to-image` | Published, indexable; existing URL retained |
+| AI pose generator | `/pose-to-image` | Published, indexable; primary phrase in Title/H1; existing URL retained |
 | Pose reference examples | `/pose-reference-camera-angle-examples` | Published, indexable; existing URL retained |
 | Generic and Pose workspace | `/app/` and `/app/?model=pose-to-image` | Functional, noindex |
 | Nano Banana 2 Lite model information | `/nano-banana-2-lite` | Tool unavailable; noindex, absent from sitemap |
@@ -46,3 +46,5 @@ The Christmas photo prompt collection uses a year-independent URL with a `/zh` e
 Muse and Seedance 3.0 workspaces and libraries have indexable `/zh` equivalents, with both languages included in `sitemap.xml`. Studio and preview navigation link to these pages. Muse `/app/?model=...` aliases redirect to the matching preview, preserving prompt drafts and other query parameters.
 
 Model generators and Prompt Libraries link to relevant prompting or pose-reference tutorials. Those tutorials link back to published tools, libraries and selected original cases using descriptive text. Case dialogs retain related works, their parent library and prompt handoff to the generator, and include a Home breadcrumb. The Blog index offers video, image and pose workflow entry points. These links render in HTML and use the canonical extensionless destinations.
+
+The Pose landing uses “AI Pose Generator” as its primary Title/H1 phrase. Its body explains the 3D editor, pose references and camera angles. The landing, `/pose-reference-camera-angle-examples` and `/how-to-control-character-poses-in-seedance-with-3d-pose-references` link to each other in both languages. Its FAQPage schema matches the six visible questions and answers, with localized URLs and text. This markup describes the content; [Google no longer displays FAQ rich results](https://developers.google.com/search/updates).

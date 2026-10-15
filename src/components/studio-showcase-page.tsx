@@ -241,7 +241,7 @@ export function StudioShowcasePage({ model }: { model: StudioShowcaseModel }) {
               </a>
               <div className="section-heading image-models-heading"><span>{t("IMAGE MODELS")}</span><span>03</span></div>
               <a className="model-button price-model" href={path("/app/image/gpt-image-2")}><span className="model-symbol orange">{t("G2")}</span><span><strong>{t("GPT Image 2")}</strong><small>{t("Generation & editing")}</small></span><em className="price-badge">{t("FROM ")}<b>$0.01</b></em></a>
-              <a className="model-button price-model" href={path("/app/image/gpt-image-2-5-1k")}><span className="model-symbol orange">G2.5</span><span><strong>{t("GPT Image 2.5")}</strong><small>{t("Generation & editing")}</small></span><em className="price-badge">{t("5 credits/image")}</em></a>
+              <a className="model-button price-model" href={path("/app/image/gpt-image-2-5-1k")}><span className="model-symbol orange">G2.5</span><span><strong>{t("GPT Image 2.5")}</strong><small>{t("Generation & editing")}</small></span><em className="price-badge">{t("FROM ")}<b>$0.01</b></em></a>
               <a className="model-button release-model" href={path('/app/image/muse-image')}><span className="model-symbol orange">MI</span><span className="release-model-copy"><span className="release-title-row"><strong>{t('Muse Image')}</strong><em className="release-status">{t('Coming soon')}</em></span><small>{t('Workspace preview')}</small></span></a>
             </div>
             <div className="nav-section showcase-nav-section">
