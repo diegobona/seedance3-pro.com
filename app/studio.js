@@ -426,12 +426,9 @@ export function initializeStudio() {
     if (poseStudio) poseStudio.hidden = !poseModel;
     if (poseModel) void ensurePoseStudio();
     referenceLabel.textContent = model.canGenerate ? t("Reference images") : t("Reference files");
-    referenceMeta.textContent = model.canGenerate ? t(getImageModel(normalizedModelId)?.maxReferences === 4
-      ? 'Optional · up to 4 images' : 'Optional · enables image-to-image') : videoModel ? t("Preview only") : t("Reference images");
+    referenceMeta.textContent = model.canGenerate ? t('Optional · up to 16 images') : videoModel ? t("Preview only") : t("Reference images");
     uploadTitle.textContent = model.canGenerate ? t("Add reference images") : t("Drop or choose reference media");
-    uploadHint.textContent = model.canGenerate ? t(getImageModel(normalizedModelId)?.maxReferences === 4
-      ? 'Up to 4 images · 10 MB each · 24 MB total'
-      : 'Up to 16 images · 10 MB each · 24 MB total') : t("Interface preview only—files are not uploaded");
+    uploadHint.textContent = model.canGenerate ? t('Up to 16 images · 10 MB each · 24 MB total') : t("Interface preview only—files are not uploaded");
     uploadBox.classList.toggle("is-enabled", Boolean(model.canGenerate) && !videoModel);
     uploadGroup.hidden = model.type === "video";
     updateVideoMode();
@@ -804,10 +801,10 @@ export function initializeStudio() {
       if (launchNotice) {
         launchNotice.hidden = summary.currentBalance !== 0;
         launchNotice.textContent = dailyCreditsUsedMessage() + " " + (isVideoGenerationSelected()
-          ? t("Launching soon. Video generation from $0.01/second.")
+          ? t("Launching soon. Video generation at $0.01/second.")
           : activeModelId === 'gpt-image-2-5-1k'
             ? t('GPT Image 2.5 uses 5 trial credits per image.')
-            : t("Launching soon. Image generation from $0.01/image."));
+            : t("Launching soon. Image generation at $0.01/image."));
       }
       updateGenerateButton();
     }

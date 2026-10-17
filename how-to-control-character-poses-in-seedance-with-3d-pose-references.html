@@ -5,20 +5,20 @@
   <script src="/assets/pose-entry-visibility.js"></script>
   <link rel="stylesheet" href="/assets/pose-entry-visibility.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>How to Control Character Poses in Seedance with 3D Pose References | SEEDANCE Blog</title>
-  <meta name="description" content="Build a 3D pose in Seedance, use it as an image-generation reference, and refine your character image. Follow the steps, prompt examples, and optional image-to-video workflow.">
+  <title>Seedance 3D Pose References: Character Pose Guide</title>
+  <meta name="description" content="Plan character images with Seedance 3D pose references. Follow camera framing, scene capture, prompt writing and image review steps before video creation.">
   <meta name="keywords" content="3D pose reference,pose to image,AI pose generator,character pose tutorial">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
   <link rel="canonical" href="https://seedance3-pro.com/how-to-control-character-poses-in-seedance-with-3d-pose-references">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="SEEDANCE 3.0">
-  <meta property="og:title" content="How to Control Character Poses in Seedance with 3D Pose References">
-  <meta property="og:description" content="Build a 3D pose in Seedance, use it as an image-generation reference, and refine your character image. Follow the steps, prompt examples, and optional image-to-video workflow.">
+  <meta property="og:title" content="Seedance 3D Pose References: Character Pose Guide">
+  <meta property="og:description" content="Plan character images with Seedance 3D pose references. Follow camera framing, scene capture, prompt writing and image review steps before video creation.">
   <meta property="og:url" content="https://seedance3-pro.com/how-to-control-character-poses-in-seedance-with-3d-pose-references">
   <meta property="og:image" content="https://seedance3-pro.com/assets/pose-reference-demo-poster.webp?v=2">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="How to Control Character Poses in Seedance with 3D Pose References">
-  <meta name="twitter:description" content="Build a 3D pose in Seedance, use it as an image-generation reference, and refine your character image. Follow the steps, prompt examples, and optional image-to-video workflow.">
+  <meta name="twitter:title" content="Seedance 3D Pose References: Character Pose Guide">
+  <meta name="twitter:description" content="Plan character images with Seedance 3D pose references. Follow camera framing, scene capture, prompt writing and image review steps before video creation.">
   <meta name="twitter:image" content="https://seedance3-pro.com/assets/pose-reference-demo-poster.webp?v=2">
   <meta name="theme-color" content="#090a0c">
   <link rel="stylesheet" href="./site.css">
@@ -32,6 +32,41 @@
   <script src="/assets/site-language.js" defer></script>
   <meta property="og:locale" content="en_US">
   <meta property="og:locale:alternate" content="zh_CN">
+  <!-- FACT-CHECK: datePublished uses the first Git-added record (2026-09-13T13:27:45+08:00, commit 524189957f851ef174cd2f74c389e274e9156a9f) as the owner-approved fallback. This records repository history, not an independently verified first-live timestamp. -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "@id": "https://seedance3-pro.com/how-to-control-character-poses-in-seedance-with-3d-pose-references#article",
+  "mainEntityOfPage": "https://seedance3-pro.com/how-to-control-character-poses-in-seedance-with-3d-pose-references",
+  "url": "https://seedance3-pro.com/how-to-control-character-poses-in-seedance-with-3d-pose-references",
+  "headline": "How to Control Character Poses in Seedance with 3D Pose References",
+  "description": "Plan character images with Seedance 3D pose references. Follow camera framing, scene capture, prompt writing and image review steps before video creation.",
+  "image": "https://seedance3-pro.com/assets/pose-reference-demo-poster.webp?v=2",
+  "datePublished": "2026-09-13T13:27:45+08:00",
+  "dateModified": "2026-10-17",
+  "inLanguage": "en",
+  "author": {
+    "@type": "Organization",
+    "name": "SEEDANCE 3.0",
+    "url": "https://seedance3-pro.com/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SEEDANCE 3.0",
+    "url": "https://seedance3-pro.com/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://seedance3-pro.com/assets/seedance-mark.svg"
+    }
+  },
+  "isPartOf": {
+    "@id": "https://seedance3-pro.com/blog#blog"
+  }
+}
+  </script>
+  <meta property="article:published_time" content="2026-09-13T13:27:45+08:00">
+  <meta property="article:modified_time" content="2026-10-17">
 </head>
 <body>
   <header class="site-header">
@@ -54,9 +89,10 @@
         <p class="eyebrow article-category">Tutorial</p>
         <h1 class="article-title">How to Control Character Poses in Seedance with 3D Pose References</h1>
         <p class="article-lead">Build a 3D pose in Seedance, use it as an image-generation reference, and refine your character image. Follow the steps, prompt examples, and optional image-to-video workflow.</p>
+        <p class="section-copy">Last updated: <time data-article-updated datetime="2026-10-17">2026-10-17</time></p>
         <div class="article-content prose">
           <p>When a character's stance or camera angle matters, a 3D mannequin gives the image model a visual reference. In Seedance, you can arrange that reference in the browser and send a capture directly to the image workspace. The generated image may still need revisions: a reference guides the model, but does not lock every joint or preserve a character's identity.</p>
-          <p data-pose-entry><a href="./pose-to-image">See the AI pose generator and its controls</a>, or <a href="./app/?model=pose-to-image">open Pose Studio</a> to follow along. Updated <time datetime="2026-09-22">September 22, 2026</time>.</p>
+          <p data-pose-entry><a href="./pose-to-image">See the AI pose generator and its controls</a>, or <a href="./app/?model=pose-to-image">open Pose Studio</a> to follow along.</p>
 
           <h2>1. Start with a pose you can read clearly</h2>
           <p>Choose a preset close to the stance you need. For example, start with Jogging for a running composition. Drag the mannequin's control points to adjust the limbs. Check the shoulders, hips, bent knees, and where the feet meet the floor.</p>
@@ -114,6 +150,18 @@
         </div>
       </article>
     </div>
+  <!-- RELATED_READING_START -->
+  <section class="related-reading" id="related-reading" aria-labelledby="related-reading-title">
+    <div class="container">
+      <h2 id="related-reading-title">Related reading</h2>
+      <div class="related-reading-grid">
+        <a class="card related-reading-card" href="/pose-to-image" data-pose-entry><h3>AI pose generator</h3><p>Arrange a pose and camera view before preparing an image reference.</p><span aria-hidden="true">→</span></a>
+        <a class="card related-reading-card" href="/pose-reference-camera-angle-examples" data-pose-entry><h3>Pose reference and camera angle examples</h3><p>Compare reference views and image results for people, animals and props.</p><span aria-hidden="true">→</span></a>
+        <a class="card related-reading-card" href="/precise-application-of-seedance-prompts"><h3>Seedance prompt examples</h3><p>Study scene descriptions, subject movement and camera instructions.</p><span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+  <!-- RELATED_READING_END -->
   </main>
 
   <footer class="site-footer article-footer">
@@ -126,5 +174,18 @@
       <nav class="site-language-switch" data-site-language-switch data-language-footer aria-label="Site language"><a href="/zh/how-to-control-character-poses-in-seedance-with-3d-pose-references?lang=zh" data-language="zh" lang="zh-Hans">中文</a><span aria-hidden="true">|</span><a href="/how-to-control-character-poses-in-seedance-with-3d-pose-references?lang=en" data-language="en" lang="en" aria-current="true">EN</a></nav>
     </div>
   </footer>
+  <!-- Date maintenance: edit Article.dateModified once; the visible date and modified-time metadata read it here. -->
+  <script id="content-date-display">
+    (() => {
+      const nodes = Array.from(document.querySelectorAll('script[type="application/ld+json"]')).flatMap((script) => {
+        const data = JSON.parse(script.textContent);
+        return data['@graph'] || [data];
+      });
+      const page = nodes.find((item) => item['@type'] === 'Article');
+      document.querySelectorAll('[data-article-updated]').forEach((time) => { time.textContent = page.dateModified.slice(0, 10); time.dateTime = page.dateModified; });
+      const modified = document.querySelector('meta[property="article:modified_time"]');
+      if (modified) modified.content = page.dateModified;
+    })();
+  </script>
 </body>
 </html>

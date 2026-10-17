@@ -24,13 +24,13 @@
   <meta name="theme-color" content="#090a0c">
   <link rel="stylesheet" href="/site.css">
   <style id="daily-news-layout">
-    #latest-news { scroll-margin-top: 110px; }
+    #latest-news, #release-timeline { scroll-margin-top: 110px; }
     #seedance-news a { overflow-wrap: anywhere; }
   </style>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="/favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
-  <!-- Date maintenance: edit Article.dateModified for editorial changes. Daily checks have a separate timestamp; changed official news updates dateModified at the edge. Keep datePublished and the historical review date intact. -->
+  <!-- Date maintenance: edit Article.dateModified for editorial changes. Completed official-source checks also update the visible date, dateModified and sitemap lastmod at the edge. Keep datePublished and historical source dates intact. -->
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -41,7 +41,7 @@
       "headline": "Seedance 3.0 发布时间：目前已确认的信息",
       "description": "Seedance 3.0 什么时候发布？查看官方来源和带日期的发布动态，了解截至 2026 年 10 月仍待确认的上线消息。这里也整理了免费试用、订阅与 API 价格的常见问题，以及 Seedance 2.5 已公布的能力，方便你了解目前能比较哪些信息，并找到现在可用的视频、图像和姿势创作工具。",
       "datePublished": "2026-10-06",
-      "dateModified": "2026-10-06",
+      "dateModified": "2026-10-17",
       "inLanguage": "zh-Hans",
       "mainEntityOfPage": "https://seedance3-pro.com/zh/seedance-3-0-release-date",
       "image": "https://seedance3-pro.com/og-cover.svg",
@@ -147,7 +147,8 @@
         <h1 class="article-title">Seedance 3.0 发布时间：目前已确认的信息</h1>
         <!-- FACT-CHECK: Recheck the official Seed model catalog and visual blog before changing the unannounced 3.0 status. No estimated launch date is asserted. -->
         <p class="article-lead"><strong>截至 2026 年 10 月，在本页核对的官方资料中，Seedance 3.0 的发布时间仍未得到确认。</strong> 字节跳动的模型目录目前列有 Seedance 2.5，相关公告和来源见下方时间线。</p>
-        <p class="section-copy">Last updated: <time data-release-updated>2026-10-06</time></p>
+        <p class="section-copy">Last updated: <time data-release-updated datetime="2026-10-17">2026-10-17</time></p>
+        <p class="section-copy">查找常见问题、提示词规划与参考素材指南，请浏览 <a href="/zh/seedance-3-0">Seedance 3.0 主题资源中心</a>。</p>
         <div class="article-content prose">
           <h2 id="latest-news">每日官方动态</h2>
           <p>每天北京时间上午 9 点检查一次官方来源。检查完成后，新发现的 Seedance 3.0 消息会显示在这里，并分别标注原文发布日期和首次发现时间。这些日期不代表模型的上线日期。</p>
@@ -196,6 +197,8 @@
           </table>
           <p id="seedance-comparison-plan">后续会用相同任务来比较主体是否保持一致、动作表现、生成结果是否符合参考素材、编辑能力、生成耗时和成本。Seedance 3.0 在这些方面的能力仍待官方信息确认。</p>
 
+          <p id="seedance-spelling">如果你搜索的是 seadance、sedance、seedanc3 或 seedence，或使用了 씨댄스 这样的检索词，请先按 Seedance 名称核对原始来源，再判断相关发布说法是否有依据。需要查找名称与拼写说明时，可以阅读 <a href="/zh/faq#seedance-spelling">名称与拼写常见问题</a>。</p>
+
           <h2 id="release-faq">Seedance 3.0 发布时间常见问题</h2>
           <p>以下解答依据本页核对的 <a href="https://seed.bytedance.com/en/models" target="_blank" rel="noopener noreferrer">官方模型目录</a> 和 <a href="https://seed.bytedance.com/en/blog_list/visual" target="_blank" rel="noopener noreferrer">视觉博客</a> ；2.5 的信息来自上方链接的官方模型页面。</p>
           <div class="faq" id="release-faq-answers">
@@ -211,10 +214,22 @@
 
           <h2 id="updates">本页如何更新</h2>
           <p>每日检查会把官方标题和原文链接加入上方动态。如果某个来源无法访问，之前保存的消息仍会显示，同时标明本次检查未完成。仅凭模型名称或公告标题，无法确认日期、价格或规格。</p>
-          <p>可以收藏本页，通过 Last updated 查看最近一次更新时间。</p>
+          <p>Last updated 会同步最近一次完整核查官方来源的日期；人工更新正文时也会刷新。</p>
         </div>
       </article>
     </div>
+  <!-- RELATED_READING_START -->
+  <section class="related-reading" id="related-reading" aria-labelledby="related-reading-title">
+    <div class="container">
+      <h2 id="related-reading-title">相关阅读</h2>
+      <div class="related-reading-grid">
+        <a class="card related-reading-card" href="/zh/"><h3>Seedance 首页</h3><p>浏览创作工具、使用指南和官方发布动态。</p><span aria-hidden="true">→</span></a>
+        <a class="card related-reading-card" href="/zh/pose-to-image" data-pose-entry><h3>AI 姿势生成器</h3><p>先安排姿势和镜头视角，再准备图像参考。</p><span aria-hidden="true">→</span></a>
+        <a class="card related-reading-card" href="/zh/seedance-3-0"><h3>Seedance 3.0 资源中心</h3><p>集中查看发布动态、常见问题、提示词草稿和参考指南。</p><span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+  <!-- RELATED_READING_END -->
   </main>
   <footer class="site-footer article-footer">
     <div class="container article-footer-inner">

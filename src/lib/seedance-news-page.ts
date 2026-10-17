@@ -31,6 +31,11 @@ function checkTime(value: string) {
   const time = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Shanghai', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date(value))
   return `${chinaDate(value)} ${time}`
 }
+function modificationDate(state: NewsState, article: boolean) {
+  const dates = [state.lastChangedAt, article ? state.lastSuccessfulCheckAt : null]
+    .flatMap(value => value ? [chinaDate(value)] : [])
+  return dates.sort().at(-1) ?? null
+}
 export function newsDocument(pathname: string) {
   return ['/', '/index.html', '/zh/', '/zh/index.html', '/seedance-3-0-release-date', '/seedance-3-0-release-date.html', '/zh/seedance-3-0-release-date', '/zh/seedance-3-0-release-date.html', '/sitemap.xml'].includes(pathname)
 }
@@ -72,9 +77,9 @@ export function renderNewsSection(state: NewsState, locale: Locale) {
 function rewriteSchema(raw: string, state: NewsState, locale: Locale, article: boolean) {
   try {
     const data = JSON.parse(raw)
+    const date = modificationDate(state, article)
     for (const entry of data['@graph'] ?? []) {
-      if (state.lastChangedAt && ['Article', 'WebPage'].includes(entry['@type'])) {
-        const date = chinaDate(state.lastChangedAt)
+      if (date && ['Article', 'WebPage'].includes(entry['@type'])) {
         entry.dateModified = typeof entry.dateModified === 'string' && entry.dateModified > date ? entry.dateModified : date
       }
       if (entry['@type'] === 'FAQPage' && state.items.length) {
@@ -103,10 +108,9 @@ export function rewriteNewsResponse(request: Request, response: Response, state:
   headers.delete('etag')
   headers.delete('last-modified')
   const fresh = new Response(response.body, { status: response.status, statusText: response.statusText, headers })
-  if (pathname === '/sitemap.xml' && /xml/i.test(type) && state.lastChangedAt) {
+  if (pathname === '/sitemap.xml' && /xml/i.test(type) && (state.lastChangedAt || state.lastSuccessfulCheckAt)) {
     let location = ''
     let originalDate = ''
-    const date = chinaDate(state.lastChangedAt)
     return new HTMLRewriter()
       .on('url', { element() { location = ''; originalDate = '' } })
       .on('url loc', { text(chunk) { location += chunk.text } })
@@ -114,6 +118,8 @@ export function rewriteNewsResponse(request: Request, response: Response, state:
         let path: string
         try { path = new URL(location.trim()).pathname } catch { return }
         if (!newsDocument(path) || path === '/sitemap.xml') return
+        const date = modificationDate(state, path.includes('seedance-3-0-release-date'))
+        if (!date) return
         originalDate += chunk.text
         chunk.replace(chunk.lastInTextNode ? (originalDate.trim() > date ? originalDate.trim() : date) : '')
       } }).transform(fresh)
@@ -122,18 +128,18 @@ export function rewriteNewsResponse(request: Request, response: Response, state:
   const rewriter = new HTMLRewriter().on('#seedance-news', {
     element(element) { element.setInnerContent(renderNewsSection(state, locale), { html: true }) },
   })
-  // Repeated successful inspections update only the check time; article dates require changed news.
+  // A completed source review updates the release article even when no new news is found.
   let schemaText = ''
-  let displayDate: string | null = null
+  let displayDate = article ? modificationDate(state, true) : null
   rewriter.on('script[type="application/ld+json"]', {
     element() { schemaText = '' },
     text(chunk) {
       schemaText += chunk.text
       if (!chunk.lastInTextNode) { chunk.replace(''); return }
       const rewritten = rewriteSchema(schemaText, state, locale, article)
-      if (article && state.lastChangedAt) {
-        try { displayDate = JSON.parse(rewritten)['@graph']?.find((entry: { '@type': string }) => entry['@type'] === 'Article')?.dateModified ?? null }
-        catch { displayDate = null }
+      if (article) {
+        try { displayDate = JSON.parse(rewritten)['@graph']?.find((entry: { '@type': string }) => entry['@type'] === 'Article')?.dateModified ?? displayDate }
+        catch { /* Keep the successful review date if structured data is unavailable. */ }
       }
       chunk.replace(rewritten)
     },

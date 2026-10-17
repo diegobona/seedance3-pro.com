@@ -227,7 +227,7 @@ export function StudioShowcasePage({ model }: { model: StudioShowcaseModel }) {
           <nav aria-label={t("Model navigation")}>
             <div className="nav-section">
               <div className="section-heading"><span>{t("AI VIDEO")}</span><span>03</span></div>
-              <a className="model-button price-model" href={path("/app/video/minimax-h3")}><span className="model-symbol cyan">{t("H3")}</span><span><strong>{t("MiniMax H3")}</strong><small>{t("Text-to-video, image-to-video")}</small></span><em className="price-badge">{t("FROM ")}<b>$0.01</b></em></a>
+              <a className="model-button price-model" href={path("/app/video/minimax-h3")}><span className="model-symbol cyan">{t("H3")}</span><span><strong>{t("MiniMax H3")}</strong><small>{t("Text-to-video, image-to-video")}</small></span><em className="price-badge"><b>$0.01</b>{t("/sec")}</em></a>
               <a className="model-button release-model" href={path('/app/video/muse-video')}><span className="model-symbol cyan">MV</span><span className="release-model-copy"><span className="release-title-row"><strong>{t('Muse Video')}</strong><em className="release-status">{t('Coming soon')}</em></span><small>{t('Workspace preview')}</small></span></a>
               <a className="model-button release-model" href={path("/app/video/seedance-3")}><img src="/assets/seedance-mark.svg" width="40" height="40" alt="" style={{ flexShrink: 0 }} /><span className="release-model-copy"><span className="release-title-row"><strong>{t("SEEDANCE 3.0")}</strong><em className="release-status">{t("Coming soon")}</em></span><small>{t("Workspace preview")}</small></span></a>
             </div>
@@ -240,8 +240,8 @@ export function StudioShowcasePage({ model }: { model: StudioShowcaseModel }) {
                 <span className="workflow-cta">{t("Open Pose Studio ")}<b>↗</b></span>
               </a>
               <div className="section-heading image-models-heading"><span>{t("IMAGE MODELS")}</span><span>03</span></div>
-              <a className="model-button price-model" href={path("/app/image/gpt-image-2")}><span className="model-symbol orange">{t("G2")}</span><span><strong>{t("GPT Image 2")}</strong><small>{t("Generation & editing")}</small></span><em className="price-badge">{t("FROM ")}<b>$0.01</b></em></a>
-              <a className="model-button price-model" href={path("/app/image/gpt-image-2-5-1k")}><span className="model-symbol orange">G2.5</span><span><strong>{t("GPT Image 2.5")}</strong><small>{t("Generation & editing")}</small></span><em className="price-badge">{t("FROM ")}<b>$0.01</b></em></a>
+              <a className="model-button price-model" href={path("/app/image/gpt-image-2-5-1k")}><span className="model-symbol orange">G2.5</span><span><strong>{t("GPT Image 2.5")}</strong><small>{t("Generation & editing")}</small></span><em className="price-badge"><b>$0.01</b>{t("/image")}</em></a>
+              <a className="model-button price-model" href={path("/app/image/gpt-image-2")}><span className="model-symbol orange">{t("G2")}</span><span><strong>{t("GPT Image 2")}</strong><small>{t("Generation & editing")}</small></span><em className="price-badge"><b>$0.01</b>{t("/image")}</em></a>
               <a className="model-button release-model" href={path('/app/image/muse-image')}><span className="model-symbol orange">MI</span><span className="release-model-copy"><span className="release-title-row"><strong>{t('Muse Image')}</strong><em className="release-status">{t('Coming soon')}</em></span><small>{t('Workspace preview')}</small></span></a>
             </div>
             <div className="nav-section showcase-nav-section">

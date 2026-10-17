@@ -27,6 +27,7 @@ button,textarea,select { font:inherit; } a { color:inherit; text-decoration:none
 .model-button.price-model { grid-template-columns:36px minmax(0,1fr) auto; }
 .model-button .price-badge { position:static; display:grid; justify-self:end; gap:3px; padding:0; border:0; border-radius:0; background:none; box-shadow:none; color:var(--muted); font-size:8px; font-weight:400; font-style:normal; letter-spacing:0; line-height:1.2; text-align:right; white-space:nowrap; }
 .model-button .price-badge b { display:block; color:#c4c5be; font-size:11px; font-weight:600; letter-spacing:0; line-height:1.2; }
+.model-button.price-model:focus-visible { outline:2px solid var(--lime); outline-offset:-2px; }
 .model-button.release-model { align-items:center; }
 .release-model-copy { min-width:0; }
 .release-title-row { display:flex; align-items:center; gap:5px; min-width:0; }

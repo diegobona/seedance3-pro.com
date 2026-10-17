@@ -5,26 +5,61 @@
   <script src="/assets/pose-entry-visibility.js"></script>
   <link rel="stylesheet" href="/assets/pose-entry-visibility.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>如何用 3D 姿势参考控制 Seedance 中的人物姿态 | SEEDANCE 博客</title>
-  <meta name="description" content="在 Seedance 中构建 3D 姿势，将其用作图像生成参考，再优化人物图像。按步骤学习提示词示例和可选的图生视频流程。">
+  <title>Seedance 3D 姿势参考：人物姿态控制指南</title>
+  <meta name="description" content="学习用 Seedance 3D 姿势参考规划人物图像，从选择易读的动作轮廓、设置相机角度，到截取场景、整理提示词与检查图像结果，按步骤准备构图。页面提供姿势参考与提示词示例，也说明从图像继续准备视频的方法；参考图能够辅助表达站位与动作，但不能保证每个关节或人物身份都完全一致，生成后仍需对照原图逐步修正。">
   <meta name="keywords" content="3D 姿势参考,姿势生成图像,AI 姿势生成器,人物姿势教程">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
   <link rel="canonical" href="https://seedance3-pro.com/zh/how-to-control-character-poses-in-seedance-with-3d-pose-references">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="SEEDANCE 3.0">
-  <meta property="og:title" content="如何用 3D 姿势参考控制 Seedance 中的人物姿态">
-  <meta property="og:description" content="在 Seedance 中构建 3D 姿势，将其用作图像生成参考，再优化人物图像。按步骤学习提示词示例和可选的图生视频流程。">
+  <meta property="og:title" content="Seedance 3D 姿势参考：人物姿态控制指南">
+  <meta property="og:description" content="学习用 Seedance 3D 姿势参考规划人物图像，从选择易读的动作轮廓、设置相机角度，到截取场景、整理提示词与检查图像结果，按步骤准备构图。页面提供姿势参考与提示词示例，也说明从图像继续准备视频的方法；参考图能够辅助表达站位与动作，但不能保证每个关节或人物身份都完全一致，生成后仍需对照原图逐步修正。">
   <meta property="og:url" content="https://seedance3-pro.com/zh/how-to-control-character-poses-in-seedance-with-3d-pose-references">
   <meta property="og:image" content="https://seedance3-pro.com/assets/pose-reference-demo-poster.webp?v=2">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="如何用 3D 姿势参考控制 Seedance 中的人物姿态">
-  <meta name="twitter:description" content="在 Seedance 中构建 3D 姿势，将其用作图像生成参考，再优化人物图像。按步骤学习提示词示例和可选的图生视频流程。">
+  <meta name="twitter:title" content="Seedance 3D 姿势参考：人物姿态控制指南">
+  <meta name="twitter:description" content="学习用 Seedance 3D 姿势参考规划人物图像，从选择易读的动作轮廓、设置相机角度，到截取场景、整理提示词与检查图像结果，按步骤准备构图。页面提供姿势参考与提示词示例，也说明从图像继续准备视频的方法；参考图能够辅助表达站位与动作，但不能保证每个关节或人物身份都完全一致，生成后仍需对照原图逐步修正。">
   <meta name="twitter:image" content="https://seedance3-pro.com/assets/pose-reference-demo-poster.webp?v=2">
   <meta name="theme-color" content="#090a0c">
   <link rel="stylesheet" href="/site.css">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="/favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+  <!-- FACT-CHECK: datePublished uses the first Git-added record (2026-09-13T13:27:45+08:00, commit 524189957f851ef174cd2f74c389e274e9156a9f) as the owner-approved fallback. This records repository history, not an independently verified first-live timestamp. -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "@id": "https://seedance3-pro.com/zh/how-to-control-character-poses-in-seedance-with-3d-pose-references#article",
+  "mainEntityOfPage": "https://seedance3-pro.com/zh/how-to-control-character-poses-in-seedance-with-3d-pose-references",
+  "url": "https://seedance3-pro.com/zh/how-to-control-character-poses-in-seedance-with-3d-pose-references",
+  "headline": "如何用 3D 姿势参考控制 Seedance 中的人物姿态",
+  "description": "学习用 Seedance 3D 姿势参考规划人物图像，从选择易读的动作轮廓、设置相机角度，到截取场景、整理提示词与检查图像结果，按步骤准备构图。页面提供姿势参考与提示词示例，也说明从图像继续准备视频的方法；参考图能够辅助表达站位与动作，但不能保证每个关节或人物身份都完全一致，生成后仍需对照原图逐步修正。",
+  "image": "https://seedance3-pro.com/assets/pose-reference-demo-poster.webp?v=2",
+  "datePublished": "2026-09-13T13:27:45+08:00",
+  "dateModified": "2026-10-17",
+  "inLanguage": "zh-Hans",
+  "author": {
+    "@type": "Organization",
+    "name": "SEEDANCE 3.0",
+    "url": "https://seedance3-pro.com/zh/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SEEDANCE 3.0",
+    "url": "https://seedance3-pro.com/zh/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://seedance3-pro.com/assets/seedance-mark.svg"
+    }
+  },
+  "isPartOf": {
+    "@id": "https://seedance3-pro.com/zh/blog#blog"
+  }
+}
+</script>
+  <meta property="article:published_time" content="2026-09-13T13:27:45+08:00">
+  <meta property="article:modified_time" content="2026-10-17">
   <link rel="alternate" hreflang="en" href="https://seedance3-pro.com/how-to-control-character-poses-in-seedance-with-3d-pose-references">
   <link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/how-to-control-character-poses-in-seedance-with-3d-pose-references">
   <link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/how-to-control-character-poses-in-seedance-with-3d-pose-references">
@@ -54,9 +89,10 @@
         <p class="eyebrow article-category">教程</p>
         <h1 class="article-title">如何用 3D 姿势参考控制 Seedance 中的人物姿态</h1>
         <p class="article-lead">在 Seedance 中构建 3D 姿势，将其用作图像生成参考，再优化人物图像。按步骤学习提示词示例和可选的图生视频流程。</p>
+        <p class="section-copy">Last updated: <time data-article-updated datetime="2026-10-17">2026-10-17</time></p>
         <div class="article-content prose">
           <p>当人物站姿或镜头角度很重要时，3D 人偶能给图像模型提供视觉参考。你可以在 Seedance 浏览器编辑器中摆好参考场景，直接将截图发送到图像工作区。生成结果仍可能需要修改：参考图用于引导模型，无法锁定每个关节，也无法保证人物身份始终一致。</p>
-          <p data-pose-entry><a href="/zh/pose-to-image">查看 AI 姿势生成器及其控件</a>，或 <a href="/zh/app/?model=pose-to-image">打开姿势工作室</a> 并跟随操作。更新于 <time datetime="2026-09-22">2026 年 9 月 22 日</time>.</p>
+          <p data-pose-entry><a href="/zh/pose-to-image">查看 AI 姿势生成器及其控件</a>，或 <a href="/zh/app/?model=pose-to-image">打开姿势工作室</a> 跟随步骤操作。</p>
 
           <h2>1. 从清楚易读的姿势开始</h2>
           <p>选择接近目标站姿的预设。例如，跑步构图可以从 Jogging（慢跑）开始。拖动人偶控制点调整四肢，检查肩膀、髋部、弯曲的膝盖和脚与地面的接触位置。</p>
@@ -109,11 +145,23 @@
           <h2>试试以姿势引导图像</h2>
           <p>从一个易读姿势和简单场景开始。静态图像成功后，再加入更复杂的风格，或规划下一步的视频制作。</p>
           <p data-pose-entry><a class="button primary" href="/zh/app/?model=pose-to-image">打开姿势工作室</a></p>
-          <p data-pose-entry><a href="/zh/pose-to-image">查看姿势生成图像流程与常见问题</a>，或 <a href="/zh/pose-reference-camera-angle-examples">探索包含人物、动物和道具的姿势参考案例</a>.</p>
+          <p data-pose-entry><a href="/zh/pose-to-image">查看姿势生成图像流程与常见问题</a>，或 <a href="/zh/pose-reference-camera-angle-examples">探索包含人物、动物和道具的姿势参考案例</a>。</p>
 
         </div>
       </article>
     </div>
+  <!-- RELATED_READING_START -->
+  <section class="related-reading" id="related-reading" aria-labelledby="related-reading-title">
+    <div class="container">
+      <h2 id="related-reading-title">相关阅读</h2>
+      <div class="related-reading-grid">
+        <a class="card related-reading-card" href="/zh/pose-to-image" data-pose-entry><h3>AI 姿势生成器</h3><p>先安排姿势和镜头视角，再准备图像参考。</p><span aria-hidden="true">→</span></a>
+        <a class="card related-reading-card" href="/zh/pose-reference-camera-angle-examples" data-pose-entry><h3>姿势参考与镜头角度示例</h3><p>对比人物、动物和道具的参考视角与图像结果。</p><span aria-hidden="true">→</span></a>
+        <a class="card related-reading-card" href="/zh/precise-application-of-seedance-prompts"><h3>Seedance 提示词示例</h3><p>学习场景描述、主体动作和镜头指令的写法。</p><span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+  <!-- RELATED_READING_END -->
   </main>
 
   <footer class="site-footer article-footer">
@@ -126,5 +174,18 @@
       <nav class="site-language-switch" data-site-language-switch data-language-footer aria-label="网站语言"><a href="/zh/how-to-control-character-poses-in-seedance-with-3d-pose-references?lang=zh" data-language="zh" lang="zh-Hans" aria-current="true">中文</a><span aria-hidden="true">|</span><a href="/how-to-control-character-poses-in-seedance-with-3d-pose-references?lang=en" data-language="en" lang="en">EN</a></nav>
     </div>
   </footer>
+  <!-- Date maintenance: edit Article.dateModified once; the visible date and modified-time metadata read it here. -->
+  <script id="content-date-display">
+    (() => {
+      const nodes = Array.from(document.querySelectorAll('script[type="application/ld+json"]')).flatMap((script) => {
+        const data = JSON.parse(script.textContent);
+        return data['@graph'] || [data];
+      });
+      const page = nodes.find((item) => item['@type'] === 'Article');
+      document.querySelectorAll('[data-article-updated]').forEach((time) => { time.textContent = page.dateModified.slice(0, 10); time.dateTime = page.dateModified; });
+      const modified = document.querySelector('meta[property="article:modified_time"]');
+      if (modified) modified.content = page.dateModified;
+    })();
+  </script>
 </body>
 </html>

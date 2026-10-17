@@ -2320,7 +2320,7 @@
     },
     {
       "source": "Explore Seedance 3.0, create AI videos and images, and build editable 3D pose scenes. Browse original prompts and examples to start your next project.",
-      "translation": "探索 Seedance 3.0，创作 AI 视频与图像，搭建可编辑的 3D 姿势场景。浏览原始提示词与案例，开始你的下一个项目。"
+      "translation": "在 Seedance 创作工作室浏览视频与图像工具、提示词示例、姿势参考教程和模型使用指南。查看 Seedance 3.0 发布跟踪页，核对官方来源与最近检查时间；在功能和规格尚未确认时，先准备场景描述、参考素材、镜头方案及结果检查清单。开始生成前，请以具体工具页显示的可用功能、账户条件和积分费用为准。"
     },
     {
       "source": "Video, image & pose creation",
@@ -2331,8 +2331,8 @@
       "translation": "AI 视频生成器"
     },
     {
-      "source": "Explore Seedance 3.0 and bring your next idea to life. Create AI videos from $0.01 per second, generate images, or build a 3D pose scene to guide your composition.",
-      "translation": "探索 Seedance 3.0，让下一个创意成为现实。AI 视频每秒低至 $0.01，还可生成图像，或搭建 3D 姿势场景来引导构图。"
+      "source": "Explore Seedance 3.0 and bring your next idea to life. Create MiniMax H3 videos at $0.01 per second, generate images, or build a 3D pose scene to guide your composition.",
+      "translation": "探索 Seedance 3.0，让下一个创意成为现实。MiniMax H3 视频每秒 $0.01，还可生成图像，或搭建 3D 姿势场景来引导构图。"
     },
     {
       "source": "Generate Your First AI Video",
@@ -2415,8 +2415,8 @@
       "translation": "试一试"
     },
     {
-      "source": "As low as $0.01/sec",
-      "translation": "低至 $0.01/秒"
+      "source": "$0.01/sec",
+      "translation": "$0.01/秒"
     },
     {
       "source": "Play showcase video 2",
@@ -2696,7 +2696,7 @@
     },
     {
       "source": "Seedance guides",
-      "translation": "Seedance 指南"
+      "translation": "Seedance 使用指南"
     },
     {
       "source": "for prompting and workflow ideas.",
@@ -8144,7 +8144,7 @@
     },
     {
       "source": "Create pose references with an AI pose generator. Arrange people, animals and props, choose camera angles, and turn your 3D scene into an AI image.",
-      "translation": "使用 AI 姿势生成器创建姿势参考，安排人物、动物与道具，选择镜头角度，再将 3D 场景转为 AI 图像。"
+      "translation": "使用 AI 姿势生成器在 3D 场景中安排人物、动物与道具，调整关节姿势、位置和镜头角度，再截取画面作为图像参考。浏览不同视角的实际示例，学习从姿势参考到图像创作的操作步骤；生成时可在提示词中说明主体、环境和需要保留的细节。编辑器可以先行探索，图像生成的登录、积分和文件要求以工具页说明为准。"
     },
     {
       "source": "AI",
@@ -8173,6 +8173,578 @@
     {
       "source": "Yes. Generate an image from your pose scene, then use the image result's video action to carry it into the image-to-video workspace as a reference. Describe the action and camera movement you want before generating the video.",
       "translation": "可以。根据姿势场景生成图像，再使用结果上的视频操作，将图像送入 图生视频工作区 作为参考。生成视频前描述想要的动作与运镜。"
+    },
+    {
+      "source": "Seedance 3.0 FAQ: Release Status, Prompts & Workflows",
+      "translation": "Seedance 3.0 常见问题：发布状态、提示词与创作流程"
+    },
+    {
+      "source": "Read Seedance 3.0 FAQs on release status, search spellings, prompt planning, image-to-video ideas and official sources, with unconfirmed details clearly marked.",
+      "translation": "查看 Seedance 3.0 常见问题，了解正式名称、容易混淆的搜索拼写、发布状态与官方来源。本页说明产品广告提示词、图生视频构思、竖屏短片规划、视频延长和音乐节奏设计的准备方法，并明确区分通用创作建议与尚待官方确认的模型功能、参数、价格和开放时间；所有待核实信息都附有来源入口，方便继续查证。"
+    },
+    {
+      "source": "Seedance 3.0 FAQ",
+      "translation": "Seedance 3.0 常见问题"
+    },
+    {
+      "source": "Find the Seedance name, check release information and plan your next video. The workflow ideas below are general preparation advice; they do not confirm Seedance 3.0 capabilities.",
+      "translation": "核对 Seedance 名称、查看发布信息，并为下一部视频准备创作方案。下方流程属于通用准备建议，并不代表 Seedance 3.0 已确认支持这些功能。"
+    },
+    {
+      "source": "As of October 2026, Seedance 3.0 release details and capabilities remain unconfirmed in the official sources reviewed here. Check the",
+      "translation": "截至 2026 年 10 月，本页核对的官方来源尚未确认 Seedance 3.0 的发布详情与功能。请查看"
+    },
+    {
+      "source": "and our",
+      "translation": "以及本站的"
+    },
+    {
+      "source": "release tracker",
+      "translation": "发布动态页"
+    },
+    {
+      "source": "Which Seedance spelling should I search for?",
+      "translation": "应该用什么拼写搜索 Seedance？"
+    },
+    {
+      "source": "If you searched for seadance, sedance, seedanc3 or seedence, or used the query 씨댄스, use Seedance as the reference spelling when checking the original sources. Search wording alone does not confirm a model version, release date or feature.",
+      "translation": "如果你搜索的是 seadance、sedance、seedanc3 或 seedence，或使用了 씨댄스 这样的检索词，核对原始来源时请以 Seedance 为参考拼写。搜索用词本身不能证明某个模型版本、发布日期或功能已获确认。"
+    },
+    {
+      "source": "Describe the subject, setting, lighting, camera movement and final composition in plain language. This is general prompt-planning advice. Seedance 3.0 input syntax and controls remain unconfirmed in the official sources reviewed as of October 2026; use the controls documented by whichever model you choose.",
+      "translation": "用自然语言描述主体、场景、光线、镜头运动和最终构图。这属于通用提示词准备建议。截至 2026 年 10 月，本页核对的官方来源尚未确认 Seedance 3.0 的输入语法与控制方式；实际操作请以所选模型的文档为准。"
+    },
+    {
+      "source": "As of October 2026, image-to-video inputs and camera-reference controls for Seedance 3.0 remain unconfirmed in the official sources reviewed here. You can prepare a still image and a written camera brief, then check the chosen model documentation before submitting either as input.",
+      "translation": "截至 2026 年 10 月，本页核对的官方来源尚未确认 Seedance 3.0 的图生视频输入与镜头参考控制方式。可以先准备静态图和文字运镜说明；实际提交哪些输入，需先查看所选模型的文档。"
+    },
+    {
+      "source": "Plan the opening shot, subject framing, captions and editing rhythm for the platform you intend to use. This is general production advice, not a Seedance 3.0 specification. Supported aspect ratios and generation durations remain unconfirmed in the official sources reviewed as of October 2026.",
+      "translation": "先根据发布平台规划开场镜头、主体构图、字幕与剪辑节奏。这属于通用制作建议，并非 Seedance 3.0 的规格说明。截至 2026 年 10 月，本页核对的官方来源尚未确认其支持的画面比例与生成时长。"
+    },
+    {
+      "source": "We have not confirmed Seedance 3.0 clip extension or continuity controls in the official sources reviewed as of October 2026. Keep your existing clip and write a continuation brief; whether it can be extended directly depends on the documented features of the model you actually use.",
+      "translation": "截至 2026 年 10 月，本页核对的官方来源尚未确认 Seedance 3.0 的视频延长或连续性控制能力。可以保留现有片段并写好后续情节；能否直接延长，取决于实际所用模型的文档说明。"
+    },
+    {
+      "source": "Prepare a beat sheet with scene changes and musical cues for your editing workflow. Seedance 3.0 audio inputs and beat-synchronization controls remain unconfirmed in the official sources reviewed as of October 2026. Do not assume an audio upload or timing instruction is supported until it is documented.",
+      "translation": "可以先为剪辑流程制作节奏表，标注场景切换与音乐提示点。截至 2026 年 10 月，本页核对的官方来源尚未确认 Seedance 3.0 的音频输入与节拍同步控制方式；在文档明确说明之前，不应假定它支持上传音轨或按时间指令生成。"
+    },
+    {
+      "source": "For dated announcements and source links, read the",
+      "translation": "如需查看带日期的公告与原始来源，请阅读"
+    },
+    {
+      "source": "release timeline",
+      "translation": "发布时间线"
+    },
+    {
+      "source": "If you searched for seadance, sedance, seedanc3 or seedence, or used the query 씨댄스, start with the Seedance name and verify release claims against original sources. For help finding the right information, see the",
+      "translation": "如果你搜索的是 seadance、sedance、seedanc3 或 seedence，或使用了 씨댄스 这样的检索词，请先按 Seedance 名称核对原始来源，再判断相关发布说法是否有依据。需要查找名称与拼写说明时，可以阅读"
+    },
+    {
+      "source": "naming FAQ",
+      "translation": "名称与拼写常见问题"
+    },
+    {
+      "source": "Explore AI pose reference examples with people, pets and props. Compare scene layouts and camera angles, then build your own reference for image creation.",
+      "translation": "探索 AI 姿势参考案例，查看人物、猫、狗、马与日常道具怎样组成完整场景。通过参考图与生成结果对照，理解多人站位、主体遮挡、姿态轮廓和不同镜头角度对构图的影响；还可沿用页面中的九个场景思路，调整角色位置、相机视角与提示词，为自己的图像创作准备参考。示例用于说明构图方法，具体生成结果仍需检查并逐步修改。"
+    },
+    {
+      "source": "Seedance 2.5 vs MiniMax H3 vs Kling 3.0",
+      "translation": "Seedance 2.5、MiniMax H3 与 Kling 3.0 对比"
+    },
+    {
+      "source": "Compare Seedance 2.5, MiniMax H3 and Kling 3.0 across references, editing, shot planning and costs. Use this guide to frame your own tests and check sources.",
+      "translation": "对比 Seedance 2.5、MiniMax H3 与 Kling 3.0，围绕参考素材、编辑控制、镜头规划、生成成本和实际创作需求梳理选择思路。阅读页面中的对照内容与来源，先定义自己的任务，再判断哪些指标值得测试；模型表现和平台价格可能变化，参数、费用、开放范围与接入条件请核对原始文档，避免把单次结果当作普遍结论。"
+    },
+    {
+      "source": "Seedance 3D Pose References: Character Pose Guide",
+      "translation": "Seedance 3D 姿势参考：人物姿态控制指南"
+    },
+    {
+      "source": "Plan character images with Seedance 3D pose references. Follow camera framing, scene capture, prompt writing and image review steps before video creation.",
+      "translation": "学习用 Seedance 3D 姿势参考规划人物图像，从选择易读的动作轮廓、设置相机角度，到截取场景、整理提示词与检查图像结果，按步骤准备构图。页面提供姿势参考与提示词示例，也说明从图像继续准备视频的方法；参考图能够辅助表达站位与动作，但不能保证每个关节或人物身份都完全一致，生成后仍需对照原图逐步修正。"
+    },
+    {
+      "source": "Seedance API Guide: Authentication, Tasks & Uploads",
+      "translation": "Seedance API 指南：鉴权、任务与文件上传"
+    },
+    {
+      "source": "Plan a Seedance API integration with authentication, reference uploads, generation tasks, polling and error handling. Check linked provider docs before use.",
+      "translation": "阅读 Seedance API 接入指南，梳理账户准备、密钥鉴权、参考文件上传、创建生成任务、查询状态、获取结果与错误处理之间的关系。结合页面中的流程说明和代码示例规划自己的集成，再按所选服务商的原始文档核对端点、模型标识、输入限制、计费方式和使用权限；示例用于理解调用过程，不能替代上线前对当前接口与安全配置的检查。"
+    },
+    {
+      "source": "Seedance Pro Guide: Features, Pricing & Access",
+      "translation": "Seedance Pro 指南：功能、价格与使用入口"
+    },
+    {
+      "source": "Explore what Seedance Pro refers to, how feature and pricing claims should be checked, and what to review before choosing a platform or starting a project.",
+      "translation": "了解 Seedance Pro 相关介绍，围绕页面中的功能、价格、使用入口和入门步骤整理需要核对的问题。选择平台之前，先区分模型名称、服务商提供的方案与具体使用条件，再查看原始文档中的计费方式、素材要求和开放范围；不同入口的宣传说法可能不同，本页用于帮助规划核查顺序，不应把某个平台的套餐名称直接视为所有服务的统一标准。"
+    },
+    {
+      "source": "Seedance Lite vs Pro: Choosing a Workflow",
+      "translation": "Seedance Lite 与 Pro：按创作需求选择流程"
+    },
+    {
+      "source": "Compare Seedance Lite and Pro workflow considerations, including project needs, iteration, access and cost checks. Verify current terms with your provider.",
+      "translation": "阅读 Seedance Lite 与 Pro 的选择指南，从项目目标、素材准备、迭代频率、预算与使用入口梳理比较思路。先明确自己要完成的镜头和交付要求，再对照所选平台当前列出的功能与方案，核对计费、权限和限制；页面中的比较用于组织决策问题，具体模型能力与套餐内容仍需查看原始来源，不应仅根据名称推断画质、速度或生成额度。"
+    },
+    {
+      "source": "Seedance Pricing 2026: Plans, Credits & Costs",
+      "translation": "Seedance 2026 年价格：方案、积分与成本"
+    },
+    {
+      "source": "Review Seedance pricing considerations for plans, trial credits and generation costs. Compare provider terms and check current rates before setting a budget.",
+      "translation": "查看 Seedance 价格指南，了解比较套餐、试用积分、生成费用与不同服务入口时应关注哪些问题。结合页面中的成本因素，按自己的素材类型、出片需求和迭代次数整理预算，再返回服务商当前价目表确认金额、积分换算、额度有效期与使用限制；价格和活动可能调整，本页用于说明核对方法，不能作为付款时的实时报价或统一收费承诺。"
+    },
+    {
+      "source": "Seedance Free Access: Trial Options & Limits",
+      "translation": "Seedance 免费使用：试用入口与限制核对"
+    },
+    {
+      "source": "Explore Seedance free-access and trial options discussed in this guide. Check account eligibility, credit limits, regional availability and current terms.",
+      "translation": "探索 Seedance 免费使用与试用的查找方法，按页面介绍的入口整理账户要求、领取步骤和需要核对的限制。开始创作之前，请确认平台当前是否仍有免费额度、哪些账户可以参与、适用地区与有效期限，并检查生成任务的实际消耗；活动内容可能随时间变化，本页用于帮助你逐项查证，不承诺固定赠送额度，也不把第三方试用视为模型统一政策。"
+    },
+    {
+      "source": "Plan Seedance 2.5 image-to-video projects with reference images, motion prompts, camera direction and review steps. Explore examples and troubleshooting tips.",
+      "translation": "学习规划 Seedance 2.5 图生视频项目，从准备参考图片、描述主体动作与相机运动，到安排画面变化、检查素材冲突和评估生成结果，逐步整理创作流程。页面提供提示词结构、场景示例、设置核对思路与问题排查方法，方便按自己的题材调整；实际可用的输入类型、生成设置、编辑操作及使用费用，仍需以所选平台当时的官方文档为准。"
+    },
+    {
+      "source": "Seedance Prompt Examples: Scenes & Camera Moves",
+      "translation": "Seedance 提示词示例：场景与镜头运动"
+    },
+    {
+      "source": "Explore Seedance prompt examples for cinematic, anime, fantasy and everyday scenes. Adapt subjects, lighting, camera movement and action to your own idea.",
+      "translation": "探索 Seedance 提示词示例，按电影感、动漫、奇幻与日常题材整理场景表达方法。观察示例怎样描述主体、环境、光线、动作与相机运动，再根据自己的参考素材替换细节，组织更容易理解的画面说明；页面适合作为创意起点，也可配合提示词库与视频工具继续尝试，具体结果取决于所用模型、输入素材和生成设置，需要检查后逐步调整。"
+    },
+    {
+      "source": "Seedance 2.0 Prompt Templates & Camera Guide",
+      "translation": "Seedance 2.0 提示词模板与运镜指南"
+    },
+    {
+      "source": "Build Seedance 2.0 prompts with a storyboard template and camera movement guide. Organize subjects, actions, framing, lighting and transitions for each shot.",
+      "translation": "阅读 Seedance 2.0 提示词模板与运镜指南，了解怎样把主体、场景、动作、光线、景别和转场组织成分镜说明。参考页面中的结构模板、镜头运动词典与场景速查内容，先写清每个镜头的重点，再按自己的素材和题材替换表达；这些内容用于帮助规划画面，不能保证任何模型都会逐项执行，具体输入语法、支持范围和输出结果仍需实际核对。"
+    },
+    {
+      "source": "Seedance 2.0 Image-to-Video Tutorial",
+      "translation": "Seedance 2.0 图生视频教程：历史流程"
+    },
+    {
+      "source": "Read the archived Seedance 2.0 image-to-video tutorial for reference preparation, prompt structure, camera direction and review. Check current provider docs.",
+      "translation": "阅读 Seedance 2.0 图生视频历史教程，回顾参考素材准备、提示词结构、动作描述、镜头控制、画面比例与结果检查的基本流程。页面作为旧版本创作方法的归档，适合整理分镜与迭代清单；如果准备实际生成视频，请先核对当前所选模型和平台的文档，确认输入要求、界面设置、使用权限与费用，避免直接把历史操作步骤当成现行服务说明。"
+    },
+    {
+      "source": "Seedance vs Kling 3.0: Workflow Comparison",
+      "translation": "Seedance 与 Kling 3.0：创作流程对比"
+    },
+    {
+      "source": "Compare Seedance and Kling 3.0 workflow considerations for prompt control, references, short-form ads and iteration. Use matched tasks to assess your needs.",
+      "translation": "对比 Seedance 与 Kling 3.0 的创作流程，围绕提示词控制、参考素材、短视频广告与团队迭代整理评估问题。阅读页面中的比较思路，再使用相同题材、相近素材和一致的验收标准测试需求；不同模型版本和服务入口可能提供不同设置，具体能力、权限、生成速度与成本应继续核对原始文档，不能仅凭一次输出判断所有项目的效果。"
+    },
+    {
+      "source": "Seedance TikTok Ads: Prompts & Creative Workflow",
+      "translation": "Seedance TikTok 广告：提示词与创作流程"
+    },
+    {
+      "source": "Plan Seedance TikTok ad creatives with hook-first scripts, framing, motion prompts and variant review. Build a workflow for testing ideas and refining cuts.",
+      "translation": "学习规划 Seedance TikTok 广告创意，从开场脚本、竖屏构图、动作提示词到不同创意版本的检查，整理适合自己题材的制作流程。页面介绍如何安排主体展示、镜头节奏、音乐切点与固定验收问题，帮助准备可比较的素材；这些内容属于创作与测试方法，不承诺点击率或获客成本，最终效果需要结合实际投放数据与当前平台要求评估。"
+    },
+    {
+      "source": "Seedance Blog: Tutorials, Comparisons & Workflows",
+      "translation": "Seedance 博客：教程、对比与创作流程"
+    },
+    {
+      "source": "Read Seedance tutorials, model comparisons, prompt examples and creator workflows. Explore image-to-video guides, API planning, pose references and ad ideas.",
+      "translation": "浏览 Seedance 博客中的教程、模型对比、提示词示例与创作流程，查找图生视频、API 接入、3D 姿势参考、镜头运动、广告素材和费用核对指南。列表汇集已有文章，方便从创意准备继续阅读具体操作说明；涉及模型发布、功能、参数与价格时，请结合文章中的来源和更新时间核对，再按自己的参考素材、项目目标与服务平台安排创作。"
+    },
+    {
+      "source": "to follow along.",
+      "translation": "跟随步骤操作。"
+    },
+    {
+      "source": "Seedance 3.0 Guide: News, Prompts & Resources",
+      "translation": "Seedance 3.0 指南：发布动态、提示词与资源"
+    },
+    {
+      "source": "Explore the Seedance 3.0 resource hub for release updates, FAQs, prompt planning, model comparisons and pose references. Choose a guide for your next step.",
+      "translation": "浏览 Seedance 3.0 主题资源中心，集中查找发布动态、官方来源、常见问题、提示词模板、模型对比、姿势参考与镜头角度教程。按核对消息、准备创意和整理参考素材的顺序选择阅读入口，了解哪些信息仍待确认；本站工作区目前仅供预览，提示词与参考流程用于创作准备，具体能力、输入要求、开放情况及费用请以官方说明为准。"
+    },
+    {
+      "source": "Seedance 3.0 reading list",
+      "translation": "Seedance 3.0 阅读目录"
+    },
+    {
+      "source": "Pose Reference & Camera Angle Examples",
+      "translation": "姿势参考与镜头角度示例"
+    },
+    {
+      "source": "Seedance Pose Reference Guide",
+      "translation": "Seedance 姿势参考指南"
+    },
+    {
+      "source": "Seedance 3.0 Resource Hub",
+      "translation": "Seedance 3.0 主题资源中心"
+    },
+    {
+      "source": "Seedance 3.0 Guide",
+      "translation": "Seedance 3.0 指南"
+    },
+    {
+      "source": "The Seedance 3.0 reading room",
+      "translation": "Seedance 3.0 资料室"
+    },
+    {
+      "source": "Follow release information, find a prompt starting point and prepare your references. Choose a guide below to take the next step in your project.",
+      "translation": "关注发布信息，寻找提示词起点，准备参考素材。从下面的指南中选择适合你当前项目的一步。"
+    },
+    {
+      "source": "Start with the current release status",
+      "translation": "先核对当前发布状态"
+    },
+    {
+      "source": "As of October 2026, the official pages reviewed here do not confirm a Seedance 3.0 release date:",
+      "translation": "截至 2026 年 10 月，本页核对的以下官方页面尚未提供可确认的 Seedance 3.0 发布日期："
+    },
+    {
+      "source": "ByteDance Seed model catalog",
+      "translation": "字节跳动 Seed 官方模型目录"
+    },
+    {
+      "source": ". See the",
+      "translation": "。查阅"
+    },
+    {
+      "source": "for dated sources and open questions.",
+      "translation": "，查看带日期的来源记录和仍待确认的问题。"
+    },
+    {
+      "source": "News, FAQ & prompts",
+      "translation": "动态、FAQ 与提示词"
+    },
+    {
+      "source": "Compare & prepare",
+      "translation": "对比与素材准备"
+    },
+    {
+      "source": "Suggested reading order",
+      "translation": "推荐阅读顺序"
+    },
+    {
+      "source": "Seedance 3.0 essentials",
+      "translation": "Seedance 3.0 核心资料"
+    },
+    {
+      "source": "Choose the release tracker for announcements, the FAQ for common questions, or the prompt library to draft an idea.",
+      "translation": "查发布消息，先看发布追踪页；找常见问题，进入 FAQ；想整理创意，可以从提示词库起步。"
+    },
+    {
+      "source": "News & sources",
+      "translation": "动态与来源"
+    },
+    {
+      "source": "Find dated source reviews, earlier Seedance announcements and the release, pricing and access details that still need confirmation.",
+      "translation": "查看带日期的来源核对记录、Seedance 早期版本公告，以及仍待确认的发布、价格与开放信息。"
+    },
+    {
+      "source": "Read the release tracker",
+      "translation": "查看发布追踪"
+    },
+    {
+      "source": "Questions & planning",
+      "translation": "问题与创作规划"
+    },
+    {
+      "source": "Check the model name, understand the current status and find general planning advice for prompts, references and shot continuity.",
+      "translation": "核对模型名称与当前状态，查找提示词、参考素材及镜头连续性的一般规划建议。"
+    },
+    {
+      "source": "Browse the FAQ",
+      "translation": "浏览常见问题"
+    },
+    {
+      "source": "Prompt planning",
+      "translation": "提示词规划"
+    },
+    {
+      "source": "Adapt a writing template around your subject, action, camera and light. These planning examples are not verified Seedance 3.0 generation results.",
+      "translation": "围绕主体、动作、镜头和光线改写模板。这些内容用于创作规划，尚非经过验证的 Seedance 3.0 生成结果。"
+    },
+    {
+      "source": "Explore prompt templates",
+      "translation": "浏览提示词模板"
+    },
+    {
+      "source": "Compare options and prepare references",
+      "translation": "对比可选方案，准备参考素材"
+    },
+    {
+      "source": "Use these guides to define a task and prepare visual material. Their workflows do not establish which inputs or controls Seedance 3.0 will support.",
+      "translation": "参考这些指南明确任务、准备视觉素材。指南中的流程不能证明 Seedance 3.0 将支持哪些输入或控制方式。"
+    },
+    {
+      "source": "Model comparison",
+      "translation": "模型对比"
+    },
+    {
+      "source": "Review the available H3 workflow and the questions that remain open for 3.0 before planning a comparison using the same scene and references.",
+      "translation": "先了解当前 H3 工作流程和 3.0 仍待确认的问题，再规划使用相同场景与参考素材的对比任务。"
+    },
+    {
+      "source": "Read the comparison",
+      "translation": "阅读模型对比"
+    },
+    {
+      "source": "Visual examples",
+      "translation": "视觉示例"
+    },
+    {
+      "source": "Study how the same pose reads from different camera angles. Choose a clear view before assembling references for your storyboard.",
+      "translation": "观察同一姿势在不同镜头角度下的呈现，先选清楚的视角，再为分镜整理参考素材。"
+    },
+    {
+      "source": "View reference examples",
+      "translation": "查看参考示例"
+    },
+    {
+      "source": "Reference workflow",
+      "translation": "参考素材流程"
+    },
+    {
+      "source": "Learn a general workflow for arranging a pose, setting the camera and capturing a reference. Check the chosen model's documentation before using it.",
+      "translation": "了解摆放姿势、设置镜头和截取参考图的一般流程。实际使用前，请核对所选模型的文档。"
+    },
+    {
+      "source": "Read the pose guide",
+      "translation": "阅读姿势指南"
+    },
+    {
+      "source": "A practical reading order",
+      "translation": "按这个顺序开始阅读"
+    },
+    {
+      "source": "Check the version and source.",
+      "translation": "核对版本与来源。"
+    },
+    {
+      "source": "Start with the",
+      "translation": "先查阅"
+    },
+    {
+      "source": ". Keep earlier-version announcements separate from claims about 3.0.",
+      "translation": "，核对消息对应的版本，避免把早期版本公告当作 3.0 的信息。"
+    },
+    {
+      "source": "Write one clear shot.",
+      "translation": "写清一个镜头。"
+    },
+    {
+      "source": "Pick a",
+      "translation": "选择一个"
+    },
+    {
+      "source": "prompt template",
+      "translation": "提示词模板"
+    },
+    {
+      "source": ", replace the subject and setting, then describe one main action and a camera move. Keep it as a draft until the model's input format is confirmed.",
+      "translation": "，替换主体与场景，再描述一个主要动作和一次镜头运动。在模型输入格式确认前，先将其保存为草稿。"
+    },
+    {
+      "source": "Prepare a reference and review checklist.",
+      "translation": "准备参考素材与检查清单。"
+    },
+    {
+      "source": "Use the",
+      "translation": "使用"
+    },
+    {
+      "source": "to explore framing. Record which pose, lighting and composition details you want to preserve, then verify that your chosen tool accepts the material.",
+      "translation": "尝试不同构图，记录希望保留的姿势、光线与画面细节，并确认所选工具接受这些素材。"
+    },
+    {
+      "source": "For tutorials covering other Seedance versions and broader creator workflows, visit the",
+      "translation": "其他 Seedance 版本教程及更多创作流程，请浏览"
+    },
+    {
+      "source": "full Seedance blog",
+      "translation": "完整的 Seedance 博客"
+    },
+    {
+      "source": "Seedance 3.0 workspace: preview only",
+      "translation": "Seedance 3.0 工作区：目前仅供预览"
+    },
+    {
+      "source": "The Seedance 3.0 workspace on this site is a preview with generation unavailable. The templates above help you prepare an idea; a workspace listing does not establish access to the model.",
+      "translation": "本站 Seedance 3.0 工作区目前仅供预览，尚未开放生成功能。上面的模板用于准备创意；站内出现工作区入口不代表已经获得该模型的使用权限。"
+    },
+    {
+      "source": "View workspace preview",
+      "translation": "查看工作区预览"
+    },
+    {
+      "source": "Following 3.0? Start with the",
+      "translation": "关注 3.0？从"
+    },
+    {
+      "source": "Seedance 3.0 resource hub",
+      "translation": "Seedance 3.0 资源中心"
+    },
+    {
+      "source": "for release information, FAQs, prompt templates and reference guides.",
+      "translation": "开始，集中查找发布信息、常见问题、提示词模板与参考素材指南。"
+    },
+    {
+      "source": "For FAQs, prompt planning and reference guides, visit the",
+      "translation": "查找常见问题、提示词规划与参考素材指南，请浏览"
+    },
+    {
+      "source": "Related reading",
+      "translation": "相关阅读"
+    },
+    {
+      "source": "Seedance home",
+      "translation": "Seedance 首页"
+    },
+    {
+      "source": "Explore the tools, guides and official release tracker.",
+      "translation": "浏览创作工具、使用指南和官方发布动态。"
+    },
+    {
+      "source": "Seedance 3.0 release tracker",
+      "translation": "Seedance 3.0 发布跟踪"
+    },
+    {
+      "source": "Review official sources and the latest completed source check.",
+      "translation": "查看官方来源及最近一次完整核查的结果。"
+    },
+    {
+      "source": "Arrange a pose and camera view before preparing an image reference.",
+      "translation": "先安排姿势和镜头视角，再准备图像参考。"
+    },
+    {
+      "source": "Find release updates, FAQs, prompt drafts and reference guides.",
+      "translation": "集中查看发布动态、常见问题、提示词草稿和参考指南。"
+    },
+    {
+      "source": "Read answers about release status, prompts and creative workflows.",
+      "translation": "了解发布状态、提示词和创作流程方面的常见问题。"
+    },
+    {
+      "source": "Browse tutorials, workflow comparisons and prompt examples.",
+      "translation": "浏览教程、工作流对比与提示词示例。"
+    },
+    {
+      "source": "Pose reference and camera angle examples",
+      "translation": "姿势参考与镜头角度示例"
+    },
+    {
+      "source": "Compare reference views and image results for people, animals and props.",
+      "translation": "对比人物、动物和道具的参考视角与图像结果。"
+    },
+    {
+      "source": "3D pose reference guide",
+      "translation": "3D 姿势参考指南"
+    },
+    {
+      "source": "Follow the steps for posing, framing and capturing a reference.",
+      "translation": "按步骤学习摆姿、构图和截取参考图。"
+    },
+    {
+      "source": "Seedance prompt examples",
+      "translation": "Seedance 提示词示例"
+    },
+    {
+      "source": "Study scene descriptions, subject movement and camera instructions.",
+      "translation": "学习场景描述、主体动作和镜头指令的写法。"
+    },
+    {
+      "source": "Seedance 2.0 prompt templates",
+      "translation": "Seedance 2.0 提示词模板"
+    },
+    {
+      "source": "Adapt the prompt structure and camera examples to your scene.",
+      "translation": "根据自己的场景调整提示词结构和镜头示例。"
+    },
+    {
+      "source": "Seedance 2.0 image-to-video tutorial",
+      "translation": "Seedance 2.0 图生视频教程"
+    },
+    {
+      "source": "Review the earlier workflow for references, prompts and iteration.",
+      "translation": "回顾旧版本中的参考素材、提示词和迭代流程。"
+    },
+    {
+      "source": "Seedance 2.5 image-to-video guide",
+      "translation": "Seedance 2.5 图生视频指南"
+    },
+    {
+      "source": "Prepare a reference image and plan the action for a video shot.",
+      "translation": "准备参考图，并规划视频镜头中的动作。"
+    },
+    {
+      "source": "Seedance 2.5, MiniMax H3 and Kling 3.0 comparison",
+      "translation": "Seedance 2.5、MiniMax H3 与 Kling 3.0 对比"
+    },
+    {
+      "source": "Compare the documented workflows and check each original source.",
+      "translation": "对照已有工作流，并核对各模型的原始资料。"
+    },
+    {
+      "source": "Seedance and Kling 3.0 workflows",
+      "translation": "Seedance 与 Kling 3.0 工作流"
+    },
+    {
+      "source": "Compare reference preparation, prompting and review steps.",
+      "translation": "比较参考素材准备、提示词编写和结果检查步骤。"
+    },
+    {
+      "source": "Seedance pricing and credit guide",
+      "translation": "Seedance 价格与积分指南"
+    },
+    {
+      "source": "Check the cost questions to resolve before choosing a service.",
+      "translation": "了解选择服务前需要核对的费用问题。"
+    },
+    {
+      "source": "Seedance free access and trial guide",
+      "translation": "Seedance 免费使用与试用指南"
+    },
+    {
+      "source": "Review trial options and verify the current access terms.",
+      "translation": "了解试用方式，并核对当前的使用条件。"
+    },
+    {
+      "source": "Seedance API workflow guide",
+      "translation": "Seedance API 工作流指南"
+    },
+    {
+      "source": "Plan authentication, media uploads, task polling and error handling.",
+      "translation": "梳理认证、素材上传、任务轮询和错误处理。"
+    },
+    {
+      "source": "Seedance Pro access guide",
+      "translation": "Seedance Pro 使用指南"
+    },
+    {
+      "source": "Review access, pricing and workflow questions before getting started.",
+      "translation": "开始使用前先了解访问方式、价格和工作流问题。"
+    },
+    {
+      "source": "Seedance Lite and Pro workflow guide",
+      "translation": "Seedance Lite 与 Pro 工作流指南"
+    },
+    {
+      "source": "Match a workflow to your production and review needs.",
+      "translation": "根据创作与审核需求选择适合的工作流。"
+    },
+    {
+      "source": "Compare MiniMax H3 and Seedance 3.0 using official sources, release status and workflow guides. Check confirmed details before choosing a video tool.",
+      "translation": "对照 MiniMax H3 与 Seedance 3.0，了解发布状态、参考素材、视频工作流和费用方面需要核对的问题。Seedance 3.0 的信息以发布跟踪页链接的官方来源为依据，不根据模型名称或页面预览推测功能与规格。你还可以浏览现有模型的使用指南、工作流对比和积分说明，在选择服务前核对可用能力及使用条件。"
+    },
+    {
+      "source": "Last updated reflects the latest completed official-source check or editorial update, whichever is newer.",
+      "translation": "Last updated 会同步最近一次完整核查官方来源的日期；人工更新正文时也会刷新。"
     }
   ]
 }

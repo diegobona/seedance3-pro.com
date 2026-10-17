@@ -68,10 +68,10 @@
   "5 credits": "5 积分",
   "YOUR BALANCE": "积分余额",
   "— credits": "— 积分",
-  "Launching soon. Image generation from $0.01/image.": "即将正式上线，图片生成低至0.01美元/张",
-  "Launching soon. Video generation from $0.01/second.": "即将正式上线，视频生成低至0.01美元/秒",
+  "Launching soon. Image generation at $0.01/image.": "即将正式上线，图片生成 0.01 美元/张",
+  "Launching soon. Video generation at $0.01/second.": "即将正式上线，视频生成 0.01 美元/秒",
   "Full launch is coming soon": "正式上线即将到来",
-  "Video generation from": "视频生成低至",
+  "Video generation at": "视频生成价格为",
   "$0.01/sec": "$0.01/秒",
   ". Join the launch list and receive": "。加入上线通知名单，即可在正式上线时获得",
   "5 bonus credits": "5 积分奖励",
@@ -621,5 +621,8 @@
   "Muse Video Prompt Library | Starter Templates": "Muse Video 提示词库 | 入门模板",
   "Browse Muse Video starter prompts for cinematic scenes, product stories, and more. Read a template and open it in the workspace to draft your video prompt.": "浏览 Muse Video 电影感场景、产品故事等入门提示词。阅读模板，并在工作区打开以草拟你的视频提示词。",
   "Muse Image Prompt Library | Starter Templates": "Muse Image 提示词库 | 入门模板",
-  "Browse Muse Image starter prompts for illustrations, product images, and more. Read a template and open it in the workspace to draft your image prompt.": "浏览 Muse Image 插画、产品图等入门提示词。阅读模板，并在工作区打开以草拟你的图像提示词。"
+  "Browse Muse Image starter prompts for illustrations, product images, and more. Read a template and open it in the workspace to draft your image prompt.": "浏览 Muse Image 插画、产品图等入门提示词。阅读模板，并在工作区打开以草拟你的图像提示词。",
+  "/image": "/张",
+  "/sec": "/秒",
+  "Up to 16 images · 10 MB each · 24 MB total": "最多 16 张图片 · 每张 10 MB · 总计 24 MB"
 }

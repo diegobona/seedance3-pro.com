@@ -73,7 +73,7 @@ const content = {
     description: "This workspace uses Tuzi's gpt-image-2.5-1k routing alias for text-to-image and reference editing. Choose a fixed 1K output size and review the five-credit trial cost per image before submitting.",
     capabilities: [
       ['Text to image', 'Describe the subject, composition, lighting, style and details you need in the final image.'],
-      ['Reference editing', 'Use up to four reference images. Explain the role of each numbered image and describe what to change or preserve.'],
+      ['Reference editing', 'Use up to 16 reference images. Explain the role of each numbered image and describe what to change or preserve.'],
       ['Fixed 1K sizes', 'Choose from eleven aspect ratios. Each ratio maps to a fixed pixel size; square output is 1254x1254.'],
       ['Five credits per image', 'The trial costs five credits per image. Review the total for your selected image count and sign in to generate.'],
     ],
@@ -86,7 +86,7 @@ const content = {
     questions: [
       ['What does the GPT Image 2.5 name refer to?', "It identifies Tuzi's gpt-image-2.5-1k routing alias used by this workspace. Tuzi provides the model route and its supported output sizes."],
       ['Can I generate an image without uploading a reference?', 'Yes. Enter a text prompt describing the subject, composition, lighting and style, then choose your output settings. Reference images are optional.'],
-      ['How many reference images can I add?', 'Add up to four PNG, JPEG or WebP images, up to 10 MB each and 24 MB combined. Identify each reference by its image number in the prompt.'],
+      ['How many reference images can I add?', 'Add up to 16 PNG, JPEG or WebP images, up to 10 MB each and 24 MB combined. Identify each reference by its image number in the prompt.'],
       ['What image sizes can I use?', 'This route uses fixed 1K sizes across eleven aspect ratios, including square, portrait, landscape and wide formats. The aspect ratio menu shows each exact pixel size.'],
       ['How many credits does an image cost?', 'Each generated image uses five trial credits. Select the image count and review the total cost and available balance before generating.'],
       ['Where can I find prompts to try?', 'Use the GPT Image 2 Prompt Library or Christmas Photo Prompts for writing ideas. Adapt a template in this workspace to create your own image.'],

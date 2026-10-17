@@ -4,12 +4,14 @@ import { MuseWorkspacePage } from '../components/muse-workspace-page'
 
 const url = 'https://seedance3-pro.com/app/video/muse-video'
 
+// Restore index and both sitemap URLs only after live generation and complete bilingual tool content are verified; notify the owner.
+
 export const Route = createFileRoute('/app_/video/muse-video')({
   head: () => (localizeHead({
     meta: [
       { title: 'Muse Video Workspace Preview | SEEDANCE' },
       { name: 'description', content: 'Preview the Muse Video workspace and draft a video prompt. Generation is not available in this workspace yet.' },
-      { name: 'robots', content: 'index,follow,max-image-preview:large,max-video-preview:-1' },
+      { name: 'robots', content: 'noindex,follow' },
       { property: 'og:url', content: url },
     ],
     links: [

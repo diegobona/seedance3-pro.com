@@ -5,9 +5,11 @@ The existing authenticated `/api/images/generate` endpoint supports two allowlis
 | Website ID | Tuzi model ID | Quality | References | Square output |
 | --- | --- | --- | --- | --- |
 | `gpt-image-2` | `gpt-image-2` | `medium` | Up to 16 | 1024x1024 |
-| `gpt-image-2-5-1k` | `gpt-image-2.5-1k` | `low` | Up to 4 | 1254x1254 |
+| `gpt-image-2-5-1k` | `gpt-image-2.5-1k` | `low` | Up to 16 | 1254x1254 |
 
-The new model is a [Tuzi routing alias](https://api.tu-zi.com/pricing?vendor=OpenAI&model=gpt-image-2.5-1k), not an official OpenAI model ID. Its provider prices depend on the token group and account tier; they are separate from the site's trial credit policy. Four references and one to three output images are this site's limits.
+The new model is a [Tuzi routing alias](https://api.tu-zi.com/pricing?vendor=OpenAI&model=gpt-image-2.5-1k), not an official OpenAI model ID. Its provider prices depend on the token group and account tier; they are separate from the site's trial credit policy. Sixteen references and one to three output images are this site's limits.
+
+As of 2026-10-17, both image tools accept up to 16 references, with the limit shown in the upload area rather than sidebar tooltips. This matches the [OpenAI image edit API](https://developers.openai.com/api/reference/resources/images/methods/edit) limit. The Tuzi `gpt-image-2.5-1k` route has not been live-tested with 16 references; the shared request handler is verified locally with a mocked provider.
 
 `app/image-models.mjs` is the shared source for provider mapping, dimensions, reference limits and credit costs. New requests send the website ID in the `model` form field and `x-seedance-image-model` header. Unknown IDs, duplicate fields, disagreement between header and body, and sizes from the wrong model are rejected. Legacy requests without a model retain GPT Image 2.
 

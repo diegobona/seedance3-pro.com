@@ -212,9 +212,10 @@ const originalVideoPreviews = document.querySelectorAll(".community-video-previe
 if (originalVideoPreviews.length && "IntersectionObserver" in window) {
   const visiblePreviews = new Set();
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const savesData = navigator.connection?.saveData === true;
 
   const playPreview = (video) => {
-    if (prefersReducedMotion || document.hidden) return;
+    if (prefersReducedMotion || savesData || document.hidden) return;
     if (!video.hasAttribute("src")) {
       video.preload = "metadata";
       video.src = video.dataset.previewSrc;
@@ -253,15 +254,20 @@ if (poseDemo) {
   const poseDemoPlay = poseDemoStage?.querySelector("[data-pose-demo-play]");
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const savesData = navigator.connection?.saveData === true;
+  let poseDemoVisible = false;
+
+  const playPoseDemo = () => {
+    poseDemo.play().catch(() => {
+      // Keep the poster and manual playback available if autoplay is blocked.
+    });
+  };
 
   poseDemo.addEventListener("timeupdate", () => {
     if (poseDemo.currentTime > 0.15) poseDemoStage?.classList.add("is-playing");
   });
 
   poseDemoPlay?.addEventListener("click", () => {
-    poseDemo.play().catch(() => {
-      // Keep the poster visible if playback is unavailable.
-    });
+    playPoseDemo();
   });
 
   if (prefersReducedMotion || savesData) {
@@ -270,10 +276,9 @@ if (poseDemo) {
   } else if ("IntersectionObserver" in window) {
     const poseDemoObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          poseDemo.play().catch(() => {
-            // The poster remains visible when autoplay is unavailable.
-          });
+        poseDemoVisible = entry.isIntersecting && entry.intersectionRatio >= 0.2;
+        if (poseDemoVisible && !document.hidden) {
+          playPoseDemo();
         } else {
           poseDemo.pause();
         }
@@ -281,5 +286,9 @@ if (poseDemo) {
     }, { threshold: 0.2 });
 
     poseDemoObserver.observe(poseDemo);
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) poseDemo.pause();
+      else if (poseDemoVisible) playPoseDemo();
+    });
   }
 }

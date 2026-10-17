@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { withRelatedReading } from './related-reading.mjs';
 
 const SCRIPT_ROOT = path.dirname(fileURLToPath(import.meta.url));
 const DEFAULT_ROOT = path.resolve(SCRIPT_ROOT, '..');
@@ -141,7 +142,7 @@ export function attachLanguageMetadata(html, englishPath, locale) {
   const footerMarkup = markup.replace('aria-label=', 'data-language-footer aria-label=');
   if (/<footer\b[^>]*>[\s\S]*?<nav\b[^>]*>[\s\S]*?<\/nav>/i.test(output)) output = output.replace(/(<footer\b[^>]*>[\s\S]*?<nav\b[^>]*>[\s\S]*?<\/nav>)/i, `$1\n      ${footerMarkup}`);
   else output = output.replace(/<\/footer>/i, `<div class="site-language-footer-control">${footerMarkup}</div>\n</footer>`);
-  return output;
+  return withRelatedReading(output, { pathname: englishPath, locale });
 }
 
 async function readArticleOverrides(rootDirectory) {

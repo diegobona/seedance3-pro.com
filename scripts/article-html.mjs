@@ -1,3 +1,5 @@
+import { withRelatedReading } from './related-reading.mjs';
+
 const ALLOWED_ELEMENTS = new Set([
   "a", "abbr", "b", "blockquote", "br", "code", "del", "details", "div", "em",
   "figcaption", "figure", "h2", "h3", "h4", "h5", "h6", "hr", "i", "img", "li",
@@ -382,7 +384,7 @@ export function renderArticleDocument({ title, excerpt, category, content, canon
   const excerptHtml = excerpt
     ? `\n        <p class="article-lead">${safeExcerpt}</p>`
     : "";
-  return `<!doctype html>
+  return withRelatedReading(`<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -427,5 +429,5 @@ ${ARTICLE_HEADER}
 
 ${ARTICLE_FOOTER}
 </body>
-</html>`;
+</html>`, { pathname: canonical });
 }

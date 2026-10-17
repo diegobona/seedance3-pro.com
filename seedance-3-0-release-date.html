@@ -24,7 +24,7 @@
   <meta name="theme-color" content="#090a0c">
   <link rel="stylesheet" href="./site.css">
   <style id="daily-news-layout">
-    #latest-news { scroll-margin-top: 110px; }
+    #latest-news, #release-timeline { scroll-margin-top: 110px; }
     #seedance-news a { overflow-wrap: anywhere; }
   </style>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg">
@@ -37,7 +37,7 @@
   <meta property="og:locale:alternate" content="zh_CN">
   <link rel="stylesheet" href="/assets/site-language.css">
   <script src="/assets/site-language.js" defer></script>
-  <!-- Date maintenance: edit Article.dateModified for editorial changes. Daily checks have a separate timestamp; changed official news updates dateModified at the edge. Keep datePublished and the historical review date intact. -->
+  <!-- Date maintenance: edit Article.dateModified for editorial changes. Completed official-source checks also update the visible date, dateModified and sitemap lastmod at the edge. Keep datePublished and historical source dates intact. -->
   <script type="application/ld+json" id="release-date-schema">
   {
     "@context": "https://schema.org",
@@ -48,7 +48,7 @@
         "headline": "Seedance 3.0 Release Date: What's Confirmed So Far",
         "description": "When is Seedance 3.0 coming out? Check official sources, dated news, pricing FAQs, the Seedance 2.5 comparison, and tools you can use while waiting.",
         "datePublished": "2026-10-06",
-        "dateModified": "2026-10-06",
+        "dateModified": "2026-10-17",
         "inLanguage": "en",
         "mainEntityOfPage": "https://seedance3-pro.com/seedance-3-0-release-date",
         "image": "https://seedance3-pro.com/og-cover.svg",
@@ -94,7 +94,8 @@
         <h1 class="article-title">Seedance 3.0 Release Date: What's Confirmed So Far</h1>
         <!-- FACT-CHECK: Recheck the official Seed model catalog and visual blog before changing the unannounced 3.0 status. No estimated launch date is asserted. -->
         <p class="article-lead"><strong>As of October 2026, we have not confirmed an official Seedance 3.0 release date in the sources reviewed for this page.</strong> ByteDance currently lists Seedance 2.5 in its model catalog. The timeline below links to the announcements and sources we checked.</p>
-        <p class="section-copy">Last updated: <time data-release-updated>2026-10-06</time></p>
+        <p class="section-copy">Last updated: <time data-release-updated datetime="2026-10-17">2026-10-17</time></p>
+        <p class="section-copy">For FAQs, prompt planning and reference guides, visit the <a href="./seedance-3-0">Seedance 3.0 resource hub</a>.</p>
         <div class="article-content prose">
           <h2 id="latest-news">Daily official updates</h2>
           <p>Official sources are checked once a day at 09:00 Beijing time. If a completed check finds new Seedance 3.0 entries, they appear here with their source publication dates and the dates we first found them. Those dates are listed separately and do not establish when the model was released.</p>
@@ -143,6 +144,8 @@
           </table>
           <p id="seedance-comparison-plan">We will compare subject consistency, motion, how well results follow references, editing, generation time, and cost using the same tasks. Seedance 3.0's capabilities in these areas still need official confirmation.</p>
 
+          <p id="seedance-spelling">If you searched for seadance, sedance, seedanc3 or seedence, or used the query 씨댄스, start with the Seedance name and verify release claims against original sources. For help finding the right information, see the <a href="./faq#seedance-spelling">naming FAQ</a>.</p>
+
           <h2 id="release-faq">Seedance 3.0 release FAQ</h2>
           <p>These answers draw on the <a href="https://seed.bytedance.com/en/models" target="_blank" rel="noopener noreferrer">official model catalog</a> and <a href="https://seed.bytedance.com/en/blog_list/visual" target="_blank" rel="noopener noreferrer">visual blog</a> reviewed for this page. Seedance 2.5 details come from its official model page linked above.</p>
           <div class="faq" id="release-faq-answers">
@@ -158,10 +161,22 @@
 
           <h2 id="updates">How this page is updated</h2>
           <p>Each daily check adds official titles and source links to the updates above. If a source is unavailable, earlier messages stay visible and the check is marked incomplete. A model name or announcement headline alone does not confirm dates, prices or specifications.</p>
-          <p>Bookmark this page and check Last updated to see when it last changed.</p>
+          <p>Last updated reflects the latest completed official-source check or editorial update, whichever is newer.</p>
         </div>
       </article>
     </div>
+  <!-- RELATED_READING_START -->
+  <section class="related-reading" id="related-reading" aria-labelledby="related-reading-title">
+    <div class="container">
+      <h2 id="related-reading-title">Related reading</h2>
+      <div class="related-reading-grid">
+        <a class="card related-reading-card" href="/"><h3>Seedance home</h3><p>Explore the tools, guides and official release tracker.</p><span aria-hidden="true">→</span></a>
+        <a class="card related-reading-card" href="/pose-to-image" data-pose-entry><h3>AI pose generator</h3><p>Arrange a pose and camera view before preparing an image reference.</p><span aria-hidden="true">→</span></a>
+        <a class="card related-reading-card" href="/seedance-3-0"><h3>Seedance 3.0 resource hub</h3><p>Find release updates, FAQs, prompt drafts and reference guides.</p><span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+  <!-- RELATED_READING_END -->
   </main>
   <footer class="site-footer article-footer">
     <div class="container article-footer-inner">

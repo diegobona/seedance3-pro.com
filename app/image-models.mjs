@@ -8,7 +8,7 @@ const imageModels = Object.freeze({
     sizes: Object.freeze({ '1:1': '1024x1024', '3:2': '1536x1024', '2:3': '1024x1536' }),
   }),
   'gpt-image-2-5-1k': Object.freeze({
-    name: 'GPT Image 2.5', providerModel: 'gpt-image-2.5-1k', quality: 'low', creditCost: 5, maxReferences: 4,
+    name: 'GPT Image 2.5', providerModel: 'gpt-image-2.5-1k', quality: 'low', creditCost: 5, maxReferences: 16,
     sizes: Object.freeze({
       '1:1': '1254x1254', '3:2': '1536x1024', '2:3': '1024x1536',
       '3:4': '1086x1448', '4:3': '1448x1086', '4:5': '1122x1402', '5:4': '1402x1122',

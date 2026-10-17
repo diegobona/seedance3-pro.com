@@ -5,6 +5,7 @@
   <script src="/assets/pose-entry-visibility.js"></script>
   <link rel="stylesheet" href="/assets/pose-entry-visibility.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preload" as="image" type="image/webp" href="/assets/seedance3-cinematic-hero.webp" imagesrcset="/assets/seedance3-cinematic-hero-768.webp 768w, /assets/seedance3-cinematic-hero-1280.webp 1280w, /assets/seedance3-cinematic-hero.webp 1672w" imagesizes="(max-width: 640px) calc(133.33vw - 37.33px), (max-width: 920px) 112vw, 1120px" fetchpriority="high">
   <title>Seedance 3.0 | AI Video Generator &amp; Creative Studio</title>
   <meta name="description" content="Explore Seedance 3.0, create AI videos and images, and build editable 3D pose scenes. Browse original prompts and examples to start your next project.">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
@@ -34,6 +35,7 @@
     },
     {
       "@type": "WebPage",
+      "dateModified": "2026-10-17",
       "name": "Seedance 3.0 | AI Video Generator & Creative Studio",
       "url": "https://seedance3-pro.com/",
       "description": "Explore Seedance 3.0, create AI videos and images, and build editable 3D pose scenes. Browse original prompts and examples to start your next project.",
@@ -159,7 +161,7 @@
         <div class="hero-content">
           <p class="eyebrow">Video, image &amp; pose creation</p>
           <h1 class="display">SEEDANCE 3.0<br><span class="outline">AI Video Generator</span></h1>
-          <p class="lead">Explore Seedance 3.0 and bring your next idea to life. Create AI videos from $0.01 per second, generate images, or build a 3D pose scene to guide your composition.</p>
+          <p class="lead">Explore Seedance 3.0 and bring your next idea to life. Create MiniMax H3 videos at $0.01 per second, generate images, or build a 3D pose scene to guide your composition.</p>
           <!-- FACT-CHECK: Recheck the official Seed model catalog before changing the unconfirmed Seedance 3.0 release date status. -->
           <p class="section-copy" id="release-status">As of October 2026, the <a href="https://seed.bytedance.com/en/models" target="_blank" rel="noopener noreferrer">official model catalog</a> we reviewed does not confirm a Seedance 3.0 release date.</p>
           <div class="hero-actions">
@@ -168,7 +170,7 @@
           <a class="card-link" href="./seedance-3-0-release-date">View the release date and known details</a>
         </div>
         <figure class="hero-media">
-          <img class="hero-art" src="./assets/seedance3-cinematic-hero.webp" alt="Cinematic fashion performer moving through a rain-lit futuristic city" width="1536" height="1024" fetchpriority="high" decoding="async">
+          <img class="hero-art" src="./assets/seedance3-cinematic-hero.webp" alt="Cinematic fashion performer moving through a rain-lit futuristic city" width="1672" height="941" srcset="/assets/seedance3-cinematic-hero-768.webp 768w, /assets/seedance3-cinematic-hero-1280.webp 1280w, /assets/seedance3-cinematic-hero.webp 1672w" sizes="(max-width: 640px) calc(133.33vw - 37.33px), (max-width: 920px) 112vw, 1120px" fetchpriority="high" decoding="async">
           <figcaption><strong>Reference · Camera · Light · Sound</strong></figcaption>
         </figure>
       </div>
@@ -195,7 +197,7 @@
 
         <figure class="pose-demo-frame">
           <div class="pose-demo-stage">
-            <video class="pose-demo-video" data-pose-demo autoplay muted loop playsinline preload="metadata" poster="./assets/pose-reference-demo-poster.webp?v=3" aria-describedby="pose-demo-description">
+            <video class="pose-demo-video" data-pose-demo muted loop playsinline preload="none" loading="lazy" poster="./assets/pose-reference-demo-poster.webp?v=3" aria-describedby="pose-demo-description">
               <source src="./assets/pose-reference-demo.mp4?v=3" type="video/mp4">
               <source src="./assets/pose-reference-demo.webm?v=3" type="video/webm">
             </video>
@@ -214,40 +216,40 @@
       <h2 class="container showcase-heading">Get Inspired</h2>
       <div class="container video-grid">
         <article class="showcase-card">
-          <button class="showcase-preview-button" type="button" data-video-src="https://cdn.metaso.cn/minimax-h3-example-video/h3-example-009.mp4" aria-label="Play showcase video 1"><video class="showcase-preview" src="https://cdn.metaso.cn/minimax-h3-example-video/h3-example-009.mp4" muted playsinline preload="metadata" aria-hidden="true"></video><span class="showcase-play" aria-hidden="true"></span></button>
-          <div class="showcase-meta"><div class="showcase-copy"><div class="showcase-title-row"><strong>Model: MiniMax H3</strong><a class="showcase-try" href="./app/video/minimax-h3">Try it</a></div><span>As low as $0.01/sec</span></div></div>
+          <button class="showcase-preview-button" type="button" data-video-src="https://cdn.metaso.cn/minimax-h3-example-video/h3-example-009.mp4" aria-label="Play showcase video 1"><img class="showcase-preview" src="./assets/showcase-posters/h3-example-009.webp" width="640" height="360" loading="lazy" decoding="async" alt=""><span class="showcase-play" aria-hidden="true"></span></button>
+          <div class="showcase-meta"><div class="showcase-copy"><div class="showcase-title-row"><strong>Model: MiniMax H3</strong><a class="showcase-try" href="./app/video/minimax-h3">Try it</a></div><span>$0.01/sec</span></div></div>
         </article>
         <article class="showcase-card">
-          <button class="showcase-preview-button" type="button" data-video-src="https://cdn.metaso.cn/minimax-h3-example-video/02.mp4" aria-label="Play showcase video 2"><video class="showcase-preview" src="https://cdn.metaso.cn/minimax-h3-example-video/02.mp4" muted playsinline preload="metadata" aria-hidden="true"></video><span class="showcase-play" aria-hidden="true"></span></button>
-          <div class="showcase-meta"><div class="showcase-copy"><div class="showcase-title-row"><strong>Model: MiniMax H3</strong><a class="showcase-try" href="./app/video/minimax-h3">Try it</a></div><span>As low as $0.01/sec</span></div></div>
+          <button class="showcase-preview-button" type="button" data-video-src="https://cdn.metaso.cn/minimax-h3-example-video/02.mp4" aria-label="Play showcase video 2"><img class="showcase-preview" src="./assets/showcase-posters/02.webp" width="640" height="360" loading="lazy" decoding="async" alt=""><span class="showcase-play" aria-hidden="true"></span></button>
+          <div class="showcase-meta"><div class="showcase-copy"><div class="showcase-title-row"><strong>Model: MiniMax H3</strong><a class="showcase-try" href="./app/video/minimax-h3">Try it</a></div><span>$0.01/sec</span></div></div>
         </article>
         <article class="showcase-card">
-          <button class="showcase-preview-button" type="button" data-video-src="https://cdn.metaso.cn/minimax-h3-example-video/05.mp4" aria-label="Play showcase video 3"><video class="showcase-preview" src="https://cdn.metaso.cn/minimax-h3-example-video/05.mp4" muted playsinline preload="metadata" aria-hidden="true"></video><span class="showcase-play" aria-hidden="true"></span></button>
-          <div class="showcase-meta"><div class="showcase-copy"><div class="showcase-title-row"><strong>Model: MiniMax H3</strong><a class="showcase-try" href="./app/video/minimax-h3">Try it</a></div><span>As low as $0.01/sec</span></div></div>
+          <button class="showcase-preview-button" type="button" data-video-src="https://cdn.metaso.cn/minimax-h3-example-video/05.mp4" aria-label="Play showcase video 3"><img class="showcase-preview" src="./assets/showcase-posters/05.webp" width="640" height="360" loading="lazy" decoding="async" alt=""><span class="showcase-play" aria-hidden="true"></span></button>
+          <div class="showcase-meta"><div class="showcase-copy"><div class="showcase-title-row"><strong>Model: MiniMax H3</strong><a class="showcase-try" href="./app/video/minimax-h3">Try it</a></div><span>$0.01/sec</span></div></div>
         </article>
         <article class="showcase-card">
-          <button class="showcase-preview-button" type="button" data-video-src="https://cdn.metaso.cn/minimax-h3-example-video/11.mp4" aria-label="Play showcase video 4"><video class="showcase-preview" src="https://cdn.metaso.cn/minimax-h3-example-video/11.mp4" muted playsinline preload="metadata" aria-hidden="true"></video><span class="showcase-play" aria-hidden="true"></span></button>
-          <div class="showcase-meta"><div class="showcase-copy"><div class="showcase-title-row"><strong>Model: MiniMax H3</strong><a class="showcase-try" href="./app/video/minimax-h3">Try it</a></div><span>As low as $0.01/sec</span></div></div>
+          <button class="showcase-preview-button" type="button" data-video-src="https://cdn.metaso.cn/minimax-h3-example-video/11.mp4" aria-label="Play showcase video 4"><img class="showcase-preview" src="./assets/showcase-posters/11.webp" width="640" height="360" loading="lazy" decoding="async" alt=""><span class="showcase-play" aria-hidden="true"></span></button>
+          <div class="showcase-meta"><div class="showcase-copy"><div class="showcase-title-row"><strong>Model: MiniMax H3</strong><a class="showcase-try" href="./app/video/minimax-h3">Try it</a></div><span>$0.01/sec</span></div></div>
         </article>
         <article class="showcase-card">
-          <button class="showcase-preview-button" type="button" data-video-src="https://cdn.metaso.cn/minimax-h3-example-video/h3-example-007.mp4" aria-label="Play showcase video 5"><video class="showcase-preview" src="https://cdn.metaso.cn/minimax-h3-example-video/h3-example-007.mp4" muted playsinline preload="metadata" aria-hidden="true"></video><span class="showcase-play" aria-hidden="true"></span></button>
-          <div class="showcase-meta"><div class="showcase-copy"><div class="showcase-title-row"><strong>Model: MiniMax H3</strong><a class="showcase-try" href="./app/video/minimax-h3">Try it</a></div><span>As low as $0.01/sec</span></div></div>
+          <button class="showcase-preview-button" type="button" data-video-src="https://cdn.metaso.cn/minimax-h3-example-video/h3-example-007.mp4" aria-label="Play showcase video 5"><img class="showcase-preview" src="./assets/showcase-posters/h3-example-007.webp" width="640" height="360" loading="lazy" decoding="async" alt=""><span class="showcase-play" aria-hidden="true"></span></button>
+          <div class="showcase-meta"><div class="showcase-copy"><div class="showcase-title-row"><strong>Model: MiniMax H3</strong><a class="showcase-try" href="./app/video/minimax-h3">Try it</a></div><span>$0.01/sec</span></div></div>
         </article>
         <article class="showcase-card">
-          <button class="showcase-preview-button" type="button" data-video-src="https://cdn.metaso.cn/minimax-h3-example-video/h3-example-013.mp4" aria-label="Play showcase video 6"><video class="showcase-preview" src="https://cdn.metaso.cn/minimax-h3-example-video/h3-example-013.mp4" muted playsinline preload="metadata" aria-hidden="true"></video><span class="showcase-play" aria-hidden="true"></span></button>
-          <div class="showcase-meta"><div class="showcase-copy"><div class="showcase-title-row"><strong>Model: MiniMax H3</strong><a class="showcase-try" href="./app/video/minimax-h3">Try it</a></div><span>As low as $0.01/sec</span></div></div>
+          <button class="showcase-preview-button" type="button" data-video-src="https://cdn.metaso.cn/minimax-h3-example-video/h3-example-013.mp4" aria-label="Play showcase video 6"><img class="showcase-preview" src="./assets/showcase-posters/h3-example-013.webp" width="640" height="360" loading="lazy" decoding="async" alt=""><span class="showcase-play" aria-hidden="true"></span></button>
+          <div class="showcase-meta"><div class="showcase-copy"><div class="showcase-title-row"><strong>Model: MiniMax H3</strong><a class="showcase-try" href="./app/video/minimax-h3">Try it</a></div><span>$0.01/sec</span></div></div>
         </article>
         <article class="showcase-card">
-          <button class="showcase-preview-button" type="button" data-video-src="https://cdn.metaso.cn/minimax-h3-example-video/h3-example-024.mp4" aria-label="Play showcase video 7"><video class="showcase-preview" src="https://cdn.metaso.cn/minimax-h3-example-video/h3-example-024.mp4" muted playsinline preload="metadata" aria-hidden="true"></video><span class="showcase-play" aria-hidden="true"></span></button>
-          <div class="showcase-meta"><div class="showcase-copy"><div class="showcase-title-row"><strong>Model: MiniMax H3</strong><a class="showcase-try" href="./app/video/minimax-h3">Try it</a></div><span>As low as $0.01/sec</span></div></div>
+          <button class="showcase-preview-button" type="button" data-video-src="https://cdn.metaso.cn/minimax-h3-example-video/h3-example-024.mp4" aria-label="Play showcase video 7"><img class="showcase-preview" src="./assets/showcase-posters/h3-example-024.webp" width="640" height="360" loading="lazy" decoding="async" alt=""><span class="showcase-play" aria-hidden="true"></span></button>
+          <div class="showcase-meta"><div class="showcase-copy"><div class="showcase-title-row"><strong>Model: MiniMax H3</strong><a class="showcase-try" href="./app/video/minimax-h3">Try it</a></div><span>$0.01/sec</span></div></div>
         </article>
         <article class="showcase-card">
-          <button class="showcase-preview-button" type="button" data-video-src="https://cdn.metaso.cn/minimax-h3-example-video/h3-example-006.mp4" aria-label="Play showcase video 8"><video class="showcase-preview" src="https://cdn.metaso.cn/minimax-h3-example-video/h3-example-006.mp4" muted playsinline preload="metadata" aria-hidden="true"></video><span class="showcase-play" aria-hidden="true"></span></button>
-          <div class="showcase-meta"><div class="showcase-copy"><div class="showcase-title-row"><strong>Model: MiniMax H3</strong><a class="showcase-try" href="./app/video/minimax-h3">Try it</a></div><span>As low as $0.01/sec</span></div></div>
+          <button class="showcase-preview-button" type="button" data-video-src="https://cdn.metaso.cn/minimax-h3-example-video/h3-example-006.mp4" aria-label="Play showcase video 8"><img class="showcase-preview" src="./assets/showcase-posters/h3-example-006.webp" width="640" height="360" loading="lazy" decoding="async" alt=""><span class="showcase-play" aria-hidden="true"></span></button>
+          <div class="showcase-meta"><div class="showcase-copy"><div class="showcase-title-row"><strong>Model: MiniMax H3</strong><a class="showcase-try" href="./app/video/minimax-h3">Try it</a></div><span>$0.01/sec</span></div></div>
         </article>
         <article class="showcase-card">
-          <button class="showcase-preview-button" type="button" data-video-src="https://cdn.metaso.cn/minimax-h3-example-video/h3-example-001.mp4" aria-label="Play showcase video 9"><video class="showcase-preview" src="https://cdn.metaso.cn/minimax-h3-example-video/h3-example-001.mp4" muted playsinline preload="metadata" aria-hidden="true"></video><span class="showcase-play" aria-hidden="true"></span></button>
-          <div class="showcase-meta"><div class="showcase-copy"><div class="showcase-title-row"><strong>Model: MiniMax H3</strong><a class="showcase-try" href="./app/video/minimax-h3">Try it</a></div><span>As low as $0.01/sec</span></div></div>
+          <button class="showcase-preview-button" type="button" data-video-src="https://cdn.metaso.cn/minimax-h3-example-video/h3-example-001.mp4" aria-label="Play showcase video 9"><img class="showcase-preview" src="./assets/showcase-posters/h3-example-001.webp" width="640" height="360" loading="lazy" decoding="async" alt=""><span class="showcase-play" aria-hidden="true"></span></button>
+          <div class="showcase-meta"><div class="showcase-copy"><div class="showcase-title-row"><strong>Model: MiniMax H3</strong><a class="showcase-try" href="./app/video/minimax-h3">Try it</a></div><span>$0.01/sec</span></div></div>
         </article>
       </div>
       <div class="container showcase-more"><a href="./showcase">Explore video ideas and pose examples <span aria-hidden="true">↗</span></a></div>
@@ -327,6 +329,18 @@
     </section>
 
     <section class="section-tight"><div class="container cta-panel"><h2>Need a model you can explore right now?</h2><a class="button primary" href="./app/video/minimax-h3">Generate Your First AI Video</a></div></section>
+  <!-- RELATED_READING_START -->
+  <section class="related-reading" id="related-reading" aria-labelledby="related-reading-title">
+    <div class="container">
+      <h2 id="related-reading-title">Related reading</h2>
+      <div class="related-reading-grid">
+        <a class="card related-reading-card" href="/seedance-3-0-release-date"><h3>Seedance 3.0 release tracker</h3><p>Review official sources and the latest completed source check.</p><span aria-hidden="true">→</span></a>
+        <a class="card related-reading-card" href="/pose-to-image" data-pose-entry><h3>AI pose generator</h3><p>Arrange a pose and camera view before preparing an image reference.</p><span aria-hidden="true">→</span></a>
+        <a class="card related-reading-card" href="/seedance-3-0"><h3>Seedance 3.0 resource hub</h3><p>Find release updates, FAQs, prompt drafts and reference guides.</p><span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+  <!-- RELATED_READING_END -->
   </main>
 
   <footer class="site-footer"><div class="container">

@@ -5,6 +5,7 @@
   <script src="/assets/pose-entry-visibility.js"></script>
   <link rel="stylesheet" href="/assets/pose-entry-visibility.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preload" as="image" type="image/webp" href="/assets/pose-reference-demo-poster.webp?v=3" fetchpriority="high">
   <title>AI Pose Generator | Seedance</title>
   <meta name="description" content="Create pose references with an AI pose generator. Arrange people, animals and props, choose camera angles, and turn your 3D scene into an AI image.">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
@@ -34,6 +35,7 @@
   "@graph": [
     {
       "@type": "WebPage",
+      "dateModified": "2026-10-17",
       "@id": "https://seedance3-pro.com/pose-to-image#webpage",
       "url": "https://seedance3-pro.com/pose-to-image",
       "name": "AI Pose Generator | Seedance",
@@ -169,6 +171,7 @@
           <div class="pose-hero-copy">
             <p class="eyebrow">Pose first. Create next.</p>
             <h1 id="pose-title">AI <span>pose generator</span></h1>
+          <p class="section-copy">Last updated: <time data-related-content-updated datetime="2026-10-17">2026-10-17</time></p>
             <p class="lead">Arrange people, animals and props in a 3D scene. Apply pose presets, adjust joints and frame the camera, then use your scene as a reference for AI image generation.</p>
             <div class="hero-actions">
               <a class="button primary" href="./app/?model=pose-to-image">Build Your Pose <span aria-hidden="true">↗</span></a>
@@ -177,7 +180,7 @@
           </div>
           <figure class="pose-recording">
             <div class="pose-recording-heading"><span><i aria-hidden="true"></i> Inside Pose Studio</span><span>Scene-to-image walkthrough</span></div>
-            <video autoplay muted loop controls playsinline preload="metadata" width="1280" height="720" poster="./assets/pose-reference-demo-poster.webp?v=3" aria-label="Pose Studio demonstration: presets, manual posing, a five-object scene and an AI visualization">
+            <video data-pose-demo muted loop controls playsinline preload="none" width="1280" height="720" poster="./assets/pose-reference-demo-poster.webp?v=3" aria-label="Pose Studio demonstration: presets, manual posing, a five-object scene and an AI visualization">
               <source src="./assets/pose-reference-demo.mp4?v=3" type="video/mp4">
               <source src="./assets/pose-reference-demo.webm?v=3" type="video/webm">
               <p>Your browser cannot play this video. <a href="./assets/pose-reference-demo.mp4?v=3">Open the pose editor recording</a>, or read the workflow below.</p>
@@ -273,6 +276,18 @@
         </div>
       </div>
     </section>
+  <!-- RELATED_READING_START -->
+  <section class="related-reading" id="related-reading" aria-labelledby="related-reading-title">
+    <div class="container">
+      <h2 id="related-reading-title">Related reading</h2>
+      <div class="related-reading-grid">
+        <a class="card related-reading-card" href="/"><h3>Seedance home</h3><p>Explore the tools, guides and official release tracker.</p><span aria-hidden="true">→</span></a>
+        <a class="card related-reading-card" href="/seedance-3-0-release-date"><h3>Seedance 3.0 release tracker</h3><p>Review official sources and the latest completed source check.</p><span aria-hidden="true">→</span></a>
+        <a class="card related-reading-card" href="/pose-reference-camera-angle-examples" data-pose-entry><h3>Pose reference and camera angle examples</h3><p>Compare reference views and image results for people, animals and props.</p><span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+  <!-- RELATED_READING_END -->
   </main>
 
   <footer class="site-footer article-footer">
@@ -282,5 +297,14 @@
       <nav class="site-language-switch" data-site-language-switch data-language-footer aria-label="Site language"><a href="/zh/pose-to-image?lang=zh" data-language="zh" lang="zh-Hans">中文</a><span aria-hidden="true">|</span><a href="/pose-to-image?lang=en" data-language="en" lang="en" aria-current="true">EN</a></nav>
     </div>
   </footer>
+  <!-- Date maintenance: edit the page Article/WebPage dateModified once; the visible date reads it below. -->
+  <script id="related-content-date-display">
+    (() => {
+      const nodes = Array.from(document.querySelectorAll('script[type="application/ld+json"]')).flatMap(script => { const data = JSON.parse(script.textContent); return data['@graph'] || [data]; });
+      const page = nodes.find(node => node['@type'] === 'Article') || nodes.find(node => node['@type'] === 'WebPage');
+      document.querySelectorAll('[data-related-content-updated]').forEach(time => { time.textContent = page.dateModified.slice(0, 10); time.dateTime = page.dateModified; });
+    })();
+  </script>
+  <script src="./main.js" defer></script>
 </body>
 </html>

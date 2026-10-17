@@ -4,12 +4,14 @@ import { MuseWorkspacePage } from '../components/muse-workspace-page'
 
 const url = 'https://seedance3-pro.com/app/image/muse-image'
 
+// Restore index and both sitemap URLs only after live generation and complete bilingual tool content are verified; notify the owner.
+
 export const Route = createFileRoute('/app_/image/muse-image')({
   head: () => (localizeHead({
     meta: [
       { title: 'Muse Image Workspace Preview | SEEDANCE' },
       { name: 'description', content: 'Preview the Muse Image workspace and draft an image prompt. Generation is not available in this workspace yet.' },
-      { name: 'robots', content: 'index,follow,max-image-preview:large' },
+      { name: 'robots', content: 'noindex,follow' },
       { property: 'og:url', content: url },
     ],
     links: [
