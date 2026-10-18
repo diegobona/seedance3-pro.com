@@ -1,11 +1,15 @@
 import { drizzleAdapter } from '@better-auth/drizzle-adapter'
 import { betterAuth } from 'better-auth'
 import { tanstackStartCookies } from 'better-auth/tanstack-start'
-import { createDb } from '../db'
+import { drizzle } from 'drizzle-orm/d1'
+import { createAppDatabase, isD1Database } from '../db'
 import { authSchema } from '../db/schema'
+import { authSchema as d1AuthSchema } from '../db/d1-schema'
 import { installLocalGoogleProxyFetch } from './google-proxy-fetch'
 
 type AuthEnvironment = {
+  DB?: D1Database
+  DATABASE_BACKEND?: string
   DATABASE_URL?: string
   BETTER_AUTH_SECRET?: string
   GOOGLE_CLIENT_ID?: string
@@ -14,6 +18,7 @@ type AuthEnvironment = {
 
 function readAuthEnvironment(): AuthEnvironment {
   return {
+    DATABASE_BACKEND: process.env.DATABASE_BACKEND,
     DATABASE_URL: process.env.DATABASE_URL,
     BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
@@ -32,6 +37,7 @@ export function createAuth(request: Request, environment: AuthEnvironment = read
   const origin = new URL(request.url).origin
   const hasGoogle = Boolean(environment.GOOGLE_CLIENT_ID && environment.GOOGLE_CLIENT_SECRET)
   const secret = requireSecret(environment.BETTER_AUTH_SECRET)
+  const database = createAppDatabase(environment)
 
   if (hasGoogle && ['localhost', '127.0.0.1'].includes(new URL(origin).hostname)) {
     installLocalGoogleProxyFetch(secret)
@@ -47,10 +53,15 @@ export function createAuth(request: Request, environment: AuthEnvironment = read
       'https://seedance3-pro.com',
       'https://www.seedance3-pro.com',
     ],
-    database: drizzleAdapter(createDb(environment.DATABASE_URL ?? ''), {
-      provider: 'pg',
-      schema: authSchema,
-    }),
+    database: isD1Database(database)
+      ? drizzleAdapter(drizzle(database, { schema: d1AuthSchema }), {
+        provider: 'sqlite',
+        schema: d1AuthSchema,
+      })
+      : drizzleAdapter(database, {
+        provider: 'pg',
+        schema: authSchema,
+      }),
     emailAndPassword: {
       enabled: true,
       autoSignIn: true,

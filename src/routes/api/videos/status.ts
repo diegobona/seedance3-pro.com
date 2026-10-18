@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import '@tanstack/react-start'
 import { env } from 'cloudflare:workers'
 import { queryAutodlVideoTask } from '../../../../scripts/autodl-video.mjs'
-import { createDb } from '../../../db'
+import { createAppDatabase, databaseConfigured } from '../../../db'
 import { createVideoGenerationTaskStore } from '../../../db/video-generation-tasks'
 import { createTrackedVideoTaskStore, createVideoTaskActivity } from '../../../lib/video-task-activity'
 import { createAuth } from '../../../lib/auth'
@@ -76,14 +76,13 @@ export const Route = createFileRoute('/api/videos/status')({
           return jsonError(400, 'INVALID_VIDEO_TASK', 'A valid video task is required.')
         }
 
-        const databaseUrl = env.DATABASE_URL?.trim() ?? ''
         const token = env.AUTODL_TOKEN?.trim() ?? ''
-        if (!databaseUrl || !token || !env.VIDEO_REFERENCES) {
+        if (!databaseConfigured(env) || !token || !env.VIDEO_REFERENCES) {
           logVideoEvent('video_status_unavailable', { reason: 'missing_configuration' })
           return unavailableResponse()
         }
 
-        const taskStore = createTrackedVideoTaskStore(createVideoGenerationTaskStore(createDb(databaseUrl)), createVideoTaskActivity(env.VIDEO_REFERENCES))
+        const taskStore = createTrackedVideoTaskStore(createVideoGenerationTaskStore(createAppDatabase(env)), createVideoTaskActivity(env.VIDEO_REFERENCES))
         return protectVideoGenerationPoll({
           request,
           localTaskId,

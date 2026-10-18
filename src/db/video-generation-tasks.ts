@@ -6,7 +6,8 @@ import type {
   VideoTaskMetadata,
   VideoTaskTransitionResult,
 } from '../lib/protected-video-generation'
-import type { Database } from './index'
+import { isD1Database, type AppDatabase, type Database } from './index'
+import { createD1VideoGenerationTaskStore } from './d1-video-generation-tasks'
 import { user, videoGenerationTask } from './schema'
 import { availableDailyCredits, creditDay, creditRefundAccount, effectiveCreditBalance, reservationRefundFields } from './daily-credit-sql'
 import { getCurrentCreditBalance } from './generation-credits'
@@ -149,7 +150,8 @@ async function updatePollState(
   return (await taskAndBalance(db, localTaskId)).task
 }
 
-export function createVideoGenerationTaskStore(db: Database): VideoGenerationTaskStore {
+export function createVideoGenerationTaskStore(db: AppDatabase): VideoGenerationTaskStore {
+  if (isD1Database(db)) return createD1VideoGenerationTaskStore(db)
   return {
     async reserveAndCreate(userId: string, credits: number, metadata: VideoTaskMetadata, localTaskId = crypto.randomUUID()) {
       if (!Number.isSafeInteger(credits) || credits <= 0) {

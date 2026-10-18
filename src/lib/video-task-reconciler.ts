@@ -1,5 +1,5 @@
 import { queryAutodlVideoTask } from '../../scripts/autodl-video.mjs'
-import { createDb } from '../db'
+import { createAppDatabase, databaseConfigured } from '../db'
 import { createVideoGenerationTaskStore } from '../db/video-generation-tasks'
 import { createTrackedVideoTaskStore, createVideoTaskActivity, type VideoTaskActivity, type VideoActivitySnapshot } from './video-task-activity'
 import type {
@@ -14,6 +14,8 @@ const MAX_LOG_LENGTH = 500
 
 type ReconcilerEnvironment = {
   DATABASE_URL?: string
+  DATABASE_BACKEND?: string
+  DB?: D1Database
   AUTODL_TOKEN?: string
   VIDEO_REFERENCES?: R2Bucket
 }
@@ -181,9 +183,9 @@ export async function reconcileVideoGenerationTasks(
   const databaseUrl = environment.DATABASE_URL?.trim() ?? ''
   const token = environment.AUTODL_TOKEN?.trim() ?? ''
   const logger = dependencies.logger ?? console.error
-  if (!databaseUrl || !token) {
+  if (!databaseConfigured(environment) || !token) {
     const missing = [
-      ...(!databaseUrl ? ['DATABASE_URL'] : []),
+      ...(!databaseConfigured(environment) ? [environment.DATABASE_BACKEND === 'd1' ? 'DB' : 'DATABASE_URL'] : []),
       ...(!token ? ['AUTODL_TOKEN'] : []),
     ]
     emitLog(logger, 'video_reconciler_unavailable', {
@@ -215,8 +217,8 @@ export async function reconcileVideoGenerationTasks(
     catch { emitLog(logger, 'video_reconciler_retry_state_unavailable') }
   }
 
-  const createStore = dependencies.createStore
-    ?? ((url: string) => createVideoGenerationTaskStore(createDb(url)))
+  const createStore: NonNullable<VideoTaskReconcilerDependencies['createStore']> = dependencies.createStore
+    ?? (() => createVideoGenerationTaskStore(createAppDatabase(environment)))
   const query = dependencies.query
     ?? (async (providerTaskId: string, providerToken: string): Promise<VideoProviderQueryResult> => (
       await queryAutodlVideoTask(providerTaskId, { token: providerToken }) as VideoProviderQueryResult

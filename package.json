@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "test:d1": "tsx --test tests/d1-*.test.ts tests/neon-to-d1-migration.test.mjs",
+    "db:d1:local": "wrangler d1 migrations apply seedance3-production --local",
     "test": "node --test tests/*.test.mjs",
     "test:auth": "tsx --test tests/*.test.ts",
     "dev": "node scripts/dev.mjs",
@@ -47,6 +49,7 @@
     "drizzle-kit": "^0.31.9",
     "jszip": "^3.10.2",
     "meshoptimizer": "^1.2.0",
+    "miniflare": "5.20260917.0-alpha",
     "tsx": "^4.21.0",
     "typescript": "^6.0.2",
     "vite": "^8.0.0",

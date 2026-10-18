@@ -8,7 +8,7 @@ import {
   handleImageGenerationRequest,
   preflightImageGenerationRequest,
 } from '../../../../scripts/tuzi-image.mjs'
-import { createDb } from '../../../db'
+import { createAppDatabase } from '../../../db'
 import { createGenerationCreditStore } from '../../../db/generation-credits'
 import { createAuth } from '../../../lib/auth'
 import { protectImageGeneration } from '../../../lib/protected-image-generation'
@@ -19,7 +19,7 @@ export const Route = createFileRoute('/api/images/generate')({
     handlers: {
       POST: async ({ request }) => {
         let userId = ''
-        const creditStore = createGenerationCreditStore(createDb(env.DATABASE_URL ?? ''))
+        const creditStore = createGenerationCreditStore(createAppDatabase(env))
         return protectImageGeneration({
           request,
           getSession: async () => {

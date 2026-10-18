@@ -1,6 +1,7 @@
 import { eq, sql } from 'drizzle-orm'
 import type { GenerationCreditStore } from '../lib/generation-credits'
-import type { Database } from './index'
+import { isD1Database, type AppDatabase, type Database } from './index'
+import { createD1GenerationCreditStore, getD1CurrentCreditBalance } from './d1-generation-credits'
 import { generationCreditReservation, user } from './schema'
 import { availableDailyCredits, creditDay, creditRefundAccount, effectiveCreditBalance, reservationRefundFields } from './daily-credit-sql'
 
@@ -46,7 +47,8 @@ async function refundStaleReservations(db: Database, userId: string) {
   `)
 }
 
-export function createGenerationCreditStore(db: Database): GenerationCreditStore {
+export function createGenerationCreditStore(db: AppDatabase): GenerationCreditStore {
+  if (isD1Database(db)) return createD1GenerationCreditStore(db)
   return {
     async reserve(userId, credits) {
       if (!Number.isSafeInteger(credits) || credits <= 0) {
@@ -140,7 +142,8 @@ export function createGenerationCreditStore(db: Database): GenerationCreditStore
   }
 }
 
-export async function getCurrentCreditBalance(db: Database, userId: string) {
+export async function getCurrentCreditBalance(db: AppDatabase, userId: string) {
+  if (isD1Database(db)) return getD1CurrentCreditBalance(db, userId)
   const result = await db.execute<BalanceRow>(sql`
     UPDATE "user" AS account
     SET "credit_balance" = ${effectiveCreditBalance('account')},

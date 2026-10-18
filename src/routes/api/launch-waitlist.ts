@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import '@tanstack/react-start'
 import { env } from 'cloudflare:workers'
-import { createDb } from '../../db'
+import { createAppDatabase, databaseConfigured } from '../../db'
 import { createLaunchWaitlistStore } from '../../db/launch-waitlist'
 import { createAuth } from '../../lib/auth'
 import {
@@ -27,8 +27,7 @@ function jsonError(status: number, code: string, message: string) {
 }
 
 async function respond(request: Request, action: 'status' | 'join') {
-  const databaseUrl = env.DATABASE_URL?.trim() ?? ''
-  if (!databaseUrl) {
+  if (!databaseConfigured(env)) {
     return jsonError(503, 'WAITLIST_UNAVAILABLE', 'Launch notifications are temporarily unavailable.')
   }
 
@@ -39,7 +38,7 @@ async function respond(request: Request, action: 'status' | 'join') {
         const session = await createAuth(sessionRequest, env).api.getSession({ headers: sessionRequest.headers })
         return session?.user?.id ? { user: { id: session.user.id } } : null
       },
-      store: createLaunchWaitlistStore(createDb(databaseUrl)),
+      store: createLaunchWaitlistStore(createAppDatabase(env)),
     }
     return action === 'join'
       ? await joinLaunchWaitlistResponse(options)

@@ -7,6 +7,17 @@
     "nodejs_compat"
   ],
   "workers_dev": false,
+  "vars": {
+    "DATABASE_BACKEND": "neon"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "seedance3-production",
+      "database_id": "bb9c23d4-43b3-4ef7-922d-ac2f9f02c62e",
+      "migrations_dir": "migrations/d1"
+    }
+  ],
   "routes": [
     {
       "pattern": "seedance3-pro.com/*",

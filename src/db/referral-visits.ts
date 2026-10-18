@@ -1,5 +1,6 @@
 import { sql } from 'drizzle-orm'
-import type { Database } from './index'
+import { isD1Database, type AppDatabase } from './index'
+import { createD1ReferralVisitStore } from './d1-referral-visits'
 import { referralVisit } from './schema'
 
 export type Visit = {
@@ -67,7 +68,8 @@ function counts(visitors: CountValue, visits: CountValue): ReferralCounts {
   return { visitors: normalizeCount(visitors), visits: normalizeCount(visits) }
 }
 
-export function createReferralVisitStore(db: Database, source: ReferralSource = 'anyposes'): ReferralVisitStore {
+export function createReferralVisitStore(db: AppDatabase, source: ReferralSource = 'anyposes'): ReferralVisitStore {
+  if (isD1Database(db)) return createD1ReferralVisitStore(db, source)
   return {
     async recordVisit(visit) {
       await db.insert(referralVisit).values({
