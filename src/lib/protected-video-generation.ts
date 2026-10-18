@@ -56,7 +56,9 @@ export interface VideoTaskTransitionResult {
 }
 
 export interface VideoGenerationTaskStore {
-  reserveAndCreate(userId: string, credits: number, metadata: VideoTaskMetadata): Promise<VideoTaskTransitionResult | null>
+  reserveAndCreate(userId: string, credits: number, metadata: VideoTaskMetadata, localTaskId?: string): Promise<VideoTaskTransitionResult | null>
+  listUnfinishedTasks(afterId?: string, limit?: number): Promise<Array<Pick<VideoGenerationTask, 'id' | 'status'>>>
+  getTaskStates(taskIds: string[]): Promise<Array<Pick<VideoGenerationTask, 'id' | 'status'>>>
   attachProviderTask(localTaskId: string, providerTaskId: string): Promise<VideoGenerationTask>
   finalizeSubmissionFailure(
     localTaskId: string,

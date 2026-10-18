@@ -1,4 +1,4 @@
-import { and, eq, sql } from 'drizzle-orm'
+import { and, eq, gt, inArray, sql } from 'drizzle-orm'
 import type {
   VideoGenerationTask,
   VideoGenerationTaskStatus,
@@ -151,12 +151,11 @@ async function updatePollState(
 
 export function createVideoGenerationTaskStore(db: Database): VideoGenerationTaskStore {
   return {
-    async reserveAndCreate(userId: string, credits: number, metadata: VideoTaskMetadata) {
+    async reserveAndCreate(userId: string, credits: number, metadata: VideoTaskMetadata, localTaskId = crypto.randomUUID()) {
       if (!Number.isSafeInteger(credits) || credits <= 0) {
         throw new Error('Credit reservation amount must be a positive integer.')
       }
       const reservationId = crypto.randomUUID()
-      const localTaskId = crypto.randomUUID()
       const result = await db.execute<TaskRow>(sql`
         WITH stale AS (
           UPDATE "generation_credit_reservation" AS reservation
@@ -221,6 +220,20 @@ export function createVideoGenerationTaskStore(db: Database): VideoGenerationTas
       const row = result.rows[0]
       if (!row) return null
       return { task: mapTask(row), remainingCredits: numericBalance(row.remaining_credits) }
+    },
+
+    async listUnfinishedTasks(afterId, limit = 100) {
+      return db.select({ id: videoGenerationTask.id, status: videoGenerationTask.status })
+        .from(videoGenerationTask)
+        .where(and(inArray(videoGenerationTask.status, ['submitting', 'queued', 'running']),
+          afterId ? gt(videoGenerationTask.id, afterId) : undefined))
+        .orderBy(videoGenerationTask.id).limit(Math.min(100, Math.max(1, limit))) as Promise<Array<Pick<VideoGenerationTask, 'id' | 'status'>>>
+    },
+
+    async getTaskStates(taskIds) {
+      if (!taskIds.length) return []
+      return db.select({ id: videoGenerationTask.id, status: videoGenerationTask.status })
+        .from(videoGenerationTask).where(inArray(videoGenerationTask.id, taskIds)) as Promise<Array<Pick<VideoGenerationTask, 'id' | 'status'>>>
     },
 
     async attachProviderTask(localTaskId, providerTaskId) {

@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.55.0",
+    "@electric-sql/pglite": "^0.5.10",
     "@tanstack/router-cli": "^1.167.38",
     "@types/node": "^22.10.2",
     "@types/react": "^19.2.0",

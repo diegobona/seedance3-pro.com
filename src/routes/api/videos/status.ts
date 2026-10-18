@@ -4,6 +4,7 @@ import { env } from 'cloudflare:workers'
 import { queryAutodlVideoTask } from '../../../../scripts/autodl-video.mjs'
 import { createDb } from '../../../db'
 import { createVideoGenerationTaskStore } from '../../../db/video-generation-tasks'
+import { createTrackedVideoTaskStore, createVideoTaskActivity } from '../../../lib/video-task-activity'
 import { createAuth } from '../../../lib/auth'
 import {
   protectVideoGenerationPoll,
@@ -77,12 +78,12 @@ export const Route = createFileRoute('/api/videos/status')({
 
         const databaseUrl = env.DATABASE_URL?.trim() ?? ''
         const token = env.AUTODL_TOKEN?.trim() ?? ''
-        if (!databaseUrl || !token) {
+        if (!databaseUrl || !token || !env.VIDEO_REFERENCES) {
           logVideoEvent('video_status_unavailable', { reason: 'missing_configuration' })
           return unavailableResponse()
         }
 
-        const taskStore = createVideoGenerationTaskStore(createDb(databaseUrl))
+        const taskStore = createTrackedVideoTaskStore(createVideoGenerationTaskStore(createDb(databaseUrl)), createVideoTaskActivity(env.VIDEO_REFERENCES))
         return protectVideoGenerationPoll({
           request,
           localTaskId,

@@ -7,6 +7,7 @@ import {
 } from '../../../../scripts/autodl-video.mjs'
 import { createDb } from '../../../db'
 import { createVideoGenerationTaskStore } from '../../../db/video-generation-tasks'
+import { createTrackedVideoTaskStore, createVideoTaskActivity } from '../../../lib/video-task-activity'
 import { createAuth } from '../../../lib/auth'
 import { resolveVideoReferences } from '../../../lib/video-references'
 import {
@@ -71,12 +72,12 @@ export const Route = createFileRoute('/api/videos/generate')({
         const databaseUrl = env.DATABASE_URL?.trim() ?? ''
         const token = env.AUTODL_TOKEN?.trim() ?? ''
         const IMAGE_RATE_LIMITER = env.IMAGE_RATE_LIMITER
-        if (!databaseUrl || !token || typeof IMAGE_RATE_LIMITER?.limit !== 'function') {
+        if (!databaseUrl || !token || !env.VIDEO_REFERENCES || typeof IMAGE_RATE_LIMITER?.limit !== 'function') {
           logVideoEvent('video_generate_unavailable', { reason: 'missing_configuration' })
           return unavailableResponse()
         }
 
-        const taskStore = createVideoGenerationTaskStore(createDb(databaseUrl))
+        const taskStore = createTrackedVideoTaskStore(createVideoGenerationTaskStore(createDb(databaseUrl)), createVideoTaskActivity(env.VIDEO_REFERENCES))
         return protectVideoGenerationStart({
           request,
           getSession: async (sessionRequest) => {

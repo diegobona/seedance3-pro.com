@@ -1,6 +1,7 @@
 import { queryAutodlVideoTask } from '../../scripts/autodl-video.mjs'
 import { createDb } from '../db'
 import { createVideoGenerationTaskStore } from '../db/video-generation-tasks'
+import { createTrackedVideoTaskStore, createVideoTaskActivity, type VideoTaskActivity, type VideoActivitySnapshot } from './video-task-activity'
 import type {
   VideoGenerationTask,
   VideoGenerationTaskStore,
@@ -14,9 +15,11 @@ const MAX_LOG_LENGTH = 500
 type ReconcilerEnvironment = {
   DATABASE_URL?: string
   AUTODL_TOKEN?: string
+  VIDEO_REFERENCES?: R2Bucket
 }
 
 export interface VideoTaskReconcilerDependencies {
+  activity?: VideoTaskActivity
   now?: () => Date
   createStore?: (databaseUrl: string) => VideoGenerationTaskStore
   query?: (providerTaskId: string, token: string) => Promise<VideoProviderQueryResult>
@@ -190,24 +193,57 @@ export async function reconcileVideoGenerationTasks(
     return { expired: 0, claimed: 0, processed: 0 }
   }
 
+  const idle = { expired: 0, claimed: 0, processed: 0 }
+  const activity = dependencies.activity ?? (environment.VIDEO_REFERENCES ? createVideoTaskActivity(environment.VIDEO_REFERENCES) : null)
+  if (!activity) {
+    emitLog(logger, 'video_reconciler_unavailable', { reason: 'missing_activity_storage' })
+    return idle
+  }
+  const now = dependencies.now?.() ?? new Date()
+  let snapshot: VideoActivitySnapshot
+  try { snapshot = await activity.snapshot() }
+  catch {
+    emitLog(logger, 'video_reconciler_activity_unavailable')
+    return idle
+  }
+  // No Neon client is created on routine idle ticks, or during an outage cooldown.
+  if ((snapshot.initialized && !snapshot.tasks.length) || snapshot.retryAt > now.getTime()) return idle
+
+  async function deferDatabase(error: unknown) {
+    emitLog(logger, 'video_reconciler_store_error', safeErrorDetails(error))
+    try { await activity!.defer(now, snapshot.failures + 1) }
+    catch { emitLog(logger, 'video_reconciler_retry_state_unavailable') }
+  }
+
   const createStore = dependencies.createStore
     ?? ((url: string) => createVideoGenerationTaskStore(createDb(url)))
   const query = dependencies.query
     ?? (async (providerTaskId: string, providerToken: string): Promise<VideoProviderQueryResult> => (
       await queryAutodlVideoTask(providerTaskId, { token: providerToken }) as VideoProviderQueryResult
     ))
-  const now = dependencies.now?.() ?? new Date()
 
   let store: VideoGenerationTaskStore
   let expiredCount = 0
   let claimed: VideoGenerationTask[] = []
   try {
-    store = createStore(databaseUrl)
+    store = createTrackedVideoTaskStore(createStore(databaseUrl), activity, logger)
+    if (!snapshot.initialized) {
+      // Persist only a fully seeded page; a failed write retries the same page.
+      const existing = await store.listUnfinishedTasks(snapshot.bootstrapAfterId, 100)
+      await Promise.all(existing.map(task => activity.track(task.id)))
+      if (existing.length < 100) await activity.initialize()
+      else await activity.checkpoint(existing[existing.length - 1].id)
+      snapshot = await activity.snapshot()
+      if (!snapshot.tasks.length) {
+        await activity.clearRetry()
+        return idle
+      }
+    }
     const expired = await store.expireOverdue(now)
     expiredCount = expired.length
     claimed = await store.claimPending(RECONCILE_BATCH_SIZE, now)
   } catch (error) {
-    emitLog(logger, 'video_reconciler_store_error', safeErrorDetails(error))
+    await deferDatabase(error)
     return { expired: expiredCount, claimed: 0, processed: 0 }
   }
 
@@ -224,5 +260,25 @@ export async function reconcileVideoGenerationTasks(
       processed += 1
     }
   })
+  try {
+    for (let offset = 0; offset < snapshot.tasks.length; offset += 100) {
+      const markers = snapshot.tasks.slice(offset, offset + 100)
+      const states = new Map((await store.getTaskStates(markers.map(marker => marker.id))).map(task => [task.id, task.status]))
+      const removable: string[] = []
+      for (const marker of markers) {
+        const status = states.get(marker.id)
+        const terminal = status && !['submitting', 'queued', 'running'].includes(status)
+        // Missing rows can be in-flight reservations. Keep recovery beyond the 2h task expiry.
+        const orphan = !status && now.getTime() - marker.recordedAt.getTime() >= 3 * 60 * 60_000
+        if (terminal || orphan) removable.push(marker.id)
+      }
+      if (removable.length) {
+        try { await activity.remove(removable) }
+        catch { emitLog(logger, 'video_activity_cleanup_deferred', { count: removable.length }) }
+      }
+    }
+    try { await activity.clearRetry() }
+    catch { emitLog(logger, 'video_reconciler_retry_state_unavailable') }
+  } catch (error) { await deferDatabase(error) }
   return { expired: expiredCount, claimed: claimed.length, processed }
 }
