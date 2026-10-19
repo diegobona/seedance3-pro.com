@@ -153,6 +153,7 @@ export function createCreditSummaryController({
   getCost,
   getBalanceUrl = () => '/api/credits/balance',
   getContext = () => 'account',
+  isGenerationPending = () => false,
   eventTarget = globalThis,
   fetchImpl = globalThis.fetch,
   setTimeoutImpl = globalThis.setTimeout,
@@ -205,8 +206,11 @@ export function createCreditSummaryController({
       costElement.textContent = t('{cost} credits', { cost: summary.cost });
       currentBalanceElement.textContent = summary.displayBalance === null ? t('— credits') : t('{cost} credits', { cost: summary.displayBalance });
     }
-    container.classList.toggle("is-insufficient", summary.insufficient);
-    container.classList.toggle("is-exhausted", summary.currentBalance === 0);
+    // A running generation has already reserved its cost. That reservation is
+    // not a failure; show warnings only once its result is available.
+    const pending = isGenerationPending();
+    container.classList.toggle("is-insufficient", summary.insufficient && !pending);
+    container.classList.toggle("is-exhausted", summary.currentBalance === 0 && !pending);
     onChange(summary);
   }
 

@@ -336,6 +336,10 @@ export function initializeStudio() {
     return activeModelId === "seedance-2-5" || activeModelId === "minimax-h3";
   }
 
+  function isCurrentGenerationPending() {
+    return isVideoGenerationSelected() ? videoPolling || Boolean(activeVideoTaskId) : imageGenerationInFlight;
+  }
+
   function isReferenceVideo() {
     return activeModelId === "minimax-h3" && videoMode === "reference";
   }
@@ -694,7 +698,7 @@ export function initializeStudio() {
           ? dailyCreditsUsedMessage()
           : `${t('You need {cost} credits to generate.', { cost: requiredCredits })} ${error.credits ? t('Current balance: {remaining}.', { remaining: error.credits.remaining }) : ""}`.trim()
         : localizedErrorMessage(error?.message, error?.code, 'Video generation failed.');
-      generationStatus.className = "generation-status is-error";
+      generationStatus.className = activeVideoTaskId ? 'generation-status is-working' : 'generation-status is-error';
     } finally {
       videoPolling = false;
       videoAbortController = null;
@@ -853,6 +857,7 @@ export function initializeStudio() {
     getBalanceUrl: () => activeModelId === 'minimax-h3' ? '/api/credits/balance?guest_video=1'
       : getImageModel(activeModelId) ? '/api/credits/balance?guest_image=1' : '/api/credits/balance',
     getContext: () => isGuestVideoSelected() ? 'guest-video' : isGuestImageSelected() ? 'guest-image' : 'account',
+    isGenerationPending: isCurrentGenerationPending,
     prepareControls: remaining => {
       guestRemaining = isGuestVideoSelected() || isGuestImageSelected() ? remaining : null;
       updateGuestVideoControls();
@@ -881,9 +886,8 @@ export function initializeStudio() {
       creditInsufficient = isGuestVideoSelected() ? guestRemaining !== null && guestRemaining < 5
         : isGuestImageSelected() ? guestRemaining !== null && guestRemaining < creditCostForQuantity(imageQuantity.value, activeModelId)
         : summary.insufficient;
-      creditSummary.classList.toggle('is-insufficient', creditInsufficient);
       if (launchNotice) {
-        launchNotice.hidden = summary.currentBalance !== 0;
+        launchNotice.hidden = summary.currentBalance !== 0 || isCurrentGenerationPending();
         if (isGuestImageSelected() || isGuestVideoSelected()) {
           renderGuestTrialNotice(launchNotice, isGuestImageSelected() ? 'image' : 'video', {
             href: window.location.href,

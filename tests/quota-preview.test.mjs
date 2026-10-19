@@ -3,6 +3,7 @@ import test from 'node:test';
 import { createCreditSummaryController } from '../app/studio-controls.mjs';
 
 function harness({ context = 'guest-image', remaining = 10, duration = '5' } = {}) {
+  let pending = false;
   const quantity = Object.assign(new EventTarget(), { value: '1' });
   const seconds = Object.assign(new EventTarget(), { value: duration });
   const balanceElement = { textContent: '' }, label = { textContent: '' }, events = new EventTarget();
@@ -12,10 +13,12 @@ function harness({ context = 'guest-image', remaining = 10, duration = '5' } = {
     quantityControl: quantity, additionalCostControls: [seconds],
     costElement: { textContent: '' }, currentBalanceElement: balanceElement, balanceLabelElement: label,
     getContext: () => context, getCost: () => context === 'guest-video' ? Number(seconds.value) : Number(quantity.value) * 5,
+    isGenerationPending: () => pending,
     eventTarget: events, onChange: state => states.push(state),
     fetchImpl: async () => Response.json({ credits: { remaining, guest: context !== 'account', expiresDaily: false } }),
   });
   return { controller, states, flags, label, balanceElement,
+    pending(value) { pending = value; controller.refresh(); },
     async focus() { events.dispatchEvent(new Event('focus')); await new Promise(resolve => setImmediate(resolve)); },
     select(value) { const control = context === 'guest-video' ? seconds : quantity; control.value = value; control.dispatchEvent(new Event('change')); },
     credits(value, cost = 5, scope = context) {
@@ -41,6 +44,42 @@ test('selecting one or two images previews one or zero images without spending t
     assert.equal(h.states.at(-1).currentBalance, 10);
     assert.equal(h.flags['is-exhausted'], false);
     assert.equal(h.flags['is-insufficient'], false);
+  } finally { h.controller.destroy(); }
+});
+
+test('image and video reservations remain neutral until the generation result returns', async () => {
+  for (const context of ['guest-image', 'guest-video', 'account']) {
+    const h = harness({ context, remaining: 5 });
+    try {
+      await h.controller.loadBalance();
+      h.pending(true);
+      h.controller.beginGeneration();
+      h.credits(0);
+      assert.equal(h.states.at(-1).currentBalance, 0);
+      assert.equal(h.states.at(-1).insufficient, true, 'eligibility still reflects the real reserved balance');
+      assert.equal(h.flags['is-insufficient'], false, 'an active request must not look failed');
+      assert.equal(h.flags['is-exhausted'], false);
+      h.credits(0);
+      await h.focus();
+      assert.equal(h.flags['is-insufficient'], false, 'polling and focus refreshes must stay neutral');
+      h.pending(false);
+      assert.equal(h.flags['is-insufficient'], true, 'show the next-generation warning after the result returns');
+      assert.equal(h.flags['is-exhausted'], true);
+    } finally { h.controller.destroy(); }
+  }
+});
+
+test('a failed generation that refunds enough quota never displays an insufficient-credit warning', async () => {
+  const h = harness({ context: 'guest-video', remaining: 5 });
+  try {
+    await h.controller.loadBalance();
+    h.pending(true);
+    h.credits(0);
+    assert.equal(h.flags['is-insufficient'], false);
+    h.credits(5);
+    h.pending(false);
+    assert.equal(h.flags['is-insufficient'], false);
+    assert.equal(h.flags['is-exhausted'], false);
   } finally { h.controller.destroy(); }
 });
 
