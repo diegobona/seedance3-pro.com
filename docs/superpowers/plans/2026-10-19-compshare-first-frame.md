@@ -53,7 +53,7 @@ Run `node --test tests/compshare-video.test.mjs` and `node node_modules/tsx/dist
 
 - [x] **Step 3: Implement adapter and dispatcher minimally.**
 
-Use fixed default endpoint `https://cp.compshare.cn`; token only from injected server configuration. `fetchImpl` injection is for tests. Do not add a user-controlled endpoint. Use a 15-second timeout, `redirect:'error'`, and a bounded reader (at most 256 KiB success/64 KiB errors). Prefer generic provider errors over relaying upstream text. Never perform automatic POST retries. Mark submission network/read uncertainty ambiguous; polling transport/408/425/429/5xx, credential gaps and upstream 401/403 retriable. Failed/cancelled are terminal failures; unexpected status remains pending. The dispatcher validates the current 480p single-image scope, and keeps text AutoDL.
+Use fixed default endpoint `https://cp.compshare.cn`; token only from injected server configuration. `fetchImpl` injection is for tests. Do not add a user-controlled endpoint. Use a 15-second timeout, Workers-supported `redirect:'manual'` with every 3xx rejected without following, and a bounded reader (at most 256 KiB success/64 KiB errors). Verify the real adapter in workerd/Miniflare with intercepted outbound transport. Prefer generic provider errors over relaying upstream text. Never perform automatic POST retries. Mark submission network/read uncertainty ambiguous; polling transport/408/425/429/5xx, credential gaps and upstream 401/403 retriable. Failed/cancelled are terminal failures; unexpected status remains pending. The dispatcher validates the current 480p single-image scope, and keeps text AutoDL.
 
 - [x] **Step 4: Write lifecycle regression tests red.**
 

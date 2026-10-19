@@ -114,7 +114,7 @@ async function request(path, init, options, query) {
   let response;
   try {
     response = await (options.fetchImpl || fetch)(`${API_BASE}${path}`, {
-      ...init, redirect: 'error', signal: (options.signalFactory || AbortSignal.timeout)(TIMEOUT_MS),
+      ...init, redirect: 'manual', signal: (options.signalFactory || AbortSignal.timeout)(TIMEOUT_MS),
     });
   } catch {
     if (!query) throw submissionUnknown();

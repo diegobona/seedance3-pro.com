@@ -70,8 +70,10 @@ The returned ID must match. Exact `queued` and `running` states remain pending;
 `succeeded` needs a usable HTTPS MP4 URL; `failed` and `cancelled` refund once.
 Unknown statuses remain pending. Cached terminal results do not require a key.
 
-Fetch uses a 15-second timeout, rejects redirects, and bounds streamed response
-bodies to 256 KiB for success or 64 KiB for errors. Upstream messages are never
+Fetch uses a 15-second timeout and Workers-supported `redirect:'manual'`.
+Every 3xx response is rejected without following its Location, forwarding
+credentials, or resubmitting. Streamed response bodies are bounded to 256 KiB
+for success or 64 KiB for errors. Upstream messages are never
 relayed. Submission transport/read uncertainty is marked ambiguous; the server
 does not retry POST or fall back to another provider. Polling transport errors,
 408/425/429/5xx, missing keys and 401/403 schedule retries, using only bounded
@@ -86,7 +88,11 @@ until those tasks have finished or expired. Historical AutoDL text and reference
 workflow IDs always query AutoDL, independent of the current switch.
 
 Offline transport, dispatcher, protected route, reconciler and D1 lifecycle tests
-use injected fetch functions and synthetic task responses. They cover contract,
+use injected fetch functions and synthetic task responses. A workerd/Miniflare
+suite imports the real adapter and uses native fetch with all outbound destinations
+intercepted, matching compatibility date `2026-09-18` and `nodejs_compat`. It covers
+POST/GET transport compatibility and redirect rejection without any real network
+requests. Together the tests cover contract,
 bounded/secret-safe errors, mixed-provider batches, ownership, stable local IDs,
 settlement/refund idempotency, guest scope and idle zero-SQL behavior. They do not
 prove live generation quality or first-frame fidelity. Live validation requires

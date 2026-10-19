@@ -24,7 +24,7 @@ test('POST matches the fixed H3 first-frame contract and preserves duration and 
       calls++;
       assert.equal(url, 'https://cp.compshare.cn/minimax/v2/video_generation');
       assert.equal(init.method, 'POST');
-      assert.equal(init.redirect, 'error');
+      assert.equal(init.redirect, 'manual');
       assert.equal(init.headers.Authorization, `Bearer ${key}`);
       assert.equal(init.headers['Content-Type'], 'application/json');
       assert.equal(init.headers.Accept, 'application/json');
@@ -68,7 +68,7 @@ test('GET encodes task ID, checks response ID, and normalizes only the exact doc
     assert.deepEqual(await queryCompshareVideoTask('provider/1', options(async (url, init) => {
       assert.equal(url, 'https://cp.compshare.cn/minimax/v2/query/video_generation/provider%2F1');
       assert.equal(init.method, 'GET');
-      assert.equal(init.redirect, 'error');
+      assert.equal(init.redirect, 'manual');
       assert.equal(init.headers.Authorization, `Bearer ${key}`);
       assert.equal(init.headers.Accept, 'application/json');
       return result(status);
@@ -108,7 +108,7 @@ test('no automatic POST retry on timeout, redirect, network or interrupted respo
     let calls = 0;
     const fetchImpl = async (_url, init) => {
       calls++;
-      assert.equal(init.redirect, 'error');
+      assert.equal(init.redirect, 'manual');
       if (name === 'read') return new Response(new ReadableStream({ start(c) { c.error(new Error(`upstream-secret ${key}`)); } }));
       throw Object.assign(new Error(`upstream-secret ${key}`), { name });
     };
