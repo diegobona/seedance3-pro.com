@@ -89,12 +89,27 @@ and source-shape suites are unchanged. No live generation quality is claimed.
 ### Release checkpoint (parent agent)
 
 - [x] Request the real API key only after code and offline validation are ready; tell user to save `COMPSHARE_API_KEY` in primary ignored `.env.local` and reply when done. Link official key-creation documentation. Never request the raw key in chat.
-- [ ] If the key is not supplied, finish all key-independent work, commit it on the feature branch and report exactly what is ready and what remains. Do not activate or claim live first-frame generation.
-- [ ] Once a key is supplied, verify balance with read-only API, configure provider switch, rebuild/typecheck/dry-run and deploy to the known Worker. Check both new CompShare and persisted old AutoDL routing. Any small real generation verification should use a nonprivate public test image, clearly bounded duration/cost and the existing protected quota path.
-- [ ] Verify live bilingual studio pages, client bundle parity, backend one-reference validation, quota metadata unchanged except deliberately consumed test quota, and 100% expected deployment version. Preserve the ability to resume existing jobs after rollback.
+- Not applicable: the user supplied the key and purchased points, so no key-missing handoff was needed.
+- [x] Once a key is supplied, verify balance with read-only API, configure provider switch, rebuild/typecheck/dry-run and deploy to the known Worker. Check both new CompShare and persisted old AutoDL routing. Any small real generation verification should use a nonprivate public test image, clearly bounded duration/cost and the existing protected quota path.
+- [x] Verify live bilingual studio pages, client bundle parity, backend one-reference validation, quota metadata unchanged except deliberately consumed test quota, and 100% expected deployment version. Preserve the ability to resume existing jobs after rollback.
 
-Release preparation: the user configured a valid key in the ignored worktree
+Release verification (2026-10-19): the user configured a valid key in the ignored worktree
 environment; it was privately synchronized into the primary deployment environment.
 After the user purchased points, the read-only API confirmed 1,100 available points.
-The provider switch is now `compshare`; activation changes pass typechecking and
-all six dispatcher tests. Deployment and one bounded five-second live test follow.
+The initial deployment exposed unsupported Workers `redirect:'error'` before any
+upstream task was created; it was rolled back, then corrected with `manual` and a
+real workerd regression test. The correction passed independent review, 62 focused
+adapter/runtime/dispatcher/protected/reconciler/D1 tests, TypeScript, production
+build, client credential scan and deployment dry run.
+
+Worker version `24256204-36d4-4684-8c7b-ec01df6f7cbc` is deployed at 100% with
+`H3_REFERENCE_PROVIDER=compshare`. One public example image was uploaded through
+the existing protected guest flow. Its five-second task succeeded; provider
+metadata confirmed native `480P`, one reference image and `use_context_ir:true`.
+The returned MP4 was available, cached polling returned the same result, guest
+seconds stayed at five after a single ten-to-five deduction, and provider points
+changed from 1,100 to 1,075. The isolated verification user's database rows were
+removed after completion. Six bilingual image/H3 pages, deployed JS/CSS parity,
+example assets and production rejection of multiple references passed; unrelated
+guest image/video balances were unchanged. Live task completion is verified;
+subject fidelity and motion quality remain model-dependent.

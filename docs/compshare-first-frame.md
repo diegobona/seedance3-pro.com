@@ -97,3 +97,18 @@ bounded/secret-safe errors, mixed-provider batches, ownership, stable local IDs,
 settlement/refund idempotency, guest scope and idle zero-SQL behavior. They do not
 prove live generation quality or first-frame fidelity. Live validation requires
 the real key and an explicitly bounded generation through the existing quota path.
+
+## Production verification on 2026-10-19
+
+Worker version `24256204-36d4-4684-8c7b-ec01df6f7cbc` was deployed at 100% with
+the CompShare channel enabled. A public example image submitted through the
+protected guest upload/generation routes produced a downloadable five-second
+MP4. CompShare metadata confirmed `480P`, one input image and prompt optimization.
+The guest allowance changed from ten to five seconds exactly once; cached result
+polling did not charge again. Provider points changed from 1,100 to 1,075. The
+isolated test account and its task/reservation rows were removed after completion.
+
+Release checks also passed for six bilingual studio pages, deployed client/CSS
+parity, example assets, one-reference API validation and unchanged unrelated
+guest balances. This verifies the live integration and accounting; visual fidelity
+still depends on the source image, prompt and model output.
