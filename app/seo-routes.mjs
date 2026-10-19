@@ -11,6 +11,10 @@ const modelPaths = Object.freeze({
 })
 
 const legacyPaths = Object.freeze({
+  '/flux-3': '/app/video/flux-3',
+  '/flux-3.html': '/app/video/flux-3',
+  '/flux-3-video-generator': '/app/video/flux-3',
+  '/flux-3-video-generator.html': '/app/video/flux-3',
   '/minimax-h3-ai-video-generator': modelPaths['minimax-h3'],
   '/minimax-h3-ai-video-generator.html': modelPaths['minimax-h3'],
   '/gpt-image-2': modelPaths['gpt-image-2'],
@@ -22,6 +26,8 @@ export function canonicalModelPath(modelId, locale = 'en') {
 }
 
 export function modelIdFromPath(pathname) {
+  // FLUX 3 is an editorial landing page with a disclosed H3 trial, not an API model.
+  if (stripLocalePath(pathname) === '/app/video/flux-3') return 'minimax-h3'
   return Object.keys(modelPaths).find(id => modelPaths[id] === stripLocalePath(pathname)) ?? null
 }
 

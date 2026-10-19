@@ -26,4 +26,16 @@
 .model-landing-links a { color: #c9ff55; }
 .model-learning-links { max-width: 800px; color: #b4b7af; line-height: 1.75; }
 .model-learning-links a { color: #c9ff55; text-decoration: underline; text-underline-offset: 3px; }
+.model-landing-entry { margin-bottom: 24px; }
+.model-landing-entry .model-landing-intro { margin-bottom: 16px; }
+.model-landing-intents { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.model-landing-entry .model-landing-entry-button { display: inline-flex; align-items: center; justify-content: center; width: auto; min-height: 44px; margin: 0; padding: 12px 20px; font-size: 13px; text-decoration: none; }
+.model-landing-disclosure { margin: 10px 0 0; color: #c4c7bf; font-size: 13px; line-height: 1.6; }
+.model-landing-table-wrap { overflow-x: auto; }
+.model-landing-table { width: 100%; border-collapse: collapse; color: #b4b7af; line-height: 1.6; }
+.model-landing-table caption { margin-bottom: 14px; text-align: left; font-size: 13px; }
+.model-landing-table th, .model-landing-table td { padding: 14px; text-align: left; border-bottom: 1px solid #34372e; }
+.model-landing-table thead { background: #191c17; color: #f2f3ee; }
+.model-landing-table th { font-weight: 650; }
+@media (max-width: 720px) { .model-landing-intents { grid-template-columns: 1fr; } }
 @media (max-width: 720px) { .model-landing-inner { width: min(100% - 28px, 1080px); padding: 55px 0 68px; } .model-landing-grid { grid-template-columns: 1fr; } }

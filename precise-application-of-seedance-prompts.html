@@ -67,20 +67,21 @@
   </script>
   <meta property="article:published_time" content="2026-03-18T12:46:38+08:00">
   <meta property="article:modified_time" content="2026-10-17">
+  <link rel="stylesheet" href="/assets/site-navigation.css">
+  <script src="/assets/site-navigation.js" defer></script>
 </head>
 <body>
-  <header class="site-header">
+  <header class="site-header" data-site-header>
     <div class="container inner">
-      <a class="brand" href="./" aria-label="SEEDANCE 3.0 home">
-        <img class="brand-mark" src="./assets/seedance-mark.svg" width="40" height="40" alt="">
-        <span>SEEDANCE 3.0</span>
-      </a>
-      <nav class="desktop-nav compact-nav" aria-label="Primary navigation">
-        <a href="./">Home</a>
-        <a href="./blog">Blog</a>
-      </nav>
-      <nav class="site-language-switch" data-site-language-switch aria-label="Site language"><a href="/zh/precise-application-of-seedance-prompts?lang=zh" data-language="zh" lang="zh-Hans">中文</a><span aria-hidden="true">|</span><a href="/precise-application-of-seedance-prompts?lang=en" data-language="en" lang="en" aria-current="true">EN</a></nav>
+      <a class="brand" href="/" aria-label="SEEDANCE 3.0 home"><img class="brand-mark" src="/assets/seedance-mark.svg" width="40" height="40" alt=""><span>SEEDANCE 3.0</span></a>
+      <nav class="desktop-nav compact-nav" aria-label="Primary navigation"><a href="/app/video/minimax-h3">AI Video</a><a href="/app/image/gpt-image-2-5-1k">AI Image</a><a class="home-extra-nav" href="/seedance-3-0-release-date">Release Date</a><a class="home-extra-nav" href="/showcase">Showcase</a><a class="home-extra-nav" href="/blog">Blog</a></nav>
+      <div class="header-actions">
+        <nav class="site-language-switch" data-site-language-switch aria-label="Site language"><a href="/zh/precise-application-of-seedance-prompts?lang=zh" data-language="zh" lang="zh-Hans">中文</a><span aria-hidden="true">|</span><a href="/precise-application-of-seedance-prompts?lang=en" data-language="en" lang="en" aria-current="true">EN</a></nav>
+        <a class="button small" href="/#create">Try for free</a>
+        <button class="menu-button" type="button" aria-label="Open navigation" aria-controls="mobile-navigation" aria-expanded="false">☰</button>
+      </div>
     </div>
+    <nav class="mobile-nav" id="mobile-navigation" aria-label="Mobile navigation"><a href="/app/video/minimax-h3">AI Video</a><a href="/app/image/gpt-image-2-5-1k">AI Image</a><a class="home-extra-nav" href="/seedance-3-0-release-date">Release Date</a><a class="home-extra-nav" href="/showcase">Showcase</a><a class="home-extra-nav" href="/blog">Blog</a></nav>
   </header>
   <main class="article-main">
     <div class="container">
@@ -121,7 +122,8 @@
       </nav>
       <nav class="site-language-switch" data-site-language-switch data-language-footer aria-label="Site language"><a href="/zh/precise-application-of-seedance-prompts?lang=zh" data-language="zh" lang="zh-Hans">中文</a><span aria-hidden="true">|</span><a href="/precise-application-of-seedance-prompts?lang=en" data-language="en" lang="en" aria-current="true">EN</a></nav>
     </div>
-  </footer>
+  <nav class="container footer-model-links" aria-label="Model guides"><a data-flux-guide-link href="/app/video/flux-3">FLUX 3</a></nav>
+</footer>
   <!-- Date maintenance: edit Article.dateModified once; the visible date and modified-time metadata read it here. -->
   <script id="content-date-display">
     (() => {

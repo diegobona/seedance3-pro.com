@@ -62,6 +62,16 @@ button,textarea,select { font:inherit; } a { color:inherit; text-decoration:none
 .studio-trial-register { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 22px; border:0; border-radius:10px; background:var(--lime); color:#16180f; font-size:14px; font-weight:850; white-space:nowrap; cursor:pointer; }
 .studio-trial-register:hover { background:#e3ff9d; }
 .studio-trial-register:focus-visible { outline:2px solid var(--lime); outline-offset:4px; }
+.studio-trial-signup[hidden],#trial-guest-message[hidden] { display:none; }
+.studio-trial-notice .studio-daily-allowance { margin-top:8px; color:var(--text); font-size:14px; font-weight:750; }
+.studio-trial-signup { display:inline-flex; align-items:center; justify-self:end; gap:6px; color:var(--lime); font-size:14px; font-weight:750; text-decoration:underline; text-underline-offset:4px; }
+.studio-trial-signup:hover { color:#efffbf; }
+.studio-trial-signup:focus-visible { outline:2px solid var(--lime); outline-offset:4px; }
+.studio-trial-notice[data-trial-state="guest-available"] #trial-guest-message { display:block; margin-top:3px; color:var(--lime); font-size:18px; font-weight:850; line-height:1.4; }
+.studio-trial-notice[data-trial-state="guest-available"] .studio-daily-allowance { color:#b4bba8; font-size:12px; font-weight:500; }
+.studio-trial-notice[data-trial-state="guest-available"] .studio-trial-daily { margin:0; padding:0; border-radius:0; background:none; color:inherit; font-size:inherit; font-weight:inherit; line-height:inherit; }
+.studio-trial-notice[data-trial-state="guest-available"] #daily-credit-reset-notice { font-size:11px; }
+@media(max-width:620px) { .studio-trial-signup { grid-column:2; justify-self:start; font-size:13px; } }
 .reference-paste-hint { display:grid; gap:5px; margin:10px 0 0; padding:11px 13px; border-left:3px solid var(--lime); border-radius:0 9px 9px 0; background:rgba(216,255,115,.07); }
 .reference-paste-hint strong { color:var(--lime); font-size:13px; }
 .reference-paste-hint span { color:#d6d9cd; font-size:12px; line-height:1.75; }

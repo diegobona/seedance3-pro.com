@@ -130,14 +130,21 @@
   <script src="/assets/site-language.js" defer></script>
   <meta property="og:locale" content="zh_CN">
   <meta property="og:locale:alternate" content="en_US">
+  <link rel="stylesheet" href="/assets/site-navigation.css">
+  <script src="/assets/site-navigation.js" defer></script>
 </head>
 <body>
-  <header class="site-header">
+  <header class="site-header" data-site-header>
     <div class="container inner">
       <a class="brand" href="/zh/" aria-label="SEEDANCE 3.0 首页"><img class="brand-mark" src="/assets/seedance-mark.svg" width="40" height="40" alt=""><span>SEEDANCE 3.0</span></a>
-      <nav class="desktop-nav compact-nav" aria-label="主导航"><a href="/zh/">首页</a><a href="/zh/blog">博客</a></nav>
-      <nav class="site-language-switch" data-site-language-switch aria-label="网站语言"><a href="/zh/seedance-3-0-release-date?lang=zh" data-language="zh" lang="zh-Hans" aria-current="true">中文</a><span aria-hidden="true">|</span><a href="/seedance-3-0-release-date?lang=en" data-language="en" lang="en">EN</a></nav>
+      <nav class="desktop-nav compact-nav" aria-label="主导航"><a href="/zh/app/video/minimax-h3">AI Video</a><a href="/zh/app/image/gpt-image-2-5-1k">AI Image</a><a class="home-extra-nav" href="/zh/seedance-3-0-release-date" aria-current="page">发布时间</a><a class="home-extra-nav" href="/zh/showcase">作品展示</a><a class="home-extra-nav" href="/zh/blog">博客</a></nav>
+      <div class="header-actions">
+        <nav class="site-language-switch" data-site-language-switch aria-label="网站语言"><a href="/zh/seedance-3-0-release-date?lang=zh" data-language="zh" lang="zh-Hans" aria-current="true">中文</a><span aria-hidden="true">|</span><a href="/seedance-3-0-release-date?lang=en" data-language="en" lang="en">EN</a></nav>
+        <a class="button small" href="/zh/#create">免费试用</a>
+        <button class="menu-button" type="button" aria-label="打开导航" aria-controls="mobile-navigation" aria-expanded="false">☰</button>
+      </div>
     </div>
+    <nav class="mobile-nav" id="mobile-navigation" aria-label="移动端导航"><a href="/zh/app/video/minimax-h3">AI Video</a><a href="/zh/app/image/gpt-image-2-5-1k">AI Image</a><a class="home-extra-nav" href="/zh/seedance-3-0-release-date" aria-current="page">发布时间</a><a class="home-extra-nav" href="/zh/showcase">作品展示</a><a class="home-extra-nav" href="/zh/blog">博客</a></nav>
   </header>
   <main class="article-main">
     <div class="container">
@@ -149,6 +156,7 @@
         <p class="article-lead"><strong>截至 2026 年 10 月，在本页核对的官方资料中，Seedance 3.0 的发布时间仍未得到确认。</strong> 字节跳动的模型目录目前列有 Seedance 2.5，相关公告和来源见下方时间线。</p>
         <p class="section-copy">Last updated: <time data-release-updated datetime="2026-10-17">2026-10-17</time></p>
         <p class="section-copy">查找常见问题、提示词规划与参考素材指南，请浏览 <a href="/zh/seedance-3-0">Seedance 3.0 主题资源中心</a>。</p>
+        <p class="release-trial-teaser"><a href="#available-tools">免注册、免登录，免费试用视频与图像生成 ↗</a><span>注册后每日赠送 15 积分。视频 $0.01/秒 · 图像 $0.01/张。</span></p>
         <div class="article-content prose">
           <h2 id="latest-news">每日官方动态</h2>
           <p>每天北京时间上午 9 点检查一次官方来源。检查完成后，新发现的 Seedance 3.0 消息会显示在这里，并分别标注原文发布日期和首次发现时间。这些日期不代表模型的上线日期。</p>
@@ -172,12 +180,36 @@
           <p>模型发布、平台上线与 API 开放可能分别发生。3.0 官方信息公布后，本页会分别标注这些节点。</p>
 
           <h2 id="available-tools">等待发布时可用的工具</h2>
-          <p>你可以先用工作室现有的工具准备项目。这些工具各自独立，当前可用不代表 Seedance 3.0 已开放使用。</p>
-          <ul>
-            <li><a href="/zh/app/video/minimax-h3">MiniMax H3 视频生成器</a>：根据创意或准备好的参考素材制作视频。</li>
-            <li><a href="/zh/app/image/gpt-image-2-5-1k">GPT Image 2.5 图像生成器</a>：准备或编辑场景所需的图像参考。</li>
-            <li><a href="/zh/pose-to-image">姿势工作室</a>：安排人物、姿势、道具与镜头构图，再截取参考图。</li>
-          </ul>
+          <div class="release-tools-offer" aria-label="视频与图像生成免费体验">
+            <p class="release-tools-title"><strong>无需注册和登录，即可免费试用</strong></p>
+            <p class="release-tools-daily"><a href="/zh/app/video/minimax-h3?auth=register">注册后</a><strong>每日赠送 15 积分</strong>，图片与视频共用。</p>
+            <div class="release-tools-grid">
+              <article class="card release-tool-card">
+                <h3><a href="/zh/app/video/minimax-h3">MiniMax H3 视频生成器</a></h3>
+                <p class="release-tool-price"><strong>$0.01</strong><span>/ 秒</span></p>
+                <p>先免费体验<strong>共 10 秒视频</strong>。输入文字或上传参考图，即可开始生成。</p>
+                <a class="button primary" href="/zh/app/video/minimax-h3">免费生成视频 ↗</a>
+              </article>
+              <article class="card release-tool-card">
+                <h3><a href="/zh/app/image/gpt-image-2-5-1k">GPT Image 2.5 图像生成器</a></h3>
+                <p class="release-tool-price"><strong>$0.01</strong><span>/ 张</span></p>
+                <p>先免费体验<strong>2 张图像</strong>。支持文字生成和参考图编辑。</p>
+                <a class="button primary" href="/zh/app/image/gpt-image-2-5-1k">免费生成图像 ↗</a>
+              </article>
+            </div>
+            <p class="release-examples-heading"><strong>看看 MiniMax H3 的生成效果</strong></p>
+            <div class="release-tools-grid">
+              <figure class="release-tool-example" data-release-example="cinematic">
+                <video src="/assets/h3-example-cinematic.mp4" poster="/assets/h3-example-cinematic-poster.jpg" width="640" height="360" controls muted loop playsinline preload="none" aria-label="电影场景 — MiniMax H3"></video>
+                <figcaption><strong>电影场景</strong><a href="/zh/app/video/minimax-h3?prompt=At+blue+hour+on+a+windswept+salt+flat%2C+a+lone+traveler+in+a+saffron+coat+walks+toward+a+glowing+glass+observatory.+One+continuous+slow+dolly-in+shot%3B+drifting+dust%2C+soft+volumetric+light%2C+grounded+realistic+motion%2C+film-grain%2C+high-contrast+cinematic+color.+No+text%2C+no+logos.&amp;duration=5&amp;aspect_ratio=16%3A9">试同款 ↗</a></figcaption>
+              </figure>
+              <figure class="release-tool-example" data-release-example="animation">
+                <video src="/assets/h3-example-animation.mp4" poster="/assets/h3-example-animation-poster.jpg" width="640" height="360" controls muted loop playsinline preload="none" aria-label="纸艺动画 — MiniMax H3"></video>
+                <figcaption><strong>纸艺动画</strong><a href="/zh/app/video/minimax-h3?prompt=A+tiny+paper+fox+with+folded+origami+fur+leaps+between+floating+lanterns+over+a+moonlit+forest+pond.+Handcrafted+stop-motion+paper+texture%2C+playful+squash-and-stretch%2C+smooth+sideways+tracking+camera%2C+saturated+indigo+and+amber+palette.+No+text%2C+no+logos.&amp;duration=5&amp;aspect_ratio=16%3A9">试同款 ↗</a></figcaption>
+              </figure>
+            </div>
+          </div>
+          <p>需要先规划参考图？使用<a href="/zh/pose-to-image">姿势工作室</a>安排人物、姿势、道具与镜头构图。</p>
           <p>想了解两者的区别，可以阅读 <a href="/zh/minimax-h3-vs-seedance-3">MiniMax H3 与 Seedance 3 对比</a>。</p>
           <p>更多用法见 <a href="/zh/features">功能概览</a> 和 <a href="/zh/faq">常见问题</a>。</p>
 
@@ -237,7 +269,8 @@
       <nav aria-label="页脚导航"><a href="/zh/">首页</a><a href="/zh/blog">博客</a><a href="/zh/faq">常见问题</a></nav>
       <nav class="site-language-switch" data-site-language-switch data-language-footer aria-label="网站语言"><a href="/zh/seedance-3-0-release-date?lang=zh" data-language="zh" lang="zh-Hans" aria-current="true">中文</a><span aria-hidden="true">|</span><a href="/seedance-3-0-release-date?lang=en" data-language="en" lang="en">EN</a></nav>
     </div>
-  </footer>
+  <nav class="container footer-model-links" aria-label="模型指南"><a data-flux-guide-link href="/zh/app/video/flux-3">FLUX 3</a></nav>
+</footer>
   <script id="release-date-display">
     (() => {
       const schema = JSON.parse(document.querySelector('script[type="application/ld+json"]').textContent);

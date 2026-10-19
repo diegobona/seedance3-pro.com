@@ -41,6 +41,20 @@ test('POST matches the fixed H3 first-frame contract and preserves duration and 
   }
 });
 
+test('first-frame submission supports documented inline image data and rejects malformed data before submission', async () => {
+  const image = 'data:image/png;base64,iVBORw0KGgo=';
+  const response = await submitCompshareVideoTask({ ...payload, referenceImageUrls: [image] }, options(async (_url, init) => {
+    assert.equal(JSON.parse(init.body).content[1].image_url.url, image);
+    return json({ task_id: 'inline-frame-task' });
+  }));
+  assert.equal(response.providerTaskId, 'inline-frame-task');
+  for (const invalid of ['data:image/svg+xml;base64,AAAA', 'data:image/png;base64,not base64', 'data:image/png;base64,', 'data:image/png;base64,AAA']) {
+    await assert.rejects(submitCompshareVideoTask({ ...payload, referenceImageUrls: [invalid] }, options(async () => {
+      assert.fail('invalid image data must never reach the provider');
+    })), isError({ code: 'COMPSHARE_CONFIGURATION_ERROR' }));
+  }
+});
+
 test('invalid input, local ID and blank credentials fail before fetch', async () => {
   const invalid = [
     { referenceImageUrls: undefined }, { referenceImageUrls: [] },

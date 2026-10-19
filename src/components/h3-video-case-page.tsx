@@ -1,5 +1,6 @@
 import { useSiteI18n } from '../lib/site-i18n'
 import { SiteLanguageSwitch } from './site-language-switch'
+import { SiteHeader } from './site-header'
 import { useEffect, useState } from 'react'
 import {
   h3VideoCases,
@@ -10,22 +11,6 @@ import {
 import '../styles/h3-video-cases.css'
 
 const siteUrl = 'https://seedance3-pro.com'
-
-function CaseHeader() {
-  const { t, path } = useSiteI18n()
-  return (
-    <header className="video-case-header">
-      <a className="video-case-brand" href={path("/")}><img src="/assets/seedance-mark.svg" width="38" height="38" alt="" /><span>{t("SEEDANCE 3.0")}</span></a>
-      <nav aria-label={t("Primary navigation")}>
-        <a href={path("/app/video/minimax-h3")}>{t("H3 Video")}</a>
-        <a href={path("/showcase")}>{t("Showcase")}</a>
-        <a href={path("/minimax-h3-prompts")} aria-current="page" target="_blank" rel="noopener noreferrer">{t("MiniMax H3 Prompt Library")}</a>
-      </nav>
-      <a className="video-case-header-cta" href={path("/app/video/minimax-h3")}>{t("Start Creating ↗")}</a>
-      <SiteLanguageSwitch />
-    </header>
-  )
-}
 
 function CaseCard({ videoCase }: { videoCase: H3VideoCase }) {
   const { t, path } = useSiteI18n()
@@ -47,7 +32,7 @@ export function H3VideoCaseIndex() {
   const { t, path } = useSiteI18n()
   return (
     <main className="video-case-site">
-      <CaseHeader />
+      <SiteHeader />
       <div className="video-case-container">
         <nav className="video-case-breadcrumbs" aria-label={t("Breadcrumb")}><a href={path("/")}>{t("Home")}</a><span aria-hidden="true">/</span><a href={path("/showcase")}>{t("Showcase")}</a><span aria-hidden="true">/</span><span>{t("MiniMax H3 Prompt Library")}</span></nav>
         <section className="video-case-index-intro">

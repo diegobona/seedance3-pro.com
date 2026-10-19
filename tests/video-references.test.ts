@@ -9,7 +9,10 @@ function setup() {
   const bucket = {
     put: async (key: string, body: Uint8Array, options: { customMetadata: Record<string, string>; httpMetadata: { contentType: string } }) => { objects.set(key, { body, size: body.length, ...options }) },
     head: async (key: string) => objects.get(key) || null,
-    get: async (key: string) => objects.get(key) || null,
+    get: async (key: string) => {
+      const object = objects.get(key)
+      return object ? { ...object, arrayBuffer: async () => object.body.slice().buffer } : null
+    },
   } as unknown as R2Bucket
   const options = { bucket, getUserId: async () => 'owner', limiter: { limit: async () => ({ success: true }) }, now }
   const request = (body: Uint8Array = png, type = 'image/png') => new Request('https://seedance3-pro.com/api/videos/references', {
@@ -40,6 +43,16 @@ test('uploaded references are ordered, owned, expiring and fetched without accou
   assert.equal(read.headers.get('content-type'), 'image/png')
   assert.deepEqual(new Uint8Array(await read.arrayBuffer()), png)
   assert.equal((await serveVideoReference(new Request(urls[1]), h.bucket, now + 24 * 3600_000)).status, 404)
+})
+
+test('local inline references contain the owned original bytes without depending on a production URL', async () => {
+  const h = setup()
+  const { id } = await (await uploadVideoReference(h.request(), h.options)).json() as { id: string }
+  const [inline] = await resolveVideoReferences([id], 'owner', h.bucket, now, [], { inline: true })
+  assert.equal(inline, `data:image/png;base64,${Buffer.from(png).toString('base64')}`)
+  await assert.rejects(resolveVideoReferences([id], 'another-user', h.bucket, now, [], { inline: true }), /unavailable/)
+  await assert.rejects(resolveVideoReferences([id], 'owner', h.bucket, now + 24 * 3600_000, [], { inline: true }), /expired/)
+  assert.match((await resolveVideoReferences([id], 'owner', h.bucket, now))[0], /^https:\/\/seedance3-pro\.com\//)
 })
 
 test('upload rejects cross-origin and rate-limited requests before storing', async () => {

@@ -2,8 +2,8 @@ import { t, currentLocale } from './i18n.mjs';
 
 export function renderGuestTrialNotice(element, kind, { href, onSignup, locale = currentLocale() }) {
   const message = t(kind === 'image'
-    ? 'Your free images are used up. Sign up for daily free credits.'
-    : 'Your free video seconds are used up. Sign up for daily free credits.', {}, locale);
+    ? 'Your free images are used up. Sign up for 15 free credits every day.'
+    : 'Your free video seconds are used up. Sign up for 15 free credits every day.', {}, locale);
   const label = t('Sign up', {}, locale);
   const index = message.indexOf(label);
   const link = element.ownerDocument.createElement('a');

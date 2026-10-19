@@ -67,20 +67,21 @@
   <script src="/assets/site-language.js" defer></script>
   <meta property="og:locale" content="zh_CN">
   <meta property="og:locale:alternate" content="en_US">
+  <link rel="stylesheet" href="/assets/site-navigation.css">
+  <script src="/assets/site-navigation.js" defer></script>
 </head>
 <body>
-  <header class="site-header">
+  <header class="site-header" data-site-header>
     <div class="container inner">
-      <a class="brand" href="/zh/" aria-label="SEEDANCE 3.0 首页">
-        <img class="brand-mark" src="/assets/seedance-mark.svg" width="40" height="40" alt="">
-        <span>SEEDANCE 3.0</span>
-      </a>
-      <nav class="desktop-nav compact-nav" aria-label="主导航">
-        <a href="/zh/">首页</a>
-        <a href="/zh/blog">博客</a>
-      </nav>
-      <nav class="site-language-switch" data-site-language-switch aria-label="网站语言"><a href="/zh/after-thorough-testing-the-conclusion-is-clear-seedance-2-0-s-universal-template-2?lang=zh" data-language="zh" lang="zh-Hans" aria-current="true">中文</a><span aria-hidden="true">|</span><a href="/after-thorough-testing-the-conclusion-is-clear-seedance-2-0-s-universal-template-2?lang=en" data-language="en" lang="en">EN</a></nav>
+      <a class="brand" href="/zh/" aria-label="SEEDANCE 3.0 首页"><img class="brand-mark" src="/assets/seedance-mark.svg" width="40" height="40" alt=""><span>SEEDANCE 3.0</span></a>
+      <nav class="desktop-nav compact-nav" aria-label="主导航"><a href="/zh/app/video/minimax-h3">AI Video</a><a href="/zh/app/image/gpt-image-2-5-1k">AI Image</a><a class="home-extra-nav" href="/zh/seedance-3-0-release-date">发布时间</a><a class="home-extra-nav" href="/zh/showcase">作品展示</a><a class="home-extra-nav" href="/zh/blog">博客</a></nav>
+      <div class="header-actions">
+        <nav class="site-language-switch" data-site-language-switch aria-label="网站语言"><a href="/zh/after-thorough-testing-the-conclusion-is-clear-seedance-2-0-s-universal-template-2?lang=zh" data-language="zh" lang="zh-Hans" aria-current="true">中文</a><span aria-hidden="true">|</span><a href="/after-thorough-testing-the-conclusion-is-clear-seedance-2-0-s-universal-template-2?lang=en" data-language="en" lang="en">EN</a></nav>
+        <a class="button small" href="/zh/#create">免费试用</a>
+        <button class="menu-button" type="button" aria-label="打开导航" aria-controls="mobile-navigation" aria-expanded="false">☰</button>
+      </div>
     </div>
+    <nav class="mobile-nav" id="mobile-navigation" aria-label="移动端导航"><a href="/zh/app/video/minimax-h3">AI Video</a><a href="/zh/app/image/gpt-image-2-5-1k">AI Image</a><a class="home-extra-nav" href="/zh/seedance-3-0-release-date">发布时间</a><a class="home-extra-nav" href="/zh/showcase">作品展示</a><a class="home-extra-nav" href="/zh/blog">博客</a></nav>
   </header>
   <main class="article-main">
     <div class="container">
@@ -118,7 +119,8 @@
       </nav>
       <nav class="site-language-switch" data-site-language-switch data-language-footer aria-label="网站语言"><a href="/zh/after-thorough-testing-the-conclusion-is-clear-seedance-2-0-s-universal-template-2?lang=zh" data-language="zh" lang="zh-Hans" aria-current="true">中文</a><span aria-hidden="true">|</span><a href="/after-thorough-testing-the-conclusion-is-clear-seedance-2-0-s-universal-template-2?lang=en" data-language="en" lang="en">EN</a></nav>
     </div>
-  </footer>
+  <nav class="container footer-model-links" aria-label="模型指南"><a data-flux-guide-link href="/zh/app/video/flux-3">FLUX 3</a></nav>
+</footer>
   <!-- Date maintenance: edit Article.dateModified once; the visible date and modified-time metadata read it here. -->
   <script id="content-date-display">
     (() => {

@@ -13,6 +13,7 @@ import { prepareImageForVideo, loadVideoReference } from "./image-to-video.mjs";
 import { validateImageReferences } from "./image-references.mjs";
 import { pollVideoGenerationTask, requestVideoGeneration } from "./video-generation.mjs";
 import { videoReferenceFrameSize } from './video-reference-frame.mjs';
+import { readVideoHandoff } from './studio-handoff.mjs';
 import { buildPoseReferencePrompt } from "./pose-transfer.mjs";
 import { createPoseResultActionsController } from "./pose-result-actions.mjs";
 import {
@@ -312,8 +313,8 @@ export function initializeStudio() {
   }
 
   function renderExhaustedNotice(element, message) {
-    const kind = message === t('Your free images are used up. Sign up for daily free credits.') ? 'image'
-      : message === t('Your free video seconds are used up. Sign up for daily free credits.') ? 'video' : null;
+    const kind = message === t('Your free images are used up. Sign up for 15 free credits every day.') ? 'image'
+      : message === t('Your free video seconds are used up. Sign up for 15 free credits every day.') ? 'video' : null;
     if (element && kind) renderGuestTrialNotice(element, kind, {
       href: window.location.href,
       onSignup: () => window.dispatchEvent(new CustomEvent('seedance:auth-required', { detail: { mode: 'register' } })),
@@ -522,6 +523,7 @@ export function initializeStudio() {
   }
 
   function updateGenerateButton() {
+    updateDailyResetNotice();
     const canGenerate = Boolean(studioModels[activeModelId]?.canGenerate);
     const generationBlocked = isVideoGenerationSelected()
       ? videoPolling || Boolean(activeVideoTaskId)
@@ -944,14 +946,18 @@ export function initializeStudio() {
   }
 
   function updateDailyResetNotice() {
-    const allowance = document.getElementById('trial-allowance-message');
-    if (allowance) allowance.textContent = (isGuestVideoSelected() || isGuestImageSelected())
-      ? t('No registration or login required.')
-      : t('Free accounts get {credits} credits daily, shared across images and videos.', { credits: 15 });
+    const guest = isGuestVideoSelected() || isGuestImageSelected();
+    const used = guest && guestRemaining === 0 && !isCurrentGenerationPending();
+    const notice = document.querySelector('.studio-trial-notice');
+    if (notice) notice.dataset.trialState = guest ? used ? 'guest-used' : 'guest-available' : 'account';
+    const noticeTitle = document.getElementById('trial-notice-title');
+    if (noticeTitle) noticeTitle.textContent = t(used ? 'Free trial used up' : 'Free trial');
+    const dailySignup = document.getElementById('trial-daily-signup');
+    if (dailySignup) dailySignup.hidden = studioShell.dataset.authenticated === 'true' || !studioModels[activeModelId]?.canGenerate;
+    const guestMessage = document.getElementById('trial-guest-message');
+    if (guestMessage) guestMessage.hidden = !guest || used;
     if (dailyCreditResetNotice) {
-      dailyCreditResetNotice.textContent = isGuestImageSelected() ? t('GPT Image 2 and 2.5 share 2 free images.') : isGuestVideoSelected()
-        ? t('Choose 5 or 10 seconds.')
-        : t("Daily reset: {time} (local time). Unused credits expire at reset and do not accumulate.", { time: dailyResetTime() });
+      dailyCreditResetNotice.textContent = t("Daily reset: {time} (local time). Unused credits expire at reset and do not accumulate.", { time: dailyResetTime() });
     }
   }
 
@@ -1067,7 +1073,29 @@ export function initializeStudio() {
     });
   }
   void creditSummaryController.loadBalance();
-  if ((availableModelIds.has("minimax-h3") || availableModelIds.has("seedance-2-5")) && activeVideoTaskId) void resumeStoredVideoTask();
+  const fromHome = activeModelId === 'minimax-h3' && new URLSearchParams(window.location.search).get('from') === 'home';
+  if (fromHome) {
+    void readVideoHandoff().then((draft) => {
+      if (destroyed) return;
+      if (draft) {
+        restoreGenerationDraft({ kind: 'video', modelId: 'minimax-h3', prompt: draft.prompt,
+          duration: draft.duration, videoResolution: '480p', aspectRatio: draft.aspectRatio,
+          videoMode: draft.mode, references: draft.file ? [{ file: draft.file }] : [],
+        });
+        if (draft.taskId) {
+          activeVideoModelId = 'minimax-h3';
+          storeActiveVideoTask(draft.taskId);
+        }
+        generationStatus.textContent = t('Your homepage draft is ready.');
+        updateGenerateButton();
+      }
+      if (activeVideoTaskId) void resumeStoredVideoTask();
+    }).catch(() => {
+      if (destroyed) return;
+      generationStatus.textContent = t('Could not restore the reference image. Please choose it again.');
+      if (activeVideoTaskId) void resumeStoredVideoTask();
+    });
+  } else if ((availableModelIds.has("minimax-h3") || availableModelIds.has("seedance-2-5")) && activeVideoTaskId) void resumeStoredVideoTask();
 
   modelButtons.forEach((button) => listen(button, "click", () => {
     const modelId = button.dataset.model;
@@ -1184,7 +1212,7 @@ export function initializeStudio() {
         window.dispatchEvent(new CustomEvent('seedance:auth-required', { detail: { mode: 'register' } }));
       }
       const message = error?.code === 'GUEST_IMAGE_INSUFFICIENT' || error?.code === 'GUEST_TRIAL_USED'
-        ? error?.credits?.remaining > 0 ? t('Choose fewer images or sign up to keep creating.') : t('Your free images are used up. Sign up for daily free credits.')
+        ? error?.credits?.remaining > 0 ? t('Choose fewer images or sign up to keep creating.') : t('Your free images are used up. Sign up for 15 free credits every day.')
         : error?.code === 'INSUFFICIENT_CREDITS'
         ? error?.credits?.remaining === 0 ? dailyCreditsUsedMessage()
           : (t('You need {cost} credits to generate.', { cost: requiredCredits }) + ' ' + (error.credits ? t('Current balance: {remaining}.', { remaining: error.credits.remaining }) : '')).trim()

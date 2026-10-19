@@ -41,6 +41,7 @@ import { Route as ApiVideosStatusRouteImport } from './routes/api/videos/status'
 import { Route as AppImageGptImage2RouteImport } from './routes/app_.image.gpt-image-2'
 import { Route as AppImageGptImage251kRouteImport } from './routes/app_.image.gpt-image-2-5-1k'
 import { Route as AppImageMuseImageRouteImport } from './routes/app_.image.muse-image'
+import { Route as AppVideoFlux3RouteImport } from './routes/app_.video.flux-3'
 import { Route as AppVideoMinimaxH3RouteImport } from './routes/app_.video.minimax-h3'
 import { Route as AppVideoMuseVideoRouteImport } from './routes/app_.video.muse-video'
 import { Route as AppVideoSeedance25RouteImport } from './routes/app_.video.seedance-2-5'
@@ -54,6 +55,7 @@ import { Route as ApiAdminReferralsPixal3dRouteImport } from './routes/api/admin
 import { Route as ZhAppImageGptImage2RouteImport } from './routes/zh.app_.image.gpt-image-2'
 import { Route as ZhAppImageGptImage251kRouteImport } from './routes/zh.app_.image.gpt-image-2-5-1k'
 import { Route as ZhAppImageMuseImageRouteImport } from './routes/zh.app_.image.muse-image'
+import { Route as ZhAppVideoFlux3RouteImport } from './routes/zh.app_.video.flux-3'
 import { Route as ZhAppVideoMinimaxH3RouteImport } from './routes/zh.app_.video.minimax-h3'
 import { Route as ZhAppVideoMuseVideoRouteImport } from './routes/zh.app_.video.muse-video'
 import { Route as ZhAppVideoSeedance25RouteImport } from './routes/zh.app_.video.seedance-2-5'
@@ -220,6 +222,11 @@ const AppImageMuseImageRoute = AppImageMuseImageRouteImport.update({
   path: '/app/image/muse-image',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppVideoFlux3Route = AppVideoFlux3RouteImport.update({
+  id: '/app_/video/flux-3',
+  path: '/app/video/flux-3',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppVideoMinimaxH3Route = AppVideoMinimaxH3RouteImport.update({
   id: '/app_/video/minimax-h3',
   path: '/app/video/minimax-h3',
@@ -287,6 +294,11 @@ const ZhAppImageMuseImageRoute = ZhAppImageMuseImageRouteImport.update({
   path: '/zh/app/image/muse-image',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ZhAppVideoFlux3Route = ZhAppVideoFlux3RouteImport.update({
+  id: '/zh/app_/video/flux-3',
+  path: '/zh/app/video/flux-3',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ZhAppVideoMinimaxH3Route = ZhAppVideoMinimaxH3RouteImport.update({
   id: '/zh/app_/video/minimax-h3',
   path: '/zh/app/video/minimax-h3',
@@ -341,6 +353,7 @@ export interface FileRoutesByFullPath {
   '/app/image/gpt-image-2': typeof AppImageGptImage2Route
   '/app/image/gpt-image-2-5-1k': typeof AppImageGptImage251kRoute
   '/app/image/muse-image': typeof AppImageMuseImageRoute
+  '/app/video/flux-3': typeof AppVideoFlux3Route
   '/app/video/minimax-h3': typeof AppVideoMinimaxH3Route
   '/app/video/muse-video': typeof AppVideoMuseVideoRoute
   '/app/video/seedance-2-5': typeof AppVideoSeedance25Route
@@ -354,6 +367,7 @@ export interface FileRoutesByFullPath {
   '/zh/app/image/gpt-image-2': typeof ZhAppImageGptImage2Route
   '/zh/app/image/gpt-image-2-5-1k': typeof ZhAppImageGptImage251kRoute
   '/zh/app/image/muse-image': typeof ZhAppImageMuseImageRoute
+  '/zh/app/video/flux-3': typeof ZhAppVideoFlux3Route
   '/zh/app/video/minimax-h3': typeof ZhAppVideoMinimaxH3Route
   '/zh/app/video/muse-video': typeof ZhAppVideoMuseVideoRoute
   '/zh/app/video/seedance-2-5': typeof ZhAppVideoSeedance25Route
@@ -392,6 +406,7 @@ export interface FileRoutesByTo {
   '/app/image/gpt-image-2': typeof AppImageGptImage2Route
   '/app/image/gpt-image-2-5-1k': typeof AppImageGptImage251kRoute
   '/app/image/muse-image': typeof AppImageMuseImageRoute
+  '/app/video/flux-3': typeof AppVideoFlux3Route
   '/app/video/minimax-h3': typeof AppVideoMinimaxH3Route
   '/app/video/muse-video': typeof AppVideoMuseVideoRoute
   '/app/video/seedance-2-5': typeof AppVideoSeedance25Route
@@ -405,6 +420,7 @@ export interface FileRoutesByTo {
   '/zh/app/image/gpt-image-2': typeof ZhAppImageGptImage2Route
   '/zh/app/image/gpt-image-2-5-1k': typeof ZhAppImageGptImage251kRoute
   '/zh/app/image/muse-image': typeof ZhAppImageMuseImageRoute
+  '/zh/app/video/flux-3': typeof ZhAppVideoFlux3Route
   '/zh/app/video/minimax-h3': typeof ZhAppVideoMinimaxH3Route
   '/zh/app/video/muse-video': typeof ZhAppVideoMuseVideoRoute
   '/zh/app/video/seedance-2-5': typeof ZhAppVideoSeedance25Route
@@ -444,6 +460,7 @@ export interface FileRoutesById {
   '/app_/image/gpt-image-2': typeof AppImageGptImage2Route
   '/app_/image/gpt-image-2-5-1k': typeof AppImageGptImage251kRoute
   '/app_/image/muse-image': typeof AppImageMuseImageRoute
+  '/app_/video/flux-3': typeof AppVideoFlux3Route
   '/app_/video/minimax-h3': typeof AppVideoMinimaxH3Route
   '/app_/video/muse-video': typeof AppVideoMuseVideoRoute
   '/app_/video/seedance-2-5': typeof AppVideoSeedance25Route
@@ -457,6 +474,7 @@ export interface FileRoutesById {
   '/zh/app_/image/gpt-image-2': typeof ZhAppImageGptImage2Route
   '/zh/app_/image/gpt-image-2-5-1k': typeof ZhAppImageGptImage251kRoute
   '/zh/app_/image/muse-image': typeof ZhAppImageMuseImageRoute
+  '/zh/app_/video/flux-3': typeof ZhAppVideoFlux3Route
   '/zh/app_/video/minimax-h3': typeof ZhAppVideoMinimaxH3Route
   '/zh/app_/video/muse-video': typeof ZhAppVideoMuseVideoRoute
   '/zh/app_/video/seedance-2-5': typeof ZhAppVideoSeedance25Route
@@ -497,6 +515,7 @@ export interface FileRouteTypes {
     | '/app/image/gpt-image-2'
     | '/app/image/gpt-image-2-5-1k'
     | '/app/image/muse-image'
+    | '/app/video/flux-3'
     | '/app/video/minimax-h3'
     | '/app/video/muse-video'
     | '/app/video/seedance-2-5'
@@ -510,6 +529,7 @@ export interface FileRouteTypes {
     | '/zh/app/image/gpt-image-2'
     | '/zh/app/image/gpt-image-2-5-1k'
     | '/zh/app/image/muse-image'
+    | '/zh/app/video/flux-3'
     | '/zh/app/video/minimax-h3'
     | '/zh/app/video/muse-video'
     | '/zh/app/video/seedance-2-5'
@@ -548,6 +568,7 @@ export interface FileRouteTypes {
     | '/app/image/gpt-image-2'
     | '/app/image/gpt-image-2-5-1k'
     | '/app/image/muse-image'
+    | '/app/video/flux-3'
     | '/app/video/minimax-h3'
     | '/app/video/muse-video'
     | '/app/video/seedance-2-5'
@@ -561,6 +582,7 @@ export interface FileRouteTypes {
     | '/zh/app/image/gpt-image-2'
     | '/zh/app/image/gpt-image-2-5-1k'
     | '/zh/app/image/muse-image'
+    | '/zh/app/video/flux-3'
     | '/zh/app/video/minimax-h3'
     | '/zh/app/video/muse-video'
     | '/zh/app/video/seedance-2-5'
@@ -599,6 +621,7 @@ export interface FileRouteTypes {
     | '/app_/image/gpt-image-2'
     | '/app_/image/gpt-image-2-5-1k'
     | '/app_/image/muse-image'
+    | '/app_/video/flux-3'
     | '/app_/video/minimax-h3'
     | '/app_/video/muse-video'
     | '/app_/video/seedance-2-5'
@@ -612,6 +635,7 @@ export interface FileRouteTypes {
     | '/zh/app_/image/gpt-image-2'
     | '/zh/app_/image/gpt-image-2-5-1k'
     | '/zh/app_/image/muse-image'
+    | '/zh/app_/video/flux-3'
     | '/zh/app_/video/minimax-h3'
     | '/zh/app_/video/muse-video'
     | '/zh/app_/video/seedance-2-5'
@@ -651,6 +675,7 @@ export interface RootRouteChildren {
   AppImageGptImage2Route: typeof AppImageGptImage2Route
   AppImageGptImage251kRoute: typeof AppImageGptImage251kRoute
   AppImageMuseImageRoute: typeof AppImageMuseImageRoute
+  AppVideoFlux3Route: typeof AppVideoFlux3Route
   AppVideoMinimaxH3Route: typeof AppVideoMinimaxH3Route
   AppVideoMuseVideoRoute: typeof AppVideoMuseVideoRoute
   AppVideoSeedance25Route: typeof AppVideoSeedance25Route
@@ -664,6 +689,7 @@ export interface RootRouteChildren {
   ZhAppImageGptImage2Route: typeof ZhAppImageGptImage2Route
   ZhAppImageGptImage251kRoute: typeof ZhAppImageGptImage251kRoute
   ZhAppImageMuseImageRoute: typeof ZhAppImageMuseImageRoute
+  ZhAppVideoFlux3Route: typeof ZhAppVideoFlux3Route
   ZhAppVideoMinimaxH3Route: typeof ZhAppVideoMinimaxH3Route
   ZhAppVideoMuseVideoRoute: typeof ZhAppVideoMuseVideoRoute
   ZhAppVideoSeedance25Route: typeof ZhAppVideoSeedance25Route
@@ -896,6 +922,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppImageMuseImageRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app_/video/flux-3': {
+      id: '/app_/video/flux-3'
+      path: '/app/video/flux-3'
+      fullPath: '/app/video/flux-3'
+      preLoaderRoute: typeof AppVideoFlux3RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/app_/video/minimax-h3': {
       id: '/app_/video/minimax-h3'
       path: '/app/video/minimax-h3'
@@ -987,6 +1020,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ZhAppImageMuseImageRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/zh/app_/video/flux-3': {
+      id: '/zh/app_/video/flux-3'
+      path: '/zh/app/video/flux-3'
+      fullPath: '/zh/app/video/flux-3'
+      preLoaderRoute: typeof ZhAppVideoFlux3RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/zh/app_/video/minimax-h3': {
       id: '/zh/app_/video/minimax-h3'
       path: '/zh/app/video/minimax-h3'
@@ -1051,6 +1091,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppImageGptImage2Route: AppImageGptImage2Route,
   AppImageGptImage251kRoute: AppImageGptImage251kRoute,
   AppImageMuseImageRoute: AppImageMuseImageRoute,
+  AppVideoFlux3Route: AppVideoFlux3Route,
   AppVideoMinimaxH3Route: AppVideoMinimaxH3Route,
   AppVideoMuseVideoRoute: AppVideoMuseVideoRoute,
   AppVideoSeedance25Route: AppVideoSeedance25Route,
@@ -1064,6 +1105,7 @@ const rootRouteChildren: RootRouteChildren = {
   ZhAppImageGptImage2Route: ZhAppImageGptImage2Route,
   ZhAppImageGptImage251kRoute: ZhAppImageGptImage251kRoute,
   ZhAppImageMuseImageRoute: ZhAppImageMuseImageRoute,
+  ZhAppVideoFlux3Route: ZhAppVideoFlux3Route,
   ZhAppVideoMinimaxH3Route: ZhAppVideoMinimaxH3Route,
   ZhAppVideoMuseVideoRoute: ZhAppVideoMuseVideoRoute,
   ZhAppVideoSeedance25Route: ZhAppVideoSeedance25Route,

@@ -1,4 +1,8 @@
 {
+  "Sign up": "注册",
+  "Try for free. No sign-up or login required.": "无需注册和登录，即可免费试用",
+  "Free trial used up": "游客免费体验额度已用完",
+  "Sign up to get {credits} free credits {daily}, shared across images and videos.": "注册后{daily}赠送 {credits} 积分，图片和视频共用。",
   "Try 5 or 10 seconds at 480p without signing in. Guests get 10 free seconds in total; sign up for daily free credits.": "无需登录即可体验 480p 视频，可选 5 秒或 10 秒。游客免费额度共 10 秒；注册后可获得每日免费积分。",
   "Can I try MiniMax H3 without an account?": "没有账号可以试用 MiniMax H3 吗？",
   "Yes. Guests get 10 free video seconds in total at 480p. Generate two 5-second videos or one 10-second video. The default is 5 seconds; failed generations refund the reserved seconds.": "可以。游客共有 10 秒 480p 视频免费额度，可以生成两次 5 秒视频或一次 10 秒视频。默认选择 5 秒，生成失败会返还预扣的秒数。",

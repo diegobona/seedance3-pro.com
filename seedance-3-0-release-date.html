@@ -77,14 +77,21 @@
     ]
   }
   </script>
+  <link rel="stylesheet" href="/assets/site-navigation.css">
+  <script src="/assets/site-navigation.js" defer></script>
 </head>
 <body>
-  <header class="site-header">
+  <header class="site-header" data-site-header>
     <div class="container inner">
-      <a class="brand" href="./" aria-label="SEEDANCE 3.0 home"><img class="brand-mark" src="./assets/seedance-mark.svg" width="40" height="40" alt=""><span>SEEDANCE 3.0</span></a>
-      <nav class="desktop-nav compact-nav" aria-label="Primary navigation"><a href="./">Home</a><a href="./blog">Blog</a></nav>
-      <nav class="site-language-switch" data-site-language-switch aria-label="Site language"><a href="/zh/seedance-3-0-release-date?lang=zh" data-language="zh" lang="zh-Hans">中文</a><span aria-hidden="true">|</span><a href="/seedance-3-0-release-date?lang=en" data-language="en" lang="en" aria-current="true">EN</a></nav>
+      <a class="brand" href="/" aria-label="SEEDANCE 3.0 home"><img class="brand-mark" src="/assets/seedance-mark.svg" width="40" height="40" alt=""><span>SEEDANCE 3.0</span></a>
+      <nav class="desktop-nav compact-nav" aria-label="Primary navigation"><a href="/app/video/minimax-h3">AI Video</a><a href="/app/image/gpt-image-2-5-1k">AI Image</a><a class="home-extra-nav" href="/seedance-3-0-release-date" aria-current="page">Release Date</a><a class="home-extra-nav" href="/showcase">Showcase</a><a class="home-extra-nav" href="/blog">Blog</a></nav>
+      <div class="header-actions">
+        <nav class="site-language-switch" data-site-language-switch aria-label="Site language"><a href="/zh/seedance-3-0-release-date?lang=zh" data-language="zh" lang="zh-Hans">中文</a><span aria-hidden="true">|</span><a href="/seedance-3-0-release-date?lang=en" data-language="en" lang="en" aria-current="true">EN</a></nav>
+        <a class="button small" href="/#create">Try for free</a>
+        <button class="menu-button" type="button" aria-label="Open navigation" aria-controls="mobile-navigation" aria-expanded="false">☰</button>
+      </div>
     </div>
+    <nav class="mobile-nav" id="mobile-navigation" aria-label="Mobile navigation"><a href="/app/video/minimax-h3">AI Video</a><a href="/app/image/gpt-image-2-5-1k">AI Image</a><a class="home-extra-nav" href="/seedance-3-0-release-date" aria-current="page">Release Date</a><a class="home-extra-nav" href="/showcase">Showcase</a><a class="home-extra-nav" href="/blog">Blog</a></nav>
   </header>
   <main class="article-main">
     <div class="container">
@@ -96,6 +103,7 @@
         <p class="article-lead"><strong>As of October 2026, we have not confirmed an official Seedance 3.0 release date in the sources reviewed for this page.</strong> ByteDance currently lists Seedance 2.5 in its model catalog. The timeline below links to the announcements and sources we checked.</p>
         <p class="section-copy">Last updated: <time data-release-updated datetime="2026-10-17">2026-10-17</time></p>
         <p class="section-copy">For FAQs, prompt planning and reference guides, visit the <a href="./seedance-3-0">Seedance 3.0 resource hub</a>.</p>
+        <p class="release-trial-teaser"><a href="#available-tools">Try AI video &amp; images free — no sign-up or login ↗</a><span>Sign up for 15 free credits every day. Videos $0.01/sec · Images $0.01/image.</span></p>
         <div class="article-content prose">
           <h2 id="latest-news">Daily official updates</h2>
           <p>Official sources are checked once a day at 09:00 Beijing time. If a completed check finds new Seedance 3.0 entries, they appear here with their source publication dates and the dates we first found them. Those dates are listed separately and do not establish when the model was released.</p>
@@ -119,12 +127,36 @@
           <p>A model announcement, platform rollout, and API availability can happen separately. We will record each milestone when official 3.0 information is available.</p>
 
           <h2 id="available-tools">Tools you can use while waiting</h2>
-          <p>You can prepare your project with the tools currently available in this studio. They are separate tools, so their availability does not mean Seedance 3.0 is open for use.</p>
-          <ul>
-            <li><a href="./app/video/minimax-h3">MiniMax H3 video generator</a>: create a video from your idea or prepared references.</li>
-            <li><a href="./app/image/gpt-image-2-5-1k">GPT Image 2.5 image generator</a>: prepare or edit image references for a scene.</li>
-            <li><a href="./pose-to-image">Pose Studio</a>: arrange characters, poses, props, and camera framing before capturing a reference.</li>
-          </ul>
+          <div class="release-tools-offer" aria-label="Free video and image generation trial">
+            <p class="release-tools-title"><strong>Try for free. No sign-up or login required.</strong></p>
+            <p class="release-tools-daily"><a href="./app/video/minimax-h3?auth=register">Sign up</a> for <strong>15 free credits every day</strong>, shared across images and videos.</p>
+            <div class="release-tools-grid">
+              <article class="card release-tool-card">
+                <h3><a href="./app/video/minimax-h3">MiniMax H3 video generator</a></h3>
+                <p class="release-tool-price"><strong>$0.01</strong><span>/ second</span></p>
+                <p>Start with <strong>10 free video seconds</strong>. Turn text or a reference image into a video.</p>
+                <a class="button primary" href="./app/video/minimax-h3">Generate a free video ↗</a>
+              </article>
+              <article class="card release-tool-card">
+                <h3><a href="./app/image/gpt-image-2-5-1k">GPT Image 2.5 image generator</a></h3>
+                <p class="release-tool-price"><strong>$0.01</strong><span>/ image</span></p>
+                <p>Start with <strong>2 free images</strong>. Create from text or edit reference images.</p>
+                <a class="button primary" href="./app/image/gpt-image-2-5-1k">Generate free images ↗</a>
+              </article>
+            </div>
+            <p class="release-examples-heading"><strong>See what MiniMax H3 can create</strong></p>
+            <div class="release-tools-grid">
+              <figure class="release-tool-example" data-release-example="cinematic">
+                <video src="/assets/h3-example-cinematic.mp4" poster="/assets/h3-example-cinematic-poster.jpg" width="640" height="360" controls muted loop playsinline preload="none" aria-label="Cinematic scene — MiniMax H3"></video>
+                <figcaption><strong>Cinematic scene</strong><a href="/app/video/minimax-h3?prompt=At+blue+hour+on+a+windswept+salt+flat%2C+a+lone+traveler+in+a+saffron+coat+walks+toward+a+glowing+glass+observatory.+One+continuous+slow+dolly-in+shot%3B+drifting+dust%2C+soft+volumetric+light%2C+grounded+realistic+motion%2C+film-grain%2C+high-contrast+cinematic+color.+No+text%2C+no+logos.&amp;duration=5&amp;aspect_ratio=16%3A9">Try this prompt ↗</a></figcaption>
+              </figure>
+              <figure class="release-tool-example" data-release-example="animation">
+                <video src="/assets/h3-example-animation.mp4" poster="/assets/h3-example-animation-poster.jpg" width="640" height="360" controls muted loop playsinline preload="none" aria-label="Paper animation — MiniMax H3"></video>
+                <figcaption><strong>Paper animation</strong><a href="/app/video/minimax-h3?prompt=A+tiny+paper+fox+with+folded+origami+fur+leaps+between+floating+lanterns+over+a+moonlit+forest+pond.+Handcrafted+stop-motion+paper+texture%2C+playful+squash-and-stretch%2C+smooth+sideways+tracking+camera%2C+saturated+indigo+and+amber+palette.+No+text%2C+no+logos.&amp;duration=5&amp;aspect_ratio=16%3A9">Try this prompt ↗</a></figcaption>
+              </figure>
+            </div>
+          </div>
+          <p>Planning a reference? Use <a href="./pose-to-image">Pose Studio</a> to arrange characters, poses, props and camera framing.</p>
           <p>For more on how the two compare, read <a href="./minimax-h3-vs-seedance-3">MiniMax H3 vs Seedance 3</a>.</p>
           <p>You can find workflow guidance in the <a href="./features">features overview</a> and <a href="./faq">FAQ</a>.</p>
 
@@ -184,7 +216,8 @@
       <nav aria-label="Footer navigation"><a href="./">Home</a><a href="./blog">Blog</a><a href="./faq">FAQ</a></nav>
     </div>
     <div class="site-language-footer-control"><nav class="site-language-switch" data-site-language-switch data-language-footer aria-label="Site language"><a href="/zh/seedance-3-0-release-date?lang=zh" data-language="zh" lang="zh-Hans">中文</a><span aria-hidden="true">|</span><a href="/seedance-3-0-release-date?lang=en" data-language="en" lang="en" aria-current="true">EN</a></nav></div>
-  </footer>
+  <nav class="container footer-model-links" aria-label="Model guides"><a data-flux-guide-link href="/app/video/flux-3">FLUX 3</a></nav>
+</footer>
   <script id="release-date-display">
     (() => {
       const schema = JSON.parse(document.querySelector('script[type="application/ld+json"]').textContent);

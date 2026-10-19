@@ -3,6 +3,8 @@ import { localeFromPath } from './site-locale.mjs';
 // Keys remain readable English; prompts, model IDs and provider enum values are
 // deliberately kept out of this dictionary's automatic UI translation path.
 export const ZH_MESSAGES = Object.freeze({
+  'Your homepage draft is ready.': '已接续首页草稿，可继续编辑。',
+  'Could not restore the reference image. Please choose it again.': '参考图暂时无法恢复，请重新选择图片。',
   'Choose a supported video aspect ratio.': '请选择支持的视频画幅。',
   'Could not prepare the reference image. Please choose it again.': '参考图处理失败，请重新选择图片。',
   "Generation preview": "生成预览",
@@ -23,6 +25,9 @@ export const ZH_MESSAGES = Object.freeze({
   "Generating your images…": "正在生成图片…",
   "The video is still processing. Continue checking its progress.": "视频仍在处理中，可继续查看进度。",
   'Sign up': '注册',
+  'Try for free. No sign-up or login required.': '无需注册和登录，即可免费试用',
+  'Free trial used up': '游客免费体验额度已用完',
+  'Free trial': '免费试用中',
   'No registration or login required.': '无需注册和登录',
   'GPT Image 2 and 2.5 share 2 free images.': 'GPT Image 2 和 2.5 共用 2 张免费图片额度',
   'Generate {count} images · free': '免费生成 {count} 张图片',
@@ -34,7 +39,7 @@ export const ZH_MESSAGES = Object.freeze({
   '{count} free images': '免费 {count} 张图片',
   '{count} images remaining': '剩余 {count} 张图片',
   '— images remaining': '剩余 — 张图片',
-  'Your free images are used up. Sign up for daily free credits.': '免费图片额度已用完，注册后每天可领免费积分。',
+  'Your free images are used up. Sign up for 15 free credits every day.': '免费图片额度已用完，注册后每天赠送 15 积分。',
   'Image generated · {count} free images remaining.': '图片已生成 · 还剩 {count} 张免费图片额度。',
   'Choose fewer images or sign up to keep creating.': '请选择更少的图片数量，或注册后继续生成。',
   'Choose 5 or 10 seconds.': '可选 5 秒或 10 秒',
@@ -45,7 +50,7 @@ export const ZH_MESSAGES = Object.freeze({
   '{seconds} seconds remaining': '剩余 {seconds} 秒',
   '— seconds remaining': '剩余 — 秒',
   'Video generated · {seconds} free seconds remaining.': '视频已生成 · 还剩 {seconds} 秒免费额度。',
-  'Your free video seconds are used up. Sign up for daily free credits.': '游客免费视频额度已用完，注册后可获得每日免费积分。',
+  'Your free video seconds are used up. Sign up for 15 free credits every day.': '游客免费视频额度已用完，注册后每天赠送 15 积分。',
   'Not enough free video seconds for this duration. Choose 5 seconds or sign up to keep creating.': '剩余免费秒数不足，请选择 5 秒或注册后继续创作。',
   'Guest videos support 5 or 10 seconds at 480p.': '游客视频支持 5 秒或 10 秒，固定 480p。',
   'This network has already claimed the guest video trial. Sign up to keep creating.': '当前网络已领取过游客体验额度，请注册后继续创作。',

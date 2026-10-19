@@ -1,0 +1,77 @@
+FLUX 3 local implementation — 2026-10-20
+No commit, push or deployment performed.
+
+Page, routing, metadata, schema, styles, sitemap and tests:
+app/flux-3-content.mjs
+src/components/flux-3-landing-content.tsx
+src/lib/flux-3-head.ts
+src/routes/app_.video.flux-3.tsx
+src/routes/zh.app_.video.flux-3.tsx
+src/routes/app.tsx
+src/components/model-landing-content.tsx
+src/styles/model-landing.css
+app/seo-routes.mjs
+src/server.ts
+src/routeTree.gen.ts
+vite.config.ts
+sitemap.xml
+app/site-navigation.mjs
+assets/site-navigation.css
+assets/home-video.js
+tests/flux-3.test.mjs
+
+Public HTML pages: footer FLUX 3 link only, plus homepage related-guide card:
+404.html
+after-thorough-testing-the-conclusion-is-clear-seedance-2-0-s-universal-template-2.html
+blog.html
+gpt-image-2.html
+how-to-control-character-poses-in-seedance-with-3d-pose-references.html
+how-to-use-seedance-for-free-in-2026-all-free-methods.html
+how-to-use-the-seedance-api-complete-developer-guide-2026.html
+index.html
+minimax-h3-ai-video-generator.html
+minimax-h3-vs-seedance-3.html
+nano-banana-2-lite.html
+pose-reference-camera-angle-examples.html
+pose-to-image.html
+precise-application-of-seedance-prompts.html
+seedance-2-0-complete-tutorial.html
+seedance-2-5-image-to-video-guide.html
+seedance-2-5-vs-minimax-h3-vs-kling-3-0-which-ai-video-model-is-best-in-2026-2.html
+seedance-3-0-release-date.html
+seedance-3-0.html
+seedance-lite-vs-pro-which-plan-should-you-choose.html
+seedance-pricing-2026-all-plans-compared.html
+seedance-tiktok-ad-video-guide.html
+seedance-vs-kling-3-comparison.html
+showcase.html
+what-is-seedance-pro-features-pricing-how-to-get-started.html
+zh/404.html
+zh/after-thorough-testing-the-conclusion-is-clear-seedance-2-0-s-universal-template-2.html
+zh/blog.html
+zh/gpt-image-2.html
+zh/how-to-control-character-poses-in-seedance-with-3d-pose-references.html
+zh/how-to-use-seedance-for-free-in-2026-all-free-methods.html
+zh/how-to-use-the-seedance-api-complete-developer-guide-2026.html
+zh/index.html
+zh/minimax-h3-ai-video-generator.html
+zh/minimax-h3-vs-seedance-3.html
+zh/nano-banana-2-lite.html
+zh/pose-reference-camera-angle-examples.html
+zh/pose-to-image.html
+zh/precise-application-of-seedance-prompts.html
+zh/seedance-2-0-complete-tutorial.html
+zh/seedance-2-5-image-to-video-guide.html
+zh/seedance-2-5-vs-minimax-h3-vs-kling-3-0-which-ai-video-model-is-best-in-2026-2.html
+zh/seedance-3-0-release-date.html
+zh/seedance-3-0.html
+zh/seedance-lite-vs-pro-which-plan-should-you-choose.html
+zh/seedance-pricing-2026-all-plans-compared.html
+zh/seedance-tiktok-ad-video-guide.html
+zh/seedance-vs-kling-3-comparison.html
+zh/showcase.html
+zh/what-is-seedance-pro-features-pricing-how-to-get-started.html
+
+Validation: build + TypeScript passed; 6 tests passed; bilingual Schema.org validator: 0 errors, 0 warnings.
+Mobile 390x844: both disclosures visible; visible FAQ exactly matches JSON-LD.
+Legacy aliases /flux-3 and /flux-3-video-generator (including .html and zh forms): 301 to canonical app route.

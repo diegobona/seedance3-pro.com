@@ -68,7 +68,7 @@ export default {
         if (slug && !slug.includes('/')) return Response.redirect(`https://seedance3-pro.com${localizedPath(`/minimax-h3-prompts/${slug}`, locale)}${url.search}`, 308)
       }
       const destination = legacyModelRedirect(url)
-      if (destination) return Response.redirect(`https://seedance3-pro.com${destination}`, 308)
+      if (destination) return Response.redirect(`https://seedance3-pro.com${destination}`, /^\/flux-3(?:-video-generator)?(?:\.html)?$/.test(basePath) ? 301 : 308)
     }
     if (pathname.startsWith('/app-assets/')) {
       return env.ASSETS.fetch(request)

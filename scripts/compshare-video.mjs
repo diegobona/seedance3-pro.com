@@ -52,10 +52,19 @@ export function assertCompshareVideoPayload(payload, { requireReferenceUrl = tru
     || ![5, 10, 15].includes(payload.duration) || payload.resolution !== '480p'
     || !['16:9', '9:16'].includes(payload.aspectRatio)
     || (ids !== undefined && (!Array.isArray(ids) || ids.length !== 1))
-    || (references !== undefined && (!Array.isArray(references) || references.length !== 1 || !httpsUrl(references[0])))
+    || (references !== undefined && (!Array.isArray(references) || references.length !== 1 || !imageSource(references[0])))
     || (requireReferenceUrl ? !references : !references && !ids)) {
     throw configurationError();
   }
+}
+
+function imageSource(value) {
+  if (httpsUrl(value)) return true;
+  if (typeof value !== 'string' || value.length > Math.ceil(10 * 1024 * 1024 / 3) * 4 + 64) return false;
+  const prefix = /^data:image\/(?:png|jpeg|webp);base64,/.exec(value)?.[0];
+  if (!prefix) return false;
+  const bytes = value.slice(prefix.length);
+  return bytes.length > 0 && bytes.length % 4 === 0 && /^[A-Za-z0-9+/]+={0,2}$/.test(bytes);
 }
 
 export async function submitCompshareVideoTask(payload, options = {}) {

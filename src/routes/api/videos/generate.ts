@@ -4,7 +4,7 @@ import { env } from 'cloudflare:workers'
 import {
   preflightVideoGenerationRequest,
 } from '../../../../scripts/autodl-video.mjs'
-import { selectVideoWorkflow, assertVideoProviderConfigured, submitVideoTask } from '../../../lib/video-providers'
+import { selectVideoWorkflow, assertVideoProviderConfigured, submitVideoTask, COMPSHARE_FIRST_FRAME_WORKFLOW_ID } from '../../../lib/video-providers'
 import { createAppDatabase, databaseConfigured } from '../../../db'
 import { createVideoGenerationTaskStore } from '../../../db/video-generation-tasks'
 import { createTrackedVideoTaskStore, createVideoTaskActivity } from '../../../lib/video-task-activity'
@@ -145,6 +145,8 @@ export const Route = createFileRoute('/api/videos/generate')({
                   validation.payload.referenceImageUrls = await resolveVideoReferences(
                     validation.payload.referenceImageIds, userId, env.VIDEO_REFERENCES,
                     Date.now(), guest ? [guest.session.user.id] : [],
+                    { inline: workflowId === COMPSHARE_FIRST_FRAME_WORKFLOW_ID
+                      && ['localhost', '127.0.0.1', '[::1]'].includes(new URL(request.url).hostname) },
                   )
                 } catch {
                   return { ok: false as const, response: jsonError(400, 'INVALID_VIDEO_REFERENCE',

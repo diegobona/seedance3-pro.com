@@ -1,4 +1,5 @@
 import { withRelatedReading } from './related-reading.mjs';
+import { renderSiteHeader, withSiteNavigation } from '../app/site-navigation.mjs';
 
 const ALLOWED_ELEMENTS = new Set([
   "a", "abbr", "b", "blockquote", "br", "code", "del", "details", "div", "em",
@@ -122,18 +123,7 @@ export function normalizeArticleDocument(html) {
   return source.replace(articleContentPattern, (_match, open, content, close) => `${open}\n        ${sanitizeArticleHtml(content)}\n      ${close}`);
 }
 
-const ARTICLE_HEADER = `  <header class="site-header">
-    <div class="container inner">
-      <a class="brand" href="./" aria-label="SEEDANCE 3.0 home">
-        <img class="brand-mark" src="./assets/seedance-mark.svg" width="40" height="40" alt="">
-        <span>SEEDANCE 3.0</span>
-      </a>
-      <nav class="desktop-nav compact-nav" aria-label="Primary navigation">
-        <a href="./">Home</a>
-        <a href="./blog">Blog</a>
-      </nav>
-    </div>
-  </header>`;
+const ARTICLE_HEADER = renderSiteHeader({ pathname: '/blog' });
 
 const ARTICLE_FOOTER = `  <footer class="site-footer article-footer">
     <div class="container article-footer-inner">
@@ -374,7 +364,8 @@ export function normalizeBlogArticleDocument(html) {
     }
   }
 
-  return output;
+  const canonical = output.match(/<link\s+rel="canonical"\s+href="([^"]+)"/i)?.[1];
+  return withSiteNavigation(output, canonical ? new URL(canonical, 'https://seedance3-pro.com').pathname : '/blog');
 }
 
 export function renderArticleDocument({ title, excerpt, category, content, canonical }) {
@@ -384,7 +375,7 @@ export function renderArticleDocument({ title, excerpt, category, content, canon
   const excerptHtml = excerpt
     ? `\n        <p class="article-lead">${safeExcerpt}</p>`
     : "";
-  return withRelatedReading(`<!doctype html>
+  return withSiteNavigation(withRelatedReading(`<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -429,5 +420,5 @@ ${ARTICLE_HEADER}
 
 ${ARTICLE_FOOTER}
 </body>
-</html>`, { pathname: canonical });
+</html>`, { pathname: canonical }), canonical ? new URL(canonical, 'https://seedance3-pro.com').pathname : '/blog');
 }

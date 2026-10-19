@@ -1,3 +1,5 @@
+import { Buffer } from 'node:buffer'
+
 const MAX_BYTES = 10 * 1024 * 1024
 const TTL_MS = 24 * 60 * 60 * 1000
 const ID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/
@@ -87,7 +89,7 @@ export async function serveVideoReference(request: Request, bucket?: R2Bucket, n
   })
 }
 
-export async function resolveVideoReferences(ids: string[], userId: string, bucket?: R2Bucket, now = Date.now(), additionalOwnerIds: string[] = []) {
+export async function resolveVideoReferences(ids: string[], userId: string, bucket?: R2Bucket, now = Date.now(), additionalOwnerIds: string[] = [], { inline = false } = {}) {
   if (!bucket) throw new Error('Reference uploads are unavailable.')
   const urls: string[] = []
   for (const id of ids) {
@@ -96,7 +98,19 @@ export async function resolveVideoReferences(ids: string[], userId: string, buck
     if (!object || ![userId, ...additionalOwnerIds].includes(object.customMetadata?.userId ?? '') || !isFresh(object.customMetadata, now + 60 * 60 * 1000)) {
       throw new Error('A reference image expired or is unavailable. Please upload it again.')
     }
-    urls.push(`https://seedance3-pro.com/api/videos/references?id=${id}`)
+    if (inline) {
+      const image = await bucket.get(`references/${id}`)
+      const type = image?.httpMetadata?.contentType || ''
+      if (!image || ![userId, ...additionalOwnerIds].includes(image.customMetadata?.userId ?? '')
+        || !isFresh(image.customMetadata, now + 60 * 60 * 1000) || !MIME_TYPES.has(type) || image.size > MAX_BYTES) {
+        throw new Error('A reference image expired or is unavailable. Please upload it again.')
+      }
+      const bytes = new Uint8Array(await image.arrayBuffer())
+      if (bytes.length < 12 || bytes.length > MAX_BYTES || !matchesImageType(bytes, type)) throw new Error('Invalid reference image.')
+      urls.push(`data:${type};base64,${Buffer.from(bytes).toString('base64')}`)
+    } else {
+      urls.push(`https://seedance3-pro.com/api/videos/references?id=${id}`)
+    }
   }
   return urls
 }

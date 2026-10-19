@@ -117,6 +117,7 @@ export function ModelLandingContent({ modelId }: { modelId: string }) {
         <nav className="model-landing-links" aria-label={t("Explore related tools")}>
           <a href={path("/")}>{t("Seedance home")}</a>
           <a href={path("/app/video/minimax-h3")}>{t("MiniMax H3 video")}</a>
+          <a href={path('/app/video/flux-3')}>FLUX 3</a>
           <a href={path("/app/image/gpt-image-2")}>{t("GPT Image 2 image")}</a>
           <a href={path("/app/image/gpt-image-2-5-1k")}>{t("GPT Image 2.5")}</a>
           <a href={path("/app/video/muse-video")}>Muse Video</a>

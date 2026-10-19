@@ -35,10 +35,22 @@
   <script src="/assets/site-language.js" defer></script>
   <meta property="og:locale" content="zh_CN">
   <meta property="og:locale:alternate" content="en_US">
+  <link rel="stylesheet" href="/assets/site-navigation.css">
+  <script src="/assets/site-navigation.js" defer></script>
 </head>
 <body>
-  <header class="site-header"><div class="container inner"><a class="brand" href="/zh/"><img class="brand-mark" src="/assets/seedance-mark.svg" width="40" height="40" alt=""><span>SEEDANCE 3.0<br><small>独立模型指南</small></span></a><nav class="desktop-nav"><a href="/zh/">Seedance 3</a><a href="/zh/app/video/minimax-h3">MiniMax H3</a><a href="/zh/nano-banana-2-lite">AI 图像</a><a href="/zh/blog">指南</a></nav><div class="header-actions">
-        <nav class="site-language-switch" data-site-language-switch aria-label="网站语言"><a href="/zh/minimax-h3-ai-video-generator?lang=zh" data-language="zh" lang="zh-Hans" aria-current="true">中文</a><span aria-hidden="true">|</span><a href="/minimax-h3-ai-video-generator?lang=en" data-language="en" lang="en">EN</a></nav><a class="button small" href="/zh/app/?model=minimax-h3">工作室预览</a><button class="menu-button" type="button" aria-label="打开导航" aria-expanded="false" aria-controls="mobile-navigation">☰</button></div></div><nav class="mobile-nav" id="mobile-navigation"><a href="/zh/">Seedance 3</a><a href="/zh/minimax-h3-vs-seedance-3">对比</a><a href="/zh/app/?model=minimax-h3">工作室预览</a></nav></header>
+  <header class="site-header" data-site-header>
+    <div class="container inner">
+      <a class="brand" href="/zh/" aria-label="SEEDANCE 3.0 首页"><img class="brand-mark" src="/assets/seedance-mark.svg" width="40" height="40" alt=""><span>SEEDANCE 3.0</span></a>
+      <nav class="desktop-nav compact-nav" aria-label="主导航"><a href="/zh/app/video/minimax-h3">AI Video</a><a href="/zh/app/image/gpt-image-2-5-1k">AI Image</a><a class="home-extra-nav" href="/zh/seedance-3-0-release-date">发布时间</a><a class="home-extra-nav" href="/zh/showcase">作品展示</a><a class="home-extra-nav" href="/zh/blog">博客</a></nav>
+      <div class="header-actions">
+        <nav class="site-language-switch" data-site-language-switch aria-label="网站语言"><a href="/zh/minimax-h3-ai-video-generator?lang=zh" data-language="zh" lang="zh-Hans" aria-current="true">中文</a><span aria-hidden="true">|</span><a href="/minimax-h3-ai-video-generator?lang=en" data-language="en" lang="en">EN</a></nav>
+        <a class="button small" href="/zh/#create">免费试用</a>
+        <button class="menu-button" type="button" aria-label="打开导航" aria-controls="mobile-navigation" aria-expanded="false">☰</button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-navigation" aria-label="移动端导航"><a href="/zh/app/video/minimax-h3">AI Video</a><a href="/zh/app/image/gpt-image-2-5-1k">AI Image</a><a class="home-extra-nav" href="/zh/seedance-3-0-release-date">发布时间</a><a class="home-extra-nav" href="/zh/showcase">作品展示</a><a class="home-extra-nav" href="/zh/blog">博客</a></nav>
+  </header>
   <main>
     <section class="page-hero"><div class="container"><div class="breadcrumbs"><a href="/zh/">首页</a><span>›</span><span>AI 视频</span><span>›</span><span>MiniMax H3</span></div><p class="eyebrow">AI 视频模型指南</p><h1 class="display">MiniMax H3 AI 视频生成器</h1><p class="lead">MiniMax H3 多模态视频生成的实用指南：文字、图像、视频与音频上下文，原生立体声、参考控制，以及便于快速创作迭代的输出流程。</p><div class="hero-actions"><a class="button primary" href="/zh/app/?model=minimax-h3">打开工作室预览</a><a class="button" href="#prompts">查看提示词示例</a></div><div class="fact-grid"><div class="fact"><strong>4–15 秒</strong><span>官方输出时长范围</span></div><div class="fact"><strong>最高 2K</strong><span>结合上下文重新生成</span></div><div class="fact"><strong>原生立体声</strong><span>视频与音频一起生成</span></div><div class="fact"><strong>多模态</strong><span>文字、图像、视频与音频上下文</span></div></div></div></section>
     <section class="section-tight"><div class="container split"><div class="sticky-copy"><p class="eyebrow">模型介绍</p><h2 class="section-title">用统一上下文承载复杂创作指令。</h2><p class="section-copy">MiniMax 将 H3 定位为通用多模态生成模型，而非彼此割裂的视频工具集合。</p></div><div class="prose"><p>MiniMax H3 能理解混合的文字、图像、视频和音频参考，并生成带原生立体声的视频。官方资料将其用于广告、品牌、电商、产品设计、游戏等重视指令遵循与视觉一致性的制作流程。</p><p>该模型支持 4–15 秒输出，覆盖常见横屏、方形与竖屏比例。结合上下文的重新生成阶段可产出更高分辨率的 2K 结果，并重新考量原始创意上下文，而非仅依赖传统超分辨率处理。</p><p><a class="card-link" href="https://www.minimax.io/blog/minimax-h3" rel="nofollow noopener" target="_blank">阅读 MiniMax H3 官方公告</a></p></div></div></section>
@@ -49,5 +61,6 @@
   </main>
   <footer class="site-footer"><div class="container"><div class="copyright"><span>© 2026 SEEDANCE 3.0 · 独立模型指南</span><span><a href="/zh/">Seedance 3</a> · <a href="/zh/app/image/gpt-image-2">GPT Image 2</a> · <a href="/zh/nano-banana-2-lite">Nano Banana 2 Lite</a></span></div></div>
 <div class="site-language-footer-control"><nav class="site-language-switch" data-site-language-switch data-language-footer aria-label="网站语言"><a href="/zh/minimax-h3-ai-video-generator?lang=zh" data-language="zh" lang="zh-Hans" aria-current="true">中文</a><span aria-hidden="true">|</span><a href="/minimax-h3-ai-video-generator?lang=en" data-language="en" lang="en">EN</a></nav></div>
+<nav class="container footer-model-links" aria-label="模型指南"><a data-flux-guide-link href="/zh/app/video/flux-3">FLUX 3</a></nav>
 </footer><script src="/assets/main.zh.js"></script>
 </body></html>

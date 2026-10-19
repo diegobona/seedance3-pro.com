@@ -7,6 +7,8 @@ import { AuthDialog } from '../components/auth-dialog'
 import { authClient } from '../lib/auth-client'
 import { UserMenu } from '../components/user-menu'
 import { ModelLandingContent } from '../components/model-landing-content'
+import { Flux3LandingContent, Flux3LandingEntry } from '../components/flux-3-landing-content'
+import { flux3Content } from '../../app/flux-3-content.mjs'
 import { H3VideoExamples } from '../components/h3-video-examples'
 import { GptImageExamples } from '../components/gpt-image-examples'
 import { DAILY_FREE_CREDIT_GRANT } from '../lib/generation-credits'
@@ -42,9 +44,9 @@ function AppPage() {
   return <StudioPage initialModel={model} />
 }
 
-export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false }: { initialModel?: string; modelLanding?: boolean }) {
-  const { t, path } = useSiteI18n()
-  const [dailyTrialBefore, dailyTrialAfter] = t("Free accounts get {credits} credits {daily}, shared across images and videos.").replace('{credits}', String(DAILY_FREE_CREDIT_GRANT)).split('{daily}')
+export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false, landingPage }: { initialModel?: string; modelLanding?: boolean; landingPage?: 'flux-3' }) {
+  const { t, path, locale } = useSiteI18n()
+  const fluxLanding = landingPage === 'flux-3'
   const initiallyPose = initialModel === 'pose-to-image'
   const initiallyH3 = initialModel === 'minimax-h3'
   const initiallySeedance25 = initialModel === 'seedance-2-5'
@@ -55,6 +57,9 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
   const [authOpen, setAuthOpen] = useState(false)
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login')
   const { data: session } = authClient.useSession()
+  const [dailyTrialBefore, dailyTrialAfter] = t(!session?.user
+    ? 'Sign up to get {credits} free credits {daily}, shared across images and videos.'
+    : 'Free accounts get {credits} credits {daily}, shared across images and videos.').replace('{credits}', String(DAILY_FREE_CREDIT_GRANT)).split('{daily}')
   const initialGuestImage = !session?.user && Boolean(getImageModel(initialModel))
   const initialGuestVideo = !session?.user && initiallyH3
   const openAuth = useCallback((mode: 'login' | 'register' = 'login') => {
@@ -144,11 +149,17 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
           </header>
 
           <div className="workspace-body">
-            <div className="workspace-title"><div><p id="model-category">{initiallyPose ? t("AI IMAGE / POSE CONTROL") : initiallyVideo ? t("AI VIDEO / TEXT TO VIDEO") : t("AI IMAGE / GENERATE & EDIT")}</p><h1 id="model-name" data-landing-model={modelLanding ? initialModel : undefined}>{initiallyPose ? t("Pose Studio") : initiallySeedance25 ? t("Seedance 2.5 Video Generator") : initiallyH3 ? t("MiniMax H3 AI Video Generator") : initiallyGpt25 ? t(modelLanding ? "GPT Image 2.5 Generator & Editor" : "GPT Image 2.5") : modelLanding ? t("GPT Image 2 Generator & Editor") : t("GPT Image 2")}</h1></div><span className="model-status" id="model-status" hidden={initiallyPose}>{initiallyPose ? '' : initiallyVideo ? t("Video generator") : t("Image generator")}</span></div>
-            {modelLanding && !initiallyGpt25 && <p className="model-landing-intro">{initiallySeedance25 ? t("Create a video from a text prompt in the Seedance 2.5 workspace. Choose your video settings and follow the result here.") : initiallyH3 ? <>{t("Turn text or reference images into a MiniMax H3 video. Describe your scene, choose your settings, or start with an example from the ")}<a href={path("/minimax-h3-prompts")} target="_blank" rel="noopener">{t("MiniMax H3 Prompt Library")}</a>.</> : <>{t("Create or edit images with GPT Image 2 using text and reference images. Describe your idea, combine visual references, or start with an example from the ")}<a href={path("/gpt-image-2-prompts")} target="_blank" rel="noopener">{t("GPT Image 2 Prompt Library")}</a>.</>}</p>}
-            <aside className="studio-trial-notice" role="note" aria-label={t("Free trial")}>
+            <div className="workspace-title"><div><p id="model-category">{initiallyPose ? t("AI IMAGE / POSE CONTROL") : initiallyVideo ? t("AI VIDEO / TEXT TO VIDEO") : t("AI IMAGE / GENERATE & EDIT")}</p><h1 id="model-name" data-landing-model={modelLanding ? initialModel : undefined}>{fluxLanding ? flux3Content(locale).h1 : initiallyPose ? t("Pose Studio") : initiallySeedance25 ? t("Seedance 2.5 Video Generator") : initiallyH3 ? t("MiniMax H3 AI Video Generator") : initiallyGpt25 ? t(modelLanding ? "GPT Image 2.5 Generator & Editor" : "GPT Image 2.5") : modelLanding ? t("GPT Image 2 Generator & Editor") : t("GPT Image 2")}</h1></div><span className="model-status" id="model-status" hidden={initiallyPose}>{initiallyPose ? '' : initiallyVideo ? t("Video generator") : t("Image generator")}</span></div>
+            {fluxLanding && <Flux3LandingEntry />}
+            {modelLanding && !fluxLanding && !initiallyGpt25 && <p className="model-landing-intro">{initiallySeedance25 ? t("Create a video from a text prompt in the Seedance 2.5 workspace. Choose your video settings and follow the result here.") : initiallyH3 ? <>{t("Turn text or reference images into a MiniMax H3 video. Describe your scene, choose your settings, or start with an example from the ")}<a href={path("/minimax-h3-prompts")} target="_blank" rel="noopener">{t("MiniMax H3 Prompt Library")}</a>.</> : <>{t("Create or edit images with GPT Image 2 using text and reference images. Describe your idea, combine visual references, or start with an example from the ")}<a href={path("/gpt-image-2-prompts")} target="_blank" rel="noopener">{t("GPT Image 2 Prompt Library")}</a>.</>}</p>}
+            <aside className="studio-trial-notice" data-trial-state={initialGuestImage || initialGuestVideo ? 'guest-available' : 'account'} role="note" aria-label={t("Free trial")}>
               <span className="studio-trial-icon" aria-hidden="true">✦</span>
-              <div><strong>{t("Free trial")}</strong><span id="trial-allowance-message">{(initiallyH3 || getImageModel(initialModel)) && !session?.user ? t('No registration or login required.') : <>{dailyTrialBefore}<strong className="studio-trial-daily">{t("daily")}</strong>{dailyTrialAfter}</>}</span><p id="daily-credit-reset-notice">{!session?.user && getImageModel(initialModel) ? t('GPT Image 2 and 2.5 share 2 free images.') : initiallyH3 && !session?.user ? t('Choose 5 or 10 seconds.') : t("Daily credits refresh each day. Unused credits expire at the next reset and do not accumulate.")}</p></div>
+              <div>
+                <strong id="trial-notice-title">{t("Free trial")}</strong><span id="trial-guest-message" hidden={!(initialGuestImage || initialGuestVideo)}>{t('Try for free. No sign-up or login required.')}</span>
+                <p id="trial-allowance-message" className="studio-daily-allowance">{dailyTrialBefore}<strong className="studio-trial-daily">{t("daily")}</strong>{dailyTrialAfter}</p>
+                <p id="daily-credit-reset-notice">{t("Daily credits refresh each day. Unused credits expire at the next reset and do not accumulate.")}</p>
+              </div>
+              {!session?.user && <a id="trial-daily-signup" className="studio-trial-signup" hidden={!(initiallyVideo || getImageModel(initialModel))} href={path(`/app?model=${encodeURIComponent(initialModel)}&auth=register`)} onClick={event => { if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return; event.preventDefault(); openAuth('register') }}>{t('Sign up')} <span aria-hidden="true">↗</span></a>}
             </aside>
             <div className="creation-grid" id="creation-grid" hidden={initiallyPose}>
               <section className="creation-panel">
@@ -344,7 +355,7 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
           </div>
         </main>
       </div>
-        {modelLanding && <ModelLandingContent modelId={initialModel} />}
+        {modelLanding && (fluxLanding ? <Flux3LandingContent /> : <ModelLandingContent modelId={initialModel} />)}
       <AuthDialog open={authOpen} initialMode={authMode} onClose={closeAuth} onAuthenticated={refreshCreditsAfterAuth} />
     </>
   )
