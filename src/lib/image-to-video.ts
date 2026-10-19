@@ -35,9 +35,11 @@ export async function prepareImageAnimation(images: GeneratedImage[], userId: st
 }
 
 export async function transferGeneratedImage(request: Request, {
-  getUserId, bucket, limiter, fetchImpl = fetch, now = Date.now(),
+  getUserId, additionalOwnerIds = [], getDestinationUserId, bucket, limiter, fetchImpl = fetch, now = Date.now(),
 }: {
   getUserId: () => Promise<string | undefined>
+  additionalOwnerIds?: string[]
+  getDestinationUserId?: () => Promise<string | undefined>
   bucket?: R2Bucket
   limiter?: { limit(input: { key: string }): Promise<{ success: boolean }> }
   fetchImpl?: typeof fetch
@@ -49,14 +51,14 @@ export async function transferGeneratedImage(request: Request, {
   const url = new URL(request.url)
   const origin = request.headers.get('origin')
   if (origin && origin !== url.origin) return fail(403, 'Cross-site transfer is not allowed.')
+  const id = url.searchParams.get('image') || ''
+  if (!UUID.test(id)) return fail(400, 'Invalid generated image.')
   const userId = await getUserId()
   if (!userId) return fail(401, 'Log in to animate this image.')
   if (!bucket || !limiter) return fail(503, 'Image transfer is temporarily unavailable.')
-  const id = url.searchParams.get('image') || ''
-  if (!UUID.test(id)) return fail(400, 'Invalid generated image.')
   if (!(await limiter.limit({ key: `animate-image:${userId}` })).success) return fail(429, 'Please wait a minute and try again.')
   const source = await bucket.get(`references/sources/${id}`)
-  if (!source || source.size > 8192 || source.customMetadata?.userId !== userId || !(Number(source.customMetadata?.expiresAt) > now)) {
+  if (!source || source.size > 8192 || ![userId, ...additionalOwnerIds].includes(source.customMetadata?.userId ?? '') || !(Number(source.customMetadata?.expiresAt) > now)) {
     return fail(404, 'This image is unavailable. Save it and upload it in H3 instead.')
   }
   const sourceUrl = await source.text()
@@ -66,11 +68,15 @@ export async function transferGeneratedImage(request: Request, {
     image = await fetchImpl(sourceUrl, { redirect: 'error', signal: AbortSignal.timeout(30_000) })
   } catch { return fail(502, 'Could not retrieve this image. Please try again or save and upload it in H3.') }
   if (!image.ok || !image.body) return fail(502, 'The image link expired. Save and upload the image in H3 instead.')
+  let destinationUserId: string | undefined
+  try { destinationUserId = getDestinationUserId ? await getDestinationUserId() : userId }
+  catch (error) { await image.body.cancel(); throw error }
+  if (!destinationUserId) { await image.body.cancel(); return fail(401, 'Log in to animate this image.') }
   return uploadVideoReference(new Request(`${url.origin}/api/videos/references`, {
     method: 'POST', body: image.body,
     headers: {
       'content-type': image.headers.get('content-type') || 'application/octet-stream',
       ...(image.headers.has('content-length') ? { 'content-length': image.headers.get('content-length')! } : {}),
     }, duplex: 'half',
-  } as RequestInit), { getUserId: async () => userId, bucket, limiter, now })
+  } as RequestInit), { getUserId: async () => destinationUserId, bucket, limiter, now })
 }

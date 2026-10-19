@@ -4,6 +4,16 @@ import { localeFromPath } from './site-locale.mjs';
 // deliberately kept out of this dictionary's automatic UI translation path.
 export const ZH_MESSAGES = Object.freeze({
   'No registration or login required.': '无需注册和登录',
+  'GPT Image 2 and 2.5 share 2 free images.': 'GPT Image 2 和 2.5 共用 2 张免费图片额度',
+  'Generate {count} images · free': '免费生成 {count} 张图片',
+  'Generate 1 image · free': '免费生成 1 张图片',
+  '1 free image': '免费 1 张图片',
+  '{count} free images': '免费 {count} 张图片',
+  '{count} images remaining': '剩余 {count} 张图片',
+  '— images remaining': '剩余 — 张图片',
+  'Your free images are used up. Sign up for daily free credits.': '免费图片额度已用完，注册后每天可领免费积分。',
+  'Image generated · {count} free images remaining.': '图片已生成 · 还剩 {count} 张免费图片额度。',
+  'Choose fewer images or sign up to keep creating.': '请选择更少的图片数量，或注册后继续生成。',
   'Choose 5 or 10 seconds.': '可选 5 秒或 10 秒',
   'Free accounts get {credits} credits daily, shared across images and videos.': '免费账户每天获得 {credits} 积分，图片和视频共用。',
   'Sign up to keep creating': '注册后继续创作',

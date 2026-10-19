@@ -2,6 +2,22 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { createCreditSummaryController } from '../app/studio-controls.mjs';
 
+test('guest image quantity follows the shared remaining images while signed-in users keep three', async () => {
+  const { guestImageQuantityState } = await import('../app/guest-image.mjs');
+  assert.deepEqual(guestImageQuantityState({ guest: true, remaining: null, value: '3' }), { value: '1', disabled: [3] });
+  assert.deepEqual(guestImageQuantityState({ guest: true, remaining: 5, value: '2' }), { value: '1', disabled: [2, 3] });
+  assert.deepEqual(guestImageQuantityState({ guest: true, remaining: 10, value: '2' }), { value: '2', disabled: [3] });
+  assert.deepEqual(guestImageQuantityState({ guest: false, remaining: 0, value: '3' }), { value: '3', disabled: [] });
+});
+
+test('image responses keep guest credit events separate from video and account balances', async () => {
+  const { requestImageGeneration } = await import('../app/image-generation.mjs');
+  const result = await requestImageGeneration({ prompt: 'Guest image', fetchImpl: async () => Response.json({
+    success: true, image: { url: 'https://example.com/image.png' },
+  }, { headers: { 'x-seedance-credit-cost': '5', 'x-seedance-credit-remaining': '5', 'x-seedance-credit-scope': 'guest-image' } }) });
+  assert.deepEqual(result.credits, { cost: 5, remaining: 5, context: 'guest-image' });
+});
+
 test('guest duration defaults to five, caps at ten, and uses the remaining seconds', async () => {
   const { guestVideoDurationState } = await import('../app/guest-video.mjs');
   assert.deepEqual(guestVideoDurationState({ guest: true, remaining: 10, value: '5' }), { value: '5', disabled: [15] });

@@ -58,6 +58,26 @@ test('transfer rejects cross-origin and arbitrary URL input', async () => {
   assert.equal((await transferGeneratedImage(new Request('https://seedance3-pro.com/api/images/animate', { method: 'POST', headers: { origin: 'https://other.example' } }), options)).status, 403)
 })
 
+test('guest source ownership can hand off to a separate video identity without granting access to other images', async () => {
+  const h = harness()
+  const [image] = await prepareImageAnimation([{ url: 'https://images.example/guest.png' }], 'guest-image-owner', h.bucket, now)
+  const request = () => new Request(`https://seedance3-pro.com/api/images/animate?image=${image.animateId}`, { method: 'POST' })
+  let destinations = 0
+  const options = { bucket: h.bucket, now, getUserId: async () => 'signed-in-owner',
+    additionalOwnerIds: ['guest-image-owner'],
+    getDestinationUserId: async () => { destinations++; return 'guest-video-owner' },
+    limiter: { limit: async () => ({ success: true }) },
+    fetchImpl: (async () => new Response(png, { headers: { 'content-type': 'image/png' } })) as typeof fetch,
+  }
+  assert.equal((await transferGeneratedImage(request(), { ...options, additionalOwnerIds: [] })).status, 404)
+  assert.equal(destinations, 0, 'do not claim video eligibility before source ownership validation')
+  const response = await transferGeneratedImage(request(), options)
+  assert.equal(response.status, 201)
+  const result = await response.json() as {id:string}
+  assert.equal(h.saved.get(`references/${result.id}`)?.customMetadata.userId, 'guest-video-owner')
+  assert.equal(destinations, 1)
+})
+
 test('animate handoff uses the chosen image only, preserves portrait orientation and never submits a video', async () => {
   const sourceId = crypto.randomUUID(), referenceId = crypto.randomUUID()
   const calls: string[] = []

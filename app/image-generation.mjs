@@ -30,9 +30,10 @@ export async function requestImageGeneration({
   });
   const creditCost = Number(response.headers.get("x-seedance-credit-cost"));
   const creditRemaining = Number(response.headers.get("x-seedance-credit-remaining"));
+  const scope = response.headers.get('x-seedance-credit-scope');
   const credits = Number.isSafeInteger(creditCost) && creditCost > 0
     && Number.isSafeInteger(creditRemaining) && creditRemaining >= 0
-    ? { cost: creditCost, remaining: creditRemaining }
+    ? { cost: creditCost, remaining: creditRemaining, ...(scope === 'guest-image' || scope === 'account' ? { context: scope } : {}) }
     : null;
   let payload;
   try {

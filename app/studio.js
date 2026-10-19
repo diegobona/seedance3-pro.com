@@ -1,6 +1,7 @@
 import { t, localizedErrorMessage, currentLocale } from './i18n.mjs';
 import { formatCreditResetTime } from './daily-credits.mjs';
 import { guestVideoDurationState } from './guest-video.mjs';
+import { guestImageQuantityState } from './guest-image.mjs';
 import { localizedPath } from './site-locale.mjs';
 import { buildModelUrl, normalizeModelId } from "./model-routing.mjs";
 import { canonicalModelPath, modelIdFromPath } from "./seo-routes.mjs";
@@ -293,6 +294,8 @@ export function initializeStudio() {
 
   function imageGenerationLabel() {
     const quantity = normalizeImageQuantity(imageQuantity?.value);
+    if (isGuestImageSelected()) return guestRemaining === 0 ? t('Sign up to keep creating')
+      : quantity === 1 ? t('Generate 1 image · free') : t('Generate {count} images · free', { count: quantity });
     if (quantity === 1) return t(defaultImageGenerationLabel);
     return t('Generate {count} images · {cost} credits', { count: quantity, cost: creditCostForQuantity(quantity, activeModelId) });
   }
@@ -305,6 +308,16 @@ export function initializeStudio() {
 
   function isGuestVideoSelected() {
     return activeModelId === 'minimax-h3' && guestVideo;
+  }
+
+  function isGuestImageSelected() {
+    return Boolean(getImageModel(activeModelId)) && guestVideo;
+  }
+
+  function updateGuestImageControls() {
+    const state = guestImageQuantityState({ guest: isGuestImageSelected(), remaining: guestRemaining, value: imageQuantity.value });
+    for (const option of imageQuantity.options) option.disabled = state.disabled.includes(Number(option.value));
+    imageQuantity.value = state.value;
   }
 
   function updateGuestVideoControls() {
@@ -411,7 +424,7 @@ export function initializeStudio() {
       : imageGenerationInFlight;
     generateButton.disabled = !canGenerate || !prompt.value.trim() || generationBlocked || creditInsufficient
       || (isReferenceVideo() && videoReferences.length === 0);
-    if (isGuestVideoSelected() && guestRemaining === 0 && !generationBlocked) generateButton.disabled = false;
+    if ((isGuestVideoSelected() || isGuestImageSelected()) && guestRemaining === 0 && !generationBlocked) generateButton.disabled = false;
     const disabled = generateButton.disabled;
     poseResultActionsController?.setGenerateState({
       disabled: disabled || !poseReferenceActive || !getImageModel(activeModelId),
@@ -426,6 +439,7 @@ export function initializeStudio() {
     guestRemaining = null;
     guestVideo = studioShell.dataset.authenticated !== 'true';
     updateGuestVideoControls();
+    updateGuestImageControls();
     updatePoseSidebar();
     modelButtons.forEach((button) => button.classList.toggle("is-active", button.dataset.model === normalizedModelId));
     if (modelName.dataset.landingModel !== normalizedModelId) modelName.textContent = t(model.name);
@@ -804,11 +818,11 @@ export function initializeStudio() {
 
   function updateDailyResetNotice() {
     const allowance = document.getElementById('trial-allowance-message');
-    if (allowance) allowance.textContent = isGuestVideoSelected()
+    if (allowance) allowance.textContent = (isGuestVideoSelected() || isGuestImageSelected())
       ? t('No registration or login required.')
       : t('Free accounts get {credits} credits daily, shared across images and videos.', { credits: 15 });
     if (dailyCreditResetNotice) {
-      dailyCreditResetNotice.textContent = isGuestVideoSelected()
+      dailyCreditResetNotice.textContent = isGuestImageSelected() ? t('GPT Image 2 and 2.5 share 2 free images.') : isGuestVideoSelected()
         ? t('Choose 5 or 10 seconds.')
         : t("Daily reset: {time} (local time). Unused credits expire at reset and do not accumulate.", { time: dailyResetTime() });
     }
@@ -824,12 +838,14 @@ export function initializeStudio() {
     getCost: () => isVideoGenerationSelected()
       ? creditCostForDuration(videoDuration.value)
       : creditCostForQuantity(imageQuantity.value, activeModelId),
-    getBalanceUrl: () => activeModelId === 'minimax-h3' ? '/api/credits/balance?guest_video=1' : '/api/credits/balance',
-    getContext: () => isGuestVideoSelected() ? 'guest-video' : 'account',
+    getBalanceUrl: () => activeModelId === 'minimax-h3' ? '/api/credits/balance?guest_video=1'
+      : getImageModel(activeModelId) ? '/api/credits/balance?guest_image=1' : '/api/credits/balance',
+    getContext: () => isGuestVideoSelected() ? 'guest-video' : isGuestImageSelected() ? 'guest-image' : 'account',
     onBalanceLoaded: (remaining, credits) => {
       guestVideo = credits ? credits.guest === true : studioShell.dataset.authenticated !== 'true';
-      guestRemaining = isGuestVideoSelected() ? remaining : null;
+      guestRemaining = isGuestVideoSelected() || isGuestImageSelected() ? remaining : null;
       updateGuestVideoControls();
+      updateGuestImageControls();
       updateGenerateButtonLabel();
       updateDailyResetNotice();
       if (remaining > 0 && generationStatus.textContent.startsWith(t("Today’s free credits are used up."))) {
@@ -845,11 +861,21 @@ export function initializeStudio() {
         currentCreditBalance.textContent = guestRemaining === null ? t('— seconds remaining')
           : t('{seconds} seconds remaining', { seconds: guestRemaining });
         updateGenerateButtonLabel();
+      } else if (isGuestImageSelected()) {
+        guestRemaining = summary.currentBalance;
+        updateGuestImageControls();
+        generationCreditCost.textContent = imageQuantity.value === '1' ? t('1 free image') : t('{count} free images', { count: Number(imageQuantity.value) });
+        currentCreditBalance.textContent = guestRemaining === null ? t('— images remaining')
+          : t('{count} images remaining', { count: Math.floor(guestRemaining / 5) });
+        updateGenerateButtonLabel();
       }
-      creditInsufficient = isGuestVideoSelected() ? guestRemaining !== null && guestRemaining < 5 : summary.insufficient;
+      creditInsufficient = isGuestVideoSelected() ? guestRemaining !== null && guestRemaining < 5
+        : isGuestImageSelected() ? guestRemaining !== null && guestRemaining < creditCostForQuantity(imageQuantity.value, activeModelId)
+        : summary.insufficient;
+      creditSummary.classList.toggle('is-insufficient', creditInsufficient);
       if (launchNotice) {
         launchNotice.hidden = summary.currentBalance !== 0;
-        launchNotice.textContent = isGuestVideoSelected() ? t('Your free video seconds are used up. Sign up for daily free credits.')
+        launchNotice.textContent = isGuestImageSelected() ? t('Your free images are used up. Sign up for daily free credits.') : isGuestVideoSelected() ? t('Your free video seconds are used up. Sign up for daily free credits.')
           : dailyCreditsUsedMessage() + " " + (isVideoGenerationSelected()
           ? t("Launching soon. Video generation at $0.01/second.")
           : activeModelId === 'gpt-image-2-5-1k'
@@ -986,6 +1012,7 @@ export function initializeStudio() {
       return;
     }
     const generationModelId = activeModelId;
+    const creditContext = isGuestImageSelected() ? 'guest-image' : 'account';
     const generationUsedPoseReference = poseReferenceActive;
     imageGenerationInFlight = true;
     renderImageReferences();
@@ -1016,20 +1043,27 @@ export function initializeStudio() {
       poseResultActionsController?.setVisible(generationUsedPoseReference);
       exampleCarousel.hidden = true;
       updateImageContext();
-      announceCredits(result.credits);
+      announceCredits(result.credits, creditContext);
       const generatedCount = result.images.length;
-      generationStatus.textContent = result.credits
+      generationStatus.textContent = (result.credits?.context ?? creditContext) === 'guest-image' && result.credits
+        ? t('Image generated · {count} free images remaining.', { count: Math.floor(result.credits.remaining / 5) }) : result.credits
         ? t('{count} image{plural} generated · {remaining} credits remaining.', { count: generatedCount, plural: generatedCount === 1 ? '' : 's', remaining: result.credits.remaining })
         : t('{count} image{plural} generated.', { count: generatedCount, plural: generatedCount === 1 ? '' : 's' });
       generationStatus.className = "generation-status is-success";
     } catch (error) {
       if (destroyed) return;
-      announceCredits(error?.credits);
+      announceCredits(error?.credits, creditContext);
       if (error?.status === 401 || error?.code === "AUTH_REQUIRED") {
         window.dispatchEvent(new CustomEvent("seedance:auth-required"));
       }
       const requiredCredits = error?.credits?.cost || creditCostForQuantity(imageQuantity.value, generationModelId);
-      generationStatus.textContent = error?.code === "INSUFFICIENT_CREDITS"
+      if (error?.code === 'GUEST_TRIAL_USED') {
+        if (isGuestImageSelected()) guestRemaining = 0;
+        window.dispatchEvent(new CustomEvent('seedance:auth-required', { detail: { mode: 'register' } }));
+      }
+      generationStatus.textContent = error?.code === 'GUEST_IMAGE_INSUFFICIENT' || error?.code === 'GUEST_TRIAL_USED'
+        ? error?.credits?.remaining > 0 ? t('Choose fewer images or sign up to keep creating.') : t('Your free images are used up. Sign up for daily free credits.')
+        : error?.code === "INSUFFICIENT_CREDITS"
         ? error?.credits?.remaining === 0
           ? dailyCreditsUsedMessage()
           : `${t('You need {cost} credits to generate.', { cost: requiredCredits })} ${error.credits ? t('Current balance: {remaining}.', { remaining: error.credits.remaining }) : ""}`.trim()
@@ -1048,7 +1082,7 @@ export function initializeStudio() {
 
   listen(generateButton, "click", async () => {
     if (generateButton.disabled) return;
-    if (isGuestVideoSelected() && guestRemaining === 0) {
+    if ((isGuestVideoSelected() || isGuestImageSelected()) && guestRemaining === 0) {
       window.dispatchEvent(new CustomEvent('seedance:auth-required', { detail: { mode: 'register' } }));
       return;
     }

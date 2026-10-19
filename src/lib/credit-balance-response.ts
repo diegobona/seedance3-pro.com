@@ -6,7 +6,7 @@ interface CreditBalanceResponseOptions {
   request: Request
   getSession: (request: Request) => Promise<SessionLike>
   getBalance: (userId: string) => Promise<number>
-  getGuestBalance?: () => Promise<{ remaining: number; guest: boolean; generationCost: number; maxDuration: number; expiresDaily: boolean }>
+  getGuestBalance?: () => Promise<{ remaining: number; guest: boolean; generationCost: number; maxDuration?: number; maxImages?: number; remainingImages?: number; expiresDaily: boolean }>
 }
 
 export async function getCreditBalanceResponse({ request, getSession, getBalance, getGuestBalance }: CreditBalanceResponseOptions) {

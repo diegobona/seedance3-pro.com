@@ -11,26 +11,27 @@ import {
 import { createAppDatabase } from '../../../db'
 import { createGenerationCreditStore } from '../../../db/generation-credits'
 import { createAuth } from '../../../lib/auth'
-import { protectImageGeneration } from '../../../lib/protected-image-generation'
+import { generateImageWithGuestAccess } from '../../../lib/guest-image-generation'
+import { createGuestImageTrialStore } from '../../../db/guest-image-trials'
 import { prepareImageAnimation } from '../../../lib/image-to-video'
 
 export const Route = createFileRoute('/api/images/generate')({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        let userId = ''
-        const creditStore = createGenerationCreditStore(createAppDatabase(env))
-        return protectImageGeneration({
+        const db = createAppDatabase(env)
+        const creditStore = createGenerationCreditStore(db)
+        return generateImageWithGuestAccess({
           request,
+          guestOptions: { secret: env.BETTER_AUTH_SECRET, store: createGuestImageTrialStore(db) },
           getSession: async () => {
             const session = await createAuth(request, env).api.getSession({ headers: request.headers })
-            userId = session?.user?.id || ''
             return session?.user?.id ? { user: { id: session.user.id } } : null
           },
           creditStore,
           preflight: (protectedRequest) => preflightImageGenerationRequest(protectedRequest, env),
           getCreditCost: getRequestedImageCreditCost,
-          generate: async (protectedRequest) => handleImageGenerationRequest(
+          generate: async (protectedRequest, userId) => handleImageGenerationRequest(
             protectedRequest,
             env,
             { skipPreflight: true, fetchImpl: createTuziTlsFetch(connect), prepareImages: (images: Array<{ url?: string; dataUrl?: string }>) =>

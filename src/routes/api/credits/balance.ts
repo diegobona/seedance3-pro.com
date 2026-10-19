@@ -7,6 +7,8 @@ import { createAuth } from '../../../lib/auth'
 import { getCreditBalanceResponse } from '../../../lib/credit-balance-response'
 import { createGuestVideoTrialStore } from '../../../db/guest-video-trials'
 import { getGuestVideoBalance, guestVideoTrialErrorResponse } from '../../../lib/guest-video-trial'
+import { createGuestImageTrialStore } from '../../../db/guest-image-trials'
+import { getGuestImageBalance } from '../../../lib/guest-image-trial'
 
 export const Route = createFileRoute('/api/credits/balance')({
   server: {
@@ -25,6 +27,10 @@ export const Route = createFileRoute('/api/credits/balance')({
             ...(new URL(request.url).searchParams.get('guest_video') === '1' ? {
               getGuestBalance: () => getGuestVideoBalance(request, {
                 secret: env.BETTER_AUTH_SECRET, store: createGuestVideoTrialStore(db),
+              }),
+            } : new URL(request.url).searchParams.get('guest_image') === '1' ? {
+              getGuestBalance: () => getGuestImageBalance(request, {
+                secret: env.BETTER_AUTH_SECRET, store: createGuestImageTrialStore(db),
               }),
             } : {}),
           })

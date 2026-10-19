@@ -2,13 +2,22 @@ import { createFileRoute } from '@tanstack/react-router'
 import '@tanstack/react-start'
 import { env } from 'cloudflare:workers'
 import { createAuth } from '../../../lib/auth'
-import { transferGeneratedImage } from '../../../lib/image-to-video'
+import { createAppDatabase } from '../../../db'
+import { createGuestImageTrialStore } from '../../../db/guest-image-trials'
+import { createGuestVideoTrialStore } from '../../../db/guest-video-trials'
+import { transferImageWithGuestAccess } from '../../../lib/guest-image-animation'
 
 export const Route = createFileRoute('/api/images/animate')({
   server: { handlers: { POST: async ({ request }) => {
     try {
-      return await transferGeneratedImage(request, {
-        getUserId: async () => (await createAuth(request, env).api.getSession({ headers: request.headers }))?.user?.id,
+      const db = createAppDatabase(env)
+      return await transferImageWithGuestAccess(request, {
+        secret: env.BETTER_AUTH_SECRET,
+        getSession: async () => {
+          const session = await createAuth(request, env).api.getSession({ headers: request.headers })
+          return session?.user?.id ? { user: { id: session.user.id } } : null
+        },
+        imageStore: createGuestImageTrialStore(db), videoStore: createGuestVideoTrialStore(db),
         bucket: env.VIDEO_REFERENCES,
         limiter: env.VIDEO_UPLOAD_RATE_LIMITER,
       })

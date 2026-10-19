@@ -2,7 +2,7 @@ import { GPT_IMAGE_2_CREDIT_COST, type GenerationCreditStore, withCreditHeaders 
 
 const DAILY_CREDITS_USED_MESSAGE = 'Today’s free credits are used up. Your daily allowance will refresh at the next reset.'
 
-type SessionLike = { user: { id: string } } | null
+type SessionLike = { user: { id: string; isGuest?: boolean } } | null
 
 interface ProtectedImageGenerationOptions {
   request: Request
@@ -85,6 +85,13 @@ export async function protectImageGeneration({ request, getSession, creditStore,
   const preflightResponse = preflight ? await preflight(request) : null
   if (preflightResponse) return preflightResponse
 
+  const guest = session.user.isGuest === true
+  const creditResponse = (response: Response, cost: number, remaining: number) => {
+    const result = withCreditHeaders(response, cost, remaining)
+    result.headers.set('x-seedance-credit-scope', guest ? 'guest-image' : 'account')
+    return result
+  }
+
   const requestedCreditCost = getCreditCost ? await getCreditCost(request) : GPT_IMAGE_2_CREDIT_COST
   const creditCost = Number.isSafeInteger(requestedCreditCost) && requestedCreditCost > 0
     ? requestedCreditCost
@@ -93,10 +100,10 @@ export async function protectImageGeneration({ request, getSession, creditStore,
   const reservation = await creditStore.reserve(session.user.id, creditCost)
   if (!reservation) {
     const remainingCredits = await creditStore.getBalance(session.user.id)
-    return withCreditHeaders(Response.json({
+    return creditResponse(Response.json({
       success: false,
-      code: 'INSUFFICIENT_CREDITS',
-      message: remainingCredits === 0
+      code: guest ? 'GUEST_IMAGE_INSUFFICIENT' : 'INSUFFICIENT_CREDITS',
+      message: guest ? 'Your free image allowance is insufficient. Choose fewer images or sign up to keep creating.' : remainingCredits === 0
         ? DAILY_CREDITS_USED_MESSAGE
         : `You need ${creditCost} credits to generate this image.`,
       credits: { cost: creditCost, remaining: remainingCredits },
@@ -111,7 +118,7 @@ export async function protectImageGeneration({ request, getSession, creditStore,
     response = await generate(request)
   } catch {
     const refunded = await retryCreditTransition(() => creditStore.refund(reservation.id))
-    return withCreditHeaders(Response.json({
+    return creditResponse(Response.json({
       success: false,
       code: 'GENERATION_FAILED',
       message: 'Image generation failed. Your credits were refunded.',
@@ -123,12 +130,12 @@ export async function protectImageGeneration({ request, getSession, creditStore,
 
   if (!response.ok) {
     const refunded = await retryCreditTransition(() => creditStore.refund(reservation.id))
-    return withCreditHeaders(response, creditCost, refunded.remainingCredits)
+    return creditResponse(response, creditCost, refunded.remainingCredits)
   }
 
   if (!await hasUsableImage(response)) {
     const refunded = await retryCreditTransition(() => creditStore.refund(reservation.id))
-    return withCreditHeaders(Response.json({
+    return creditResponse(Response.json({
       success: false,
       code: 'INVALID_GENERATION_RESULT',
       message: 'Image generation did not return a usable image. Your credits were refunded.',
@@ -141,5 +148,5 @@ export async function protectImageGeneration({ request, getSession, creditStore,
   await retryCreditTransition(() => creditStore.settle(reservation.id))
   const remainingCredits = await retryCreditTransition(() => creditStore.getBalance(session.user.id))
     .catch(() => reservation.remainingCredits)
-  return withCreditHeaders(response, creditCost, remainingCredits)
+  return creditResponse(response, creditCost, remainingCredits)
 }

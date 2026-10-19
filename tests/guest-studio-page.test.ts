@@ -44,3 +44,19 @@ test('GPT Image 2.5 retains the requested intro removal while adding guest H3 su
   assert.doesNotMatch(html, /class="model-landing-intro"/)
   assert.match(html, /<h1\b[^>]*id="model-name"/)
 })
+
+test('both image landing pages offer the same two-image guest allowance without registration', async () => {
+  for (const model of ['gpt-image-2', 'gpt-image-2-5-1k']) {
+    for (const prefix of ['', '/zh']) {
+      const html = await render(`${prefix}/app/image/${model}`, model)
+      const notice = html.match(/<aside\b[^>]*class="studio-trial-notice"[^>]*>([\s\S]*?)<\/aside>/)?.[1] ?? ''
+      assert.match(notice, prefix ? /无需注册和登录/ : /No registration or login required/)
+      assert.match(notice, prefix ? /共用 2 张免费图片额度/ : /share 2 free images/)
+      assert.doesNotMatch(notice, /<button|15 credits|15 积分/)
+      const quantity = html.match(/<select\b[^>]*id="image-quantity"[^>]*>([\s\S]*?)<\/select>/)?.[1] ?? ''
+      assert.match(quantity, /<option\b[^>]*value="3"[^>]*disabled/)
+      assert.match(html, prefix ? /免费生成 1 张图片/ : /Generate 1 image · free/)
+      assert.match(html, prefix ? /剩余 — 张图片/ : /— images remaining/)
+    }
+  }
+})

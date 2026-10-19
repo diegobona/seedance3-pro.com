@@ -141,3 +141,13 @@ export const guestVideoTrial = sqliteTable('guest_video_trial', {
 ])
 
 export const authSchema = { user, session, account, verification }
+
+export const guestImageTrial = sqliteTable('guest_image_trial', {
+  id: text('id').primaryKey().notNull(),
+  userId: text('user_id').notNull().references(() => user.id, { onDelete: 'cascade' }),
+  networkHash: text('network_hash').notNull(),
+  createdAt: timestamp('created_at').default(nowMilliseconds).notNull(),
+}, (table) => [
+  uniqueIndex('guest_image_trial_user_idx').on(table.userId),
+  uniqueIndex('guest_image_trial_network_idx').on(table.networkHash),
+])

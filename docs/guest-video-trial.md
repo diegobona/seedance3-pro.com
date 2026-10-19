@@ -4,9 +4,9 @@
 
 游客用签名 HttpOnly / Secure / SameSite=Lax Cookie 持有身份。D1 的 `guest_video_trial` 关联 `plan=guest` 的非登录账户，并用网络 HMAC 的唯一索引防止清 Cookie 重复领额度；仅接受 Cloudflare 提供的可信客户端 IP，数据库不存原始 IP。共享公网 IP 共用一次初始资格；丢失 Cookie 无法取回该身份剩余额度。这是基础防滥用，不是实名识别。
 
-游客只可使用视频生成、任务状态和视频参考图，不获得图片生成的登录权限。中途登录后仍可凭已验证的游客 Cookie 访问自己的游客任务和参考图；新提交使用当前登录账户余额。前端区分 account / guest-video 余额事件，游客任务完成不会覆盖登录账户显示的积分。
+游客可使用视频生成、任务状态和视频参考图，不获得账户登录权限。GPT Image 2 / 2.5 另有共用 2 张的独立游客图片额度，见 `guest-image-trial.md`。中途登录后仍可凭已验证的游客 Cookie 访问自己的游客任务和参考图；新提交使用当前登录账户余额。前端区分 account / guest-video / guest-image 余额事件，游客任务完成不会覆盖登录账户显示的积分。
 
-`GET /api/credits/balance?guest_video=1` 只查询或预览游客秒数，不创建身份。普通余额接口仍要求登录。视频请求先校验参数，再创建游客身份；图片接口仍通过 Better Auth 校验。
+`GET /api/credits/balance?guest_video=1` 只查询或预览游客秒数，不创建身份。普通余额接口仍要求登录。视频请求先校验参数，再创建游客身份；图片接口优先使用 Better Auth 登录账户，未登录时使用独立的游客图片身份。
 
 ## 2026-10-19 发布修复
 
