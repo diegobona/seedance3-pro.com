@@ -11,8 +11,9 @@ const examples = exampleSlugs.map((slug) => {
   return imageCase
 })
 
-export function GptImageExamples() {
+export function GptImageExamples({ modelId = 'gpt-image-2' }: { modelId?: 'gpt-image-2' | 'gpt-image-2-5-1k' }) {
   const { t } = useSiteI18n()
+  const isGpt25 = modelId === 'gpt-image-2-5-1k'
   const [selectedIndex, setSelectedIndex] = useState(0)
   const selected = examples[selectedIndex]
 
@@ -32,8 +33,8 @@ export function GptImageExamples() {
   }
 
   return (
-    <section className="context-card h3-examples gpt-image-examples" id="gpt-image-examples" aria-label={t("GPT Image 2 image examples")}>
-      <div className="h3-examples-heading"><span>{t("IMAGE EXAMPLES")}</span><small>{t("MADE WITH GPT IMAGE 2")}</small></div>
+    <section className="context-card h3-examples gpt-image-examples" id="gpt-image-examples" aria-label={t(isGpt25 ? "GPT Image 2.5 image examples" : "GPT Image 2 image examples")}>
+      <div className="h3-examples-heading"><span>{t("IMAGE EXAMPLES")}</span><small>{t(isGpt25 ? "TRY WITH GPT IMAGE 2.5" : "MADE WITH GPT IMAGE 2")}</small></div>
       <div className="gpt-example-frame">
         <img key={selected.slug} src={selected.imageUrl} alt={t(selected.summary)} />
       </div>

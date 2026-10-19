@@ -45,6 +45,11 @@ test('GPT Image 2.5 retains the requested intro removal while adding guest H3 su
   const html = await render('/zh/app/image/gpt-image-2-5-1k', 'gpt-image-2-5-1k')
   assert.doesNotMatch(html, /class="model-landing-intro"/)
   assert.match(html, /<h1\b[^>]*id="model-name"/)
+  assert.match(html, /data-preview-model="gpt-image-2-5-1k"><section[^>]*id="gpt-image-examples"/)
+  assert.match(html, /class="gpt-example-frame"><img[^>]*src="\/media\/showcase-gpt-image-2\//)
+  assert.match(html, /class="h3-example-prompt">Luxury commercial product photograph/)
+  assert.match(html, /试一试 ↗/)
+  assert.doesNotMatch(html, /GPT Image 2\.5 quick start|Describe your image or edit|model-video-guide/)
 })
 
 test('both image landing pages offer the same two-image guest allowance without registration', async () => {

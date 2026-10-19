@@ -51,7 +51,7 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
   const initiallyGpt25 = initialModel === 'gpt-image-2-5-1k'
   const initiallyVideo = initiallyH3 || initiallySeedance25
   const imageSizes = getImageModel(initialModel)?.sizes ?? getImageModel('gpt-image-2')!.sizes
-  const showGptImageExamples = initialModel === 'gpt-image-2' && modelLanding
+  const showGptImageExamples = initialModel === 'gpt-image-2' && modelLanding || initiallyGpt25
   const [authOpen, setAuthOpen] = useState(false)
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login')
   const { data: session } = authClient.useSession()
@@ -204,8 +204,7 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
                 <div className="generation-preview" id="generation-preview" tabIndex={-1} role="region" aria-label={t("Generation preview")} data-state="idle" aria-busy="false">
                   <div id="preview-idle">
                 {initiallyH3 && modelLanding && <div data-preview-model="minimax-h3"><H3VideoExamples /></div>}
-                {showGptImageExamples && <div data-preview-model="gpt-image-2"><GptImageExamples /></div>}
-                {initiallyGpt25 && <section className="context-card model-video-guide" data-preview-model="gpt-image-2-5-1k" aria-label={t("GPT Image 2.5 quick start")}><p className="model-landing-eyebrow">{t("5 credits/image")}</p><h2>{t("Describe your image or edit")}</h2><p>{t("Start with a text prompt or add up to 16 references. Describe what to change and what to preserve, then choose the aspect ratio and image count.")}</p><p>{t("Find a starting point in the GPT Image 2 prompts or Christmas templates, then adapt it to your subject.")}</p><a href={path('/gpt-image-2-prompts')}>{t("GPT Image 2 Prompt Library")}</a>{' · '}<a href={path('/ai-christmas-photo-prompt')}>{t("Christmas Photo Prompts")}</a></section>}
+                {showGptImageExamples && <div data-preview-model={initialModel}><GptImageExamples modelId={initiallyGpt25 ? 'gpt-image-2-5-1k' : 'gpt-image-2'} /></div>}
                 <section className="context-card pose-reference-card" id="pose-reference-card" hidden>
                   <div className="result-heading"><span>{t("YOUR POSE SCENE")}</span><small>{t("Pose Studio")}</small></div>
                   <div className="result-frame"><img id="pose-scene-preview" alt={t("Your captured Pose Studio scene")} /></div>

@@ -170,6 +170,7 @@ export function initializeStudio() {
   const exampleCarousel = document.getElementById("example-carousel");
   const hasDedicatedImageExamples = Boolean(document.getElementById("gpt-image-examples"));
   const imageExamples = document.getElementById("gpt-image-examples");
+  const imageExamplesModel = imageExamples?.closest('[data-preview-model]')?.dataset.previewModel || 'gpt-image-2';
   const poseReferenceCard = document.getElementById("pose-reference-card");
   const poseScenePreview = document.getElementById("pose-scene-preview");
   const exampleCarouselSlides = document.querySelectorAll(".example-carousel-slide");
@@ -874,7 +875,7 @@ export function initializeStudio() {
     const isIdle = previewController.getState(activeModelId)?.phase === 'idle';
     const showPose = isIdle && Boolean(getImageModel(activeModelId)) && poseReferenceActive;
     if (poseReferenceCard) poseReferenceCard.hidden = !showPose;
-    if (imageExamples) imageExamples.hidden = activeModelId !== 'gpt-image-2' || showPose;
+    if (imageExamples) imageExamples.hidden = activeModelId !== imageExamplesModel || showPose;
     exampleCarousel.hidden = activeModelId !== 'gpt-image-2' || hasDedicatedImageExamples || showPose;
     let hasExamples = false;
     generationOutput.querySelectorAll('[data-preview-model]').forEach(element => {

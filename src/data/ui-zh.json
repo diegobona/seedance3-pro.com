@@ -655,5 +655,7 @@
   "Generating your video…": "正在生成视频…",
   "Generating your images…": "正在生成图片…",
   "The video is still processing. Continue checking its progress.": "视频仍在处理中，可继续查看进度。",
-  "Generating…": "正在生成…"
+  "Generating…": "正在生成…",
+  "GPT Image 2.5 image examples": "GPT Image 2.5 图像示例",
+  "TRY WITH GPT IMAGE 2.5": "使用 GPT IMAGE 2.5 试一试"
 }
