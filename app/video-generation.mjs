@@ -1,4 +1,5 @@
 import { t, localizedErrorMessage } from './i18n.mjs';
+import { prepareVideoReferenceFrame } from './video-reference-frame.mjs';
 const LOCAL_TASK_UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const TERMINAL_STATUSES = new Set(["succeeded", "failed", "expired", "submission_unknown"]);
 const RETRIABLE_HTTP_STATUSES = new Set([408, 425, 429, 500, 502, 503, 504]);
@@ -235,6 +236,7 @@ export async function requestVideoGeneration({
   duration = 5,
   aspectRatio = "16:9",
   referenceFiles = [],
+  prepareReferenceImpl = prepareVideoReferenceFrame,
   onUpload = () => {},
   fetchImpl = globalThis.fetch,
   signal,
@@ -250,10 +252,12 @@ export async function requestVideoGeneration({
       throw videoError(t("Choose PNG, JPEG or WebP images, up to 10 MB each."));
     }
     onUpload({ index: index + 1, total: referenceFiles.length });
+    const prepared = await prepareReferenceImpl(file, { aspectRatio, signal });
+    throwIfAborted(signal);
     const upload = await fetchImpl("/api/videos/references", {
       method: "POST", credentials: "same-origin",
-      headers: { "content-type": file.type, accept: "application/json" },
-      body: file, signal,
+      headers: { "content-type": prepared.type, accept: "application/json" },
+      body: prepared, signal,
     });
     const result = await responsePayload(upload);
     if (!upload.ok || !result?.success) throw errorFromResponse(upload, result);

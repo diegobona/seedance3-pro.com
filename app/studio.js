@@ -12,6 +12,7 @@ import { getImageModel } from './image-models.mjs';
 import { prepareImageForVideo, loadVideoReference } from "./image-to-video.mjs";
 import { validateImageReferences } from "./image-references.mjs";
 import { pollVideoGenerationTask, requestVideoGeneration } from "./video-generation.mjs";
+import { videoReferenceFrameSize } from './video-reference-frame.mjs';
 import { buildPoseReferencePrompt } from "./pose-transfer.mjs";
 import { createPoseResultActionsController } from "./pose-result-actions.mjs";
 import {
@@ -466,6 +467,8 @@ export function initializeStudio() {
       const card = document.createElement("div");
       card.className = "video-reference-item";
       const image = Object.assign(document.createElement("img"), { src: reference.url, alt: t('Image {number}: {name}', { number: index + 1, name: reference.file.name }) });
+      const frame = videoReferenceFrameSize(videoAspectRatio.value);
+      image.style.aspectRatio = `${frame.width} / ${frame.height}`;
       const label = Object.assign(document.createElement("span"), { textContent: t('Image {number}', { number: index + 1 }) });
       const remove = Object.assign(document.createElement("button"), { type: "button", textContent: "×", disabled: videoPolling });
       remove.setAttribute("aria-label", t('Remove Image {number}', { number: index + 1 }));
@@ -1097,10 +1100,12 @@ export function initializeStudio() {
     updateGenerateButton();
   });
   listen(videoDuration, "change", updateGenerateButtonLabel);
+  listen(videoAspectRatio, 'change', renderVideoReferences);
   videoModeButtons.forEach((button) => listen(button, "click", () => {
     if (videoPolling) return;
     videoMode = button.dataset.videoMode;
     updateVideoMode();
+    renderVideoReferences();
     updateGenerateButton();
   }));
   if (videoReferenceAdd && videoReferenceInput) {

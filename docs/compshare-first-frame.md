@@ -32,6 +32,18 @@ values fail closed.
 
 ## Request and result contract
 
+The shared browser video request prepares every reference before upload. It
+decodes image orientation, scales the complete original with one scale factor,
+centers it on an opaque black canvas, and exports PNG at the provider's native
+480P dimensions: 864x480 for landscape or 480x864 for portrait. Empty space is
+padded; the image is never cropped or stretched. This covers file selection,
+clipboard paste, generated-image transfers and explicit retries. Each generation
+uses its captured ratio and original File, so changing ratios does not reuse an
+already-padded frame. Reference thumbnails show the same contained composition.
+Preparation errors or aborts stop before upload/submission. Text-only generation
+and GET-only task resume do not perform image processing. Existing reference mode
+aspect-ratio availability is unchanged; this adds no new ratio options.
+
 `POST https://cp.compshare.cn/minimax/v2/video_generation` sends JSON with
 `Authorization: Bearer <COMPSHARE_API_KEY>`, `Accept: application/json`, and
 `Idempotency-Key: seedance-video:<reserved local task UUID>`:

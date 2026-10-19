@@ -286,6 +286,28 @@ test('H3 rejects multiple selections and a pasted second image while retaining t
   assert.match(element('video-reference-grid').querySelector('img').alt, /second.png/);
 });
 
+test('reference previews preserve the complete original and update the native frame when the ratio changes', async context => {
+  const { element, change, document } = await setup(context, { modelId: 'minimax-h3' });
+  document.querySelector('[data-video-mode="reference"]').click();
+  const file = new File(['unchanged reference'], 'near-square.jpg', { type: 'image/jpeg' });
+  element('video-reference-input').files = [file];
+  element('video-reference-input').dispatchEvent(new Event('change'));
+  const source = element('video-reference-grid').querySelector('img').src;
+  for (const [ratio, expected] of [['16:9', '864 / 480'], ['9:16', '480 / 864'], ['16:9', '864 / 480']]) {
+    change('video-aspect-ratio', ratio);
+    const image = element('video-reference-grid').querySelector('img');
+    assert.equal(image.style.aspectRatio, expected);
+    assert.equal(image.src, source, 'ratio changes reuse the original preview rather than an already-padded frame');
+  }
+  assert.equal(await file.text(), 'unchanged reference');
+  assert.match(element('video-reference-grid').querySelector('img').alt, /near-square.jpg/);
+  document.querySelector('[data-video-mode="text"]').click();
+  change('video-aspect-ratio', '1:1');
+  document.querySelector('[data-video-mode="reference"]').click();
+  assert.equal(element('video-aspect-ratio').value, '16:9');
+  assert.equal(element('video-reference-grid').querySelector('img').style.aspectRatio, '864 / 480');
+});
+
 test('switching H3 back to text mode does not upload or submit hidden reference images', async context => {
   const { element, input, document, requests } = await setup(context, { modelId: 'minimax-h3' });
   document.querySelector('[data-video-mode="reference"]').click();

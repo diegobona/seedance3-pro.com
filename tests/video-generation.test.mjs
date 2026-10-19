@@ -16,7 +16,7 @@ test("image-to-video uploads one reference before submitting and polling", async
   const ids = [crypto.randomUUID()];
   const files = [new File(['first'], 'a.png', { type: 'image/png' })];
   let uploads = 0;
-  const result = await requestVideoGeneration({ prompt: 'Make a scene', referenceFiles: files, fetchImpl: async (url, init) => {
+  const result = await requestVideoGeneration({ prompt: 'Make a scene', referenceFiles: files, prepareReferenceImpl: async file => file, fetchImpl: async (url, init) => {
     if (url === '/api/videos/references') {
       assert.equal(init.body, files[uploads]);
       return Response.json({ success: true, id: ids[uploads++] }, { status: 201 });
@@ -45,7 +45,7 @@ test("multiple video reference files are rejected before upload or generation", 
 test("a rejected upload never submits a paid video job", async () => {
   const { requestVideoGeneration } = await import('../app/video-generation.mjs');
   let calls = 0;
-  await assert.rejects(requestVideoGeneration({ prompt: 'Scene', referenceFiles: [new File(['data'], 'x.png', { type: 'image/png' })], fetchImpl: async (url) => {
+  await assert.rejects(requestVideoGeneration({ prompt: 'Scene', referenceFiles: [new File(['data'], 'x.png', { type: 'image/png' })], prepareReferenceImpl: async file => file, fetchImpl: async (url) => {
     calls++;
     assert.equal(url, '/api/videos/references');
     return Response.json({ success: false, message: 'Log in' }, { status: 401 });
@@ -56,6 +56,47 @@ test("a rejected upload never submits a paid video job", async () => {
 function jsonResponse(payload, { status = 200, headers = {} } = {}) {
   return Response.json(payload, { status, headers });
 }
+
+test('every new reference generation prepares its captured ratio and uploads the prepared image', async () => {
+  const { requestVideoGeneration } = await import('../app/video-generation.mjs');
+  const source = new File(['unmodified source'], 'source.jpg', { type: 'image/jpeg' });
+  for (const aspectRatio of ['16:9', '9:16']) {
+    const prepared = new Blob(['fitted image'], { type: 'image/png' });
+    let preparedCount = 0;
+    await requestVideoGeneration({ prompt: 'Animate', aspectRatio, referenceFiles: [source],
+      prepareReferenceImpl: async (file, options) => {
+        assert.equal(file, source); assert.equal(options.aspectRatio, aspectRatio); preparedCount++; return prepared;
+      }, fetchImpl: async (url, options) => {
+        if (url === '/api/videos/references') {
+          assert.equal(preparedCount, 1); assert.equal(options.body, prepared);
+          assert.equal(options.headers['content-type'], 'image/png');
+          return Response.json({ success: true, id: crypto.randomUUID() }, { status: 201 });
+        }
+        if (url === '/api/videos/generate') {
+          assert.equal(JSON.parse(options.body).aspectRatio, aspectRatio);
+          return Response.json({ success: true, task: { id: LOCAL_TASK_ID, status: 'queued' } }, { status: 202 });
+        }
+        return Response.json({ success: true, task: { id: LOCAL_TASK_ID, status: 'succeeded', resultUrl: 'https://media.example/fitted.mp4' } });
+      } });
+    assert.equal(preparedCount, 1);
+  }
+  assert.equal(await source.text(), 'unmodified source');
+});
+
+test('failed or aborted frame preparation prevents uploads and paid video submission', async () => {
+  const { requestVideoGeneration } = await import('../app/video-generation.mjs');
+  for (const abort of [false, true]) {
+    const controller = new AbortController(); let calls = 0;
+    await assert.rejects(requestVideoGeneration({ prompt: 'Animate', signal: controller.signal,
+      referenceFiles: [new File(['source'], 'a.png', { type: 'image/png' })],
+      prepareReferenceImpl: async () => {
+        if (abort) { controller.abort(); return new Blob(['png'], { type: 'image/png' }); }
+        throw new Error('Cannot prepare reference image');
+      }, fetchImpl: async () => { calls++; throw new Error('Network must not be reached'); },
+    }), error => abort ? error.name === 'AbortError' : /Cannot prepare/.test(error.message));
+    assert.equal(calls, 0);
+  }
+});
 
 test("video generation submits a fixed 480p payload and polls only the local task id", async () => {
   const { requestVideoGeneration } = await import("../app/video-generation.mjs");

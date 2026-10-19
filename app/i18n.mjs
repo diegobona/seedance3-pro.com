@@ -3,6 +3,8 @@ import { localeFromPath } from './site-locale.mjs';
 // Keys remain readable English; prompts, model IDs and provider enum values are
 // deliberately kept out of this dictionary's automatic UI translation path.
 export const ZH_MESSAGES = Object.freeze({
+  'Choose a supported video aspect ratio.': '请选择支持的视频画幅。',
+  'Could not prepare the reference image. Please choose it again.': '参考图处理失败，请重新选择图片。',
   "Generation preview": "生成预览",
   "Your result will appear here": "生成结果将在这里显示",
   "Describe what you want to create, then generate.": "描述你想创作的内容，然后开始生成。",
