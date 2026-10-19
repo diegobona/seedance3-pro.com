@@ -3,6 +3,7 @@ import { localeFromPath } from './site-locale.mjs';
 // Keys remain readable English; prompts, model IDs and provider enum values are
 // deliberately kept out of this dictionary's automatic UI translation path.
 export const ZH_MESSAGES = Object.freeze({
+  'Sign up': '注册',
   'No registration or login required.': '无需注册和登录',
   'GPT Image 2 and 2.5 share 2 free images.': 'GPT Image 2 和 2.5 共用 2 张免费图片额度',
   'Generate {count} images · free': '免费生成 {count} 张图片',

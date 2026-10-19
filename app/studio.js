@@ -2,6 +2,7 @@ import { t, localizedErrorMessage, currentLocale } from './i18n.mjs';
 import { formatCreditResetTime } from './daily-credits.mjs';
 import { guestVideoDurationState } from './guest-video.mjs';
 import { guestImageQuantityState } from './guest-image.mjs';
+import { renderGuestTrialNotice } from './guest-trial-notice.mjs';
 import { localizedPath } from './site-locale.mjs';
 import { buildModelUrl, normalizeModelId } from "./model-routing.mjs";
 import { canonicalModelPath, modelIdFromPath } from "./seo-routes.mjs";
@@ -883,8 +884,12 @@ export function initializeStudio() {
       creditSummary.classList.toggle('is-insufficient', creditInsufficient);
       if (launchNotice) {
         launchNotice.hidden = summary.currentBalance !== 0;
-        launchNotice.textContent = isGuestImageSelected() ? t('Your free images are used up. Sign up for daily free credits.') : isGuestVideoSelected() ? t('Your free video seconds are used up. Sign up for daily free credits.')
-          : dailyCreditsUsedMessage() + " " + (isVideoGenerationSelected()
+        if (isGuestImageSelected() || isGuestVideoSelected()) {
+          renderGuestTrialNotice(launchNotice, isGuestImageSelected() ? 'image' : 'video', {
+            href: window.location.href,
+            onSignup: () => window.dispatchEvent(new CustomEvent('seedance:auth-required', { detail: { mode: 'register' } })),
+          });
+        } else launchNotice.textContent = dailyCreditsUsedMessage() + " " + (isVideoGenerationSelected()
           ? t("Launching soon. Video generation at $0.01/second.")
           : activeModelId === 'gpt-image-2-5-1k'
             ? t('GPT Image 2.5 uses 5 trial credits per image.')
@@ -1077,6 +1082,11 @@ export function initializeStudio() {
           ? dailyCreditsUsedMessage()
           : `${t('You need {cost} credits to generate.', { cost: requiredCredits })} ${error.credits ? t('Current balance: {remaining}.', { remaining: error.credits.remaining }) : ""}`.trim()
         : localizedErrorMessage(error?.message, error?.code, 'Image generation failed.');
+      if ((error?.code === 'GUEST_IMAGE_INSUFFICIENT' && error?.credits?.remaining === 0) || error?.code === 'GUEST_TRIAL_USED') {
+        renderGuestTrialNotice(generationStatus, 'image', { href: window.location.href,
+          onSignup: () => window.dispatchEvent(new CustomEvent('seedance:auth-required', { detail: { mode: 'register' } })),
+        });
+      }
       generationStatus.className = "generation-status is-error";
     } finally {
       if (!destroyed) {

@@ -78,6 +78,13 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
       setAuthOpen(true)
     }
     window.addEventListener('seedance:auth-required', requestLogin)
+    const signupUrl = new URL(window.location.href)
+    if (signupUrl.searchParams.get('auth') === 'register') {
+      setAuthMode('register')
+      setAuthOpen(true)
+      signupUrl.searchParams.delete('auth')
+      window.history.replaceState(window.history.state, '', signupUrl.href)
+    }
     return () => {
       disposed = true
       studioCleanup?.()
