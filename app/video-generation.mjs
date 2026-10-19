@@ -244,7 +244,7 @@ export async function requestVideoGeneration({
 } = {}) {
   throwIfAborted(signal);
   const referenceImageIds = [];
-  if (!Array.isArray(referenceFiles) || referenceFiles.length > 9) throw videoError(t("Choose up to 9 reference images."));
+  if (!Array.isArray(referenceFiles) || referenceFiles.length > 1) throw videoError(t("H3 supports only one reference image. Remove the current image before adding another."));
   for (const [index, file] of referenceFiles.entries()) {
     if (!["image/png", "image/jpeg", "image/webp"].includes(file.type) || !file.size || file.size > 10 * 1024 * 1024) {
       throw videoError(t("Choose PNG, JPEG or WebP images, up to 10 MB each."));

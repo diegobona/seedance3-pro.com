@@ -11,10 +11,10 @@ test('guest status credits retain their owner scope when resuming after login', 
   assert.deepEqual(result.credits, { cost: 5, remaining: 5, context: 'guest-video' });
 });
 
-test("image-to-video uploads references in order before submitting and polling", async () => {
+test("image-to-video uploads one reference before submitting and polling", async () => {
   const { requestVideoGeneration } = await import('../app/video-generation.mjs');
-  const ids = [crypto.randomUUID(), crypto.randomUUID()];
-  const files = [new File(['first'], 'a.png', { type: 'image/png' }), new File(['second'], 'b.webp', { type: 'image/webp' })];
+  const ids = [crypto.randomUUID()];
+  const files = [new File(['first'], 'a.png', { type: 'image/png' })];
   let uploads = 0;
   const result = await requestVideoGeneration({ prompt: 'Make a scene', referenceFiles: files, fetchImpl: async (url, init) => {
     if (url === '/api/videos/references') {
@@ -22,13 +22,24 @@ test("image-to-video uploads references in order before submitting and polling",
       return Response.json({ success: true, id: ids[uploads++] }, { status: 201 });
     }
     if (url === '/api/videos/generate') {
-      assert.equal(uploads, 2);
+      assert.equal(uploads, 1);
       assert.deepEqual(JSON.parse(init.body).referenceImageIds, ids);
       return Response.json({ success: true, task: { id: LOCAL_TASK_ID, status: 'queued' } }, { status: 202 });
     }
     return Response.json({ success: true, task: { id: LOCAL_TASK_ID, status: 'succeeded', resultUrl: 'https://media.example/result.mp4' } });
   } });
   assert.equal(result.status, 'succeeded');
+});
+
+test("multiple video reference files are rejected before upload or generation", async () => {
+  const { requestVideoGeneration } = await import('../app/video-generation.mjs');
+  let calls = 0;
+  await assert.rejects(requestVideoGeneration({
+    prompt: 'Animate the image',
+    referenceFiles: ['first', 'second'].map(name => new File([name], `${name}.png`, { type: 'image/png' })),
+    fetchImpl: async () => { calls++; return Response.json({ success: false }); },
+  }), /only one reference image/i);
+  assert.equal(calls, 0);
 });
 
 test("a rejected upload never submits a paid video job", async () => {

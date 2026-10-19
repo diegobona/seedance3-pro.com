@@ -258,12 +258,40 @@ test('terminal video failure retry uses the captured prompt and video settings a
   assert.equal(element('generation-preview').dataset.state, 'succeeded');
 });
 
+test('H3 rejects multiple selections and a pasted second image while retaining the first reference', async context => {
+  const { element, document } = await setup(context, { modelId: 'minimax-h3' });
+  document.querySelector('[data-video-mode="reference"]').click();
+  const first = new File(['first'], 'first.png', { type: 'image/png' });
+  const second = new File(['second'], 'second.png', { type: 'image/png' });
+  const choose = files => {
+    element('video-reference-input').files = files;
+    element('video-reference-input').dispatchEvent(new Event('change'));
+  };
+  choose([first, second]);
+  assert.equal(element('video-reference-grid').children.length, 0);
+  assert.match(element('generation-status').textContent, /only one reference image/i);
+  choose([first]);
+  assert.equal(element('video-reference-count').textContent, '1 / 1');
+  assert.equal(element('video-reference-add').disabled, true);
+  const event = new Event('paste', { cancelable: true });
+  Object.defineProperty(event, 'clipboardData', { value: { files: [second] } });
+  document.dispatchEvent(event);
+  assert.match(element('generation-status').textContent, /only one reference image/i);
+  assert.equal(element('video-reference-grid').children.length, 1);
+  assert.match(element('video-reference-grid').querySelector('img').alt, /first.png/);
+  element('video-reference-grid').querySelector('button').onclick();
+  assert.equal(element('video-reference-count').textContent, '0 / 1');
+  assert.equal(element('video-reference-add').disabled, false);
+  choose([second]);
+  assert.match(element('video-reference-grid').querySelector('img').alt, /second.png/);
+});
+
 test('switching H3 back to text mode does not upload or submit hidden reference images', async context => {
   const { element, input, document, requests } = await setup(context, { modelId: 'minimax-h3' });
   document.querySelector('[data-video-mode="reference"]').click();
   element('video-reference-input').files = [new File([new Uint8Array([1, 2, 3])], 'reference.png', { type: 'image/png' })];
   element('video-reference-input').dispatchEvent(new Event('change'));
-  assert.equal(element('video-reference-count').textContent, '1 / 9');
+  assert.equal(element('video-reference-count').textContent, '1 / 1');
   document.querySelector('[data-video-mode="text"]').click();
   assert.equal(element('video-reference-group').hidden, true);
   input('studio-prompt', 'A text-only cinematic scene');

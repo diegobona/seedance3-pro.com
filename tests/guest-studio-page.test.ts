@@ -41,6 +41,20 @@ test('guest H3 landing is registration-free, defaults to five seconds and caps s
   }
 })
 
+test('H3 allows selecting only one video reference image in both languages', async () => {
+  for (const prefix of ['', '/zh']) {
+    const html = await render(`${prefix}/app/video/minimax-h3`)
+    const fileInput = html.match(/<input\b[^>]*id="video-reference-input"[^>]*>/)?.[0] ?? ''
+    assert.ok(fileInput)
+    assert.doesNotMatch(fileInput, /\bmultiple\b/)
+    assert.match(html, /id="video-reference-count">0 \/ 1</)
+    assert.match(html, prefix ? /1 张图 · PNG、JPEG 或 WebP · 最大 10 MB/ : /1 image · PNG, JPEG or WebP · max 10 MB/)
+    assert.doesNotMatch(html, /1–9 images|1–9 张图/)
+    assert.doesNotMatch(html, /Describe how the subjects in Image 1, Image 2|描述图 1、图 2 等图像中的主体应如何互动/)
+    assert.match(html, prefix ? /描述主体动作和镜头运动。/ : /Describe the motion and camera movement\./)
+  }
+})
+
 test('GPT Image 2.5 retains the requested intro removal while adding guest H3 support', async () => {
   const html = await render('/zh/app/image/gpt-image-2-5-1k', 'gpt-image-2-5-1k')
   assert.doesNotMatch(html, /class="model-landing-intro"/)

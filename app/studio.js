@@ -460,8 +460,8 @@ export function initializeStudio() {
   function renderVideoReferences() {
     if (!videoReferenceGrid) return;
     videoReferenceGrid.replaceChildren();
-    videoReferenceCount.textContent = `${videoReferences.length} / 9`;
-    videoReferenceAdd.disabled = videoReferences.length >= 9 || videoPolling;
+    videoReferenceCount.textContent = `${videoReferences.length} / 1`;
+    videoReferenceAdd.disabled = videoReferences.length >= 1 || videoPolling;
     for (const [index, reference] of videoReferences.entries()) {
       const card = document.createElement("div");
       card.className = "video-reference-item";
@@ -484,7 +484,7 @@ export function initializeStudio() {
   function addVideoReferenceImages(files) {
     if (videoPolling || activeVideoTaskId || !files.length) return false;
     let message = "";
-    if (files.length + videoReferences.length > 9) message = t("You can add up to 9 reference images.");
+    if (files.length + videoReferences.length > 1) message = t("H3 supports only one reference image. Remove the current image before adding another.");
     else if (files.some((file) => !["image/png", "image/jpeg", "image/webp"].includes(file.type) || !file.size || file.size > 10 * 1024 * 1024)) {
       message = t("Choose PNG, JPEG or WebP images, up to 10 MB each.");
     }
@@ -494,7 +494,7 @@ export function initializeStudio() {
       return false;
     }
     videoReferences.push(...files.map((file) => ({ file, url: URL.createObjectURL(file) })));
-    generationStatus.textContent = t("Reference images ready.");
+    generationStatus.textContent = t("Reference image ready.");
     generationStatus.className = "generation-status";
     renderVideoReferences();
     updateGenerateButton();
@@ -1051,7 +1051,7 @@ export function initializeStudio() {
     void loadVideoReference(transferredImageId, { signal: imageTransferAbortController.signal }).then((file) => {
       if (destroyed) return;
       // The user may have added images while the transferred one was loading.
-      if (videoReferences.length >= 9) throw new Error(t("Remove an image before adding the transferred reference."));
+      if (videoReferences.length >= 1) throw new Error(t("H3 supports only one reference image. Remove the current image before adding another."));
       videoReferences.unshift({ file, url: URL.createObjectURL(file) });
       renderVideoReferences();
       updateGenerateButton();

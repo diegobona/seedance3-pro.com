@@ -90,7 +90,7 @@ test('localized video requests preserve provider enums and local API routes', as
       },
     });
     assert.equal(result.status, 'succeeded');
-    await assert.rejects(requestVideoGeneration({ referenceFiles: Array(10).fill({}) }), /最多 9 张参考图片/);
+    await assert.rejects(requestVideoGeneration({ referenceFiles: Array(2).fill({}) }), /只能上传一张参考图/);
   });
 });
 

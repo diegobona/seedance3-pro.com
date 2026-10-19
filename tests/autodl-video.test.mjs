@@ -3,9 +3,9 @@ import test from "node:test";
 
 import * as autodlVideo from "../scripts/autodl-video.mjs";
 
-test("reference video validates up to nine IDs and rejects square format or arbitrary URLs", async () => {
+test("reference video accepts one image and rejects multiple images, square format or arbitrary URLs", async () => {
   const base = { prompt: "A scene", duration: 5, resolution: "480p", aspectRatio: "16:9" };
-  const ids = Array.from({ length: 9 }, () => crypto.randomUUID());
+  const ids = [crypto.randomUUID()];
   const accepted = await autodlVideo.preflightVideoGenerationRequest(videoRequest(JSON.stringify({ ...base, referenceImageIds: ids })));
   assert.equal(accepted.ok, true);
   assert.deepEqual(accepted.payload.referenceImageIds, ids);
@@ -18,15 +18,25 @@ test("reference video validates up to nine IDs and rejects square format or arbi
   }
 });
 
-test("reference submission uses the multi-image workflow and exact ordered reference fields", async () => {
-  const urls = ['https://seedance3-pro.com/api/videos/references?id=first', 'https://seedance3-pro.com/api/videos/references?id=second'];
-  await autodlVideo.submitAutodlVideoTask({ prompt: 'Combine the images', duration: 5, resolution: '480p', aspectRatio: '16:9', referenceImageUrls: urls }, {
+test("reference submission sends only the single reference field to the existing workflow", async () => {
+  const urls = ['https://seedance3-pro.com/api/videos/references?id=first'];
+  await autodlVideo.submitAutodlVideoTask({ prompt: 'Animate the image', duration: 5, resolution: '480p', aspectRatio: '16:9', referenceImageUrls: urls }, {
     token: 'test-token', fetchImpl: async (url, init) => {
       assert.ok(url.endsWith('/minimax_h3_image_audio_to_video_v2_15s'));
-      assert.deepEqual(JSON.parse(init.body), { prompt: 'Combine the images', duration: 5, resolution: '480p横', ref_image_0: urls[0], ref_image_1: urls[1] });
+      assert.deepEqual(JSON.parse(init.body), { prompt: 'Animate the image', duration: 5, resolution: '480p横', ref_image_0: urls[0] });
       return Response.json({ code: 'Success', data: { task_id: 'test-provider-task', status: 'QUEUED' } });
     },
   });
+});
+
+test("multiple reference URLs never create a provider task", async () => {
+  let calls = 0;
+  await assert.rejects(autodlVideo.submitAutodlVideoTask({
+    prompt: 'Animate the image', duration: 5, resolution: '480p', aspectRatio: '16:9',
+    referenceImageUrls: ['https://example.com/first.png', 'https://example.com/second.png'],
+  }, { token: 'test-token', fetchImpl: async () => { calls++; return Response.json({}); } }),
+  error => error.code === 'AUTODL_CONFIGURATION_ERROR');
+  assert.equal(calls, 0);
 });
 
 const { mapAutodlVideoResolution } = autodlVideo;

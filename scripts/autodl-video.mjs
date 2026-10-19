@@ -108,10 +108,10 @@ export async function preflightVideoGenerationRequest(request) {
     return invalidRequest("Aspect ratio must be 9:16, 16:9, or 1:1.", 400);
   }
   const ids = payload.referenceImageIds;
-  if (ids !== undefined && (!Array.isArray(ids) || ids.length < 1 || ids.length > 9
+  if (ids !== undefined && (!Array.isArray(ids) || ids.length !== 1
     || new Set(ids).size !== ids.length
     || ids.some((id) => typeof id !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(id)))) {
-    return invalidRequest("Choose 1 to 9 valid reference images.", 400);
+    return invalidRequest("Choose one valid reference image.", 400);
   }
   if (ids && payload.aspectRatio === "1:1") {
     return invalidRequest("Reference-to-video supports 16:9 or 9:16 only.", 400);
@@ -137,7 +137,7 @@ export async function submitAutodlVideoTask(payload, options = {}) {
   const providerResolution = mapAutodlVideoResolution(payload?.resolution, payload?.aspectRatio);
   const references = payload?.referenceImageUrls;
   if (!providerResolution || (payload?.referenceImageIds && !references)
-    || (references && (!Array.isArray(references) || references.length < 1 || references.length > 9
+    || (references && (!Array.isArray(references) || references.length !== 1
       || payload.aspectRatio === "1:1" || references.some((url) => !String(url).startsWith("https://"))))) {
     throw new AutodlProviderError("Video provider request is invalid.", {
       code: "AUTODL_CONFIGURATION_ERROR"

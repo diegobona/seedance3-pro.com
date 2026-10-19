@@ -1,14 +1,18 @@
 # H3 reference-image video generation
 
 The H3 studio supports text-to-video and reference-to-video. The latter accepts
-1–9 PNG, JPEG or WebP files, at most 10 MiB each, and preserves upload order.
+one PNG, JPEG or WebP image, at most 10 MiB. File selection, clipboard paste,
+generated-image handoff and API validation all enforce the one-image limit.
+Remove the current image before choosing a replacement. A multi-image request is
+rejected before uploads, credit reservation or provider submission.
 Both modes use the existing trial settings: 480p, 5/10/15 seconds, one credit
 per output second. Reference mode supports 16:9 and 9:16; text mode also supports 1:1.
 
 ## Provider contract
 
 - Reference workflow: `minimax_h3_image_audio_to_video_v2_15s`.
-- Input: `prompt`, `duration`, mapped `resolution`, `ref_image_0` through `ref_image_8`.
+- Input: `prompt`, `duration`, mapped `resolution`, and the single `ref_image_0`.
+- The current AutoDL workflow still treats this as a reference image, not a first-frame constraint.
 - Text workflow remains `minimax_h3_lightx2v_no_pic`.
 - Both workflows use the existing asynchronous result endpoint and refund/reconciliation logic.
 - Contract source: https://www.autodl.art/large-model/comfyui/minimax_h3_image_audio_to_video_v2_15s

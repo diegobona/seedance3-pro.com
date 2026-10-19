@@ -155,12 +155,12 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
                 <div className="model-select"><span className={`model-symbol ${initiallySeedance25 ? 'lime' : initiallyH3 ? 'cyan' : 'orange'}`} id="selected-symbol">{initiallySeedance25 ? t("S2") : initiallyH3 ? t("H3") : initiallyGpt25 ? 'G2.5' : t("G2")}</span><div><small>{t("Selected model")}</small><strong id="selected-name">{initiallySeedance25 ? t("SEEDANCE 2.5") : initiallyH3 ? t("MiniMax H3") : initiallyGpt25 ? t("GPT Image 2.5") : t("GPT Image 2")}</strong></div></div>
                 <div className="field-group" id="mode-group" hidden={!initiallyH3}><label>{t("Create from")}</label><div className="segmented"><button className="is-selected" type="button" data-video-mode="text" aria-pressed="true">{t("Text to video")}</button><button type="button" data-video-mode="reference" aria-pressed="false">{t("Reference to video")}</button></div></div>
                 <div className="field-group" id="video-reference-group" hidden>
-                  <div className="label-line"><label htmlFor="video-reference-input">{t("Reference images")}</label><span id="video-reference-count">0 / 9</span></div>
-                  <input id="video-reference-input" type="file" accept="image/png,image/jpeg,image/webp" multiple hidden />
-                  <button className="upload-box is-enabled" id="video-reference-add" type="button"><span>＋</span><strong>{t("Add reference images")}</strong><small>{t("1–9 images · PNG, JPEG or WebP · max 10 MB each")}</small></button>
-                  <p className="reference-paste-hint"><strong>{t("Paste reference images")}</strong><span>{t("Copy an image, then press")} <kbd>Ctrl + V</kbd> / <kbd>⌘ + V</kbd> {t("anywhere on this page.")}</span></p>
+                  <div className="label-line"><label htmlFor="video-reference-input">{t("Reference image")}</label><span id="video-reference-count">0 / 1</span></div>
+                  <input id="video-reference-input" type="file" accept="image/png,image/jpeg,image/webp" hidden />
+                  <button className="upload-box is-enabled" id="video-reference-add" type="button"><span>＋</span><strong>{t("Choose a reference image")}</strong><small>{t("1 image · PNG, JPEG or WebP · max 10 MB")}</small></button>
+                  <p className="reference-paste-hint"><strong>{t("Paste reference image")}</strong><span>{t("Copy an image, then press")} <kbd>Ctrl + V</kbd> / <kbd>⌘ + V</kbd> {t("anywhere on this page.")}</span></p>
                   <div className="video-reference-grid" id="video-reference-grid" />
-                  <p className="video-reference-hint">{t("Describe how the subjects in Image 1, Image 2, etc. should interact. Images are numbered in upload order.")}</p>
+                  <p className="video-reference-hint">{t("Describe the motion and camera movement.")}</p>
                 </div>
                 <div className="field-group" id="upload-group" hidden={initiallyVideo}>
                   <div className="label-line"><label id="reference-label">{t(initiallyGpt25 ? "Reference images" : "Reference image")}</label><span id="reference-meta">{t("Optional · up to 16 images")}</span></div>
