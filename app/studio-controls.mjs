@@ -147,6 +147,7 @@ export function createCreditSummaryController({
   container,
   costElement,
   currentBalanceElement,
+  balanceLabelElement,
   quantityControl,
   additionalCostControls = [],
   getCost,
@@ -157,6 +158,7 @@ export function createCreditSummaryController({
   setTimeoutImpl = globalThis.setTimeout,
   clearTimeoutImpl = globalThis.clearTimeout,
   nowImpl = Date.now,
+  prepareControls = () => {},
   onBalanceLoaded = () => {},
   onChange = () => {}
 }) {
@@ -165,6 +167,7 @@ export function createCreditSummaryController({
   let loadVersion = 0;
   let loadAbortController = null;
   let dailyResetTimer = null;
+  let preview = true;
 
   function scheduleDailyReset() {
     if (dailyResetTimer !== null) clearTimeoutImpl(dailyResetTimer);
@@ -179,11 +182,29 @@ export function createCreditSummaryController({
   }
 
   function render() {
-    const summary = typeof getCost === "function"
+    // Guest controls may fall back to an affordable quantity/duration. Compute
+    // the cost only after that adjustment, using the real balance for limits.
+    prepareControls(balance);
+    const base = typeof getCost === "function"
       ? creditSummaryForCost(balance, getCost())
       : creditSummaryFor(balance, quantityControl?.value);
-    costElement.textContent = t('{cost} credits', { cost: summary.cost });
-    currentBalanceElement.textContent = summary.currentBalance === null ? t("— credits") : t('{cost} credits', { cost: summary.currentBalance });
+    const summary = { ...base, displayBalance: preview ? base.projectedBalance : base.currentBalance, isPreview: preview };
+    const context = getContext();
+    if (balanceLabelElement) balanceLabelElement.textContent = t(preview ? 'AFTER GENERATION' : 'REMAINING');
+    if (context === 'guest-image') {
+      const count = summary.cost / 5;
+      costElement.textContent = count === 1 ? t('1 free image') : t('{count} free images', { count });
+      const remaining = summary.displayBalance === null ? null : Math.floor(summary.displayBalance / 5);
+      currentBalanceElement.textContent = remaining === null ? t('— images remaining')
+        : remaining === 1 ? t('1 image remaining') : t('{count} images remaining', { count: remaining });
+    } else if (context === 'guest-video') {
+      costElement.textContent = t('{seconds} free seconds', { seconds: summary.cost });
+      currentBalanceElement.textContent = summary.displayBalance === null ? t('— seconds remaining')
+        : t('{seconds} seconds remaining', { seconds: summary.displayBalance });
+    } else {
+      costElement.textContent = t('{cost} credits', { cost: summary.cost });
+      currentBalanceElement.textContent = summary.displayBalance === null ? t('— credits') : t('{cost} credits', { cost: summary.displayBalance });
+    }
     container.classList.toggle("is-insufficient", summary.insufficient);
     container.classList.toggle("is-exhausted", summary.currentBalance === 0);
     onChange(summary);
@@ -193,10 +214,19 @@ export function createCreditSummaryController({
     if ((event?.detail?.context ?? 'account') !== getContext()) return;
     invalidateLoad();
     balance = normalizeCreditBalance(event?.detail?.remaining);
+    // Provider headers already include reservations, settlement or refunds.
+    preview = false;
+    render();
+  }
+
+  function handleCostChanged(event) {
+    if (event.currentTarget.disabled) return;
+    preview = true;
     render();
   }
 
   function handleAuthChanged() {
+    preview = true;
     onBalanceLoaded(null, null);
     balance = null;
     render();
@@ -235,17 +265,24 @@ export function createCreditSummaryController({
     }
   }
 
-  quantityControl.addEventListener("change", render);
-  additionalCostControls.forEach((control) => control.addEventListener("change", render));
+  function handleFocus() { void loadBalance(); }
+
+  quantityControl.addEventListener("change", handleCostChanged);
+  additionalCostControls.forEach((control) => control.addEventListener("change", handleCostChanged));
   eventTarget.addEventListener("seedance:credits-updated", handleCreditsUpdated);
   eventTarget.addEventListener("seedance:auth-changed", handleAuthChanged);
-  eventTarget.addEventListener("focus", handleAuthChanged);
+  eventTarget.addEventListener("focus", handleFocus);
   render();
 
   return {
     refresh: render,
+    beginGeneration({ reserved = false } = {}) {
+      preview = !reserved;
+      render();
+    },
     reset() {
       invalidateLoad();
+      preview = true;
       balance = null;
       render();
       return loadBalance();
@@ -256,11 +293,11 @@ export function createCreditSummaryController({
       destroyed = true;
       invalidateLoad();
       if (dailyResetTimer !== null) clearTimeoutImpl(dailyResetTimer);
-      quantityControl.removeEventListener("change", render);
-      additionalCostControls.forEach((control) => control.removeEventListener("change", render));
+      quantityControl.removeEventListener("change", handleCostChanged);
+      additionalCostControls.forEach((control) => control.removeEventListener("change", handleCostChanged));
       eventTarget.removeEventListener("seedance:credits-updated", handleCreditsUpdated);
       eventTarget.removeEventListener("seedance:auth-changed", handleAuthChanged);
-      eventTarget.removeEventListener("focus", handleAuthChanged);
+      eventTarget.removeEventListener("focus", handleFocus);
     }
   };
 }

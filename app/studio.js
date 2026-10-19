@@ -195,6 +195,7 @@ export function initializeStudio() {
   const creditSummary = document.getElementById("credit-summary");
   const generationCreditCost = document.getElementById("generation-credit-cost");
   const currentCreditBalance = document.getElementById("current-credit-balance");
+  const creditBalanceLabel = document.getElementById('credit-balance-label');
   const launchNotice = document.getElementById("launch-notice");
   const resultHeadingLabel = document.getElementById("result-heading-label");
   const resultModelLabel = document.getElementById("result-model-label");
@@ -315,12 +316,16 @@ export function initializeStudio() {
   }
 
   function updateGuestImageControls() {
+    imageQuantity.disabled = imageGenerationInFlight;
+    if (imageGenerationInFlight) return;
     const state = guestImageQuantityState({ guest: isGuestImageSelected(), remaining: guestRemaining, value: imageQuantity.value });
     for (const option of imageQuantity.options) option.disabled = state.disabled.includes(Number(option.value));
     imageQuantity.value = state.value;
   }
 
   function updateGuestVideoControls() {
+    videoDuration.disabled = videoPolling || Boolean(activeVideoTaskId);
+    if (videoDuration.disabled) return;
     const state = guestVideoDurationState({ guest: isGuestVideoSelected(), remaining: guestRemaining, value: videoDuration.value });
     for (const option of videoDuration.options) option.disabled = state.disabled.includes(Number(option.value));
     videoDuration.value = state.value;
@@ -600,6 +605,10 @@ export function initializeStudio() {
   }
 
   function updateVideoStatus(update, context) {
+    if (isVideoGenerationSelected() && (update?.credits?.context ?? context) === (isGuestVideoSelected() ? 'guest-video' : 'account')
+      && [5, 10, 15].includes(update?.credits?.cost)) {
+      videoDuration.value = String(update.credits.cost);
+    }
     announceCredits(update?.credits, context);
     const status = update?.status;
     generationStatus.textContent = status === "queued" || status === "submitting"
@@ -618,6 +627,7 @@ export function initializeStudio() {
     if (videoPolling || destroyed || !(availableModelIds.has("minimax-h3") || availableModelIds.has("seedance-2-5"))) return;
     videoPolling = true;
     const creditContext = isGuestVideoSelected() ? 'guest-video' : 'account';
+    creditSummaryController?.beginGeneration({ reserved: Boolean(resumeTaskId) });
     updateVideoMode();
     renderVideoReferences();
     videoAbortController = new AbortController();
@@ -833,6 +843,7 @@ export function initializeStudio() {
     container: creditSummary,
     costElement: generationCreditCost,
     currentBalanceElement: currentCreditBalance,
+    balanceLabelElement: creditBalanceLabel,
     quantityControl: imageQuantity,
     additionalCostControls: [videoDuration],
     getCost: () => isVideoGenerationSelected()
@@ -841,6 +852,11 @@ export function initializeStudio() {
     getBalanceUrl: () => activeModelId === 'minimax-h3' ? '/api/credits/balance?guest_video=1'
       : getImageModel(activeModelId) ? '/api/credits/balance?guest_image=1' : '/api/credits/balance',
     getContext: () => isGuestVideoSelected() ? 'guest-video' : isGuestImageSelected() ? 'guest-image' : 'account',
+    prepareControls: remaining => {
+      guestRemaining = isGuestVideoSelected() || isGuestImageSelected() ? remaining : null;
+      updateGuestVideoControls();
+      updateGuestImageControls();
+    },
     onBalanceLoaded: (remaining, credits) => {
       guestVideo = credits ? credits.guest === true : studioShell.dataset.authenticated !== 'true';
       guestRemaining = isGuestVideoSelected() || isGuestImageSelected() ? remaining : null;
@@ -856,17 +872,9 @@ export function initializeStudio() {
     onChange: (summary) => {
       if (isGuestVideoSelected()) {
         guestRemaining = summary.currentBalance;
-        updateGuestVideoControls();
-        generationCreditCost.textContent = t('{seconds} free seconds', { seconds: videoDuration.value });
-        currentCreditBalance.textContent = guestRemaining === null ? t('— seconds remaining')
-          : t('{seconds} seconds remaining', { seconds: guestRemaining });
         updateGenerateButtonLabel();
       } else if (isGuestImageSelected()) {
         guestRemaining = summary.currentBalance;
-        updateGuestImageControls();
-        generationCreditCost.textContent = imageQuantity.value === '1' ? t('1 free image') : t('{count} free images', { count: Number(imageQuantity.value) });
-        currentCreditBalance.textContent = guestRemaining === null ? t('— images remaining')
-          : t('{count} images remaining', { count: Math.floor(guestRemaining / 5) });
         updateGenerateButtonLabel();
       }
       creditInsufficient = isGuestVideoSelected() ? guestRemaining !== null && guestRemaining < 5
@@ -1015,6 +1023,7 @@ export function initializeStudio() {
     const creditContext = isGuestImageSelected() ? 'guest-image' : 'account';
     const generationUsedPoseReference = poseReferenceActive;
     imageGenerationInFlight = true;
+    creditSummaryController?.beginGeneration();
     renderImageReferences();
     updateGenerateButton();
     updateGenerateButtonLabel();
@@ -1072,6 +1081,7 @@ export function initializeStudio() {
     } finally {
       if (!destroyed) {
         imageGenerationInFlight = false;
+        creditSummaryController?.refresh();
         renderImageReferences();
         updateImageContext();
         updateGenerateButtonLabel();

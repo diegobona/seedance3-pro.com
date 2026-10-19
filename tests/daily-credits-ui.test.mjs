@@ -40,7 +40,7 @@ test('an open generator refreshes an exhausted balance at midnight and cleans up
   remaining = 15;
   timers[0].callback();
   await new Promise(resolve => setImmediate(resolve));
-  assert.equal(element.textContent, '15 credits');
+  assert.equal(element.textContent, '10 credits');
   assert.deepEqual(balances, [0, 15]);
   controller.destroy();
   assert.ok(cleared.includes(2));

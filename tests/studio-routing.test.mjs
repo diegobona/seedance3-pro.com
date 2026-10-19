@@ -28,7 +28,7 @@ function assertVisibleCreditSummary(markup, shellName) {
 
   for (const [id, description] of [
     ["generation-credit-cost", "this generation's cost"],
-    ["current-credit-balance", "the current balance"]
+    ["current-credit-balance", "the projected or actual remaining balance"]
   ]) {
     assert.match(
       summary,
@@ -37,8 +37,8 @@ function assertVisibleCreditSummary(markup, shellName) {
     );
   }
   assert.match(summary, /THIS GENERATION/i, `${shellName} should label the generation cost`);
-  assert.match(summary, /YOUR BALANCE/i, `${shellName} should label the current balance`);
-  assert.doesNotMatch(summary, /After generation|after-generation-credit-balance/i, `${shellName} should not show projected balance`);
+  assert.match(summary, /id=["']credit-balance-label["'][^>]*>[\s\S]*?AFTER GENERATION/i, `${shellName} should label the projected balance`);
+  assert.doesNotMatch(summary, /YOUR BALANCE/i, `${shellName} should distinguish the forecast from current credits`);
 }
 
 function boundElementName(script, id) {

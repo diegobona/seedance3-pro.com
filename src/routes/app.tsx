@@ -56,6 +56,7 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login')
   const { data: session } = authClient.useSession()
   const initialGuestImage = !session?.user && Boolean(getImageModel(initialModel))
+  const initialGuestVideo = !session?.user && initiallyH3
   const openAuth = useCallback((mode: 'login' | 'register' = 'login') => {
     setAuthMode(mode)
     setAuthOpen(true)
@@ -184,8 +185,8 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
                   <label>{t("Aspect ratio")}<select id="image-aspect-ratio">{Object.entries(imageSizes).map(([ratio, size]) => <option key={ratio} value={ratio}>{initiallyGpt25 ? `${ratio} · ${size}` : ratio === '3:2' ? t("3:2 landscape") : ratio === '2:3' ? t("2:3 portrait") : ratio}</option>)}</select></label>
                 </div>
                 <section id="credit-summary" className="credit-summary" aria-label={t("Generation credit summary")} aria-live="polite">
-                  <div className="credit-summary-panel credit-summary-cost"><span>{t("THIS GENERATION")}</span><strong id="generation-credit-cost" className="credit-summary-value">{initialGuestImage ? t('1 free image') : t("5 credits")}</strong></div>
-                  <div className="credit-summary-panel credit-summary-balance"><span>{t("YOUR BALANCE")}</span><strong id="current-credit-balance" className="credit-summary-value">{initialGuestImage ? t('— images remaining') : t("— credits")}</strong></div>
+                  <div className="credit-summary-panel credit-summary-cost"><span>{t("THIS GENERATION")}</span><strong id="generation-credit-cost" className="credit-summary-value">{initialGuestImage ? t('1 free image') : initialGuestVideo ? t('5 free seconds') : t("5 credits")}</strong></div>
+                  <div className="credit-summary-panel credit-summary-balance"><span id="credit-balance-label">{t('AFTER GENERATION')}</span><strong id="current-credit-balance" className="credit-summary-value">{initialGuestImage ? t('— images remaining') : initialGuestVideo ? t('— seconds remaining') : t("— credits")}</strong></div>
                 </section>
                 <p className="launch-notice" id="launch-notice" role="note" hidden>{initiallyVideo ? t("Launching soon. Video generation at $0.01/second.") : initiallyGpt25 ? t("GPT Image 2.5 uses 5 trial credits per image.") : t("Launching soon. Image generation at $0.01/image.")}</p>
                 <button className="generate-button" id="generate-button" type="button" disabled><span id="generate-button-label">{initialGuestImage ? t('Generate 1 image · free') : initiallyVideo ? t("Generate video · 5 credits") : t("Generate image · 5 credits")}</span></button>

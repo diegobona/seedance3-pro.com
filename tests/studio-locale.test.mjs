@@ -165,7 +165,7 @@ test('credit summary updates remain localized when balance is fetched or changed
     assert.equal(costElement.textContent, '10 积分');
     assert.equal(currentBalanceElement.textContent, '— 积分');
     await controller.loadBalance();
-    assert.equal(currentBalanceElement.textContent, '25 积分');
+    assert.equal(currentBalanceElement.textContent, '15 积分');
     events.dispatchEvent(new CustomEvent('seedance:credits-updated', { detail: { remaining: 15 } }));
     assert.equal(currentBalanceElement.textContent, '15 积分');
     controller.destroy();

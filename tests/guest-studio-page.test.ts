@@ -36,6 +36,8 @@ test('guest H3 landing is registration-free, defaults to five seconds and caps s
     assert.match(duration, /<option\b[^>]*value="5"[^>]*selected/)
     assert.match(duration, /<option\b[^>]*value="15"[^>]*disabled/)
     assert.match(html, /data-authenticated="false"/)
+    assert.match(html, prefix ? /生成后预计剩余/ : /AFTER GENERATION/)
+    assert.match(html, prefix ? /剩余 — 秒/ : /— seconds remaining/)
   }
 })
 
@@ -57,6 +59,7 @@ test('both image landing pages offer the same two-image guest allowance without 
       assert.match(quantity, /<option\b[^>]*value="3"[^>]*disabled/)
       assert.match(html, prefix ? /免费生成 1 张图片/ : /Generate 1 image · free/)
       assert.match(html, prefix ? /剩余 — 张图片/ : /— images remaining/)
+      assert.match(html, prefix ? /生成后预计剩余/ : /AFTER GENERATION/)
     }
   }
 })

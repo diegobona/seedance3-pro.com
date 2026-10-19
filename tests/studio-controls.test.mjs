@@ -251,13 +251,13 @@ test("credit summary controller renders live balances and removes its listeners"
   assert.equal(fetchCalls[0].url, "/api/credits/balance");
   assert.equal(fetchCalls[0].init?.credentials, "same-origin");
   assert.equal(costElement.textContent, "5 credits");
-  assert.equal(currentBalanceElement.textContent, "15 credits");
+  assert.equal(currentBalanceElement.textContent, "10 credits");
   assert.equal(container.classList.contains("is-insufficient"), false);
 
   quantityControl.value = "2";
   quantityControl.dispatchEvent(new Event("change"));
   assert.equal(costElement.textContent, "10 credits");
-  assert.equal(currentBalanceElement.textContent, "15 credits");
+  assert.equal(currentBalanceElement.textContent, "5 credits");
 
   eventTarget.dispatchEvent(creditsUpdatedEvent(8));
   assert.equal(currentBalanceElement.textContent, "8 credits");
@@ -287,12 +287,12 @@ test("credit summary controller reports each rendered state", () => {
     onChange: (summary) => summaries.push(summary)
   });
 
-  assert.deepEqual(summaries.at(-1), creditSummaryFor(null, "1"));
+  assert.deepEqual(summaries.at(-1), { ...creditSummaryFor(null, "1"), displayBalance: null, isPreview: true });
   eventTarget.dispatchEvent(creditsUpdatedEvent(8));
-  assert.deepEqual(summaries.at(-1), creditSummaryFor(8, "1"));
+  assert.deepEqual(summaries.at(-1), { ...creditSummaryFor(8, "1"), displayBalance: 8, isPreview: false });
   quantityControl.value = "2";
   quantityControl.dispatchEvent(new Event("change"));
-  assert.deepEqual(summaries.at(-1), creditSummaryFor(8, "2"));
+  assert.deepEqual(summaries.at(-1), { ...creditSummaryFor(8, "2"), displayBalance: 0, isPreview: true });
   assert.equal(summaries.at(-1).insufficient, true);
 
   controller.destroy();
@@ -352,7 +352,7 @@ test("credit summary controller reloads the balance after authentication changes
   assert.equal(fetchCalls, 2, "authentication should trigger a fresh balance request");
   resolveAuthenticatedBalance(Response.json({ credits: { remaining: 15 } }));
   await new Promise((resolve) => setImmediate(resolve));
-  assert.equal(currentBalanceElement.textContent, "15 credits");
+  assert.equal(currentBalanceElement.textContent, "10 credits");
 
   controller.destroy();
 });
