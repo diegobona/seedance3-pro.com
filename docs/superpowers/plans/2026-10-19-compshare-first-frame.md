@@ -71,12 +71,12 @@ Set source config `vars.H3_REFERENCE_PROVIDER` to `autodl` for staging. Document
 
 Run adapter/dispatcher/protected/reconciler/D1 lifecycle tests; existing client `video-generation`, studio preview, quota projection, ownership and guest trial tests; `node node_modules/typescript/bin/tsc --noEmit`; production build. Avoid unrelated stale GPT 2.5 four-image tests as release gates, but report their known baseline status accurately if encountered. Verify no keys or new provider capabilities are shipped to client JS and no secret files are tracked.
 
-- [ ] **Step 8: Review and commit.**
+- [x] **Step 8: Review and commit.**
 
 Spec review first, then quality review; resolve material findings and rerun affected checks. Commit only implementation/spec/plan/docs/tests, preserving unrelated files. Parent agent performs final overall review and controls integration/publishing/deployment. Do not deploy or run paid tasks inside the implementation subagent.
 
-Implementation self-review is complete; external spec/quality reviews remain with
-the parent. Actual TDD red evidence: 8 adapter and 5 dispatcher assertions failed
+Implementation self-review and independent spec/quality reviews are complete;
+neither reviewer found a material issue. Actual TDD red evidence: 8 adapter and 5 dispatcher assertions failed
 against export scaffolding; 6 protected/reconciler behavior assertions and 2 D1
 lifecycle assertions failed against the previous lifecycle. Additional red tests
 caught dot-only task IDs and AutoDL 401/403 polling refunds before their fixes.
@@ -88,7 +88,13 @@ and source-shape suites are unchanged. No live generation quality is claimed.
 
 ### Release checkpoint (parent agent)
 
-- [ ] Request the real API key only after code and offline validation are ready; tell user to save `COMPSHARE_API_KEY` in primary ignored `.env.local` and reply when done. Link official key-creation documentation. Never request the raw key in chat.
+- [x] Request the real API key only after code and offline validation are ready; tell user to save `COMPSHARE_API_KEY` in primary ignored `.env.local` and reply when done. Link official key-creation documentation. Never request the raw key in chat.
 - [ ] If the key is not supplied, finish all key-independent work, commit it on the feature branch and report exactly what is ready and what remains. Do not activate or claim live first-frame generation.
 - [ ] Once a key is supplied, verify balance with read-only API, configure provider switch, rebuild/typecheck/dry-run and deploy to the known Worker. Check both new CompShare and persisted old AutoDL routing. Any small real generation verification should use a nonprivate public test image, clearly bounded duration/cost and the existing protected quota path.
 - [ ] Verify live bilingual studio pages, client bundle parity, backend one-reference validation, quota metadata unchanged except deliberately consumed test quota, and 100% expected deployment version. Preserve the ability to resume existing jobs after rollback.
+
+Release preparation: the user configured a valid key in the ignored worktree
+environment; it was privately synchronized into the primary deployment environment.
+After the user purchased points, the read-only API confirmed 1,100 available points.
+The provider switch is now `compshare`; activation changes pass typechecking and
+all six dispatcher tests. Deployment and one bounded five-second live test follow.

@@ -10,7 +10,7 @@
   "vars": {
     "DATABASE_BACKEND": "d1",
     "DATABASE_MIGRATION_PAUSED": "0",
-    "H3_REFERENCE_PROVIDER": "autodl"
+    "H3_REFERENCE_PROVIDER": "compshare"
   },
   "d1_databases": [
     {

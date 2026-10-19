@@ -22,10 +22,10 @@ sync/deployment process for production. Do not paste the key into chat, source
 files, client environment variables, or browser code. `AUTODL_TOKEN` remains
 necessary for text generation and existing AutoDL tasks.
 
-Source `wrangler.jsonc` stages `vars.H3_REFERENCE_PROVIDER` as `autodl`. After
-configuring the production key, change that variable to `compshare`, regenerate
-bindings with `npm run cf-typegen`, run the local checks/build, and deploy the
-complete change through the normal release process. The adapter, generate route,
+Source `wrangler.jsonc` selects `compshare` with `vars.H3_REFERENCE_PROVIDER`.
+Before deployment, configure the production key and confirm that its account has
+available H3 points. Regenerate bindings with `npm run cf-typegen`, run the local
+checks/build, and deploy the complete change through the normal release process. The adapter, generate route,
 status route, and reconciler must ship together. Missing selected-channel keys
 return 503 before a guest is provisioned or credits are reserved. Unknown channel
 values fail closed.
