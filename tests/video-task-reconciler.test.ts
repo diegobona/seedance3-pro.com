@@ -7,6 +7,7 @@ import {
 import type { VideoGenerationTask } from '../src/lib/protected-video-generation'
 import { createVideoTaskActivity } from '../src/lib/video-task-activity'
 import { activityBucket } from './helpers/video-activity-bucket'
+import { COMPSHARE_FIRST_FRAME_WORKFLOW_ID as compshare } from '../src/lib/video-providers'
 
 function task(overrides: Partial<VideoGenerationTask> = {}): VideoGenerationTask {
   return {
@@ -110,6 +111,59 @@ test('reconciliation expires first, claims a bounded batch, and retries transien
 })
 
 const configuredEnvironment = { DATABASE_URL: 'postgresql://configured.example/db', AUTODL_TOKEN: 'secret-token' }
+
+test('mixed batch queries each persisted workflow with the correct token even after rollback', async () => {
+  const tasks = [task(), task({ id: 'comp-local', providerTaskId: 'comp-provider', workflowId: compshare })]
+  const activity = createVideoTaskActivity(activityBucket().bucket)
+  await activity.initialize()
+  await Promise.all(tasks.map(row => activity.track(row.id)))
+  const calls: unknown[] = []
+  const store = { expireOverdue: async () => [], claimPending: async () => tasks,
+    scheduleNextPoll: async () => tasks[0], getTaskStates: async () => tasks,
+  }
+  const result = await reconcileVideoGenerationTasks({ ...configuredEnvironment,
+    H3_REFERENCE_PROVIDER: 'autodl', COMPSHARE_API_KEY: 'comp-secret',
+  }, { activity, createStore: () => store as never, logger: () => {},
+    query: async (id, token, context) => { calls.push([id, token, context]); return { terminal: false, status: 'queued' } },
+  })
+  assert.equal(result.processed, 2)
+  assert.deepEqual(calls, [
+    ['provider-secret-1', 'secret-token', { workflowId: 'minimax_h3_lightx2v_no_pic', localTaskId: 'local-task-1' }],
+    ['comp-provider', 'comp-secret', { workflowId: compshare, localTaskId: 'comp-local' }],
+  ])
+})
+
+test('CompShare-only reconciliation does not require AutoDL; absent CompShare key retries without refund', async () => {
+  for (const key of ['', 'comp-secret']) {
+    const row = task({ workflowId: compshare })
+    const activity = createVideoTaskActivity(activityBucket().bucket)
+    await activity.initialize(); await activity.track(row.id)
+    let retries = 0, queries = 0, refunds = 0
+    const store = { expireOverdue: async () => [], claimPending: async () => [row], getTaskStates: async () => [row],
+      scheduleNextPoll: async () => { retries++; return row }, finalizeFailure: async () => { refunds++; return row },
+    }
+    const response = await reconcileVideoGenerationTasks({ DATABASE_URL: configuredEnvironment.DATABASE_URL, COMPSHARE_API_KEY: key }, {
+      activity, createStore: () => store as never, logger: () => {},
+      query: async (_id, token) => { queries++; assert.equal(token, key); return { terminal: false, status: 'queued' } },
+    })
+    assert.equal(response.processed, 1)
+    assert.equal(queries, key ? 1 : 0)
+    assert.equal(retries, 1)
+    assert.equal(refunds, 0)
+  }
+})
+
+test('idle activity performs zero SQL and provider calls even when both provider credentials are absent', async () => {
+  const activity = createVideoTaskActivity(activityBucket().bucket)
+  await activity.initialize()
+  let stores = 0, queries = 0
+  await reconcileVideoGenerationTasks({ DATABASE_URL: configuredEnvironment.DATABASE_URL }, {
+    activity, createStore: () => { stores++; throw new Error('idle must not query SQL') },
+    query: async () => { queries++; throw new Error('idle must not query providers') }, logger: () => {},
+  })
+  assert.equal(stores, 0)
+  assert.equal(queries, 0)
+})
 
 test('initialized idle cron never creates a Neon store, including repeated ticks', async () => {
   const activity = createVideoTaskActivity(activityBucket().bucket)

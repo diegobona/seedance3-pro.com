@@ -1,4 +1,4 @@
-import { queryAutodlVideoTask } from '../../scripts/autodl-video.mjs'
+import { assertVideoProviderConfigured, queryVideoTask, videoProviderToken, type VideoProviderEnvironment } from './video-providers'
 import { createAppDatabase, databaseConfigured } from '../db'
 import { createVideoGenerationTaskStore } from '../db/video-generation-tasks'
 import { createTrackedVideoTaskStore, createVideoTaskActivity, type VideoTaskActivity, type VideoActivitySnapshot } from './video-task-activity'
@@ -6,17 +6,17 @@ import type {
   VideoGenerationTask,
   VideoGenerationTaskStore,
   VideoProviderQueryResult,
+  VideoTaskProviderContext,
 } from './protected-video-generation'
 
 const RECONCILE_BATCH_SIZE = 6
 const RECONCILE_CONCURRENCY = 2
 const MAX_LOG_LENGTH = 500
 
-type ReconcilerEnvironment = {
+type ReconcilerEnvironment = VideoProviderEnvironment & {
   DATABASE_URL?: string
   DATABASE_BACKEND?: string
   DB?: D1Database
-  AUTODL_TOKEN?: string
   VIDEO_REFERENCES?: R2Bucket
 }
 
@@ -24,7 +24,7 @@ export interface VideoTaskReconcilerDependencies {
   activity?: VideoTaskActivity
   now?: () => Date
   createStore?: (databaseUrl: string) => VideoGenerationTaskStore
-  query?: (providerTaskId: string, token: string) => Promise<VideoProviderQueryResult>
+  query?: (providerTaskId: string, token: string, context: VideoTaskProviderContext) => Promise<VideoProviderQueryResult>
   logger?: (message: string) => void
 }
 
@@ -88,7 +88,7 @@ async function reconcileClaimedTask(
   task: VideoGenerationTask,
   store: VideoGenerationTaskStore,
   query: NonNullable<VideoTaskReconcilerDependencies['query']>,
-  token: string,
+  environment: ReconcilerEnvironment,
   now: Date,
   logger: (message: string) => void,
 ) {
@@ -99,7 +99,10 @@ async function reconcileClaimedTask(
 
   let providerResult: VideoProviderQueryResult
   try {
-    providerResult = await query(task.providerTaskId, token)
+    assertVideoProviderConfigured(task.workflowId, environment, true)
+    providerResult = await query(task.providerTaskId, videoProviderToken(task.workflowId, environment), {
+      workflowId: task.workflowId, localTaskId: task.id,
+    })
   } catch (error) {
     const details = safeErrorDetails(error)
     emitLog(logger, 'video_reconciler_provider_error', {
@@ -181,12 +184,10 @@ export async function reconcileVideoGenerationTasks(
   dependencies: VideoTaskReconcilerDependencies = {},
 ): Promise<ReconciliationResult> {
   const databaseUrl = environment.DATABASE_URL?.trim() ?? ''
-  const token = environment.AUTODL_TOKEN?.trim() ?? ''
   const logger = dependencies.logger ?? console.error
-  if (!databaseConfigured(environment) || !token) {
+  if (!databaseConfigured(environment)) {
     const missing = [
       ...(!databaseConfigured(environment) ? [environment.DATABASE_BACKEND === 'd1' ? 'DB' : 'DATABASE_URL'] : []),
-      ...(!token ? ['AUTODL_TOKEN'] : []),
     ]
     emitLog(logger, 'video_reconciler_unavailable', {
       reason: 'missing_configuration',
@@ -220,8 +221,8 @@ export async function reconcileVideoGenerationTasks(
   const createStore: NonNullable<VideoTaskReconcilerDependencies['createStore']> = dependencies.createStore
     ?? (() => createVideoGenerationTaskStore(createAppDatabase(environment)))
   const query = dependencies.query
-    ?? (async (providerTaskId: string, providerToken: string): Promise<VideoProviderQueryResult> => (
-      await queryAutodlVideoTask(providerTaskId, { token: providerToken }) as VideoProviderQueryResult
+    ?? (async (providerTaskId: string, _providerToken: string, context: VideoTaskProviderContext): Promise<VideoProviderQueryResult> => (
+      queryVideoTask(providerTaskId, { workflowId: context.workflowId, environment })
     ))
 
   let store: VideoGenerationTaskStore
@@ -252,7 +253,7 @@ export async function reconcileVideoGenerationTasks(
   let processed = 0
   await processWithBoundedConcurrency(claimed, async (task) => {
     try {
-      await reconcileClaimedTask(task, store, query, token, now, logger)
+      await reconcileClaimedTask(task, store, query, environment, now, logger)
     } catch (error) {
       emitLog(logger, 'video_reconciler_transition_error', {
         taskId: task.id.slice(0, 64),

@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import '@tanstack/react-start'
 import { env } from 'cloudflare:workers'
-import { queryAutodlVideoTask } from '../../../../scripts/autodl-video.mjs'
+import { queryVideoTask } from '../../../lib/video-providers'
 import { createAppDatabase, databaseConfigured } from '../../../db'
 import { createVideoGenerationTaskStore } from '../../../db/video-generation-tasks'
 import { createTrackedVideoTaskStore, createVideoTaskActivity } from '../../../lib/video-task-activity'
@@ -10,7 +10,6 @@ import { createGuestVideoTrialStore } from '../../../db/guest-video-trials'
 import { resolveGuestVideoTrial } from '../../../lib/guest-video-trial'
 import {
   protectVideoGenerationPoll,
-  type VideoProviderQueryResult,
 } from '../../../lib/protected-video-generation'
 
 const LOCAL_TASK_UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
@@ -79,8 +78,7 @@ export const Route = createFileRoute('/api/videos/status')({
         }
 
         const hasDatabase = databaseConfigured(env)
-        const token = env.AUTODL_TOKEN?.trim() ?? ''
-        if (!hasDatabase || !token || !env.VIDEO_REFERENCES) {
+        if (!hasDatabase || !env.VIDEO_REFERENCES) {
           logVideoEvent('video_status_unavailable', { reason: 'missing_configuration' })
           return unavailableResponse()
         }
@@ -102,9 +100,9 @@ export const Route = createFileRoute('/api/videos/status')({
             return guest?.session ?? (session?.user?.id ? { user: { id: session.user.id } } : null)
           },
           taskStore,
-          query: async (providerTaskId) => {
+          query: async (providerTaskId, context) => {
             try {
-              return await queryAutodlVideoTask(providerTaskId, { token }) as VideoProviderQueryResult
+              return await queryVideoTask(providerTaskId, { workflowId: context.workflowId, environment: env })
             } catch (error) {
               logVideoEvent('video_status_provider_error', safeProviderLogDetails(error))
               throw error

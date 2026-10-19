@@ -1,0 +1,19 @@
+# CompShare H3 first-frame integration
+
+The user authorized implementing the pictured free-trial single-image video route using https://www.compshare.cn/docs/minimax-h3/api/minimax-h3-video-api and asked to be told when an API key is required.
+
+- H3 reference generation accepts exactly one uploaded image. Send it as `role: first_frame`, never `reference_image`; no tail frame is required.
+- Use CompShare native `480P`, `MiniMax-H3`, explicit Context-IR optimization, and the existing selected duration and aspect ratio. Keep guest total 10 seconds, default 5, max 10; preserve signed-in daily accounting and allowed 15-second requests. All current site video requests are the existing free trial at 480p; do not add a new pricing system.
+- Pure text generation remains AutoDL. GPT image generation is unchanged.
+- Persist the chosen channel in the existing task workflow identifier and use that persisted identity for user polling and scheduled reconciliation. Existing AutoDL tasks must continue to work after cutover. No database schema/data migration is necessary.
+- Keep authorization, guest ownership after login, rate limits, one reservation per task, leases, successful settlement, failure refund, 2-hour expiry, and the R2 activity gate that prevents idle SQL.
+- New CompShare tasks use the local task ID as a stable idempotency key. Do not automatically resubmit on ambiguous responses or fall back to another provider.
+- Bounded response reads, timeouts, safe error messages, secret-free logs, HTTPS results, task ID validation, and no credential forwarding on redirects are required.
+- Missing credentials and upstream 401/403 responses during polling are temporary configuration failures and must not refund an already accepted task. Unrecognized channel identities must fail closed without querying either provider.
+- Provide an explicit reversible `H3_REFERENCE_PROVIDER=autodl|compshare` switch. Keep the committed default `autodl` until the real key is configured and a live integration check can be run. In CompShare mode, a missing API key must fail before guest provisioning/reservation rather than silently generate through AutoDL.
+- The API key is server-only `COMPSHARE_API_KEY`. Do not ask for it in chat; ask the user to save it in the ignored primary `.env.local` when implementation and offline checks are ready. Credential setup, balance checks, activation and any paid validation remain parent-controlled release checkpoints. The implementation worker must not read/print keys or make real provider requests.
+- Preserve the unrelated untracked `docs/superpowers/plans/2026-10-19-my-creations.md` and all private migration backups.
+
+Verified documentation: POST `https://cp.compshare.cn/minimax/v2/video_generation`, bearer auth, body `{model,content:[{type:'text',text:prompt},{type:'image_url',image_url:{url},role:'first_frame'}],resolution:'480P',duration,ratio,use_context_ir:true}`. POST returns `{task_id}`. GET `/minimax/v2/query/video_generation/{task_id}` returns `{task:{id,status,content:{url}}}`. Exact statuses are queued, running, succeeded, failed, cancelled. Failed/cancelled release provider reservation. Unknown statuses remain pending. Native 480P is five provider points per video second (separate from website credits).
+
+Known baseline failures unrelated to this task: `tests/image-model-selection.test.mjs` and `tests/gpt-image-25-studio.test.ts` each contain a stale GPT 2.5 four-reference assertion whereas the existing model allows 16. Both were reproduced on clean main before this task. Do not change image settings or those tests in this feature.

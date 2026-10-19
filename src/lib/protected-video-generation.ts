@@ -95,12 +95,15 @@ export type VideoProviderQueryResult =
   | { status: 'failed'; terminal: true }
   | { status: 'succeeded'; terminal: true; videoUrl: string }
 
+export type VideoTaskProviderContext = { workflowId: string; localTaskId: string }
+
 interface ProtectedVideoGenerationStartOptions {
   request: Request
   getSession: (request: Request) => Promise<SessionLike>
   preflight: (request: Request, userId: string) => Promise<VideoGenerationPreflight>
   taskStore: VideoGenerationTaskStore
-  submit: (payload: VideoGenerationPayload) => Promise<{ providerTaskId: string }>
+  resolveWorkflow?: (payload: VideoGenerationPayload) => string
+  submit: (payload: VideoGenerationPayload, context: VideoTaskProviderContext) => Promise<{ providerTaskId: string }>
 }
 
 interface ProtectedVideoGenerationPollOptions {
@@ -108,7 +111,7 @@ interface ProtectedVideoGenerationPollOptions {
   localTaskId: string
   getSession: (request: Request) => Promise<SessionLike>
   taskStore: VideoGenerationTaskStore
-  query: (providerTaskId: string) => Promise<VideoProviderQueryResult>
+  query: (providerTaskId: string, context: VideoTaskProviderContext) => Promise<VideoProviderQueryResult>
   now?: Date
   leaseDurationMs?: number
 }
@@ -131,6 +134,7 @@ async function protectVideoGenerationStartUnsafe({
   getSession,
   preflight,
   taskStore,
+  resolveWorkflow,
   submit,
 }: ProtectedVideoGenerationStartOptions) {
   const session = await getSession(request)
@@ -154,8 +158,10 @@ async function protectVideoGenerationStartUnsafe({
     if (error) return error
   }
   const creditCost = payload.duration
+  const workflowId = resolveWorkflow?.(payload)
+    ?? (payload.referenceImageIds?.length ? REFERENCE_VIDEO_WORKFLOW_ID : VIDEO_WORKFLOW_ID)
   const reservation = await taskStore.reserveAndCreate(session.user.id, creditCost, {
-    workflowId: payload.referenceImageIds?.length ? REFERENCE_VIDEO_WORKFLOW_ID : VIDEO_WORKFLOW_ID,
+    workflowId,
     duration: payload.duration,
     resolution: payload.resolution,
     aspectRatio: payload.aspectRatio,
@@ -174,7 +180,9 @@ async function protectVideoGenerationStartUnsafe({
 
   let providerTaskId: string
   try {
-    providerTaskId = (await submit(payload)).providerTaskId
+    providerTaskId = (await submit(payload, {
+      workflowId: reservation.task.workflowId, localTaskId: reservation.task.id,
+    })).providerTaskId
   } catch (error) {
     const ambiguous = Boolean((error as { ambiguous?: unknown } | null)?.ambiguous)
     const status = ambiguous ? 'submission_unknown' : 'failed'
@@ -317,7 +325,7 @@ async function protectVideoGenerationPollUnsafe({
 
   let providerResult: VideoProviderQueryResult
   try {
-    providerResult = await query(claimed.providerTaskId)
+    providerResult = await query(claimed.providerTaskId, { workflowId: claimed.workflowId, localTaskId: claimed.id })
   } catch (error) {
     if (Boolean((error as { retriable?: unknown } | null)?.retriable)) {
       const retryAfterSeconds = (error as { retryAfterSeconds?: unknown }).retryAfterSeconds

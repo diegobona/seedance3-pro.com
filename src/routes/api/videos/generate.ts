@@ -3,8 +3,8 @@ import '@tanstack/react-start'
 import { env } from 'cloudflare:workers'
 import {
   preflightVideoGenerationRequest,
-  submitAutodlVideoTask,
 } from '../../../../scripts/autodl-video.mjs'
+import { selectVideoWorkflow, assertVideoProviderConfigured, submitVideoTask } from '../../../lib/video-providers'
 import { createAppDatabase, databaseConfigured } from '../../../db'
 import { createVideoGenerationTaskStore } from '../../../db/video-generation-tasks'
 import { createTrackedVideoTaskStore, createVideoTaskActivity } from '../../../lib/video-task-activity'
@@ -73,20 +73,30 @@ export const Route = createFileRoute('/api/videos/generate')({
         }
 
         const hasDatabase = databaseConfigured(env)
-        const token = env.AUTODL_TOKEN?.trim() ?? ''
         const IMAGE_RATE_LIMITER = env.IMAGE_RATE_LIMITER
-        if (!hasDatabase || !token || !env.VIDEO_REFERENCES || typeof IMAGE_RATE_LIMITER?.limit !== 'function') {
+        if (!hasDatabase || !env.VIDEO_REFERENCES || typeof IMAGE_RATE_LIMITER?.limit !== 'function') {
           logVideoEvent('video_generate_unavailable', { reason: 'missing_configuration' })
           return unavailableResponse()
         }
 
         try {
-          const db = createAppDatabase(env)
-          const taskStore = createTrackedVideoTaskStore(createVideoGenerationTaskStore(db), createVideoTaskActivity(env.VIDEO_REFERENCES))
-          const session = await createAuth(request, env).api.getSession({ headers: request.headers })
           // Validate before provisioning a guest or assigning their lifetime allowance.
           const validation = await preflightVideoGenerationRequest(request) as VideoGenerationPreflight
           if (!validation.ok) return validation.response
+          let workflowId: string
+          try {
+            workflowId = selectVideoWorkflow(validation.payload, env)
+            assertVideoProviderConfigured(workflowId, env)
+          } catch (error) {
+            logVideoEvent('video_generate_unavailable', safeProviderLogDetails(error))
+            if ((error as { code?: string }).code === 'COMPSHARE_CONFIGURATION_ERROR') {
+              return jsonError(400, 'INVALID_VIDEO_REQUEST', 'Reference video input is invalid. The prompt cannot exceed 7,000 characters.')
+            }
+            return unavailableResponse()
+          }
+          const db = createAppDatabase(env)
+          const taskStore = createTrackedVideoTaskStore(createVideoGenerationTaskStore(db), createVideoTaskActivity(env.VIDEO_REFERENCES))
+          const session = await createAuth(request, env).api.getSession({ headers: request.headers })
           if (!session?.user?.id) {
             const error = guestVideoPayloadError(validation.payload)
             if (error) return error
@@ -99,6 +109,7 @@ export const Route = createFileRoute('/api/videos/generate')({
             request,
             getSession: async () => session?.user?.id ? { user: { id: session.user.id } } : guest?.session ?? null,
             taskStore,
+            resolveWorkflow: () => workflowId,
             preflight: async (protectedRequest, userId) => {
               if (validation.payload.resolution !== '480p') {
                 return {
@@ -142,9 +153,9 @@ export const Route = createFileRoute('/api/videos/generate')({
               }
               return validation
             },
-            submit: async (payload) => {
+            submit: async (payload, context) => {
               try {
-                return await submitAutodlVideoTask(payload, { token })
+                return await submitVideoTask(payload, { ...context, environment: env })
               } catch (error) {
                 logVideoEvent('video_generate_provider_error', safeProviderLogDetails(error))
                 throw error

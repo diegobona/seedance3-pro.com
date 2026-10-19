@@ -5,6 +5,8 @@ import {
   protectVideoGenerationStart,
   type VideoGenerationTask,
 } from '../src/lib/protected-video-generation'
+import { preflightVideoGenerationRequest } from '../scripts/autodl-video.mjs'
+import { COMPSHARE_FIRST_FRAME_WORKFLOW_ID as compshare, selectVideoWorkflow, assertVideoProviderConfigured, queryVideoTask } from '../src/lib/video-providers'
 
 const validPayload = {
   prompt: 'A paper boat crossing a moonlit lake',
@@ -54,6 +56,39 @@ test('reference generation records the correct workflow while keeping duration-b
   assert.deepEqual(harness.calls.reserve[0], ['user-1', 10, {
     workflowId: 'minimax_h3_image_audio_to_video_v2_15s', duration: 10, resolution: '480p', aspectRatio: '16:9',
   }])
+})
+
+test('trusted selection persists CompShare and submits the actual reservation ID and workflow', async () => {
+  const image = { ...validPayload, referenceImageIds: [crypto.randomUUID()], referenceImageUrls: ['https://example.test/reference.png'] }
+  const environment = { H3_REFERENCE_PROVIDER: 'compshare', COMPSHARE_API_KEY: 'test-key' }
+  const contexts: unknown[] = []
+  const harness = startHarness({ preflight: async () => ({ ok: true, payload: image }),
+    resolveWorkflow: (payload: typeof image) => selectVideoWorkflow(payload, environment),
+    submit: async (_payload: typeof image, context: unknown) => { contexts.push(context); return { providerTaskId: 'comp-1' } },
+  })
+  harness.options.taskStore.reserveAndCreate = async (...args: unknown[]) => {
+    harness.calls.reserve.push(args)
+    return { task: { ...harness.task, ...(args[2] as object), id: 'reservation-issued-id' }, remainingCredits: 5 }
+  }
+  const response = await protectVideoGenerationStart(harness.options as never)
+  assert.equal(response.status, 202)
+  assert.equal((harness.calls.reserve[0][2] as { workflowId: string }).workflowId, compshare)
+  assert.deepEqual(contexts, [{ localTaskId: 'reservation-issued-id', workflowId: compshare }])
+  assert.deepEqual(harness.calls.attach, [['reservation-issued-id', 'comp-1']])
+})
+
+test('trusted resolver rejects unavailable credentials before reserving; client workflow fields are rejected', async () => {
+  const harness = startHarness({ resolveWorkflow: () => { assertVideoProviderConfigured(compshare, {}); return compshare } })
+  const response = await protectVideoGenerationStart(harness.options as never)
+  assert.equal(response.status, 503)
+  assert.equal(harness.calls.reserve.length, 0)
+  assert.equal(harness.calls.submit, 0)
+  for (const field of ['workflowId', 'workflow', 'provider', 'referenceImageUrls']) {
+    const validation = await preflightVideoGenerationRequest(new Request('https://example.test/api/videos/generate', {
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...validPayload, [field]: 'attacker-choice' }),
+    }))
+    assert.equal(validation.ok, false)
+  }
 })
 
 function startHarness(overrides: Record<string, unknown> = {}) {
@@ -384,6 +419,36 @@ test('poll hides tasks owned by another user', async () => {
   assert.equal(response.status, 404)
   assert.equal(harness.calls.claim, 0)
   assert.equal(harness.calls.query, 0)
+})
+
+test('poll passes the persisted workflow only after ownership and lease checks, and never starts a task', async () => {
+  const harness = pollHarness({ workflowId: compshare })
+  const contexts: unknown[] = []
+  const query = async (providerTaskId: string, context: unknown) => {
+    assert.equal(harness.calls.lookup, 1)
+    assert.equal(harness.calls.claim, 1)
+    contexts.push([providerTaskId, context])
+    return { status: 'queued' as const, terminal: false as const }
+  }
+  const response = await protectVideoGenerationPoll({ ...harness.options, query } as never)
+  assert.equal(response.status, 202)
+  assert.deepEqual(contexts, [['provider-secret-1', { workflowId: compshare, localTaskId: 'local-task-1' }]])
+  harness.store.claimForPoll = async () => null as never
+  await protectVideoGenerationPoll({ ...harness.options, query } as never)
+  assert.equal(contexts.length, 1)
+})
+
+test('missing persisted CompShare credentials schedule retry without refund or AutoDL fallback', async () => {
+  const harness = pollHarness({ workflowId: compshare })
+  const response = await protectVideoGenerationPoll({ ...harness.options,
+    query: (providerTaskId: string, context: { workflowId: string }) => queryVideoTask(providerTaskId, {
+      workflowId: context.workflowId, environment: { H3_REFERENCE_PROVIDER: 'autodl', AUTODL_TOKEN: 'old-token' },
+      fetchImpl: async () => { throw new Error('must not fall back') },
+    }),
+  } as never)
+  assert.equal(response.status, 202)
+  assert.equal(harness.calls.schedule.length, 1)
+  assert.equal(harness.calls.failure.length, 0)
 })
 
 test('poll returns a cached terminal success without claiming or querying', async () => {

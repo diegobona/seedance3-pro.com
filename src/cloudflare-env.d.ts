@@ -13,6 +13,8 @@ interface Env {
   TUZI_API_KEY?: string
   TUZI_API_BASE?: string
   AUTODL_TOKEN?: string
+  COMPSHARE_API_KEY?: string
+  H3_REFERENCE_PROVIDER?: string
   IMAGE_RATE_LIMITER?: {
     limit(input: { key: string }): Promise<{ success: boolean }>
   }
