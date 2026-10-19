@@ -7,6 +7,7 @@ import { canonicalSiteRedirect, fetchPublicPage, isStudioDocument } from './lib/
 import poseEntryVisibility from '../assets/pose-entry-visibility.js?raw'
 import { collectSeedanceNews, NEWS_CRON, readNewsState } from './lib/seedance-news'
 import { newsDocument, newsPageRequest, rewriteNewsResponse } from './lib/seedance-news-page'
+import { databaseMaintenanceResponse } from './lib/database-maintenance'
 
 interface WorkerContext {
   waitUntil(promise: Promise<unknown>): void
@@ -43,6 +44,8 @@ function isLegacyApiRequest(request: Request) {
 
 export default {
   async fetch(request, env, ctx) {
+    const maintenance = databaseMaintenanceResponse(request, env.DATABASE_MIGRATION_PAUSED)
+    if (maintenance) return maintenance
     const url = new URL(request.url)
     const { pathname } = url
     const basePath = stripLocalePath(pathname)
@@ -94,6 +97,7 @@ export default {
     return fetchPublicPage(request)
   },
   scheduled(controller, env, ctx) {
+    if (env.DATABASE_MIGRATION_PAUSED === '1') return
     if (controller.cron === NEWS_CRON) {
       if (!env.CMS_JOBS) throw new Error('Official news storage is not configured')
       return collectSeedanceNews(env.CMS_JOBS).then(() => undefined)
