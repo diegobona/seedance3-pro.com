@@ -6,6 +6,8 @@ import { createAppDatabase, databaseConfigured } from '../../../db'
 import { createVideoGenerationTaskStore } from '../../../db/video-generation-tasks'
 import { createTrackedVideoTaskStore, createVideoTaskActivity } from '../../../lib/video-task-activity'
 import { createAuth } from '../../../lib/auth'
+import { createGuestVideoTrialStore } from '../../../db/guest-video-trials'
+import { resolveGuestVideoTrial } from '../../../lib/guest-video-trial'
 import {
   protectVideoGenerationPoll,
   type VideoProviderQueryResult,
@@ -76,19 +78,28 @@ export const Route = createFileRoute('/api/videos/status')({
           return jsonError(400, 'INVALID_VIDEO_TASK', 'A valid video task is required.')
         }
 
+        const hasDatabase = databaseConfigured(env)
         const token = env.AUTODL_TOKEN?.trim() ?? ''
-        if (!databaseConfigured(env) || !token || !env.VIDEO_REFERENCES) {
+        if (!hasDatabase || !token || !env.VIDEO_REFERENCES) {
           logVideoEvent('video_status_unavailable', { reason: 'missing_configuration' })
           return unavailableResponse()
         }
 
-        const taskStore = createTrackedVideoTaskStore(createVideoGenerationTaskStore(createAppDatabase(env)), createVideoTaskActivity(env.VIDEO_REFERENCES))
+        const db = createAppDatabase(env)
+        const taskStore = createTrackedVideoTaskStore(createVideoGenerationTaskStore(db), createVideoTaskActivity(env.VIDEO_REFERENCES))
         return protectVideoGenerationPoll({
           request,
           localTaskId,
           getSession: async (sessionRequest) => {
             const session = await createAuth(sessionRequest, env).api.getSession({ headers: sessionRequest.headers })
-            return session?.user?.id ? { user: { id: session.user.id } } : null
+            if (session?.user?.id && await taskStore.getForUser(localTaskId, session.user.id)) {
+              return { user: { id: session.user.id } }
+            }
+            // Logging in while a guest task runs must not strand that result.
+            const guest = await resolveGuestVideoTrial(sessionRequest, {
+              secret: env.BETTER_AUTH_SECRET, store: createGuestVideoTrialStore(db),
+            })
+            return guest?.session ?? (session?.user?.id ? { user: { id: session.user.id } } : null)
           },
           taskStore,
           query: async (providerTaskId) => {

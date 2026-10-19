@@ -87,13 +87,13 @@ export async function serveVideoReference(request: Request, bucket?: R2Bucket, n
   })
 }
 
-export async function resolveVideoReferences(ids: string[], userId: string, bucket?: R2Bucket, now = Date.now()) {
+export async function resolveVideoReferences(ids: string[], userId: string, bucket?: R2Bucket, now = Date.now(), additionalOwnerIds: string[] = []) {
   if (!bucket) throw new Error('Reference uploads are unavailable.')
   const urls: string[] = []
   for (const id of ids) {
     if (!ID_PATTERN.test(id)) throw new Error('Invalid reference image.')
     const object = await bucket.head(`references/${id}`)
-    if (!object || object.customMetadata?.userId !== userId || !isFresh(object.customMetadata, now + 60 * 60 * 1000)) {
+    if (!object || ![userId, ...additionalOwnerIds].includes(object.customMetadata?.userId ?? '') || !isFresh(object.customMetadata, now + 60 * 60 * 1000)) {
       throw new Error('A reference image expired or is unavailable. Please upload it again.')
     }
     urls.push(`https://seedance3-pro.com/api/videos/references?id=${id}`)

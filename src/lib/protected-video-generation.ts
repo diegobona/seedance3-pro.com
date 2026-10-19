@@ -25,7 +25,15 @@ export type VideoGenerationPreflight =
   | { ok: true; payload: VideoGenerationPayload }
   | { ok: false; response: Response }
 
-type SessionLike = { user: { id: string } } | null
+type SessionLike = { user: { id: string; isGuest?: boolean } } | null
+
+export function guestVideoPayloadError(payload: VideoGenerationPayload) {
+  if ([5, 10].includes(payload.duration) && payload.resolution === '480p') return null
+  return Response.json({ success: false, code: 'GUEST_TRIAL_PARAMETERS',
+    message: 'Guest videos support 5 or 10 seconds at 480p.' }, {
+    status: 400, headers: { 'cache-control': 'no-store' },
+  })
+}
 
 export type VideoTaskMetadata = Pick<VideoGenerationPayload, 'duration' | 'resolution' | 'aspectRatio'> & { workflowId: string }
 
@@ -141,6 +149,10 @@ async function protectVideoGenerationStartUnsafe({
   if (!validation.ok) return validation.response
 
   const payload = validation.payload
+  if (session.user.isGuest) {
+    const error = guestVideoPayloadError(payload)
+    if (error) return error
+  }
   const creditCost = payload.duration
   const reservation = await taskStore.reserveAndCreate(session.user.id, creditCost, {
     workflowId: payload.referenceImageIds?.length ? REFERENCE_VIDEO_WORKFLOW_ID : VIDEO_WORKFLOW_ID,
@@ -152,8 +164,10 @@ async function protectVideoGenerationStartUnsafe({
     const remainingCredits = await taskStore.getBalance(session.user.id)
     return withCreditHeaders(Response.json({
       success: false,
-      code: 'INSUFFICIENT_CREDITS',
-      message: `You need ${creditCost} credits to generate this video.`,
+      code: session.user.isGuest ? 'GUEST_TRIAL_INSUFFICIENT' : 'INSUFFICIENT_CREDITS',
+      message: session.user.isGuest
+        ? 'Not enough free video seconds for this duration. Choose 5 seconds or sign up to keep creating.'
+        : `You need ${creditCost} credits to generate this video.`,
       credits: { cost: creditCost, remaining: remainingCredits },
     }, { status: 402 }), creditCost, remainingCredits)
   }
@@ -217,7 +231,14 @@ function unavailableResponse() {
 
 export async function protectVideoGenerationStart(options: ProtectedVideoGenerationStartOptions) {
   try {
-    return await protectVideoGenerationStartUnsafe(options)
+    let scope = 'account'
+    const response = await protectVideoGenerationStartUnsafe({ ...options, getSession: async request => {
+      const session = await options.getSession(request)
+      scope = session?.user.isGuest ? 'guest-video' : 'account'
+      return session
+    } })
+    response.headers.set('x-seedance-credit-scope', scope)
+    return response
   } catch {
     return unavailableResponse()
   }
@@ -360,7 +381,14 @@ async function protectVideoGenerationPollUnsafe({
 
 export async function protectVideoGenerationPoll(options: ProtectedVideoGenerationPollOptions) {
   try {
-    return await protectVideoGenerationPollUnsafe(options)
+    let scope = 'account'
+    const response = await protectVideoGenerationPollUnsafe({ ...options, getSession: async request => {
+      const session = await options.getSession(request)
+      scope = session?.user.isGuest ? 'guest-video' : 'account'
+      return session
+    } })
+    response.headers.set('x-seedance-credit-scope', scope)
+    return response
   } catch {
     return unavailableResponse()
   }

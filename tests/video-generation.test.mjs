@@ -3,6 +3,14 @@ import test from "node:test";
 
 const LOCAL_TASK_ID = "123e4567-e89b-42d3-a456-426614174000";
 
+test('guest status credits retain their owner scope when resuming after login', async () => {
+  const { pollVideoGenerationTask } = await import('../app/video-generation.mjs');
+  const result = await pollVideoGenerationTask({ taskId: LOCAL_TASK_ID, fetchImpl: async () => Response.json({
+    success: true, task: { id: LOCAL_TASK_ID, status: 'succeeded', resultUrl: 'https://media.example/video.mp4' },
+  }, { headers: { 'x-seedance-credit-cost': '5', 'x-seedance-credit-remaining': '5', 'x-seedance-credit-scope': 'guest-video' } }) });
+  assert.deepEqual(result.credits, { cost: 5, remaining: 5, context: 'guest-video' });
+});
+
 test("image-to-video uploads references in order before submitting and polling", async () => {
   const { requestVideoGeneration } = await import('../app/video-generation.mjs');
   const ids = [crypto.randomUUID(), crypto.randomUUID()];

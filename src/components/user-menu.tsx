@@ -80,7 +80,8 @@ export function UserMenu({ onLogin }: UserMenuProps) {
       }
     }
     const updateCredits = (event: Event) => {
-      const detail = (event as CustomEvent<{ remaining?: unknown }>).detail
+      const detail = (event as CustomEvent<{ remaining?: unknown; context?: string }>).detail
+      if (detail?.context === 'guest-video') return
       if (typeof detail?.remaining !== 'number' || !Number.isSafeInteger(detail.remaining) || detail.remaining < 0) return
       announcedRemainingRef.current = detail.remaining
       creditVersion += 1

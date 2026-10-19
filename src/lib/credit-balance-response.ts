@@ -6,11 +6,15 @@ interface CreditBalanceResponseOptions {
   request: Request
   getSession: (request: Request) => Promise<SessionLike>
   getBalance: (userId: string) => Promise<number>
+  getGuestBalance?: () => Promise<{ remaining: number; guest: boolean; generationCost: number; maxDuration: number; expiresDaily: boolean }>
 }
 
-export async function getCreditBalanceResponse({ request, getSession, getBalance }: CreditBalanceResponseOptions) {
+export async function getCreditBalanceResponse({ request, getSession, getBalance, getGuestBalance }: CreditBalanceResponseOptions) {
   const session = await getSession(request)
   if (!session?.user?.id) {
+    if (getGuestBalance) return Response.json({ success: true, credits: await getGuestBalance() }, {
+      headers: { 'cache-control': 'no-store' },
+    })
     return Response.json({
       success: false,
       code: 'AUTH_REQUIRED',

@@ -150,6 +150,8 @@ export function createCreditSummaryController({
   quantityControl,
   additionalCostControls = [],
   getCost,
+  getBalanceUrl = () => '/api/credits/balance',
+  getContext = () => 'account',
   eventTarget = globalThis,
   fetchImpl = globalThis.fetch,
   setTimeoutImpl = globalThis.setTimeout,
@@ -188,12 +190,16 @@ export function createCreditSummaryController({
   }
 
   function handleCreditsUpdated(event) {
+    if ((event?.detail?.context ?? 'account') !== getContext()) return;
     invalidateLoad();
     balance = normalizeCreditBalance(event?.detail?.remaining);
     render();
   }
 
   function handleAuthChanged() {
+    onBalanceLoaded(null, null);
+    balance = null;
+    render();
     void loadBalance();
   }
 
@@ -203,13 +209,15 @@ export function createCreditSummaryController({
     const abortController = new AbortController();
     loadAbortController = abortController;
     let loadedBalance = null;
+    let loadedCredits = null;
     try {
-      const response = await fetchImpl("/api/credits/balance", {
+      const response = await fetchImpl(getBalanceUrl(), {
         credentials: "same-origin",
         signal: abortController.signal
       });
       if (response.ok) {
         const payload = await response.json();
+        loadedCredits = payload?.credits ?? null;
         loadedBalance = normalizeCreditBalance(payload?.credits?.remaining);
       }
     } catch {
@@ -218,10 +226,12 @@ export function createCreditSummaryController({
     if (destroyed || requestVersion !== loadVersion) return;
     loadAbortController = null;
     balance = loadedBalance;
+    onBalanceLoaded(loadedBalance, loadedCredits);
     render();
     if (loadedBalance !== null) {
-      scheduleDailyReset();
-      onBalanceLoaded(loadedBalance);
+      if (dailyResetTimer !== null) clearTimeoutImpl(dailyResetTimer);
+      dailyResetTimer = null;
+      if (loadedCredits?.expiresDaily !== false) scheduleDailyReset();
     }
   }
 
@@ -234,6 +244,12 @@ export function createCreditSummaryController({
 
   return {
     refresh: render,
+    reset() {
+      invalidateLoad();
+      balance = null;
+      render();
+      return loadBalance();
+    },
     loadBalance,
     destroy() {
       if (destroyed) return;

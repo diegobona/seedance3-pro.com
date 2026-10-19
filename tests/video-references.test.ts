@@ -50,3 +50,11 @@ test('upload rejects cross-origin and rate-limited requests before storing', asy
   assert.equal((await uploadVideoReference(h.request(), { ...h.options, limiter: { limit: async () => ({ success: false }) } })).status, 429)
   assert.equal(h.objects.size, 0)
 })
+
+test('a signed-in user can reuse references owned by their verified guest identity', async () => {
+  const h = setup()
+  const reference = await (await uploadVideoReference(h.request(), h.options)).json() as { id: string }
+  const urls = await resolveVideoReferences([reference.id], 'signed-in-user', h.bucket, now, ['owner'])
+  assert.equal(new URL(urls[0]).searchParams.get('id'), reference.id)
+  await assert.rejects(resolveVideoReferences([reference.id], 'signed-in-user', h.bucket, now, ['unrelated-guest']), /unavailable/)
+})

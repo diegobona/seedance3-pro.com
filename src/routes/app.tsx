@@ -71,8 +71,8 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
       if (disposed) return
       studioCleanup = initializeStudio()
     })
-    const requestLogin = () => {
-      setAuthMode('login')
+    const requestLogin = (event: Event) => {
+      setAuthMode((event as CustomEvent).detail?.mode === 'register' ? 'register' : 'login')
       setAuthOpen(true)
     }
     window.addEventListener('seedance:auth-required', requestLogin)
@@ -83,9 +83,13 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
     }
   }, [])
 
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('seedance:auth-changed'))
+  }, [session?.user?.id])
+
   return (
     <>
-      <div className={`studio-shell${initiallyPose ? ' is-pose-mode' : ''}`}>
+      <div className={`studio-shell${initiallyPose ? ' is-pose-mode' : ''}`} data-authenticated={session?.user ? 'true' : 'false'}>
         <aside className="sidebar" id="studio-sidebar">
           <a className="studio-brand" href={path("/")}><img src="/assets/seedance-mark.svg" width="40" height="40" alt="" /><strong>{t("SEEDANCE")}<br /><small>{t("CREATIVE STUDIO")}</small></strong></a>
           <button className="sidebar-close" type="button" aria-label={t("Close model navigation")}>×</button>
@@ -135,8 +139,7 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
             {modelLanding && !initiallyGpt25 && <p className="model-landing-intro">{initiallySeedance25 ? t("Create a video from a text prompt in the Seedance 2.5 workspace. Choose your video settings and follow the result here.") : initiallyH3 ? <>{t("Turn text or reference images into a MiniMax H3 video. Describe your scene, choose your settings, or start with an example from the ")}<a href={path("/minimax-h3-prompts")} target="_blank" rel="noopener">{t("MiniMax H3 Prompt Library")}</a>.</> : <>{t("Create or edit images with GPT Image 2 using text and reference images. Describe your idea, combine visual references, or start with an example from the ")}<a href={path("/gpt-image-2-prompts")} target="_blank" rel="noopener">{t("GPT Image 2 Prompt Library")}</a>.</>}</p>}
             <aside className="studio-trial-notice" role="note" aria-label={t("Free trial")}>
               <span className="studio-trial-icon" aria-hidden="true">✦</span>
-              <div><strong>{t("Free trial")}</strong><span>{dailyTrialBefore}<strong className="studio-trial-daily">{t("daily")}</strong>{dailyTrialAfter}</span><p id="daily-credit-reset-notice">{t("Daily credits refresh each day. Unused credits expire at the next reset and do not accumulate.")}</p></div>
-              {!session?.user && <button className="studio-trial-register" type="button" onClick={() => openAuth('register')}>{t("Register")} <span aria-hidden="true">↗</span></button>}
+              <div><strong>{t("Free trial")}</strong><span id="trial-allowance-message">{initiallyH3 && !session?.user ? t('No registration or login required.') : <>{dailyTrialBefore}<strong className="studio-trial-daily">{t("daily")}</strong>{dailyTrialAfter}</>}</span><p id="daily-credit-reset-notice">{initiallyH3 && !session?.user ? t('Choose 5 or 10 seconds.') : t("Daily credits refresh each day. Unused credits expire at the next reset and do not accumulate.")}</p></div>
             </aside>
             <div className="creation-grid" id="creation-grid" hidden={initiallyPose}>
               <section className="creation-panel">
@@ -163,7 +166,7 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
                   <div className="prompt-tools" hidden={initiallyVideo}><button id="prompt-structure-button" type="button">{t("✦ Prompt structure")}</button><button id="example-prompt-button" type="button">{t("View examples")}</button></div>
                 </div>
                 <div className="settings-grid" id="video-settings" hidden={!initiallyVideo}>
-                  <label>{t("Duration")}<select id="video-duration" defaultValue="5"><option value="5">{t("5 seconds")}</option><option value="10">{t("10 seconds")}</option><option value="15">{t("15 seconds")}</option></select></label>
+                  <label>{t("Duration")}<select id="video-duration" defaultValue="5"><option value="5">{t("5 seconds")}</option><option value="10">{t("10 seconds")}</option><option value="15" disabled={initiallyH3 && !session?.user}>{t("15 seconds")}</option></select></label>
                   <label className="resolution-setting"><span className="resolution-heading"><span>{t("Resolution")}</span><small>{t("TRIAL · 480P ONLY")}</small></span><select id="video-resolution" value="480p" disabled><option value="480p">{t("480p")}</option></select></label>
                   <label>{t("Aspect ratio")}<select id="video-aspect-ratio" defaultValue="16:9"><option value="9:16">{t("9:16 portrait")}</option><option value="16:9">{t("16:9 landscape")}</option><option value="1:1">{t("1:1 square")}</option></select></label>
                 </div>

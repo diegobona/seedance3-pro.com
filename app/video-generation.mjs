@@ -18,9 +18,10 @@ function throwIfAborted(signal) {
 function parseCredits(response) {
   const cost = Number(response.headers.get("x-seedance-credit-cost"));
   const remaining = Number(response.headers.get("x-seedance-credit-remaining"));
+  const scope = response.headers.get('x-seedance-credit-scope');
   return Number.isSafeInteger(cost) && cost > 0
     && Number.isSafeInteger(remaining) && remaining >= 0
-    ? { cost, remaining }
+    ? { cost, remaining, ...(scope === 'guest-video' || scope === 'account' ? { context: scope } : {}) }
     : null;
 }
 

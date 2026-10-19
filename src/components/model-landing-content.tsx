@@ -34,9 +34,10 @@ const content = {
       'Choose Text to video, or select Reference to video and upload your images.',
       'Describe one main action and the camera movement. With multiple images, identify each subject or setting by its image number.',
       'Choose your duration and aspect ratio, and review the available resolution in the form.',
-      'Review the credit cost, sign in, then generate and check the result.',
+      'Try 5 or 10 seconds at 480p without signing in. Guests get 10 free seconds in total; sign up for daily free credits.',
     ],
     questions: [
+      ['Can I try MiniMax H3 without an account?', 'Yes. Guests get 10 free video seconds in total at 480p. Generate two 5-second videos or one 10-second video. The default is 5 seconds; failed generations refund the reserved seconds.'],
       ['Can MiniMax H3 generate a video from a single image?', 'Yes. Select Reference to video, upload one image, and describe the action and camera movement you want. You can also add more reference images to guide the scene.'],
       ['How do I use multiple reference images?', 'Select Reference to video and add your images within the limits shown in the upload area. Images are numbered in upload order. For example: use Image 1 as the setting and animate the character from Image 2 walking through it.'],
       ['What video lengths and formats are available here?', 'The form shows the available duration, resolution and aspect ratio for your selected mode. Check these controls when setting up your video.'],

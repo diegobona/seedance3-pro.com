@@ -1,5 +1,6 @@
 import { t, localizedErrorMessage, currentLocale } from './i18n.mjs';
 import { formatCreditResetTime } from './daily-credits.mjs';
+import { guestVideoDurationState } from './guest-video.mjs';
 import { localizedPath } from './site-locale.mjs';
 import { buildModelUrl, normalizeModelId } from "./model-routing.mjs";
 import { canonicalModelPath, modelIdFromPath } from "./seo-routes.mjs";
@@ -228,6 +229,8 @@ export function initializeStudio() {
   let activeVideoTaskId = readActiveVideoTask();
   let exampleIndex = 0;
   let creditInsufficient = false;
+  let guestVideo = studioShell.dataset.authenticated !== 'true';
+  let guestRemaining = null;
   let creditSummaryController;
   let poseStudioCleanup;
   let poseStudioPromise;
@@ -295,7 +298,19 @@ export function initializeStudio() {
   }
 
   function videoGenerationLabel() {
+    if (isGuestVideoSelected()) return guestRemaining === 0
+      ? t('Sign up to keep creating') : t('Generate video · {seconds}s free', { seconds: videoDuration.value });
     return t('Generate video · {cost} credits', { cost: creditCostForDuration(videoDuration?.value) });
+  }
+
+  function isGuestVideoSelected() {
+    return activeModelId === 'minimax-h3' && guestVideo;
+  }
+
+  function updateGuestVideoControls() {
+    const state = guestVideoDurationState({ guest: isGuestVideoSelected(), remaining: guestRemaining, value: videoDuration.value });
+    for (const option of videoDuration.options) option.disabled = state.disabled.includes(Number(option.value));
+    videoDuration.value = state.value;
   }
 
   function isVideoGenerationSelected() {
@@ -396,6 +411,7 @@ export function initializeStudio() {
       : imageGenerationInFlight;
     generateButton.disabled = !canGenerate || !prompt.value.trim() || generationBlocked || creditInsufficient
       || (isReferenceVideo() && videoReferences.length === 0);
+    if (isGuestVideoSelected() && guestRemaining === 0 && !generationBlocked) generateButton.disabled = false;
     const disabled = generateButton.disabled;
     poseResultActionsController?.setGenerateState({
       disabled: disabled || !poseReferenceActive || !getImageModel(activeModelId),
@@ -407,6 +423,9 @@ export function initializeStudio() {
     const normalizedModelId = normalizeModelId(modelId, availableModelIds);
     const model = studioModels[normalizedModelId];
     activeModelId = normalizedModelId;
+    guestRemaining = null;
+    guestVideo = studioShell.dataset.authenticated !== 'true';
+    updateGuestVideoControls();
     updatePoseSidebar();
     modelButtons.forEach((button) => button.classList.toggle("is-active", button.dataset.model === normalizedModelId));
     if (modelName.dataset.landingModel !== normalizedModelId) modelName.textContent = t(model.name);
@@ -453,6 +472,8 @@ export function initializeStudio() {
       generationStatus.className = "generation-status";
     }
     creditSummaryController?.refresh();
+    void creditSummaryController?.reset();
+    updateDailyResetNotice();
     updateGenerateButton();
     if (syncUrl && modelFromLocation() !== normalizedModelId) {
       history.pushState({ model: normalizedModelId }, "", buildModelUrl(window.location.href, normalizedModelId));
@@ -467,9 +488,9 @@ export function initializeStudio() {
     prompt.focus();
   }
 
-  function announceCredits(credits) {
+  function announceCredits(credits, context = 'account') {
     if (!credits) return;
-    window.dispatchEvent(new CustomEvent("seedance:credits-updated", { detail: credits }));
+    window.dispatchEvent(new CustomEvent("seedance:credits-updated", { detail: { ...credits, context: credits.context ?? context } }));
   }
 
   function renderGeneratedImages(images, modelId = activeModelId) {
@@ -564,8 +585,8 @@ export function initializeStudio() {
     resultNote.textContent = t("Video links may expire. Open or download your result when it is ready.");
   }
 
-  function updateVideoStatus(update) {
-    announceCredits(update?.credits);
+  function updateVideoStatus(update, context) {
+    announceCredits(update?.credits, context);
     const status = update?.status;
     generationStatus.textContent = status === "queued" || status === "submitting"
       ? t("Video queued. Waiting for generation to start…")
@@ -582,6 +603,7 @@ export function initializeStudio() {
   async function runVideoTask({ resumeTaskId = "" } = {}) {
     if (videoPolling || destroyed || !(availableModelIds.has("minimax-h3") || availableModelIds.has("seedance-2-5"))) return;
     videoPolling = true;
+    const creditContext = isGuestVideoSelected() ? 'guest-video' : 'account';
     updateVideoMode();
     renderVideoReferences();
     videoAbortController = new AbortController();
@@ -599,7 +621,7 @@ export function initializeStudio() {
     try {
       const common = {
         signal: videoAbortController.signal,
-        onStatus: updateVideoStatus
+        onStatus: update => updateVideoStatus(update, creditContext)
       };
       const result = resumeTaskId
         ? await pollVideoGenerationTask({ ...common, taskId: resumeTaskId })
@@ -616,18 +638,19 @@ export function initializeStudio() {
             onTask: storeActiveVideoTask
           });
       if (destroyed) return;
-      announceCredits(result.credits);
+      announceCredits(result.credits, creditContext);
       clearActiveVideoTask();
       renderGeneratedVideo(result.videoUrl);
       resultCard.hidden = false;
       exampleCarousel.hidden = true;
-      generationStatus.textContent = result.credits
+      generationStatus.textContent = (result.credits?.context ?? creditContext) === 'guest-video' && result.credits
+        ? t('Video generated · {seconds} free seconds remaining.', { seconds: result.credits.remaining }) : result.credits
         ? t('Video generated · {remaining} credits remaining.', { remaining: result.credits.remaining })
         : t("Video generated.");
       generationStatus.className = "generation-status is-success";
     } catch (error) {
       if (destroyed || error?.name === "AbortError") return;
-      announceCredits(error?.credits);
+      announceCredits(error?.credits, creditContext);
       if (requiresAuthentication(error)) {
         window.dispatchEvent(new CustomEvent("seedance:auth-required"));
       }
@@ -635,7 +658,13 @@ export function initializeStudio() {
         clearActiveVideoTask();
       }
       const requiredCredits = error?.credits?.cost || creditCostForDuration(videoDuration.value);
-      generationStatus.textContent = error?.code === "INSUFFICIENT_CREDITS"
+      if (error?.code === 'GUEST_TRIAL_USED') {
+        guestRemaining = 0;
+        window.dispatchEvent(new CustomEvent('seedance:auth-required', { detail: { mode: 'register' } }));
+      }
+      generationStatus.textContent = error?.code === 'GUEST_TRIAL_INSUFFICIENT'
+        ? t('Not enough free video seconds for this duration. Choose 5 seconds or sign up to keep creating.')
+        : error?.code === "INSUFFICIENT_CREDITS"
         ? error?.credits?.remaining === 0
           ? dailyCreditsUsedMessage()
           : `${t('You need {cost} credits to generate.', { cost: requiredCredits })} ${error.credits ? t('Current balance: {remaining}.', { remaining: error.credits.remaining }) : ""}`.trim()
@@ -649,6 +678,7 @@ export function initializeStudio() {
         renderVideoReferences();
         updateGenerateButtonLabel();
         creditSummaryController?.refresh();
+        void creditSummaryController?.loadBalance();
         updateGenerateButton();
       }
     }
@@ -773,8 +803,14 @@ export function initializeStudio() {
   }
 
   function updateDailyResetNotice() {
+    const allowance = document.getElementById('trial-allowance-message');
+    if (allowance) allowance.textContent = isGuestVideoSelected()
+      ? t('No registration or login required.')
+      : t('Free accounts get {credits} credits daily, shared across images and videos.', { credits: 15 });
     if (dailyCreditResetNotice) {
-      dailyCreditResetNotice.textContent = t("Daily reset: {time} (local time). Unused credits expire at reset and do not accumulate.", { time: dailyResetTime() });
+      dailyCreditResetNotice.textContent = isGuestVideoSelected()
+        ? t('Choose 5 or 10 seconds.')
+        : t("Daily reset: {time} (local time). Unused credits expire at reset and do not accumulate.", { time: dailyResetTime() });
     }
   }
 
@@ -788,8 +824,13 @@ export function initializeStudio() {
     getCost: () => isVideoGenerationSelected()
       ? creditCostForDuration(videoDuration.value)
       : creditCostForQuantity(imageQuantity.value, activeModelId),
-    onBalanceLoaded: (remaining) => {
-      announceCredits({ remaining });
+    getBalanceUrl: () => activeModelId === 'minimax-h3' ? '/api/credits/balance?guest_video=1' : '/api/credits/balance',
+    getContext: () => isGuestVideoSelected() ? 'guest-video' : 'account',
+    onBalanceLoaded: (remaining, credits) => {
+      guestVideo = credits ? credits.guest === true : studioShell.dataset.authenticated !== 'true';
+      guestRemaining = isGuestVideoSelected() ? remaining : null;
+      updateGuestVideoControls();
+      updateGenerateButtonLabel();
       updateDailyResetNotice();
       if (remaining > 0 && generationStatus.textContent.startsWith(t("Today’s free credits are used up."))) {
         generationStatus.textContent = "";
@@ -797,10 +838,19 @@ export function initializeStudio() {
       }
     },
     onChange: (summary) => {
-      creditInsufficient = summary.insufficient;
+      if (isGuestVideoSelected()) {
+        guestRemaining = summary.currentBalance;
+        updateGuestVideoControls();
+        generationCreditCost.textContent = t('{seconds} free seconds', { seconds: videoDuration.value });
+        currentCreditBalance.textContent = guestRemaining === null ? t('— seconds remaining')
+          : t('{seconds} seconds remaining', { seconds: guestRemaining });
+        updateGenerateButtonLabel();
+      }
+      creditInsufficient = isGuestVideoSelected() ? guestRemaining !== null && guestRemaining < 5 : summary.insufficient;
       if (launchNotice) {
         launchNotice.hidden = summary.currentBalance !== 0;
-        launchNotice.textContent = dailyCreditsUsedMessage() + " " + (isVideoGenerationSelected()
+        launchNotice.textContent = isGuestVideoSelected() ? t('Your free video seconds are used up. Sign up for daily free credits.')
+          : dailyCreditsUsedMessage() + " " + (isVideoGenerationSelected()
           ? t("Launching soon. Video generation at $0.01/second.")
           : activeModelId === 'gpt-image-2-5-1k'
             ? t('GPT Image 2.5 uses 5 trial credits per image.')
@@ -824,6 +874,7 @@ export function initializeStudio() {
         imageAspectRatio.value = aspectRatio;
       }
       creditSummaryController?.refresh();
+      updateGuestVideoControls();
       updateGenerateButtonLabel();
       updateGenerateButton();
     }
@@ -997,6 +1048,10 @@ export function initializeStudio() {
 
   listen(generateButton, "click", async () => {
     if (generateButton.disabled) return;
+    if (isGuestVideoSelected() && guestRemaining === 0) {
+      window.dispatchEvent(new CustomEvent('seedance:auth-required', { detail: { mode: 'register' } }));
+      return;
+    }
     if (isVideoGenerationSelected()) {
       await runVideoTask();
       return;

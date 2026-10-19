@@ -5,20 +5,30 @@ import { createAppDatabase } from '../../../db'
 import { createGenerationCreditStore } from '../../../db/generation-credits'
 import { createAuth } from '../../../lib/auth'
 import { getCreditBalanceResponse } from '../../../lib/credit-balance-response'
+import { createGuestVideoTrialStore } from '../../../db/guest-video-trials'
+import { getGuestVideoBalance, guestVideoTrialErrorResponse } from '../../../lib/guest-video-trial'
 
 export const Route = createFileRoute('/api/credits/balance')({
   server: {
     handlers: {
       GET: async ({ request }) => {
-        const creditStore = createGenerationCreditStore(createAppDatabase(env))
-        return getCreditBalanceResponse({
-          request,
-          getSession: async (sessionRequest) => {
-            const session = await createAuth(sessionRequest, env).api.getSession({ headers: sessionRequest.headers })
-            return session?.user?.id ? { user: { id: session.user.id } } : null
-          },
-          getBalance: (userId) => creditStore.getBalance(userId),
-        })
+        try {
+          const db = createAppDatabase(env)
+          const creditStore = createGenerationCreditStore(db)
+          return await getCreditBalanceResponse({
+            request,
+            getSession: async (sessionRequest) => {
+              const session = await createAuth(sessionRequest, env).api.getSession({ headers: sessionRequest.headers })
+              return session?.user?.id ? { user: { id: session.user.id } } : null
+            },
+            getBalance: (userId) => creditStore.getBalance(userId),
+            ...(new URL(request.url).searchParams.get('guest_video') === '1' ? {
+              getGuestBalance: () => getGuestVideoBalance(request, {
+                secret: env.BETTER_AUTH_SECRET, store: createGuestVideoTrialStore(db),
+              }),
+            } : {}),
+          })
+        } catch (error) { return guestVideoTrialErrorResponse(error) }
       },
     },
   },

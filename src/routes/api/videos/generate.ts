@@ -9,9 +9,12 @@ import { createAppDatabase, databaseConfigured } from '../../../db'
 import { createVideoGenerationTaskStore } from '../../../db/video-generation-tasks'
 import { createTrackedVideoTaskStore, createVideoTaskActivity } from '../../../lib/video-task-activity'
 import { createAuth } from '../../../lib/auth'
+import { createGuestVideoTrialStore } from '../../../db/guest-video-trials'
+import { resolveGuestVideoTrial, withGuestVideoCookie, guestVideoTrialErrorResponse } from '../../../lib/guest-video-trial'
 import { resolveVideoReferences } from '../../../lib/video-references'
 import {
   protectVideoGenerationStart,
+  guestVideoPayloadError,
   type VideoGenerationPreflight,
 } from '../../../lib/protected-video-generation'
 
@@ -69,74 +72,87 @@ export const Route = createFileRoute('/api/videos/generate')({
           return jsonError(403, 'CROSS_SITE_REQUEST', 'Cross-site video generation is not allowed.')
         }
 
+        const hasDatabase = databaseConfigured(env)
         const token = env.AUTODL_TOKEN?.trim() ?? ''
         const IMAGE_RATE_LIMITER = env.IMAGE_RATE_LIMITER
-        if (!databaseConfigured(env) || !token || !env.VIDEO_REFERENCES || typeof IMAGE_RATE_LIMITER?.limit !== 'function') {
+        if (!hasDatabase || !token || !env.VIDEO_REFERENCES || typeof IMAGE_RATE_LIMITER?.limit !== 'function') {
           logVideoEvent('video_generate_unavailable', { reason: 'missing_configuration' })
           return unavailableResponse()
         }
 
-        const taskStore = createTrackedVideoTaskStore(createVideoGenerationTaskStore(createAppDatabase(env)), createVideoTaskActivity(env.VIDEO_REFERENCES))
-        return protectVideoGenerationStart({
-          request,
-          getSession: async (sessionRequest) => {
-            const session = await createAuth(sessionRequest, env).api.getSession({ headers: sessionRequest.headers })
-            return session?.user?.id ? { user: { id: session.user.id } } : null
-          },
-          taskStore,
-          preflight: async (protectedRequest, userId) => {
-            const validation = await preflightVideoGenerationRequest(protectedRequest) as VideoGenerationPreflight
-            if (!validation.ok) return validation
-            if (validation.payload.resolution !== '480p') {
-              return {
-                ok: false as const,
-                response: jsonError(
-                  400,
-                  'TRIAL_RESOLUTION_UNAVAILABLE',
-                  'Free trial video generation supports 480p only.',
-                ),
+        try {
+          const db = createAppDatabase(env)
+          const taskStore = createTrackedVideoTaskStore(createVideoGenerationTaskStore(db), createVideoTaskActivity(env.VIDEO_REFERENCES))
+          const session = await createAuth(request, env).api.getSession({ headers: request.headers })
+          // Validate before provisioning a guest or assigning their lifetime allowance.
+          const validation = await preflightVideoGenerationRequest(request) as VideoGenerationPreflight
+          if (!validation.ok) return validation.response
+          if (!session?.user?.id) {
+            const error = guestVideoPayloadError(validation.payload)
+            if (error) return error
+          }
+          const guestStore = createGuestVideoTrialStore(db)
+          const guest = await resolveGuestVideoTrial(request, {
+            secret: env.BETTER_AUTH_SECRET, store: guestStore, create: !session?.user?.id,
+          })
+          const response = await protectVideoGenerationStart({
+            request,
+            getSession: async () => session?.user?.id ? { user: { id: session.user.id } } : guest?.session ?? null,
+            taskStore,
+            preflight: async (protectedRequest, userId) => {
+              if (validation.payload.resolution !== '480p') {
+                return {
+                  ok: false as const,
+                  response: jsonError(
+                    400,
+                    'TRIAL_RESOLUTION_UNAVAILABLE',
+                    'Free trial video generation supports 480p only.',
+                  ),
+                }
               }
-            }
 
-            const actor = protectedRequest.headers.get('cf-connecting-ip') || 'anonymous'
-            let rateLimit: { success: boolean }
-            try {
-              rateLimit = await IMAGE_RATE_LIMITER.limit({ key: `video-generation:${actor}` })
-            } catch (error) {
-              logVideoEvent('video_generate_rate_limit_error', safeProviderLogDetails(error))
-              return { ok: false as const, response: unavailableResponse() }
-            }
-            if (!rateLimit.success) {
-              return {
-                ok: false as const,
-                response: jsonError(
-                  429,
-                  'GENERATION_RATE_LIMITED',
-                  'Generation limit reached. Please wait a minute and try again.',
-                ),
-              }
-            }
-            if (validation.payload.referenceImageIds) {
+              const actor = protectedRequest.headers.get('cf-connecting-ip') || 'anonymous'
+              let rateLimit: { success: boolean }
               try {
-                validation.payload.referenceImageUrls = await resolveVideoReferences(
-                  validation.payload.referenceImageIds, userId, env.VIDEO_REFERENCES,
-                )
-              } catch {
-                return { ok: false as const, response: jsonError(400, 'INVALID_VIDEO_REFERENCE',
-                  'A reference image expired or is unavailable. Please remove it and upload it again.') }
+                rateLimit = await IMAGE_RATE_LIMITER.limit({ key: `video-generation:${actor}` })
+              } catch (error) {
+                logVideoEvent('video_generate_rate_limit_error', safeProviderLogDetails(error))
+                return { ok: false as const, response: unavailableResponse() }
               }
-            }
-            return validation
-          },
-          submit: async (payload) => {
-            try {
-              return await submitAutodlVideoTask(payload, { token })
-            } catch (error) {
-              logVideoEvent('video_generate_provider_error', safeProviderLogDetails(error))
-              throw error
-            }
-          },
-        })
+              if (!rateLimit.success) {
+                return {
+                  ok: false as const,
+                  response: jsonError(
+                    429,
+                    'GENERATION_RATE_LIMITED',
+                    'Generation limit reached. Please wait a minute and try again.',
+                  ),
+                }
+              }
+              if (validation.payload.referenceImageIds) {
+                try {
+                  validation.payload.referenceImageUrls = await resolveVideoReferences(
+                    validation.payload.referenceImageIds, userId, env.VIDEO_REFERENCES,
+                    Date.now(), guest ? [guest.session.user.id] : [],
+                  )
+                } catch {
+                  return { ok: false as const, response: jsonError(400, 'INVALID_VIDEO_REFERENCE',
+                    'A reference image expired or is unavailable. Please remove it and upload it again.') }
+                }
+              }
+              return validation
+            },
+            submit: async (payload) => {
+              try {
+                return await submitAutodlVideoTask(payload, { token })
+              } catch (error) {
+                logVideoEvent('video_generate_provider_error', safeProviderLogDetails(error))
+                throw error
+              }
+            },
+          })
+          return withGuestVideoCookie(response, guest)
+        } catch (error) { return guestVideoTrialErrorResponse(error) }
       },
     },
   },

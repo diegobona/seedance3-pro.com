@@ -13,6 +13,37 @@ const validPayload = {
   aspectRatio: '16:9',
 }
 
+test('guests may reserve five seconds and keep the other five seconds', async () => {
+  const harness = startHarness({ getSession: async () => ({ user: { id: 'guest-1', isGuest: true } }),
+    preflight: async () => ({ ok: true, payload: { ...validPayload, duration: 5 } }) })
+  const response = await protectVideoGenerationStart(harness.options as never)
+  assert.equal(response.status, 202)
+  assert.equal(harness.calls.reserve[0][1], 5)
+  assert.equal(response.headers.get('x-seedance-credit-remaining'), '5')
+  assert.equal(response.headers.get('x-seedance-credit-scope'), 'guest-video')
+})
+
+test('guests cannot submit fifteen seconds or higher resolutions', async () => {
+  for (const payload of [{ ...validPayload, duration: 15 }, { ...validPayload, resolution: '768p' }]) {
+    const harness = startHarness({ getSession: async () => ({ user: { id: 'guest-1', isGuest: true } }),
+      preflight: async () => ({ ok: true, payload }) })
+    const response = await protectVideoGenerationStart(harness.options as never)
+    assert.equal(response.status, 400)
+    assert.equal((await response.json() as { code: string }).code, 'GUEST_TRIAL_PARAMETERS')
+    assert.equal(harness.calls.reserve.length, 0)
+    assert.equal(harness.calls.submit, 0)
+  }
+})
+
+test('an exhausted guest is prompted to register without submitting to the provider', async () => {
+  const harness = startHarness({ getSession: async () => ({ user: { id: 'guest-1', isGuest: true } }) })
+  harness.options.taskStore.reserveAndCreate = async () => null as never
+  const response = await protectVideoGenerationStart(harness.options as never)
+  assert.equal(response.status, 402)
+  assert.equal((await response.json() as { code: string }).code, 'GUEST_TRIAL_INSUFFICIENT')
+  assert.equal(harness.calls.submit, 0)
+})
+
 test('reference generation records the correct workflow while keeping duration-based credits', async () => {
   const harness = startHarness({ preflight: async (_request: Request, userId: string) => {
     assert.equal(userId, 'user-1')
@@ -335,6 +366,13 @@ test('poll authenticates before task lookup or provider work', async () => {
   assert.equal(response.status, 401)
   assert.equal(harness.calls.lookup, 0)
   assert.equal(harness.calls.query, 0)
+})
+
+test('guest polling identifies guest seconds even after an account signs in', async () => {
+  const harness = pollHarness()
+  const response = await protectVideoGenerationPoll({ ...harness.options,
+    getSession: async () => ({ user: { id: 'guest-1', isGuest: true } }) } as never)
+  assert.equal(response.headers.get('x-seedance-credit-scope'), 'guest-video')
 })
 
 test('poll hides tasks owned by another user', async () => {

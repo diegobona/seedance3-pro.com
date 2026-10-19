@@ -3,6 +3,20 @@ import { localeFromPath } from './site-locale.mjs';
 // Keys remain readable English; prompts, model IDs and provider enum values are
 // deliberately kept out of this dictionary's automatic UI translation path.
 export const ZH_MESSAGES = Object.freeze({
+  'No registration or login required.': '无需注册和登录',
+  'Choose 5 or 10 seconds.': '可选 5 秒或 10 秒',
+  'Free accounts get {credits} credits daily, shared across images and videos.': '免费账户每天获得 {credits} 积分，图片和视频共用。',
+  'Sign up to keep creating': '注册后继续创作',
+  'Generate video · {seconds}s free': '生成视频 · 免费 {seconds} 秒',
+  '{seconds} free seconds': '免费 {seconds} 秒',
+  '{seconds} seconds remaining': '剩余 {seconds} 秒',
+  '— seconds remaining': '剩余 — 秒',
+  'Video generated · {seconds} free seconds remaining.': '视频已生成 · 还剩 {seconds} 秒免费额度。',
+  'Your free video seconds are used up. Sign up for daily free credits.': '游客免费视频额度已用完，注册后可获得每日免费积分。',
+  'Not enough free video seconds for this duration. Choose 5 seconds or sign up to keep creating.': '剩余免费秒数不足，请选择 5 秒或注册后继续创作。',
+  'Guest videos support 5 or 10 seconds at 480p.': '游客视频支持 5 秒或 10 秒，固定 480p。',
+  'This network has already claimed the guest video trial. Sign up to keep creating.': '当前网络已领取过游客体验额度，请注册后继续创作。',
+  'Guest video generation is temporarily unavailable. Please try again later.': '游客视频生成暂时不可用，请稍后重试。',
   'Create with GPT Image 2.5': '使用 GPT Image 2.5创作',
   'Describe the subject, composition and lighting, or add reference images to guide your edit.': '描述主体、构图和光线，也可以添加参考图来指导编辑。',
   'GPT Image 2.5 uses 5 trial credits per image.': 'GPT Image 2.5试用每张消耗 5 积分。',
