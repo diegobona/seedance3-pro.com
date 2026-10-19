@@ -7,6 +7,7 @@ import { localizedPath } from './site-locale.mjs';
 import { buildModelUrl, normalizeModelId } from "./model-routing.mjs";
 import { canonicalModelPath, modelIdFromPath } from "./seo-routes.mjs";
 import { requestImageGeneration } from "./image-generation.mjs";
+import { createGenerationPreviewController } from "./generation-preview.mjs";
 import { getImageModel } from './image-models.mjs';
 import { prepareImageForVideo, loadVideoReference } from "./image-to-video.mjs";
 import { validateImageReferences } from "./image-references.mjs";
@@ -126,6 +127,7 @@ export function initializeStudio() {
   const cleanups = [];
   let destroyed = false;
   let imageTransferInFlight = false;
+  const imageAnimateButtons = new Set();
   const imageTransferAbortController = new AbortController();
 
   function listen(target, type, listener, options) {
@@ -163,8 +165,8 @@ export function initializeStudio() {
   const generateButtonLabel = document.getElementById("generate-button-label");
   const generationStatus = document.getElementById("generation-status");
   const dailyCreditResetNotice = document.getElementById("daily-credit-reset-notice");
-  const resultCard = document.getElementById("result-card");
-  const resultGallery = document.getElementById("result-gallery");
+  const generationOutput = document.getElementById("generation-output");
+  const previewPlaceholder = document.getElementById("preview-placeholder");
   const exampleCarousel = document.getElementById("example-carousel");
   const hasDedicatedImageExamples = Boolean(document.getElementById("gpt-image-examples"));
   const imageExamples = document.getElementById("gpt-image-examples");
@@ -198,9 +200,6 @@ export function initializeStudio() {
   const currentCreditBalance = document.getElementById("current-credit-balance");
   const creditBalanceLabel = document.getElementById('credit-balance-label');
   const launchNotice = document.getElementById("launch-notice");
-  const resultHeadingLabel = document.getElementById("result-heading-label");
-  const resultModelLabel = document.getElementById("result-model-label");
-  const resultNote = document.getElementById("result-note");
   const poseResultActions = document.getElementById("pose-result-actions");
   const editPoseButton = document.getElementById("edit-pose-button");
   const generateAgainButton = document.getElementById("generate-again-button");
@@ -230,6 +229,10 @@ export function initializeStudio() {
   let videoPolling = false;
   let videoAbortController = null;
   let activeVideoTaskId = readActiveVideoTask();
+  let activeVideoModelId = readActiveVideoModel();
+  let videoPreviewJob = null;
+  const retryDrafts = new WeakMap();
+  const jobStatuses = new Map();
   let exampleIndex = 0;
   let creditInsufficient = false;
   let guestVideo = studioShell.dataset.authenticated !== 'true';
@@ -238,6 +241,82 @@ export function initializeStudio() {
   let poseStudioCleanup;
   let poseStudioPromise;
   let poseResultActionsController;
+  const previewController = createGenerationPreviewController({
+    root: generationOutput,
+    onRevealModel: modelId => selectModel(modelId, { syncUrl: true }),
+    onChange: ({ phase, job }) => {
+      poseResultActionsController?.setVisible(phase === 'succeeded' && Boolean(job?.isPose));
+      if (phase === 'failed') renderExhaustedNotice(document.getElementById('preview-error-message'), job?.message);
+      updateImageContext();
+    },
+    onRetry: (job, { resume }) => {
+      if (destroyed) return;
+      selectModel(job.modelId, { syncUrl: true });
+      if (resume) {
+        void resumeStoredVideoTask();
+        return;
+      }
+      const draft = retryDrafts.get(job);
+      if (!draft || imageGenerationInFlight && draft.kind === 'image' || videoPolling && draft.kind === 'video') return;
+      restoreGenerationDraft(draft);
+      creditSummaryController?.refresh();
+      updateGenerateButton();
+      generateButton.click();
+    },
+  });
+
+  function captureGenerationDraft(kind) {
+    return {
+      kind, modelId: activeModelId, prompt: prompt.value,
+      quantity: normalizeImageQuantity(imageQuantity.value), resolution: imageQuality.value,
+      aspectRatio: kind === 'video' ? videoAspectRatio.value : imageAspectRatio.value,
+      duration: creditCostForDuration(videoDuration.value), videoResolution: videoResolution.value || '480p',
+      videoMode, isPose: kind === 'image' && poseReferenceActive,
+      references: kind === 'video' ? (isReferenceVideo() ? videoReferences.map(item => ({ file: item.file })) : [])
+        : imageReferences.map(item => ({ file: item.file, source: item.source })),
+    };
+  }
+
+  function restoreGenerationDraft(draft) {
+    prompt.value = draft.prompt;
+    promptCount.textContent = String(draft.prompt.length);
+    if (draft.kind === 'image') {
+      imageReferences.forEach(item => URL.revokeObjectURL(item.url));
+      imageReferences = draft.references.map(item => ({ ...item, url: URL.createObjectURL(item.file) }));
+      imageQuantity.value = String(draft.quantity);
+      imageQuality.value = draft.resolution;
+      imageAspectRatio.value = draft.aspectRatio;
+      renderImageReferences();
+    } else {
+      videoReferences.forEach(item => URL.revokeObjectURL(item.url));
+      videoReferences = draft.references.map(item => ({ ...item, url: URL.createObjectURL(item.file) }));
+      videoDuration.value = String(draft.duration);
+      videoResolution.value = draft.videoResolution;
+      videoAspectRatio.value = draft.aspectRatio;
+      videoMode = draft.videoMode;
+      updateVideoMode();
+      renderVideoReferences();
+    }
+    updateGenerateButtonLabel();
+  }
+
+  function setJobStatus(job, message, className = 'is-working') {
+    if (destroyed) return;
+    jobStatuses.set(job.modelId, { message, className });
+    if (activeModelId !== job.modelId) return;
+    generationStatus.textContent = message;
+    generationStatus.className = `generation-status ${className}`;
+    if (className === 'is-error') renderExhaustedNotice(generationStatus, message);
+  }
+
+  function renderExhaustedNotice(element, message) {
+    const kind = message === t('Your free images are used up. Sign up for daily free credits.') ? 'image'
+      : message === t('Your free video seconds are used up. Sign up for daily free credits.') ? 'video' : null;
+    if (element && kind) renderGuestTrialNotice(element, kind, {
+      href: window.location.href,
+      onSignup: () => window.dispatchEvent(new CustomEvent('seedance:auth-required', { detail: { mode: 'register' } })),
+    });
+  }
 
   function ensurePoseStudio() {
     if (!poseStudio || poseStudioCleanup || poseStudioPromise) return poseStudioPromise;
@@ -276,10 +355,19 @@ export function initializeStudio() {
     }
   }
 
+  function readActiveVideoModel() {
+    try {
+      const saved = sessionStorage.getItem('seedance:video:active-model');
+      if (saved === 'minimax-h3' || saved === 'seedance-2-5') return saved;
+    } catch { /* Storage may be unavailable. */ }
+    return routeModelId === 'seedance-2-5' ? 'seedance-2-5' : 'minimax-h3';
+  }
+
   function storeActiveVideoTask(taskId) {
     activeVideoTaskId = taskId;
     try {
       sessionStorage.setItem(activeVideoTaskStorageKey, taskId);
+      sessionStorage.setItem('seedance:video:active-model', activeVideoModelId);
     } catch {
       // Polling can continue for this page lifetime when storage is unavailable.
     }
@@ -289,6 +377,7 @@ export function initializeStudio() {
     activeVideoTaskId = "";
     try {
       sessionStorage.removeItem(activeVideoTaskStorageKey);
+      sessionStorage.removeItem('seedance:video:active-model');
     } catch {
       // Storage may be unavailable in hardened browsers.
     }
@@ -337,7 +426,8 @@ export function initializeStudio() {
   }
 
   function isCurrentGenerationPending() {
-    return isVideoGenerationSelected() ? videoPolling || Boolean(activeVideoTaskId) : imageGenerationInFlight;
+    return previewController.getState(activeModelId)?.phase === 'pending'
+      || isVideoGenerationSelected() && activeModelId === activeVideoModelId && Boolean(activeVideoTaskId);
   }
 
   function isReferenceVideo() {
@@ -463,7 +553,7 @@ export function initializeStudio() {
     examplePrompt.textContent = t(model.examplePrompt);
     const videoModel = model.type === "video";
     const poseModel = model.type === "pose";
-    exampleCarousel.hidden = videoModel || hasDedicatedImageExamples;
+    previewController.selectModel(normalizedModelId);
     updateImageContext();
     creationGrid.hidden = poseModel;
     if (poseStudio) poseStudio.hidden = !poseModel;
@@ -495,6 +585,8 @@ export function initializeStudio() {
       generationStatus.textContent = "";
       generationStatus.className = "generation-status";
     }
+    const savedStatus = jobStatuses.get(normalizedModelId);
+    if (savedStatus) setJobStatus({ modelId: normalizedModelId }, savedStatus.message, savedStatus.className);
     creditSummaryController?.refresh();
     void creditSummaryController?.reset();
     updateDailyResetNotice();
@@ -502,7 +594,7 @@ export function initializeStudio() {
     if (syncUrl && modelFromLocation() !== normalizedModelId) {
       history.pushState({ model: normalizedModelId }, "", buildModelUrl(window.location.href, normalizedModelId));
     }
-    if (isVideoGenerationSelected() && activeVideoTaskId) void resumeStoredVideoTask();
+    if (isVideoGenerationSelected() && activeVideoTaskId && !previewController.getState(activeVideoModelId)?.job?.paused) void resumeStoredVideoTask();
   }
 
   function setPromptValue(value) {
@@ -547,6 +639,8 @@ export function initializeStudio() {
       const animate = document.createElement("button");
       animate.type = "button";
       animate.className = "animate-image-button";
+      animate.disabled = imageTransferInFlight;
+      imageAnimateButtons.add(animate);
       animate.textContent = t("Animate this image ↗");
       animate.setAttribute("aria-label", t('Animate this image {number}', { number: index + 1 }));
       const transferStatus = document.createElement("p");
@@ -555,7 +649,7 @@ export function initializeStudio() {
       animate.onclick = async () => {
         if (imageTransferInFlight || destroyed) return;
         imageTransferInFlight = true;
-        resultGallery.querySelectorAll(".animate-image-button").forEach((button) => { button.disabled = true; });
+        imageAnimateButtons.forEach((button) => { button.disabled = true; });
         animate.textContent = t("Preparing image…");
         transferStatus.textContent = t("Saving your reference image for H3…");
         try {
@@ -569,7 +663,7 @@ export function initializeStudio() {
         } finally {
           imageTransferInFlight = false;
           if (!destroyed) {
-            resultGallery.querySelectorAll(".animate-image-button").forEach((button) => { button.disabled = false; });
+            imageAnimateButtons.forEach((button) => { button.disabled = false; });
             animate.textContent = t("Animate this image ↗");
           }
         }
@@ -578,13 +672,10 @@ export function initializeStudio() {
       item.append(frame, actions, transferStatus);
       return item;
     });
-    resultGallery.replaceChildren(...items);
-    resultHeadingLabel.textContent = t("GENERATED IMAGES");
-    resultModelLabel.textContent = getImageModel(modelId)?.name || studioModels[modelId]?.name || '';
-    resultNote.textContent = t("Provider image links may expire. Open or download each result when it is ready.");
+    return items;
   }
 
-  function renderGeneratedVideo(videoUrl) {
+  function renderGeneratedVideo(videoUrl, modelId) {
     const item = document.createElement("div");
     item.className = "result-item video-result-item";
     const frame = document.createElement("div");
@@ -600,105 +691,116 @@ export function initializeStudio() {
     link.href = videoUrl;
     link.target = "_blank";
     link.rel = "noopener noreferrer";
-    link.download = "minimax-h3-video.mp4";
+    link.download = `${modelId}-video.mp4`;
     link.textContent = t("Open or download generated video →");
     item.append(frame, link);
-    resultGallery.replaceChildren(item);
-    resultHeadingLabel.textContent = t("GENERATED VIDEO");
-    resultModelLabel.textContent = activeModelId === "seedance-2-5" ? t("Video result") : "MiniMax H3";
-    resultNote.textContent = t("Video links may expire. Open or download your result when it is ready.");
+    return [item];
   }
 
-  function updateVideoStatus(update, context) {
-    if (isVideoGenerationSelected() && (update?.credits?.context ?? context) === (isGuestVideoSelected() ? 'guest-video' : 'account')
+  function updateVideoStatus(update, context, job) {
+    if (activeModelId === job.modelId && (update?.credits?.context ?? context) === (isGuestVideoSelected() ? 'guest-video' : 'account')
       && [5, 10, 15].includes(update?.credits?.cost)) {
       videoDuration.value = String(update.credits.cost);
     }
     announceCredits(update?.credits, context);
-    const status = update?.status;
-    generationStatus.textContent = status === "queued" || status === "submitting"
-      ? t("Video queued. Waiting for generation to start…")
-      : status === "running"
-        ? t("Generating your video…")
-        : t("Video service is busy. Retrying safely…");
-    generationStatus.className = "generation-status is-working";
+    const phase = update?.status;
+    const message = phase === 'submitting' ? t('Submitting your request…')
+      : phase === 'queued' ? t('Queued for generation…')
+      : phase === 'running' ? t('Generating your video…')
+      : t('Video service is busy. Retrying safely…');
+    previewController.update(job, { stage: phase || 'checking', message });
+    setJobStatus(job, message);
   }
 
   function requiresAuthentication(error) {
-    return error?.status === 401 || error?.code === "AUTH_REQUIRED";
+    return error?.status === 401 || error?.code === 'AUTH_REQUIRED';
   }
 
-  async function runVideoTask({ resumeTaskId = "" } = {}) {
-    if (videoPolling || destroyed || !(availableModelIds.has("minimax-h3") || availableModelIds.has("seedance-2-5"))) return;
+  async function runVideoTask({ resumeTaskId = '' } = {}) {
+    if (videoPolling || destroyed || !(availableModelIds.has('minimax-h3') || availableModelIds.has('seedance-2-5'))) return;
+    const draft = resumeTaskId ? null : captureGenerationDraft('video');
+    const generationModelId = resumeTaskId ? activeVideoModelId : draft.modelId;
+    activeVideoModelId = generationModelId;
+    const creditContext = generationModelId === 'minimax-h3' && studioShell.dataset.authenticated !== 'true' ? 'guest-video' : 'account';
     videoPolling = true;
-    const creditContext = isGuestVideoSelected() ? 'guest-video' : 'account';
-    creditSummaryController?.beginGeneration({ reserved: Boolean(resumeTaskId) });
+    const previousJob = videoPreviewJob && previewController.getState(generationModelId);
+    const job = resumeTaskId && previousJob?.phase === 'pending' && previousJob.job?.handle === videoPreviewJob
+      ? videoPreviewJob
+      : previewController.begin({
+          modelId: generationModelId, kind: 'video', modelName: studioModels[generationModelId].name,
+          aspectRatio: draft?.aspectRatio || videoAspectRatio.value,
+        });
+    videoPreviewJob = job;
+    if (draft) retryDrafts.set(job, draft);
+    if (activeModelId === generationModelId) creditSummaryController?.beginGeneration({ reserved: Boolean(resumeTaskId) });
     updateVideoMode();
     renderVideoReferences();
     videoAbortController = new AbortController();
     updateGenerateButtonLabel();
     updateGenerateButton();
-    generationStatus.textContent = resumeTaskId
-      ? t("Resuming video generation status…")
-      : isReferenceVideo() ? t("Preparing your reference images…") : t("Submitting your text-to-video prompt…");
-    generationStatus.className = "generation-status is-working";
-    if (!resumeTaskId) {
-      resultCard.hidden = true;
-      exampleCarousel.hidden = true;
-    }
+    const initialMessage = resumeTaskId ? t('Checking generation progress…')
+      : draft.references.length ? t('Uploading references…') : t('Submitting your request…');
+    previewController.update(job, { stage: resumeTaskId ? 'checking' : draft.references.length ? 'uploading' : 'submitting', message: initialMessage });
+    setJobStatus(job, initialMessage);
 
     try {
       const common = {
         signal: videoAbortController.signal,
-        onStatus: update => updateVideoStatus(update, creditContext)
+        onStatus: update => updateVideoStatus(update, creditContext, job),
       };
       const result = resumeTaskId
         ? await pollVideoGenerationTask({ ...common, taskId: resumeTaskId })
         : await requestVideoGeneration({
             ...common,
-            prompt: prompt.value,
-            duration: creditCostForDuration(videoDuration.value),
-            resolution: videoResolution.value || "480p",
-            aspectRatio: videoAspectRatio.value,
-            referenceFiles: isReferenceVideo() ? videoReferences.map((item) => item.file) : [],
+            prompt: draft.prompt,
+            duration: draft.duration,
+            resolution: draft.videoResolution,
+            aspectRatio: draft.aspectRatio,
+            referenceFiles: draft.references.map(item => item.file),
             onUpload: ({ index, total }) => {
-              generationStatus.textContent = t('Uploading reference image {index} of {total}…', { index, total });
+              const message = t('Uploading reference image {index} of {total}…', { index, total });
+              previewController.update(job, { stage: 'uploading', message });
+              setJobStatus(job, message);
             },
-            onTask: storeActiveVideoTask
+            onTask: storeActiveVideoTask,
           });
       if (destroyed) return;
       announceCredits(result.credits, creditContext);
       clearActiveVideoTask();
-      renderGeneratedVideo(result.videoUrl);
-      resultCard.hidden = false;
-      exampleCarousel.hidden = true;
-      generationStatus.textContent = (result.credits?.context ?? creditContext) === 'guest-video' && result.credits
+      previewController.succeed(job, {
+        items: renderGeneratedVideo(result.videoUrl, generationModelId),
+        note: t('Video links may expire. Open or download your result when it is ready.'),
+      });
+      const message = (result.credits?.context ?? creditContext) === 'guest-video' && result.credits
         ? t('Video generated · {seconds} free seconds remaining.', { seconds: result.credits.remaining }) : result.credits
         ? t('Video generated · {remaining} credits remaining.', { remaining: result.credits.remaining })
-        : t("Video generated.");
-      generationStatus.className = "generation-status is-success";
+        : t('Video generated.');
+      setJobStatus(job, message, 'is-success');
     } catch (error) {
-      if (destroyed || error?.name === "AbortError") return;
+      if (destroyed || error?.name === 'AbortError') return;
       announceCredits(error?.credits, creditContext);
-      if (requiresAuthentication(error)) {
-        window.dispatchEvent(new CustomEvent("seedance:auth-required"));
-      }
-      if (error?.terminal || error?.status === 404 || error?.code === "VIDEO_TASK_NOT_FOUND" || error?.code === "INVALID_VIDEO_TASK") {
-        clearActiveVideoTask();
-      }
-      const requiredCredits = error?.credits?.cost || creditCostForDuration(videoDuration.value);
+      if (requiresAuthentication(error)) window.dispatchEvent(new CustomEvent('seedance:auth-required'));
+      if (error?.terminal || error?.status === 404 || error?.code === 'VIDEO_TASK_NOT_FOUND' || error?.code === 'INVALID_VIDEO_TASK') clearActiveVideoTask();
+      const requiredCredits = error?.credits?.cost || draft?.duration || creditCostForDuration(videoDuration.value);
       if (error?.code === 'GUEST_TRIAL_USED') {
-        guestRemaining = 0;
+        if (activeModelId === generationModelId) guestRemaining = 0;
         window.dispatchEvent(new CustomEvent('seedance:auth-required', { detail: { mode: 'register' } }));
       }
-      generationStatus.textContent = error?.code === 'GUEST_TRIAL_INSUFFICIENT'
+      const message = error?.code === 'GUEST_TRIAL_INSUFFICIENT'
         ? t('Not enough free video seconds for this duration. Choose 5 seconds or sign up to keep creating.')
-        : error?.code === "INSUFFICIENT_CREDITS"
-        ? error?.credits?.remaining === 0
-          ? dailyCreditsUsedMessage()
-          : `${t('You need {cost} credits to generate.', { cost: requiredCredits })} ${error.credits ? t('Current balance: {remaining}.', { remaining: error.credits.remaining }) : ""}`.trim()
-        : localizedErrorMessage(error?.message, error?.code, 'Video generation failed.');
-      generationStatus.className = activeVideoTaskId ? 'generation-status is-working' : 'generation-status is-error';
+        : error?.code === 'INSUFFICIENT_CREDITS'
+          ? error?.credits?.remaining === 0 ? dailyCreditsUsedMessage()
+            : (t('You need {cost} credits to generate.', { cost: requiredCredits }) + ' ' + (error.credits ? t('Current balance: {remaining}.', { remaining: error.credits.remaining }) : '')).trim()
+          : localizedErrorMessage(error?.message, error?.code, 'Video generation failed.');
+      if (activeVideoTaskId) {
+        const pausedMessage = message + ' ' + t('The video is still processing. Continue checking its progress.');
+        previewController.pause(job, { message: pausedMessage });
+        setJobStatus(job, pausedMessage);
+      } else {
+        // Resumed tasks from an earlier page have no request draft to submit again.
+        previewController.fail(job, { message, canRetry: retryDrafts.has(job) });
+        setJobStatus(job, message, 'is-error');
+      }
     } finally {
       videoPolling = false;
       videoAbortController = null;
@@ -769,12 +871,18 @@ export function initializeStudio() {
   }
 
   function updateImageContext() {
-    const isImage = Boolean(getImageModel(activeModelId));
-    const showPose = isImage && poseReferenceActive && resultCard.hidden;
+    const isIdle = previewController.getState(activeModelId)?.phase === 'idle';
+    const showPose = isIdle && Boolean(getImageModel(activeModelId)) && poseReferenceActive;
     if (poseReferenceCard) poseReferenceCard.hidden = !showPose;
-    const hideExamples = activeModelId !== 'gpt-image-2' || poseReferenceActive || !resultCard.hidden || imageGenerationInFlight;
-    if (imageExamples) imageExamples.hidden = hideExamples;
-    exampleCarousel.hidden = hideExamples || hasDedicatedImageExamples;
+    if (imageExamples) imageExamples.hidden = activeModelId !== 'gpt-image-2' || showPose;
+    exampleCarousel.hidden = activeModelId !== 'gpt-image-2' || hasDedicatedImageExamples || showPose;
+    let hasExamples = false;
+    generationOutput.querySelectorAll('[data-preview-model]').forEach(element => {
+      const matches = element.dataset.previewModel === activeModelId;
+      element.hidden = showPose || !matches;
+      hasExamples ||= matches;
+    });
+    if (previewPlaceholder) previewPlaceholder.hidden = showPose || hasExamples;
   }
 
   function setReferenceImage(file, { source = "upload" } = {}) {
@@ -799,7 +907,7 @@ export function initializeStudio() {
     if (source === "pose") {
       imageReferences.filter(item => item.source === "pose").forEach(item => URL.revokeObjectURL(item.url));
       imageReferences = [...added, ...retained];
-      resultCard.hidden = true;
+      previewController.resetDraft(activeModelId);
       poseResultActionsController?.setVisible(false);
     } else {
       imageReferences.push(...added);
@@ -1028,70 +1136,55 @@ export function initializeStudio() {
       generationStatus.className = 'generation-status is-error';
       return;
     }
-    const generationModelId = activeModelId;
+    const draft = captureGenerationDraft('image');
+    const generationModelId = draft.modelId;
     const creditContext = isGuestImageSelected() ? 'guest-image' : 'account';
-    const generationUsedPoseReference = poseReferenceActive;
     imageGenerationInFlight = true;
+    const job = previewController.begin({ modelId: generationModelId, kind: 'image', modelName: studioModels[generationModelId].name,
+      count: draft.quantity, aspectRatio: draft.aspectRatio, isPose: draft.isPose });
+    retryDrafts.set(job, draft);
     creditSummaryController?.beginGeneration();
     renderImageReferences();
     updateGenerateButton();
     updateGenerateButtonLabel();
-    generationStatus.textContent = generationUsedPoseReference
-      ? t("Creating from your pose reference…")
-      : imageReferences.length
-        ? t("Editing from your reference image…")
-        : t("Creating an image from your prompt…");
-    generationStatus.className = "generation-status is-working";
-    resultCard.hidden = true;
-    poseResultActionsController?.setVisible(false);
-    exampleCarousel.hidden = hasDedicatedImageExamples;
-    updateImageContext();
+    const initialMessage = draft.isPose ? t('Creating from your pose reference…')
+      : draft.references.length ? t('Editing from your reference image…') : t('Creating an image from your prompt…');
+    previewController.update(job, { stage: 'submitting', message: initialMessage });
+    setJobStatus(job, initialMessage);
     try {
       const result = await requestImageGeneration({
-        model: generationModelId,
-        prompt: prompt.value,
-        referenceFiles: imageReferences.map(item => item.file),
-        quantity: normalizeImageQuantity(imageQuantity.value),
-        resolution: imageQuality.value,
-        size: sizeForAspectRatio(imageAspectRatio.value, generationModelId)
+        model: generationModelId, prompt: draft.prompt,
+        referenceFiles: draft.references.map(item => item.file), quantity: draft.quantity,
+        resolution: draft.resolution, size: sizeForAspectRatio(draft.aspectRatio, generationModelId),
+        signal: imageTransferAbortController.signal,
       });
       if (destroyed) return;
-      renderGeneratedImages(result.images, generationModelId);
-      resultCard.hidden = false;
-      poseResultActionsController?.setVisible(generationUsedPoseReference);
-      exampleCarousel.hidden = true;
-      updateImageContext();
+      previewController.succeed(job, { items: renderGeneratedImages(result.images, generationModelId),
+        note: t('Provider image links may expire. Open or download each result when it is ready.') });
       announceCredits(result.credits, creditContext);
       const generatedCount = result.images.length;
-      generationStatus.textContent = (result.credits?.context ?? creditContext) === 'guest-image' && result.credits
+      const message = (result.credits?.context ?? creditContext) === 'guest-image' && result.credits
         ? t('Image generated · {count} free images remaining.', { count: Math.floor(result.credits.remaining / 5) }) : result.credits
         ? t('{count} image{plural} generated · {remaining} credits remaining.', { count: generatedCount, plural: generatedCount === 1 ? '' : 's', remaining: result.credits.remaining })
         : t('{count} image{plural} generated.', { count: generatedCount, plural: generatedCount === 1 ? '' : 's' });
-      generationStatus.className = "generation-status is-success";
+      setJobStatus(job, message, 'is-success');
     } catch (error) {
       if (destroyed) return;
       announceCredits(error?.credits, creditContext);
-      if (error?.status === 401 || error?.code === "AUTH_REQUIRED") {
-        window.dispatchEvent(new CustomEvent("seedance:auth-required"));
-      }
-      const requiredCredits = error?.credits?.cost || creditCostForQuantity(imageQuantity.value, generationModelId);
+      if (requiresAuthentication(error)) window.dispatchEvent(new CustomEvent('seedance:auth-required'));
+      const requiredCredits = error?.credits?.cost || creditCostForQuantity(draft.quantity, generationModelId);
       if (error?.code === 'GUEST_TRIAL_USED') {
-        if (isGuestImageSelected()) guestRemaining = 0;
+        if (activeModelId === generationModelId) guestRemaining = 0;
         window.dispatchEvent(new CustomEvent('seedance:auth-required', { detail: { mode: 'register' } }));
       }
-      generationStatus.textContent = error?.code === 'GUEST_IMAGE_INSUFFICIENT' || error?.code === 'GUEST_TRIAL_USED'
+      const message = error?.code === 'GUEST_IMAGE_INSUFFICIENT' || error?.code === 'GUEST_TRIAL_USED'
         ? error?.credits?.remaining > 0 ? t('Choose fewer images or sign up to keep creating.') : t('Your free images are used up. Sign up for daily free credits.')
-        : error?.code === "INSUFFICIENT_CREDITS"
-        ? error?.credits?.remaining === 0
-          ? dailyCreditsUsedMessage()
-          : `${t('You need {cost} credits to generate.', { cost: requiredCredits })} ${error.credits ? t('Current balance: {remaining}.', { remaining: error.credits.remaining }) : ""}`.trim()
+        : error?.code === 'INSUFFICIENT_CREDITS'
+        ? error?.credits?.remaining === 0 ? dailyCreditsUsedMessage()
+          : (t('You need {cost} credits to generate.', { cost: requiredCredits }) + ' ' + (error.credits ? t('Current balance: {remaining}.', { remaining: error.credits.remaining }) : '')).trim()
         : localizedErrorMessage(error?.message, error?.code, 'Image generation failed.');
-      if ((error?.code === 'GUEST_IMAGE_INSUFFICIENT' && error?.credits?.remaining === 0) || error?.code === 'GUEST_TRIAL_USED') {
-        renderGuestTrialNotice(generationStatus, 'image', { href: window.location.href,
-          onSignup: () => window.dispatchEvent(new CustomEvent('seedance:auth-required', { detail: { mode: 'register' } })),
-        });
-      }
-      generationStatus.className = "generation-status is-error";
+      previewController.fail(job, { message });
+      setJobStatus(job, message, 'is-error');
     } finally {
       if (!destroyed) {
         imageGenerationInFlight = false;
@@ -1130,7 +1223,9 @@ export function initializeStudio() {
     if (destroyed) return;
     destroyed = true;
     imageTransferAbortController.abort();
+    imageAnimateButtons.clear();
     videoAbortController?.abort();
+    previewController.destroy();
     creditSummaryController.destroy();
     exampleCarouselController.destroy();
     poseResultActionsController?.destroy();

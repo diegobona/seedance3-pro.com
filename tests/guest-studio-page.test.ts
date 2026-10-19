@@ -63,3 +63,23 @@ test('both image landing pages offer the same two-image guest allowance without 
     }
   }
 })
+
+test('each generator has one right-hand stage for idle, loading, result and error with separate page history', async () => {
+  for (const model of ['gpt-image-2', 'gpt-image-2-5-1k', 'minimax-h3']) {
+    for (const prefix of ['', '/zh']) {
+      const kind = model === 'minimax-h3' ? 'video' : 'image'
+      const html = await render(`${prefix}/app/${kind}/${model}`, model)
+      const output = html.slice(html.indexOf('id="generation-output"'), html.indexOf('</aside>', html.indexOf('id="generation-output"')))
+      for (const id of ['generation-preview', 'preview-idle', 'preview-pending', 'preview-status', 'preview-elapsed', 'preview-placeholders', 'preview-resume', 'result-card', 'result-gallery', 'preview-error', 'preview-error-message', 'preview-retry', 'generation-history', 'generation-history-list', 'view-generation-result']) {
+        assert.equal((output.match(new RegExp(`id="${id}"`, 'g')) || []).length, 1, `${model}: ${id}`)
+      }
+      assert.match(output, /id="generation-preview"[^>]*tabindex="-1"[^>]*role="region"/)
+      assert.match(output, /id="preview-elapsed"[^>]*aria-live="off"/)
+      assert.match(output, /id="preview-pending"[^>]*hidden/)
+      assert.match(output, /id="preview-error"[^>]*hidden/)
+      assert.match(output, prefix ? /正在生成/ : /Generating/)
+      assert.match(output, prefix ? /本页之前的结果/ : /Previous results on this page/)
+      assert.ok(output.indexOf('id="result-card"') < output.indexOf('id="generation-history"'))
+    }
+  }
+})

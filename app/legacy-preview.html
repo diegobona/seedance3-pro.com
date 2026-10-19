@@ -105,9 +105,11 @@
             <div class="generation-status" id="generation-status" role="status" aria-live="polite"></div>
           </section>
 
-          <aside class="context-panel">
-            <div class="context-card result-card" id="result-card" hidden><div class="result-heading"><span id="result-heading-label">GENERATED IMAGES</span><small id="result-model-label">GPT Image 2</small></div><div class="result-gallery" id="result-gallery"></div><p id="result-note">Provider image links may expire. Open or download each result when it is ready.</p></div>
-            <section class="context-card example-carousel" id="example-carousel" aria-labelledby="example-carousel-heading">
+          <aside class="context-panel" id="generation-output">
+            <div class="generation-preview" id="generation-preview" tabindex="-1" role="region" aria-label="Generation preview" data-state="idle" aria-busy="false">
+              <div id="preview-idle">
+
+            <section class="context-card example-carousel" id="example-carousel" data-preview-model="gpt-image-2" aria-labelledby="example-carousel-heading">
               <div class="result-heading"><span id="example-carousel-heading">IMAGE PREVIEW</span><small>3 DISTINCT STYLES</small></div>
               <div class="example-carousel-viewport">
                 <figure class="example-carousel-slide" data-title="Editorial architecture" data-description="Photoreal fashion direction with strong geometry and cinematic light."><img src="/assets/gpt-image-2-editorial-fashion.webp" alt="Editorial fashion portrait inside a futuristic gallery"></figure>
@@ -125,6 +127,15 @@
                 </div>
               </div>
             </section>
+
+                <div class="context-card preview-placeholder" id="preview-placeholder" hidden><span class="preview-placeholder-icon" aria-hidden="true">✦</span><h2>Your result will appear here</h2><p>Describe what you want to create, then generate.</p></div>
+              </div>
+              <section class="context-card preview-pending" id="preview-pending" hidden><div class="result-heading"><span>Generating…</span><small id="preview-elapsed" aria-live="off"></small></div><div class="preview-placeholders" id="preview-placeholders" aria-hidden="true"></div><p id="preview-status" role="status" aria-live="polite"></p><button class="preview-action" id="preview-resume" type="button" hidden>Continue checking</button></section>
+            <div class="context-card result-card" id="result-card" hidden><div class="result-heading"><span id="result-heading-label">GENERATED IMAGES</span><small id="result-model-label">GPT Image 2</small></div><div class="result-gallery" id="result-gallery"></div><p id="result-note">Provider image links may expire. Open or download each result when it is ready.</p></div>
+              <section class="context-card preview-error" id="preview-error" hidden><h2>Generation failed</h2><p id="preview-error-message" role="alert"></p><button class="preview-action" id="preview-retry" type="button">Try again</button></section>
+            </div>
+            <section class="generation-history" id="generation-history" hidden><h2>Previous results on this page</h2><div id="generation-history-list"></div></section>
+            <button class="view-generation-result" id="view-generation-result" type="button" hidden>View result</button>
           </aside>
         </div>
       </div>

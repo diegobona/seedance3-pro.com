@@ -200,29 +200,19 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
                 <div className="generation-status" id="generation-status" role="status" aria-live="polite" />
               </section>
 
-              <aside className="context-panel">
-                {initiallyH3 && modelLanding && <H3VideoExamples />}
-                {showGptImageExamples && <GptImageExamples />}
-                {initiallyGpt25 && <section className="context-card model-video-guide" aria-label={t("GPT Image 2.5 quick start")}><p className="model-landing-eyebrow">{t("5 credits/image")}</p><h2>{t("Describe your image or edit")}</h2><p>{t("Start with a text prompt or add up to 16 references. Describe what to change and what to preserve, then choose the aspect ratio and image count.")}</p><p>{t("Find a starting point in the GPT Image 2 prompts or Christmas templates, then adapt it to your subject.")}</p><a href={path('/gpt-image-2-prompts')}>{t("GPT Image 2 Prompt Library")}</a>{' · '}<a href={path('/ai-christmas-photo-prompt')}>{t("Christmas Photo Prompts")}</a></section>}
+              <aside className="context-panel" id="generation-output">
+                <div className="generation-preview" id="generation-preview" tabIndex={-1} role="region" aria-label={t("Generation preview")} data-state="idle" aria-busy="false">
+                  <div id="preview-idle">
+                {initiallyH3 && modelLanding && <div data-preview-model="minimax-h3"><H3VideoExamples /></div>}
+                {showGptImageExamples && <div data-preview-model="gpt-image-2"><GptImageExamples /></div>}
+                {initiallyGpt25 && <section className="context-card model-video-guide" data-preview-model="gpt-image-2-5-1k" aria-label={t("GPT Image 2.5 quick start")}><p className="model-landing-eyebrow">{t("5 credits/image")}</p><h2>{t("Describe your image or edit")}</h2><p>{t("Start with a text prompt or add up to 16 references. Describe what to change and what to preserve, then choose the aspect ratio and image count.")}</p><p>{t("Find a starting point in the GPT Image 2 prompts or Christmas templates, then adapt it to your subject.")}</p><a href={path('/gpt-image-2-prompts')}>{t("GPT Image 2 Prompt Library")}</a>{' · '}<a href={path('/ai-christmas-photo-prompt')}>{t("Christmas Photo Prompts")}</a></section>}
                 <section className="context-card pose-reference-card" id="pose-reference-card" hidden>
                   <div className="result-heading"><span>{t("YOUR POSE SCENE")}</span><small>{t("Pose Studio")}</small></div>
                   <div className="result-frame"><img id="pose-scene-preview" alt={t("Your captured Pose Studio scene")} /></div>
                   <p>{t("Describe the characters, clothing, scene and style on the left, then generate your image.")}</p>
                 </section>
-                {initiallySeedance25 && modelLanding && <section className="context-card model-video-guide" aria-label={t("Video trial details")}><p className="model-landing-eyebrow">{t("Seedance 2.5 trial")}</p><h2>{t("Direct your first shot")}</h2><p>{t("Start with the subject and action, then add camera movement, setting and lighting. Describe the scene you want to bring to life.")}</p><ul><li>{t("Choose from the available video durations")}</li><li>{t("Select a frame format for your scene")}</li><li>{t("Credit cost shown before generation")}</li></ul><a href="#model-details">{t("How this tool works ↓")}</a></section>}
-                <div className="context-card result-card" id="result-card" hidden>
-                  <div className="result-heading"><span id="result-heading-label">{t("GENERATED IMAGES")}</span><small id="result-model-label">{t(initiallyGpt25 ? "GPT Image 2.5" : "GPT Image 2")}</small></div>
-                  <div className="result-gallery" id="result-gallery" />
-                  <div className="pose-result-actions" id="pose-result-actions" hidden>
-                    <div><span>{t("POSE GUIDED")}</span><small>{t("Keep refining this pose or create another variation.")}</small></div>
-                    <div className="pose-result-buttons">
-                      <button id="edit-pose-button" type="button">{t("Edit pose")}</button>
-                      <button id="generate-again-button" type="button">{t("Generate again · 5 credits")}</button>
-                    </div>
-                  </div>
-                  <p id="result-note">{t("Provider image links may expire. Open or download each result when it is ready.")}</p>
-                </div>
-                <section className="context-card example-carousel" id="example-carousel" aria-labelledby="example-carousel-heading" hidden={initiallyVideo || showGptImageExamples || initiallyGpt25}>
+                {initiallySeedance25 && modelLanding && <section className="context-card model-video-guide" data-preview-model="seedance-2-5" aria-label={t("Video trial details")}><p className="model-landing-eyebrow">{t("Seedance 2.5 trial")}</p><h2>{t("Direct your first shot")}</h2><p>{t("Start with the subject and action, then add camera movement, setting and lighting. Describe the scene you want to bring to life.")}</p><ul><li>{t("Choose from the available video durations")}</li><li>{t("Select a frame format for your scene")}</li><li>{t("Credit cost shown before generation")}</li></ul><a href="#model-details">{t("How this tool works ↓")}</a></section>}
+                <section className="context-card example-carousel" id="example-carousel" data-preview-model={showGptImageExamples ? undefined : "gpt-image-2"} aria-labelledby="example-carousel-heading" hidden={initiallyVideo || showGptImageExamples || initiallyGpt25}>
                   <div className="result-heading"><span id="example-carousel-heading">{t("IMAGE PREVIEW")}</span><small>{t("3 DISTINCT STYLES")}</small></div>
                   <div className="example-carousel-viewport">
                     <figure className="example-carousel-slide" data-title={t("Editorial architecture")} data-description={t("Photoreal fashion direction with strong geometry and cinematic light.")}><img src="/assets/gpt-image-2-editorial-fashion.webp" alt={t("Editorial fashion portrait inside a futuristic gallery")} /></figure>
@@ -240,6 +230,42 @@ export function StudioPage({ initialModel = 'gpt-image-2', modelLanding = false 
                     </div>
                   </div>
                 </section>
+
+                    <div className="context-card preview-placeholder" id="preview-placeholder" hidden={initiallyH3 && modelLanding || showGptImageExamples || initiallyGpt25 || initiallySeedance25 && modelLanding || !initiallyVideo}>
+                      <span className="preview-placeholder-icon" aria-hidden="true">✦</span>
+                      <h2>{t("Your result will appear here")}</h2>
+                      <p>{t("Describe what you want to create, then generate.")}</p>
+                    </div>
+                  </div>
+                  <section className="context-card preview-pending" id="preview-pending" hidden>
+                    <div className="result-heading"><span>{t("Generating…")}</span><small id="preview-elapsed" aria-live="off" /></div>
+                    <div className="preview-placeholders" id="preview-placeholders" aria-hidden="true" />
+                    <p id="preview-status" role="status" aria-live="polite" />
+                    <button className="preview-action" id="preview-resume" type="button" hidden>{t("Continue checking")}</button>
+                  </section>
+                <div className="context-card result-card" id="result-card" hidden>
+                  <div className="result-heading"><span id="result-heading-label">{t("GENERATED IMAGES")}</span><small id="result-model-label">{t(initiallyGpt25 ? "GPT Image 2.5" : "GPT Image 2")}</small></div>
+                  <div className="result-gallery" id="result-gallery" />
+                  <div className="pose-result-actions" id="pose-result-actions" hidden>
+                    <div><span>{t("POSE GUIDED")}</span><small>{t("Keep refining this pose or create another variation.")}</small></div>
+                    <div className="pose-result-buttons">
+                      <button id="edit-pose-button" type="button">{t("Edit pose")}</button>
+                      <button id="generate-again-button" type="button">{t("Generate again · 5 credits")}</button>
+                    </div>
+                  </div>
+                  <p id="result-note">{t("Provider image links may expire. Open or download each result when it is ready.")}</p>
+                </div>
+                  <section className="context-card preview-error" id="preview-error" hidden>
+                    <h2>{t("Generation failed")}</h2>
+                    <p id="preview-error-message" role="alert" />
+                    <button className="preview-action" id="preview-retry" type="button">{t("Try again")}</button>
+                  </section>
+                </div>
+                <section className="generation-history" id="generation-history" hidden>
+                  <h2>{t("Previous results on this page")}</h2>
+                  <div id="generation-history-list" />
+                </section>
+                <button className="view-generation-result" id="view-generation-result" type="button" hidden>{t("View result")}</button>
               </aside>
             </div>
 

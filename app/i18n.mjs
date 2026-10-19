@@ -3,6 +3,23 @@ import { localeFromPath } from './site-locale.mjs';
 // Keys remain readable English; prompts, model IDs and provider enum values are
 // deliberately kept out of this dictionary's automatic UI translation path.
 export const ZH_MESSAGES = Object.freeze({
+  "Generation preview": "生成预览",
+  "Your result will appear here": "生成结果将在这里显示",
+  "Describe what you want to create, then generate.": "描述你想创作的内容，然后开始生成。",
+  "Continue checking": "继续查看进度",
+  "Generation failed": "生成失败",
+  "Try again": "重试",
+  "Previous results on this page": "本页之前的结果",
+  "View result": "查看结果",
+  "Waiting {time}": "已等待 {time}",
+  "{model} is ready · View result": "{model} 已生成 · 查看结果",
+  "Submitting your request…": "正在提交生成请求…",
+  "Uploading references…": "正在上传参考图片…",
+  "Checking generation progress…": "正在查看生成进度…",
+  "Queued for generation…": "已排队，等待生成…",
+  "Generating your video…": "正在生成视频…",
+  "Generating your images…": "正在生成图片…",
+  "The video is still processing. Continue checking its progress.": "视频仍在处理中，可继续查看进度。",
   'Sign up': '注册',
   'No registration or login required.': '无需注册和登录',
   'GPT Image 2 and 2.5 share 2 free images.': 'GPT Image 2 和 2.5 共用 2 张免费图片额度',
