@@ -27,11 +27,11 @@ test('D1 referral statistics retain Shanghai day boundaries, deduplicate visits 
 test('D1 launch waitlist enrollment is idempotent and never changes credits', async () => {
   const h = await createD1TestDatabase()
   try {
-    await h.db.prepare('INSERT INTO "user" (id,name,email,credit_balance) VALUES (\'u\',\'Test\',\'u@example.test\',15)').run()
+    await h.db.prepare('INSERT INTO "user" (id,name,email,credit_balance) VALUES (\'u\',\'Test\',\'u@example.test\',10)').run()
     const store = createLaunchWaitlistStore(h.db as unknown as Database)
     assert.deepEqual(await store.getStatus('u'), { joined: false, bonusCredits: 5 })
     await Promise.all([store.join('u'), store.join('u')])
     assert.deepEqual(await store.getStatus('u'), { joined: true, bonusCredits: 5 })
-    assert.equal((await h.db.prepare('SELECT credit_balance FROM "user" WHERE id=\'u\'').first<{credit_balance:number}>())!.credit_balance, 15)
+    assert.equal((await h.db.prepare('SELECT credit_balance FROM "user" WHERE id=\'u\'').first<{credit_balance:number}>())!.credit_balance, 10)
   } finally { await h.dispose() }
 })

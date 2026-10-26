@@ -1,0 +1,265 @@
+✖ all accounts receive daily ten, spending free first with separate paid balance (4639.681ms)
+✖ refunded retries retain supplier budget and explicit paid-only remains available (5362.6113ms)
+✖ partial settlement refunds paid portion first once without releasing supplier budget (5195.3153ms)
+✖ free budget reservations serialize concurrent retries and billing holds block paid continuation (5747.9878ms)
+✔ migration converts existing guest image balance and pending refunds from five credits to one (3729.0589ms)
+✔ D1 reservations prevent concurrent overspending and duplicate refunds (5635.7386ms)
+✖ D1 daily grants replace yesterday free credits while preserving permanent credits (5720.2412ms)
+✔ D1 settlement increments generation counts once and cannot later refund (5066.1429ms)
+✖ D1 cross-day refunds return permanent credits without carrying yesterday free credits (4649.8895ms)
+✔ D1 recovers abandoned image reservations but protects active video reservations (5063.7279ms)
+✔ D1 reservation helpers roll back the debit when the following task insert fails (4969.7151ms)
+✖ D1 normalizes legacy daily dates and rejects invalid credit amounts (4706.2449ms)
+✔ D1 enables credit triggers after import without charging existing reservations twice (5269.212ms)
+✖ D1 reservation insert applies the current daily grant when an earlier refresh becomes stale (4908.8587ms)
+2026-10-24T16:09:20.683Z ERROR [Better Auth]: Email and password is not enabled. Make sure to enable it in the options on you `auth.ts` file. Check `https://better-auth.com/docs/authentication/email-password` for more!
+✔ direct email sign-up and password sign-in are disabled without creating users or sessions (4525.4402ms)
+2026-10-24T16:09:25.526Z ERROR [Better Auth]: Provider not found. Make sure to add the provider in your auth config { provider: 'github' }
+✔ Google OAuth still returns a provider redirect with the original callback and creates no account before verification (4662.169ms)
+✖ guest pending and successful usage merges once, retains cost and disables subsequent guest access (7036.1164ms)
+✔ signed-in network cannot claim either guest allowance after logout (5436.8228ms)
+✔ image and video guests on the same trusted network share the daily supplier-cost cap (6179.569ms)
+✖ reconciled pending video credits are protected from stale image reservation recovery (5772.3664ms)
+✔ D1 video reserves and creates atomically under concurrency, rolling back a task insert failure (6131.7088ms)
+✔ four concurrent ten-second requests with only ten free credits submit exactly one video (8167.882ms)
+✔ D1 video leases reject stale transitions and success settles only once (5683.6766ms)
+✔ D1 video failure and crashed submission expiry refund once and preserve terminal state (6071.5497ms)
+✔ D1 video retry uses bounded delays and global claims include only due unleased tasks (5417.731ms)
+✔ D1 cron works without Neon credentials and returns to zero database work after terminal cleanup (5244.6182ms)
+✔ Stripe configuration fails closed for missing keys and mixed modes (1.2997ms)
+✔ restricted Stripe keys are accepted only for their configured test or live mode (0.3116ms)
+✔ Stripe raw signature accepts rotated signatures and rejects altered and stale payloads (7.9692ms)
+✔ D1 purchase fulfillment credits exactly once under concurrent duplicate deliveries, without changing plan (5192.4359ms)
+✔ refund replay revokes the pack once, protects daily credits and holds a spent account (5052.2879ms)
+✔ out-of-order refund before payment fulfillment prevents any grant (4632.1044ms)
+✔ checkout rejects unauthenticated and cross-origin requests before contacting Stripe (4118.1517ms)
+✔ checkout pins amount, quantity, price and owner on server and owner history never leaks (5309.3254ms)
+✔ checkout returns to either exact language homepage supplied by returnTo (5539.8674ms)
+✔ checkout preserves billing return URLs when no homepage target is supplied (6123.2921ms)
+✔ checkout ignores arbitrary, encoded, and malformed return targets and keeps locale billing return URLs (11395.8816ms)
+✔ returned checkout session can only be confirmed from its owner history and history cannot grant credits (5752.9797ms)
+✔ signed webhook retrieves payment, rejects wrong owner/price/amount/mode, and fulfills only validated payment (5436.788ms)
+✔ webhook rejects oversized raw bodies and wrong signatures (4330.5476ms)
+✔ synthetic guest sessions cannot access billing even when a guest identity exists (4749.2134ms)
+✔ a failed credit update rolls back order status and event receipt together (5098.385ms)
+✔ signed refund and dispute events freeze once, including refunds arriving before success (5001.4212ms)
+✔ already-refunded current Stripe payment never grants credits even without a refund webhook (5138.9517ms)
+✔ public production cannot sell or grant real credits using Stripe test mode (4588.7786ms)
+ℹ tests 45
+ℹ suites 0
+ℹ pass 35
+ℹ fail 10
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 235059.5345
+
+✖ failing tests:
+
+test at tests\d1-credit-budget.test.ts:6:1
+✖ all accounts receive daily ten, spending free first with separate paid balance (4639.681ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  505 !== 510
+  
+      at TestContext.<anonymous> (D:\Asideproject\! 网站、插件、APP\Seedance3\tests\d1-credit-budget.test.ts:10:9)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 505,
+    expected: 510,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\d1-credit-budget.test.ts:15:1
+✖ refunded retries retain supplier budget and explicit paid-only remains available (5362.6113ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  505 !== 510
+  
+      at TestContext.<anonymous> (D:\Asideproject\! 网站、插件、APP\Seedance3\tests\d1-credit-budget.test.ts:20:9)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 505,
+    expected: 510,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\d1-credit-budget.test.ts:26:1
+✖ partial settlement refunds paid portion first once without releasing supplier budget (5195.3153ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   dailyRemaining: 0,
+  +   freeBudgetRemainingMicros: 850000,
+  +   paidRemaining: 48,
+  +   remaining: 48
+  -   dailyRemaining: 3,
+  -   freeBudgetRemainingMicros: 700000,
+  -   paidRemaining: 50,
+  -   remaining: 53
+    }
+  
+      at TestContext.<anonymous> (D:\Asideproject\! 网站、插件、APP\Seedance3\tests\d1-credit-budget.test.ts:32:9)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { remaining: 48, dailyRemaining: 0, paidRemaining: 48, freeBudgetRemainingMicros: 850000 },
+    expected: { remaining: 53, dailyRemaining: 3, paidRemaining: 50, freeBudgetRemainingMicros: 700000 },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests\d1-credit-budget.test.ts:36:1
+✖ free budget reservations serialize concurrent retries and billing holds block paid continuation (5747.9878ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (D:\Asideproject\! 网站、插件、APP\Seedance3\tests\d1-credit-budget.test.ts:43:9)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\d1-generation-credits.test.ts:42:1
+✖ D1 daily grants replace yesterday free credits while preserving permanent credits (5720.2412ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  70 !== 75
+  
+      at TestContext.<anonymous> (D:\Asideproject\! 网站、插件、APP\Seedance3\tests\d1-generation-credits.test.ts:47:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 70,
+    expected: 75,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\d1-generation-credits.test.ts:78:1
+✖ D1 cross-day refunds return permanent credits without carrying yesterday free credits (4649.8895ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   remainingCredits: 25
+  -   remainingCredits: 30
+    }
+  
+      at TestContext.<anonymous> (D:\Asideproject\! 网站、插件、APP\Seedance3\tests\d1-generation-credits.test.ts:91:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { remainingCredits: 25 },
+    expected: { remainingCredits: 30 },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests\d1-generation-credits.test.ts:142:1
+✖ D1 normalizes legacy daily dates and rejects invalid credit amounts (4706.2449ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  10 !== 15
+  
+      at TestContext.<anonymous> (D:\Asideproject\! 网站、插件、APP\Seedance3\tests\d1-generation-credits.test.ts:149:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 10,
+    expected: 15,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\d1-generation-credits.test.ts:193:1
+✖ D1 reservation insert applies the current daily grant when an earlier refresh becomes stale (4908.8587ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   credit_balance: 50,
+  -   credit_balance: 55,
+      daily_credit_date: '2026-10-25',
+      daily_free_credits: 0
+    }
+  
+      at TestContext.<anonymous> (D:\Asideproject\! 网站、插件、APP\Seedance3\tests\d1-generation-credits.test.ts:204:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { credit_balance: 50, daily_free_credits: 0, daily_credit_date: '2026-10-25' },
+    expected: { credit_balance: 55, daily_free_credits: 0, daily_credit_date: '2026-10-25' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests\d1-guest-reconciliation.test.ts:11:1
+✖ guest pending and successful usage merges once, retains cost and disables subsequent guest access (7036.1164ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   dailyRemaining: 4,
+  -   dailyRemaining: 9,
+      freeBudgetRemainingMicros: 370000,
+      paidRemaining: 0,
+  +   remaining: 4
+  -   remaining: 9
+    }
+  
+      at TestContext.<anonymous> (D:\Asideproject\! 网站、插件、APP\Seedance3\tests\d1-guest-reconciliation.test.ts:25:9)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { remaining: 4, dailyRemaining: 4, paidRemaining: 0, freeBudgetRemainingMicros: 370000 },
+    expected: { remaining: 9, dailyRemaining: 9, paidRemaining: 0, freeBudgetRemainingMicros: 370000 },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests\d1-guest-reconciliation.test.ts:53:1
+✖ reconciled pending video credits are protected from stale image reservation recovery (5772.3664ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.equal(next,null)
+  
+      at TestContext.<anonymous> (D:\Asideproject\! 网站、插件、APP\Seedance3\tests\d1-guest-reconciliation.test.ts:64:78)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

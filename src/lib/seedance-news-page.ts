@@ -156,7 +156,7 @@ export function rewriteNewsResponse(request: Request, response: Response, state:
     } })
     rewriter.on('.article-lead', { element(element) {
       element.setInnerContent(zh
-        ? '官方页面已有 Seedance 3.0 相关消息，原文标题、来源和时间见下方“每日官方动态”。提及模型或将其列入目录，并不等于确认上线日期、价格或开放使用。'
+        ? '字节跳动 Seed 页面已有 Seedance 3.0 相关消息，原文标题、来源和时间见下方“每日发布动态”。提及模型或将其列入目录，并不等于确认上线日期、价格或开放使用。'
         : 'Official pages include Seedance 3.0 updates. The original titles, sources, and dates are listed in the daily updates below. A mention or model listing alone does not establish a launch date, pricing, or availability.')
     } })
     rewriter.on('#seedance-comparison-note', { element(element) {

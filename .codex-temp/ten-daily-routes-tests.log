@@ -1,0 +1,50 @@
+✔ billing pages render one fixed pack in both languages and require authentication (20.5409ms)
+✔ explicit guest video balances expose ten seconds without granting account credits (7.19ms)
+✔ anonymous balance requests are rejected without reading the database (0.6316ms)
+✔ authenticated balance requests expose the daily allowance, expiry and image cost (1.1809ms)
+✔ both current image models charge one credit for each requested output (18.7329ms)
+✔ partial image delivery charges only delivered outputs (1.989ms)
+✔ an exhausted supplier budget returns an actionable error without generating (0.8669ms)
+✔ image paid-only continuation requires an explicit request header (1.0332ms)
+✔ video budget error never submits to supplier (0.6099ms)
+✔ balance response exposes separate daily and purchased balances (0.3533ms)
+✔ provider partial batch is delivered for per-output settlement (0.688ms)
+✔ full preflight rejects invalid image size before credit/cost reservation (8.092ms)
+✔ SSR uses a neutral allowance heading while the account session is unresolved in both languages (45.5338ms)
+✔ guest H3 landing is registration-free, defaults to five seconds and caps selection at ten in both languages (32.969ms)
+✔ H3 permits nine references and displays 768p in both languages (34.0143ms)
+✔ GPT Image 2.5 retains the requested intro removal while adding guest H3 support (14.4438ms)
+✔ both image landing pages offer the same two-image guest allowance without registration (88.0511ms)
+✔ each generator has one right-hand stage for idle, loading, result and error with separate page history (154.268ms)
+✔ anonymous Tuzi 2.5 generation stops before rate limiting, credits or upstream work (18.7239ms)
+▶ provider aliases and arbitrary model headers are rejected before credit reservation
+  ✔ gpt-image-2.5-1k (1.4349ms)
+  ✔ unlisted-provider-model (0.9866ms)
+✔ provider aliases and arbitrary model headers are rejected before credit reservation (3.3625ms)
+✔ two Tuzi 2.5 images reserve and settle exactly two credits with the exact upstream alias (10.6801ms)
+✔ a two-image Tuzi 2.5 request with only one credit does not call the provider (1.5639ms)
+▶ model mismatches and model-specific invalid sizes restore credits without calling Tuzi
+  ✔ old header with new body (2.0891ms)
+  ✔ new header with old body (1.035ms)
+  ✔ new body without model header (0.8239ms)
+  ✔ new header without model body (0.7078ms)
+  ✔ new model with old square size (1.7758ms)
+  ✔ old model with new square size (2.2815ms)
+  ✔ provider alias in form body (0.919ms)
+  ✔ seventeen reference images for new model (17.327ms)
+✔ model mismatches and model-specific invalid sizes restore credits without calling Tuzi (28.0271ms)
+▶ Tuzi failures and unusable or incomplete results refund the full two-image reservation once
+  ✔ provider HTTP error (1.5352ms)
+  ✔ empty provider result (1.0344ms)
+  ✔ unusable provider URL (1.071ms)
+  ✔ provider transport error (0.9492ms)
+✔ Tuzi failures and unusable or incomplete results refund the full two-image reservation once (5.0727ms)
+✔ legacy model-less clients retain the old provider model and the same one-credit unit price (1.1871ms)
+ℹ tests 39
+ℹ suites 0
+ℹ pass 39
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2461.5052

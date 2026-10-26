@@ -1,0 +1,17 @@
+✔ explicit guest video balances expose ten seconds without granting account credits (3.2436ms)
+✔ anonymous balance requests are rejected without reading the database (0.5027ms)
+✔ authenticated balance requests expose the daily allowance, expiry and image cost (0.4479ms)
+✔ D1 schema preserves all product tables, integer millisecond defaults, and credit constraints (1969.6507ms)
+✔ Better Auth signs up and signs in through D1 without a Neon connection (4927.5811ms)
+✔ a staged D1 binding leaves authentication on Neon until D1 is explicitly selected (389.9167ms)
+✔ explicit D1 authentication requires its D1 binding (0.3504ms)
+✔ registered accounts can spend ten shared daily credits on images and video (7330.0462ms)
+✔ existing registered accounts receive the ten-credit daily policy (4281.682ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 12378.9508

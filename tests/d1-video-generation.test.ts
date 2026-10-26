@@ -6,12 +6,13 @@ import { createD1TestDatabase } from './helpers/d1-test-db'
 import { activityBucket } from './helpers/video-activity-bucket'
 import { createTrackedVideoTaskStore, createVideoTaskActivity } from '../src/lib/video-task-activity'
 import { reconcileVideoGenerationTasks } from '../src/lib/video-task-reconciler'
+import { protectVideoGenerationStart } from '../src/lib/protected-video-generation'
 
 const metadata = { workflowId: 'minimax_h3_lightx2v_no_pic', duration: 5, resolution: '480p', aspectRatio: '16:9' }
 async function fixture(balance = 15) {
   const h = await createD1TestDatabase()
   const userId = crypto.randomUUID()
-  await h.db.prepare('INSERT INTO "user" (id,name,email,plan,credit_balance) VALUES (?,?,?,\'paid\',?)')
+  await h.db.prepare(`INSERT INTO "user" (id,name,email,plan,credit_balance,daily_credit_date) VALUES (?,?,?,'paid',?,date('now','+8 hours'))`)
     .bind(userId, 'D1 test', `${userId}@example.test`, balance).run()
   return { ...h, userId, store: videoStore.createVideoGenerationTaskStore(h.db as unknown as Database) }
 }
@@ -28,6 +29,43 @@ test('D1 video reserves and creates atomically under concurrency, rolling back a
     assert.equal(results.filter(Boolean).length, 2)
     assert.equal(await h.store.getBalance(h.userId), 0)
     assert.equal((await h.store.listUnfinishedTasks()).length, 3)
+  } finally { await h.dispose() }
+})
+
+test('concurrent requests submit exactly one video within the guest ten-second or registered five-credit allowance', async () => {
+  const h = await createD1TestDatabase()
+  try {
+    const store = videoStore.createVideoGenerationTaskStore(h.db as unknown as Database)
+    // Exercise both the lifetime guest allowance and today's registered allowance.
+    for (const plan of ['guest', 'free']) {
+      const allowance = plan === 'guest' ? 10 : 5
+      const userId = `ten-second-concurrency-${plan}`
+      await h.db.prepare(`INSERT INTO "user"
+        (id,name,email,plan,credit_balance,daily_free_credits,daily_credit_date)
+        VALUES (?,?,?,?,?,?,date('now','+8 hours'))`)
+        .bind(userId, userId, `${userId}@example.test`, plan, allowance, plan === 'free' ? allowance : 0).run()
+      let submissions = 0
+      const responses = await Promise.all(Array.from({ length: 4 }, () => protectVideoGenerationStart({
+        request: new Request('https://seedance3-pro.com/api/videos/generate', { method: 'POST' }),
+        getSession: async () => ({ user: { id: userId, isGuest: plan === 'guest' } }),
+        preflight: async () => ({ ok: true, payload: {
+          prompt: 'Local concurrency regression; no supplier request.',
+          duration: allowance, resolution: '768p', aspectRatio: '16:9',
+        } }),
+        taskStore: store,
+        submit: async () => {
+          submissions += 1
+          return { providerTaskId: `local-only-${crypto.randomUUID()}` }
+        },
+      })))
+      assert.deepEqual(responses.map(response => response.status).sort(), [202, 402, 402, 402], plan)
+      assert.equal(submissions, 1, plan)
+      assert.equal(await store.getBalance(userId), 0, plan)
+      assert.deepEqual(await h.db.prepare(`SELECT count(*) AS tasks,sum(duration) AS seconds
+        FROM video_generation_task WHERE user_id=?`).bind(userId).first(), { tasks: 1, seconds: allowance }, plan)
+      assert.deepEqual(await h.db.prepare(`SELECT count(*) AS reservations,sum(credits) AS credits
+        FROM generation_credit_reservation WHERE user_id=?`).bind(userId).first(), { reservations: 1, credits: allowance }, plan)
+    }
   } finally { await h.dispose() }
 })
 

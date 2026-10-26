@@ -1,5 +1,6 @@
 import { sql } from 'drizzle-orm'
-import { check, index, integer, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core'
+import { DAILY_FREE_CREDIT_GRANT } from '../lib/generation-credits'
+import { check, index, integer, primaryKey, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core'
 
 // D1 stores absolute instants as integer milliseconds; Drizzle exposes Date objects.
 const nowMilliseconds = sql`(CAST(unixepoch('subsecond') * 1000 AS INTEGER))`
@@ -18,7 +19,7 @@ export const user = sqliteTable('user', {
   generationCount: integer('generation_count').default(0).notNull(),
   monthlyGenerationCount: integer('monthly_generation_count').default(0).notNull(),
   generationLimit: integer('generation_limit').default(0).notNull(),
-  creditBalance: integer('credit_balance').default(15).notNull(),
+  creditBalance: integer('credit_balance').default(DAILY_FREE_CREDIT_GRANT).notNull(),
   dailyFreeCredits: integer('daily_free_credits').default(0).notNull(),
   dailyCreditDate: text('daily_credit_date'),
   trialCreditsGrantedAt: timestamp('trial_credits_granted_at').default(nowMilliseconds).notNull(),
@@ -30,6 +31,8 @@ export const user = sqliteTable('user', {
 ])
 
 export const generationCreditReservation = sqliteTable('generation_credit_reservation', {
+  freeNetworkHash: text('free_network_hash'),
+  networkFreeCredits: integer('network_free_credits').default(0).notNull(),
   id: text('id').primaryKey().notNull(),
   userId: text('user_id').notNull().references(() => user.id, { onDelete: 'cascade' }),
   credits: integer('credits').notNull(),
@@ -150,4 +153,15 @@ export const guestImageTrial = sqliteTable('guest_image_trial', {
 }, (table) => [
   uniqueIndex('guest_image_trial_user_idx').on(table.userId),
   uniqueIndex('guest_image_trial_network_idx').on(table.networkHash),
+])
+
+export const guestDeviceClaim = sqliteTable('guest_device_claim', {
+  kind: text('kind').notNull(),
+  deviceHash: text('device_hash').notNull(),
+  userId: text('user_id').notNull().references(() => user.id, { onDelete: 'cascade' }),
+  createdAt: timestamp('created_at').default(nowMilliseconds).notNull(),
+}, (table) => [
+  primaryKey({ columns: [table.kind, table.deviceHash] }),
+  index('guest_device_claim_user_idx').on(table.userId),
+  check('guest_device_claim_kind_check', sql`${table.kind} IN ('image','video')`),
 ])

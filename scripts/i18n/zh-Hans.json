@@ -3,6 +3,110 @@
   "notes": "Exact English source and reviewed Simplified Chinese translation. Original model names, prices, code and example prompts are preserved.",
   "entries": [
     {
+      "source": "No login. No sign-up.",
+      "translation": "无需登录 · 无需注册"
+    },
+    {
+      "source": "Free video trial",
+      "translation": "视频免费体验"
+    },
+    {
+      "source": "Video credit pack",
+      "translation": "视频积分包"
+    },
+    {
+      "source": "Try for free ↗",
+      "translation": "免费试用 ↗"
+    },
+    {
+      "source": "No sign-up or login required.",
+      "translation": "免注册、免登录。"
+    },
+    {
+      "source": "10 free video seconds",
+      "translation": "免费体验 10 秒视频"
+    },
+    {
+      "source": "Buy 500 video seconds ↗",
+      "translation": "购买 500 秒视频 ↗"
+    },
+    {
+      "source": "Credits never expire. No subscription.",
+      "translation": "积分永久有效，无订阅。"
+    },
+    {
+      "source": "for 500 seconds of video",
+      "translation": "可生成总计 500 秒视频"
+    },
+    {
+      "source": "Seedance 3.0 isn’t available yet. Start creating with Seedance 2.5 while you wait.",
+      "translation": "Seedance 3.0 暂未开放，可以先用 Seedance 2.5 开始创作。"
+    },
+    {
+      "source": "View pricing →",
+      "translation": "查看价格 →"
+    },
+    {
+      "source": "Try 10 seconds free ↗",
+      "translation": "免费体验 10 秒 ↗"
+    },
+    {
+      "source": "Try 10 seconds free. No sign-up or login required.",
+      "translation": "先免费体验 10 秒，无需注册或登录。"
+    },
+    {
+      "source": "US$4.99 buys 500 seconds of video. Credits never expire. No subscription.",
+      "translation": "US$4.99 可生成总计 500 秒视频。积分永久有效，无订阅。"
+    },
+    {
+      "source": "A 10-second video ≈ US$0.10",
+      "translation": "10 秒视频约 US$0.10"
+    },
+    {
+      "source": "/second",
+      "translation": "/秒"
+    },
+    {
+      "source": "Seedance 2.5 pricing and free video trial",
+      "translation": "Seedance 2.5 价格与视频免费体验"
+    },
+    {
+      "source": "Try Seedance 2.5 for free",
+      "translation": "免费试用 Seedance 2.5"
+    },
+    {
+      "source": "Free Seedance 2.5 video trial",
+      "translation": "Seedance 2.5 视频免费试用"
+    },
+    {
+      "source": "10 free video seconds. No sign-up or login required.",
+      "translation": "免注册、免登录，免费试用 10 秒视频"
+    },
+    {
+      "source": "Start free trial ↗",
+      "translation": "立即免费试用 ↗"
+    },
+    {
+      "source": "Try Seedance 2.5 video & AI images free — no sign-up or login ↗",
+      "translation": "免注册、免登录，免费试用 Seedance 2.5 视频与 AI 图像生成 ↗"
+    },
+    {
+      "source": "10 FREE SECONDS",
+      "translation": "首次共 10 秒免费额度"
+    },
+    {
+      "source": "No sign-up or login required",
+      "translation": "无需注册或登录，即可试用"
+    },
+    {
+      "source": "AFTER SIGN-UP",
+      "translation": "注册后"
+    },
+    {
+      "source": "Get free credits every day",
+      "translation": "每天领取免费积分"
+    },
+    {
       "source": "U",
       "translation": ""
     },
@@ -1039,16 +1143,16 @@
       "translation": "探索 GPT Image 2 的生成与编辑流程：详细指令、高保真图像输入、易读版式、品牌素材与创意制作。"
     },
     {
-      "source": "An independent practical guide to GPT Image 2 generation and editing workflows.",
-      "translation": "关于 GPT Image 2 图像生成与编辑流程的独立实用指南。"
+      "source": "A practical guide to GPT Image 2 generation and editing workflows.",
+      "translation": "关于 GPT Image 2 图像生成与编辑流程的实用指南。"
     },
     {
-      "source": "Independent guide to GPT Image 2 image generation and editing workflows.",
-      "translation": "GPT Image 2 图像生成与编辑流程独立指南。"
+      "source": "Guide to GPT Image 2 image generation and editing workflows.",
+      "translation": "GPT Image 2 图像生成与编辑流程指南。"
     },
     {
-      "source": "Independent model guide",
-      "translation": "独立模型指南"
+      "source": "Model guide",
+      "translation": "模型指南"
     },
     {
       "source": "Seedance 3",
@@ -1195,8 +1299,8 @@
       "translation": "打开预览"
     },
     {
-      "source": "© 2026 SEEDANCE 3.0 · Independent model guide",
-      "translation": "© 2026 SEEDANCE 3.0 · 独立模型指南"
+      "source": "© 2026 SEEDANCE 3.0 · Model guide",
+      "translation": "© 2026 SEEDANCE 3.0 · 模型指南"
     },
     {
       "source": "MiniMax H3 AI Video Generator | Features, Prompts & Examples",
@@ -1211,12 +1315,12 @@
       "translation": "MiniMax H3 AI 视频生成器"
     },
     {
-      "source": "A practical, independent guide to MiniMax H3 capabilities, prompts, and creative workflows.",
-      "translation": "MiniMax H3 能力、提示词与创意流程的独立实用指南。"
+      "source": "A practical guide to MiniMax H3 capabilities, prompts, and creative workflows.",
+      "translation": "MiniMax H3 能力、提示词与创意流程的实用指南。"
     },
     {
-      "source": "Independent guide to MiniMax H3 features, prompts and creative workflows.",
-      "translation": "MiniMax H3 功能、提示词与创意流程独立指南。"
+      "source": "Guide to MiniMax H3 features, prompts and creative workflows.",
+      "translation": "MiniMax H3 功能、提示词与创意流程指南。"
     },
     {
       "source": "SEEDANCE 3.0 Editorial",
@@ -1499,8 +1603,8 @@
       "translation": "探索提示词与工作流程"
     },
     {
-      "source": "Follow official release updates",
-      "translation": "关注官方发布动态"
+      "source": "Follow release updates",
+      "translation": "关注发布动态"
     },
     {
       "source": "MiniMax H3 today",
@@ -1583,12 +1687,12 @@
       "translation": "Nano Banana 2 Lite 图像生成器"
     },
     {
-      "source": "An independent workflow guide to Google’s speed-focused Nano Banana 2 Lite image model.",
-      "translation": "Google 速度优先的 Nano Banana 2 Lite 图像模型独立流程指南。"
+      "source": "A workflow guide to Google’s speed-focused Nano Banana 2 Lite image model.",
+      "translation": "Google 速度优先的 Nano Banana 2 Lite 图像模型流程指南。"
     },
     {
-      "source": "Independent guide to Nano Banana 2 Lite image generation and editing workflows.",
-      "translation": "Nano Banana 2 Lite 图像生成与编辑流程独立指南。"
+      "source": "Guide to Nano Banana 2 Lite image generation and editing workflows.",
+      "translation": "Nano Banana 2 Lite 图像生成与编辑流程指南。"
     },
     {
       "source": "Try GPT Image 2 instead",
@@ -7211,16 +7315,16 @@
       "translation": "，阅读官方来源、注明日期的公告时间线，以及价格和使用入口的解答。"
     },
     {
-      "source": "Seedance 3.0 Release Date: What's Confirmed So Far",
-      "translation": "Seedance 3.0 发布时间：目前已确认的信息"
+      "source": "Seedance 3.0 Release Date: Estimate & Latest Updates",
+      "translation": "Seedance 3.0 发布时间：预计日期与最新动态"
     },
     {
-      "source": "When is Seedance 3.0 coming out? Check official sources, dated news, pricing FAQs, the Seedance 2.5 comparison, and tools you can use while waiting.",
-      "translation": "Seedance 3.0 什么时候发布？查看官方来源和带日期的发布动态，了解截至 2026 年 10 月仍待确认的上线消息。这里也整理了免费试用、订阅与 API 价格的常见问题，以及 Seedance 2.5 已公布的能力，方便你了解目前能比较哪些信息，并找到现在可用的视频、图像和姿势创作工具。"
+      "source": "Seedance 3.0 is estimated for January–February 2027 based on earlier release timing. Check source announcements, release updates, and tools you can use now.",
+      "translation": "根据此前版本的发布间隔，Seedance 3.0 预计于 2027 年 1–2 月发布，具体日期仍待公布。查看发布公告、最新动态，以及现在可用的创作工具。"
     },
     {
-      "source": "As of October 2026, the ByteDance Seed model catalog and visual blog we reviewed do not give us a confirmed Seedance 3.0 release date. We cannot confirm a launch month, estimated release window, or countdown. Links to the official sources are in the timeline above.",
-      "translation": "截至 2026 年 10 月，从本页核对的字节跳动 Seed 官方模型目录和视觉博客，还无法确认 Seedance 3.0 的发布时间。具体月份、预计发布时段和倒计时都无法确定，相关官方来源见上方时间线。"
+      "source": "Seedance 3.0 is estimated for January–February 2027 based on the 169-day interval between the Seedance 2.0 and 2.5 announcements. This is an estimate; a launch date has not been announced in the ByteDance Seed sources reviewed as of October 2026.",
+      "translation": "根据 Seedance 2.0 与 2.5 发布公告相隔 169 天的间隔，Seedance 3.0 预计于 2027 年 1–2 月发布。这是预计时间；截至 2026 年 10 月，本页核对的字节跳动 Seed 来源尚未公布具体发布日期。"
     },
     {
       "source": "Will Seedance 3.0 be free?",
@@ -7251,12 +7355,12 @@
       "translation": "发布时间追踪"
     },
     {
-      "source": "As of October 2026, we have not confirmed an official Seedance 3.0 release date in the sources reviewed for this page.",
-      "translation": "截至 2026 年 10 月，在本页核对的官方资料中，Seedance 3.0 的发布时间仍未得到确认。"
+      "source": "As of October 2026, ByteDance Seed has not announced a Seedance 3.0 release date in the model catalog and visual blog reviewed here.",
+      "translation": "截至 2026 年 10 月，本页核对的字节跳动 Seed 模型目录和视觉博客尚未公布 Seedance 3.0 的具体发布日期。"
     },
     {
-      "source": "ByteDance currently lists Seedance 2.5 in its model catalog. The timeline below links to the announcements and sources we checked.",
-      "translation": "字节跳动的模型目录目前列有 Seedance 2.5，相关公告和来源见下方时间线。"
+      "source": "The estimated window below is based on earlier release timing. The timeline links to the announcements and sources checked.",
+      "translation": "下方预计时间根据此前版本的发布间隔推算，相关公告和来源见时间线。"
     },
     {
       "source": "Last updated:",
@@ -7271,8 +7375,8 @@
       "translation": "Seedance 3.0 最新动态与官方公告"
     },
     {
-      "source": "The dates below mark official announcements and our source review. Release dates for earlier versions do not tell us when Seedance 3.0 will launch.",
-      "translation": "下列日期分别对应官方公告和本页的来源核查。旧版本的发布日期不能用来推算 Seedance 3.0 的发布时间。"
+      "source": "The dates below mark ByteDance Seed announcements and source reviews. Earlier release intervals inform the estimate above; they do not confirm a Seedance 3.0 launch date.",
+      "translation": "下列日期分别对应字节跳动 Seed 公告和本页的来源核查。此前版本的发布间隔可作为上方预计时间的参考，不能据此确认 Seedance 3.0 的具体发布日期。"
     },
     {
       "source": "Official announcements and source review",
@@ -7319,8 +7423,8 @@
       "translation": "官方视觉博客"
     },
     {
-      "source": "Both official pages list Seedance 2.5. As of October 2026, we have not confirmed a Seedance 3.0 announcement or release date in these sources.",
-      "translation": "这两个官方页面列有 Seedance 2.5。截至 2026 年 10 月，Seedance 3.0 的发布公告和具体日期仍未在这些资料中得到确认。"
+      "source": "Both pages list Seedance 2.5. As of October 2026, these sources do not announce a Seedance 3.0 release date.",
+      "translation": "这两个页面列有 Seedance 2.5。截至 2026 年 10 月，这些来源尚未公布 Seedance 3.0 的具体发布日期。"
     },
     {
       "source": "A model announcement, platform rollout, and API availability can happen separately. We will record each milestone when official 3.0 information is available.",
@@ -7583,8 +7687,8 @@
       "translation": "在已核对的 官方模型目录 中，截至 2026 年 10 月，Seedance 3.0 的订阅和 API 价格仍未得到确认。 查看 Seedance 3.0 价格动态"
     },
     {
-      "source": "Daily official updates",
-      "translation": "每日官方动态"
+      "source": "Daily release updates",
+      "translation": "每日发布动态"
     },
     {
       "source": "Official sources are checked once a day at 09:00 Beijing time. New Seedance 3.0 entries appear here after a successful inspection. Source publication dates and first-seen dates are shown separately; neither is automatically treated as a model release date.",
@@ -8131,8 +8235,8 @@
       "translation": "使用兔子（Tuzi）路由别名生成或编辑图像。使用文字提示词或参考图开始创作。"
     },
     {
-      "source": "5 credits/image",
-      "translation": "5 积分/张"
+      "source": "1 credit/image",
+      "translation": "1 积分/张"
     },
     {
       "source": "Open GPT Image 2.5 generator",
@@ -8611,8 +8715,8 @@
       "translation": "Seedance 首页"
     },
     {
-      "source": "Explore the tools, guides and official release tracker.",
-      "translation": "浏览创作工具、使用指南和官方发布动态。"
+      "source": "Explore the tools, guides and release updates.",
+      "translation": "浏览创作工具、使用指南和发布动态。"
     },
     {
       "source": "Seedance 3.0 release tracker",
@@ -8749,6 +8853,170 @@
     {
       "source": "Last updated reflects the latest completed official-source check or editorial update, whichever is newer.",
       "translation": "Last updated 会同步最近一次完整核查官方来源的日期；人工更新正文时也会刷新。"
+    },
+    {
+      "source": "to claim your 5 free daily credits.",
+      "translation": "领取每日 5 个免费积分。"
+    },
+    {
+      "source": "5 free credits every day. Buy 500 nonexpiring credits for US$4.99 once. No subscription or auto-renewal.",
+      "translation": "每天 5 免费积分；US$4.99 一次性购买 500 永久积分。无订阅、无自动续费。"
+    },
+    {
+      "source": "Every signed-in account gets 5 free credits daily, including accounts that purchase credits.",
+      "translation": "所有登录账户每天获得 5 免费积分，包括购买过积分的用户。"
+    },
+    {
+      "source": "5 credits / day",
+      "translation": "10 积分 / 天"
+    },
+    {
+      "source": "Estimated release window",
+      "translation": "预计发布时间"
+    },
+    {
+      "source": "Expected January–February 2027",
+      "translation": "预计 2027 年 1–2 月发布"
+    },
+    {
+      "source": "Seedance 2.0 was announced on",
+      "translation": "Seedance 2.0 于"
+    },
+    {
+      "source": "February 12, 2026",
+      "translation": "2026 年 2 月 12 日"
+    },
+    {
+      "source": ", followed by Seedance 2.5 on",
+      "translation": "正式发布，2.5 于"
+    },
+    {
+      "source": "July 31, 2026",
+      "translation": "2026 年 7 月 31 日"
+    },
+    {
+      "source": ": a gap of 169 days, or about five and a half months. If the next release follows that interval, it would fall around January 2027, making early 2027, including the Lunar New Year period, worth watching.",
+      "translation": "正式发布，两次相隔 169 天，约五个半月。如果下一轮沿用这次间隔，时间会落在 2027 年 1 月前后，因此 2027 年初、包括春节前后，都是值得观察的时间窗口。"
+    },
+    {
+      "source": "This estimate uses one release interval, not a fixed schedule. The launch could be earlier or later.",
+      "translation": "此预计时间依据最近一次版本间隔推算，不代表固定发布周期，实际发布可能提前或推迟。"
+    },
+    {
+      "source": "ByteDance Seed visual blog",
+      "translation": "字节跳动 Seed 视觉博客"
+    },
+    {
+      "source": "Release Date",
+      "translation": "发布时间"
+    },
+    {
+      "source": "Try for free",
+      "translation": "免费试用"
+    },
+    {
+      "source": "Log in",
+      "translation": "登录"
+    },
+    {
+      "source": "US$0.01",
+      "translation": "US$0.01"
+    },
+    {
+      "source": "US$4.99",
+      "translation": "US$4.99"
+    },
+    {
+      "source": "One-time payment, no auto-renewal. Request a refund within 7 days for a completely unused purchased pack.",
+      "translation": "一次性付款，无自动续费。未使用的整包购买积分可在购买后 7 天内申请退款。"
+    },
+    {
+      "source": "Refund conditions",
+      "translation": "退款条件"
+    },
+    {
+      "source": "Terms",
+      "translation": "服务条款"
+    },
+    {
+      "source": "Privacy",
+      "translation": "隐私政策"
+    },
+    {
+      "source": "Contact support",
+      "translation": "联系客服"
+    },
+    {
+      "source": "Support email",
+      "translation": "客服邮箱"
+    },
+    {
+      "source": "zw83716@gmail.com",
+      "translation": "zw83716@gmail.com"
+    },
+    {
+      "source": "Close email window",
+      "translation": "关闭邮箱窗口"
+    },
+    {
+      "source": "See what Seedance 2.5 can create",
+      "translation": "看看 Seedance 2.5 的生成效果"
+    },
+    {
+      "source": "Cinematic scene — Seedance 2.5",
+      "translation": "电影场景 — Seedance 2.5"
+    },
+    {
+      "source": "Cinematic scene",
+      "translation": "电影场景"
+    },
+    {
+      "source": "Try this prompt ↗",
+      "translation": "试同款 ↗"
+    },
+    {
+      "source": "Paper animation — Seedance 2.5",
+      "translation": "纸艺动画 — Seedance 2.5"
+    },
+    {
+      "source": "Paper animation",
+      "translation": "纸艺动画"
+    },
+    {
+      "source": "Operated by: ColdStone Technology Co., Ltd.",
+      "translation": "运营者: ColdStone Technology Co., Ltd."
+    },
+    {
+      "source": "Service and policies",
+      "translation": "服务与政策"
+    },
+    {
+      "source": "About & contact",
+      "translation": "关于与联系"
+    },
+    {
+      "source": "Refund policy",
+      "translation": "退款政策"
+    },
+    {
+      "source": "Terms of service",
+      "translation": "服务条款"
+    },
+    {
+      "source": "Explore text-to-video and image-to-video generation in the current workspace.",
+      "translation": "通过当前工作区体验文生视频和图生视频。"
+    },
+    {
+      "source": "Read the Seedance 2.5 announcement",
+      "translation": "阅读 Seedance 2.5 发布公告"
+    },
+    {
+      "source": "Seedance 3.0 isn’t available yet. Start creating with 2.5 today.",
+      "translation": "Seedance 3.0 暂未开放，先用 2.5 开始创作。"
+    },
+    {
+      "source": "Lowest price online",
+      "translation": "全网最低价"
     }
   ]
 }

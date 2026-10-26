@@ -100,9 +100,9 @@ test("example prompts cycle deterministically", () => {
 });
 
 test("image settings map to safe provider parameters and per-image credits", () => {
-  assert.equal(creditCostForQuantity("1"), 5);
-  assert.equal(creditCostForQuantity("3"), 15);
-  assert.equal(creditCostForQuantity("99"), 5);
+  assert.equal(creditCostForQuantity("1"), 1);
+  assert.equal(creditCostForQuantity("3"), 3);
+  assert.equal(creditCostForQuantity("99"), 1);
   assert.equal(sizeForAspectRatio("1:1"), "1024x1024");
   assert.equal(sizeForAspectRatio("3:2"), "1536x1024");
   assert.equal(sizeForAspectRatio("2:3"), "1024x1536");
@@ -138,7 +138,7 @@ test("credit summary controller can switch between image quantity and video dura
     onChange: (summary) => summaries.push(summary)
   });
 
-  assert.equal(summaries.at(-1).cost, 15, "three GPT images should retain their existing cost");
+  assert.equal(summaries.at(-1).cost, 3, "three images cost three credits");
   mode = "video";
   controller.refresh();
   assert.equal(summaries.at(-1).cost, 5);
@@ -151,18 +151,18 @@ test("credit summary controller can switch between image quantity and video dura
   controller.destroy();
 });
 
-test("projected balances subtract five credits per normalized image quantity", () => {
+test("projected balances subtract one credit per normalized image quantity", () => {
   assert.equal(typeof projectedCreditBalance, "function", "expected projectedCreditBalance to be exported");
-  assert.equal(projectedCreditBalance(15, "1"), 10);
-  assert.equal(projectedCreditBalance(15, "2"), 5);
-  assert.equal(projectedCreditBalance(15, "3"), 0);
-  assert.equal(projectedCreditBalance(15, "99"), 10);
+  assert.equal(projectedCreditBalance(15, "1"), 14);
+  assert.equal(projectedCreditBalance(15, "2"), 13);
+  assert.equal(projectedCreditBalance(15, "3"), 12);
+  assert.equal(projectedCreditBalance(15, "99"), 14);
 });
 
 test("projected balances clamp insufficient credits to zero", () => {
   assert.equal(typeof projectedCreditBalance, "function", "expected projectedCreditBalance to be exported");
-  assert.equal(projectedCreditBalance(4, "1"), 0);
-  assert.equal(projectedCreditBalance(9, "2"), 0);
+  assert.equal(projectedCreditBalance(0, "1"), 0);
+  assert.equal(projectedCreditBalance(1, "2"), 0);
   assert.equal(projectedCreditBalance(0, "3"), 0);
 });
 
@@ -176,19 +176,19 @@ test("projected balances stay unknown for invalid balances", () => {
 test("credit summaries expose cost, balances, and insufficiency from one state object", () => {
   assert.equal(typeof creditSummaryFor, "function", "expected creditSummaryFor to be exported");
   assert.deepEqual(creditSummaryFor(15, "2"), {
-    cost: 10,
+    cost: 2,
     currentBalance: 15,
-    projectedBalance: 5,
+    projectedBalance: 13,
     insufficient: false
   });
-  assert.deepEqual(creditSummaryFor(4, "1"), {
-    cost: 5,
-    currentBalance: 4,
+  assert.deepEqual(creditSummaryFor(0, "1"), {
+    cost: 1,
+    currentBalance: 0,
     projectedBalance: 0,
     insufficient: true
   });
   assert.deepEqual(creditSummaryFor(null, "3"), {
-    cost: 15,
+    cost: 3,
     currentBalance: null,
     projectedBalance: null,
     insufficient: false
@@ -250,25 +250,25 @@ test("credit summary controller renders live balances and removes its listeners"
   assert.equal(fetchCalls.length, 1);
   assert.equal(fetchCalls[0].url, "/api/credits/balance");
   assert.equal(fetchCalls[0].init?.credentials, "same-origin");
-  assert.equal(costElement.textContent, "5 credits");
-  assert.equal(currentBalanceElement.textContent, "10 credits");
+  assert.equal(costElement.textContent, "1 credit");
+  assert.equal(currentBalanceElement.textContent, "14 credits");
   assert.equal(container.classList.contains("is-insufficient"), false);
 
   quantityControl.value = "2";
   quantityControl.dispatchEvent(new Event("change"));
-  assert.equal(costElement.textContent, "10 credits");
-  assert.equal(currentBalanceElement.textContent, "5 credits");
+  assert.equal(costElement.textContent, "2 credits");
+  assert.equal(currentBalanceElement.textContent, "13 credits");
 
-  eventTarget.dispatchEvent(creditsUpdatedEvent(8));
-  assert.equal(currentBalanceElement.textContent, "8 credits");
+  eventTarget.dispatchEvent(creditsUpdatedEvent(1));
+  assert.equal(currentBalanceElement.textContent, "1 credit");
   assert.equal(container.classList.contains("is-insufficient"), true);
 
   controller.destroy();
   quantityControl.value = "3";
   quantityControl.dispatchEvent(new Event("change"));
   eventTarget.dispatchEvent(creditsUpdatedEvent(50));
-  assert.equal(costElement.textContent, "10 credits");
-  assert.equal(currentBalanceElement.textContent, "8 credits");
+  assert.equal(costElement.textContent, "2 credits");
+  assert.equal(currentBalanceElement.textContent, "1 credit");
   assert.equal(container.classList.contains("is-insufficient"), true);
 });
 
@@ -288,11 +288,11 @@ test("credit summary controller reports each rendered state", () => {
   });
 
   assert.deepEqual(summaries.at(-1), { ...creditSummaryFor(null, "1"), displayBalance: null, isPreview: true });
-  eventTarget.dispatchEvent(creditsUpdatedEvent(8));
-  assert.deepEqual(summaries.at(-1), { ...creditSummaryFor(8, "1"), displayBalance: 8, isPreview: false });
+  eventTarget.dispatchEvent(creditsUpdatedEvent(1));
+  assert.deepEqual(summaries.at(-1), { ...creditSummaryFor(1, "1"), displayBalance: 1, isPreview: false });
   quantityControl.value = "2";
   quantityControl.dispatchEvent(new Event("change"));
-  assert.deepEqual(summaries.at(-1), { ...creditSummaryFor(8, "2"), displayBalance: 0, isPreview: true });
+  assert.deepEqual(summaries.at(-1), { ...creditSummaryFor(1, "2"), displayBalance: 0, isPreview: true });
   assert.equal(summaries.at(-1).insufficient, true);
 
   controller.destroy();
@@ -349,10 +349,11 @@ test("credit summary controller reloads the balance after authentication changes
   assert.equal(currentBalanceElement.textContent, "— credits");
 
   eventTarget.dispatchEvent(new Event("seedance:auth-changed"));
+  await new Promise((resolve) => setImmediate(resolve));
   assert.equal(fetchCalls, 2, "authentication should trigger a fresh balance request");
   resolveAuthenticatedBalance(Response.json({ credits: { remaining: 15 } }));
   await new Promise((resolve) => setImmediate(resolve));
-  assert.equal(currentBalanceElement.textContent, "10 credits");
+  assert.equal(currentBalanceElement.textContent, "14 credits");
 
   controller.destroy();
 });
@@ -374,17 +375,19 @@ test("credit summary controller rejects stale loads and aborts loads on destroy"
   });
 
   const staleLoad = controller.loadBalance();
+  await new Promise((resolve) => setImmediate(resolve));
   assert.equal(requests[0].init.signal.aborted, false);
-  eventTarget.dispatchEvent(creditsUpdatedEvent(8));
+  eventTarget.dispatchEvent(creditsUpdatedEvent(1));
   requests[0].resolve(Response.json({ credits: { remaining: 50 } }));
   await staleLoad;
-  assert.equal(currentBalanceElement.textContent, "8 credits", "a stale load must not replace a newer event");
+  assert.equal(currentBalanceElement.textContent, "1 credit", "a stale load must not replace a newer event");
 
   const destroyedLoad = controller.loadBalance();
+  await new Promise((resolve) => setImmediate(resolve));
   const destroyedRequest = requests[1];
   controller.destroy();
   assert.equal(destroyedRequest.init.signal.aborted, true, "destroy should abort the active balance request");
   destroyedRequest.resolve(Response.json({ credits: { remaining: 99 } }));
   await destroyedLoad;
-  assert.equal(currentBalanceElement.textContent, "8 credits", "a destroyed controller must ignore late responses");
+  assert.equal(currentBalanceElement.textContent, "1 credit", "a destroyed controller must ignore late responses");
 });

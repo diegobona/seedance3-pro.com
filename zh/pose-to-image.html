@@ -25,10 +25,10 @@
   <meta name="twitter:image" content="https://seedance3-pro.com/assets/pose-reference-demo-poster.webp?v=3">
   <meta name="twitter:image:alt" content="A five-object Pose Studio scene beside a countryside AI visualization">
   <meta name="theme-color" content="#090a0c">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
-  <link rel="stylesheet" href="/site.css">
-  <link rel="stylesheet" href="/pose-to-image.css">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=20261024-blue-brand">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png?v=20261024-blue-brand">
+  <link rel="stylesheet" href="/site.css?v=20261024-blue-brand">
+  <link rel="stylesheet" href="/pose-to-image.css?v=20261024-blue-brand">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -138,26 +138,33 @@
   <link rel="alternate" hreflang="en" href="https://seedance3-pro.com/pose-to-image">
   <link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/pose-to-image">
   <link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/pose-to-image">
-  <link rel="stylesheet" href="/assets/site-language.css">
+  <link rel="stylesheet" href="/assets/site-language.css?v=20261024-blue-brand">
   <script src="/assets/site-language.js" defer></script>
   <meta property="og:locale" content="zh_CN">
   <meta property="og:locale:alternate" content="en_US">
-  <link rel="stylesheet" href="/assets/site-navigation.css">
+  <link rel="stylesheet" href="/assets/site-navigation.css?v=20261024-blue-brand">
   <script src="/assets/site-navigation.js" defer></script>
+  <script type="module" src="/assets/site-account.mjs?v=20261020-purchase"></script>
+  <link rel="stylesheet" href="/assets/site-trust.css?v=20261024-blue-brand">
+  <link data-site-typography rel="preload" href="/assets/fonts/source-serif-4-roman.woff2" as="font" type="font/woff2" crossorigin>
+  <link data-site-typography rel="stylesheet" href="/assets/fonts/noto-serif-sc.css?v=20261024-editorial">
+  <link data-site-typography rel="stylesheet" href="/assets/site-typography.css?v=20261024-editorial">
+  <link data-site-brand rel="stylesheet" href="/assets/site-brand.css?v=20261024-blue-brand">
 </head>
 <body class="pose-page">
   <a class="pose-skip-link" href="#main-content">跳转到正文</a>
   <header class="site-header" data-site-header>
     <div class="container inner">
-      <a class="brand" href="/zh/" aria-label="SEEDANCE 3.0 首页"><img class="brand-mark" src="/assets/seedance-mark.svg" width="40" height="40" alt=""><span>SEEDANCE 3.0</span></a>
-      <nav class="desktop-nav compact-nav" aria-label="主导航"><a href="/zh/app/video/minimax-h3">AI Video</a><a href="/zh/app/image/gpt-image-2-5-1k">AI Image</a><a class="home-extra-nav" href="/zh/seedance-3-0-release-date">发布时间</a><a class="home-extra-nav" href="/zh/showcase">作品展示</a><a class="home-extra-nav" href="/zh/blog">博客</a></nav>
+      <a class="brand" href="/zh/" aria-label="SEEDANCE 3.0 首页"><img class="brand-mark" src="/assets/seedance-mark.svg?v=20261024-blue-brand" width="40" height="40" alt=""><span>SEEDANCE 3.0</span></a>
+      <nav class="desktop-nav compact-nav" aria-label="主导航"><a href="/zh/app/video/seedance-2-5">AI Video</a><a href="/zh/app/image/gpt-image-2-5-1k">AI Image</a><a class="home-extra-nav" href="/zh/pricing">价格</a><a class="home-extra-nav" href="/zh/seedance-3-0-release-date">发布时间</a><a class="home-extra-nav" href="/zh/showcase">作品展示</a><a class="home-extra-nav" href="/zh/blog">博客</a></nav>
       <div class="header-actions">
         <nav class="site-language-switch" data-site-language-switch aria-label="网站语言"><a href="/zh/pose-to-image?lang=zh" data-language="zh" lang="zh-Hans" aria-current="true">中文</a><span aria-hidden="true">|</span><a href="/pose-to-image?lang=en" data-language="en" lang="en">EN</a></nav>
         <a class="button small" href="/zh/#create">免费试用</a>
+        <div class="site-account" data-site-account><a class="site-account-login" data-account-login href="/zh/app?auth=login">登录</a></div>
         <button class="menu-button" type="button" aria-label="打开导航" aria-controls="mobile-navigation" aria-expanded="false">☰</button>
       </div>
     </div>
-    <nav class="mobile-nav" id="mobile-navigation" aria-label="移动端导航"><a href="/zh/app/video/minimax-h3">AI Video</a><a href="/zh/app/image/gpt-image-2-5-1k">AI Image</a><a class="home-extra-nav" href="/zh/seedance-3-0-release-date">发布时间</a><a class="home-extra-nav" href="/zh/showcase">作品展示</a><a class="home-extra-nav" href="/zh/blog">博客</a></nav>
+    <nav class="mobile-nav" id="mobile-navigation" aria-label="移动端导航"><a href="/zh/app/video/seedance-2-5">AI Video</a><a href="/zh/app/image/gpt-image-2-5-1k">AI Image</a><a class="home-extra-nav" href="/zh/pricing">价格</a><a class="home-extra-nav" href="/zh/seedance-3-0-release-date">发布时间</a><a class="home-extra-nav" href="/zh/showcase">作品展示</a><a class="home-extra-nav" href="/zh/blog">博客</a></nav>
   </header>
 
   <main id="main-content" tabindex="-1">
@@ -192,7 +199,7 @@
     <section class="pose-section" id="workflow" aria-labelledby="workflow-title">
       <div class="container">
         <div class="pose-section-heading">
-          <div><p class="eyebrow">从姿势到图像</p><h2 id="workflow-title">如何将 3D 姿势<br>变成 AI 图像。</h2></div>
+          <div><p class="eyebrow">从姿势到图像</p><h2 id="workflow-title">如何将 3D 姿势变成 AI 图像。</h2></div>
           <p>姿势参考为图像模型提供身体和构图的视觉指引。提示词则补充人物、环境与风格。</p>
         </div>
         <ol class="pose-workflow">
@@ -205,7 +212,7 @@
 
     <section class="pose-section pose-examples" id="examples" aria-labelledby="examples-title">
       <div class="container">
-        <div class="pose-section-heading"><div><p class="eyebrow">原创案例</p><h2 id="examples-title">姿势参考<br>与 AI 图像结果。</h2></div><p>对比摆好的场景和生成图像，探索镜头角度、身体位置与构图如何影响结果。</p></div>
+        <div class="pose-section-heading"><div><p class="eyebrow">原创案例</p><h2 id="examples-title">姿势参考与 AI 图像结果。</h2></div><p>对比摆好的场景和生成图像，探索镜头角度、身体位置与构图如何影响结果。</p></div>
         <div class="pose-example-grid">
           <a class="pose-example-card" href="/zh/pose-reference-camera-angle-examples#crossed-arms"><div class="pose-example-images"><img src="/media/pose-cases/2026-09-22/references/ca-01.png" width="1834" height="1300" loading="lazy" decoding="async" alt="正面视角下抱臂人偶的参考图"><img src="/media/pose-cases/2026-09-22/outputs/crossed-arms-front.png" width="1254" height="1254" loading="lazy" decoding="async" alt="首次生成的抱臂图像"></div><span class="pose-example-labels"><span>参考素材</span><span>首次输出</span></span><h3>抱臂</h3><p>比较正面与低机位视角 <span aria-hidden="true">→</span></p></a>
           <a class="pose-example-card" href="/zh/pose-reference-camera-angle-examples#kneeling"><div class="pose-example-images"><img src="/media/pose-cases/2026-09-22/references/kn-02.png" width="1834" height="1300" loading="lazy" decoding="async" alt="俯视角度的跪姿人偶参考图"><img src="/media/pose-cases/2026-09-22/outputs/kneeling-high.png" width="1254" height="1254" loading="lazy" decoding="async" alt="首次生成的俯视跪姿图像"></div><span class="pose-example-labels"><span>参考素材</span><span>首次输出</span></span><h3>跪姿</h3><p>比较斜侧面与高机位视角 <span aria-hidden="true">→</span></p></a>
@@ -236,7 +243,7 @@
       <div class="container pose-expectations">
         <div class="pose-expectations-copy">
           <p class="eyebrow">实用的起点</p>
-          <h2 id="expectations-title">引导姿势。<br>检查结果。</h2>
+          <h2 id="expectations-title">引导姿势。检查结果。</h2>
           <p>人偶场景截图是视觉参考。图像模型会结合提示词理解它，因此结果的身体结构、姿势、镜头角度或位置可能有所差异。</p>
           <p>从清楚的轮廓与四肢布局开始。每次生成后检查手、重叠肢体和身体比例。无法保证姿势完全匹配或身份保持一致。</p>
         </div>
@@ -252,14 +259,14 @@
 
     <section class="pose-section pose-faq-section" id="faq" aria-labelledby="faq-title">
       <div class="container pose-faq-layout">
-        <div><p class="eyebrow">AI 姿势生成器常见问题</p><h2 id="faq-title">摆好第一个<br>姿势之前。</h2></div>
+        <div><p class="eyebrow">AI 姿势生成器常见问题</p><h2 id="faq-title">摆好第一个姿势之前。</h2></div>
         <div class="faq pose-faq">
           <details><summary>这个 AI 姿势生成器能做什么？</summary><p>Seedance 将手动 3D 姿势编辑器与参考引导图像生成结合起来。你先调整人偶与镜头，再在图像工作区附加截图并描述目标图像，模型会根据参考进行生成。</p></details>
           <details><summary>可以只用姿势编辑器而不生成图像吗？</summary><p>可以。打开编辑器、调整人偶与镜头、准备参考图即可，无需提交生成请求。图像生成是独立操作，需要登录和足够积分。</p></details>
           <details><summary>可以同时摆放多个角色吗？</summary><p>可以。将人物和动物加入同一个场景，选择各自调整姿势，并在周围安排道具。截取整个构图作为共同参考。浏览 <a href="/zh/showcase#pose">可编辑姿势场景</a> ，选择起点。</p></details>
           <details><summary>图像会完全匹配姿势吗？</summary><p>无法保证完全匹配。参考会引导身体姿势和镜头构图，但模型可能重新理解身体结构、重叠和位置。人偶也无法确定人物身份。输出偏离目标时，继续优化参考与提示词。</p></details>
           <details><summary>编辑器能导出 OpenPose 数据吗？</summary><p>不能。这套流程截取的是 3D 场景的渲染图像，不提供 OpenPose 骨架、关键点文件或 ControlNet 姿势图导出。</p></details>
-          <details><summary>可以把生成图像变成视频吗？</summary><p>可以。根据姿势场景生成图像，再使用结果上的视频操作，将图像送入 <a href="/zh/app/video/minimax-h3">图生视频工作区</a> 作为参考。生成视频前描述想要的动作与运镜。</p></details>
+          <details><summary>可以把生成图像变成视频吗？</summary><p>可以。根据姿势场景生成图像，再使用结果上的视频操作，将图像送入 <a href="/zh/app/video/seedance-2-5">图生视频工作区</a> 作为参考。生成视频前描述想要的动作与运镜。</p></details>
         </div>
       </div>
     </section>
@@ -295,7 +302,12 @@
       <nav aria-label="页脚导航"><a href="/zh/">首页</a><a href="/zh/blog">博客</a></nav>
       <nav class="site-language-switch" data-site-language-switch data-language-footer aria-label="网站语言"><a href="/zh/pose-to-image?lang=zh" data-language="zh" lang="zh-Hans" aria-current="true">中文</a><span aria-hidden="true">|</span><a href="/pose-to-image?lang=en" data-language="en" lang="en">EN</a></nav>
     </div>
-  <nav class="container footer-model-links" aria-label="模型指南"><a data-flux-guide-link href="/zh/app/video/flux-3">FLUX 3</a></nav>
+  <!-- SITE_TRUST_START -->
+<div class="trust-footer" data-site-trust>
+  <div class="trust-operator"><span>运营者: ColdStone Technology Co., Ltd.</span><a href="mailto:zw83716@gmail.com">zw83716@gmail.com</a></div>
+  <nav aria-label="服务与政策"><a href="/zh/about">关于与联系</a><a href="/zh/refund-policy">退款政策</a><a href="/zh/privacy">隐私政策</a><a href="/zh/terms">服务条款</a></nav>
+</div>
+<!-- SITE_TRUST_END -->
 </footer>
   <!-- Date maintenance: edit the page Article/WebPage dateModified once; the visible date reads it below. -->
   <script id="related-content-date-display">

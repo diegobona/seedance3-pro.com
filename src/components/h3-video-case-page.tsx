@@ -34,16 +34,16 @@ export function H3VideoCaseIndex() {
     <main className="video-case-site">
       <SiteHeader />
       <div className="video-case-container">
-        <nav className="video-case-breadcrumbs" aria-label={t("Breadcrumb")}><a href={path("/")}>{t("Home")}</a><span aria-hidden="true">/</span><a href={path("/showcase")}>{t("Showcase")}</a><span aria-hidden="true">/</span><span>{t("MiniMax H3 Prompt Library")}</span></nav>
+        <nav className="video-case-breadcrumbs" aria-label={t("Breadcrumb")}><a href={path("/")}>{t("Home")}</a><span aria-hidden="true">/</span><a href={path("/showcase")}>{t("Showcase")}</a><span aria-hidden="true">/</span><span>{t("Seedance 2.5 Prompt Library")}</span></nav>
         <section className="video-case-index-intro">
           <p className="video-case-eyebrow">{t("Original video examples")}</p>
-          <h1>{t("MiniMax H3 Prompt Library")}</h1>
+          <h1>{t("Seedance 2.5 Prompt Library")}</h1>
           <p>{t("Original scenes generated for this site. Watch each finished video, read the prompt used to create it, and explore the creative direction behind the shot.")}</p>
         </section>
         <div className="video-case-index-grid">
           {h3VideoCases.map((videoCase) => <CaseCard key={videoCase.slug} videoCase={videoCase} />)}
         </div>
-        <div className="video-case-index-next"><span>{t("Have a scene of your own?")}</span><a href={path("/app/video/minimax-h3")}>{t("Open the H3 video tool ↗")}</a></div>
+        <div className="video-case-index-next"><span>{t("Have a scene of your own?")}</span><a href={path("/app/video/seedance-2-5")}>{t("Open the Seedance 2.5 video tool ↗")}</a></div>
       </div>
     </main>
   )
@@ -69,7 +69,7 @@ export function H3VideoCaseDetail({ videoCase }: { videoCase: H3VideoCase }) {
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') window.location.assign(path('/minimax-h3-prompts'))
+      if (event.key === 'Escape') window.location.assign(path('/seedance-2-5-prompts'))
     }
     document.addEventListener('keydown', closeOnEscape)
     return () => document.removeEventListener('keydown', closeOnEscape)
@@ -87,13 +87,13 @@ export function H3VideoCaseDetail({ videoCase }: { videoCase: H3VideoCase }) {
   return (
     <main className="video-case-modal-stage">
       <div className="video-case-modal-backdrop" aria-hidden="true">
-        <div className="video-case-backdrop-brand">{t("SEEDANCE 3.0 ")}<span>{t("MiniMax H3 Prompt Library")}</span></div>
+        <div className="video-case-backdrop-brand">{t("SEEDANCE 3.0 ")}<span>{t("Seedance 2.5 Prompt Library")}</span></div>
         <div className="video-case-backdrop-grid">{h3VideoCases.map((entry) => <img key={entry.slug} src={entry.posterUrl} alt="" />)}</div>
       </div>
       <article className="video-case-modal" role="dialog" aria-modal="true" aria-labelledby="video-case-title">
         <SiteLanguageSwitch />
-        <a className="video-case-close" href={path("/minimax-h3-prompts")} aria-label={t("Close case and return to video library")}>×</a>
-        <nav className="video-case-breadcrumbs" aria-label={t("Breadcrumb")}><a href={path("/")}>{t("Home")}</a><span aria-hidden="true">/</span><a href={path("/showcase")}>{t("Showcase")}</a><span aria-hidden="true">/</span><a href={path("/minimax-h3-prompts")} target="_blank" rel="noopener noreferrer">{t("MiniMax H3 Prompt Library")}</a></nav>
+        <a className="video-case-close" href={path("/seedance-2-5-prompts")} aria-label={t("Close case and return to video library")}>×</a>
+        <nav className="video-case-breadcrumbs" aria-label={t("Breadcrumb")}><a href={path("/")}>{t("Home")}</a><span aria-hidden="true">/</span><a href={path("/showcase")}>{t("Showcase")}</a><span aria-hidden="true">/</span><a href={path("/seedance-2-5-prompts")} target="_blank" rel="noopener noreferrer">{t("Seedance 2.5 Prompt Library")}</a></nav>
         <h1 id="video-case-title">{t(videoCase.title)}</h1>
         <div className="video-case-modal-top">
           <div className={'video-case-player' + (videoCase.aspectRatio === '9:16' ? ' is-portrait' : '')}>
@@ -104,12 +104,12 @@ export function H3VideoCaseDetail({ videoCase }: { videoCase: H3VideoCase }) {
             <p className="video-case-facts-heading">{t("Original video")}</p>
             <dl>
               <div><dt>{t("Created")}</dt><dd>{t("September 25, 2026")}</dd></div>
-              <div><dt>{t("Model")}</dt><dd>{t("MiniMax H3")}</dd></div>
+              <div><dt>{t("Model")}</dt><dd>{t("Seedance 2.5")}</dd></div>
               <div><dt>{t("Duration")}</dt><dd>{t("5 seconds")}</dd></div>
               <div><dt>{t("Format")}</dt><dd>{videoCase.aspectRatio}</dd></div>
             </dl>
             <p>{t("Watch the finished scene, then use the exact text prompt as a starting point for your own variation.")}</p>
-            <a href={path(h3VideoCaseTryUrl(videoCase))}>{t("Open H3 Video ↗")}</a>
+            <a href={path(h3VideoCaseTryUrl(videoCase))}>{t("Open Seedance 2.5 Video ↗")}</a>
           </aside>
         </div>
         <p className="video-case-summary">{t(videoCase.summary)}</p>
@@ -126,7 +126,7 @@ export function H3VideoCaseDetail({ videoCase }: { videoCase: H3VideoCase }) {
           <p>{t(videoCase.creativeNote)}</p>
         </section>
         <section className="video-case-related" aria-labelledby="related-video-cases">
-          <div className="video-case-related-heading"><h2 id="related-video-cases">{t("More original video prompts")}</h2><a href={path("/minimax-h3-prompts")} target="_blank" rel="noopener noreferrer">{t("MiniMax H3 Prompt Library ↗")}</a></div>
+          <div className="video-case-related-heading"><h2 id="related-video-cases">{t("More original video prompts")}</h2><a href={path("/seedance-2-5-prompts")} target="_blank" rel="noopener noreferrer">{t("Seedance 2.5 Prompt Library ↗")}</a></div>
           <div className="video-case-related-grid">{related.map((entry) => <CaseCard key={entry.slug} videoCase={entry} />)}</div>
         </section>
       </article>

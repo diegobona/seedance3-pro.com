@@ -8,6 +8,17 @@ const config = await import('../app/image-models.mjs').catch(() => null);
 const model = 'gpt-image-2-5-1k';
 const env = { TUZI_API_KEY: 'fixture-key', IMAGE_RATE_LIMITER: { limit: async () => ({ success: true }) } };
 
+test('new browser image requests default to GPT Image 2.5 with matching model and dimensions', async () => {
+  let sent;
+  await requestImageGeneration({ prompt: 'A ceramic rabbit', fetchImpl: async (_url, init) => {
+    sent = init;
+    return Response.json({ success: true, image: { url: 'https://cdn.example/new.png' } });
+  } });
+  assert.equal(sent.headers['x-seedance-image-model'], model);
+  assert.equal(sent.body.get('model'), model);
+  assert.equal(sent.body.get('size'), '1254x1254');
+});
+
 function request({ selected = model, header = selected, size = '1254x1254', quantity = '1', references = [], duplicate = false } = {}) {
   const form = new FormData();
   form.set('prompt', 'A ceramic rabbit on a green table');
@@ -25,13 +36,13 @@ function request({ selected = model, header = selected, size = '1254x1254', quan
 test('shared image model configuration preserves GPT Image 2 and Tuzi 2.5 fixed sizes and costs', () => {
   assert.ok(config, 'shared model configuration exists');
   assert.equal(config.getImageModel(model).providerModel, 'gpt-image-2.5-1k');
-  assert.equal(config.getImageModel(model).creditCost, 5);
+  assert.equal(config.getImageModel(model).creditCost, 1);
   assert.equal(config.getImageModel('arbitrary-provider-model'), null);
   assert.equal(sizeForAspectRatio('1:1'), '1024x1024');
   assert.equal(sizeForAspectRatio('1:1', model), '1254x1254');
   assert.equal(sizeForAspectRatio('16:9', model), '1672x941');
   assert.equal(sizeForAspectRatio('9:21', model), '821x1915');
-  assert.equal(creditCostForQuantity(3, model), 15);
+  assert.equal(creditCostForQuantity(3, model), 3);
 });
 
 test('Tuzi 2.5 text generation uses the exact allowlisted provider alias and its square size', async () => {
@@ -113,14 +124,15 @@ test('the client carries the selected model in both body and billing header', as
   } });
 });
 
-test('Tuzi 2.5 refuses more than four references while GPT Image 2 keeps its previous limit', async () => {
+test('both image models reject more than sixteen references before provider work', async () => {
   const file = new Blob([new Uint8Array([137, 80, 78, 71, 0, 255])], { type: 'image/png' });
   let calls = 0;
   const fetchImpl = async () => { calls += 1; return Response.json({ data: [{ url: 'https://cdn.example/edited.png' }] }); };
-  const response = await handleImageGenerationRequest(request({ references: [file, file, file, file, file] }), env, { fetchImpl });
-  assert.equal(response.status, 400);
-  assert.equal(calls, 0);
-  const oldResponse = await handleImageGenerationRequest(request({ selected: 'gpt-image-2', size: '1024x1024', references: [file, file, file, file, file] }), env, { fetchImpl });
-  assert.equal(oldResponse.status, 200);
-  assert.equal(calls, 1);
+  for (const selected of [model, 'gpt-image-2']) {
+    const response = await handleImageGenerationRequest(request({ selected,
+      size: selected === model ? '1254x1254' : '1024x1024', references: Array(17).fill(file),
+    }), env, { fetchImpl });
+    assert.equal(response.status, 400);
+    assert.equal(calls, 0);
+  }
 });

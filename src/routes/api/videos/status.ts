@@ -7,6 +7,7 @@ import { createVideoGenerationTaskStore } from '../../../db/video-generation-tas
 import { createTrackedVideoTaskStore, createVideoTaskActivity } from '../../../lib/video-task-activity'
 import { createAuth } from '../../../lib/auth'
 import { createGuestVideoTrialStore } from '../../../db/guest-video-trials'
+import { readGuestVideoResourceOwner } from '../../../lib/guest-resource-ownership'
 import { resolveGuestVideoTrial } from '../../../lib/guest-video-trial'
 import {
   protectVideoGenerationPoll,
@@ -94,6 +95,12 @@ export const Route = createFileRoute('/api/videos/status')({
               return { user: { id: session.user.id } }
             }
             // Logging in while a guest task runs must not strand that result.
+            if (session?.user?.id) {
+              const guestOwner = await readGuestVideoResourceOwner(sessionRequest, session.user.id, {
+                secret: env.BETTER_AUTH_SECRET, store: createGuestVideoTrialStore(db),
+              })
+              return guestOwner ? { user: { id: guestOwner, isGuest: true } } : { user: { id: session.user.id } }
+            }
             const guest = await resolveGuestVideoTrial(sessionRequest, {
               secret: env.BETTER_AUTH_SECRET, store: createGuestVideoTrialStore(db),
             })

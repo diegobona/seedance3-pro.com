@@ -11,5 +11,5 @@ export const Route = createFileRoute('/prompt-guide')({
     ],
     links: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
   }, "/prompt-guide", 'en')),
-  component: () => <ComingSoonPage kind="Prompt guide" title="A practical prompt guide is on its way." description="We are building a guide for directing video scenes, refining images, and working from pose references. Each section will be based on workflows you can actually try here." primaryHref="/app/video/minimax-h3" primaryLabel="Try the H3 video tool" />,
+  component: () => <ComingSoonPage kind="Prompt guide" title="A practical prompt guide is on its way." description="We are building a guide for directing video scenes, refining images, and working from pose references. Each section will be based on workflows you can actually try here." primaryHref="/app/video/seedance-2-5" primaryLabel="Try the Seedance 2.5 video tool" />,
 })

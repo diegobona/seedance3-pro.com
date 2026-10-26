@@ -113,14 +113,14 @@ export function createReferralVisitStore(db: AppDatabase, source: ReferralSource
           ) AS "last30_visits"
         FROM "referral_visit"
         WHERE "source" = ${source}
-          AND "entry_path" = '/app/image/gpt-image-2'
+          AND "entry_path" IN ('/app/image/gpt-image-2', '/app/image/gpt-image-2-5-1k')
       `)
       const daily = await db.execute<DailyRow>(sql`
         SELECT TO_CHAR("created_at" AT TIME ZONE 'Asia/Shanghai', 'YYYY-MM-DD') AS "date",
           COUNT(DISTINCT "visitor_id") AS "visitors", COUNT(*) AS "visits"
         FROM "referral_visit"
         WHERE "source" = ${source}
-          AND "entry_path" = '/app/image/gpt-image-2'
+          AND "entry_path" IN ('/app/image/gpt-image-2', '/app/image/gpt-image-2-5-1k')
           AND "created_at" >= ${last30Start}::timestamptz
           AND "created_at" < ${tomorrowStart}::timestamptz
         GROUP BY TO_CHAR("created_at" AT TIME ZONE 'Asia/Shanghai', 'YYYY-MM-DD')

@@ -11,7 +11,7 @@ import { createD1VideoGenerationTaskStore } from './d1-video-generation-tasks'
 import { user, videoGenerationTask } from './schema'
 import { availableDailyCredits, creditDay, creditRefundAccount, effectiveCreditBalance, reservationRefundFields } from './daily-credit-sql'
 import { getCurrentCreditBalance } from './generation-credits'
-import { DAILY_FREE_CREDIT_GRANT } from '../lib/generation-credits'
+import { CreditPolicyError, type CreditReservationOptions, DAILY_FREE_CREDIT_GRANT } from '../lib/generation-credits'
 
 const TERMINAL_STATUSES = new Set<VideoGenerationTaskStatus>([
   'submission_unknown',
@@ -150,10 +150,11 @@ async function updatePollState(
   return (await taskAndBalance(db, localTaskId)).task
 }
 
-export function createVideoGenerationTaskStore(db: AppDatabase): VideoGenerationTaskStore {
-  if (isD1Database(db)) return createD1VideoGenerationTaskStore(db)
+export function createVideoGenerationTaskStore(db: AppDatabase, networkKey?: string): VideoGenerationTaskStore {
+  if (isD1Database(db)) return createD1VideoGenerationTaskStore(db, networkKey)
   return {
-    async reserveAndCreate(userId: string, credits: number, metadata: VideoTaskMetadata, localTaskId = crypto.randomUUID()) {
+    async reserveAndCreate(userId: string, credits: number, metadata: VideoTaskMetadata, localTaskId = crypto.randomUUID(), options?: CreditReservationOptions) {
+      if (options) throw new CreditPolicyError('CREDIT_BACKEND_UNSUPPORTED')
       if (!Number.isSafeInteger(credits) || credits <= 0) {
         throw new Error('Credit reservation amount must be a positive integer.')
       }

@@ -1,10 +1,10 @@
 import { t } from './i18n.mjs';
 
-// Match the provider's native 480P sizes, including its slightly wider 16:9 frame.
+// Prepare full, uncropped references at the selected 768P output tier.
 const FRAMES = Object.freeze({
-  '16:9': { width: 864, height: 480 },
-  '9:16': { width: 480, height: 864 },
-  '1:1': { width: 480, height: 480 },
+  '16:9': { width: 1344, height: 768 },
+  '9:16': { width: 768, height: 1344 },
+  '1:1': { width: 768, height: 768 },
 });
 
 export function videoReferenceFrameSize(aspectRatio) {

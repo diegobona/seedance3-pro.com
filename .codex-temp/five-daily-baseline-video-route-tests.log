@@ -1,0 +1,102 @@
+Baseline check: loading the previous 10-credit policy in memory.
+✔ guests may reserve five seconds and keep the other five seconds (12.709ms)
+✔ guests cannot submit fifteen seconds or resolutions other than 768p (0.9957ms)
+✔ an exhausted guest is prompted to register without submitting to the provider (0.4214ms)
+✖ reference generation records the correct workflow while keeping duration-based credits (2.6858ms)
+✔ trusted selection persists CompShare and submits the actual reservation ID and workflow (0.6227ms)
+✔ trusted resolver rejects unavailable credentials before reserving; client workflow fields are rejected (1.461ms)
+✔ start authenticates before validation, credits, or provider work (0.2097ms)
+✔ start returns preflight failures without charging or submitting (0.1635ms)
+✖ start reserves one credit per second without persisting the prompt, then submits and attaches once (1.2556ms)
+✔ start returns insufficient credits without submitting (0.3284ms)
+✔ start converts database failures to a safe service response (0.269ms)
+✔ definite submit failure terminalizes as failed and refunds (0.2441ms)
+✔ ambiguous submit failure is not retried and terminalizes as submission_unknown (0.2052ms)
+✔ attachment retries once, then refunds as submission_unknown and returns a safe 503 (0.3659ms)
+✔ poll authenticates before task lookup or provider work (0.5699ms)
+✔ guest polling identifies guest seconds even after an account signs in (0.301ms)
+✔ poll hides tasks owned by another user (0.1587ms)
+✔ poll passes the persisted workflow only after ownership and lease checks, and never starts a task (0.318ms)
+✔ missing persisted CompShare credentials schedule retry without refund or AutoDL fallback (0.2465ms)
+✔ poll returns a cached terminal success without claiming or querying (0.2289ms)
+✔ queued provider state schedules another poll without changing credits (0.2268ms)
+✔ a terminal transition won by an overlapping poll returns the cached terminal result (0.721ms)
+✔ running provider state records running and schedules another poll without changing credits (0.5097ms)
+✔ transient query failures schedule a retry without refunding (0.2683ms)
+✔ poll converts scheduling database failures to a safe service response (0.2101ms)
+✔ explicit provider failure atomically terminalizes and refunds (0.2092ms)
+✔ usable HTTPS mp4 success atomically settles and is cached for repeated polls (0.392ms)
+✔ expired tasks never expose a late provider result (0.1725ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 26
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 236.4013
+
+✖ failing tests:
+
+test at tests\auth-video-route.test.ts:1:2261
+✖ reference generation records the correct workflow while keeping duration-based credits (2.6858ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      'user-1',
+      10,
+      {
+        aspectRatio: '16:9',
+  ...
+      },
+  +   undefined,
+  +   {
+  +     paidOnly: false,
+  +     unitCostMicros: 60000
+  +   }
+    ]
+  
+      at TestContext.<anonymous> (D:\Asideproject\! 网站、插件、APP\Seedance3\tests\auth-video-route.test.ts:56:10)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'user-1', 10, { workflowId: 'minimax_h3_image_audio_to_video_v2_15s', duration: 10, resolution: '768p', aspectRatio: '16:9' }, undefined, { unitCostMicros: 60000, paidOnly: false } ],
+    expected: [ 'user-1', 10, { workflowId: 'minimax_h3_image_audio_to_video_v2_15s', duration: 10, resolution: '768p', aspectRatio: '16:9' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests\auth-video-route.test.ts:1:7350
+✖ start reserves one credit per second without persisting the prompt, then submits and attaches once (1.2556ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      [
+        'user-1',
+        10,
+        {
+  ...
+        },
+  +     undefined,
+  +     {
+  +       paidOnly: false,
+  +       unitCostMicros: 60000
+  +     }
+      ]
+    ]
+  
+      at TestContext.<anonymous> (D:\Asideproject\! 网站、插件、APP\Seedance3\tests\auth-video-route.test.ts:202:10)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ [ 'user-1', 10, [Object], undefined, [Object] ] ],
+    expected: [ [ 'user-1', 10, [Object] ] ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

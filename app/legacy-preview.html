@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="/assets/pose-entry-visibility.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AI Creative Studio Preview | SEEDANCE 3.0</title>
-  <meta name="description" content="Preview the planned multi-model AI creative studio for MiniMax H3, SEEDANCE 3.0, and GPT Image 2.">
+  <meta name="description" content="Preview the planned multi-model AI creative studio for Seedance 2.5, SEEDANCE 3.0, and GPT Image 2.5.">
   <meta name="robots" content="noindex,follow">
   <meta name="theme-color" content="#090a0c">
   <link rel="stylesheet" href="./studio.css">
@@ -22,7 +22,7 @@
       <nav aria-label="Model navigation">
         <div class="nav-section">
           <div class="section-heading"><span>AI VIDEO</span><span>02</span></div>
-          <button class="model-button" type="button" data-model="minimax-h3" disabled><span class="model-symbol cyan">H3</span><span><strong>MiniMax H3</strong><small>Multimodal video</small></span><em class="soon">Coming Soon</em></button>
+          <button class="model-button" type="button" data-model="minimax-h3" disabled><span class="model-symbol cyan">S2.5</span><span><strong>Seedance 2.5</strong><small>Multimodal video</small></span><em class="soon">Coming Soon</em></button>
           <button class="model-button release-model" type="button" data-model="seedance-3" disabled><img src="../assets/seedance-mark.svg" width="40" height="40" alt="" style="flex-shrink:0"><span class="release-model-copy"><span class="release-title-row"><strong>SEEDANCE 3.0</strong><em class="release-status">Release Updates</em></span><small>Next-gen video</small></span></button>
         </div>
         <div class="nav-section">
@@ -42,7 +42,7 @@
             <em class="soon">Coming Soon</em>
           </button>
           <div class="section-heading image-models-heading"><span>IMAGE MODELS</span><span>01</span></div>
-          <button class="model-button is-active" type="button" data-model="gpt-image-2"><span class="model-symbol orange">G2</span><span><strong>GPT Image 2</strong><small>Generation & editing</small></span></button>
+          <button class="model-button is-active" type="button" data-model="gpt-image-2-5-1k"><span class="model-symbol orange">G2.5</span><span><strong>GPT Image 2.5</strong><small>Generation & editing</small></span></button>
         </div>
       </nav>
       <div class="sidebar-foot"><a href="../">← Back to SEEDANCE 3.0</a></div>
@@ -54,11 +54,11 @@
       </header>
 
       <div class="workspace-body">
-        <div class="workspace-title"><div><p id="model-category">AI IMAGE / GENERATE &amp; EDIT</p><h1 id="model-name">GPT Image 2</h1></div><span class="model-status" id="model-status">Image generator</span></div>
+        <div class="workspace-title"><div><p id="model-category">AI IMAGE / GENERATE &amp; EDIT</p><h1 id="model-name">GPT Image 2.5</h1></div><span class="model-status" id="model-status">Image generator</span></div>
 
         <div class="creation-grid">
           <section class="creation-panel">
-            <div class="model-select"><span class="model-symbol orange" id="selected-symbol">G2</span><div><small>Selected model</small><strong id="selected-name">GPT Image 2</strong></div></div>
+            <div class="model-select"><span class="model-symbol orange" id="selected-symbol">G2.5</span><div><small>Selected model</small><strong id="selected-name">GPT Image 2.5</strong></div></div>
 
             <div class="field-group" id="mode-group" hidden>
               <label>Create from</label>
@@ -80,7 +80,7 @@
 
             <div class="settings-grid" id="video-settings" hidden>
               <label>Duration<select id="video-duration" disabled><option value="5">5 seconds</option><option value="10">10 seconds</option><option value="15">15 seconds</option></select></label>
-              <label class="resolution-setting"><span class="resolution-heading"><span>Resolution</span><small>TRIAL · 480P ONLY</small></span><select id="video-resolution" disabled><option value="480p">480p</option></select></label>
+              <label class="resolution-setting"><span class="resolution-heading"><span>Resolution</span><small>TRIAL · 1080P</small></span><select id="video-resolution" disabled><option value="768p">1080P</option></select></label>
               <label>Aspect ratio<select id="video-aspect-ratio" disabled><option value="9:16">9:16 portrait</option><option value="16:9" selected>16:9 landscape</option><option value="1:1">1:1 square</option></select></label>
             </div>
             <div class="settings-grid image-settings" id="image-settings">
@@ -109,7 +109,7 @@
             <div class="generation-preview" id="generation-preview" tabindex="-1" role="region" aria-label="Generation preview" data-state="idle" aria-busy="false">
               <div id="preview-idle">
 
-            <section class="context-card example-carousel" id="example-carousel" data-preview-model="gpt-image-2" aria-labelledby="example-carousel-heading">
+            <section class="context-card example-carousel" id="example-carousel" hidden data-preview-model="gpt-image-2" aria-labelledby="example-carousel-heading">
               <div class="result-heading"><span id="example-carousel-heading">IMAGE PREVIEW</span><small>3 DISTINCT STYLES</small></div>
               <div class="example-carousel-viewport">
                 <figure class="example-carousel-slide" data-title="Editorial architecture" data-description="Photoreal fashion direction with strong geometry and cinematic light."><img src="/assets/gpt-image-2-editorial-fashion.webp" alt="Editorial fashion portrait inside a futuristic gallery"></figure>
@@ -131,7 +131,7 @@
                 <div class="context-card preview-placeholder" id="preview-placeholder" hidden><span class="preview-placeholder-icon" aria-hidden="true">✦</span><h2>Your result will appear here</h2><p>Describe what you want to create, then generate.</p></div>
               </div>
               <section class="context-card preview-pending" id="preview-pending" hidden><div class="result-heading"><span>Generating…</span><small id="preview-elapsed" aria-live="off"></small></div><div class="preview-placeholders" id="preview-placeholders" aria-hidden="true"></div><p id="preview-status" role="status" aria-live="polite"></p><button class="preview-action" id="preview-resume" type="button" hidden>Continue checking</button></section>
-            <div class="context-card result-card" id="result-card" hidden><div class="result-heading"><span id="result-heading-label">GENERATED IMAGES</span><small id="result-model-label">GPT Image 2</small></div><div class="result-gallery" id="result-gallery"></div><p id="result-note">Provider image links may expire. Open or download each result when it is ready.</p></div>
+            <div class="context-card result-card" id="result-card" hidden><div class="result-heading"><span id="result-heading-label">GENERATED IMAGES</span><small id="result-model-label">GPT Image 2.5</small></div><div class="result-gallery" id="result-gallery"></div><p id="result-note">Provider image links may expire. Open or download each result when it is ready.</p></div>
               <section class="context-card preview-error" id="preview-error" hidden><h2>Generation failed</h2><p id="preview-error-message" role="alert"></p><button class="preview-action" id="preview-retry" type="button">Try again</button></section>
             </div>
             <section class="generation-history" id="generation-history" hidden><h2>Previous results on this page</h2><div id="generation-history-list"></div></section>

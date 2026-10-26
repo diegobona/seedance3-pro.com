@@ -23,7 +23,7 @@ export function getGptImageCase(slug: string) {
 }
 
 export function gptImageCaseUrl(slug: string) {
-  return '/gpt-image-2-prompts/' + slug
+  return '/gpt-image-2-5-prompts/' + slug
 }
 
 export function gptImageCaseTryUrl(imageCase: GptImageCase) {
@@ -31,5 +31,5 @@ export function gptImageCaseTryUrl(imageCase: GptImageCase) {
     prompt: imageCase.prompt,
     aspect_ratio: imageCase.aspectRatio,
   })
-  return '/app/image/gpt-image-2?' + search.toString()
+  return '/app/image/gpt-image-2-5-1k?' + search.toString()
 }

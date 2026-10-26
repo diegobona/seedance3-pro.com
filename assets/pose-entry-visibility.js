@@ -79,7 +79,12 @@
       if (!incomingSource && (host === 'pixal3d.net' || host.endsWith('.pixal3d.net'))) incomingSource = 'pixal3d';
     } catch (_) {}
     var entryPath = window.location.pathname.replace(/^\/zh(?=\/|$)/, '').replace(/\/$/, '') || '/';
-    if (entryPath !== '/app/image/gpt-image-2') incomingSource = '';
+    // Keep referral history grouped under its original stable key after a public URL rename.
+    if (entryPath === '/app/image/gpt-image-2-5') entryPath = '/app/image/gpt-image-2';
+    function trackedEntryPath(path) {
+      return path === '/app/image/gpt-image-2' || path === '/app/image/gpt-image-2-5-1k';
+    }
+    if (!trackedEntryPath(entryPath)) incomingSource = '';
 
     function readCookie(name) {
       var prefix = name + '=';
@@ -113,7 +118,7 @@
     }
     // Cookie-blocking browsers are excluded so navigation cannot inflate visitors.
     if (readCookie(visitorKey) !== visitorId) return;
-    if (!visit || !uuid.test(visit.id) || visit.path !== '/app/image/gpt-image-2') {
+    if (!visit || !uuid.test(visit.id) || !trackedEntryPath(visit.path)) {
       if (!incoming) return;
       visit = { id: window.crypto.randomUUID(), path: entryPath };
     }

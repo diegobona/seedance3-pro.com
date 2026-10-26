@@ -5,31 +5,84 @@
   <script src="/assets/pose-entry-visibility.js"></script>
   <link rel="stylesheet" href="/assets/pose-entry-visibility.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Seedance 3.0 发布时间：目前已确认的信息</title>
-  <meta name="description" content="Seedance 3.0 什么时候发布？查看官方来源和带日期的发布动态，了解截至 2026 年 10 月仍待确认的上线消息。这里也整理了免费试用、订阅与 API 价格的常见问题，以及 Seedance 2.5 已公布的能力，方便你了解目前能比较哪些信息，并找到现在可用的视频、图像和姿势创作工具。">
+  <title>Seedance 3.0 发布时间：预计日期与最新动态</title>
+  <meta name="description" content="根据此前版本的发布间隔，Seedance 3.0 预计于 2027 年 1–2 月发布，具体日期仍待公布。查看发布公告、最新动态，以及现在可用的创作工具。">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
   <link rel="canonical" href="https://seedance3-pro.com/zh/seedance-3-0-release-date">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="SEEDANCE 3.0">
-  <meta property="og:title" content="Seedance 3.0 发布时间：目前已确认的信息">
-  <meta property="og:description" content="Seedance 3.0 什么时候发布？查看官方来源和带日期的发布动态，了解截至 2026 年 10 月仍待确认的上线消息。这里也整理了免费试用、订阅与 API 价格的常见问题，以及 Seedance 2.5 已公布的能力，方便你了解目前能比较哪些信息，并找到现在可用的视频、图像和姿势创作工具。">
+  <meta property="og:title" content="Seedance 3.0 发布时间：预计日期与最新动态">
+  <meta property="og:description" content="根据此前版本的发布间隔，Seedance 3.0 预计于 2027 年 1–2 月发布，具体日期仍待公布。查看发布公告、最新动态，以及现在可用的创作工具。">
   <meta property="og:url" content="https://seedance3-pro.com/zh/seedance-3-0-release-date">
   <meta property="og:image" content="https://seedance3-pro.com/og-cover.svg">
   <meta property="og:image:alt" content="Seedance 3.0 release date guide">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Seedance 3.0 发布时间：目前已确认的信息">
-  <meta name="twitter:description" content="Seedance 3.0 什么时候发布？查看官方来源和带日期的发布动态，了解截至 2026 年 10 月仍待确认的上线消息。这里也整理了免费试用、订阅与 API 价格的常见问题，以及 Seedance 2.5 已公布的能力，方便你了解目前能比较哪些信息，并找到现在可用的视频、图像和姿势创作工具。">
+  <meta name="twitter:title" content="Seedance 3.0 发布时间：预计日期与最新动态">
+  <meta name="twitter:description" content="根据此前版本的发布间隔，Seedance 3.0 预计于 2027 年 1–2 月发布，具体日期仍待公布。查看发布公告、最新动态，以及现在可用的创作工具。">
   <meta name="twitter:image" content="https://seedance3-pro.com/og-cover.svg">
   <meta name="twitter:image:alt" content="Seedance 3.0 release date guide">
   <meta name="theme-color" content="#090a0c">
-  <link rel="stylesheet" href="/site.css">
+  <link rel="stylesheet" href="/site.css?v=20261024-blue-brand">
   <style id="daily-news-layout">
     #latest-news, #release-timeline { scroll-margin-top: 110px; }
     #seedance-news a { overflow-wrap: anywhere; }
+    .release-forecast { max-width: 820px; margin-top: 24px; padding: clamp(18px, 3vw, 26px); border: 1px solid rgba(58,141,222,.35); border-left: 4px solid var(--lime); border-radius: 16px; background: linear-gradient(120deg, rgba(58,141,222,.11), rgba(58,141,222,.035)); }
+    .release-forecast p { margin: 0; color: #c8c7c2; font-size: 15px; line-height: 1.8; }
+    .release-forecast .release-forecast-label { color: var(--lime); font-size: 12px; font-weight: 750; }
+    .release-forecast .release-forecast-window { margin: 8px 0 12px; color: var(--text); font-size: clamp(22px, 3vw, 28px); line-height: 1.35; }
+    .release-forecast a { color: var(--lime); text-decoration: underline; text-underline-offset: 3px; }
+    .release-forecast a:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+    .release-forecast .release-forecast-note { margin-top: 12px; color: var(--muted); font-size: 13px; }
   </style>
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="/favicon.ico">
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+  <style id="release-page-layout">
+    .article-main { padding-top: clamp(36px, 4vw, 56px); }
+    .article-main .article-shell { width: min(100%, 1180px); }
+    .article-shell > .breadcrumbs { margin-bottom: 20px; }
+    .article-shell > .article-category { margin-bottom: 16px; }
+    .article-shell > .article-title { max-width: 1180px; }
+    .article-shell > .article-lead { max-width: 1120px; margin-top: 20px; }
+    .article-shell > .section-copy { max-width: 1120px; margin-top: 12px; }
+    .article-shell > .release-forecast { max-width: none; margin-top: 18px; padding: 18px 22px; }
+    .article-shell > .release-tools-section.article-content.prose { max-width: none; margin-top: 28px; }
+    .release-tools-section .release-tools-heading { display: grid; gap: 10px; margin: 0; padding: 0; font-family: var(--font-sans, system-ui, sans-serif); }
+    .release-tools-section .release-tools-transition { margin: 0; color: #c5d2dc; font-family: var(--font-sans, system-ui, sans-serif); font-size: clamp(18px,1.5vw,20px); font-weight: 450; line-height: 1.55; text-wrap: pretty; }
+    .release-tools-section .release-tools-heading h2 { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; min-width: 0; margin: 0; font-family: var(--font-sans, system-ui, sans-serif); font-size: clamp(28px,3vw,36px); font-weight: 750; line-height: 1.2; letter-spacing: -.035em; text-align: left; }
+    .release-tools-heading .release-model-name { white-space: nowrap; }
+    .release-tools-heading .release-value-badge { display: inline-flex; align-items: center; gap: 7px; max-width: 100%; padding: 7px 12px; border: 1px solid #e2b85b4d; border-radius: 7px; background: #e2b85b12; color: #ffe49b; font-family: var(--font-sans, system-ui, sans-serif); font-size: 14px; font-weight: 750; line-height: 1.4; letter-spacing: .035em; text-transform: uppercase; white-space: nowrap; }
+    .release-tools-section #available-tools { scroll-margin-top: 140px; }
+    .release-tools-section .release-tools-offer { display: grid; grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr); align-items: center; gap: 24px; margin: 14px 0 0; padding: 20px; border-radius: 18px; }
+    .release-tools-section .release-offer-copy { display: grid; gap: 12px; min-width: 0; }
+    .release-tools-section .release-purchase-block { padding: 16px; border: 1px solid rgba(58,141,222,.25); border-radius: 12px; background: rgba(58,141,222,.055); }
+    .release-tools-section .release-tools-title { display: flex; align-items: baseline; gap: 6px; margin: 0 0 8px; font-size: 15px; }
+    .release-tools-section .release-tools-title strong { font-size: clamp(30px,3vw,36px); line-height: 1.1; }
+    .release-tools-section .release-pack-value { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 7px; margin: 0 0 4px; color: var(--text); font-size: 14px; line-height: 1.5; }
+    .release-tools-section .release-pack-value strong { font-size: 20px; }
+    .release-tools-section .release-paid-detail { margin: 0; font-size: 12px; line-height: 1.6; }
+    .release-tools-section .release-buy-action { margin: 12px 0 0; }
+    .release-tools-section .release-trial-block { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 16px; border: 1px solid rgba(120,222,212,.45); border-radius: 12px; background: rgba(120,222,212,.075); }
+    .release-tools-section .release-trial-detail { margin: 0; font-size: 12px; line-height: 1.5; }
+    .release-tools-section .release-trial-detail strong { display: block; color: #98eee0; font-size: clamp(17px,1.6vw,20px); font-weight: 800; line-height: 1.3; }
+    .release-tools-section .release-trial-detail span { display: block; margin-top: 5px; color: #f5f3ed; font-size: 13px; font-weight: 600; }
+    .release-tools-section .release-buy-action .button, .release-tools-section .release-trial-block .button { min-height: 38px; padding: 9px 16px; font-size: 13px; text-decoration: none; white-space: nowrap; }
+    .release-tools-section .release-trial-block .button { flex-shrink: 0; border: 1px solid rgba(120,222,212,.45); background: transparent; color: var(--lime); }
+    .release-tools-section [data-checkout-error] { margin: 10px 0 0; color: #ff9a79; font-size: 13px; line-height: 1.5; }
+    .release-tools-section .release-examples-heading { margin: 0 0 10px; font-size: 13px; line-height: 1.4; }
+    .release-tools-section .release-tools-grid { gap: 12px; }
+    .release-tools-section .release-tool-example video { width: 100%; height: auto; aspect-ratio: 16/9; border-radius: 10px; }
+    .release-tools-section .release-tool-example figcaption { flex-wrap: wrap; gap: 2px 8px; margin-top: 7px; line-height: 1.4; }
+    .release-tools-section .release-tool-example figcaption strong, .release-tools-section .release-tool-example figcaption a { font-size: 11px; }
+    @media (max-width: 760px) {
+      .release-tools-section .release-tools-offer { grid-template-columns: 1fr; gap: 18px; padding: 16px; }
+      .release-tools-section .release-tools-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+    }
+    .article-shell > .article-content.prose { max-width: 1120px; margin-top: 40px; }
+    @media (max-width: 640px) {
+      .article-shell > .release-forecast { padding: 18px; }
+    }
+  </style>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=20261024-blue-brand">
+  <link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="/favicon.ico?v=20261024-blue-brand">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png?v=20261024-blue-brand">
   <!-- Date maintenance: edit Article.dateModified for editorial changes. Completed official-source checks also update the visible date, dateModified and sitemap lastmod at the edge. Keep datePublished and historical source dates intact. -->
   <script type="application/ld+json">
 {
@@ -38,10 +91,10 @@
     {
       "@type": "Article",
       "@id": "https://seedance3-pro.com/zh/seedance-3-0-release-date#article",
-      "headline": "Seedance 3.0 发布时间：目前已确认的信息",
-      "description": "Seedance 3.0 什么时候发布？查看官方来源和带日期的发布动态，了解截至 2026 年 10 月仍待确认的上线消息。这里也整理了免费试用、订阅与 API 价格的常见问题，以及 Seedance 2.5 已公布的能力，方便你了解目前能比较哪些信息，并找到现在可用的视频、图像和姿势创作工具。",
+      "headline": "Seedance 3.0 发布时间：预计日期与最新动态",
+      "description": "根据此前版本的发布间隔，Seedance 3.0 预计于 2027 年 1–2 月发布，具体日期仍待公布。查看发布公告、最新动态，以及现在可用的创作工具。",
       "datePublished": "2026-10-06",
-      "dateModified": "2026-10-17",
+      "dateModified": "2026-10-24",
       "inLanguage": "zh-Hans",
       "mainEntityOfPage": "https://seedance3-pro.com/zh/seedance-3-0-release-date",
       "image": "https://seedance3-pro.com/og-cover.svg",
@@ -68,7 +121,7 @@
           "name": "Seedance 3.0 什么时候发布？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "截至 2026 年 10 月，从本页核对的字节跳动 Seed 官方模型目录和视觉博客，还无法确认 Seedance 3.0 的发布时间。具体月份、预计发布时段和倒计时都无法确定，相关官方来源见上方时间线。"
+            "text": "根据 Seedance 2.0 与 2.5 发布公告相隔 169 天的间隔，Seedance 3.0 预计于 2027 年 1–2 月发布。这是预计时间；截至 2026 年 10 月，本页核对的字节跳动 Seed 来源尚未公布具体发布日期。"
           }
         },
         {
@@ -126,39 +179,85 @@
   <link rel="alternate" hreflang="en" href="https://seedance3-pro.com/seedance-3-0-release-date">
   <link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/seedance-3-0-release-date">
   <link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/seedance-3-0-release-date">
-  <link rel="stylesheet" href="/assets/site-language.css">
+  <link rel="stylesheet" href="/assets/site-language.css?v=20261024-blue-brand">
   <script src="/assets/site-language.js" defer></script>
   <meta property="og:locale" content="zh_CN">
   <meta property="og:locale:alternate" content="en_US">
-  <link rel="stylesheet" href="/assets/site-navigation.css">
+  <link rel="stylesheet" href="/assets/site-navigation.css?v=20261024-blue-brand">
   <script src="/assets/site-navigation.js" defer></script>
+  <script type="module" src="/assets/site-account.mjs?v=20261020-purchase"></script>
+  <link rel="stylesheet" href="/assets/site-trust.css?v=20261024-blue-brand">
+  <link data-site-typography rel="preload" href="/assets/fonts/source-serif-4-roman.woff2" as="font" type="font/woff2" crossorigin>
+  <link data-site-typography rel="stylesheet" href="/assets/fonts/noto-serif-sc.css?v=20261024-editorial">
+  <link data-site-typography rel="stylesheet" href="/assets/site-typography.css?v=20261024-editorial">
+  <link data-site-brand rel="stylesheet" href="/assets/site-brand.css?v=20261024-blue-brand">
 </head>
 <body>
   <header class="site-header" data-site-header>
     <div class="container inner">
-      <a class="brand" href="/zh/" aria-label="SEEDANCE 3.0 首页"><img class="brand-mark" src="/assets/seedance-mark.svg" width="40" height="40" alt=""><span>SEEDANCE 3.0</span></a>
-      <nav class="desktop-nav compact-nav" aria-label="主导航"><a href="/zh/app/video/minimax-h3">AI Video</a><a href="/zh/app/image/gpt-image-2-5-1k">AI Image</a><a class="home-extra-nav" href="/zh/seedance-3-0-release-date" aria-current="page">发布时间</a><a class="home-extra-nav" href="/zh/showcase">作品展示</a><a class="home-extra-nav" href="/zh/blog">博客</a></nav>
+      <a class="brand" href="/zh/" aria-label="SEEDANCE 3.0 首页"><img class="brand-mark" src="/assets/seedance-mark.svg?v=20261024-blue-brand" width="40" height="40" alt=""><span>SEEDANCE 3.0</span></a>
+      <nav class="desktop-nav compact-nav" aria-label="主导航"><a href="/zh/app/video/seedance-2-5">AI Video</a><a href="/zh/app/image/gpt-image-2-5-1k">AI Image</a><a class="home-extra-nav" href="/zh/pricing">价格</a><a class="home-extra-nav" href="/zh/seedance-3-0-release-date" aria-current="page">发布时间</a><a class="home-extra-nav" href="/zh/showcase">作品展示</a><a class="home-extra-nav" href="/zh/blog">博客</a></nav>
       <div class="header-actions">
         <nav class="site-language-switch" data-site-language-switch aria-label="网站语言"><a href="/zh/seedance-3-0-release-date?lang=zh" data-language="zh" lang="zh-Hans" aria-current="true">中文</a><span aria-hidden="true">|</span><a href="/seedance-3-0-release-date?lang=en" data-language="en" lang="en">EN</a></nav>
         <a class="button small" href="/zh/#create">免费试用</a>
+        <div class="site-account" data-site-account><a class="site-account-login" data-account-login href="/zh/app?auth=login">登录</a></div>
         <button class="menu-button" type="button" aria-label="打开导航" aria-controls="mobile-navigation" aria-expanded="false">☰</button>
       </div>
     </div>
-    <nav class="mobile-nav" id="mobile-navigation" aria-label="移动端导航"><a href="/zh/app/video/minimax-h3">AI Video</a><a href="/zh/app/image/gpt-image-2-5-1k">AI Image</a><a class="home-extra-nav" href="/zh/seedance-3-0-release-date" aria-current="page">发布时间</a><a class="home-extra-nav" href="/zh/showcase">作品展示</a><a class="home-extra-nav" href="/zh/blog">博客</a></nav>
+    <nav class="mobile-nav" id="mobile-navigation" aria-label="移动端导航"><a href="/zh/app/video/seedance-2-5">AI Video</a><a href="/zh/app/image/gpt-image-2-5-1k">AI Image</a><a class="home-extra-nav" href="/zh/pricing">价格</a><a class="home-extra-nav" href="/zh/seedance-3-0-release-date" aria-current="page">发布时间</a><a class="home-extra-nav" href="/zh/showcase">作品展示</a><a class="home-extra-nav" href="/zh/blog">博客</a></nav>
   </header>
   <main class="article-main">
     <div class="container">
       <article class="article-shell">
         <nav class="breadcrumbs" aria-label="面包屑导航"><a href="/zh/">首页</a><span aria-hidden="true">›</span><a href="/zh/blog">博客</a><span aria-hidden="true">›</span><span aria-current="page">Seedance 3.0 发布时间</span></nav>
         <p class="article-category tag lime">发布时间追踪</p>
-        <h1 class="article-title">Seedance 3.0 发布时间：目前已确认的信息</h1>
-        <!-- FACT-CHECK: Recheck the official Seed model catalog and visual blog before changing the unannounced 3.0 status. No estimated launch date is asserted. -->
-        <p class="article-lead"><strong>截至 2026 年 10 月，在本页核对的官方资料中，Seedance 3.0 的发布时间仍未得到确认。</strong> 字节跳动的模型目录目前列有 Seedance 2.5，相关公告和来源见下方时间线。</p>
-        <p class="section-copy">Last updated: <time data-release-updated datetime="2026-10-17">2026-10-17</time></p>
+        <h1 class="article-title">Seedance 3.0 发布时间：预计日期与最新动态</h1>
+        <!-- FACT-CHECK: Keep estimated timing separate from announced dates. Recheck the ByteDance Seed model catalog and visual blog before changing the 3.0 status. -->
+        <p class="article-lead"><strong>截至 2026 年 10 月，本页核对的字节跳动 Seed 模型目录和视觉博客尚未公布 Seedance 3.0 的具体发布日期。</strong> 下方预计时间根据此前版本的发布间隔推算，相关公告和来源见时间线。</p>
+        <aside class="release-forecast" aria-labelledby="release-forecast-label">
+          <p class="release-forecast-label" id="release-forecast-label">预计发布时间</p>
+          <p class="release-forecast-window"><strong>预计 2027 年 1–2 月发布</strong></p>
+          <p>Seedance 2.0 于 <a href="https://seed.bytedance.com/en/blog/seedance-2-0-official-launch" target="_blank" rel="noopener noreferrer">2026 年 2 月 12 日</a>正式发布，2.5 于 <a href="https://seed.bytedance.com/en/blog/one-take-creation-flexible-referencing-introducing-seedance-2-5" target="_blank" rel="noopener noreferrer">2026 年 7 月 31 日</a>正式发布，两次相隔 169 天，约五个半月。如果下一轮沿用这次间隔，时间会落在 2027 年 1 月前后，因此 2027 年初、包括春节前后，都是值得观察的时间窗口。</p>
+          <p class="release-forecast-note">此预计时间依据最近一次版本间隔推算，不代表固定发布周期，实际发布可能提前或推迟。</p>
+        </aside>
+        <p class="section-copy">Last updated: <time data-release-updated datetime="2026-10-24">2026-10-24</time></p>
         <p class="section-copy">查找常见问题、提示词规划与参考素材指南，请浏览 <a href="/zh/seedance-3-0">Seedance 3.0 主题资源中心</a>。</p>
-        <p class="release-trial-teaser"><a href="#available-tools">免注册、免登录，免费试用视频与图像生成 ↗</a><span>注册后每日赠送 15 积分。视频 $0.01/秒 · 图像 $0.01/张。</span></p>
+        <section class="article-content prose release-tools-section" aria-labelledby="available-tools">
+          <hgroup class="release-tools-heading">
+            <p class="release-tools-transition">Seedance 3.0 暂未开放，先用 2.5 开始创作。</p>
+            <h2 id="available-tools"><span class="release-model-name">Seedance 2.5</span><span class="release-value-badge"><span aria-hidden="true">✦</span> 全网最低价</span></h2>
+          </hgroup>
+          <div class="release-tools-offer" aria-label="Seedance 2.5 价格与视频免费体验">
+            <div class="release-offer-copy">
+              <div class="release-purchase-block" aria-label="视频积分包">
+                <p class="release-tools-title"><strong>US$0.01</strong><span>/秒</span></p>
+                <p class="release-pack-value"><strong>US$4.99</strong><span>可生成总计 500 秒视频</span></p>
+                <p class="release-paid-detail">积分永久有效，无订阅。</p>
+                <p class="release-buy-action"><a class="button primary" data-credit-pack-buy href="/zh/billing?checkout=start" target="_blank" rel="noopener noreferrer">购买 500 秒视频 ↗</a>
+<p class="purchase-assurance" data-purchase-assurance>一次性付款，无自动续费。未使用的整包购买积分可在购买后 7 天内申请退款。 <a href="/zh/refund-policy">退款条件</a> · <a href="/zh/terms">服务条款</a> · <a href="/zh/privacy">隐私政策</a> · <button type="button" class="support-email-trigger" popovertarget="purchase-support-email">联系客服</button><span id="purchase-support-email" class="support-email-popover" popover="auto" role="dialog" aria-label="客服邮箱"><strong>客服邮箱</strong><span class="support-email-address">zw83716@gmail.com</span><button type="button" class="support-email-close" popovertarget="purchase-support-email" popovertargetaction="hide" aria-label="关闭邮箱窗口" autofocus>×</button></span></p></p>
+              </div>
+              <div class="release-trial-block" aria-label="视频免费体验">
+                <p class="release-trial-detail"><strong>无需登录 · 无需注册</strong><span>免费体验 10 秒视频</span></p>
+                <a class="button secondary" href="/zh/app/video/seedance-2-5">免费试用 ↗</a>
+              </div>
+            </div>
+            <div class="release-offer-examples">
+            <p class="release-examples-heading"><strong>看看 Seedance 2.5 的生成效果</strong></p>
+            <div class="release-tools-grid">
+              <figure class="release-tool-example" data-release-example="cinematic">
+                <video src="/assets/h3-example-cinematic.mp4" poster="/assets/h3-example-cinematic-poster.jpg" width="640" height="360" controls muted loop playsinline preload="none" aria-label="电影场景 — Seedance 2.5"></video>
+                <figcaption><strong>电影场景</strong><a href="/zh/app/video/seedance-2-5?prompt=At+blue+hour+on+a+windswept+salt+flat%2C+a+lone+traveler+in+a+saffron+coat+walks+toward+a+glowing+glass+observatory.+One+continuous+slow+dolly-in+shot%3B+drifting+dust%2C+soft+volumetric+light%2C+grounded+realistic+motion%2C+film-grain%2C+high-contrast+cinematic+color.+No+text%2C+no+logos.&amp;duration=5&amp;aspect_ratio=16%3A9">试同款 ↗</a></figcaption>
+              </figure>
+              <figure class="release-tool-example" data-release-example="animation">
+                <video src="/assets/h3-example-animation.mp4" poster="/assets/h3-example-animation-poster.jpg" width="640" height="360" controls muted loop playsinline preload="none" aria-label="纸艺动画 — Seedance 2.5"></video>
+                <figcaption><strong>纸艺动画</strong><a href="/zh/app/video/seedance-2-5?prompt=A+tiny+paper+fox+with+folded+origami+fur+leaps+between+floating+lanterns+over+a+moonlit+forest+pond.+Handcrafted+stop-motion+paper+texture%2C+playful+squash-and-stretch%2C+smooth+sideways+tracking+camera%2C+saturated+indigo+and+amber+palette.+No+text%2C+no+logos.&amp;duration=5&amp;aspect_ratio=16%3A9">试同款 ↗</a></figcaption>
+              </figure>
+            </div>
+            </div>
+          </div>
+        </section>
         <div class="article-content prose">
-          <h2 id="latest-news">每日官方动态</h2>
+          <h2 id="latest-news">每日发布动态</h2>
           <p>每天北京时间上午 9 点检查一次官方来源。检查完成后，新发现的 Seedance 3.0 消息会显示在这里，并分别标注原文发布日期和首次发现时间。这些日期不代表模型的上线日期。</p>
           <!-- FACT-CHECK: Publish only identifiable Seed official records. A mention or model listing alone does not confirm a launch date, pricing, or availability. -->
           <div id="seedance-news" aria-live="polite">
@@ -166,7 +265,7 @@
             <p>监测来源： <a href="https://seed.bytedance.com/en/blog_list/visual" target="_blank" rel="noopener noreferrer">Seed 官方视觉博客</a> · <a href="https://seed.bytedance.com/en/models" target="_blank" rel="noopener noreferrer">官方模型目录</a> · <a href="https://seed.bytedance.com/zh/blog_list/visual" target="_blank" rel="noopener noreferrer">官方视觉博客（中文）</a> · <a href="https://seed.bytedance.com/zh/models" target="_blank" rel="noopener noreferrer">官方模型目录（中文）</a></p>
           </div>
           <h2 id="release-timeline">历史公告与人工核查记录</h2>
-          <p>下列日期分别对应官方公告和本页的来源核查。旧版本的发布日期不能用来推算 Seedance 3.0 的发布时间。</p>
+          <p>下列日期分别对应字节跳动 Seed 公告和本页的来源核查。此前版本的发布间隔可作为上方预计时间的参考，不能据此确认 Seedance 3.0 的具体发布日期。</p>
           <table>
             <caption>官方公告与来源核查记录</caption>
             <thead><tr><th scope="col">日期</th><th scope="col">来源</th><th scope="col">已确认的信息</th></tr></thead>
@@ -174,44 +273,10 @@
               <tr><td>2026-02-12</td><td><a href="https://seed.bytedance.com/en/blog/seedance-2-0-official-launch" target="_blank" rel="noopener noreferrer">字节跳动 Seed：Seedance 2.0 发布公告</a></td><td>字节跳动宣布发布 Seedance 2.0。这是 2.0 的公告，不是 3.0 的发布时间。</td></tr>
               <tr><td>2026-07-31</td><td><a href="https://seed.bytedance.com/en/blog/one-take-creation-flexible-referencing-introducing-seedance-2-5" target="_blank" rel="noopener noreferrer">字节跳动 Seed：Seedance 2.5 发布公告</a></td><td>字节跳动宣布发布 Seedance 2.5，介绍了更长片段生成、参考控制与编辑能力。</td></tr>
               <!-- FACT-CHECK: The following is this page's review date, not a Seedance 3.0 announcement or launch date. -->
-              <tr><td><time data-release-reviewed datetime="2026-10-06">2026-10-06</time></td><td><a href="https://seed.bytedance.com/en/models" target="_blank" rel="noopener noreferrer">官方模型目录</a> · <a href="https://seed.bytedance.com/en/blog_list/visual" target="_blank" rel="noopener noreferrer">官方视觉博客</a></td><td>这两个官方页面列有 Seedance 2.5。截至 2026 年 10 月，Seedance 3.0 的发布公告和具体日期仍未在这些资料中得到确认。</td></tr>
+              <tr><td><time data-release-reviewed datetime="2026-10-24">2026-10-24</time></td><td><a href="https://seed.bytedance.com/en/models" target="_blank" rel="noopener noreferrer">字节跳动 Seed 模型目录</a> · <a href="https://seed.bytedance.com/en/blog_list/visual" target="_blank" rel="noopener noreferrer">字节跳动 Seed 视觉博客</a></td><td>这两个页面列有 Seedance 2.5。截至 2026 年 10 月，这些来源尚未公布 Seedance 3.0 的具体发布日期。</td></tr>
             </tbody>
           </table>
           <p>模型发布、平台上线与 API 开放可能分别发生。3.0 官方信息公布后，本页会分别标注这些节点。</p>
-
-          <h2 id="available-tools">等待发布时可用的工具</h2>
-          <div class="release-tools-offer" aria-label="视频与图像生成免费体验">
-            <p class="release-tools-title"><strong>无需注册和登录，即可免费试用</strong></p>
-            <p class="release-tools-daily"><a href="/zh/app/video/minimax-h3?auth=register">注册后</a><strong>每日赠送 15 积分</strong>，图片与视频共用。</p>
-            <div class="release-tools-grid">
-              <article class="card release-tool-card">
-                <h3><a href="/zh/app/video/minimax-h3">MiniMax H3 视频生成器</a></h3>
-                <p class="release-tool-price"><strong>$0.01</strong><span>/ 秒</span></p>
-                <p>先免费体验<strong>共 10 秒视频</strong>。输入文字或上传参考图，即可开始生成。</p>
-                <a class="button primary" href="/zh/app/video/minimax-h3">免费生成视频 ↗</a>
-              </article>
-              <article class="card release-tool-card">
-                <h3><a href="/zh/app/image/gpt-image-2-5-1k">GPT Image 2.5 图像生成器</a></h3>
-                <p class="release-tool-price"><strong>$0.01</strong><span>/ 张</span></p>
-                <p>先免费体验<strong>2 张图像</strong>。支持文字生成和参考图编辑。</p>
-                <a class="button primary" href="/zh/app/image/gpt-image-2-5-1k">免费生成图像 ↗</a>
-              </article>
-            </div>
-            <p class="release-examples-heading"><strong>看看 MiniMax H3 的生成效果</strong></p>
-            <div class="release-tools-grid">
-              <figure class="release-tool-example" data-release-example="cinematic">
-                <video src="/assets/h3-example-cinematic.mp4" poster="/assets/h3-example-cinematic-poster.jpg" width="640" height="360" controls muted loop playsinline preload="none" aria-label="电影场景 — MiniMax H3"></video>
-                <figcaption><strong>电影场景</strong><a href="/zh/app/video/minimax-h3?prompt=At+blue+hour+on+a+windswept+salt+flat%2C+a+lone+traveler+in+a+saffron+coat+walks+toward+a+glowing+glass+observatory.+One+continuous+slow+dolly-in+shot%3B+drifting+dust%2C+soft+volumetric+light%2C+grounded+realistic+motion%2C+film-grain%2C+high-contrast+cinematic+color.+No+text%2C+no+logos.&amp;duration=5&amp;aspect_ratio=16%3A9">试同款 ↗</a></figcaption>
-              </figure>
-              <figure class="release-tool-example" data-release-example="animation">
-                <video src="/assets/h3-example-animation.mp4" poster="/assets/h3-example-animation-poster.jpg" width="640" height="360" controls muted loop playsinline preload="none" aria-label="纸艺动画 — MiniMax H3"></video>
-                <figcaption><strong>纸艺动画</strong><a href="/zh/app/video/minimax-h3?prompt=A+tiny+paper+fox+with+folded+origami+fur+leaps+between+floating+lanterns+over+a+moonlit+forest+pond.+Handcrafted+stop-motion+paper+texture%2C+playful+squash-and-stretch%2C+smooth+sideways+tracking+camera%2C+saturated+indigo+and+amber+palette.+No+text%2C+no+logos.&amp;duration=5&amp;aspect_ratio=16%3A9">试同款 ↗</a></figcaption>
-              </figure>
-            </div>
-          </div>
-          <p>需要先规划参考图？使用<a href="/zh/pose-to-image">姿势工作室</a>安排人物、姿势、道具与镜头构图。</p>
-          <p>想了解两者的区别，可以阅读 <a href="/zh/minimax-h3-vs-seedance-3">MiniMax H3 与 Seedance 3 对比</a>。</p>
-          <p>更多用法见 <a href="/zh/features">功能概览</a> 和 <a href="/zh/faq">常见问题</a>。</p>
 
           <h2 id="seedance-25-comparison">Seedance 3.0 与 2.5：目前能比较什么？</h2>
           <p id="seedance-comparison-note"> <a href="https://seed.bytedance.com/en/seedance2_5" target="_blank" rel="noopener noreferrer">Seedance 2.5 官方页面</a> 已公布相关能力，可作为后续对比的依据。3.0 的对应规格仍待核实，目前无法确认它会有哪些改进。</p>
@@ -234,8 +299,8 @@
           <h2 id="release-faq">Seedance 3.0 发布时间常见问题</h2>
           <p>以下解答依据本页核对的 <a href="https://seed.bytedance.com/en/models" target="_blank" rel="noopener noreferrer">官方模型目录</a> 和 <a href="https://seed.bytedance.com/en/blog_list/visual" target="_blank" rel="noopener noreferrer">视觉博客</a> ；2.5 的信息来自上方链接的官方模型页面。</p>
           <div class="faq" id="release-faq-answers">
-            <!-- FACT-CHECK: Confirm any 3.0 launch date against an official announcement before revising this answer. -->
-            <details open><summary>Seedance 3.0 什么时候发布？</summary><p>截至 2026 年 10 月，从本页核对的字节跳动 Seed 官方模型目录和视觉博客，还无法确认 Seedance 3.0 的发布时间。具体月份、预计发布时段和倒计时都无法确定，相关官方来源见上方时间线。</p></details>
+            <!-- FACT-CHECK: Keep this estimate consistent with the forecast and schema. Treat a date as confirmed only when supported by a ByteDance Seed announcement. -->
+            <details open><summary>Seedance 3.0 什么时候发布？</summary><p>根据 Seedance 2.0 与 2.5 发布公告相隔 169 天的间隔，Seedance 3.0 预计于 2027 年 1–2 月发布。这是预计时间；截至 2026 年 10 月，本页核对的字节跳动 Seed 来源尚未公布具体发布日期。</p></details>
             <!-- FACT-CHECK: Seedance 3.0 free access and trial terms are not verified. -->
             <details><summary>Seedance 3.0 会免费吗？</summary><p>截至 2026 年 10 月，在已核对的官方资料中，还无法确认 Seedance 3.0 是否提供免费方案或试用。其他模型或平台的免费额度，不能视为 Seedance 3.0 的优惠政策。</p></details>
             <!-- FACT-CHECK: Seedance 3.0 subscription and API prices are not verified. -->
@@ -255,7 +320,7 @@
     <div class="container">
       <h2 id="related-reading-title">相关阅读</h2>
       <div class="related-reading-grid">
-        <a class="card related-reading-card" href="/zh/"><h3>Seedance 首页</h3><p>浏览创作工具、使用指南和官方发布动态。</p><span aria-hidden="true">→</span></a>
+        <a class="card related-reading-card" href="/zh/"><h3>Seedance 首页</h3><p>浏览创作工具、使用指南和发布动态。</p><span aria-hidden="true">→</span></a>
         <a class="card related-reading-card" href="/zh/pose-to-image" data-pose-entry><h3>AI 姿势生成器</h3><p>先安排姿势和镜头视角，再准备图像参考。</p><span aria-hidden="true">→</span></a>
         <a class="card related-reading-card" href="/zh/seedance-3-0"><h3>Seedance 3.0 资源中心</h3><p>集中查看发布动态、常见问题、提示词草稿和参考指南。</p><span aria-hidden="true">→</span></a>
       </div>
@@ -269,7 +334,12 @@
       <nav aria-label="页脚导航"><a href="/zh/">首页</a><a href="/zh/blog">博客</a><a href="/zh/faq">常见问题</a></nav>
       <nav class="site-language-switch" data-site-language-switch data-language-footer aria-label="网站语言"><a href="/zh/seedance-3-0-release-date?lang=zh" data-language="zh" lang="zh-Hans" aria-current="true">中文</a><span aria-hidden="true">|</span><a href="/seedance-3-0-release-date?lang=en" data-language="en" lang="en">EN</a></nav>
     </div>
-  <nav class="container footer-model-links" aria-label="模型指南"><a data-flux-guide-link href="/zh/app/video/flux-3">FLUX 3</a></nav>
+  <!-- SITE_TRUST_START -->
+<div class="trust-footer" data-site-trust>
+  <div class="trust-operator"><span>运营者: ColdStone Technology Co., Ltd.</span><a href="mailto:zw83716@gmail.com">zw83716@gmail.com</a></div>
+  <nav aria-label="服务与政策"><a href="/zh/about">关于与联系</a><a href="/zh/refund-policy">退款政策</a><a href="/zh/privacy">隐私政策</a><a href="/zh/terms">服务条款</a></nav>
+</div>
+<!-- SITE_TRUST_END -->
 </footer>
   <script id="release-date-display">
     (() => {
@@ -282,5 +352,6 @@
     })();
   </script>
   <script src="/assets/main.zh.js"></script>
+  <script type="module" src="/assets/credit-pack-purchase.mjs"></script>
 </body>
 </html>

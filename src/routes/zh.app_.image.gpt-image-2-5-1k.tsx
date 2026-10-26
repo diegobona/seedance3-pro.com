@@ -4,7 +4,7 @@ import { StudioPage } from './app'
 
 const url = 'https://seedance3-pro.com/app/image/gpt-image-2-5-1k'
 const title = 'GPT Image 2.5 Generator | Tuzi Image Creation & Editing'
-const description = 'Generate and edit images with GPT Image 2.5, a Tuzi routing alias. Use text prompts or reference images at supported fixed sizes for 5 credits per image.'
+const description = 'Generate and edit images with GPT Image 2.5, a Tuzi routing alias. Use text prompts or reference images at supported fixed sizes for 1 credit per image.'
 const previewImage = 'https://seedance3-pro.com/assets/apple-touch-icon.png'
 
 export const Route = createFileRoute('/zh/app_/image/gpt-image-2-5-1k')({

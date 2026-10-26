@@ -4,7 +4,7 @@ import test from 'node:test'
 
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8')
 
-test('studio exposes complete account entry points without changing the static homepage', () => {
+test('studio owns the login dialog while the public homepage reads its existing session', () => {
   const route = read('src/routes/app.tsx')
   const dialog = read('src/components/auth-dialog.tsx')
   const menu = read('src/components/user-menu.tsx')
@@ -13,6 +13,8 @@ test('studio exposes complete account entry points without changing the static h
   assert.match(route, /import\(['"]\.\.\/\.\.\/app\/studio\.js['"]\)/)
   assert.match(dialog, /signIn\.email/)
   assert.match(dialog, /signUp\.email/)
+  assert.match(dialog, /EMAIL_PASSWORD_AUTH_ENABLED && \(/)
+  assert.match(dialog, /if \(!EMAIL_PASSWORD_AUTH_ENABLED\) return/)
   assert.match(dialog, /signIn\.social/)
   assert.match(dialog, /provider:\s*['"]google['"]/)
   assert.match(menu, /useSession/)
@@ -23,5 +25,7 @@ test('studio exposes complete account entry points without changing the static h
   assert.match(menu, /credits/i)
 
   const homepage = read('index.html')
+  assert.match(homepage, /data-site-account/)
+  assert.match(homepage, /\/assets\/site-account\.mjs/)
   assert.doesNotMatch(homepage, /auth-dialog|auth-user-menu|signIn\.email/)
 })

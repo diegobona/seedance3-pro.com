@@ -34,6 +34,16 @@ function elementContents(html: string, tag: string, id: string) {
   return match[1]
 }
 
+test('default image workspace selects GPT Image 2.5 and exposes only its current model choice', async () => {
+  for (const prefix of ['', '/zh']) {
+    const html = await renderPage(prefix + '/app', () => createElement(StudioPage))
+    assert.equal(elementContents(html, 'strong', 'selected-name'), 'GPT Image 2.5')
+    assert.match(elementContents(html, 'select', 'image-aspect-ratio'), /1254[x×]1254/)
+    assert.match(html, /data-model="gpt-image-2-5-1k"/)
+    assert.doesNotMatch(html, /data-model="gpt-image-2"/)
+  }
+})
+
 test('GPT Image 2.5 SSR selects and labels its own model in both languages', async () => {
   for (const prefix of ['', '/zh']) {
     const html = await renderPage(prefix + '/app/image/gpt-image-2-5-1k', () => createElement(StudioPage, { initialModel: 'gpt-image-2-5-1k', modelLanding: true }))
@@ -51,13 +61,13 @@ test('GPT Image 2.5 SSR selects and labels its own model in both languages', asy
   }
 })
 
-test('new image SSR offers the provider fixed aspect ratios and four local reference inputs', async () => {
+test('new image SSR offers the provider fixed aspect ratios and sixteen reference inputs', async () => {
   const html = await renderPage('/app/image/gpt-image-2-5-1k', () => createElement(StudioPage, { initialModel: 'gpt-image-2-5-1k', modelLanding: true }))
   const ratios = Array.from(elementContents(html, 'select', 'image-aspect-ratio').matchAll(/<option\b[^>]*value="([^"]+)"/g), match => match[1])
   assert.deepEqual(ratios, ['1:1', '3:2', '2:3', '3:4', '4:3', '4:5', '5:4', '16:9', '9:16', '21:9', '9:21'])
-  assert.match(elementContents(html, 'span', 'reference-meta'), /4 images/)
+  assert.match(elementContents(html, 'span', 'reference-meta'), /16 images/)
   assert.match(elementContents(html, 'small', 'upload-hint'), /10 MB.*24 MB/)
-  assert.match(elementContents(html, 'strong', 'generation-credit-cost'), /5 credits/)
+  assert.match(elementContents(html, 'strong', 'generation-credit-cost'), /1 free image/)
   const carousel = html.match(/<section\b[^>]*id="example-carousel"[^>]*>/)?.[0]
   assert.match(carousel ?? '', /hidden=""/)
   assert.doesNotMatch(html, /class="context-card gpt-image-examples/)
@@ -66,11 +76,14 @@ test('new image SSR offers the provider fixed aspect ratios and four local refer
 })
 
 test('existing GPT Image 2 SSR retains its own selection, ratios and original examples', async () => {
-  const html = await renderPage('/app/image/gpt-image-2', () => createElement(StudioPage, { initialModel: 'gpt-image-2', modelLanding: true }))
-  assert.equal(elementContents(html, 'strong', 'selected-name'), 'GPT Image 2')
-  const ratios = Array.from(elementContents(html, 'select', 'image-aspect-ratio').matchAll(/<option\b[^>]*value="([^"]+)"/g), match => match[1])
-  assert.deepEqual(ratios, ['1:1', '3:2', '2:3'])
-  assert.match(html, /gpt-image-examples/)
+  for (const prefix of ['', '/zh']) {
+    const html = await renderPage(prefix + '/app/image/gpt-image-2', () => createElement(StudioPage, { initialModel: 'gpt-image-2', modelLanding: true }))
+    assert.equal(elementContents(html, 'strong', 'selected-name'), 'GPT Image 2')
+    const ratios = Array.from(elementContents(html, 'select', 'image-aspect-ratio').matchAll(/<option\b[^>]*value="([^"]+)"/g), match => match[1])
+    assert.deepEqual(ratios, ['1:1', '3:2', '2:3'])
+    assert.match(html, /gpt-image-examples/)
+    assert.doesNotMatch(html, /data-model="gpt-image-2"/)
+  }
 })
 
 test('every existing studio shell discovers the new image workspace without dropping Christmas links', async () => {
@@ -83,6 +96,7 @@ test('every existing studio shell discovers the new image workspace without drop
     const html = await renderPage('/zh/app/image/muse-image', component)
     assert.match(html, /href="\/zh\/app\/image\/gpt-image-2-5-1k"/)
     assert.match(html, /GPT Image 2\.5/)
+    assert.doesNotMatch(html, /href="\/zh\/app\/image\/gpt-image-2"/)
     const image25Link = html.match(/<a\b[^>]*href="\/zh\/app\/image\/gpt-image-2-5-1k"[^>]*>[\s\S]*?<\/a>/)?.[0] ?? ''
     assert.match(image25Link, /class="price-badge">.*?<b>\$0\.01<\/b>/)
     assert.match(html, /href="\/zh\/ai-christmas-photo-prompt"/)

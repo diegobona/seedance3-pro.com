@@ -2,12 +2,14 @@ import handler from '@tanstack/react-start/server-entry'
 import legacyWorker from '../worker.js'
 import { reconcileVideoGenerationTasks } from './lib/video-task-reconciler'
 import { legacyModelRedirect } from '../app/seo-routes.mjs'
-import { localeFromPath, localizedPath, stripLocalePath, localeRedirect } from '../app/site-locale.mjs'
+import { partnerImageRedirect } from '../app/partner-image-redirect.mjs'
+import { localeFromPath, stripLocalePath, localeRedirect } from '../app/site-locale.mjs'
 import { canonicalSiteRedirect, fetchPublicPage, isStudioDocument } from './lib/site-static-proxy'
 import poseEntryVisibility from '../assets/pose-entry-visibility.js?raw'
 import { collectSeedanceNews, NEWS_CRON, readNewsState } from './lib/seedance-news'
 import { newsDocument, newsPageRequest, rewriteNewsResponse } from './lib/seedance-news-page'
 import { databaseMaintenanceResponse } from './lib/database-maintenance'
+import { withPlausibleAnalytics } from './lib/plausible'
 
 interface WorkerContext {
   waitUntil(promise: Promise<unknown>): void
@@ -31,12 +33,6 @@ const legacyApiPaths = new Set([
   '/api/retry-now',
 ])
 
-const legacyPromptPaths: Record<string, string> = {
-  '/prompts/minimax-h3/videos': '/minimax-h3-prompts',
-  '/prompts/gpt-image-2/images': '/gpt-image-2-prompts',
-}
-const legacyH3VideoCasePrefix = '/prompts/minimax-h3/videos/'
-
 function isLegacyApiRequest(request: Request) {
   const { pathname } = new URL(request.url)
   return legacyApiPaths.has(pathname) || pathname.startsWith('/api/job/')
@@ -49,6 +45,9 @@ export default {
     const url = new URL(request.url)
     const { pathname } = url
     const basePath = stripLocalePath(pathname)
+    // Attribute partner links before canonical or locale hops can lose Referer.
+    const partnerRedirect = partnerImageRedirect(request)
+    if (partnerRedirect) return partnerRedirect
     const canonicalRedirect = canonicalSiteRedirect(request)
     if (canonicalRedirect) return canonicalRedirect
     // Static Pages and React workspaces must use the same referral guard version.
@@ -60,13 +59,6 @@ export default {
     if (request.method === 'GET' || request.method === 'HEAD') {
       const redirect = localeRedirect(request, request.cf?.country)
       if (redirect) return redirect
-      const locale = localeFromPath(pathname)
-      const promptDestination = legacyPromptPaths[basePath]
-      if (promptDestination) return Response.redirect(`https://seedance3-pro.com${localizedPath(promptDestination, locale)}${url.search}`, 308)
-      if (basePath.startsWith(legacyH3VideoCasePrefix)) {
-        const slug = basePath.slice(legacyH3VideoCasePrefix.length)
-        if (slug && !slug.includes('/')) return Response.redirect(`https://seedance3-pro.com${localizedPath(`/minimax-h3-prompts/${slug}`, locale)}${url.search}`, 308)
-      }
       const destination = legacyModelRedirect(url)
       if (destination) return Response.redirect(`https://seedance3-pro.com${destination}`, /^\/flux-3(?:-video-generator)?(?:\.html)?$/.test(basePath) ? 301 : 308)
     }
@@ -92,9 +84,9 @@ export default {
           return null
         }),
       ])
-      return rewriteNewsResponse(request, response, state)
+      return withPlausibleAnalytics(request, rewriteNewsResponse(request, response, state))
     }
-    return fetchPublicPage(request)
+    return withPlausibleAnalytics(request, await fetchPublicPage(request))
   },
   scheduled(controller, env, ctx) {
     if (env.DATABASE_MIGRATION_PAUSED === '1') return

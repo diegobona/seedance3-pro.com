@@ -25,10 +25,10 @@
   <meta name="twitter:image" content="https://seedance3-pro.com/assets/pose-reference-demo-poster.webp?v=3">
   <meta name="twitter:image:alt" content="A five-object Pose Studio scene beside a countryside AI visualization">
   <meta name="theme-color" content="#090a0c">
-  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
-  <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
-  <link rel="stylesheet" href="./site.css">
-  <link rel="stylesheet" href="./pose-to-image.css">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg?v=20261024-blue-brand">
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png?v=20261024-blue-brand">
+  <link rel="stylesheet" href="./site.css?v=20261024-blue-brand">
+  <link rel="stylesheet" href="./pose-to-image.css?v=20261024-blue-brand">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -137,26 +137,33 @@
   <link rel="alternate" hreflang="en" href="https://seedance3-pro.com/pose-to-image">
   <link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/pose-to-image">
   <link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/pose-to-image">
-  <link rel="stylesheet" href="/assets/site-language.css">
+  <link rel="stylesheet" href="/assets/site-language.css?v=20261024-blue-brand">
   <script src="/assets/site-language.js" defer></script>
   <meta property="og:locale" content="en_US">
   <meta property="og:locale:alternate" content="zh_CN">
-  <link rel="stylesheet" href="/assets/site-navigation.css">
+  <link rel="stylesheet" href="/assets/site-navigation.css?v=20261024-blue-brand">
   <script src="/assets/site-navigation.js" defer></script>
+  <script type="module" src="/assets/site-account.mjs?v=20261020-purchase"></script>
+  <link rel="stylesheet" href="/assets/site-trust.css?v=20261024-blue-brand">
+  <link data-site-typography rel="preload" href="/assets/fonts/source-serif-4-roman.woff2" as="font" type="font/woff2" crossorigin>
+  <link data-site-typography rel="stylesheet" href="/assets/fonts/noto-serif-sc.css?v=20261024-editorial">
+  <link data-site-typography rel="stylesheet" href="/assets/site-typography.css?v=20261024-editorial">
+  <link data-site-brand rel="stylesheet" href="/assets/site-brand.css?v=20261024-blue-brand">
 </head>
 <body class="pose-page">
   <a class="pose-skip-link" href="#main-content">Skip to content</a>
   <header class="site-header" data-site-header>
     <div class="container inner">
-      <a class="brand" href="/" aria-label="SEEDANCE 3.0 home"><img class="brand-mark" src="/assets/seedance-mark.svg" width="40" height="40" alt=""><span>SEEDANCE 3.0</span></a>
-      <nav class="desktop-nav compact-nav" aria-label="Primary navigation"><a href="/app/video/minimax-h3">AI Video</a><a href="/app/image/gpt-image-2-5-1k">AI Image</a><a class="home-extra-nav" href="/seedance-3-0-release-date">Release Date</a><a class="home-extra-nav" href="/showcase">Showcase</a><a class="home-extra-nav" href="/blog">Blog</a></nav>
+      <a class="brand" href="/" aria-label="SEEDANCE 3.0 home"><img class="brand-mark" src="/assets/seedance-mark.svg?v=20261024-blue-brand" width="40" height="40" alt=""><span>SEEDANCE 3.0</span></a>
+      <nav class="desktop-nav compact-nav" aria-label="Primary navigation"><a href="/app/video/seedance-2-5">AI Video</a><a href="/app/image/gpt-image-2-5-1k">AI Image</a><a class="home-extra-nav" href="/pricing">Pricing</a><a class="home-extra-nav" href="/seedance-3-0-release-date">Release Date</a><a class="home-extra-nav" href="/showcase">Showcase</a><a class="home-extra-nav" href="/blog">Blog</a></nav>
       <div class="header-actions">
         <nav class="site-language-switch" data-site-language-switch aria-label="Site language"><a href="/zh/pose-to-image?lang=zh" data-language="zh" lang="zh-Hans">中文</a><span aria-hidden="true">|</span><a href="/pose-to-image?lang=en" data-language="en" lang="en" aria-current="true">EN</a></nav>
         <a class="button small" href="/#create">Try for free</a>
+        <div class="site-account" data-site-account><a class="site-account-login" data-account-login href="/app?auth=login">Log in</a></div>
         <button class="menu-button" type="button" aria-label="Open navigation" aria-controls="mobile-navigation" aria-expanded="false">☰</button>
       </div>
     </div>
-    <nav class="mobile-nav" id="mobile-navigation" aria-label="Mobile navigation"><a href="/app/video/minimax-h3">AI Video</a><a href="/app/image/gpt-image-2-5-1k">AI Image</a><a class="home-extra-nav" href="/seedance-3-0-release-date">Release Date</a><a class="home-extra-nav" href="/showcase">Showcase</a><a class="home-extra-nav" href="/blog">Blog</a></nav>
+    <nav class="mobile-nav" id="mobile-navigation" aria-label="Mobile navigation"><a href="/app/video/seedance-2-5">AI Video</a><a href="/app/image/gpt-image-2-5-1k">AI Image</a><a class="home-extra-nav" href="/pricing">Pricing</a><a class="home-extra-nav" href="/seedance-3-0-release-date">Release Date</a><a class="home-extra-nav" href="/showcase">Showcase</a><a class="home-extra-nav" href="/blog">Blog</a></nav>
   </header>
 
   <main id="main-content" tabindex="-1">
@@ -191,7 +198,7 @@
     <section class="pose-section" id="workflow" aria-labelledby="workflow-title">
       <div class="container">
         <div class="pose-section-heading">
-          <div><p class="eyebrow">From pose to image</p><h2 id="workflow-title">How to turn a 3D pose<br>into an AI image.</h2></div>
+          <div><p class="eyebrow">From pose to image</p><h2 id="workflow-title">How to turn a 3D pose into an AI image.</h2></div>
           <p>A pose reference gives the image model visual direction for the body and framing. Your prompt supplies the character, setting, and style.</p>
         </div>
         <ol class="pose-workflow">
@@ -204,7 +211,7 @@
 
     <section class="pose-section pose-examples" id="examples" aria-labelledby="examples-title">
       <div class="container">
-        <div class="pose-section-heading"><div><p class="eyebrow">Original examples</p><h2 id="examples-title">Pose references<br>and AI image results.</h2></div><p>Compare a posed scene with its generated image. Explore how camera angle, body position and framing shape the result.</p></div>
+        <div class="pose-section-heading"><div><p class="eyebrow">Original examples</p><h2 id="examples-title">Pose references and AI image results.</h2></div><p>Compare a posed scene with its generated image. Explore how camera angle, body position and framing shape the result.</p></div>
         <div class="pose-example-grid">
           <a class="pose-example-card" href="./pose-reference-camera-angle-examples#crossed-arms"><div class="pose-example-images"><img src="./media/pose-cases/2026-09-22/references/ca-01.png" width="1834" height="1300" loading="lazy" decoding="async" alt="Crossed-arms mannequin reference from the front"><img src="./media/pose-cases/2026-09-22/outputs/crossed-arms-front.png" width="1254" height="1254" loading="lazy" decoding="async" alt="First generated crossed-arms image"></div><span class="pose-example-labels"><span>Reference</span><span>First output</span></span><h3>Crossed arms</h3><p>Compare the front and low camera views <span aria-hidden="true">→</span></p></a>
           <a class="pose-example-card" href="./pose-reference-camera-angle-examples#kneeling"><div class="pose-example-images"><img src="./media/pose-cases/2026-09-22/references/kn-02.png" width="1834" height="1300" loading="lazy" decoding="async" alt="Kneeling mannequin reference from above"><img src="./media/pose-cases/2026-09-22/outputs/kneeling-high.png" width="1254" height="1254" loading="lazy" decoding="async" alt="First generated high-view kneeling image"></div><span class="pose-example-labels"><span>Reference</span><span>First output</span></span><h3>Kneeling</h3><p>Compare the oblique and high camera views <span aria-hidden="true">→</span></p></a>
@@ -235,7 +242,7 @@
       <div class="container pose-expectations">
         <div class="pose-expectations-copy">
           <p class="eyebrow">A useful starting point</p>
-          <h2 id="expectations-title">Guide the pose.<br>Review the result.</h2>
+          <h2 id="expectations-title">Guide the pose. Review the result.</h2>
           <p>A captured mannequin scene is a visual reference. The image model interprets it alongside your prompt, so a generated image may differ in anatomy, pose, camera angle, or placement.</p>
           <p>Start with a readable silhouette and clear limb placement. Check hands, overlapping limbs, and body proportions in every result. Exact pose matching and identity preservation are not guaranteed.</p>
         </div>
@@ -251,14 +258,14 @@
 
     <section class="pose-section pose-faq-section" id="faq" aria-labelledby="faq-title">
       <div class="container pose-faq-layout">
-        <div><p class="eyebrow">AI Pose Generator FAQ</p><h2 id="faq-title">Before your<br>first pose.</h2></div>
+        <div><p class="eyebrow">AI Pose Generator FAQ</p><h2 id="faq-title">Before your first pose.</h2></div>
         <div class="faq pose-faq">
           <details><summary>What does this AI pose generator do?</summary><p>Seedance combines a manual 3D pose editor with reference-guided image generation. You pose the mannequin and choose the camera view, then attach a capture in the image workspace and describe the image you want. The image model interprets that reference when generating.</p></details>
           <details><summary>Can I use the pose editor without generating an image?</summary><p>Yes. You can open the editor, adjust the mannequin and camera, and prepare a reference without submitting a generation request. Image generation is a separate action that requires sign-in and sufficient credits.</p></details>
           <details><summary>Can I pose multiple characters at once?</summary><p>Yes. Add people and animals to the same scene, select each character to adjust its pose, and arrange props around them. Capture the composition as a shared reference. Browse the <a href="./showcase#pose">editable pose scenes</a> for a starting point.</p></details>
           <details><summary>Will the image match the pose exactly?</summary><p>Exact matching is not guaranteed. The reference guides body pose and camera framing, but the model can reinterpret anatomy, overlaps, and placement. The mannequin also does not establish a person's identity. Refine the reference and prompt if the output misses your intention.</p></details>
           <details><summary>Does the editor export OpenPose data?</summary><p>No. This workflow captures a rendered image of the 3D scene. It does not provide an OpenPose skeleton, keypoint file, or ControlNet pose map export.</p></details>
-          <details><summary>Can I turn my generated image into a video?</summary><p>Yes. Generate an image from your pose scene, then use the image result's video action to carry it into the <a href="./app/video/minimax-h3">image-to-video workspace</a> as a reference. Describe the action and camera movement you want before generating the video.</p></details>
+          <details><summary>Can I turn my generated image into a video?</summary><p>Yes. Generate an image from your pose scene, then use the image result's video action to carry it into the <a href="./app/video/seedance-2-5">image-to-video workspace</a> as a reference. Describe the action and camera movement you want before generating the video.</p></details>
         </div>
       </div>
     </section>
@@ -279,7 +286,7 @@
     <div class="container">
       <h2 id="related-reading-title">Related reading</h2>
       <div class="related-reading-grid">
-        <a class="card related-reading-card" href="/"><h3>Seedance home</h3><p>Explore the tools, guides and official release tracker.</p><span aria-hidden="true">→</span></a>
+        <a class="card related-reading-card" href="/"><h3>Seedance home</h3><p>Explore the tools, guides and release tracker.</p><span aria-hidden="true">→</span></a>
         <a class="card related-reading-card" href="/seedance-3-0-release-date"><h3>Seedance 3.0 release tracker</h3><p>Review official sources and the latest completed source check.</p><span aria-hidden="true">→</span></a>
         <a class="card related-reading-card" href="/pose-reference-camera-angle-examples" data-pose-entry><h3>Pose reference and camera angle examples</h3><p>Compare reference views and image results for people, animals and props.</p><span aria-hidden="true">→</span></a>
       </div>
@@ -294,7 +301,12 @@
       <nav aria-label="Footer navigation"><a href="./">Home</a><a href="./blog">Blog</a></nav>
       <nav class="site-language-switch" data-site-language-switch data-language-footer aria-label="Site language"><a href="/zh/pose-to-image?lang=zh" data-language="zh" lang="zh-Hans">中文</a><span aria-hidden="true">|</span><a href="/pose-to-image?lang=en" data-language="en" lang="en" aria-current="true">EN</a></nav>
     </div>
-  <nav class="container footer-model-links" aria-label="Model guides"><a data-flux-guide-link href="/app/video/flux-3">FLUX 3</a></nav>
+  <!-- SITE_TRUST_START -->
+<div class="trust-footer" data-site-trust>
+  <div class="trust-operator"><span>Operated by: ColdStone Technology Co., Ltd.</span><a href="mailto:zw83716@gmail.com">zw83716@gmail.com</a></div>
+  <nav aria-label="Service and policies"><a href="/about">About & contact</a><a href="/refund-policy">Refund policy</a><a href="/privacy">Privacy</a><a href="/terms">Terms of service</a></nav>
+</div>
+<!-- SITE_TRUST_END -->
 </footer>
   <!-- Date maintenance: edit the page Article/WebPage dateModified once; the visible date reads it below. -->
   <script id="related-content-date-display">

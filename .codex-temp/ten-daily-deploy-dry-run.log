@@ -1,0 +1,223 @@
+X [ERROR] Failed to write to log file Error: EPERM: operation not permitted, open 'C:\Users\zhouw\AppData\Roaming\xdg.config\.wrangler\logs\wrangler-2026-10-24_07-37-20_708.log'
+
+      at async open (node:internal/fs/promises:637:25)
+      at async writeFile (node:internal/fs/promises:1239:14)
+      at async D:\Asideproject\! 网站、插件、APP\Seedance3\node_modules\wrangler\wrangler-dist\cli.js:63296:7
+      at async Mutex.runWith (D:\Asideproject\! 网站、插件、APP\Seedance3\node_modules\miniflare\dist\src\index.js:55597:16)
+      at async appendToDebugLogFile (D:\Asideproject\! 网站、插件、APP\Seedance3\node_modules\wrangler\wrangler-dist\cli.js:63293:3) {
+    errno: -4048,
+    code: 'EPERM',
+    syscall: 'open',
+    path: 'C:\\Users\\zhouw\\AppData\\Roaming\\xdg.config\\.wrangler\\logs\\wrangler-2026-10-24_07-37-20_708.log'
+  }
+
+
+X [ERROR] Would have written: 
+
+  --- 2026-10-24T07:37:21.018Z debug
+  🪵  Writing logs to "C:\Users\zhouw\AppData\Roaming\xdg.config\.wrangler\logs\wrangler-2026-10-24_07-37-20_708.log"
+  ---
+  
+
+
+
+ ⛅️ wrangler 4.134.0
+────────────────────
+Using redirected Wrangler configuration.
+ - Configuration being used: "dist\server\wrangler.json"
+ - Original user's configuration: "wrangler.jsonc"
+ - Deploy configuration file: ".wrangler\deploy\config.json"
+
+Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
+Attaching additional modules:
+┌─────────────────────────────────────────────────────────┬──────┬─────────────┐
+│ Name                                                    │ Type │ Size        │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/ai-christmas-photo-prompt-Ccm1_uHz.js        │ esm  │ 0.43 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/app-BWKc8kGQ.js                              │ esm  │ 118.02 KiB  │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/app-zabry2FC.js                              │ esm  │ 77.24 KiB   │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/app_.image.gpt-image-2-5-1k-UzFUTKIg.js      │ esm  │ 0.43 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/app_.image.gpt-image-2-5-B0GTQo3K.js         │ esm  │ 0.42 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/app_.image.muse-image-CVfOlcGG.js            │ esm  │ 0.42 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/app_.video.flux-3-DIthAina.js                │ esm  │ 0.44 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/app_.video.muse-video-CUEK770-.js            │ esm  │ 0.42 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/app_.video.seedance-2-5-CNmgBTnO.js          │ esm  │ 0.42 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/app_.video.seedance-3-DsdNLlnn.js            │ esm  │ 0.24 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/auth-C6RuMJF8.js                             │ esm  │ 86.26 KiB   │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/billing-Bevj6TxN.js                          │ esm  │ 0.20 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/billing-page-LGtJPtoI.js                     │ esm  │ 15.44 KiB   │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/bun-sqlite-dialect-C7ftEUSI-C1h47hZr.js      │ esm  │ 4.50 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/ClientOnly-BAzdjcwq.js                       │ esm  │ 8.43 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/coming-soon-page-y-F1fe-E.js                 │ esm  │ 4.37 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/credit-pack-purchase-Vp3IQ4FO.js             │ esm  │ 7.13 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/d1-sqlite-dialect-D4qp4-wW-CwUCHtSb.js       │ esm  │ 5.02 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/daily-credits-B2hkVMk5.js                    │ esm  │ 1.54 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/default-query-compiler-2C8slTxe.js           │ esm  │ 43.87 KiB   │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/dist-Cd3xUyrb.js                             │ esm  │ 14.22 KiB   │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/empty-plugin-adapters-D9UWiqvJ.js            │ esm  │ 0.22 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/env-impl-CLSey1QN.js                         │ esm  │ 6.66 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/generation-credits-D14wRH0K.js               │ esm  │ 0.68 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/gpt-image-2-5-prompts-cCqVxp2N.js            │ esm  │ 0.42 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/gpt-image-2-5-prompts_._slug-BnJMT-qR.js     │ esm  │ 0.49 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/gpt-image-case-page-C1LctCDA.js              │ esm  │ 10.57 KiB   │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/gpt-image-cases-BhgrL8UH.js                  │ esm  │ 7.33 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/h3-video-case-page-DEcrraVF.js               │ esm  │ 15.32 KiB   │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/h3-video-cases-CczwsUcG.js                   │ esm  │ 5.02 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/i18n-DOgMPZXE.js                             │ esm  │ 30.39 KiB   │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/image-references-CMMHB2ax.js                 │ esm  │ 0.78 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/images-D8rVi1FO.js                           │ esm  │ 0.75 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/jsx-runtime-CbOA9iie.js                      │ esm  │ 2.72 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/kysely-adapter-BtmutXHp.js                   │ esm  │ 0.13 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/kysely-migration-tables-DFfmKhq--BmaT-cAq.js │ esm  │ 0.79 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/lazyRouteComponent-BCQFHYXT.js               │ esm  │ 17.60 KiB   │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/model-routing-EOE_ZcjM.js                    │ esm  │ 0.86 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/muse-image-prompts-BMV9cYRf.js               │ esm  │ 0.42 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/muse-video-prompts-D6XNks0j.js               │ esm  │ 0.42 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/muse-workspace-DbwJmdiw.js                   │ esm  │ 5.85 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/muse-workspace-page-DrVDzL1i.js              │ esm  │ 26.53 KiB   │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/node-sqlite-dialect-rUWFzdfz.js              │ esm  │ 4.51 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/not-found-8nHLrNYc.js                        │ esm  │ 0.88 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/plausible-CAqfCOdX.js                        │ esm  │ 570.19 KiB  │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/pose-studio-RAcqdDxO.js                      │ esm  │ 1771.22 KiB │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/prompt-guide-2lMNp1PY.js                     │ esm  │ 0.73 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/router-B-OoClE-.js                           │ esm  │ 1705.86 KiB │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/routes-CJ_vy6H4.js                           │ esm  │ 0.75 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/seedance-2-5-prompts-C9TgCMlT.js             │ esm  │ 0.42 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/seedance-2-5-prompts_._slug-4qDpDVLZ.js      │ esm  │ 0.49 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/seedance-3-0-prompts-q9w2EW57.js             │ esm  │ 0.42 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/seedance3-planned-prompts-DFUVGhC_.js        │ esm  │ 4.54 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/seedance3-preview-page-bi44AFiy.js           │ esm  │ 26.14 KiB   │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/seo-routes-CBU4ROtk.js                       │ esm  │ 3.40 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/site-brand-CjmkK31H.js                       │ esm  │ 32.32 KiB   │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/site-language-switch-DuIL1HTY.js             │ esm  │ 77.70 KiB   │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/site-navigation-DussESC2.js                  │ esm  │ 5.31 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/site-trust-B_sUFSmq.js                       │ esm  │ 4.23 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/start-5Z2QO8AU.js                            │ esm  │ 0.14 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/string-DmMxG8W_.js                           │ esm  │ 0.54 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/studio-Ba7H_6gd.js                           │ esm  │ 106.97 KiB  │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/studio-showcase-page-3QR2q8eQ.js             │ esm  │ 38.86 KiB   │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/video-resolution-label-CrnAXKZu.js           │ esm  │ 6.04 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/videos-Bddes6q5.js                           │ esm  │ 0.23 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/zh.ai-christmas-photo-prompt-DSksrJ-T.js     │ esm  │ 0.43 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/zh.app-DskPc-XW.js                           │ esm  │ 0.52 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/zh.app_.image.gpt-image-2-5-1k-BQvhtj3k.js   │ esm  │ 0.43 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/zh.app_.image.gpt-image-2-5-DqisZSPA.js      │ esm  │ 0.43 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/zh.app_.image.muse-image-BU0Rfw60.js         │ esm  │ 0.42 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/zh.app_.video.flux-3-69TUR6UH.js             │ esm  │ 0.44 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/zh.app_.video.muse-video-DUNfNEpH.js         │ esm  │ 0.42 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/zh.app_.video.seedance-2-5-Fr_Fj3TR.js       │ esm  │ 0.42 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/zh.app_.video.seedance-3-C2oy1lpc.js         │ esm  │ 0.24 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/zh.billing-COwTT6HX.js                       │ esm  │ 0.20 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/zh.gpt-image-2-5-prompts-Bzb7-GJE.js         │ esm  │ 0.43 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/zh.gpt-image-2-5-prompts_._slug-gCvqwM9e.js  │ esm  │ 0.49 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/zh.muse-image-prompts-DLpwMLrb.js            │ esm  │ 0.42 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/zh.muse-video-prompts-4tjHR4G7.js            │ esm  │ 0.42 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/zh.prompt-guide-xl9VBKOk.js                  │ esm  │ 0.73 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/zh.seedance-2-5-prompts-DV0UESzG.js          │ esm  │ 0.42 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/zh.seedance-2-5-prompts_._slug-L8EI1KBC.js   │ esm  │ 0.49 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/zh.seedance-3-0-prompts-CExcqdWL.js          │ esm  │ 0.43 KiB    │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ app-assets/_tanstack-start-manifest_v-B9YkWXm7.js       │ esm  │ 14.23 KiB   │
+├─────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ Total (84 modules)                                      │      │ 4907.32 KiB │
+└─────────────────────────────────────────────────────────┴──────┴─────────────┘
+✨ Read 92 files from the assets directory D:\Asideproject\! 网站、插件、APP\Seedance3\dist\client
+Total Upload: 5704.48 KiB / gzip: 1223.10 KiB
+Your Worker has access to the following bindings:
+Binding                                                               Resource                  
+env.CMS_JOBS (fa1e1517a43444f899d34abb737486b2)                       KV Namespace              
+env.DB (seedance3-production)                                         D1 Database               
+env.VIDEO_REFERENCES (seedance3-video-references)                     R2 Bucket                 
+env.VIDEO_UPLOAD_RATE_LIMITER (20 requests/60s)                       Rate Limit                
+env.IMAGE_RATE_LIMITER (2 requests/60s)                               Rate Limit                
+env.ASSETS                                                            Assets                    
+env.DATABASE_BACKEND ("d1")                                           Environment Variable      
+env.DATABASE_MIGRATION_PAUSED ("0")                                   Environment Variable      
+env.H3_REFERENCE_PROVIDER ("autodl-upgraded")                         Environment Variable      
+
+--dry-run: exiting now.
+
+Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
+🪵  Logs were written to "C:\Users\zhouw\AppData\Roaming\xdg.config\.wrangler\logs\wrangler-2026-10-24_07-37-20_708.log"

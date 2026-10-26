@@ -10,7 +10,7 @@
     "test:auth": "tsx --test tests/*.test.ts",
     "predev": "npm run db:d1:local",
     "dev": "node scripts/dev.mjs",
-    "build": "node scripts/sync-site-navigation.mjs && node scripts/build-home-video.mjs && vite build && tsc --noEmit",
+    "build": "node scripts/build-trust-pages.mjs && node scripts/sync-site-navigation.mjs && node scripts/build-home-auth.mjs && node scripts/build-home-video.mjs && vite build && tsc --noEmit",
     "sync:navigation": "node scripts/sync-site-navigation.mjs",
     "preview": "vite preview",
     "generate-routes": "tsr generate",

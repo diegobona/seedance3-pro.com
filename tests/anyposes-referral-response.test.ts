@@ -21,6 +21,17 @@ test('same-origin collection records the anonymous visit and is not cached', asy
   assert.deepEqual(await response.json(), { success: true })
 })
 
+test('GPT Image 2.5 collection accepts its canonical entry path without storing query data', async () => {
+  const visit = { ...body, entryPath: '/app/image/gpt-image-2-5-1k' }
+  let recorded: unknown
+  const response = await recordAnyposesReferralResponse(request(visit), async value => { recorded = value })
+  assert.equal(response.status, 200)
+  assert.deepEqual(recorded, visit)
+  for (const entryPath of ['/app/image/gpt-image-2-5-1k?prompt=private', '/zh/app/image/gpt-image-2-5-1k', '/app/image/gpt-image-2-5-1k/']) {
+    assert.equal((await recordAnyposesReferralResponse(request({ ...visit, entryPath }), async () => {})).status, 400)
+  }
+})
+
 test('cross-origin, missing origin and malformed/oversized payloads cannot touch storage', async () => {
   const calls: unknown[] = []
   const save = async (value: unknown) => { calls.push(value) }

@@ -1,4 +1,5 @@
 import { GPT_IMAGE_2_CREDIT_COST, type GenerationCreditStore, withCreditHeaders } from './generation-credits'
+import { creditBudgetErrorResponse } from './credit-budget-response'
 
 const DAILY_CREDITS_USED_MESSAGE = 'Today’s free credits are used up. Your daily allowance will refresh at the next reset.'
 
@@ -21,20 +22,20 @@ async function retryCreditTransition<T>(transition: () => Promise<T>) {
   }
 }
 
-async function hasUsableImage(response: Response) {
-  if (!response.ok || response.status === 204) return false
+async function usableImageCount(response: Response) {
+  if (!response.ok || response.status === 204) return 0
   const validatedImageCount = Number(response.headers.get('x-seedance-validated-image-count'))
-  if (Number.isSafeInteger(validatedImageCount) && validatedImageCount > 0) return true
+  if (Number.isSafeInteger(validatedImageCount) && validatedImageCount > 0) return validatedImageCount
   const payload = await response.clone().json().catch(() => null) as {
     success?: unknown
     image?: { url?: unknown; dataUrl?: unknown }
     images?: Array<{ url?: unknown; dataUrl?: unknown }>
   } | null
-  if (payload?.success !== true || !payload.image) return false
+  if (payload?.success !== true || !payload.image) return 0
   const images = Array.isArray(payload.images) && payload.images.length
     ? payload.images
     : [payload.image]
-  return images.every(isUsableGeneratedImage)
+  return images.every(isUsableGeneratedImage) ? images.length : 0
 }
 
 function isUsableGeneratedImage(image: { url?: unknown; dataUrl?: unknown }) {
@@ -97,7 +98,17 @@ export async function protectImageGeneration({ request, getSession, creditStore,
     ? requestedCreditCost
     : GPT_IMAGE_2_CREDIT_COST
 
-  const reservation = await creditStore.reserve(session.user.id, creditCost)
+  let reservation
+  try {
+    reservation = await creditStore.reserve(session.user.id, creditCost, {
+      unitCostMicros: 30_000,
+      paidOnly: request.headers.get('x-seedance-credit-source') === 'paid',
+    })
+  } catch (error) {
+    const response = creditBudgetErrorResponse(error)
+    if (response) return response
+    throw error
+  }
   if (!reservation) {
     const remainingCredits = await creditStore.getBalance(session.user.id)
     return creditResponse(Response.json({
@@ -133,7 +144,8 @@ export async function protectImageGeneration({ request, getSession, creditStore,
     return creditResponse(response, creditCost, refunded.remainingCredits)
   }
 
-  if (!await hasUsableImage(response)) {
+  const delivered = await usableImageCount(response)
+  if (!delivered) {
     const refunded = await retryCreditTransition(() => creditStore.refund(reservation.id))
     return creditResponse(Response.json({
       success: false,
@@ -145,8 +157,9 @@ export async function protectImageGeneration({ request, getSession, creditStore,
     }), creditCost, refunded.remainingCredits)
   }
 
-  await retryCreditTransition(() => creditStore.settle(reservation.id))
+  const fulfilledCredits = Math.min(creditCost, delivered * GPT_IMAGE_2_CREDIT_COST)
+  await retryCreditTransition(() => creditStore.settle(reservation.id, fulfilledCredits))
   const remainingCredits = await retryCreditTransition(() => creditStore.getBalance(session.user.id))
     .catch(() => reservation.remainingCredits)
-  return creditResponse(response, creditCost, remainingCredits)
+  return creditResponse(response, fulfilledCredits, remainingCredits)
 }

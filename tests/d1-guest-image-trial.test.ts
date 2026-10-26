@@ -44,7 +44,7 @@ test('both image models spend the same two-image D1 allowance independently of v
     const first = await generate(request())
     assert.equal(first.status, 200)
     assert.equal(first.headers.get('x-seedance-credit-scope'), 'guest-image')
-    assert.equal(first.headers.get('x-seedance-credit-remaining'), '5')
+    assert.equal(first.headers.get('x-seedance-credit-remaining'), '1')
     const cookie = first.headers.get('set-cookie')!.split(';')[0]
     const tooMany = await generate(request('gpt-image-2-5-1k', 2, cookie))
     assert.equal(tooMany.status, 402)
@@ -82,12 +82,12 @@ test('guest image claims are atomic, isolated from video cookies, and cannot ove
     const tampered = cookie.slice(0, -1) + (cookie.endsWith('0') ? '1' : '0')
     assert.equal(await resolveGuestImageTrial(request('gpt-image-2', 1, tampered), { store, secret }), null)
     const credits = createGenerationCreditStore(db)
-    const results = await Promise.all([1, 2, 3].map(() => credits.reserve(guest.value.session.user.id, 5)))
+    const results = await Promise.all([1, 2, 3].map(() => credits.reserve(guest.value.session.user.id, 1)))
     assert.equal(results.filter(Boolean).length, 2)
     assert.equal(await store.getBalance(guest.value.session.user.id), 0)
     await credits.refund(results.find(Boolean)!.id)
     await credits.refund(results.find(Boolean)!.id)
-    assert.equal(await store.getBalance(guest.value.session.user.id), 5)
+    assert.equal(await store.getBalance(guest.value.session.user.id), 1)
   } finally { await dispose() }
 })
 

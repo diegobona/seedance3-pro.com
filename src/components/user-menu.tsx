@@ -2,6 +2,9 @@ import { useSiteI18n } from '../lib/site-i18n'
 import { useEffect, useRef, useState } from 'react'
 import { authClient } from '../lib/auth-client'
 import { millisecondsUntilCreditReset } from '../../app/daily-credits.mjs'
+import { DAILY_FREE_CREDIT_GRANT } from '../lib/generation-credits'
+import { guestDeviceHeaders } from '../../assets/guest-device.mjs'
+import { openCreditPurchase } from '../../assets/credit-checkout.mjs'
 
 interface UserMenuProps {
   onLogin: () => void
@@ -11,6 +14,8 @@ interface CreditSummary {
   remaining: number
   generationCost: number
   dailyGrant: number
+  dailyRemaining: number | null
+  paidRemaining: number | null
 }
 
 interface CreditState extends CreditSummary {
@@ -18,9 +23,11 @@ interface CreditState extends CreditSummary {
 }
 
 export function UserMenu({ onLogin }: UserMenuProps) {
-  const { t } = useSiteI18n()
+  const { t, path, locale } = useSiteI18n()
   const { data: session, isPending, error } = authClient.useSession()
   const [open, setOpen] = useState(false)
+  const [purchasing, setPurchasing] = useState(false)
+  const [purchaseError, setPurchaseError] = useState(false)
   const [credits, setCredits] = useState<CreditState | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const announcedRemainingRef = useRef<number | null>(null)
@@ -51,7 +58,7 @@ export function UserMenu({ onLogin }: UserMenuProps) {
       const requestVersion = creditVersion
       try {
         const response = await fetch('/api/credits/balance', {
-          headers: { accept: 'application/json' },
+          headers: { accept: 'application/json', ...(await guestDeviceHeaders()) },
           credentials: 'same-origin',
           signal: controller.signal,
         })
@@ -71,6 +78,8 @@ export function UserMenu({ onLogin }: UserMenuProps) {
             remaining: creditVersion === requestVersion ? summary.remaining : announcedRemainingRef.current ?? summary.remaining,
             generationCost: summary.generationCost,
             dailyGrant: summary.dailyGrant,
+            dailyRemaining: typeof summary.dailyRemaining === 'number' && creditVersion === requestVersion ? summary.dailyRemaining : null,
+            paidRemaining: typeof summary.paidRemaining === 'number' && creditVersion === requestVersion ? summary.paidRemaining : null,
           })
           window.clearTimeout(dailyResetTimer)
           dailyResetTimer = window.setTimeout(() => { void loadCredits() }, millisecondsUntilCreditReset())
@@ -88,9 +97,12 @@ export function UserMenu({ onLogin }: UserMenuProps) {
       setCredits((current) => ({
         userId,
         remaining: detail.remaining as number,
-        generationCost: current?.generationCost ?? 5,
-        dailyGrant: current?.dailyGrant ?? 15,
+        generationCost: current?.generationCost ?? 1,
+        dailyGrant: current?.dailyGrant ?? DAILY_FREE_CREDIT_GRANT,
+        dailyRemaining: null,
+        paidRemaining: null,
       }))
+      void loadCredits()
     }
 
     void loadCredits()
@@ -128,6 +140,19 @@ export function UserMenu({ onLogin }: UserMenuProps) {
           <strong>{displayName}</strong>
           <small>{session.user.email}</small>
           <div className="user-menu-credit-row"><span>{t("Credits")}</span><strong>{currentCredits?.remaining ?? '—'}</strong></div>
+          <div className="user-menu-credit-row"><span>{t("Daily credits")}</span><strong>{currentCredits?.dailyRemaining ?? '—'}</strong></div>
+          <div className="user-menu-credit-row"><span>{t("Purchased credits")}</span><strong>{currentCredits?.paidRemaining ?? '—'}</strong></div>
+          <small>{t("Daily: resets at 00:00 Asia/Shanghai. Purchased: never expires.")}</small>
+          <a className="user-menu-billing" href={path('/billing') + '?checkout=start'} target="_blank" rel="noopener noreferrer" aria-busy={purchasing} onClick={async event => {
+            if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+            event.preventDefault()
+            if (purchasing) return
+            setPurchasing(true); setPurchaseError(false)
+            try { await openCreditPurchase({ locale }) }
+            catch { setPurchaseError(true) }
+            finally { setPurchasing(false) }
+          }}>{t("Buy credits & billing")}</a>
+          {purchaseError && <p role="alert">{locale === 'zh' ? '无法打开付款页面，请重试。' : 'Could not open checkout. Please try again.'}</p>}
           <button type="button" onClick={async () => {
             await authClient.signOut()
             setOpen(false)

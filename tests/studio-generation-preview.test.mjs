@@ -166,7 +166,7 @@ test('a prior image retains its exact download and animate action nodes across a
   animate.click();
   await flush();
   assert.equal(requests.calls.filter(call => call.url === `/api/images/animate?image=${animateId}` && call.method === 'POST').length, 1);
-  assert.deepEqual(navigations, [`/app/video/minimax-h3?reference=${referenceId}&aspect_ratio=16%3A9`]);
+  assert.deepEqual(navigations, [`/app/video/seedance-2-5?reference=${referenceId}&aspect_ratio=16%3A9`]);
 });
 
 test('real video polling timeout stays pending and explicit resume only GETs the stored task', async context => {
@@ -258,7 +258,7 @@ test('terminal video failure retry uses the captured prompt and video settings a
   assert.equal(element('generation-preview').dataset.state, 'succeeded');
 });
 
-test('H3 rejects multiple selections and a pasted second image while retaining the first reference', async context => {
+test('H3 accepts multiple selections and paste up to nine references and rejects a tenth', async context => {
   const { element, document } = await setup(context, { modelId: 'minimax-h3' });
   document.querySelector('[data-video-mode="reference"]').click();
   const first = new File(['first'], 'first.png', { type: 'image/png' });
@@ -268,22 +268,24 @@ test('H3 rejects multiple selections and a pasted second image while retaining t
     element('video-reference-input').dispatchEvent(new Event('change'));
   };
   choose([first, second]);
-  assert.equal(element('video-reference-grid').children.length, 0);
-  assert.match(element('generation-status').textContent, /only one reference image/i);
-  choose([first]);
-  assert.equal(element('video-reference-count').textContent, '1 / 1');
-  assert.equal(element('video-reference-add').disabled, true);
+  assert.equal(element('video-reference-grid').children.length, 2);
+  assert.equal(element('video-reference-count').textContent, '2 / 9');
+  assert.equal(element('video-reference-add').disabled, false);
+  choose(Array.from({ length: 6 }, (_, i) => new File([String(i)], `${i}.png`, { type: 'image/png' })));
   const event = new Event('paste', { cancelable: true });
   Object.defineProperty(event, 'clipboardData', { value: { files: [second] } });
   document.dispatchEvent(event);
-  assert.match(element('generation-status').textContent, /only one reference image/i);
-  assert.equal(element('video-reference-grid').children.length, 1);
+  assert.equal(element('video-reference-count').textContent, '9 / 9');
+  assert.equal(element('video-reference-add').disabled, true);
+  choose([second]);
+  assert.match(element('generation-status').textContent, /up to 9 reference images/i);
+  assert.equal(element('video-reference-grid').children.length, 9);
   assert.match(element('video-reference-grid').querySelector('img').alt, /first.png/);
   element('video-reference-grid').querySelector('button').onclick();
-  assert.equal(element('video-reference-count').textContent, '0 / 1');
+  assert.equal(element('video-reference-count').textContent, '8 / 9');
   assert.equal(element('video-reference-add').disabled, false);
   choose([second]);
-  assert.match(element('video-reference-grid').querySelector('img').alt, /second.png/);
+  assert.equal(element('video-reference-count').textContent, '9 / 9');
 });
 
 test('reference previews preserve the complete original and update the native frame when the ratio changes', async context => {
@@ -293,7 +295,7 @@ test('reference previews preserve the complete original and update the native fr
   element('video-reference-input').files = [file];
   element('video-reference-input').dispatchEvent(new Event('change'));
   const source = element('video-reference-grid').querySelector('img').src;
-  for (const [ratio, expected] of [['16:9', '864 / 480'], ['9:16', '480 / 864'], ['16:9', '864 / 480']]) {
+  for (const [ratio, expected] of [['16:9', '1344 / 768'], ['9:16', '768 / 1344'], ['16:9', '1344 / 768']]) {
     change('video-aspect-ratio', ratio);
     const image = element('video-reference-grid').querySelector('img');
     assert.equal(image.style.aspectRatio, expected);
@@ -304,8 +306,8 @@ test('reference previews preserve the complete original and update the native fr
   document.querySelector('[data-video-mode="text"]').click();
   change('video-aspect-ratio', '1:1');
   document.querySelector('[data-video-mode="reference"]').click();
-  assert.equal(element('video-aspect-ratio').value, '16:9');
-  assert.equal(element('video-reference-grid').querySelector('img').style.aspectRatio, '864 / 480');
+  assert.equal(element('video-aspect-ratio').value, '1:1');
+  assert.equal(element('video-reference-grid').querySelector('img').style.aspectRatio, '768 / 768');
 });
 
 test('switching H3 back to text mode does not upload or submit hidden reference images', async context => {
@@ -313,7 +315,7 @@ test('switching H3 back to text mode does not upload or submit hidden reference 
   document.querySelector('[data-video-mode="reference"]').click();
   element('video-reference-input').files = [new File([new Uint8Array([1, 2, 3])], 'reference.png', { type: 'image/png' })];
   element('video-reference-input').dispatchEvent(new Event('change'));
-  assert.equal(element('video-reference-count').textContent, '1 / 1');
+  assert.equal(element('video-reference-count').textContent, '1 / 9');
   document.querySelector('[data-video-mode="text"]').click();
   assert.equal(element('video-reference-group').hidden, true);
   input('studio-prompt', 'A text-only cinematic scene');

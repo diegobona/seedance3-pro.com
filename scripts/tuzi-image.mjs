@@ -57,6 +57,10 @@ export async function preflightImageGenerationRequest(request, env = {}, options
       return json({ success: false, message: "Generation limit reached. Please wait a minute and try again." }, 429);
     }
   }
+  if (options.validateBody) {
+    // Bound and validate the full body before reserving either credits or supplier budget.
+    return handleImageGenerationRequest(request.clone(), env, { skipPreflight: true, validateOnly: true });
+  }
   return null;
 }
 
@@ -151,6 +155,8 @@ export async function handleImageGenerationRequest(request, env = {}, options = 
     return json({ success: false, message: referenceError }, tooLarge ? 413 : 400);
   }
 
+  if (options.validateOnly) return null;
+
   try {
     let images = await generateTuziImage({ model: modelResult.value, prompt, referenceImages: imageValues, quantity, size }, {
       apiKey,
@@ -182,7 +188,7 @@ export async function generateTuziImage({
   quantity = DEFAULT_QUANTITY,
   size
 }, {
-  apiKey,
+  apiKey = "",
   apiBase = DEFAULT_API_BASE,
   fetchImpl = fetch,
   timeoutMs = UPSTREAM_TIMEOUT_MS
@@ -238,10 +244,9 @@ export async function generateTuziImage({
     return imageData ? [imageData] : [];
   });
   if (!images.length) throw providerError("Image provider returned no usable image.", 502);
-  if (images.length !== quantity) {
-    throw providerError("Image provider did not return the requested number of images.", 502);
-  }
-  return images;
+  // Deliver usable partial batches; the accounting boundary settles delivered outputs only.
+  // Never bill for unexpected extra outputs.
+  return images.slice(0, quantity);
 }
 
 async function createGenerationBody({ model, selectedModel, prompt, referenceImages, quantity, size }) {

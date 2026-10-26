@@ -1,5 +1,10 @@
 # CompShare H3 first-frame channel
 
+> Since 2026-10-20 this adapter is retained but inactive for new reference jobs.
+> `H3_REFERENCE_PROVIDER=autodl-upgraded` selects AutoDL 768P with up to nine images.
+> Historical CompShare tasks still query this adapter. Its documented 480P,
+> single-image submission contract below is intentionally unchanged.
+
 The existing H3 image trial can submit one image as the first frame through
 CompShare. Text-to-video stays on AutoDL, and GPT image generation is unchanged.
 The existing 480p trial, guest 10-second lifetime allowance (5-second default,

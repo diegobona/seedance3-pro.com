@@ -1,5 +1,5 @@
 const resources = {
-  home: ['/', 'Seedance home', 'Seedance 首页', 'Explore the tools, guides and official release tracker.', '浏览创作工具、使用指南和官方发布动态。'],
+  home: ['/', 'Seedance home', 'Seedance 首页', 'Explore the tools, guides and release tracker.', '浏览创作工具、使用指南和发布动态。'],
   release: ['/seedance-3-0-release-date', 'Seedance 3.0 release tracker', 'Seedance 3.0 发布跟踪', 'Review official sources and the latest completed source check.', '查看官方来源及最近一次完整核查的结果。'],
   pose: ['/pose-to-image', 'AI pose generator', 'AI 姿势生成器', 'Arrange a pose and camera view before preparing an image reference.', '先安排姿势和镜头视角，再准备图像参考。'],
   hub: ['/seedance-3-0', 'Seedance 3.0 resource hub', 'Seedance 3.0 资源中心', 'Find release updates, FAQs, prompt drafts and reference guides.', '集中查看发布动态、常见问题、提示词草稿和参考指南。'],

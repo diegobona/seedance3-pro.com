@@ -40,7 +40,7 @@ function validVisit(value: unknown): value is ReferralVisit {
   const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
   return typeof visit.visitorId === 'string' && uuid.test(visit.visitorId)
     && typeof visit.visitId === 'string' && uuid.test(visit.visitId)
-    && visit.entryPath === '/app/image/gpt-image-2'
+    && (visit.entryPath === '/app/image/gpt-image-2' || visit.entryPath === '/app/image/gpt-image-2-5-1k')
 }
 
 export async function recordReferralResponse(

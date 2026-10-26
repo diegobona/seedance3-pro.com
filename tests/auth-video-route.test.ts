@@ -11,7 +11,7 @@ import { COMPSHARE_FIRST_FRAME_WORKFLOW_ID as compshare, selectVideoWorkflow, as
 const validPayload = {
   prompt: 'A paper boat crossing a moonlit lake',
   duration: 10,
-  resolution: '480p',
+  resolution: '768p',
   aspectRatio: '16:9',
 }
 
@@ -25,8 +25,8 @@ test('guests may reserve five seconds and keep the other five seconds', async ()
   assert.equal(response.headers.get('x-seedance-credit-scope'), 'guest-video')
 })
 
-test('guests cannot submit fifteen seconds or higher resolutions', async () => {
-  for (const payload of [{ ...validPayload, duration: 15 }, { ...validPayload, resolution: '768p' }]) {
+test('guests cannot submit fifteen seconds or resolutions other than 768p', async () => {
+  for (const payload of [{ ...validPayload, duration: 15 }, { ...validPayload, resolution: '480p' }]) {
     const harness = startHarness({ getSession: async () => ({ user: { id: 'guest-1', isGuest: true } }),
       preflight: async () => ({ ok: true, payload }) })
     const response = await protectVideoGenerationStart(harness.options as never)
@@ -54,12 +54,12 @@ test('reference generation records the correct workflow while keeping duration-b
   const response = await protectVideoGenerationStart(harness.options as never)
   assert.equal(response.status, 202)
   assert.deepEqual(harness.calls.reserve[0], ['user-1', 10, {
-    workflowId: 'minimax_h3_image_audio_to_video_v2_15s', duration: 10, resolution: '480p', aspectRatio: '16:9',
-  }])
+    workflowId: 'minimax_h3_image_audio_to_video_v2_15s', duration: 10, resolution: '768p', aspectRatio: '16:9',
+  }, undefined, { unitCostMicros: 60_000, paidOnly: false }])
 })
 
 test('trusted selection persists CompShare and submits the actual reservation ID and workflow', async () => {
-  const image = { ...validPayload, referenceImageIds: [crypto.randomUUID()], referenceImageUrls: ['https://example.test/reference.png'] }
+  const image = { ...validPayload, resolution: '480p', referenceImageIds: [crypto.randomUUID()], referenceImageUrls: ['https://example.test/reference.png'] }
   const environment = { H3_REFERENCE_PROVIDER: 'compshare', COMPSHARE_API_KEY: 'test-key' }
   const contexts: unknown[] = []
   const harness = startHarness({ preflight: async () => ({ ok: true, payload: image }),
@@ -205,9 +205,11 @@ test('start reserves one credit per second without persisting the prompt, then s
     {
       workflowId: 'minimax_h3_lightx2v_no_pic',
       duration: 10,
-      resolution: '480p',
+      resolution: '768p',
       aspectRatio: '16:9',
     },
+    undefined,
+    { unitCostMicros: 60_000, paidOnly: false },
   ]])
   assert.equal(harness.calls.submit, 1)
   assert.deepEqual(harness.calls.attach, [['local-task-1', 'provider-1']])

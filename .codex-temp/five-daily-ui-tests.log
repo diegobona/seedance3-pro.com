@@ -1,0 +1,42 @@
+✔ daily refresh follows Beijing midnight independently of the browser region (1.2852ms)
+✔ the same credit reset is displayed in the visitor timezone with daylight saving respected (43.747ms)
+✔ an open generator refreshes an exhausted balance at midnight and cleans up its timer (31.1987ms)
+✔ guest image quantity follows the shared remaining images while signed-in users keep three (3.0017ms)
+✔ image responses keep guest credit events separate from video and account balances (28.2111ms)
+✔ guest duration defaults to five, caps at ten, and uses the remaining seconds (4.3769ms)
+✔ switching models discards the old guest balance and ignores late guest credit events (2.9861ms)
+✔ guest balance metadata reaches the UI before rendering, with no daily reset timer (1.256ms)
+✔ homepage purchase opens immediately in a separate tab without saving or navigating away (1.8605ms)
+✔ homepage action keeps exhausted users on a usable registration or purchase button (1.6462ms)
+✔ homepage saves draft before one Stripe request and returns to its own language path (7.1555ms)
+✔ cancelled login never buys and an ordinary later login does not consume an old purchase intent (0.6336ms)
+✔ successful email login resumes an explicit purchase once, while failed draft persistence blocks checkout (0.8012ms)
+✔ homepage handoff keeps the original reference, draft settings and accepted task without submitting anything (4.8836ms)
+✔ replacing a draft releases its old reference and malformed task identifiers are discarded (1.5474ms)
+✔ homepage handoff preserves all nine ordered references and consumes every stored file (2.6125ms)
+✔ a failed multi-file save cleans new blobs and preserves the previous usable draft (1.0788ms)
+✔ legacy single-reference drafts still restore into the multi-reference workspace contract (0.6883ms)
+✔ homepage checkout drafts can survive a longer payment visit while workspace handoffs retain their shorter default (0.4748ms)
+✔ both homepages retain one keyword H1 and structured SEO while showing the generator before examples and Pose (13.8725ms)
+✔ free budget rejection requires a visible explicit choice before sending a paid image request (130.5796ms)
+✔ en gpt-image-2-5-1k account allowance remains daily credits with 500 purchased credits (117.2006ms)
+✔ en gpt-image-2-5-1k account allowance remains daily credits with 0 purchased credits (40.1905ms)
+✔ en minimax-h3 account allowance remains daily credits with 500 purchased credits (57.3769ms)
+✔ en minimax-h3 account allowance remains daily credits with 0 purchased credits (36.6351ms)
+✔ en pending account lookup stays neutral, then guest exhaustion and sign-in update the notice (45.2234ms)
+✔ zh gpt-image-2-5-1k account allowance remains daily credits with 500 purchased credits (35.9803ms)
+✔ zh gpt-image-2-5-1k account allowance remains daily credits with 0 purchased credits (34.0461ms)
+✔ zh minimax-h3 account allowance remains daily credits with 500 purchased credits (33.4902ms)
+✔ zh minimax-h3 account allowance remains daily credits with 0 purchased credits (31.7274ms)
+✔ zh pending account lookup stays neutral, then guest exhaustion and sign-in update the notice (42.4186ms)
+✔ account with 5 credits offers only affordable video durations (31.7571ms)
+✔ account with 505 credits offers only affordable video durations (29.7924ms)
+✔ account image batches follow the remaining credits after daily usage (36.9186ms)
+ℹ tests 34
+ℹ suites 0
+ℹ pass 34
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 809.549

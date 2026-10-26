@@ -1,6 +1,7 @@
 import { t } from './i18n.mjs';
+import { guestDeviceHeaders } from '../assets/guest-device.mjs';
 import { DEFAULT_IMAGE_MODEL, getImageModel, imageSizeForAspectRatio } from './image-models.mjs';
-import { millisecondsUntilCreditReset } from './daily-credits.mjs';
+import { millisecondsUntilCreditReset, creditDebitPreview } from './daily-credits.mjs';
 export const IMAGE_EXAMPLE_PROMPTS = [
   "A cinematic portrait of a fashion designer in a sunlit studio, natural pose, editorial composition, warm rim light, premium magazine photography.",
   "A premium product photograph of a translucent citrus perfume bottle on pale stone, soft morning shadows, clean luxury campaign styling, 3:2 landscape composition.",
@@ -109,7 +110,7 @@ export function normalizeImageQuantity(value) {
 }
 
 export function creditCostForQuantity(value, modelId = DEFAULT_IMAGE_MODEL) {
-  return normalizeImageQuantity(value) * (getImageModel(modelId)?.creditCost ?? 5);
+  return normalizeImageQuantity(value) * (getImageModel(modelId)?.creditCost ?? 1);
 }
 
 export function creditCostForDuration(value) {
@@ -148,6 +149,10 @@ export function createCreditSummaryController({
   costElement,
   currentBalanceElement,
   balanceLabelElement,
+  debitElement,
+  splitBalanceElement,
+  purchaseNoticeElement,
+  getPaidOnly = () => false,
   quantityControl,
   additionalCostControls = [],
   getCost,
@@ -164,6 +169,7 @@ export function createCreditSummaryController({
   onChange = () => {}
 }) {
   let balance = null;
+  let creditBreakdown = null;
   let destroyed = false;
   let loadVersion = 0;
   let loadAbortController = null;
@@ -189,13 +195,27 @@ export function createCreditSummaryController({
     const base = typeof getCost === "function"
       ? creditSummaryForCost(balance, getCost())
       : creditSummaryFor(balance, quantityControl?.value);
-    const summary = { ...base, displayBalance: preview ? base.projectedBalance : base.currentBalance, isPreview: preview };
+    const debit = creditDebitPreview(creditBreakdown, base.cost, getPaidOnly());
+    const summary = { ...base, insufficient: debit?.insufficient ?? base.insufficient,
+      displayBalance: preview ? base.projectedBalance : base.currentBalance, isPreview: preview };
     const context = getContext();
+    if (debitElement) {
+      debitElement.hidden = true;
+      debitElement.textContent = debit
+        ? t('Next generation: {daily} daily + {paid} purchased credits.', debit)
+        : t('Loading credit breakdown…');
+    }
+    if (splitBalanceElement) {
+      splitBalanceElement.hidden = true;
+      splitBalanceElement.textContent = debit
+        ? t('Balance: {daily} daily · {paid} purchased', { daily: creditBreakdown.dailyRemaining, paid: creditBreakdown.paidRemaining })
+        : t('Loading credit breakdown…');
+    }
     if (balanceLabelElement) balanceLabelElement.textContent = t(preview ? 'AFTER GENERATION' : 'REMAINING');
     if (context === 'guest-image') {
-      const count = summary.cost / 5;
+      const count = summary.cost;
       costElement.textContent = count === 1 ? t('1 free image') : t('{count} free images', { count });
-      const remaining = summary.displayBalance === null ? null : Math.floor(summary.displayBalance / 5);
+      const remaining = summary.displayBalance;
       currentBalanceElement.textContent = remaining === null ? t('— images remaining')
         : remaining === 1 ? t('1 image remaining') : t('{count} images remaining', { count: remaining });
     } else if (context === 'guest-video') {
@@ -203,12 +223,14 @@ export function createCreditSummaryController({
       currentBalanceElement.textContent = summary.displayBalance === null ? t('— seconds remaining')
         : t('{seconds} seconds remaining', { seconds: summary.displayBalance });
     } else {
-      costElement.textContent = t('{cost} credits', { cost: summary.cost });
-      currentBalanceElement.textContent = summary.displayBalance === null ? t('— credits') : t('{cost} credits', { cost: summary.displayBalance });
+      costElement.textContent = summary.cost === 1 ? t('1 credit') : t('{cost} credits', { cost: summary.cost });
+      currentBalanceElement.textContent = summary.displayBalance === null ? t('— credits')
+        : summary.displayBalance === 1 ? t('1 credit') : t('{cost} credits', { cost: summary.displayBalance });
     }
     // A running generation has already reserved its cost. That reservation is
     // not a failure; show warnings only once its result is available.
     const pending = isGenerationPending();
+    if (purchaseNoticeElement) purchaseNoticeElement.hidden = !summary.insufficient || pending;
     container.classList.toggle("is-insufficient", summary.insufficient && !pending);
     container.classList.toggle("is-exhausted", summary.currentBalance === 0 && !pending);
     onChange(summary);
@@ -218,9 +240,11 @@ export function createCreditSummaryController({
     if ((event?.detail?.context ?? 'account') !== getContext()) return;
     invalidateLoad();
     balance = normalizeCreditBalance(event?.detail?.remaining);
+    creditBreakdown = event?.detail;
     // Provider headers already include reservations, settlement or refunds.
     preview = false;
     render();
+    if (debitElement || splitBalanceElement) void loadBalance();
   }
 
   function handleCostChanged(event) {
@@ -233,6 +257,7 @@ export function createCreditSummaryController({
     preview = true;
     onBalanceLoaded(null, null);
     balance = null;
+    creditBreakdown = null;
     render();
     void loadBalance();
   }
@@ -246,6 +271,7 @@ export function createCreditSummaryController({
     let loadedCredits = null;
     try {
       const response = await fetchImpl(getBalanceUrl(), {
+        headers: await guestDeviceHeaders(),
         credentials: "same-origin",
         signal: abortController.signal
       });
@@ -260,12 +286,13 @@ export function createCreditSummaryController({
     if (destroyed || requestVersion !== loadVersion) return;
     loadAbortController = null;
     balance = loadedBalance;
+    creditBreakdown = loadedCredits;
     onBalanceLoaded(loadedBalance, loadedCredits);
     render();
     if (loadedBalance !== null) {
       if (dailyResetTimer !== null) clearTimeoutImpl(dailyResetTimer);
       dailyResetTimer = null;
-      if (loadedCredits?.expiresDaily !== false) scheduleDailyReset();
+      if (loadedCredits?.guest !== true || loadedCredits?.expiresDaily !== false) scheduleDailyReset();
     }
   }
 
@@ -288,6 +315,7 @@ export function createCreditSummaryController({
       invalidateLoad();
       preview = true;
       balance = null;
+      creditBreakdown = null;
       render();
       return loadBalance();
     },

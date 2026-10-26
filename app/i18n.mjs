@@ -1,8 +1,39 @@
 import { localeFromPath } from './site-locale.mjs';
+import { videoResolutionLabel } from './video-resolution-label.mjs';
+import { modelDisplayNames } from './model-display-names.mjs';
 
 // Keys remain readable English; prompts, model IDs and provider enum values are
 // deliberately kept out of this dictionary's automatic UI translation path.
 export const ZH_MESSAGES = Object.freeze({
+  "This network’s daily free allowance is used up. It resets at 00:00 Asia/Shanghai. You can choose to use purchased credits.": "当前网络的每日免费额度已用完，将于北京时间 00:00 重置。你可以主动选择使用购买积分。",
+  "Each network shares a daily limit of 10 free credits across guest and registered image/video generation.": "同一网络每天共享 10 积分免费额度，游客和注册用户生成图片、视频均计入。",
+  "Pricing": "价格",
+  "Not enough credits.": "额度不足。",
+  "Credits reset daily and do not accumulate.": "积分每日重置，不累积。",
+  "Daily credits": "每日积分",
+  "Purchased credits": "购买积分",
+  "Daily: resets at 00:00 Asia/Shanghai. Purchased: never expires.": "每日积分：北京时间 00:00 重置。购买积分：永久有效。",
+  "Buy credits & billing": "购买积分与账单",
+  "Loading credit breakdown…": "正在加载积分明细…",
+  "Next generation: {daily} daily + {paid} purchased credits.": "下次生成扣费：{daily} 每日积分 + {paid} 购买积分。",
+  "Balance: {daily} daily · {paid} purchased": "当前余额：{daily} 每日积分 · {paid} 购买积分",
+  "Use purchased credits only for this generation": "本次生成仅使用购买积分",
+  "Today’s free generation budget is reached. Wait until reset, or explicitly choose purchased credits.": "今日免费生成预算已达上限。请等待重置，或主动选择使用购买积分。",
+  "Buy 500 credits · $4.99": "购买 500 积分 · $4.99",
+  "500 seconds of video": "可生成总计 500 秒视频",
+  "500 images or 500 seconds of video": "可生成 500 张图片或 500 秒视频",
+  "1 credit": "1 积分",
+  "Generate image · 1 credit": "生成图片 · 1 积分",
+  "Generate again · 1 credit": "再次生成 · 1 积分",
+  "GPT Image 2.5 uses 1 credit per image.": "GPT Image 2.5 每张图片消耗 1 积分。",
+  "All signed-in accounts get {credits} credits {daily}, shared across images and videos.": "所有登录账户{daily}获得 {credits} 积分，图片与视频共用。",
+  "Daily credits reset at 00:00 Asia/Shanghai ({time} local time) and do not accumulate. Purchased credits never expire.": "每日积分在北京时间 00:00（当地时间 {time}）重置，不累积。购买积分永久有效。",
+  "One credit per image": "每张图片 1 积分",
+  "The trial costs one credit per image. Review the total for your selected image count and sign in to generate.": "每张图片消耗 1 积分。请先查看所选图片数量对应的总积分。",
+
+  'TRIAL · 768P': '试用 · 768P',
+  '1–9 images · PNG, JPEG or WebP · max 10 MB each': '1–9 张图 · PNG、JPEG 或 WebP · 每张最大 10 MB',
+  'Describe the role of each reference image, then describe the motion and camera movement.': '说明每张参考图的用途，再描述主体动作和镜头运动。',
   'Your homepage draft is ready.': '已接续首页草稿，可继续编辑。',
   'Could not restore the reference image. Please choose it again.': '参考图暂时无法恢复，请重新选择图片。',
   'Choose a supported video aspect ratio.': '请选择支持的视频画幅。',
@@ -28,6 +59,7 @@ export const ZH_MESSAGES = Object.freeze({
   'Try for free. No sign-up or login required.': '无需注册和登录，即可免费试用',
   'Free trial used up': '游客免费体验额度已用完',
   'Free trial': '免费试用中',
+  'Daily free credits': '每日免费积分',
   'No registration or login required.': '无需注册和登录',
   'GPT Image 2 and 2.5 share 2 free images.': 'GPT Image 2 和 2.5 共用 2 张免费图片额度',
   'Generate {count} images · free': '免费生成 {count} 张图片',
@@ -39,7 +71,7 @@ export const ZH_MESSAGES = Object.freeze({
   '{count} free images': '免费 {count} 张图片',
   '{count} images remaining': '剩余 {count} 张图片',
   '— images remaining': '剩余 — 张图片',
-  'Your free images are used up. Sign up for 15 free credits every day.': '免费图片额度已用完，注册后每天赠送 15 积分。',
+  'Your free images are used up. Sign up for 5 free credits every day.': '免费图片额度已用完，注册后每天赠送 5 积分。',
   'Image generated · {count} free images remaining.': '图片已生成 · 还剩 {count} 张免费图片额度。',
   'Choose fewer images or sign up to keep creating.': '请选择更少的图片数量，或注册后继续生成。',
   'Choose 5 or 10 seconds.': '可选 5 秒或 10 秒',
@@ -50,10 +82,12 @@ export const ZH_MESSAGES = Object.freeze({
   '{seconds} seconds remaining': '剩余 {seconds} 秒',
   '— seconds remaining': '剩余 — 秒',
   'Video generated · {seconds} free seconds remaining.': '视频已生成 · 还剩 {seconds} 秒免费额度。',
-  'Your free video seconds are used up. Sign up for 15 free credits every day.': '游客免费视频额度已用完，注册后每天赠送 15 积分。',
+  'Your free video seconds are used up. Sign up for 5 free credits every day.': '游客免费视频额度已用完，注册后每天赠送 5 积分。',
   'Not enough free video seconds for this duration. Choose 5 seconds or sign up to keep creating.': '剩余免费秒数不足，请选择 5 秒或注册后继续创作。',
-  'Guest videos support 5 or 10 seconds at 480p.': '游客视频支持 5 秒或 10 秒，固定 480p。',
+  'Guest videos support 5 or 10 seconds at 768p.': '游客视频支持 5 秒或 10 秒，固定 768p。',
   'This network has already claimed the guest video trial. Sign up to keep creating.': '当前网络已领取过游客体验额度，请注册后继续创作。',
+  'This device or network has already claimed the guest video trial. Sign up to keep creating.': '当前设备或网络已领取过游客视频额度，请注册后继续创作。',
+  'This device or network has already claimed the guest image trial. Sign up to keep creating.': '当前设备或网络已领取过游客图片额度，请注册后继续创作。',
   'Guest video generation is temporarily unavailable. Please try again later.': '游客视频生成暂时不可用，请稍后重试。',
   'Create with GPT Image 2.5': '使用 GPT Image 2.5创作',
   'Describe the subject, composition and lighting, or add reference images to guide your edit.': '描述主体、构图和光线，也可以添加参考图来指导编辑。',
@@ -124,7 +158,7 @@ export const ZH_MESSAGES = Object.freeze({
   'Animate this image ↗': '让这张图片动起来 ↗',
   'Animate this image {number}': '让图片 {number} 动起来',
   'Preparing image…': '正在准备图片…',
-  'Saving your reference image for H3…': '正在为 H3 保存参考图片…',
+  'Saving your reference image for Seedance 2.5…': '正在为 Seedance 2.5 保存参考图片…',
   'GENERATED IMAGES': "生成的图像",
   'Provider image links may expire. Open or download each result when it is ready.': "服务商提供的图像链接可能会失效。结果就绪后，请及时打开或下载。",
   'Generated video': '生成的视频',
@@ -158,7 +192,9 @@ export const ZH_MESSAGES = Object.freeze({
   'Could not load the image. Please upload it again.': '无法加载图片，请重新上传。',
   'Prompt structure added.': '已添加提示词结构。',
   'Example prompt loaded. Click again for another.': '已载入示例提示词，再次点击可切换示例。',
-  'H3 supports only one reference image. Remove the current image before adding another.': 'H3 只能上传一张参考图，请先移除当前图片再添加。',
+  'Seedance 2.5 supports only one reference image. Remove the current image before adding another.': 'Seedance 2.5 只能上传一张参考图，请先移除当前图片再添加。',
+  'Seedance 2.5 supports up to 9 reference images.': 'Seedance 2.5 最多支持 9 张参考图。',
+  'Choose 1 to 9 valid reference images.': '请选择 1 至 9 张有效的参考图。',
   'Choose one valid reference image.': '请选择一张有效的参考图。',
   'Reference image ready.': '参考图已就绪。',
   'Reference images ready.': '参考图片已就绪。',
@@ -188,7 +224,7 @@ export const ZH_MESSAGES = Object.freeze({
   'Log in to check video generation.': '请登录后查看视频进度。',
   'Log in to upload reference images.': '请登录后上传参考图片。',
   'Log in to animate this image.': '请登录后让这张图片动起来。',
-  'Free trial video generation supports 480p only.': '免费试用的视频分辨率仅支持 480p。',
+  'Free trial video generation supports 768p only.': '免费试用的视频分辨率仅支持 768p。',
   'Generation limit reached. Please wait a minute and try again.': '已达到生成频率限制，请等待一分钟后重试。',
   'Please wait a minute and try again.': '请等待一分钟后重试。',
   'Reference uploads are temporarily unavailable.': '参考图上传暂时不可用，请稍后重试。',
@@ -201,9 +237,9 @@ export const ZH_MESSAGES = Object.freeze({
   'A reference image expired or is unavailable. Please upload it again.': '参考图片已过期或不可用，请重新上传。',
   'A reference image expired or is unavailable. Please remove it and upload it again.': '参考图片已过期或不可用，请移除后重新上传。',
   'Image transfer is temporarily unavailable.': '图片传入暂时不可用，请稍后重试。',
-  'This image is unavailable. Save it and upload it in H3 instead.': '图片不可用，请保存后在 H3 中上传。',
-  'Could not retrieve this image. Please try again or save and upload it in H3.': '无法获取图片，请重试或保存后在 H3 中上传。',
-  'The image link expired. Save and upload the image in H3 instead.': '图片链接已过期，请保存后在 H3 中上传。',
+  'This image is unavailable. Save it and upload it in Seedance 2.5 instead.': '图片不可用，请保存后在 Seedance 2.5 中上传。',
+  'Could not retrieve this image. Please try again or save and upload it in Seedance 2.5.': '无法获取图片，请重试或保存后在 Seedance 2.5 中上传。',
+  'The image link expired. Save and upload the image in Seedance 2.5 instead.': '图片链接已过期，请保存后在 Seedance 2.5 中上传。',
   'Image service returned an invalid image URL.': '图片服务返回了无效图片链接。',
   'Image service returned invalid image data.': '图片服务返回了无效图片数据。',
   'Video polling was aborted.': '已停止检查视频生成进度。',
@@ -222,8 +258,8 @@ export const ZH_MESSAGES = Object.freeze({
   'Video service returned an invalid task status.': '视频服务返回了无效任务状态。',
   'Choose PNG, JPEG or WebP images, up to 10 MB each.': '请选择 PNG、JPEG 或 WebP 图片，每张不超过 10 MB。',
   'Reference upload returned an invalid response.': '参考图上传返回了无效响应，请重试。',
-  'Could not transfer this image. Save it, then upload it as a reference in H3.': '无法传入这张图片，请保存后在 H3 中上传为参考图片。',
-  'This image link is unavailable. Save and upload the image in H3 instead.': '图片链接不可用，请保存图片后在 H3 中上传。',
+  'Could not transfer this image. Save it, then upload it as a reference in Seedance 2.5.': '无法传入这张图片，请保存后在 Seedance 2.5 中上传为参考图片。',
+  'This image link is unavailable. Save and upload the image in Seedance 2.5 instead.': '图片链接不可用，请保存图片后在 Seedance 2.5 中上传。',
   'The reference must be a PNG, JPEG or WebP image up to 10 MB.': '参考图须为 PNG、JPEG 或 WebP 图片，大小不超过 10 MB。',
   'Image transfer failed. Please try again.': '图片传入失败，请重试。',
   'Invalid reference image link. Please choose an image again.': '参考图片链接无效，请重新选择图片。',
@@ -295,11 +331,13 @@ export function currentLocale() {
 export function t(message, values = {}, locale = currentLocale()) {
   const source = String(message ?? '');
   const translated = locale === 'zh' && Object.hasOwn(ZH_MESSAGES, source) ? ZH_MESSAGES[source] : source;
-  return translated.replace(/\{([a-zA-Z][\w]*)\}/g, (placeholder, key) =>
-    Object.hasOwn(values, key) ? String(values[key]) : placeholder);
+  return modelDisplayNames(videoResolutionLabel(translated.replace(/\{([a-zA-Z][\w]*)\}/g, (placeholder, key) =>
+    Object.hasOwn(values, key) ? String(values[key]) : placeholder)));
 }
 
 const ERROR_MESSAGES = Object.freeze({
+  FREE_BUDGET_EXCEEDED: 'Today’s free generation budget is reached. Wait until reset, or explicitly choose purchased credits.',
+  NETWORK_FREE_BUDGET_EXCEEDED: 'This network’s daily free allowance is used up. It resets at 00:00 Asia/Shanghai. You can choose to use purchased credits.',
   AUTH_REQUIRED: 'Please log in to continue.',
   INSUFFICIENT_CREDITS: 'Insufficient credits. Please check your balance.',
   RATE_LIMITED: 'Too many requests. Please try again later.',
@@ -324,11 +362,11 @@ const ZH_ERROR_MESSAGES = Object.freeze({
 
 export function localizedErrorMessage(message, code = '', fallback = 'Image generation failed.', locale = currentLocale()) {
   const source = String(message || fallback);
-  if (locale !== 'zh') return source;
+  if (locale !== 'zh') return modelDisplayNames(videoResolutionLabel(source));
   if (Object.hasOwn(ZH_MESSAGES, source)) return t(source, {}, locale);
   const known = ERROR_MESSAGES[code];
   if (known) return ZH_ERROR_MESSAGES[known] || t(known, {}, locale);
   // Unknown service details receive a stable message in the selected language.
-  if (/[\u3400-\u9fff]/u.test(source)) return source;
+  if (/[\u3400-\u9fff]/u.test(source)) return modelDisplayNames(videoResolutionLabel(source));
   return t(fallback, {}, locale);
 }

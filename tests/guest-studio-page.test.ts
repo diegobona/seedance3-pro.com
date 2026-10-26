@@ -25,13 +25,35 @@ async function render(pathname: string, initialModel = 'minimax-h3') {
   return renderToString(createElement(RouterProvider, { router }))
 }
 
+test('generation purchase prompt is hidden until needed and opens checkout in a new tab in both languages', async () => {
+  for (const prefix of ['', '/zh']) {
+    const html = await render(`${prefix}/app/video/seedance-2-5`)
+    const notice = html.match(/<p\b[^>]*id="credit-purchase-notice"[^>]*>[\s\S]*?<\/p>/)?.[0] ?? ''
+    assert.match(notice, /\bhidden=""/)
+    assert.ok(notice.includes(`href="${prefix}/billing?checkout=start"`))
+    assert.match(notice, /target="_blank" rel="noopener noreferrer"/)
+    assert.match(notice, prefix ? /额度不足。/ : /Not enough credits\./)
+    assert.match(html, /id="credit-balance-split" hidden=""><\/p>/)
+    assert.match(html, /id="credit-debit-preview" hidden=""><\/p>/)
+  }
+})
+
+test('SSR uses a neutral allowance heading while the account session is unresolved in both languages', async () => {
+  for (const prefix of ['', '/zh']) {
+    const html = await render(`${prefix}/app/video/minimax-h3`)
+    const expected = prefix ? '每日免费积分' : 'Daily free credits'
+    assert.match(html, new RegExp(`<aside\\b[^>]*class="studio-trial-notice"[^>]*aria-label="${expected}"`))
+    assert.match(html, new RegExp(`<strong id="trial-notice-title">${expected}</strong>`))
+  }
+})
+
 test('guest H3 landing is registration-free, defaults to five seconds and caps selection at ten in both languages', async () => {
   for (const prefix of ['', '/zh']) {
     const html = await render(`${prefix}/app/video/minimax-h3`)
     const notice = html.match(/<aside\b[^>]*class="studio-trial-notice"[^>]*>([\s\S]*?)<\/aside>/)?.[1] ?? ''
-    assert.match(notice, prefix ? /无需注册和登录/ : /No registration or login required/)
-    assert.match(notice, prefix ? /可选 5 秒或 10 秒/ : /Choose 5 or 10 seconds/)
-    assert.doesNotMatch(notice, /studio-trial-register|<button|480p|15 credits|15 积分/)
+    assert.match(notice, prefix ? /无需注册和登录/ : /No sign-up or login required/)
+    assert.match(notice, /id="trial-allowance-message"/)
+    assert.doesNotMatch(notice, /studio-trial-register|480p/)
     const duration = html.match(/<select\b[^>]*id="video-duration"[^>]*>([\s\S]*?)<\/select>/)?.[1] ?? ''
     assert.match(duration, /<option\b[^>]*value="5"[^>]*selected/)
     assert.match(duration, /<option\b[^>]*value="15"[^>]*disabled/)
@@ -41,17 +63,17 @@ test('guest H3 landing is registration-free, defaults to five seconds and caps s
   }
 })
 
-test('H3 allows selecting only one video reference image in both languages', async () => {
+test('H3 permits nine references and displays 768p in both languages', async () => {
   for (const prefix of ['', '/zh']) {
     const html = await render(`${prefix}/app/video/minimax-h3`)
     const fileInput = html.match(/<input\b[^>]*id="video-reference-input"[^>]*>/)?.[0] ?? ''
     assert.ok(fileInput)
-    assert.doesNotMatch(fileInput, /\bmultiple\b/)
-    assert.match(html, /id="video-reference-count">0 \/ 1</)
-    assert.match(html, prefix ? /1 张图 · PNG、JPEG 或 WebP · 最大 10 MB/ : /1 image · PNG, JPEG or WebP · max 10 MB/)
-    assert.doesNotMatch(html, /1–9 images|1–9 张图/)
+    assert.match(fileInput, /\bmultiple\b/)
+    assert.match(html, /id="video-reference-count">0 \/ 9</)
+    assert.match(html, prefix ? /1–9 张图 · PNG、JPEG 或 WebP · 每张最大 10 MB/ : /1–9 images · PNG, JPEG or WebP · max 10 MB each/)
+    assert.match(html, /value="768p"/)
     assert.doesNotMatch(html, /Describe how the subjects in Image 1, Image 2|描述图 1、图 2 等图像中的主体应如何互动/)
-    assert.match(html, prefix ? /描述主体动作和镜头运动。/ : /Describe the motion and camera movement\./)
+    assert.match(html, prefix ? /说明每张参考图的用途/ : /Describe the role of each reference image/)
   }
 })
 
@@ -71,9 +93,10 @@ test('both image landing pages offer the same two-image guest allowance without 
     for (const prefix of ['', '/zh']) {
       const html = await render(`${prefix}/app/image/${model}`, model)
       const notice = html.match(/<aside\b[^>]*class="studio-trial-notice"[^>]*>([\s\S]*?)<\/aside>/)?.[1] ?? ''
-      assert.match(notice, prefix ? /无需注册和登录/ : /No registration or login required/)
-      assert.match(notice, prefix ? /共用 2 张免费图片额度/ : /share 2 free images/)
-      assert.doesNotMatch(notice, /<button|15 credits|15 积分/)
+      assert.match(notice, prefix ? /无需注册和登录/ : /No sign-up or login required/)
+      assert.match(notice, /id="trial-allowance-message"/)
+      assert.match(notice, /class="studio-credit-pack-link"/)
+      assert.doesNotMatch(notice, /studio-trial-register/)
       const quantity = html.match(/<select\b[^>]*id="image-quantity"[^>]*>([\s\S]*?)<\/select>/)?.[1] ?? ''
       assert.match(quantity, /<option\b[^>]*value="3"[^>]*disabled/)
       assert.match(html, prefix ? /免费生成 1 张图片/ : /Generate 1 image · free/)

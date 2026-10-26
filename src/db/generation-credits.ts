@@ -1,5 +1,5 @@
 import { eq, sql } from 'drizzle-orm'
-import type { GenerationCreditStore } from '../lib/generation-credits'
+import { CreditPolicyError, type GenerationCreditStore } from '../lib/generation-credits'
 import { isD1Database, type AppDatabase, type Database } from './index'
 import { createD1GenerationCreditStore, getD1CurrentCreditBalance } from './d1-generation-credits'
 import { generationCreditReservation, user } from './schema'
@@ -47,10 +47,11 @@ async function refundStaleReservations(db: Database, userId: string) {
   `)
 }
 
-export function createGenerationCreditStore(db: AppDatabase): GenerationCreditStore {
-  if (isD1Database(db)) return createD1GenerationCreditStore(db)
+export function createGenerationCreditStore(db: AppDatabase, networkKey?: string): GenerationCreditStore {
+  if (isD1Database(db)) return createD1GenerationCreditStore(db, networkKey)
   return {
-    async reserve(userId, credits) {
+    async reserve(userId, credits, options) {
+      if (options) throw new CreditPolicyError('CREDIT_BACKEND_UNSUPPORTED')
       if (!Number.isSafeInteger(credits) || credits <= 0) {
         throw new Error('Credit reservation amount must be a positive integer.')
       }
@@ -89,7 +90,8 @@ export function createGenerationCreditStore(db: AppDatabase): GenerationCreditSt
       }
     },
 
-    async settle(reservationId) {
+    async settle(reservationId, fulfilledCredits) {
+      if (fulfilledCredits !== undefined) throw new CreditPolicyError('CREDIT_BACKEND_UNSUPPORTED')
       await db.execute(sql`
         WITH settled AS (
           UPDATE "generation_credit_reservation" AS reservation

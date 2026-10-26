@@ -7,7 +7,7 @@ test('D1 includes the guest trial identity table without altering existing credi
   try {
     const row = await db.prepare("SELECT count(*) AS count FROM sqlite_master WHERE type='table' AND name='guest_video_trial'").first<{ count: number }>()
     assert.equal(row?.count, 1)
-    assert.equal((await db.prepare("SELECT count(*) AS count FROM sqlite_master WHERE type='trigger' AND name LIKE 'credit_reservation_%'").first<{ count: number }>())?.count, 3)
+    assert.equal((await db.prepare("SELECT count(*) AS count FROM sqlite_master WHERE type='trigger' AND name IN ('credit_reservation_debit','credit_reservation_settle','credit_reservation_refund')").first<{ count: number }>())?.count, 3)
   } finally { await dispose() }
 })
 
@@ -49,15 +49,23 @@ test('D1 guests spend five plus five seconds, cannot overspend, and refund only 
       getSession: async () => ({ user: { id: userId, isGuest: true } }),
       taskStore: tasks,
       preflight: async () => ({ ok: true, payload: {
-        prompt: 'Guest trial regression', duration: 5, resolution: '480p', aspectRatio: '16:9',
+        prompt: 'Guest trial regression', duration: 5, resolution: '768p', aspectRatio: '16:9',
+        referenceImageIds: Array.from({ length: 9 }, () => crypto.randomUUID()),
       } }),
-      submit: async () => ({ providerTaskId: `test-provider-${++submissions}` }),
+      resolveWorkflow: () => 'minimax_h3_zm_u24',
+      submit: async payload => {
+        assert.equal(payload.referenceImageIds?.length, 9)
+        return { providerTaskId: `test-provider-${++submissions}` }
+      },
     })
     const first = await start()
     assert.equal(first.status, 202)
     assert.equal(first.headers.get('x-seedance-credit-remaining'), '5')
     assert.equal(first.headers.get('x-seedance-credit-scope'), 'guest-video')
     const firstTask = (await first.json()) as { task: { id: string } }
+    const stored = await tasks.getForUser(firstTask.task.id, userId)
+    assert.equal(stored?.workflowId, 'minimax_h3_zm_u24')
+    assert.equal(stored?.resolution, '768p')
     const second = await start()
     assert.equal(second.status, 202)
     assert.equal(await store.getBalance(userId), 0)

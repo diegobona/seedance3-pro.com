@@ -7,8 +7,8 @@ export function Flux3LandingEntry() {
   return <div className="model-landing-entry">
     <p className="model-landing-intro">{page.intro}</p>
     <div className="model-landing-intents">
-      <div><a className="generate-button model-landing-entry-button" href="#creation-grid">{page.videoCta} ↗</a><p className="model-landing-disclosure" id="generation-model-disclosure">{FLUX_3_VIDEO_DISCLOSURE}</p></div>
-      <div><a className="generate-button model-landing-entry-button" href={path('/app/image/gpt-image-2-5-1k')}>{page.imageCta} ↗</a><p className="model-landing-disclosure">{FLUX_3_IMAGE_DISCLOSURE}</p></div>
+      <div><a className="generate-button model-landing-entry-button" href="#creation-grid">{page.videoCta} ↗</a><p className="model-landing-disclosure" id="generation-model-disclosure">{locale === 'zh' ? '视频生成使用 Seedance 2.5。' : FLUX_3_VIDEO_DISCLOSURE}</p></div>
+      <div><a className="generate-button model-landing-entry-button" href={path('/app/image/gpt-image-2-5-1k')}>{page.imageCta} ↗</a><p className="model-landing-disclosure">{locale === 'zh' ? '图像生成使用 GPT Image 2.5。' : FLUX_3_IMAGE_DISCLOSURE}</p></div>
     </div>
   </div>
 }
@@ -32,9 +32,9 @@ export function Flux3LandingContent() {
       <div className="model-landing-faq" id="flux-3-faq">{page.questions.map(([question, answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}</div>
       <p className="model-learning-links">{page.sourcesLabel}: {Object.values(FLUX_3_SOURCES).slice(0, 4).map((href, index) => <span key={href}>{index > 0 ? ' · ' : ''}<a href={href} target="_blank" rel="noopener noreferrer">{page.sourceLabels[index]}</a></span>)}</p>
       <nav className="model-landing-links" aria-label={t('Explore related tools')}>
-        <a href={path('/')}>{t('Seedance home')}</a><a href={path('/app/video/minimax-h3')}>MiniMax H3</a>
-        <a href={path('/app/image/gpt-image-2-5-1k')}>GPT Image 2.5</a><a href={path('/app/image/gpt-image-2')}>GPT Image 2</a>
-        <a href={path('/minimax-h3-prompts')}>{t('MiniMax H3 Prompt Library')}</a>
+        <a href={path('/')}>{t('Seedance home')}</a><a href={path('/app/video/seedance-2-5')}>Seedance 2.5</a>
+        <a href={path('/app/image/gpt-image-2-5-1k')}>GPT Image 2.5</a>
+        <a href={path('/seedance-2-5-prompts')}>{t('Seedance 2.5 Prompt Library')}</a>
       </nav>
     </div>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(flux3FaqSchema(locale)).replace(/</g, '\\u003c') }} />

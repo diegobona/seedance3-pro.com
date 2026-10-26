@@ -15,7 +15,7 @@ test('Christmas photo Try links preserve the exact prompt and supported image ra
     const link: string = promptData.christmasPhotoPromptTryUrl({ prompt, aspectRatio })
     for (const locale of ['en', 'zh'] as const) {
       const url: URL = new URL(localizedPath(link, locale), 'https://seedance3-pro.com')
-      assert.equal(url.pathname, locale === 'zh' ? '/zh/app/image/gpt-image-2' : '/app/image/gpt-image-2')
+      assert.equal(url.pathname, locale === 'zh' ? '/zh/app/image/gpt-image-2-5-1k' : '/app/image/gpt-image-2-5-1k')
       assert.equal(url.searchParams.get('prompt'), prompt)
       assert.equal(url.searchParams.get('aspect_ratio'), aspectRatio)
       assert.equal(url.searchParams.size, 2)
@@ -90,6 +90,6 @@ test('Christmas collection SSR includes every original prompt and localized gene
       assert.ok(html.includes(item.prompt.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll("'", '&#x27;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')), item.slug)
     }
     assert.equal((html.match(/class="christmas-prompt-card"/g) ?? []).length, 12)
-    assert.match(html, locale === 'zh' ? /href="\/zh\/app\/image\/gpt-image-2\?prompt=/ : /href="\/app\/image\/gpt-image-2\?prompt=/)
+    assert.match(html, locale === 'zh' ? /href="\/zh\/app\/image\/gpt-image-2-5-1k\?prompt=/ : /href="\/app\/image\/gpt-image-2-5-1k\?prompt=/)
   }
 })

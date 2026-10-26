@@ -3,6 +3,9 @@ import translations from '../data/ui-zh.json'
 import christmasPhotoTranslations from '../data/christmas-photo-zh.json'
 import gptImage25Translations from '../data/gpt-image-25-zh.json'
 import { localeFromPath as resolveLocale, localizedPath as resolvePath } from '../../app/site-locale.mjs'
+import { videoResolutionLabel } from '../../app/video-resolution-label.mjs'
+import { modelDisplayNames } from '../../app/model-display-names.mjs'
+import { brandAssetUrl } from '../../app/site-brand.mjs'
 
 export type SiteLocale = 'en' | 'zh'
 const dictionary: Record<string, string> = { ...translations, ...christmasPhotoTranslations, ...gptImage25Translations }
@@ -17,16 +20,16 @@ export function localizedPath(href: string, locale: SiteLocale): string {
 }
 
 export function translate(locale: SiteLocale, text: string): string {
-  if (locale === 'en') return text
+  if (locale === 'en') return modelDisplayNames(videoResolutionLabel(text))
   const normalized = text.replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim()
   const value = dictionary[normalized] ?? lowercaseDictionary[normalized.toLowerCase()]
   if (value === undefined) {
     for (const suffix of [' Watch the original video and read the exact prompt used to create it.', ' See the original image and the exact GPT Image 2 prompt used to create it.']) {
       if (text.endsWith(suffix)) return translate(locale, text.slice(0, -suffix.length)) + translate(locale, suffix.trim())
     }
-    return text
+    return modelDisplayNames(videoResolutionLabel(text))
   }
-  return (text.startsWith(' ') ? ' ' : '') + value + (text.endsWith(' ') ? ' ' : '')
+  return modelDisplayNames(videoResolutionLabel((text.startsWith(' ') ? ' ' : '') + value + (text.endsWith(' ') ? ' ' : '')))
 }
 
 // Translate editorial content while preserving generation prompts and machine values.
@@ -67,6 +70,8 @@ export function localizeHead<T extends { meta?: Record<string, unknown>[]; links
   return {
     ...head,
     meta: [...meta, { property: 'og:locale', content: locale === 'zh' ? 'zh_CN' : 'en_US' }],
-    links: [...(head.links ?? []).filter(link => link.rel !== 'canonical'), { rel: 'canonical', href: url }],
+    links: [...(head.links ?? []).filter(link => link.rel !== 'canonical').map(link =>
+      ['icon', 'apple-touch-icon'].includes(String(link.rel)) && typeof link.href === 'string'
+        ? { ...link, href: brandAssetUrl(link.href) } : link), { rel: 'canonical', href: url }],
   } as T
 }

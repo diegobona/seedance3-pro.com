@@ -1,0 +1,259 @@
+
+> seedance3-blog-cms@1.0.0 build
+> node scripts/build-trust-pages.mjs && node scripts/sync-site-navigation.mjs && node scripts/build-home-auth.mjs && node scripts/build-home-video.mjs && vite build && tsc --noEmit
+
+Generated 8 bilingual trust and policy pages.
+Updated shared navigation on 0 pages.
+vite v8.3.0 building client environment for production...
+transforming...
+✓ 374 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/client/.assetsignore                                               0.02 kB
+dist/client/app-assets/dog-training-CjfSVXu4.json                      21.80 kB │ gzip:   6.30 kB
+dist/client/app-assets/two-friends-BL5S2W2v.json                       36.40 kB │ gzip:  10.48 kB
+dist/client/app-assets/cafe-conversation-DlqczWTE.json                 36.86 kB │ gzip:  10.55 kB
+dist/client/app-assets/cat-preview-Bvl4aKO7.png                        39.29 kB
+dist/client/app-assets/horse-preview-CDlezztq.png                      40.64 kB
+dist/client/app-assets/dog-preview-lpc7mYwm.png                        41.60 kB
+dist/client/app-assets/studio-01-preview-BZgOc1Pt.png                  47.81 kB
+dist/client/app-assets/studio-02-preview-C8Z7dRKU.png                  48.45 kB
+dist/client/app-assets/anyposes-jogging-BiWGpOeT.png                  268.10 kB
+dist/client/app-assets/anyposes-kneeling-CuW97TPI.png                 278.65 kB
+dist/client/app-assets/anyposes-crossed-arms-BRvWtCnf.png             282.82 kB
+dist/client/app-assets/anyposes-studio-02-B8qLvhKk.fbx                674.03 kB
+dist/client/app-assets/dog-baCFRIx7.glb                               798.94 kB
+dist/client/app-assets/anyposes-female-rig-fVHsTT-w.fbx               986.80 kB
+dist/client/app-assets/h3-example-product-DESfCUl1.mp4              1,070.98 kB
+dist/client/app-assets/h3-example-cinematic-CIyH-Ysf.mp4            1,147.97 kB
+dist/client/app-assets/cat-DSJDMfzb.glb                             1,663.15 kB
+dist/client/app-assets/horse-DvJFIyOk.glb                           1,914.79 kB
+dist/client/app-assets/h3-example-animation-DQ8Pej4N.mp4            2,480.78 kB
+dist/client/app-assets/muse-workspace-vuTnZPnA.css                      2.40 kB │ gzip:   0.81 kB
+dist/client/app-assets/billing-page-CZaY47JG.css                        2.40 kB │ gzip:   0.90 kB
+dist/client/app-assets/coming-soon-page-DWNi2TPc.css                    2.91 kB │ gzip:   1.03 kB
+dist/client/app-assets/credit-pack-purchase-BQga864l.css                3.71 kB │ gzip:   1.16 kB
+dist/client/app-assets/auth-B8c93pbj.css                                4.69 kB │ gzip:   1.51 kB
+dist/client/app-assets/seedance3-preview-DK5uKbi0.css                   4.76 kB │ gzip:   1.37 kB
+dist/client/app-assets/h3-video-case-page-C8S1ZXW2.css                  7.15 kB │ gzip:   1.63 kB
+dist/client/app-assets/h3-video-cases-Bg68GAdm.css                      9.02 kB │ gzip:   2.49 kB
+dist/client/app-assets/studio-showcase-page-R41n1piB.css               12.78 kB │ gzip:   3.08 kB
+dist/client/app-assets/index-CCmjecjg.css                              47.52 kB │ gzip:  10.21 kB
+dist/client/app-assets/billing-DM7RrWId.js                              0.07 kB │ gzip:   0.09 kB
+dist/client/app-assets/zh.billing-DM7RrWId.js                           0.07 kB │ gzip:   0.09 kB
+dist/client/app-assets/videos-hl20YtAg.js                               0.08 kB │ gzip:   0.09 kB
+dist/client/app-assets/app_.video.seedance-3-BbK3_3Ki.js                0.08 kB │ gzip:   0.10 kB
+dist/client/app-assets/zh.app_.video.seedance-3-BbK3_3Ki.js             0.08 kB │ gzip:   0.10 kB
+dist/client/app-assets/not-found-i5RsCZif.js                            0.11 kB │ gzip:   0.11 kB
+dist/client/app-assets/app_.image.muse-image-BqvKV5x0.js                0.16 kB │ gzip:   0.15 kB
+dist/client/app-assets/app_.video.muse-video-CjLei__O.js                0.16 kB │ gzip:   0.15 kB
+dist/client/app-assets/zh.app_.image.muse-image-BqvKV5x0.js             0.16 kB │ gzip:   0.15 kB
+dist/client/app-assets/zh.app_.video.muse-video-CjLei__O.js             0.16 kB │ gzip:   0.15 kB
+dist/client/app-assets/muse-image-prompts-DiwCoGJN.js                   0.16 kB │ gzip:   0.16 kB
+dist/client/app-assets/muse-video-prompts-CdU7zXX3.js                   0.16 kB │ gzip:   0.16 kB
+dist/client/app-assets/seedance-2-5-prompts-DGGvUV56.js                 0.16 kB │ gzip:   0.16 kB
+dist/client/app-assets/zh.muse-image-prompts-DiwCoGJN.js                0.16 kB │ gzip:   0.16 kB
+dist/client/app-assets/zh.muse-video-prompts-CdU7zXX3.js                0.16 kB │ gzip:   0.16 kB
+dist/client/app-assets/zh.seedance-2-5-prompts-DGGvUV56.js              0.16 kB │ gzip:   0.16 kB
+dist/client/app-assets/gpt-image-2-5-prompts-BYmcaMQL.js                0.17 kB │ gzip:   0.16 kB
+dist/client/app-assets/zh.gpt-image-2-5-prompts-BYmcaMQL.js             0.17 kB │ gzip:   0.16 kB
+dist/client/app-assets/seedance-3-0-prompts-Dys8G4n-.js                 0.17 kB │ gzip:   0.16 kB
+dist/client/app-assets/zh.seedance-3-0-prompts-Dys8G4n-.js              0.17 kB │ gzip:   0.16 kB
+dist/client/app-assets/ai-christmas-photo-prompt-Dk7TV48l.js            0.17 kB │ gzip:   0.16 kB
+dist/client/app-assets/zh.ai-christmas-photo-prompt-Dk7TV48l.js         0.17 kB │ gzip:   0.16 kB
+dist/client/app-assets/app_.video.seedance-2-5-CSyuv6XK.js              0.18 kB │ gzip:   0.16 kB
+dist/client/app-assets/zh.app_.video.seedance-2-5-CSyuv6XK.js           0.18 kB │ gzip:   0.16 kB
+dist/client/app-assets/app_.image.gpt-image-2-5-CjxPBivI.js             0.18 kB │ gzip:   0.17 kB
+dist/client/app-assets/zh.app_.image.gpt-image-2-5-CjxPBivI.js          0.18 kB │ gzip:   0.17 kB
+dist/client/app-assets/app_.image.gpt-image-2-5-1k-3_qONm68.js          0.18 kB │ gzip:   0.17 kB
+dist/client/app-assets/zh.app_.image.gpt-image-2-5-1k-3_qONm68.js       0.18 kB │ gzip:   0.17 kB
+dist/client/app-assets/app_.video.flux-3-DunR32em.js                    0.20 kB │ gzip:   0.18 kB
+dist/client/app-assets/zh.app_.video.flux-3-DunR32em.js                 0.20 kB │ gzip:   0.18 kB
+dist/client/app-assets/zh.seedance-2-5-prompts_._slug-DQGvIYgH.js       0.21 kB │ gzip:   0.18 kB
+dist/client/app-assets/seedance-2-5-prompts_._slug-7ia6Aq_K.js          0.22 kB │ gzip:   0.18 kB
+dist/client/app-assets/gpt-image-2-5-prompts_._slug-DyTzB_zw.js         0.22 kB │ gzip:   0.18 kB
+dist/client/app-assets/zh.gpt-image-2-5-prompts_._slug-CHvJqZn2.js      0.22 kB │ gzip:   0.18 kB
+dist/client/app-assets/zh.app-CsChA9fr.js                               0.22 kB │ gzip:   0.19 kB
+dist/client/app-assets/routes-CWGv2hUT.js                               0.40 kB │ gzip:   0.30 kB
+dist/client/app-assets/prompt-guide-BTg8F75r.js                         0.48 kB │ gzip:   0.34 kB
+dist/client/app-assets/zh.prompt-guide-BTg8F75r.js                      0.48 kB │ gzip:   0.34 kB
+dist/client/app-assets/images-D5s3OvJs.js                               0.49 kB │ gzip:   0.34 kB
+dist/client/app-assets/daily-credits-WiKSldTB.js                        0.84 kB │ gzip:   0.45 kB
+dist/client/app-assets/jsx-runtime-BkSabwWG.js                          0.96 kB │ gzip:   0.55 kB
+dist/client/app-assets/preload-helper-BZ1Pz5am.js                       1.21 kB │ gzip:   0.69 kB
+dist/client/app-assets/site-trust-BSDceA8A.js                           1.88 kB │ gzip:   1.03 kB
+dist/client/app-assets/model-display-names-pIcZEkbW.js                  1.96 kB │ gzip:   0.86 kB
+dist/client/app-assets/coming-soon-page-sFwrehno.js                     2.28 kB │ gzip:   0.79 kB
+dist/client/app-assets/credit-pack-purchase-BCioxqWI.js                 3.86 kB │ gzip:   1.96 kB
+dist/client/app-assets/seedance3-planned-prompts-BrZVQjBl.js            4.28 kB │ gzip:   1.96 kB
+dist/client/app-assets/muse-workspace-C8h2Dsy9.js                       5.55 kB │ gzip:   2.40 kB
+dist/client/app-assets/gpt-image-case-page-dEnM5GT8.js                  5.65 kB │ gzip:   1.81 kB
+dist/client/app-assets/h3-video-case-page-Cznry-Ye.js                   8.55 kB │ gzip:   2.68 kB
+dist/client/app-assets/billing-page-ePDE2tE-.js                         9.33 kB │ gzip:   3.78 kB
+dist/client/app-assets/lazyRouteComponent-DEp4LotH.js                   9.99 kB │ gzip:   4.19 kB
+dist/client/app-assets/seedance3-preview-page-UWgX09Ha.js              13.25 kB │ gzip:   3.24 kB
+dist/client/app-assets/muse-workspace-page-CwNyTh9w.js                 13.53 kB │ gzip:   3.42 kB
+dist/client/app-assets/studio-showcase-page-DXR9t_QN.js                22.41 kB │ gzip:   5.80 kB
+dist/client/app-assets/auth-CoQf3stA.js                                38.02 kB │ gzip:  13.86 kB
+dist/client/app-assets/app-DifCsdOO.js                                 38.50 kB │ gzip:   9.31 kB
+dist/client/app-assets/site-language-switch-CG_NDiDN.js                86.72 kB │ gzip:  33.18 kB
+dist/client/app-assets/studio-CsQdsr02.js                              89.64 kB │ gzip:  30.03 kB
+dist/client/app-assets/index-C0KxrS3d.js                              454.95 kB │ gzip: 136.17 kB
+dist/client/app-assets/pose-studio-Cwg2ZIOz.js                        778.80 kB │ gzip: 201.69 kB
+
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 1.98s
+vite v8.3.0 building ssr environment for production...
+transforming...
+✓ 1249 modules transformed.
+rendering chunks...
+Using secrets defined in .dev.vars
+X [ERROR] Failed to write to log file Error: EPERM: operation not permitted, open 'C:\Users\zhouw\AppData\Roaming\xdg.config\.wrangler\logs\wrangler-2026-10-24_07-38-04_587.log'
+
+      at async open (node:internal/fs/promises:637:25)
+      at async writeFile (node:internal/fs/promises:1239:14)
+      at async D:\Asideproject\! 网站、插件、APP\Seedance3\node_modules\wrangler\wrangler-dist\cli.js:63296:7
+      at async Mutex.runWith (D:\Asideproject\! 网站、插件、APP\Seedance3\node_modules\miniflare\dist\src\index.js:55597:16)
+      at async appendToDebugLogFile (D:\Asideproject\! 网站、插件、APP\Seedance3\node_modules\wrangler\wrangler-dist\cli.js:63293:3) {
+    errno: -4048,
+    code: 'EPERM',
+    syscall: 'open',
+    path: 'C:\\Users\\zhouw\\AppData\\Roaming\\xdg.config\\.wrangler\\logs\\wrangler-2026-10-24_07-38-04_587.log'
+  }
+
+
+X [ERROR] Would have written: 
+
+  --- 2026-10-24T07:38:11.065Z debug
+  🪵  Writing logs to "C:\Users\zhouw\AppData\Roaming\xdg.config\.wrangler\logs\wrangler-2026-10-24_07-38-04_587.log"
+  ---
+  
+
+
+computing gzip size...
+dist/server/.dev.vars                                                    0.97 kB
+dist/server/wrangler.json                                                2.21 kB │ gzip:   1.12 kB
+dist/server/app-assets/dog-training-CjfSVXu4.json                       21.80 kB │ gzip:   6.30 kB
+dist/server/app-assets/two-friends-BL5S2W2v.json                        36.40 kB │ gzip:  10.48 kB
+dist/server/.vite/manifest.json                                         36.51 kB │ gzip:   4.12 kB
+dist/server/app-assets/cafe-conversation-DlqczWTE.json                  36.86 kB │ gzip:  10.55 kB
+dist/server/app-assets/cat-preview-Bvl4aKO7.png                         39.29 kB
+dist/server/app-assets/horse-preview-CDlezztq.png                       40.64 kB
+dist/server/app-assets/dog-preview-lpc7mYwm.png                         41.60 kB
+dist/server/app-assets/studio-01-preview-BZgOc1Pt.png                   47.81 kB
+dist/server/app-assets/studio-02-preview-C8Z7dRKU.png                   48.45 kB
+dist/server/app-assets/anyposes-jogging-BiWGpOeT.png                   268.10 kB
+dist/server/app-assets/anyposes-kneeling-CuW97TPI.png                  278.65 kB
+dist/server/app-assets/anyposes-crossed-arms-BRvWtCnf.png              282.82 kB
+dist/server/app-assets/anyposes-studio-02-B8qLvhKk.fbx                 674.03 kB
+dist/server/app-assets/dog-baCFRIx7.glb                                798.94 kB
+dist/server/app-assets/anyposes-female-rig-fVHsTT-w.fbx                986.80 kB
+dist/server/app-assets/h3-example-product-DESfCUl1.mp4               1,070.98 kB
+dist/server/app-assets/h3-example-cinematic-CIyH-Ysf.mp4             1,147.97 kB
+dist/server/app-assets/cat-DSJDMfzb.glb                              1,663.15 kB
+dist/server/app-assets/horse-DvJFIyOk.glb                            1,914.79 kB
+dist/server/app-assets/h3-example-animation-DQ8Pej4N.mp4             2,480.78 kB
+dist/server/app-assets/router-D0HOWvYe.css                               1.73 kB │ gzip:   0.77 kB
+dist/server/app-assets/muse-workspace-vuTnZPnA.css                       2.40 kB │ gzip:   0.81 kB
+dist/server/app-assets/billing-page-CZaY47JG.css                         2.40 kB │ gzip:   0.90 kB
+dist/server/app-assets/coming-soon-page-DWNi2TPc.css                     2.91 kB │ gzip:   1.03 kB
+dist/server/app-assets/credit-pack-purchase-BQga864l.css                 3.71 kB │ gzip:   1.16 kB
+dist/server/app-assets/auth-B8c93pbj.css                                 4.69 kB │ gzip:   1.51 kB
+dist/server/app-assets/seedance3-preview-DK5uKbi0.css                    4.76 kB │ gzip:   1.37 kB
+dist/server/app-assets/app-Bc5vM9Ze.css                                  6.18 kB │ gzip:   1.75 kB
+dist/server/app-assets/h3-video-case-page-C8S1ZXW2.css                   7.15 kB │ gzip:   1.63 kB
+dist/server/app-assets/h3-video-cases-Bg68GAdm.css                       9.02 kB │ gzip:   2.49 kB
+dist/server/app-assets/studio-showcase-page-R41n1piB.css                12.78 kB │ gzip:   3.08 kB
+dist/server/app-assets/studio-BuY5zgKP.css                              39.61 kB │ gzip:   8.56 kB
+dist/server/app-assets/kysely-adapter-BtmutXHp.js                        0.13 kB │ gzip:   0.10 kB
+dist/server/app-assets/start-5Z2QO8AU.js                                 0.14 kB │ gzip:   0.13 kB
+dist/server/app-assets/billing-Bevj6TxN.js                               0.20 kB │ gzip:   0.15 kB
+dist/server/app-assets/zh.billing-COwTT6HX.js                            0.20 kB │ gzip:   0.15 kB
+dist/server/app-assets/empty-plugin-adapters-D9UWiqvJ.js                 0.22 kB │ gzip:   0.16 kB
+dist/server/app-assets/videos-Bddes6q5.js                                0.23 kB │ gzip:   0.18 kB
+dist/server/app-assets/app_.video.seedance-3-DsdNLlnn.js                 0.24 kB │ gzip:   0.17 kB
+dist/server/app-assets/zh.app_.video.seedance-3-C2oy1lpc.js              0.24 kB │ gzip:   0.18 kB
+dist/server/app-assets/app_.image.muse-image-CVfOlcGG.js                 0.43 kB │ gzip:   0.26 kB
+dist/server/app-assets/app_.video.muse-video-CUEK770-.js                 0.43 kB │ gzip:   0.26 kB
+dist/server/app-assets/muse-image-prompts-BMV9cYRf.js                    0.43 kB │ gzip:   0.26 kB
+dist/server/app-assets/muse-video-prompts-D6XNks0j.js                    0.43 kB │ gzip:   0.26 kB
+dist/server/app-assets/app_.video.seedance-2-5-CNmgBTnO.js               0.43 kB │ gzip:   0.29 kB
+dist/server/app-assets/seedance-2-5-prompts-C9TgCMlT.js                  0.43 kB │ gzip:   0.27 kB
+dist/server/app-assets/app_.image.gpt-image-2-5-B0GTQo3K.js              0.43 kB │ gzip:   0.28 kB
+dist/server/app-assets/zh.app_.image.muse-image-BU0Rfw60.js              0.43 kB │ gzip:   0.26 kB
+dist/server/app-assets/zh.app_.video.muse-video-DUNfNEpH.js              0.43 kB │ gzip:   0.26 kB
+dist/server/app-assets/zh.muse-image-prompts-DLpwMLrb.js                 0.43 kB │ gzip:   0.26 kB
+dist/server/app-assets/zh.muse-video-prompts-4tjHR4G7.js                 0.43 kB │ gzip:   0.26 kB
+dist/server/app-assets/gpt-image-2-5-prompts-cCqVxp2N.js                 0.43 kB │ gzip:   0.26 kB
+dist/server/app-assets/seedance-3-0-prompts-q9w2EW57.js                  0.43 kB │ gzip:   0.26 kB
+dist/server/app-assets/zh.app_.video.seedance-2-5-Fr_Fj3TR.js            0.43 kB │ gzip:   0.29 kB
+dist/server/app-assets/zh.seedance-2-5-prompts-DV0UESzG.js               0.43 kB │ gzip:   0.27 kB
+dist/server/app-assets/zh.app_.image.gpt-image-2-5-DqisZSPA.js           0.43 kB │ gzip:   0.28 kB
+dist/server/app-assets/zh.gpt-image-2-5-prompts-Bzb7-GJE.js              0.43 kB │ gzip:   0.27 kB
+dist/server/app-assets/zh.seedance-3-0-prompts-CExcqdWL.js               0.43 kB │ gzip:   0.27 kB
+dist/server/app-assets/app_.image.gpt-image-2-5-1k-UzFUTKIg.js           0.44 kB │ gzip:   0.28 kB
+dist/server/app-assets/ai-christmas-photo-prompt-Ccm1_uHz.js             0.44 kB │ gzip:   0.27 kB
+dist/server/app-assets/zh.app_.image.gpt-image-2-5-1k-BQvhtj3k.js        0.44 kB │ gzip:   0.29 kB
+dist/server/app-assets/zh.ai-christmas-photo-prompt-DSksrJ-T.js          0.44 kB │ gzip:   0.27 kB
+dist/server/app-assets/app_.video.flux-3-DIthAina.js                     0.44 kB │ gzip:   0.29 kB
+dist/server/app-assets/zh.app_.video.flux-3-69TUR6UH.js                  0.45 kB │ gzip:   0.30 kB
+dist/server/app-assets/seedance-2-5-prompts_._slug-4qDpDVLZ.js           0.49 kB │ gzip:   0.30 kB
+dist/server/app-assets/zh.seedance-2-5-prompts_._slug-L8EI1KBC.js        0.50 kB │ gzip:   0.31 kB
+dist/server/app-assets/gpt-image-2-5-prompts_._slug-BnJMT-qR.js          0.50 kB │ gzip:   0.30 kB
+dist/server/app-assets/zh.gpt-image-2-5-prompts_._slug-gCvqwM9e.js       0.50 kB │ gzip:   0.30 kB
+dist/server/app-assets/zh.app-DskPc-XW.js                                0.53 kB │ gzip:   0.32 kB
+dist/server/app-assets/string-DmMxG8W_.js                                0.55 kB │ gzip:   0.34 kB
+dist/server/app-assets/generation-credits-D14wRH0K.js                    0.69 kB │ gzip:   0.36 kB
+dist/server/app-assets/prompt-guide-2lMNp1PY.js                          0.74 kB │ gzip:   0.45 kB
+dist/server/app-assets/zh.prompt-guide-xl9VBKOk.js                       0.74 kB │ gzip:   0.45 kB
+dist/server/app-assets/images-D8rVi1FO.js                                0.76 kB │ gzip:   0.45 kB
+dist/server/app-assets/routes-CJ_vy6H4.js                                0.76 kB │ gzip:   0.43 kB
+dist/server/app-assets/image-references-CMMHB2ax.js                      0.79 kB │ gzip:   0.42 kB
+dist/server/app-assets/kysely-migration-tables-DFfmKhq--BmaT-cAq.js      0.80 kB │ gzip:   0.45 kB
+dist/server/app-assets/model-routing-EOE_ZcjM.js                         0.88 kB │ gzip:   0.44 kB
+dist/server/app-assets/not-found-8nHLrNYc.js                             0.89 kB │ gzip:   0.48 kB
+dist/server/app-assets/daily-credits-B2hkVMk5.js                         1.57 kB │ gzip:   0.70 kB
+dist/server/app-assets/jsx-runtime-CbOA9iie.js                           2.78 kB │ gzip:   1.17 kB
+dist/server/app-assets/seo-routes-CBU4ROtk.js                            3.47 kB │ gzip:   1.15 kB
+dist/server/app-assets/site-trust-B_sUFSmq.js                            4.33 kB │ gzip:   1.78 kB
+dist/server/app-assets/coming-soon-page-y-F1fe-E.js                      4.47 kB │ gzip:   1.09 kB
+dist/server/app-assets/bun-sqlite-dialect-C7ftEUSI-C1h47hZr.js           4.61 kB │ gzip:   1.64 kB
+dist/server/app-assets/node-sqlite-dialect-rUWFzdfz.js                   4.61 kB │ gzip:   1.62 kB
+dist/server/app-assets/seedance3-planned-prompts-DFUVGhC_.js             4.65 kB │ gzip:   2.05 kB
+dist/server/app-assets/d1-sqlite-dialect-D4qp4-wW-CwUCHtSb.js            5.13 kB │ gzip:   1.82 kB
+dist/server/app-assets/h3-video-cases-CczwsUcG.js                        5.13 kB │ gzip:   1.99 kB
+dist/server/app-assets/site-navigation-DussESC2.js                       5.43 kB │ gzip:   2.10 kB
+dist/server/app-assets/muse-workspace-DbwJmdiw.js                        5.98 kB │ gzip:   2.52 kB
+dist/server/app-assets/video-resolution-label-CrnAXKZu.js                6.18 kB │ gzip:   2.10 kB
+dist/server/app-assets/env-impl-CLSey1QN.js                              6.81 kB │ gzip:   2.56 kB
+dist/server/app-assets/credit-pack-purchase-Vp3IQ4FO.js                  7.29 kB │ gzip:   2.61 kB
+dist/server/app-assets/gpt-image-cases-BhgrL8UH.js                       7.50 kB │ gzip:   3.05 kB
+dist/server/app-assets/ClientOnly-BAzdjcwq.js                            8.63 kB │ gzip:   3.33 kB
+dist/server/app-assets/gpt-image-case-page-C1LctCDA.js                  10.82 kB │ gzip:   2.41 kB
+dist/server/app-assets/dist-Cd3xUyrb.js                                 14.56 kB │ gzip:   4.07 kB
+dist/server/app-assets/_tanstack-start-manifest_v-B9YkWXm7.js           14.57 kB │ gzip:   1.89 kB
+dist/server/app-assets/h3-video-case-page-DEcrraVF.js                   15.69 kB │ gzip:   3.36 kB
+dist/server/app-assets/billing-page-LGtJPtoI.js                         15.81 kB │ gzip:   4.55 kB
+dist/server/app-assets/lazyRouteComponent-BCQFHYXT.js                   18.02 kB │ gzip:   5.01 kB
+dist/server/app-assets/seedance3-preview-page-bi44AFiy.js               26.76 kB │ gzip:   4.25 kB
+dist/server/app-assets/muse-workspace-page-DrVDzL1i.js                  27.16 kB │ gzip:   4.48 kB
+dist/server/app-assets/i18n-DOgMPZXE.js                                 31.12 kB │ gzip:  10.61 kB
+dist/server/app-assets/site-brand-CjmkK31H.js                           33.10 kB │ gzip:   9.85 kB
+dist/server/app-assets/studio-showcase-page-3QR2q8eQ.js                 39.79 kB │ gzip:   7.21 kB
+dist/server/app-assets/default-query-compiler-2C8slTxe.js               44.92 kB │ gzip:   7.91 kB
+dist/server/app-assets/app-zabry2FC.js                                  79.09 kB │ gzip:  11.67 kB
+dist/server/app-assets/site-language-switch-DuIL1HTY.js                 79.56 kB │ gzip:  28.91 kB
+dist/server/app-assets/auth-C6RuMJF8.js                                 88.33 kB │ gzip:  23.20 kB
+dist/server/app-assets/studio-Ba7H_6gd.js                              109.53 kB │ gzip:  26.65 kB
+dist/server/app-assets/app-BWKc8kGQ.js                                 120.84 kB │ gzip:  22.23 kB
+dist/server/app-assets/plausible-CAqfCOdX.js                           583.87 kB │ gzip: 137.13 kB
+dist/server/index.js                                                   816.28 kB │ gzip: 177.14 kB
+dist/server/app-assets/router-B-OoClE-.js                            1,746.79 kB │ gzip: 370.26 kB
+dist/server/app-assets/pose-studio-RAcqdDxO.js                       1,813.73 kB │ gzip: 370.45 kB
+
+✓ built in 2.96s
+🪵  Logs were written to "C:\Users\zhouw\AppData\Roaming\xdg.config\.wrangler\logs\wrangler-2026-10-24_07-38-04_587.log"

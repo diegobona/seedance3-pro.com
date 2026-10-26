@@ -8,6 +8,26 @@ const image = { ...payload, referenceImageIds: [crypto.randomUUID()], referenceI
 const environment = { H3_REFERENCE_PROVIDER: 'compshare', AUTODL_TOKEN: 'autodl-token', COMPSHARE_API_KEY: 'sk-ml-private' }
 const localTaskId = crypto.randomUUID()
 
+test('upgraded switch selects and submits 768p multi-reference jobs, retaining historical polling', async () => {
+  const workflowId = 'minimax_h3_zm_u24'
+  const environment = { H3_REFERENCE_PROVIDER: 'autodl-upgraded', AUTODL_TOKEN: 'token' }
+  const payload = { prompt: 'Combine references', duration: 5, resolution: '768p', aspectRatio: '1:1',
+    referenceImageIds: Array.from({ length: 9 }, () => crypto.randomUUID()),
+    referenceImageUrls: Array.from({ length: 9 }, (_, i) => `https://example.com/${i}.png`) }
+  assert.equal(selectVideoWorkflow(payload, environment), workflowId)
+  assert.doesNotThrow(() => assertVideoProviderConfigured(workflowId, environment))
+  await submitVideoTask(payload, { workflowId, environment, localTaskId, fetchImpl: async (url, init) => {
+    assert.equal(url, `https://autodl.art/api/v1/comfyui/comfyui_workflow/${workflowId}`)
+    assert.equal(JSON.parse(init!.body as string).ref_image_8, payload.referenceImageUrls[8])
+    return Response.json({ code: 'Success', data: { task_id: 'upgraded-1' } })
+  } })
+  assert.deepEqual(await queryVideoTask('upgraded-1', { workflowId,
+    environment: { ...environment, H3_REFERENCE_PROVIDER: 'compshare' }, fetchImpl: async url => {
+      assert.equal(url, 'https://autodl.art/api/v1/comfyui/comfyui_workflow/result/upgraded-1')
+      return Response.json({ code: 'Success', data: { status: 'QUEUED' } })
+    } }), { status: 'queued', terminal: false })
+})
+
 test('switch selects only new 480p reference jobs; text stays AutoDL and unknown switches fail closed', () => {
   assert.equal(selectVideoWorkflow(image, environment), compshare)
   assert.equal(selectVideoWorkflow(image, { H3_REFERENCE_PROVIDER: 'autodl' }), reference)

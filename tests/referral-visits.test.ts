@@ -93,7 +93,7 @@ test('stats use Beijing calendar windows and distinct aggregate counts instead o
   assert.ok(query.params.includes('2026-09-02T16:00:00.000Z'))
   assert.ok(query.params.includes('2026-10-02T16:00:00.000Z'))
   assert.equal(queries.every((entry) => /"source" = \$\d+/.test(entry.sql) && entry.params.includes('anyposes')), true)
-  assert.equal(queries.every((entry) => /"entry_path" = '\/app\/image\/gpt-image-2'/.test(entry.sql)), true)
+  assert.equal(queries.every((entry) => /"entry_path" IN \('\/app\/image\/gpt-image-2', '\/app\/image\/gpt-image-2-5-1k'\)/.test(entry.sql)), true)
   assert.match(queries[1].sql, /at time zone 'Asia\/Shanghai'/i)
   assert.match(queries[1].sql, /group by/i)
 })

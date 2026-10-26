@@ -42,6 +42,6 @@ test('authenticated balance requests expose the daily allowance, expiry and imag
   assert.equal(response.headers.get('cache-control'), 'no-store')
   assert.deepEqual(await response.json(), {
     success: true,
-    credits: { remaining: 15, generationCost: 5, dailyGrant: 15, resetTimeZone: 'Asia/Shanghai', expiresDaily: true },
+    credits: { remaining: 15, generationCost: 1, dailyGrant: 5, resetTimeZone: 'Asia/Shanghai', expiresDaily: true },
   })
 })

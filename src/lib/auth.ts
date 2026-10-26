@@ -6,6 +6,8 @@ import { createAppDatabase, isD1Database } from '../db'
 import { authSchema } from '../db/schema'
 import { authSchema as d1AuthSchema } from '../db/d1-schema'
 import { installLocalGoogleProxyFetch } from './google-proxy-fetch'
+import { DAILY_FREE_CREDIT_GRANT } from './generation-credits'
+import { EMAIL_PASSWORD_AUTH_ENABLED } from '../../app/auth-methods.mjs'
 
 type AuthEnvironment = {
   DB?: D1Database
@@ -63,7 +65,7 @@ export function createAuth(request: Request, environment: AuthEnvironment = read
         schema: authSchema,
       }),
     emailAndPassword: {
-      enabled: true,
+      enabled: EMAIL_PASSWORD_AUTH_ENABLED,
       autoSignIn: true,
       requireEmailVerification: false,
     },
@@ -86,7 +88,7 @@ export function createAuth(request: Request, environment: AuthEnvironment = read
         generationCount: { type: 'number', required: false, defaultValue: 0, input: false },
         monthlyGenerationCount: { type: 'number', required: false, defaultValue: 0, input: false },
         generationLimit: { type: 'number', required: false, defaultValue: 0, input: false },
-        creditBalance: { type: 'number', required: false, defaultValue: 15, input: false },
+        creditBalance: { type: 'number', required: false, defaultValue: DAILY_FREE_CREDIT_GRANT, input: false },
         trialCreditsGrantedAt: { type: 'date', required: false, defaultValue: new Date(), input: false },
         paymentCustomerId: { type: 'string', required: false, input: false, returned: false },
         subscriptionStatus: { type: 'string', required: false, defaultValue: 'inactive', input: false },

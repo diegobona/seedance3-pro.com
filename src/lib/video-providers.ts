@@ -1,8 +1,8 @@
-import { submitAutodlVideoTask, queryAutodlVideoTask } from '../../scripts/autodl-video.mjs'
+import { submitAutodlVideoTask, queryAutodlVideoTask, AUTODL_UPGRADED_REFERENCE_WORKFLOW_ID } from '../../scripts/autodl-video.mjs'
 import { assertCompshareVideoPayload, submitCompshareVideoTask, queryCompshareVideoTask, COMPSHARE_FIRST_FRAME_WORKFLOW_ID } from '../../scripts/compshare-video.mjs'
 import { VIDEO_WORKFLOW_ID, REFERENCE_VIDEO_WORKFLOW_ID, type VideoGenerationPayload, type VideoProviderQueryResult } from './protected-video-generation'
 
-export { COMPSHARE_FIRST_FRAME_WORKFLOW_ID }
+export { COMPSHARE_FIRST_FRAME_WORKFLOW_ID, AUTODL_UPGRADED_REFERENCE_WORKFLOW_ID }
 export type VideoProviderEnvironment = { H3_REFERENCE_PROVIDER?: string; AUTODL_TOKEN?: string; COMPSHARE_API_KEY?: string }
 
 function providerConfigurationError(retriable = false) {
@@ -12,6 +12,7 @@ function providerConfigurationError(retriable = false) {
 export function selectVideoWorkflow(payload: VideoGenerationPayload, environment: VideoProviderEnvironment): string {
   if (!payload.referenceImageIds && !payload.referenceImageUrls) return VIDEO_WORKFLOW_ID
   const provider = environment.H3_REFERENCE_PROVIDER?.trim() || 'autodl'
+  if (provider === 'autodl-upgraded') return AUTODL_UPGRADED_REFERENCE_WORKFLOW_ID
   if (provider === 'autodl') return REFERENCE_VIDEO_WORKFLOW_ID
   if (provider !== 'compshare') throw providerConfigurationError()
   assertCompshareVideoPayload(payload, { requireReferenceUrl: false })
@@ -20,7 +21,7 @@ export function selectVideoWorkflow(payload: VideoGenerationPayload, environment
 
 export function videoProviderToken(workflowId: string, environment: VideoProviderEnvironment): string {
   if (workflowId === COMPSHARE_FIRST_FRAME_WORKFLOW_ID) return environment.COMPSHARE_API_KEY?.trim() ?? ''
-  if (workflowId === VIDEO_WORKFLOW_ID || workflowId === REFERENCE_VIDEO_WORKFLOW_ID) return environment.AUTODL_TOKEN?.trim() ?? ''
+  if ([VIDEO_WORKFLOW_ID, REFERENCE_VIDEO_WORKFLOW_ID, AUTODL_UPGRADED_REFERENCE_WORKFLOW_ID].includes(workflowId)) return environment.AUTODL_TOKEN?.trim() ?? ''
   throw providerConfigurationError()
 }
 
@@ -35,10 +36,11 @@ export async function submitVideoTask(payload: VideoGenerationPayload, options: 
   if (options.workflowId === COMPSHARE_FIRST_FRAME_WORKFLOW_ID) {
     return submitCompshareVideoTask(payload, { apiKey: options.environment.COMPSHARE_API_KEY, localTaskId: options.localTaskId, fetchImpl: options.fetchImpl })
   }
-  // Both historical workflows retain their original AutoDL transport.
-  const expected = payload.referenceImageUrls ? REFERENCE_VIDEO_WORKFLOW_ID : VIDEO_WORKFLOW_ID
-  if (options.workflowId !== expected) throw providerConfigurationError()
-  return submitAutodlVideoTask(payload, { token: options.environment.AUTODL_TOKEN, fetchImpl: options.fetchImpl })
+  // Stored workflow IDs keep historical jobs on their original transport.
+  const expected = payload.referenceImageUrls
+    ? [REFERENCE_VIDEO_WORKFLOW_ID, AUTODL_UPGRADED_REFERENCE_WORKFLOW_ID] : [VIDEO_WORKFLOW_ID]
+  if (!expected.includes(options.workflowId)) throw providerConfigurationError()
+  return submitAutodlVideoTask(payload, { token: options.environment.AUTODL_TOKEN, workflowId: options.workflowId, fetchImpl: options.fetchImpl })
 }
 
 export async function queryVideoTask(providerTaskId: string, options: DispatchOptions): Promise<VideoProviderQueryResult> {

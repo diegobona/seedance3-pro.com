@@ -6,7 +6,7 @@ import { createGuestVideoTrialStore } from '../src/db/guest-video-trials'
 import { protectVideoGenerationStart, protectVideoGenerationPoll } from '../src/lib/protected-video-generation'
 import { selectVideoWorkflow, submitVideoTask, queryVideoTask, COMPSHARE_FIRST_FRAME_WORKFLOW_ID as compshare } from '../src/lib/video-providers'
 
-test('D1 CompShare reservation keeps its UUID/workflow, settles once, and preserves guest scope after login', async () => {
+test('historical D1 CompShare reservation keeps its UUID/workflow, settles once, and preserves guest scope after login', async () => {
   const h = await createD1TestDatabase()
   try {
     const userId = `guest-${crypto.randomUUID()}`
@@ -18,8 +18,11 @@ test('D1 CompShare reservation keeps its UUID/workflow, settles once, and preser
       referenceImageIds: [crypto.randomUUID()], referenceImageUrls: ['https://seedance3-pro.com/api/videos/references?id=offline'],
     }
     const getSession = async () => ({ user: { id: userId, isGuest: true } })
+    // Reconstruct a task accepted before the trial switched to 768P.
+    // New guest submissions intentionally reject the retained 480P channel.
     const response = await protectVideoGenerationStart({
-      request: new Request('https://example.test/api/videos/generate'), getSession, taskStore: store,
+      request: new Request('https://example.test/api/videos/generate'),
+      getSession: async () => ({ user: { id: userId } }), taskStore: store,
       preflight: async () => ({ ok: true, payload }), resolveWorkflow: p => selectVideoWorkflow(p, environment),
       submit: async (p, context) => {
         submittedLocalId = context.localTaskId

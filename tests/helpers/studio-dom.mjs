@@ -142,10 +142,12 @@ export function createStudioEnvironment({ fetchImpl, modelId = 'gpt-image-2' }) 
   // The legacy page disables models that production SSR exposes and predates
   // the optional pose sidebar control. Supply those production capabilities.
   document.querySelector('[data-model="minimax-h3"]').disabled = false;
-  if (!document.querySelector('[data-model="gpt-image-2-5-1k"]')) {
+  // Both image routes remain supported even though the sidebar shows only 2.5.
+  for (const supportedImageModel of ['gpt-image-2', 'gpt-image-2-5-1k']) {
+    if (document.querySelector(`[data-model="${supportedImageModel}"]`)) continue;
     const button = document.createElement('button');
     button.className = 'model-button';
-    button.setAttribute('data-model', 'gpt-image-2-5-1k');
+    button.setAttribute('data-model', supportedImageModel);
     document.querySelector('nav').append(button);
   }
   if (!document.querySelector('.pose-sidebar-toggle')) {

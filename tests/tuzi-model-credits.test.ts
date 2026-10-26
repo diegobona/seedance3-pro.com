@@ -199,12 +199,12 @@ async function runGeneration({
 }
 
 function assertRefunded(harness: GenerationHarness): void {
-  assert.deepEqual(harness.calls.reserves, [{ userId: USER_ID, credits: 10 }])
+  assert.deepEqual(harness.calls.reserves, [{ userId: USER_ID, credits: 2 }])
   assert.deepEqual(harness.calls.refunds, [RESERVATION_ID])
   assert.deepEqual(harness.calls.settlements, [])
   assert.equal(harness.balance, 20)
   assert.equal(harness.reservationStatus, 'refunded')
-  assert.equal(harness.response.headers.get('x-seedance-credit-cost'), '10')
+  assert.equal(harness.response.headers.get('x-seedance-credit-cost'), '2')
   assert.equal(harness.response.headers.get('x-seedance-credit-remaining'), '20')
 }
 
@@ -243,10 +243,10 @@ test('provider aliases and arbitrary model headers are rejected before credit re
   }
 })
 
-test('two Tuzi 2.5 images reserve and settle exactly ten credits with the exact upstream alias', async () => {
+test('two Tuzi 2.5 images reserve and settle exactly two credits with the exact upstream alias', async () => {
   const harness = await runGeneration({ request: generationRequest({ size: null }) })
   assert.equal(harness.response.status, 200)
-  assert.deepEqual(harness.calls.reserves, [{ userId: USER_ID, credits: 10 }])
+  assert.deepEqual(harness.calls.reserves, [{ userId: USER_ID, credits: 2 }])
   assert.equal(harness.calls.upstream.length, 1)
   assert.deepEqual(harness.calls.upstream[0], {
     url: 'https://api.tu-zi.com/v1/images/generations',
@@ -262,10 +262,10 @@ test('two Tuzi 2.5 images reserve and settle exactly ten credits with the exact 
   assert.deepEqual(harness.calls.settlements, [RESERVATION_ID])
   assert.deepEqual(harness.calls.refunds, [])
   assert.deepEqual(harness.calls.balances, [USER_ID])
-  assert.equal(harness.balance, 10)
+  assert.equal(harness.balance, 18)
   assert.equal(harness.reservationStatus, 'settled')
-  assert.equal(harness.response.headers.get('x-seedance-credit-cost'), '10')
-  assert.equal(harness.response.headers.get('x-seedance-credit-remaining'), '10')
+  assert.equal(harness.response.headers.get('x-seedance-credit-cost'), '2')
+  assert.equal(harness.response.headers.get('x-seedance-credit-remaining'), '18')
   assert.deepEqual(harness.events, [
     'session', 'preflight', 'rate-limit', 'credit-cost', 'reserve', 'provider', 'settle', 'get-balance',
   ])
@@ -275,18 +275,18 @@ test('two Tuzi 2.5 images reserve and settle exactly ten credits with the exact 
   assert.deepEqual(payload.image, payload.images[0])
 })
 
-test('a two-image Tuzi 2.5 request with only nine credits does not call the provider', async () => {
-  const harness = await runGeneration({ initialBalance: 9 })
+test('a two-image Tuzi 2.5 request with only one credit does not call the provider', async () => {
+  const harness = await runGeneration({ initialBalance: 1 })
   assert.equal(harness.response.status, 402)
   const payload = await readFailurePayload(harness.response)
   assert.equal(payload.code, 'INSUFFICIENT_CREDITS')
-  assert.deepEqual(payload.credits, { cost: 10, remaining: 9 })
-  assert.deepEqual(harness.calls.reserves, [{ userId: USER_ID, credits: 10 }])
+  assert.deepEqual(payload.credits, { cost: 2, remaining: 1 })
+  assert.deepEqual(harness.calls.reserves, [{ userId: USER_ID, credits: 2 }])
   assert.equal(harness.calls.adapter, 0)
   assert.deepEqual(harness.calls.upstream, [])
   assert.deepEqual(harness.calls.refunds, [])
   assert.deepEqual(harness.calls.settlements, [])
-  assert.equal(harness.balance, 9)
+  assert.equal(harness.balance, 1)
 })
 
 test('model mismatches and model-specific invalid sizes restore credits without calling Tuzi', async (t) => {
@@ -298,7 +298,7 @@ test('model mismatches and model-specific invalid sizes restore credits without 
     { name: 'new model with old square size', input: { size: '1024x1024' }, message: /size is not supported/i },
     { name: 'old model with new square size', input: { model: 'gpt-image-2', size: '1254x1254' }, message: /size is not supported/i },
     { name: 'provider alias in form body', input: { model: PROVIDER_MODEL, modelHeader: WEBSITE_MODEL }, message: /model is not supported/i },
-    { name: 'five reference images for new model', input: { references: 5 }, message: /up to 4 reference images/i },
+    { name: 'seventeen reference images for new model', input: { references: 17 }, message: /up to 16 reference images/i },
   ]
   for (const { name, input, message } of cases) {
     await t.test(name, async () => {
@@ -318,7 +318,6 @@ test('Tuzi failures and unusable or incomplete results refund the full two-image
     { name: 'provider HTTP error', reply: () => Response.json({ error: { message: 'Fixture provider failure' } }, { status: 500 }), message: /fixture provider failure/i },
     { name: 'empty provider result', reply: () => Response.json({ data: [] }), message: /no usable image/i },
     { name: 'unusable provider URL', reply: () => Response.json({ data: [{ url: 'http://cdn.example.com/unsafe.png' }] }), message: /no usable image/i },
-    { name: 'only one of two requested images', reply: () => Response.json({ data: [{ url: 'https://cdn.example.com/one.png' }] }), message: /requested number of images/i },
     { name: 'provider transport error', reply: async () => { throw new Error('Fixture offline') }, message: /unable to reach/i },
   ]
   for (const { name, reply, message } of cases) {
@@ -335,14 +334,14 @@ test('Tuzi failures and unusable or incomplete results refund the full two-image
   }
 })
 
-test('legacy model-less clients retain the old provider model and the same five-credit unit price', async () => {
+test('legacy model-less clients retain the old provider model and the same one-credit unit price', async () => {
   const harness = await runGeneration({ request: generationRequest({ model: null, modelHeader: null, size: null }) })
   assert.equal(harness.response.status, 200)
-  assert.deepEqual(harness.calls.reserves, [{ userId: USER_ID, credits: 10 }])
+  assert.deepEqual(harness.calls.reserves, [{ userId: USER_ID, credits: 2 }])
   assert.equal(harness.calls.upstream[0]?.body.model, 'gpt-image-2')
   assert.equal(harness.calls.upstream[0]?.body.size, '1024x1024')
   assert.equal(harness.calls.upstream[0]?.body.quality, 'medium')
   assert.deepEqual(harness.calls.settlements, [RESERVATION_ID])
   assert.deepEqual(harness.calls.refunds, [])
-  assert.equal(harness.balance, 10)
+  assert.equal(harness.balance, 18)
 })

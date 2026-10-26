@@ -38,7 +38,7 @@ function creditStore(options: CreditStoreOptions = {}) {
       refund: async () => {
         calls.refund += 1
         if (calls.refund <= refundFailures) throw new Error('Transient refund failure.')
-        return { remainingCredits: remainingCredits + 5 }
+        return { remainingCredits: remainingCredits + 1 }
       },
       getBalance: async () => {
         calls.getBalance += 1
@@ -49,13 +49,13 @@ function creditStore(options: CreditStoreOptions = {}) {
   }
 }
 
-test('multi-image generation reserves five credits per requested image', async () => {
+test('multi-image generation reserves one credit per requested image', async () => {
   const credits = creditStore({ remainingCredits: 15, currentBalance: 15 })
   const response = await protectImageGeneration({
     request,
     getSession: async () => ({ user: { id: 'user-1' } }),
     creditStore: credits.store,
-    getCreditCost: async () => 15,
+    getCreditCost: async () => 3,
     generate: async () => Response.json({
       success: true,
       image: { dataUrl: 'data:image/png;base64,iVBORw0KGgo=' },
@@ -68,18 +68,18 @@ test('multi-image generation reserves five credits per requested image', async (
   })
 
   assert.equal(response.status, 200)
-  assert.deepEqual(credits.calls.reserveAmounts, [15])
-  assert.equal(response.headers.get('x-seedance-credit-cost'), '15')
+  assert.deepEqual(credits.calls.reserveAmounts, [3])
+  assert.equal(response.headers.get('x-seedance-credit-cost'), '3')
 })
 
 test('multi-image generation reports the dynamic cost when credits are insufficient', async () => {
   let providerCalls = 0
-  const credits = creditStore({ currentBalance: 10, canReserve: false })
+  const credits = creditStore({ currentBalance: 2, canReserve: false })
   const response = await protectImageGeneration({
     request,
     getSession: async () => ({ user: { id: 'user-1' } }),
     creditStore: credits.store,
-    getCreditCost: () => 15,
+    getCreditCost: () => 3,
     generate: async () => {
       providerCalls += 1
       return Response.json({ success: true })
@@ -88,10 +88,10 @@ test('multi-image generation reports the dynamic cost when credits are insuffici
 
   assert.equal(response.status, 402)
   assert.equal(providerCalls, 0)
-  assert.deepEqual(credits.calls.reserveAmounts, [15])
-  assert.equal(response.headers.get('x-seedance-credit-cost'), '15')
+  assert.deepEqual(credits.calls.reserveAmounts, [3])
+  assert.equal(response.headers.get('x-seedance-credit-cost'), '3')
   const body = (await response.json()) as { message: string }
-  assert.match(body.message, /15 credits/i)
+  assert.match(body.message, /3 credits/i)
 })
 
 test('anonymous image generation is rejected before provider work', async () => {
@@ -136,13 +136,13 @@ test('insufficient credits reject generation before provider work', async () => 
   assert.equal(response.status, 402)
   assert.equal(providerCalls, 0)
   assert.equal(credits.calls.reserve, 1)
-  assert.equal(response.headers.get('x-seedance-credit-cost'), '5')
+  assert.equal(response.headers.get('x-seedance-credit-cost'), '1')
   assert.equal(response.headers.get('x-seedance-credit-remaining'), '0')
   assert.deepEqual(await response.json(), {
     success: false,
     code: 'INSUFFICIENT_CREDITS',
     message: 'Today’s free credits are used up. Your daily allowance will refresh at the next reset.',
-    credits: { cost: 5, remaining: 0 },
+    credits: { cost: 1, remaining: 0 },
   })
 })
 
@@ -165,7 +165,7 @@ test('request preflight rejects invalid envelopes before reserving credits', asy
   assert.equal(providerCalls, 0)
 })
 
-test('successful image generation settles five credits and exposes the remaining balance', async () => {
+test('successful image generation settles one credit and exposes the remaining balance', async () => {
   let providerCalls = 0
   const credits = creditStore({ remainingCredits: 10 })
   const options = {
@@ -185,7 +185,7 @@ test('successful image generation settles five credits and exposes the remaining
   assert.equal(credits.calls.reserve, 1)
   assert.equal(credits.calls.settle, 1)
   assert.equal(credits.calls.refund, 0)
-  assert.equal(response.headers.get('x-seedance-credit-cost'), '5')
+  assert.equal(response.headers.get('x-seedance-credit-cost'), '1')
   assert.equal(response.headers.get('x-seedance-credit-remaining'), '10')
 })
 
@@ -246,8 +246,8 @@ test('failed provider responses refund credits and expose the restored balance',
   assert.equal(response.status, 502)
   assert.equal(credits.calls.settle, 0)
   assert.equal(credits.calls.refund, 1)
-  assert.equal(response.headers.get('x-seedance-credit-cost'), '5')
-  assert.equal(response.headers.get('x-seedance-credit-remaining'), '15')
+  assert.equal(response.headers.get('x-seedance-credit-cost'), '1')
+  assert.equal(response.headers.get('x-seedance-credit-remaining'), '11')
 })
 
 test('unusable successful provider responses are refunded instead of billed', async () => {
@@ -262,7 +262,7 @@ test('unusable successful provider responses are refunded instead of billed', as
   assert.equal(response.status, 502)
   assert.equal(credits.calls.settle, 0)
   assert.equal(credits.calls.refund, 1)
-  assert.equal(response.headers.get('x-seedance-credit-remaining'), '15')
+  assert.equal(response.headers.get('x-seedance-credit-remaining'), '11')
   assert.deepEqual(await response.json(), {
     success: false,
     code: 'INVALID_GENERATION_RESULT',
@@ -303,8 +303,8 @@ test('thrown provider errors refund credits and return the restored balance', as
   assert.equal(response.status, 502)
   assert.equal(credits.calls.settle, 0)
   assert.equal(credits.calls.refund, 1)
-  assert.equal(response.headers.get('x-seedance-credit-cost'), '5')
-  assert.equal(response.headers.get('x-seedance-credit-remaining'), '15')
+  assert.equal(response.headers.get('x-seedance-credit-cost'), '1')
+  assert.equal(response.headers.get('x-seedance-credit-remaining'), '11')
   assert.deepEqual(await response.json(), {
     success: false,
     code: 'GENERATION_FAILED',
@@ -325,5 +325,5 @@ test('credit refunds retry once after a transient database failure', async () =>
 
   assert.equal(response.status, 502)
   assert.equal(credits.calls.refund, 2)
-  assert.equal(response.headers.get('x-seedance-credit-remaining'), '15')
+  assert.equal(response.headers.get('x-seedance-credit-remaining'), '11')
 })

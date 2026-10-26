@@ -1,11 +1,14 @@
 import { t, localizedErrorMessage } from './i18n.mjs';
-import { DEFAULT_IMAGE_MODEL, IMAGE_MODEL_HEADER, getImageModel } from './image-models.mjs';
+import { IMAGE_MODEL_HEADER, getImageModel } from './image-models.mjs';
+import { DEFAULT_MODEL_ID } from './model-routing.mjs';
+import { guestDeviceHeaders } from '../assets/guest-device.mjs';
 export async function requestImageGeneration({
-  model = DEFAULT_IMAGE_MODEL,
+  model = DEFAULT_MODEL_ID,
   prompt,
   referenceFile = null,
   referenceFiles = referenceFile ? [referenceFile] : [],
   quantity = 1,
+  paidOnly = false,
   size,
   fetchImpl = fetch,
   signal
@@ -24,7 +27,8 @@ export async function requestImageGeneration({
 
   const response = await fetchImpl("/api/images/generate", {
     method: "POST",
-    headers: { "x-seedance-image-quantity": String(quantity), [IMAGE_MODEL_HEADER]: model },
+    headers: { ...(await guestDeviceHeaders()), "x-seedance-image-quantity": String(quantity), [IMAGE_MODEL_HEADER]: model,
+      ...(paidOnly === true ? { 'x-seedance-credit-source': 'paid' } : {}) },
     body: form,
     signal
   });

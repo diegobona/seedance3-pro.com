@@ -50,6 +50,17 @@ function browser() {
   };
 }
 
+test('renamed GPT tool URLs preserve the existing referral identity and historical entry key', async () => {
+  for (const prefix of ['', '/zh']) {
+    const tab = browser();
+    await tab.visit('?ref=pixal3d', '', prefix + '/app/image/gpt-image-2-5');
+    assert.equal(tab.requests.length, 1);
+    assert.equal(tab.requests[0].body.entryPath, '/app/image/gpt-image-2');
+    await tab.visit('?ref=pixal3d', '', prefix + '/app/image/gpt-image-2');
+    assert.equal(tab.requests.length, 1, 'renaming does not count an existing visit twice');
+  }
+});
+
 test('explicit or actual referrals record anonymous IDs and only the entry path', async () => {
   for (const referrer of ['', 'https://www.anyposes.com/']) {
     const tab = browser();
@@ -105,6 +116,49 @@ test('Chinese landing records the same canonical path and visitor across locale 
   assert.equal(tab.requests[0].body.entryPath, '/app/image/gpt-image-2');
   await tab.visit('', 'https://seedance3-pro.com/zh/app/image/gpt-image-2', '/app/image/gpt-image-2');
   assert.equal(tab.requests.length, 1);
+});
+
+test('GPT Image 2.5 referrals record both locales and retain the visit across old and new pages', async () => {
+  for (const source of ['anyposes', 'pixal3d']) {
+    for (const locale of ['', '/zh']) {
+      const tab = browser();
+      await tab.visit('?ref=' + source, '', locale + '/app/image/gpt-image-2-5-1k');
+      assert.equal(tab.requests.length, 1);
+      assert.equal(tab.requests[0].url, '/api/referrals/' + source);
+      assert.equal(tab.requests[0].body.entryPath, '/app/image/gpt-image-2-5-1k');
+      await tab.visit('?ref=' + source, '', '/app/image/gpt-image-2');
+      await tab.visit('?ref=' + source, '', '/zh/app/image/gpt-image-2-5-1k');
+      assert.equal(tab.requests.length, 1);
+    }
+  }
+});
+
+test('old visit cookies remain deduplicated after an AnyPoses redirect to 2.5', async () => {
+  const tab = browser();
+  await tab.visit('?ref=anyposes');
+  const first = tab.requests[0].body;
+  await tab.visit('?ref=anyposes', '', '/app/image/gpt-image-2-5-1k');
+  assert.equal(tab.requests.length, 1);
+  const visit = JSON.parse(decodeURIComponent(tab.cookies.get('seedance_anyposes_visit').value));
+  assert.equal(visit.id, first.visitId);
+  assert.equal(visit.path, '/app/image/gpt-image-2');
+});
+
+test('failed 2.5 recording retries the same visit and preserves its entry on internal navigation', async () => {
+  const tab = browser();
+  tab.fail();
+  await tab.visit('?ref=anyposes', '', '/zh/app/image/gpt-image-2-5-1k');
+  await tab.visit('', 'https://seedance3-pro.com/zh/app/image/gpt-image-2-5-1k', '/');
+  assert.equal(tab.requests.length, 2);
+  assert.equal(tab.requests[0].body.entryPath, '/app/image/gpt-image-2-5-1k');
+  assert.deepEqual(tab.requests[1].body, tab.requests[0].body);
+});
+
+test('an explicit Pixal3D source wins over an AnyPoses Referer on GPT Image 2.5', async () => {
+  const tab = browser();
+  await tab.visit('?ref=pixal3d', 'https://anyposes.com/', '/app/image/gpt-image-2-5-1k');
+  assert.equal(tab.requests.length, 1);
+  assert.equal(tab.requests[0].url, '/api/referrals/pixal3d');
 });
 
 test('AnyPoses referrals entering the homepage or H3 are excluded', async () => {

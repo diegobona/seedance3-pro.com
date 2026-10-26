@@ -1,0 +1,29 @@
+✔ all accounts receive daily five, spending free first with separate paid balance (4674.4537ms)
+✔ refunded retries retain supplier budget and explicit paid-only remains available (5836.4057ms)
+✔ partial settlement refunds paid portion first once without releasing supplier budget (4905.6864ms)
+✔ free budget reservations serialize concurrent retries and billing holds block paid continuation (5954.4081ms)
+✔ migration converts existing guest image balance and pending refunds from five credits to one (3542.7659ms)
+✔ registered accounts can spend five shared daily credits on images and video (8083.4948ms)
+✔ five-credit migration accounts for today’s usage, preserves paid credits and leaves guests unchanged (6317.5251ms)
+✔ next-day renewal and refunds keep the five-credit daily cap and purchased balance (5447.6589ms)
+✔ D1 reservations prevent concurrent overspending and duplicate refunds (5178.0173ms)
+✔ D1 daily grants replace yesterday free credits while preserving permanent credits (5252.2687ms)
+✔ D1 settlement increments generation counts once and cannot later refund (5244.9998ms)
+✔ D1 cross-day refunds return permanent credits without carrying yesterday free credits (5298.179ms)
+✔ D1 recovers abandoned image reservations but protects active video reservations (5369.7757ms)
+✔ D1 reservation helpers roll back the debit when the following task insert fails (4949.4199ms)
+✔ D1 normalizes legacy daily dates and rejects invalid credit amounts (5216.0971ms)
+✔ D1 enables credit triggers after import without charging existing reservations twice (5315.8202ms)
+✔ D1 reservation insert applies the current daily grant when an earlier refresh becomes stale (5058.5121ms)
+✔ guest pending and successful usage merges once, retains cost and disables subsequent guest access (7508.4059ms)
+✔ signed-in network cannot claim either guest allowance after logout (5355.1944ms)
+✔ image and video guests on the same trusted network share the daily supplier-cost cap (5771.4006ms)
+✔ reconciled pending video credits are protected from stale image reservation recovery (5883.4574ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 119294.2973

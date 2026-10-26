@@ -1,0 +1,27 @@
+✔ daily refresh follows Beijing midnight independently of the browser region (0.5039ms)
+✔ the same credit reset is displayed in the visitor timezone with daylight saving respected (35.4412ms)
+✔ an open generator refreshes an exhausted balance at midnight and cleans up its timer (19.4016ms)
+✔ homepage handoff keeps the original reference, draft settings and accepted task without submitting anything (3.0799ms)
+✔ replacing a draft releases its old reference and malformed task identifiers are discarded (0.2747ms)
+✔ homepage handoff preserves all nine ordered references and consumes every stored file (0.9762ms)
+✔ a failed multi-file save cleans new blobs and preserves the previous usable draft (0.5983ms)
+✔ legacy single-reference drafts still restore into the multi-reference workspace contract (0.2249ms)
+✔ homepage checkout drafts can survive a longer payment visit while workspace handoffs retain their shorter default (0.1288ms)
+✔ both homepages retain one keyword H1 and structured SEO while showing the generator before examples and Pose (5.1889ms)
+✔ dynamic UI re-evaluates locale and keeps unknown strings and user values intact (0.9854ms)
+✔ Chinese image validation reports format and upload limits in Chinese (0.1949ms)
+✔ localized image requests preserve API URL, prompt and provider field values (15.6122ms)
+✔ localized video requests preserve provider enums and local API routes (1.284ms)
+✔ image-to-video and Pose share URLs retain Chinese locale and scene/reference state (1.8163ms)
+✔ Chinese Pose preset labels and joint handles are translated while category keys stay English (0.2476ms)
+✔ waitlist and Pose result buttons render Chinese after async state changes (0.8331ms)
+✔ credit summary updates remain localized when balance is fetched or changed (0.8918ms)
+✔ free budget rejection requires a visible explicit choice before sending a paid image request (87.0988ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 208.8051

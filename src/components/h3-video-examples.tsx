@@ -55,8 +55,8 @@ export function H3VideoExamples() {
   }
 
   return (
-    <section className="context-card h3-examples" aria-label={t("MiniMax H3 video examples")}>
-      <div className="h3-examples-heading"><span>{t("VIDEO EXAMPLES")}</span><small>{t("MADE WITH MINIMAX H3")}</small></div>
+    <section className="context-card h3-examples" aria-label={t("Seedance 2.5 video examples")}>
+      <div className="h3-examples-heading"><span>{t("VIDEO EXAMPLES")}</span><small>{t("MADE WITH Seedance 2.5")}</small></div>
       <video key={selected.id} className="h3-example-player" src={selected.src} controls playsInline preload="metadata" aria-label={`${t(selected.title)} — ${t("Example video")}`} />
       <div className="h3-example-details">
         <div className="h3-example-title"><div><span>{t(selected.style)}</span><h2>{t(selected.title)}</h2></div><button type="button" onClick={tryExample}>{t("Try it ↗")}</button></div>

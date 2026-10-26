@@ -1,17 +1,18 @@
 import { t, localizedErrorMessage, currentLocale } from './i18n.mjs';
+import { bindCreditPurchaseLink } from '../assets/credit-checkout.mjs';
 import { formatCreditResetTime } from './daily-credits.mjs';
 import { guestVideoDurationState } from './guest-video.mjs';
 import { guestImageQuantityState } from './guest-image.mjs';
 import { renderGuestTrialNotice } from './guest-trial-notice.mjs';
 import { localizedPath } from './site-locale.mjs';
-import { buildModelUrl, normalizeModelId } from "./model-routing.mjs";
+import { DEFAULT_MODEL_ID, buildModelUrl, normalizeModelId } from "./model-routing.mjs";
 import { canonicalModelPath, modelIdFromPath } from "./seo-routes.mjs";
 import { requestImageGeneration } from "./image-generation.mjs";
 import { createGenerationPreviewController } from "./generation-preview.mjs";
 import { getImageModel } from './image-models.mjs';
 import { prepareImageForVideo, loadVideoReference } from "./image-to-video.mjs";
 import { validateImageReferences } from "./image-references.mjs";
-import { pollVideoGenerationTask, requestVideoGeneration } from "./video-generation.mjs";
+import { pollVideoGenerationTask, requestVideoGeneration, validateVideoReferenceFiles } from "./video-generation.mjs";
 import { videoReferenceFrameSize } from './video-reference-frame.mjs';
 import { readVideoHandoff } from './studio-handoff.mjs';
 import { buildPoseReferencePrompt } from "./pose-transfer.mjs";
@@ -29,9 +30,9 @@ import {
 
 const studioModels = {
   "seedance-2-5": {
-    category: "AI VIDEO / TEXT-TO-VIDEO",
+    category: "AI VIDEO",
     name: "SEEDANCE 2.5",
-    status: "Text-to-video",
+    status: "Video generator",
     symbol: "S2",
     tone: "lime",
     exampleTitle: "Cinematic story scene",
@@ -40,10 +41,10 @@ const studioModels = {
     canGenerate: true
   },
   "minimax-h3": {
-    category: "AI VIDEO / TEXT-TO-VIDEO",
-    name: "MiniMax H3",
-    status: "Text-to-video",
-    symbol: "H3",
+    category: "AI VIDEO",
+    name: "Seedance 2.5",
+    status: "Video generator",
+    symbol: "S2.5",
     tone: "cyan",
     exampleTitle: "Cinematic product reveal",
     examplePrompt: "A slow orbital camera, controlled reflections, native room tone, and a clean final composition.",
@@ -95,7 +96,7 @@ const studioModels = {
     category: "AI IMAGE / GENERATE & EDIT",
     name: "GPT Image 2",
     status: "Image generator",
-    symbol: "G2",
+    symbol: "G2.5",
     tone: "orange",
     exampleTitle: "Brand-ready layout",
     examplePrompt: "Specify format, hierarchy, exact copy, safe areas, and the visual elements that must remain unchanged.",
@@ -104,7 +105,7 @@ const studioModels = {
   }
 };
 
-const defaultImageGenerationLabel = "Generate image · 5 credits";
+const defaultImageGenerationLabel = "Generate image · 1 credit";
 const activeVideoTaskStorageKey = "seedance:minimax-h3:active-task";
 
 export function clipboardReferenceImages(clipboardData) {
@@ -140,10 +141,14 @@ export function initializeStudio() {
   const modelButtons = document.querySelectorAll(".model-button[data-model]");
   const enabledModelButtons = Array.from(modelButtons).filter((button) => !button.disabled);
   const availableModelIds = new Set(enabledModelButtons.map((button) => button.dataset.model));
+  // Keep direct and query-string Anyposes links usable without a menu entry.
+  availableModelIds.add('gpt-image-2');
   const routeModelId = modelIdFromPath(window.location.pathname);
   if (routeModelId && studioModels[routeModelId]?.canGenerate) availableModelIds.add(routeModelId);
   const modelName = document.getElementById("model-name");
   const modelCategory = document.getElementById("model-category");
+  const packOutput = document.getElementById('studio-pack-output');
+  const packLowestPrice = document.getElementById('studio-pack-lowest-price');
   const modelStatus = document.getElementById("model-status");
   const selectedName = document.getElementById("selected-name");
   const selectedSymbol = document.getElementById("selected-symbol");
@@ -202,6 +207,20 @@ export function initializeStudio() {
   const generationCreditCost = document.getElementById("generation-credit-cost");
   const currentCreditBalance = document.getElementById("current-credit-balance");
   const creditBalanceLabel = document.getElementById('credit-balance-label');
+  const paidOnlyCheckbox = document.getElementById('paid-only-checkbox');
+  const paidOnlyOption = document.getElementById('paid-only-option');
+  const freeBudgetNotice = document.getElementById('free-budget-notice');
+  let freeBudgetBlocked = false;
+  let freeBudgetBlockedDay = null;
+  function offerPaidOnly(error) {
+    if (!['FREE_BUDGET_EXCEEDED', 'NETWORK_FREE_BUDGET_EXCEEDED'].includes(error?.code) || studioShell.dataset.authenticated !== 'true') return;
+    freeBudgetBlocked = true;
+    freeBudgetBlockedDay = Math.floor((Date.now() + 8 * 60 * 60 * 1000) / 86400000);
+    if (paidOnlyOption) paidOnlyOption.hidden = false;
+    if (freeBudgetNotice) freeBudgetNotice.hidden = false;
+    if (paidOnlyCheckbox) paidOnlyCheckbox.checked = false;
+    void creditSummaryController?.loadBalance();
+  }
   const launchNotice = document.getElementById("launch-notice");
   const poseResultActions = document.getElementById("pose-result-actions");
   const editPoseButton = document.getElementById("edit-pose-button");
@@ -225,7 +244,7 @@ export function initializeStudio() {
   const creationGrid = document.getElementById("creation-grid");
   const poseStudio = document.getElementById("pose-studio");
 
-  let activeModelId = "gpt-image-2";
+  let activeModelId = DEFAULT_MODEL_ID;
   let imageReferences = [];
   let poseReferenceActive = false;
   let imageGenerationInFlight = false;
@@ -240,6 +259,7 @@ export function initializeStudio() {
   let creditInsufficient = false;
   let guestVideo = studioShell.dataset.authenticated !== 'true';
   let guestRemaining = null;
+  let accountRemaining = null;
   let creditSummaryController;
   let poseStudioCleanup;
   let poseStudioPromise;
@@ -273,7 +293,7 @@ export function initializeStudio() {
       kind, modelId: activeModelId, prompt: prompt.value,
       quantity: normalizeImageQuantity(imageQuantity.value), resolution: imageQuality.value,
       aspectRatio: kind === 'video' ? videoAspectRatio.value : imageAspectRatio.value,
-      duration: creditCostForDuration(videoDuration.value), videoResolution: videoResolution.value || '480p',
+      duration: creditCostForDuration(videoDuration.value), videoResolution: videoResolution.value || '768p',
       videoMode, isPose: kind === 'image' && poseReferenceActive,
       references: kind === 'video' ? (isReferenceVideo() ? videoReferences.map(item => ({ file: item.file })) : [])
         : imageReferences.map(item => ({ file: item.file, source: item.source })),
@@ -313,8 +333,8 @@ export function initializeStudio() {
   }
 
   function renderExhaustedNotice(element, message) {
-    const kind = message === t('Your free images are used up. Sign up for 15 free credits every day.') ? 'image'
-      : message === t('Your free video seconds are used up. Sign up for 15 free credits every day.') ? 'video' : null;
+    const kind = message === t('Your free images are used up. Sign up for 5 free credits every day.') ? 'image'
+      : message === t('Your free video seconds are used up. Sign up for 5 free credits every day.') ? 'video' : null;
     if (element && kind) renderGuestTrialNotice(element, kind, {
       href: window.location.href,
       onSignup: () => window.dispatchEvent(new CustomEvent('seedance:auth-required', { detail: { mode: 'register' } })),
@@ -331,7 +351,7 @@ export function initializeStudio() {
           canvasHost: document.getElementById("pose-canvas"),
           onUsePose: async (file) => {
             if (destroyed) return;
-            selectModel("gpt-image-2", { syncUrl: true });
+            selectModel(DEFAULT_MODEL_ID, { syncUrl: true });
             setReferenceImage(file, { source: "pose" });
             setPromptValue(buildPoseReferencePrompt(prompt.value));
             generationStatus.textContent = t("Pose reference ready · describe the character, clothing, scene, and style.");
@@ -411,7 +431,7 @@ export function initializeStudio() {
   function updateGuestImageControls() {
     imageQuantity.disabled = imageGenerationInFlight;
     if (imageGenerationInFlight) return;
-    const state = guestImageQuantityState({ guest: isGuestImageSelected(), remaining: guestRemaining, value: imageQuantity.value });
+    const state = guestImageQuantityState({ guest: isGuestImageSelected(), remaining: isGuestImageSelected() ? guestRemaining : accountRemaining, value: imageQuantity.value });
     for (const option of imageQuantity.options) option.disabled = state.disabled.includes(Number(option.value));
     imageQuantity.value = state.value;
   }
@@ -419,7 +439,7 @@ export function initializeStudio() {
   function updateGuestVideoControls() {
     videoDuration.disabled = videoPolling || Boolean(activeVideoTaskId);
     if (videoDuration.disabled) return;
-    const state = guestVideoDurationState({ guest: isGuestVideoSelected(), remaining: guestRemaining, value: videoDuration.value });
+    const state = guestVideoDurationState({ guest: isGuestVideoSelected(), remaining: isGuestVideoSelected() ? guestRemaining : accountRemaining, value: videoDuration.value });
     for (const option of videoDuration.options) option.disabled = state.disabled.includes(Number(option.value));
     videoDuration.value = state.value;
   }
@@ -448,22 +468,19 @@ export function initializeStudio() {
       button.disabled = videoPolling;
     });
     const square = videoAspectRatio.querySelector('option[value="1:1"]');
-    if (square) square.disabled = isReferenceVideo();
-    if (isReferenceVideo() && videoAspectRatio.value === "1:1") videoAspectRatio.value = "16:9";
+    if (square) square.disabled = false;
     if (enabled) {
       prompt.placeholder = isReferenceVideo()
         ? t("How should this image move? Describe the subject’s motion, camera movement, and what happens next…")
         : t("Describe the subject, action, setting, camera movement, lighting, and final shot…");
-      modelCategory.textContent = isReferenceVideo() ? t("AI VIDEO / REFERENCE TO VIDEO") : t("AI VIDEO / TEXT TO VIDEO");
-      modelStatus.textContent = isReferenceVideo() ? t("Reference to video") : t("Text to video");
     }
   }
 
   function renderVideoReferences() {
     if (!videoReferenceGrid) return;
     videoReferenceGrid.replaceChildren();
-    videoReferenceCount.textContent = `${videoReferences.length} / 1`;
-    videoReferenceAdd.disabled = videoReferences.length >= 1 || videoPolling;
+    videoReferenceCount.textContent = `${videoReferences.length} / 9`;
+    videoReferenceAdd.disabled = videoReferences.length >= 9 || videoPolling;
     for (const [index, reference] of videoReferences.entries()) {
       const card = document.createElement("div");
       card.className = "video-reference-item";
@@ -487,18 +504,14 @@ export function initializeStudio() {
 
   function addVideoReferenceImages(files) {
     if (videoPolling || activeVideoTaskId || !files.length) return false;
-    let message = "";
-    if (files.length + videoReferences.length > 1) message = t("H3 supports only one reference image. Remove the current image before adding another.");
-    else if (files.some((file) => !["image/png", "image/jpeg", "image/webp"].includes(file.type) || !file.size || file.size > 10 * 1024 * 1024)) {
-      message = t("Choose PNG, JPEG or WebP images, up to 10 MB each.");
-    }
-    if (message) {
-      generationStatus.textContent = message;
+    try { validateVideoReferenceFiles(files, { existingCount: videoReferences.length }); }
+    catch (error) {
+      generationStatus.textContent = error.message;
       generationStatus.className = "generation-status is-error";
       return false;
     }
     videoReferences.push(...files.map((file) => ({ file, url: URL.createObjectURL(file) })));
-    generationStatus.textContent = t("Reference image ready.");
+    generationStatus.textContent = t("Reference images ready.");
     generationStatus.className = "generation-status";
     renderVideoReferences();
     updateGenerateButton();
@@ -529,6 +542,7 @@ export function initializeStudio() {
       ? videoPolling || Boolean(activeVideoTaskId)
       : imageGenerationInFlight;
     generateButton.disabled = !canGenerate || !prompt.value.trim() || generationBlocked || creditInsufficient
+      || (freeBudgetBlocked && studioShell.dataset.authenticated === 'true' && !paidOnlyCheckbox?.checked)
       || (isReferenceVideo() && videoReferences.length === 0);
     if ((isGuestVideoSelected() || isGuestImageSelected()) && guestRemaining === 0 && !generationBlocked) generateButton.disabled = false;
     const disabled = generateButton.disabled;
@@ -551,13 +565,17 @@ export function initializeStudio() {
     if (modelName.dataset.landingModel !== normalizedModelId) modelName.textContent = t(model.name);
     modelCategory.textContent = t(model.category);
     modelStatus.textContent = t(model.status);
-    modelStatus.hidden = model.type === "pose";
+    modelStatus.hidden = model.type === "pose" || model.type === "video" && model.canGenerate;
     selectedName.textContent = t(model.name);
     selectedSymbol.textContent = model.symbol;
     selectedSymbol.className = `model-symbol ${model.tone}`;
     exampleTitle.textContent = t(model.exampleTitle);
     examplePrompt.textContent = t(model.examplePrompt);
     const videoModel = model.type === "video";
+    if (packOutput) packOutput.textContent = t(videoModel ? '500 seconds of video' : '500 images or 500 seconds of video');
+    if (packLowestPrice) packLowestPrice.hidden = !videoModel || !model.canGenerate;
+    const availabilityNotice = document.getElementById('video-model-availability');
+    if (availabilityNotice) availabilityNotice.hidden = !['minimax-h3', 'seedance-2-5'].includes(normalizedModelId);
     const poseModel = model.type === "pose";
     previewController.selectModel(normalizedModelId);
     updateImageContext();
@@ -657,7 +675,7 @@ export function initializeStudio() {
         imageTransferInFlight = true;
         imageAnimateButtons.forEach((button) => { button.disabled = true; });
         animate.textContent = t("Preparing image…");
-        transferStatus.textContent = t("Saving your reference image for H3…");
+        transferStatus.textContent = t("Saving your reference image for Seedance 2.5…");
         try {
           await element.decode();
           const destination = await prepareImageForVideo({ image, width: element.naturalWidth, height: element.naturalHeight, signal: imageTransferAbortController.signal });
@@ -758,6 +776,7 @@ export function initializeStudio() {
         ? await pollVideoGenerationTask({ ...common, taskId: resumeTaskId })
         : await requestVideoGeneration({
             ...common,
+            paidOnly: studioShell.dataset.authenticated === 'true' && paidOnlyCheckbox?.checked === true,
             prompt: draft.prompt,
             duration: draft.duration,
             resolution: draft.videoResolution,
@@ -785,6 +804,7 @@ export function initializeStudio() {
     } catch (error) {
       if (destroyed || error?.name === 'AbortError') return;
       announceCredits(error?.credits, creditContext);
+      offerPaidOnly(error);
       if (requiresAuthentication(error)) window.dispatchEvent(new CustomEvent('seedance:auth-required'));
       if (error?.terminal || error?.status === 404 || error?.code === 'VIDEO_TASK_NOT_FOUND' || error?.code === 'INVALID_VIDEO_TASK') clearActiveVideoTask();
       const requiredCredits = error?.credits?.cost || draft?.duration || creditCostForDuration(videoDuration.value);
@@ -948,25 +968,36 @@ export function initializeStudio() {
   function updateDailyResetNotice() {
     const guest = isGuestVideoSelected() || isGuestImageSelected();
     const used = guest && guestRemaining === 0 && !isCurrentGenerationPending();
+    const account = studioShell.dataset.authenticated === 'true' || !guestVideo || studioShell.dataset.authPending === 'true';
+    const title = t(account ? 'Daily free credits' : used ? 'Free trial used up' : 'Free trial');
     const notice = document.querySelector('.studio-trial-notice');
-    if (notice) notice.dataset.trialState = guest ? used ? 'guest-used' : 'guest-available' : 'account';
+    if (notice) {
+      notice.dataset.trialState = guest ? used ? 'guest-used' : 'guest-available' : 'account';
+      notice.setAttribute('aria-label', title);
+    }
     const noticeTitle = document.getElementById('trial-notice-title');
-    if (noticeTitle) noticeTitle.textContent = t(used ? 'Free trial used up' : 'Free trial');
+    if (noticeTitle) noticeTitle.textContent = title;
     const dailySignup = document.getElementById('trial-daily-signup');
     if (dailySignup) dailySignup.hidden = studioShell.dataset.authenticated === 'true' || !studioModels[activeModelId]?.canGenerate;
     const guestMessage = document.getElementById('trial-guest-message');
     if (guestMessage) guestMessage.hidden = !guest || used;
     if (dailyCreditResetNotice) {
-      dailyCreditResetNotice.textContent = t("Daily reset: {time} (local time). Unused credits expire at reset and do not accumulate.", { time: dailyResetTime() });
+      dailyCreditResetNotice.textContent = t('Credits reset daily and do not accumulate.') + ' ' + t('Each network shares a daily limit of 10 free credits across guest and registered image/video generation.');
     }
   }
 
   updateDailyResetNotice();
+  const purchaseLink = document.getElementById('credit-purchase-notice')?.querySelector('a');
+  if (purchaseLink) cleanups.push(bindCreditPurchaseLink(purchaseLink, { locale: currentLocale() }));
   creditSummaryController = createCreditSummaryController({
     container: creditSummary,
     costElement: generationCreditCost,
     currentBalanceElement: currentCreditBalance,
     balanceLabelElement: creditBalanceLabel,
+    debitElement: document.getElementById('credit-debit-preview'),
+    splitBalanceElement: document.getElementById('credit-balance-split'),
+    purchaseNoticeElement: document.getElementById('credit-purchase-notice'),
+    getPaidOnly: () => studioShell.dataset.authenticated === 'true' && paidOnlyCheckbox?.checked === true,
     quantityControl: imageQuantity,
     additionalCostControls: [videoDuration],
     getCost: () => isVideoGenerationSelected()
@@ -978,34 +1009,41 @@ export function initializeStudio() {
     isGenerationPending: isCurrentGenerationPending,
     prepareControls: remaining => {
       guestRemaining = isGuestVideoSelected() || isGuestImageSelected() ? remaining : null;
+      accountRemaining = isGuestVideoSelected() || isGuestImageSelected() ? null : remaining;
       updateGuestVideoControls();
       updateGuestImageControls();
     },
     onBalanceLoaded: (remaining, credits) => {
       guestVideo = credits ? credits.guest === true : studioShell.dataset.authenticated !== 'true';
       guestRemaining = isGuestVideoSelected() || isGuestImageSelected() ? remaining : null;
+      accountRemaining = isGuestVideoSelected() || isGuestImageSelected() ? null : remaining;
       updateGuestVideoControls();
       updateGuestImageControls();
       updateGenerateButtonLabel();
       updateDailyResetNotice();
+      if (!credits || credits.guest || credits.freeBudgetExceeded === false
+        || freeBudgetBlockedDay !== null && freeBudgetBlockedDay !== Math.floor((Date.now() + 8 * 60 * 60 * 1000) / 86400000)) {
+        freeBudgetBlocked = false;
+        freeBudgetBlockedDay = null;
+        if (paidOnlyCheckbox) paidOnlyCheckbox.checked = false;
+        if (paidOnlyOption) paidOnlyOption.hidden = true;
+        if (freeBudgetNotice) freeBudgetNotice.hidden = true;
+      }
       if (remaining > 0 && generationStatus.textContent.startsWith(t("Today’s free credits are used up."))) {
         generationStatus.textContent = "";
         generationStatus.className = "generation-status";
       }
     },
     onChange: (summary) => {
-      if (isGuestVideoSelected()) {
+      if (isGuestVideoSelected() || isGuestImageSelected()) {
         guestRemaining = summary.currentBalance;
-        updateGenerateButtonLabel();
-      } else if (isGuestImageSelected()) {
-        guestRemaining = summary.currentBalance;
-        updateGenerateButtonLabel();
       }
+      updateGenerateButtonLabel();
       creditInsufficient = isGuestVideoSelected() ? guestRemaining !== null && guestRemaining < 5
         : isGuestImageSelected() ? guestRemaining !== null && guestRemaining < creditCostForQuantity(imageQuantity.value, activeModelId)
         : summary.insufficient;
       if (launchNotice) {
-        launchNotice.hidden = summary.currentBalance !== 0 || isCurrentGenerationPending();
+        launchNotice.hidden = summary.currentBalance !== 0 || isCurrentGenerationPending() || !(isGuestImageSelected() || isGuestVideoSelected());
         if (isGuestImageSelected() || isGuestVideoSelected()) {
           renderGuestTrialNotice(launchNotice, isGuestImageSelected() ? 'image' : 'video', {
             href: window.location.href,
@@ -1014,11 +1052,18 @@ export function initializeStudio() {
         } else launchNotice.textContent = dailyCreditsUsedMessage() + " " + (isVideoGenerationSelected()
           ? t("Launching soon. Video generation at $0.01/second.")
           : activeModelId === 'gpt-image-2-5-1k'
-            ? t('GPT Image 2.5 uses 5 trial credits per image.')
+            ? t('GPT Image 2.5 uses 1 credit per image.')
             : t("Launching soon. Image generation at $0.01/image."));
       }
       updateGenerateButton();
     }
+  });
+  if (paidOnlyCheckbox) listen(paidOnlyCheckbox, 'change', () => creditSummaryController.refresh());
+  listen(window, 'seedance:auth-changed', () => {
+    freeBudgetBlocked = false;
+    if (paidOnlyCheckbox) paidOnlyCheckbox.checked = false;
+    if (paidOnlyOption) paidOnlyOption.hidden = true;
+    if (freeBudgetNotice) freeBudgetNotice.hidden = true;
   });
   selectModel(modelFromLocation());
   if (activeModelId === "minimax-h3" || getImageModel(activeModelId)) {
@@ -1060,7 +1105,7 @@ export function initializeStudio() {
     void loadVideoReference(transferredImageId, { signal: imageTransferAbortController.signal }).then((file) => {
       if (destroyed) return;
       // The user may have added images while the transferred one was loading.
-      if (videoReferences.length >= 1) throw new Error(t("H3 supports only one reference image. Remove the current image before adding another."));
+      if (videoReferences.length >= 9) throw new Error(t("Seedance 2.5 supports up to 9 reference images."));
       videoReferences.unshift({ file, url: URL.createObjectURL(file) });
       renderVideoReferences();
       updateGenerateButton();
@@ -1079,8 +1124,8 @@ export function initializeStudio() {
       if (destroyed) return;
       if (draft) {
         restoreGenerationDraft({ kind: 'video', modelId: 'minimax-h3', prompt: draft.prompt,
-          duration: draft.duration, videoResolution: '480p', aspectRatio: draft.aspectRatio,
-          videoMode: draft.mode, references: draft.file ? [{ file: draft.file }] : [],
+          duration: draft.duration, videoResolution: '768p', aspectRatio: draft.aspectRatio,
+          videoMode: draft.mode, references: (draft.files ?? (draft.file ? [draft.file] : [])).map(file => ({ file })),
         });
         if (draft.taskId) {
           activeVideoModelId = 'minimax-h3';
@@ -1099,7 +1144,7 @@ export function initializeStudio() {
 
   modelButtons.forEach((button) => listen(button, "click", () => {
     const modelId = button.dataset.model;
-    if (modelIdFromPath(window.location.pathname)) {
+    if (routeModelId) {
       if (modelId === modelFromLocation()) return;
       window.location.assign(localizedPath(canonicalModelPath(modelId) || buildModelUrl(`${window.location.origin}/app/`, modelId), currentLocale()));
       return;
@@ -1187,6 +1232,7 @@ export function initializeStudio() {
     setJobStatus(job, initialMessage);
     try {
       const result = await requestImageGeneration({
+        paidOnly: studioShell.dataset.authenticated === 'true' && paidOnlyCheckbox?.checked === true,
         model: generationModelId, prompt: draft.prompt,
         referenceFiles: draft.references.map(item => item.file), quantity: draft.quantity,
         resolution: draft.resolution, size: sizeForAspectRatio(draft.aspectRatio, generationModelId),
@@ -1198,13 +1244,14 @@ export function initializeStudio() {
       announceCredits(result.credits, creditContext);
       const generatedCount = result.images.length;
       const message = (result.credits?.context ?? creditContext) === 'guest-image' && result.credits
-        ? t('Image generated · {count} free images remaining.', { count: Math.floor(result.credits.remaining / 5) }) : result.credits
+        ? t('Image generated · {count} free images remaining.', { count: result.credits.remaining }) : result.credits
         ? t('{count} image{plural} generated · {remaining} credits remaining.', { count: generatedCount, plural: generatedCount === 1 ? '' : 's', remaining: result.credits.remaining })
         : t('{count} image{plural} generated.', { count: generatedCount, plural: generatedCount === 1 ? '' : 's' });
       setJobStatus(job, message, 'is-success');
     } catch (error) {
       if (destroyed) return;
       announceCredits(error?.credits, creditContext);
+      offerPaidOnly(error);
       if (requiresAuthentication(error)) window.dispatchEvent(new CustomEvent('seedance:auth-required'));
       const requiredCredits = error?.credits?.cost || creditCostForQuantity(draft.quantity, generationModelId);
       if (error?.code === 'GUEST_TRIAL_USED') {
@@ -1212,7 +1259,7 @@ export function initializeStudio() {
         window.dispatchEvent(new CustomEvent('seedance:auth-required', { detail: { mode: 'register' } }));
       }
       const message = error?.code === 'GUEST_IMAGE_INSUFFICIENT' || error?.code === 'GUEST_TRIAL_USED'
-        ? error?.credits?.remaining > 0 ? t('Choose fewer images or sign up to keep creating.') : t('Your free images are used up. Sign up for 15 free credits every day.')
+        ? error?.credits?.remaining > 0 ? t('Choose fewer images or sign up to keep creating.') : t('Your free images are used up. Sign up for 5 free credits every day.')
         : error?.code === 'INSUFFICIENT_CREDITS'
         ? error?.credits?.remaining === 0 ? dailyCreditsUsedMessage()
           : (t('You need {cost} credits to generate.', { cost: requiredCredits }) + ' ' + (error.credits ? t('Current balance: {remaining}.', { remaining: error.credits.remaining }) : '')).trim()

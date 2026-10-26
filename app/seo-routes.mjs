@@ -1,10 +1,11 @@
 import { localeFromPath, localizedPath, stripLocalePath } from './site-locale.mjs'
+import { publicModelPath } from './public-model-paths.mjs'
 
 const modelPaths = Object.freeze({
+  'minimax-h3': '/app/video/seedance-2-5',
   'seedance-2-5': '/app/video/seedance-2-5',
-  'minimax-h3': '/app/video/minimax-h3',
   'seedance-3': '/app/video/seedance-3',
-  'gpt-image-2': '/app/image/gpt-image-2',
+  'gpt-image-2': '/app/image/gpt-image-2-5',
   'gpt-image-2-5-1k': '/app/image/gpt-image-2-5-1k',
   'muse-video': '/app/video/muse-video',
   'muse-image': '/app/image/muse-image',
@@ -28,23 +29,22 @@ export function canonicalModelPath(modelId, locale = 'en') {
 export function modelIdFromPath(pathname) {
   // FLUX 3 is an editorial landing page with a disclosed H3 trial, not an API model.
   if (stripLocalePath(pathname) === '/app/video/flux-3') return 'minimax-h3'
-  return Object.keys(modelPaths).find(id => modelPaths[id] === stripLocalePath(pathname)) ?? null
+  return Object.keys(modelPaths).find(id => modelPaths[id] === publicModelPath(stripLocalePath(pathname)).replace(/\/$/, '')) ?? null
 }
 
 export function legacyModelRedirect(url) {
   const pathname = stripLocalePath(url.pathname)
   const locale = localeFromPath(url.pathname)
-  if (legacyPaths[pathname]) return localizedPath(legacyPaths[pathname], locale) + url.search
+  const renamedPath = publicModelPath(pathname)
+  if (renamedPath !== pathname) return localizedPath(renamedPath, locale) + url.search + url.hash
+  if (legacyPaths[pathname]) return localizedPath(legacyPaths[pathname], locale) + url.search + url.hash
   if (pathname === '/app' || pathname === '/app/') {
     const modelId = url.searchParams.get('model')
-    if (modelId === 'muse-video' || modelId === 'muse-image') {
+    if (modelId && canonicalModelPath(modelId, locale)) {
       const search = new URLSearchParams(url.search)
       search.delete('model')
       const query = search.toString()
-      return canonicalModelPath(modelId, locale) + (query ? '?' + query : '')
-    }
-    if (modelId && [...url.searchParams.keys()].every(key => key === 'model')) {
-      return canonicalModelPath(modelId, locale)
+      return canonicalModelPath(modelId, locale) + (query ? '?' + query : '') + url.hash
     }
   }
   return null

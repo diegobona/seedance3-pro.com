@@ -1,8 +1,13 @@
 import { localizedPath, languageSwitchPath, stripLocalePath } from './site-locale.mjs';
+import { withSiteTrust } from './site-trust.mjs';
+import { withModelDisplayNames } from './model-display-names.mjs';
+import { withPublicModelPaths } from './public-model-paths.mjs';
+import { withSiteTypography } from './site-typography.mjs';
 
 export const PUBLIC_NAVIGATION = [
-  { href: '/app/video/minimax-h3', en: 'AI Video', zh: 'AI Video' },
+  { href: '/app/video/seedance-2-5', en: 'AI Video', zh: 'AI Video' },
   { href: '/app/image/gpt-image-2-5-1k', en: 'AI Image', zh: 'AI Image' },
+  { href: '/pricing', en: 'Pricing', zh: '价格' },
   { href: '/seedance-3-0-release-date', en: 'Release Date', zh: '发布时间' },
   { href: '/showcase', en: 'Showcase', zh: '作品展示' },
   { href: '/blog', en: 'Blog', zh: '博客' },
@@ -22,7 +27,8 @@ export function renderSiteHeader({ pathname = '/', locale = 'en' } = {}) {
       <nav class="desktop-nav compact-nav" aria-label="${zh ? '主导航' : 'Primary navigation'}">${links}</nav>
       <div class="header-actions">
         <nav class="site-language-switch" data-site-language-switch aria-label="${zh ? '网站语言' : 'Site language'}"><a href="${languageSwitchPath(pathname, 'zh')}" data-language="zh" lang="zh-Hans"${zh ? ' aria-current="true"' : ''}>中文</a><span aria-hidden="true">|</span><a href="${languageSwitchPath(pathname, 'en')}" data-language="en" lang="en"${zh ? '' : ' aria-current="true"'}>EN</a></nav>
-        <a class="button small" href="${home ? '#create' : localizedPath('/', locale) + '#create'}">${zh ? '免费试用' : 'Try for free'}</a>
+        <a class="button small"${home?' data-home-primary':''} href="${home ? '#create' : localizedPath('/', locale) + '#create'}">${zh ? '免费试用' : 'Try for free'}</a>
+        <div class="site-account" data-site-account><a class="site-account-login" data-account-login href="${localizedPath('/app', locale)}?auth=login">${zh ? '登录' : 'Log in'}</a></div>
         <button class="menu-button" type="button" aria-label="${zh ? '打开导航' : 'Open navigation'}" aria-controls="mobile-navigation" aria-expanded="false">☰</button>
       </div>
     </div>
@@ -31,19 +37,20 @@ export function renderSiteHeader({ pathname = '/', locale = 'en' } = {}) {
 }
 
 export function withSiteNavigation(html, pathname = '/') {
-  if (!/<header\b[^>]*class="site-header"/.test(html)) return html;
+  html = withPublicModelPaths(withModelDisplayNames(html)).replace(/<nav\b[^>]*class="[^\"]*\bfooter-(?:model|credit)-links\b[^\"]*"[^>]*>[\s\S]*?<\/nav>\s*/gi, '');
+  if (!/<header\b[^>]*class="site-header"/.test(html)) return withSiteTypography(withSiteTrust(html, pathname));
   const locale = pathname.startsWith('/zh/') || pathname === '/zh' ? 'zh' : 'en';
   let output = html.replace(/<header\b[^>]*class="site-header"[^>]*>[\s\S]*?<\/header>/, renderSiteHeader({ pathname, locale }));
-  if (!output.includes('href="/assets/site-navigation.css"')) {
-    output = output.replace('</head>', '  <link rel="stylesheet" href="/assets/site-navigation.css">\n</head>');
+  output = output.replace(/href="\/assets\/site-navigation\.css(?:\?[^\"]*)?"/g, 'href="/assets/site-navigation.css?v=20261020-purchase"');
+  if (!output.includes('href="/assets/site-navigation.css?')) {
+    output = output.replace('</head>', '  <link rel="stylesheet" href="/assets/site-navigation.css?v=20261020-purchase">\n</head>');
   }
   if (!output.includes('src="/assets/site-navigation.js"')) {
     output = output.replace('</head>', '  <script src="/assets/site-navigation.js" defer></script>\n</head>');
   }
-  // Keep the model guide reachable from every existing public footer.
-  output = output.replace(/(<footer\b[^>]*class="site-footer[^\"]*"[^>]*>)([\s\S]*?)(<\/footer>)/, (match, opening, body, closing) => {
-    if (body.includes('data-flux-guide-link')) return match;
-    return opening + body + `<nav class="container footer-model-links" aria-label="${locale === 'zh' ? '模型指南' : 'Model guides'}"><a data-flux-guide-link href="${localizedPath('/app/video/flux-3', locale)}">FLUX 3</a></nav>\n` + closing;
-  });
-  return output;
+  output=output.replace(/src="\/assets\/site-account\.mjs(?:\?[^\"]*)?"/g,'src="/assets/site-account.mjs?v=20261020-purchase"');
+  if (!output.includes('src="/assets/site-account.mjs?')) {
+    output = output.replace('</head>', '  <script type="module" src="/assets/site-account.mjs?v=20261020-purchase"></script>\n</head>');
+  }
+  return withSiteTypography(withSiteTrust(output, pathname));
 }

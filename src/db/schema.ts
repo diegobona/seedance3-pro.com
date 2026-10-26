@@ -1,4 +1,5 @@
 import { sql } from 'drizzle-orm'
+import { DAILY_FREE_CREDIT_GRANT } from '../lib/generation-credits'
 import { boolean, check, date, index, integer, pgTable, text, timestamp, uniqueIndex } from 'drizzle-orm/pg-core'
 
 export const user = pgTable('user', {
@@ -16,7 +17,7 @@ export const user = pgTable('user', {
   generationCount: integer('generation_count').default(0).notNull(),
   monthlyGenerationCount: integer('monthly_generation_count').default(0).notNull(),
   generationLimit: integer('generation_limit').default(0).notNull(),
-  creditBalance: integer('credit_balance').default(15).notNull(),
+  creditBalance: integer('credit_balance').default(DAILY_FREE_CREDIT_GRANT).notNull(),
   dailyFreeCredits: integer('daily_free_credits').default(0).notNull(),
   dailyCreditDate: date('daily_credit_date'),
   trialCreditsGrantedAt: timestamp('trial_credits_granted_at', { withTimezone: true }).defaultNow().notNull(),

@@ -1,6 +1,7 @@
 import { resolveGuestImageTrial, type GuestImageTrialStore } from './guest-image-trial'
 import { resolveGuestVideoTrial, withGuestVideoCookie, guestVideoTrialErrorResponse,
   GuestVideoTrialError, type GuestVideoAccess, type GuestVideoTrialStore } from './guest-video-trial'
+import { readGuestImageResourceOwner } from './guest-resource-ownership'
 import { transferGeneratedImage } from './image-to-video'
 
 export async function transferImageWithGuestAccess(request: Request, options: {
@@ -19,11 +20,14 @@ export async function transferImageWithGuestAccess(request: Request, options: {
       return Response.json({ success: false, message: 'Cross-site transfer is not allowed.' }, { status: 403 })
     }
     const session = await options.getSession()
-    const imageGuest = await resolveGuestImageTrial(request, { secret: options.secret, store: options.imageStore })
+    const imageGuest = session?.user.id ? null : await resolveGuestImageTrial(request, { secret: options.secret, store: options.imageStore })
+    const imageResourceOwner = session?.user.id
+      ? await readGuestImageResourceOwner(request, session.user.id, { secret: options.secret, store: options.imageStore })
+      : imageGuest?.session.user.id
     const response = await transferGeneratedImage(request, {
       bucket: options.bucket, limiter: options.limiter, fetchImpl: options.fetchImpl,
       getUserId: async () => session?.user.id ?? imageGuest?.session.user.id,
-      additionalOwnerIds: imageGuest ? [imageGuest.session.user.id] : [],
+      additionalOwnerIds: imageResourceOwner ? [imageResourceOwner] : [],
       // Validate the source first. The video identity owns the new reference, while
       // its seconds and the image identity's remaining images stay untouched.
       getDestinationUserId: async () => {

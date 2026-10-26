@@ -23,11 +23,11 @@ export function createD1ReferralVisitStore(db: D1Database, source: ReferralSourc
           count(*) FILTER(WHERE created_at>=? AND created_at<?) AS last7_visits,
           count(DISTINCT visitor_id) FILTER(WHERE created_at>=? AND created_at<?) AS last30_visitors,
           count(*) FILTER(WHERE created_at>=? AND created_at<?) AS last30_visits
-          FROM referral_visit WHERE source=? AND entry_path='/app/image/gpt-image-2'`)
+          FROM referral_visit WHERE source=? AND entry_path IN ('/app/image/gpt-image-2','/app/image/gpt-image-2-5-1k')`)
           .bind(start, end, start, end, last7, end, last7, end, last30, end, last30, end, source),
         db.prepare(`SELECT date(created_at/1000,'unixepoch','+8 hours') AS date,
           count(DISTINCT visitor_id) AS visitors,count(*) AS visits FROM referral_visit
-          WHERE source=? AND entry_path='/app/image/gpt-image-2' AND created_at>=? AND created_at<? GROUP BY date ORDER BY date`)
+          WHERE source=? AND entry_path IN ('/app/image/gpt-image-2','/app/image/gpt-image-2-5-1k') AND created_at>=? AND created_at<? GROUP BY date ORDER BY date`)
           .bind(source, last30, end),
       ])
       const row = results[0].results[0]

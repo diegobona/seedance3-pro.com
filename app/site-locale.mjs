@@ -1,3 +1,5 @@
+import { publicModelPath } from './public-model-paths.mjs'
+
 export const SUPPORTED_LOCALES = Object.freeze(['en', 'zh'])
 export const LOCALE_COOKIE = 'seedance_locale'
 
@@ -20,7 +22,7 @@ export function isLanguageNeutralPath(pathname) {
 export function localizedPath(path, locale = 'en') {
   if (!path || !path.startsWith('/') || path.startsWith('//')) return path
   const match = path.match(/^([^?#]*)(.*)$/)
-  const pathname = stripLocalePath(match[1])
+  const pathname = publicModelPath(stripLocalePath(match[1]))
   if (isLanguageNeutralPath(pathname)) return pathname + match[2]
   return (locale === 'zh' ? '/zh' + (pathname === '/' ? '/' : pathname) : pathname) + match[2]
 }

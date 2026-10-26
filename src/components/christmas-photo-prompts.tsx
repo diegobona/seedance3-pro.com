@@ -77,7 +77,7 @@ export function ChristmasPhotoPrompts() {
         <details><summary>{t('Can I use my own photo as a reference?')}</summary><p>{t('Yes. Open the prompt in GPT Image 2 and upload your reference there. The prompts ask to preserve identity when a reference is provided. Review the result and refine any details that drift.')}</p></details>
         <details><summary>{t('Which aspect ratio should I choose?')}</summary><p>{t('Use 2:3 for vertical portraits and cards, 3:2 for wider couple or family photos, and 1:1 for a square portrait or pet photo. Each prompt includes a suggested ratio you can change in the generator.')}</p></details>
         <details><summary>{t('How do I add a Christmas greeting?')}</summary><p>{t('The card prompts leave a blank area for your message. Generate the photo first, then add your greeting in an image or card editor so you control the wording, font and placement.')}</p></details>
-        <p className="christmas-related-link"><a href={path('/gpt-image-2-prompts')}>{t('Explore the GPT Image 2 Prompt Library')} <span aria-hidden="true">↗</span></a></p>
+        <p className="christmas-related-link"><a href={path('/gpt-image-2-5-prompts')}>{t('Explore the GPT Image 2 Prompt Library')} <span aria-hidden="true">↗</span></a></p>
       </section>
     </div>
   )

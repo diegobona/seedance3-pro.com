@@ -1,3 +1,4 @@
+import { BRAND_MARK } from '../../app/site-brand.mjs'
 import { SiteLanguageSwitch } from './site-language-switch'
 import { useSiteI18n } from '../lib/site-i18n'
 import '../styles/resource-preview.css'
@@ -13,12 +14,12 @@ export function ComingSoonPage({ kind, title, description, primaryHref, primaryL
   return (
     <main className="resource-page">
       <header className="resource-header">
-        <a className="resource-brand" href={path("/")}><img src="/assets/seedance-mark.svg" width="38" height="38" alt="" /><span>{t("SEEDANCE 3.0")}</span></a>
+        <a className="resource-brand" href={path("/")}><img src={BRAND_MARK} width="38" height="38" alt="" /><span>{t("SEEDANCE 3.0")}</span></a>
         <SiteLanguageSwitch />
         <nav aria-label={t("Explore published pages")}>
           <a href={path("/")}>{t("Seedance 3.0 ")}<span className="release-badge">{t("Coming Soon")}</span></a>
-          <a href={path("/app/video/minimax-h3")}>{t("H3 Video")}</a>
-          <a href={path("/app/image/gpt-image-2")}>{t("GPT Image 2")}</a>
+          <a href={path("/app/video/seedance-2-5")}>{t("Seedance 2.5 Video")}</a>
+          <a href={path("/app/image/gpt-image-2-5-1k")}>{t("GPT Image 2.5")}</a>
           <a href={path("/showcase")}>{t("Showcase")}</a>
         </nav>
       </header>
@@ -38,8 +39,8 @@ export function ComingSoonPage({ kind, title, description, primaryHref, primaryL
       <section className="resource-links" aria-label={t("Available now")}>
         <p>{t("Explore what is available now")}</p>
         <div>
-          <a href={path("/app/video/minimax-h3")}>{t("MiniMax H3 video generator")}</a>
-          <a href={path("/app/image/gpt-image-2")}>{t("GPT Image 2 image generator")}</a>
+          <a href={path("/app/video/seedance-2-5")}>{t("Seedance 2.5 video generator")}</a>
+          <a href={path("/app/image/gpt-image-2-5-1k")}>{t("GPT Image 2.5")}</a>
           <a href={path("/pose-to-image")}>{t("Pose Control")}</a>
           <a href={path("/blog")}>{t("Blog")}</a>
         </div>

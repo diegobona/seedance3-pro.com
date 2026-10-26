@@ -1,0 +1,41 @@
+✔ multi-image generation reserves one credit per requested image (3.5563ms)
+✔ multi-image generation reports the dynamic cost when credits are insufficient (0.5955ms)
+✔ anonymous image generation is rejected before provider work (0.2449ms)
+✔ insufficient credits reject generation before provider work (0.332ms)
+✔ request preflight rejects invalid envelopes before reserving credits (0.1983ms)
+✔ successful image generation settles one credit and exposes the remaining balance (0.6075ms)
+✔ credit settlement retries once after a transient database failure (0.4843ms)
+✔ successful responses refresh the balance after settlement (0.3657ms)
+✔ a failed post-settlement balance refresh never discards the paid image (0.462ms)
+✔ failed provider responses refund credits and expose the restored balance (0.2846ms)
+✔ unusable successful provider responses are refunded instead of billed (0.4042ms)
+✔ malformed base64 provider responses are refunded instead of billed (0.2958ms)
+✔ thrown provider errors refund credits and return the restored balance (0.2764ms)
+✔ credit refunds retry once after a transient database failure (0.2138ms)
+✔ billing pages render one fixed pack in both languages and require authentication (21.6555ms)
+✔ explicit guest video balances expose ten seconds without granting account credits (6.9057ms)
+✔ anonymous balance requests are rejected without reading the database (0.8236ms)
+✔ authenticated balance requests expose the daily allowance, expiry and image cost (2.3729ms)
+✔ both current image models charge one credit for each requested output (12.4884ms)
+✔ partial image delivery charges only delivered outputs (1.8009ms)
+✔ an exhausted supplier budget returns an actionable error without generating (0.7425ms)
+✔ image paid-only continuation requires an explicit request header (0.8816ms)
+✔ video budget error never submits to supplier (0.5134ms)
+✔ balance response exposes separate daily and purchased balances (0.4706ms)
+✔ provider partial batch is delivered for per-output settlement (0.9717ms)
+✔ full preflight rejects invalid image size before credit/cost reservation (5.8617ms)
+✔ generation purchase prompt is hidden until needed and opens checkout in a new tab in both languages (43.8018ms)
+✔ SSR uses a neutral allowance heading while the account session is unresolved in both languages (31.987ms)
+✔ guest H3 landing is registration-free, defaults to five seconds and caps selection at ten in both languages (29.2528ms)
+✔ H3 permits nine references and displays 768p in both languages (37.9814ms)
+✔ GPT Image 2.5 retains the requested intro removal while adding guest H3 support (16.3145ms)
+✔ both image landing pages offer the same two-image guest allowance without registration (100.0293ms)
+✔ each generator has one right-hand stage for idle, loading, result and error with separate page history (142.095ms)
+ℹ tests 33
+ℹ suites 0
+ℹ pass 33
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2248.2568

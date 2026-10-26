@@ -47,8 +47,9 @@ test('Workers renders bilingual news into the HTML without JavaScript and escape
       assert.equal(response.headers.get('content-length'), null)
       assert.equal(response.headers.get('etag'), null)
       const article = schema(rendered).find(entry => entry['@type'] === 'Article')!
-      assert.equal(article.dateModified, '2026-10-06')
-      assert.equal(article.datePublished, '2026-10-06')
+      const originalArticle = schema(html).find(entry => entry['@type'] === 'Article')!
+      assert.equal(article.dateModified, [originalArticle.dateModified, '2026-10-07'].sort().at(-1))
+      assert.equal(article.datePublished, originalArticle.datePublished)
       // The historical review row must not be stamped with the next automated check date.
       assert.doesNotMatch(rendered, /data-release-reviewed[^>]*>2026-10-07/)
     } finally { await mf.dispose() }
@@ -91,11 +92,12 @@ test('failed checks say the inspection is incomplete and keep saved news visible
 
 test('later news changes the visible date without JavaScript and removes stale current comparison assertions', async () => {
   const html = await readFile('seedance-3-0-release-date.html', 'utf8')
-  const mf = await runtime(html, { ...state, lastCheckedAt: '2026-10-08T01:00:00Z', lastChangedAt: '2026-10-08T01:00:00Z' })
+  const mf = await runtime(html, { ...state, lastCheckedAt: '2026-10-26T01:00:00Z', lastChangedAt: '2026-10-26T01:00:00Z' })
   try {
     const rendered = await (await mf.dispatchFetch('https://seedance3-pro.com/seedance-3-0-release-date')).text()
-    assert.match(rendered, /data-release-updated[^>]*datetime="2026-10-08"[^>]*>2026-10-08<\/time>/)
-    assert.match(rendered, /data-release-reviewed[^>]*>2026-10-06<\/time>/)
+    assert.match(rendered, /data-release-updated[^>]*datetime="2026-10-26"[^>]*>2026-10-26<\/time>/)
+    const historicalReview = html.match(/<time\b[^>]*data-release-reviewed[^>]*>[^<]*<\/time>/)![0]
+    assert.ok(rendered.includes(historicalReview), 'later news must preserve the historical source-review date')
     const intro = rendered.match(/<p[^>]*id="seedance-comparison-note"[^>]*>([\s\S]*?)<\/p>/)![1]
     assert.doesNotMatch(intro, /specifications are still unconfirmed/)
     const table = rendered.match(/<table[^>]*id="seedance-comparison-table"[^>]*>([\s\S]*?)<\/table>/)![1]

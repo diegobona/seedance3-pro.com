@@ -9,8 +9,10 @@ import { createAppDatabase, databaseConfigured } from '../../../db'
 import { createVideoGenerationTaskStore } from '../../../db/video-generation-tasks'
 import { createTrackedVideoTaskStore, createVideoTaskActivity } from '../../../lib/video-task-activity'
 import { createAuth } from '../../../lib/auth'
+import { reconcileGuestCredits } from '../../../lib/guest-credit-reconciliation'
 import { createGuestVideoTrialStore } from '../../../db/guest-video-trials'
-import { resolveGuestVideoTrial, withGuestVideoCookie, guestVideoTrialErrorResponse } from '../../../lib/guest-video-trial'
+import { resolveGuestVideoTrial, withGuestVideoCookie, guestVideoTrialErrorResponse, guestVideoNetworkHash } from '../../../lib/guest-video-trial'
+import { readGuestVideoResourceOwner } from '../../../lib/guest-resource-ownership'
 import { resolveVideoReferences } from '../../../lib/video-references'
 import {
   protectVideoGenerationStart,
@@ -95,29 +97,34 @@ export const Route = createFileRoute('/api/videos/generate')({
             return unavailableResponse()
           }
           const db = createAppDatabase(env)
-          const taskStore = createTrackedVideoTaskStore(createVideoGenerationTaskStore(db), createVideoTaskActivity(env.VIDEO_REFERENCES))
+          const networkKey = await guestVideoNetworkHash(request, env.BETTER_AUTH_SECRET, 'daily-free-network')
+          const taskStore = createTrackedVideoTaskStore(createVideoGenerationTaskStore(db, networkKey), createVideoTaskActivity(env.VIDEO_REFERENCES))
           const session = await createAuth(request, env).api.getSession({ headers: request.headers })
+          if (session?.user?.id) await reconcileGuestCredits(request, session.user.id, env.BETTER_AUTH_SECRET, db)
           if (!session?.user?.id) {
             const error = guestVideoPayloadError(validation.payload)
             if (error) return error
           }
           const guestStore = createGuestVideoTrialStore(db)
-          const guest = await resolveGuestVideoTrial(request, {
-            secret: env.BETTER_AUTH_SECRET, store: guestStore, create: !session?.user?.id,
+          const guest = session?.user?.id ? null : await resolveGuestVideoTrial(request, {
+            secret: env.BETTER_AUTH_SECRET, store: guestStore, create: true,
           })
+          const guestResourceOwner = session?.user?.id
+            ? await readGuestVideoResourceOwner(request, session.user.id, { secret: env.BETTER_AUTH_SECRET, store: guestStore })
+            : guest?.session.user.id
           const response = await protectVideoGenerationStart({
             request,
             getSession: async () => session?.user?.id ? { user: { id: session.user.id } } : guest?.session ?? null,
             taskStore,
             resolveWorkflow: () => workflowId,
             preflight: async (protectedRequest, userId) => {
-              if (validation.payload.resolution !== '480p') {
+              if (validation.payload.resolution !== '768p') {
                 return {
                   ok: false as const,
                   response: jsonError(
                     400,
                     'TRIAL_RESOLUTION_UNAVAILABLE',
-                    'Free trial video generation supports 480p only.',
+                    'Free trial video generation supports 768p only.',
                   ),
                 }
               }
@@ -144,7 +151,7 @@ export const Route = createFileRoute('/api/videos/generate')({
                 try {
                   validation.payload.referenceImageUrls = await resolveVideoReferences(
                     validation.payload.referenceImageIds, userId, env.VIDEO_REFERENCES,
-                    Date.now(), guest ? [guest.session.user.id] : [],
+                    Date.now(), guestResourceOwner ? [guestResourceOwner] : [],
                     { inline: workflowId === COMPSHARE_FIRST_FRAME_WORKFLOW_ID
                       && ['localhost', '127.0.0.1', '[::1]'].includes(new URL(request.url).hostname) },
                   )

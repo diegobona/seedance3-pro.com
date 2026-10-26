@@ -1,4 +1,5 @@
-import { withCreditHeaders } from './generation-credits'
+import { withCreditHeaders, type CreditReservationOptions } from './generation-credits'
+import { creditBudgetErrorResponse } from './credit-budget-response'
 
 export const VIDEO_WORKFLOW_ID = 'minimax_h3_lightx2v_no_pic'
 export const REFERENCE_VIDEO_WORKFLOW_ID = 'minimax_h3_image_audio_to_video_v2_15s'
@@ -28,9 +29,9 @@ export type VideoGenerationPreflight =
 type SessionLike = { user: { id: string; isGuest?: boolean } } | null
 
 export function guestVideoPayloadError(payload: VideoGenerationPayload) {
-  if ([5, 10].includes(payload.duration) && payload.resolution === '480p') return null
+  if ([5, 10].includes(payload.duration) && payload.resolution === '768p') return null
   return Response.json({ success: false, code: 'GUEST_TRIAL_PARAMETERS',
-    message: 'Guest videos support 5 or 10 seconds at 480p.' }, {
+    message: 'Guest videos support 5 or 10 seconds at 768p.' }, {
     status: 400, headers: { 'cache-control': 'no-store' },
   })
 }
@@ -64,7 +65,7 @@ export interface VideoTaskTransitionResult {
 }
 
 export interface VideoGenerationTaskStore {
-  reserveAndCreate(userId: string, credits: number, metadata: VideoTaskMetadata, localTaskId?: string): Promise<VideoTaskTransitionResult | null>
+  reserveAndCreate(userId: string, credits: number, metadata: VideoTaskMetadata, localTaskId?: string, options?: CreditReservationOptions): Promise<VideoTaskTransitionResult | null>
   listUnfinishedTasks(afterId?: string, limit?: number): Promise<Array<Pick<VideoGenerationTask, 'id' | 'status'>>>
   getTaskStates(taskIds: string[]): Promise<Array<Pick<VideoGenerationTask, 'id' | 'status'>>>
   attachProviderTask(localTaskId: string, providerTaskId: string): Promise<VideoGenerationTask>
@@ -160,12 +161,22 @@ async function protectVideoGenerationStartUnsafe({
   const creditCost = payload.duration
   const workflowId = resolveWorkflow?.(payload)
     ?? (payload.referenceImageIds?.length ? REFERENCE_VIDEO_WORKFLOW_ID : VIDEO_WORKFLOW_ID)
-  const reservation = await taskStore.reserveAndCreate(session.user.id, creditCost, {
-    workflowId,
-    duration: payload.duration,
-    resolution: payload.resolution,
-    aspectRatio: payload.aspectRatio,
-  })
+  let reservation
+  try {
+    reservation = await taskStore.reserveAndCreate(session.user.id, creditCost, {
+      workflowId,
+      duration: payload.duration,
+      resolution: payload.resolution,
+      aspectRatio: payload.aspectRatio,
+    }, undefined, {
+      unitCostMicros: 60_000,
+      paidOnly: request.headers.get('x-seedance-credit-source') === 'paid',
+    })
+  } catch (error) {
+    const response = creditBudgetErrorResponse(error)
+    if (response) return response
+    throw error
+  }
   if (!reservation) {
     const remainingCredits = await taskStore.getBalance(session.user.id)
     return withCreditHeaders(Response.json({

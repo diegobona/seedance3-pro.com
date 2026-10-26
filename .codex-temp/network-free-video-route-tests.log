@@ -1,0 +1,36 @@
+✔ guests may reserve five seconds and keep the other five seconds (12.6951ms)
+✔ guests cannot submit fifteen seconds or resolutions other than 768p (0.9807ms)
+✔ an exhausted guest is prompted to register without submitting to the provider (0.4008ms)
+✔ reference generation records the correct workflow while keeping duration-based credits (0.9663ms)
+✔ trusted selection persists CompShare and submits the actual reservation ID and workflow (0.5247ms)
+✔ trusted resolver rejects unavailable credentials before reserving; client workflow fields are rejected (1.4314ms)
+✔ start authenticates before validation, credits, or provider work (0.1978ms)
+✔ start returns preflight failures without charging or submitting (0.1614ms)
+✔ start reserves one credit per second without persisting the prompt, then submits and attaches once (0.2725ms)
+✔ start returns insufficient credits without submitting (0.2745ms)
+✔ start converts database failures to a safe service response (0.2942ms)
+✔ definite submit failure terminalizes as failed and refunds (0.25ms)
+✔ ambiguous submit failure is not retried and terminalizes as submission_unknown (0.2005ms)
+✔ attachment retries once, then refunds as submission_unknown and returns a safe 503 (0.2901ms)
+✔ poll authenticates before task lookup or provider work (0.3804ms)
+✔ guest polling identifies guest seconds even after an account signs in (1.0418ms)
+✔ poll hides tasks owned by another user (0.1934ms)
+✔ poll passes the persisted workflow only after ownership and lease checks, and never starts a task (0.3789ms)
+✔ missing persisted CompShare credentials schedule retry without refund or AutoDL fallback (0.2584ms)
+✔ poll returns a cached terminal success without claiming or querying (0.2356ms)
+✔ queued provider state schedules another poll without changing credits (0.2013ms)
+✔ a terminal transition won by an overlapping poll returns the cached terminal result (0.2707ms)
+✔ running provider state records running and schedules another poll without changing credits (0.1964ms)
+✔ transient query failures schedule a retry without refunding (0.2439ms)
+✔ poll converts scheduling database failures to a safe service response (0.2062ms)
+✔ explicit provider failure atomically terminalizes and refunds (0.1772ms)
+✔ usable HTTPS mp4 success atomically settles and is cached for repeated polls (0.4532ms)
+✔ expired tasks never expose a late provider result (0.2302ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 28
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 253.3473

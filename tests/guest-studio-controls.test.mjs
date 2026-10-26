@@ -5,9 +5,10 @@ import { createCreditSummaryController } from '../app/studio-controls.mjs';
 test('guest image quantity follows the shared remaining images while signed-in users keep three', async () => {
   const { guestImageQuantityState } = await import('../app/guest-image.mjs');
   assert.deepEqual(guestImageQuantityState({ guest: true, remaining: null, value: '3' }), { value: '1', disabled: [3] });
-  assert.deepEqual(guestImageQuantityState({ guest: true, remaining: 5, value: '2' }), { value: '1', disabled: [2, 3] });
-  assert.deepEqual(guestImageQuantityState({ guest: true, remaining: 10, value: '2' }), { value: '2', disabled: [3] });
-  assert.deepEqual(guestImageQuantityState({ guest: false, remaining: 0, value: '3' }), { value: '3', disabled: [] });
+  assert.deepEqual(guestImageQuantityState({ guest: true, remaining: 1, value: '2' }), { value: '1', disabled: [2, 3] });
+  assert.deepEqual(guestImageQuantityState({ guest: true, remaining: 2, value: '2' }), { value: '2', disabled: [3] });
+  assert.deepEqual(guestImageQuantityState({ guest: false, remaining: 1, value: '3' }), { value: '1', disabled: [2, 3] });
+  assert.deepEqual(guestImageQuantityState({ guest: false, remaining: 10, value: '3' }), { value: '3', disabled: [] });
 });
 
 test('image responses keep guest credit events separate from video and account balances', async () => {
@@ -24,6 +25,8 @@ test('guest duration defaults to five, caps at ten, and uses the remaining secon
   assert.deepEqual(guestVideoDurationState({ guest: true, remaining: 5, value: '10' }), { value: '5', disabled: [10, 15] });
   assert.deepEqual(guestVideoDurationState({ guest: true, remaining: 10, value: '15' }), { value: '5', disabled: [15] });
   assert.deepEqual(guestVideoDurationState({ guest: false, remaining: 15, value: '15' }), { value: '15', disabled: [] });
+  assert.deepEqual(guestVideoDurationState({ guest: false, remaining: 10, value: '15' }), { value: '5', disabled: [15] });
+  assert.deepEqual(guestVideoDurationState({ guest: false, remaining: 5, value: '10' }), { value: '5', disabled: [10, 15] });
 });
 
 test('switching models discards the old guest balance and ignores late guest credit events', async () => {

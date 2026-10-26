@@ -1,0 +1,10 @@
+✔ registered accounts can spend ten shared daily credits on images and video (8179.3637ms)
+✔ daily-limit migration preserves purchased balances and caps old pending refunds at ten (9216.8839ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 18124.376

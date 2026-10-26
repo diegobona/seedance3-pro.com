@@ -4,6 +4,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { validateSharedScene } from '../app/pose-share.mjs'
 import { localizedPath, localeRedirect } from '../app/site-locale.mjs'
+import { legacyModelRedirect } from '../app/seo-routes.mjs'
 
 const root = resolve(import.meta.dirname, '..')
 const read = (path) => readFileSync(resolve(root, path), 'utf8')
@@ -128,8 +129,8 @@ test('remaining Coming Soon resources are real noindex routes with bilingual Wor
 
   const component = read('src/components/coming-soon-page.tsx')
   assert.match(component, /Coming soon/i)
-  assert.match(component, /href=\{path\("\/app\/video\/minimax-h3"\)\}/)
-  assert.match(component, /href=\{path\("\/app\/image\/gpt-image-2"\)\}/)
+  assert.match(component, /href=\{path\("\/app\/video\/seedance-2-5"\)\}/)
+  assert.match(component, /href=\{path\("\/app\/image\/gpt-image-2-5-1k"\)\}/)
 })
 
 test('five original H3 videos have linked, indexable cases with their submitted prompts', () => {
@@ -137,8 +138,8 @@ test('five original H3 videos have linked, indexable cases with their submitted 
   const cases = read('src/data/h3-video-cases.ts')
   const showcase = read('showcase.html')
   const sitemap = read('sitemap.xml')
-  const detailRoute = read('src/routes/minimax-h3-prompts_.$slug.tsx')
-  const indexRoute = read('src/routes/minimax-h3-prompts.tsx')
+  const detailRoute = read('src/routes/seedance-2-5-prompts_.$slug.tsx')
+  const indexRoute = read('src/routes/seedance-2-5-prompts.tsx')
   const previewCode = read('main.js')
   const originalCards = [...showcase.matchAll(/<a class="community-video-card community-video-card--original[^"]*" href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)]
   assert.match(indexRoute, /index,follow/)
@@ -158,7 +159,7 @@ test('five original H3 videos have linked, indexable cases with their submitted 
   assert.match(previewCode, /video\.play\(\)/)
   assert.match(previewCode, /video\.pause\(\)/)
   for (const [slug, scene] of Object.entries(manifest.scenes)) {
-    const path = '/minimax-h3-prompts/' + slug
+    const path = '/seedance-2-5-prompts/' + slug
     const card = originalCards.find(([_, href]) => href === '.' + path)?.[2]
     assert.ok(sitemap.includes('<loc>https://seedance3-pro.com' + path + '</loc>'), slug + ' needs a sitemap entry')
     assert.ok(!sitemap.includes('<loc>https://seedance3-pro.com/prompts/minimax-h3/videos/' + slug + '</loc>'), slug + ' old URL should leave the sitemap')
@@ -175,8 +176,8 @@ test('five original H3 videos have linked, indexable cases with their submitted 
 test('five original GPT Image 2 images have published prompts and working case routes', () => {
   const cases = JSON.parse(read('src/data/gpt-image-cases.json'))
   const sitemap = read('sitemap.xml')
-  const indexRoute = read('src/routes/gpt-image-2-prompts.tsx')
-  const detailRoute = read('src/routes/gpt-image-2-prompts_.$slug.tsx')
+  const indexRoute = read('src/routes/gpt-image-2-5-prompts.tsx')
+  const detailRoute = read('src/routes/gpt-image-2-5-prompts_.$slug.tsx')
   const showcase = read('src/components/studio-showcase-page.tsx')
   const studio = read('app/studio.js')
   const config = JSON.parse(read('wrangler.jsonc'))
@@ -191,15 +192,15 @@ test('five original GPT Image 2 images have published prompts and working case r
   assert.match(showcase, /gptImageCaseTryUrl/)
   assert.match(studio, /imageAspectRatio\.value = aspectRatio/)
   assert.match(read('src/components/gpt-image-case-page.tsx'), /application\/ld\+json/)
-  assertWorkerCoverage(config, '/gpt-image-2-prompts/example-case')
-  assert.ok(sitemap.includes('<loc>https://seedance3-pro.com/gpt-image-2-prompts</loc>'))
+  assertWorkerCoverage(config, '/gpt-image-2-5-prompts/example-case')
+  assert.ok(sitemap.includes('<loc>https://seedance3-pro.com/gpt-image-2-5-prompts</loc>'))
   for (const imageCase of cases) {
     const imagePath = imageCase.imageUrl.slice(1)
     const originalPath = imagePath.replace(/\.webp$/, '.png')
     assert.ok(imageCase.prompt.length > 100, imageCase.slug + ' needs its actual prompt')
     assert.ok(existsSync(resolve(root, imagePath)), imageCase.slug + ' needs a served image')
     assert.ok(existsSync(resolve(root, originalPath)), imageCase.slug + ' needs the original API result')
-    assert.ok(sitemap.includes('<loc>https://seedance3-pro.com/gpt-image-2-prompts/' + imageCase.slug + '</loc>'))
+    assert.ok(sitemap.includes('<loc>https://seedance3-pro.com/gpt-image-2-5-prompts/' + imageCase.slug + '</loc>'))
   }
   assert.ok(cases.every((entry) => entry.creativeNote.length > 50), 'every original case needs a creative note')
 })
@@ -208,8 +209,8 @@ test('model sidebar links all three prompt libraries while homepage Showcase kee
   const sidebar = read('src/routes/app.tsx')
   const homepage = read('index.html')
   for (const [label, path] of [
-    ['MiniMax H3 Prompt Library', '/minimax-h3-prompts'],
-    ['GPT Image 2 Prompt Library', '/gpt-image-2-prompts'],
+    ['Seedance 2.5 Prompt Library', '/seedance-2-5-prompts'],
+    ['GPT Image 2 Prompt Library', '/gpt-image-2-5-prompts'],
     ['Seedance 3.0 Prompt Library', '/seedance-3-0-prompts'],
   ]) {
     assert.ok(sidebar.includes(`href={path("${path}")}`), `${path} should use the localized navigation helper`)
@@ -217,10 +218,10 @@ test('model sidebar links all three prompt libraries while homepage Showcase kee
   }
   assert.match(homepage, /<a href="\.\/showcase">Showcase<\/a>/)
   const server = read('src/server.ts')
-  assert.match(server, /'\/prompts\/minimax-h3\/videos': '\/minimax-h3-prompts'/)
-  assert.match(server, /'\/prompts\/gpt-image-2\/images': '\/gpt-image-2-prompts'/)
-  assert.match(server, /legacyH3VideoCasePrefix/)
-  assert.match(server, /\/minimax-h3-prompts\/\$\{slug\}/)
+  assert.match(server, /legacyModelRedirect\(url\)/)
+  assert.equal(legacyModelRedirect(new URL('https://seedance3-pro.com/prompts/minimax-h3/videos')), '/seedance-2-5-prompts')
+  assert.equal(legacyModelRedirect(new URL('https://seedance3-pro.com/prompts/gpt-image-2/images')), '/gpt-image-2-5-prompts')
+  assert.equal(legacyModelRedirect(new URL('https://seedance3-pro.com/prompts/minimax-h3/videos/corgi-sprint')), '/seedance-2-5-prompts/corgi-sprint')
   const config = JSON.parse(read('wrangler.jsonc'))
   assertWorkerCoverage(config, '/minimax-h3-prompts/example-case')
 })

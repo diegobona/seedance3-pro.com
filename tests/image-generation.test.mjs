@@ -272,7 +272,7 @@ test("all usable provider images are returned while keeping the first image comp
   ]);
 });
 
-test("provider output count must match the requested quantity", async () => {
+test("usable partial provider batches are delivered for per-image billing", async () => {
   const response = await workerModule.handleImageGenerationRequest(
     imageRequest({ quantity: "3" }),
     successEnv(),
@@ -286,8 +286,9 @@ test("provider output count must match the requested quantity", async () => {
     }
   );
 
-  assert.equal(response.status, 502);
-  assert.match((await response.json()).message, /requested number of images/i);
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get("x-seedance-validated-image-count"), "2");
+  assert.equal((await response.json()).images.length, 2);
 });
 
 test("generation rejects missing configuration, invalid inputs, and exhausted rate limits", async () => {

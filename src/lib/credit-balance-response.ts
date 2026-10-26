@@ -6,10 +6,13 @@ interface CreditBalanceResponseOptions {
   request: Request
   getSession: (request: Request) => Promise<SessionLike>
   getBalance: (userId: string) => Promise<number>
+  getBreakdown?: (userId: string) => Promise<{
+    remaining: number; dailyRemaining: number; paidRemaining: number; freeBudgetRemainingMicros?: number
+  }>
   getGuestBalance?: () => Promise<{ remaining: number; guest: boolean; generationCost: number; maxDuration?: number; maxImages?: number; remainingImages?: number; expiresDaily: boolean }>
 }
 
-export async function getCreditBalanceResponse({ request, getSession, getBalance, getGuestBalance }: CreditBalanceResponseOptions) {
+export async function getCreditBalanceResponse({ request, getSession, getBalance, getBreakdown, getGuestBalance }: CreditBalanceResponseOptions) {
   const session = await getSession(request)
   if (!session?.user?.id) {
     if (getGuestBalance) return Response.json({ success: true, credits: await getGuestBalance() }, {
@@ -25,11 +28,16 @@ export async function getCreditBalanceResponse({ request, getSession, getBalance
     })
   }
 
-  const remaining = await getBalance(session.user.id)
+  const breakdown = getBreakdown ? await getBreakdown(session.user.id) : null
+  const remaining = breakdown?.remaining ?? await getBalance(session.user.id)
   return Response.json({
     success: true,
     credits: {
       remaining,
+      ...(breakdown ? {
+        dailyRemaining: breakdown.dailyRemaining,
+        paidRemaining: breakdown.paidRemaining,
+      } : {}),
       generationCost: GPT_IMAGE_2_CREDIT_COST,
       dailyGrant: DAILY_FREE_CREDIT_GRANT,
       resetTimeZone: DAILY_CREDIT_TIME_ZONE,

@@ -1,11 +1,20 @@
 import { t, localizedErrorMessage } from './i18n.mjs';
 import { prepareVideoReferenceFrame } from './video-reference-frame.mjs';
+import { guestDeviceHeaders } from '../assets/guest-device.mjs';
 const LOCAL_TASK_UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const TERMINAL_STATUSES = new Set(["succeeded", "failed", "expired", "submission_unknown"]);
 const RETRIABLE_HTTP_STATUSES = new Set([408, 425, 429, 500, 502, 503, 504]);
 
 function videoError(message, details = {}) {
   return Object.assign(new Error(t(message)), details);
+}
+
+export function validateVideoReferenceFiles(files, { existingCount = 0 } = {}) {
+  if (!Array.isArray(files) || files.length + existingCount > 9) throw videoError(t('Seedance 2.5 supports up to 9 reference images.'));
+  if (files.some(file => !['image/png', 'image/jpeg', 'image/webp'].includes(file?.type)
+    || !file.size || file.size > 10 * 1024 * 1024)) {
+    throw videoError(t('Choose PNG, JPEG or WebP images, up to 10 MB each.'));
+  }
 }
 
 function abortError() {
@@ -233,6 +242,7 @@ export async function pollVideoGenerationTask({
 
 export async function requestVideoGeneration({
   prompt,
+  paidOnly = false,
   duration = 5,
   aspectRatio = "16:9",
   referenceFiles = [],
@@ -246,7 +256,8 @@ export async function requestVideoGeneration({
 } = {}) {
   throwIfAborted(signal);
   const referenceImageIds = [];
-  if (!Array.isArray(referenceFiles) || referenceFiles.length > 1) throw videoError(t("H3 supports only one reference image. Remove the current image before adding another."));
+  // Validate the whole selection before uploading any reference.
+  validateVideoReferenceFiles(referenceFiles);
   for (const [index, file] of referenceFiles.entries()) {
     if (!["image/png", "image/jpeg", "image/webp"].includes(file.type) || !file.size || file.size > 10 * 1024 * 1024) {
       throw videoError(t("Choose PNG, JPEG or WebP images, up to 10 MB each."));
@@ -256,7 +267,7 @@ export async function requestVideoGeneration({
     throwIfAborted(signal);
     const upload = await fetchImpl("/api/videos/references", {
       method: "POST", credentials: "same-origin",
-      headers: { "content-type": prepared.type, accept: "application/json" },
+      headers: { ...(await guestDeviceHeaders()), "content-type": prepared.type, accept: "application/json" },
       body: prepared, signal,
     });
     const result = await responsePayload(upload);
@@ -268,13 +279,15 @@ export async function requestVideoGeneration({
     method: "POST",
     credentials: "same-origin",
     headers: {
+      ...(await guestDeviceHeaders()),
       accept: "application/json",
+      ...(paidOnly === true ? { 'x-seedance-credit-source': 'paid' } : {}),
       "content-type": "application/json"
     },
     body: JSON.stringify({
       prompt: String(prompt || "").trim(),
       duration: Number(duration),
-      resolution: "480p",
+      resolution: "768p",
       aspectRatio: String(aspectRatio || "16:9"),
       ...(referenceImageIds.length ? { referenceImageIds } : {})
     }),

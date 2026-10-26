@@ -47,7 +47,7 @@ export function GptImageCaseDetail({ imageCase }: { imageCase: GptImageCase }) {
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') window.location.assign(path('/gpt-image-2-prompts'))
+      if (event.key === 'Escape') window.location.assign(path('/gpt-image-2-5-prompts'))
     }
     document.addEventListener('keydown', closeOnEscape)
     return () => document.removeEventListener('keydown', closeOnEscape)
@@ -70,8 +70,8 @@ export function GptImageCaseDetail({ imageCase }: { imageCase: GptImageCase }) {
       </div>
       <article className="video-case-modal" role="dialog" aria-modal="true" aria-labelledby="image-case-title">
         <SiteLanguageSwitch />
-        <a className="video-case-close" href={path("/gpt-image-2-prompts")} aria-label={t("Close case and return to image library")}>×</a>
-        <nav className="video-case-breadcrumbs" aria-label={t("Breadcrumb")}><a href={path("/")}>{t("Home")}</a><span aria-hidden="true">/</span><a href={path("/showcase")}>{t("Showcase")}</a><span aria-hidden="true">/</span><a href={path("/gpt-image-2-prompts")} target="_blank" rel="noopener noreferrer">{t("GPT Image 2 Prompt Library")}</a></nav>
+        <a className="video-case-close" href={path("/gpt-image-2-5-prompts")} aria-label={t("Close case and return to image library")}>×</a>
+        <nav className="video-case-breadcrumbs" aria-label={t("Breadcrumb")}><a href={path("/")}>{t("Home")}</a><span aria-hidden="true">/</span><a href={path("/showcase")}>{t("Showcase")}</a><span aria-hidden="true">/</span><a href={path("/gpt-image-2-5-prompts")} target="_blank" rel="noopener noreferrer">{t("GPT Image 2 Prompt Library")}</a></nav>
         <h1 id="image-case-title">{t(imageCase.title)}</h1>
         <div className="video-case-modal-top">
           <div className={'video-case-player image-case-player' + (imageCase.aspectRatio === '2:3' ? ' is-portrait' : '')}>
@@ -86,7 +86,7 @@ export function GptImageCaseDetail({ imageCase }: { imageCase: GptImageCase }) {
               <div><dt>{t("Format")}</dt><dd>{imageCase.aspectRatio}</dd></div>
             </dl>
             <p>{t("Explore the finished image, then use the exact text prompt as a starting point for your own variation.")}</p>
-            <a href={path(gptImageCaseTryUrl(imageCase))}>{t("Open GPT Image 2 ↗")}</a>
+            <a href={path(gptImageCaseTryUrl(imageCase))}>{t("Open GPT Image 2.5 ↗")}</a>
           </aside>
         </div>
         <p className="video-case-summary">{t(imageCase.summary)}</p>
@@ -104,7 +104,7 @@ export function GptImageCaseDetail({ imageCase }: { imageCase: GptImageCase }) {
           {imageCase.sourceUrl && <p><a href={path(imageCase.sourceUrl)} target="_blank" rel="noopener noreferrer">{t("Topic reference ↗")}</a></p>}
         </section>
         <section className="video-case-related" aria-labelledby="related-image-cases">
-          <div className="video-case-related-heading"><h2 id="related-image-cases">{t("More original image prompts")}</h2><a href={path("/gpt-image-2-prompts")} target="_blank" rel="noopener noreferrer">{t("GPT Image 2 Prompt Library ↗")}</a></div>
+          <div className="video-case-related-heading"><h2 id="related-image-cases">{t("More original image prompts")}</h2><a href={path("/gpt-image-2-5-prompts")} target="_blank" rel="noopener noreferrer">{t("GPT Image 2 Prompt Library ↗")}</a></div>
           <div className="video-case-related-grid">{related.map((entry) => <RelatedCaseCard key={entry.slug} imageCase={entry} />)}</div>
         </section>
       </article>

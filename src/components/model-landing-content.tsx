@@ -22,7 +22,7 @@ const content = {
     ],
   },
   'minimax-h3': {
-    title: 'MiniMax H3 text-to-video and image-to-video',
+    title: 'Seedance 2.5 text-to-video and image-to-video',
     description: 'Describe a new scene from scratch, or use reference images to guide the people, objects and setting. Add an action and camera direction to turn the idea into a short video.',
     capabilities: [
       ['Text to video', 'Describe the subject, action, setting, camera movement and lighting. No reference image is needed.'],
@@ -34,15 +34,15 @@ const content = {
       'Choose Text to video, or select Reference to video and upload your images.',
       'Describe one main action and the camera movement. With multiple images, identify each subject or setting by its image number.',
       'Choose your duration and aspect ratio, and review the available resolution in the form.',
-      'Try 5 or 10 seconds at 480p without signing in. Guests get 10 free seconds in total; sign up for daily free credits.',
+      'Try 5 or 10 seconds at 768p without signing in. Guests get 10 free seconds in total; sign up for daily free credits.',
     ],
     questions: [
-      ['Can I try MiniMax H3 without an account?', 'Yes. Guests get 10 free video seconds in total at 480p. Generate two 5-second videos or one 10-second video. The default is 5 seconds; failed generations refund the reserved seconds.'],
-      ['Can MiniMax H3 generate a video from a single image?', 'Yes. Select Reference to video, upload one image, and describe the action and camera movement you want. You can also add more reference images to guide the scene.'],
+      ['Can I try Seedance 2.5 without an account?', 'Yes. Guests get 10 free video seconds in total at 768p. Generate two 5-second videos or one 10-second video. The default is 5 seconds; failed generations refund the reserved seconds.'],
+      ['Can Seedance 2.5 generate a video from a single image?', 'Yes. Select Reference to video, upload one image, and describe the action and camera movement you want. You can also add more reference images to guide the scene.'],
       ['How do I use multiple reference images?', 'Select Reference to video and add your images within the limits shown in the upload area. Images are numbered in upload order. For example: use Image 1 as the setting and animate the character from Image 2 walking through it.'],
       ['What video lengths and formats are available here?', 'The form shows the available duration, resolution and aspect ratio for your selected mode. Check these controls when setting up your video.'],
       ['How many credits does a video cost?', 'The form shows the credit cost for your selected settings and your available balance before submission. Sign in to generate.'],
-      ['Can I reuse an example prompt?', 'Yes. Select Try it beside a video example to fill the prompt field, then adjust it before generating. The MiniMax H3 Prompt Library includes more original videos and their exact prompts.'],
+      ['Can I reuse an example prompt?', 'Yes. Select Try it beside a video example to fill the prompt field, then adjust it before generating. The Seedance 2.5 Prompt Library includes more original videos and their exact prompts.'],
     ],
   },
   'gpt-image-2': {
@@ -71,12 +71,12 @@ const content = {
   },
   'gpt-image-2-5-1k': {
     title: 'GPT Image 2.5 image generation and reference editing',
-    description: "This workspace uses Tuzi's gpt-image-2.5-1k routing alias for text-to-image and reference editing. Choose a fixed 1K output size and review the five-credit trial cost per image before submitting.",
+    description: "This workspace uses Tuzi's gpt-image-2.5-1k routing alias for text-to-image and reference editing. Choose a fixed 1K output size and review the one-credit cost per image before submitting.",
     capabilities: [
       ['Text to image', 'Describe the subject, composition, lighting, style and details you need in the final image.'],
       ['Reference editing', 'Use up to 16 reference images. Explain the role of each numbered image and describe what to change or preserve.'],
       ['Fixed 1K sizes', 'Choose from eleven aspect ratios. Each ratio maps to a fixed pixel size; square output is 1254x1254.'],
-      ['Five credits per image', 'The trial costs five credits per image. Review the total for your selected image count and sign in to generate.'],
+      ['One credit per image', 'The trial costs one credit per image. Review the total for your selected image count and sign in to generate.'],
     ],
     steps: [
       'Start with a text prompt, or upload the images you want to use as references.',
@@ -89,7 +89,7 @@ const content = {
       ['Can I generate an image without uploading a reference?', 'Yes. Enter a text prompt describing the subject, composition, lighting and style, then choose your output settings. Reference images are optional.'],
       ['How many reference images can I add?', 'Add up to 16 PNG, JPEG or WebP images, up to 10 MB each and 24 MB combined. Identify each reference by its image number in the prompt.'],
       ['What image sizes can I use?', 'This route uses fixed 1K sizes across eleven aspect ratios, including square, portrait, landscape and wide formats. The aspect ratio menu shows each exact pixel size.'],
-      ['How many credits does an image cost?', 'Each generated image uses five trial credits. Select the image count and review the total cost and available balance before generating.'],
+      ['How many credits does an image cost?', 'Each generated image uses one credit. Select the image count and review the total cost and available balance before generating.'],
       ['Where can I find prompts to try?', 'Use the GPT Image 2 Prompt Library or Christmas Photo Prompts for writing ideas. Adapt a template in this workspace to create your own image.'],
     ],
   },
@@ -100,7 +100,7 @@ export function ModelLandingContent({ modelId }: { modelId: string }) {
   if (!(modelId in content)) return null
   const page = content[modelId as ModelId]
   return (
-    <section className="model-landing-content" id="model-details" aria-label={`${modelId} — ${t("About this tool")}`}>
+    <section className="model-landing-content" id="model-details" aria-label={`${modelId === 'minimax-h3' ? 'Seedance 2.5' : modelId} — ${t("About this tool")}`}>
       <div className="model-landing-inner">
         <p className="model-landing-eyebrow">{t("About this tool")}</p>
         <h2>{t(page.title)}</h2>
@@ -110,22 +110,21 @@ export function ModelLandingContent({ modelId }: { modelId: string }) {
         </div>
         <h2>{t("How to use this generator")}</h2>
         <ol className="model-landing-steps">{page.steps.map(step => <li key={step}>{t(step)}</li>)}</ol>
-        {modelId === 'minimax-h3' && <p className="model-learning-links">{t("For a worked example, explore the ")}<a href={path("/minimax-h3-prompts/foldable-origami-crane")}>{t("foldable phone video and its exact prompt")}</a>{t(". Read the ")}<a href={path("/precise-application-of-seedance-prompts")}>{t("camera movement and video prompting guide")}</a>{t(" for ideas to adapt to your next scene.")}</p>}
-        {modelId === 'gpt-image-2' && <p className="model-learning-links">{t("Explore the ")}<a href={path("/gpt-image-2-prompts/foldable-pocket-universe")}>{t("surreal product image and its exact prompt")}</a>{t(", or follow the ")}<a href={path("/how-to-control-character-poses-in-seedance-with-3d-pose-references")}>{t("3D pose reference tutorial")}</a>{t(" to plan a character image before generating.")}</p>}
+        {modelId === 'minimax-h3' && <p className="model-learning-links">{t("For a worked example, explore the ")}<a href={path("/seedance-2-5-prompts/foldable-origami-crane")}>{t("foldable phone video and its exact prompt")}</a>{t(". Read the ")}<a href={path("/precise-application-of-seedance-prompts")}>{t("camera movement and video prompting guide")}</a>{t(" for ideas to adapt to your next scene.")}</p>}
+        {modelId === 'gpt-image-2' && <p className="model-learning-links">{t("Explore the ")}<a href={path("/gpt-image-2-5-prompts/foldable-pocket-universe")}>{t("surreal product image and its exact prompt")}</a>{t(", or follow the ")}<a href={path("/how-to-control-character-poses-in-seedance-with-3d-pose-references")}>{t("3D pose reference tutorial")}</a>{t(" to plan a character image before generating.")}</p>}
         <h2>{t("Questions about this tool")}</h2>
         <div className="model-landing-faq">{page.questions.map(([question, answer]) => <details key={question}><summary>{t(question)}</summary><p>{t(answer)}</p></details>)}</div>
         <nav className="model-landing-links" aria-label={t("Explore related tools")}>
           <a href={path("/")}>{t("Seedance home")}</a>
-          <a href={path("/app/video/minimax-h3")}>{t("MiniMax H3 video")}</a>
+          <a href={path("/app/video/seedance-2-5")}>{t("Seedance 2.5 video")}</a>
           <a href={path('/app/video/flux-3')}>FLUX 3</a>
-          <a href={path("/app/image/gpt-image-2")}>{t("GPT Image 2 image")}</a>
           <a href={path("/app/image/gpt-image-2-5-1k")}>{t("GPT Image 2.5")}</a>
           <a href={path("/app/video/muse-video")}>Muse Video</a>
           <a href={path("/app/image/muse-image")}>Muse Image</a>
           <a href={path("/pose-to-image")}>{t("Pose Control")}</a>
           <a href={path("/showcase")}>{t("Showcase")}</a>
-          {modelId === 'minimax-h3' && <a href={path("/minimax-h3-prompts")} target="_blank" rel="noopener noreferrer">{t("MiniMax H3 Prompt Library")}</a>}
-          {(modelId === 'gpt-image-2' || modelId === 'gpt-image-2-5-1k') && <a href={path("/gpt-image-2-prompts")} target="_blank" rel="noopener noreferrer">{t("GPT Image 2 Prompt Library")}</a>}
+          {modelId === 'minimax-h3' && <a href={path("/seedance-2-5-prompts")} target="_blank" rel="noopener noreferrer">{t("Seedance 2.5 Prompt Library")}</a>}
+          {(modelId === 'gpt-image-2' || modelId === 'gpt-image-2-5-1k') && <a href={path("/gpt-image-2-5-prompts")} target="_blank" rel="noopener noreferrer">{t("GPT Image 2 Prompt Library")}</a>}
           {(modelId === 'gpt-image-2' || modelId === 'gpt-image-2-5-1k') && <a href={path("/ai-christmas-photo-prompt")}>{t("Christmas Photo Prompts")}</a>}
           <a href={path("/blog")}>{t("Blog")}</a>
         </nav>

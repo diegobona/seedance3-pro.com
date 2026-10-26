@@ -85,10 +85,10 @@ test("TanStack video routes enforce the trial boundary and protected lifecycle w
   assert.match(generationRoute, /createFileRoute\(['"]\/api\/videos\/generate['"]\)/);
   assert.match(generationRoute, /protectVideoGenerationStart/);
   assert.match(generationRoute, /preflightVideoGenerationRequest/);
-  assert.match(generationRoute, /resolution\s*!==\s*['"]480p['"]/);
+  assert.match(generationRoute, /resolution\s*!==\s*['"]768p['"]/);
   assert.match(generationRoute, /IMAGE_RATE_LIMITER\.limit/);
-  assert.match(generationRoute, /AUTODL_TOKEN/);
-  assert.match(generationRoute, /DATABASE_URL/);
+  assert.match(generationRoute, /assertVideoProviderConfigured/);
+  assert.match(generationRoute, /databaseConfigured/);
   assert.match(generationRoute, /request\.headers\.get\(['"]origin['"]\)/);
   assert.match(generationRoute, /new URL\(request\.url\)\.origin/);
 

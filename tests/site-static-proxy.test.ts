@@ -12,8 +12,8 @@ test('www and HTML aliases redirect permanently to the same non-www clean docume
     ['https://seedance3-pro.com/index.html', 'https://seedance3-pro.com/'],
     ['https://seedance3-pro.com/zh/index.html', 'https://seedance3-pro.com/zh/'],
     ['https://seedance3-pro.com/guide-index.html', 'https://seedance3-pro.com/guide-index'],
-    ['https://www.seedance3-pro.com/gpt-image-2.html', 'https://seedance3-pro.com/app/image/gpt-image-2'],
-    ['https://seedance3-pro.com/zh/minimax-h3-ai-video-generator.html?ref=partner', 'https://seedance3-pro.com/zh/app/video/minimax-h3?ref=partner'],
+    ['https://www.seedance3-pro.com/gpt-image-2.html', 'https://seedance3-pro.com/app/image/gpt-image-2-5'],
+    ['https://seedance3-pro.com/zh/minimax-h3-ai-video-generator.html?ref=partner', 'https://seedance3-pro.com/zh/app/video/seedance-2-5?ref=partner'],
   ]) {
     for (const method of ['GET', 'HEAD']) {
       const response = canonicalSiteRedirect(new Request(source, { method }))
@@ -78,5 +78,7 @@ test('Pages redirects stay on public host and HEAD/404 responses remain correct'
   assert.equal(await notFound.text(), '')
   assert.equal(isStudioDocument('/zh/app/image/gpt-image-2'), true)
   assert.equal(isStudioDocument('/zh/minimax-h3-prompts/my-video'), true)
+  assert.equal(isStudioDocument('/zh/seedance-2-5-prompts/my-video'), true)
+  assert.equal(isStudioDocument('/gpt-image-2-5-prompts/my-image'), true)
   assert.equal(isStudioDocument('/zh/blog'), false)
 })

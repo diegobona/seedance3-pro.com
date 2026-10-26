@@ -140,5 +140,5 @@ export function filterChristmasPhotoPrompts(category: ChristmasPhotoFilter): Chr
 }
 
 export function christmasPhotoPromptTryUrl(item: Pick<ChristmasPhotoPrompt, 'prompt' | 'aspectRatio'>) {
-  return `/app/image/gpt-image-2?${new URLSearchParams({ prompt: item.prompt, aspect_ratio: item.aspectRatio }).toString()}`
+  return `/app/image/gpt-image-2-5-1k?${new URLSearchParams({ prompt: item.prompt, aspect_ratio: item.aspectRatio }).toString()}`
 }

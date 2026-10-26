@@ -1,23 +1,24 @@
 import { t, localizedErrorMessage, currentLocale } from './i18n.mjs';
 import { localizedPath } from './site-locale.mjs';
+import { guestDeviceHeaders } from '../assets/guest-device.mjs';
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 
 export async function prepareImageForVideo({ image, width, height, fetchImpl = fetch, signal, locale = currentLocale() }) {
   let response;
   if (UUID.test(image.animateId || "")) {
-    response = await fetchImpl(`/api/images/animate?image=${image.animateId}`, { method: "POST", credentials: "same-origin", signal });
+    response = await fetchImpl(`/api/images/animate?image=${image.animateId}`, { method: "POST", credentials: "same-origin", headers: await guestDeviceHeaders(), signal });
   } else {
     let source;
     try {
       source = await fetchImpl(image.dataUrl || image.url, { signal, credentials: "omit" });
-    } catch { throw new Error(t("Could not transfer this image. Save it, then upload it as a reference in H3.")); }
-    if (!source.ok) throw new Error(t("This image link is unavailable. Save and upload the image in H3 instead."));
+    } catch { throw new Error(t("Could not transfer this image. Save it, then upload it as a reference in Seedance 2.5.")); }
+    if (!source.ok) throw new Error(t("This image link is unavailable. Save and upload the image in Seedance 2.5 instead."));
     const blob = await source.blob();
     if (!['image/png', 'image/jpeg', 'image/webp'].includes(blob.type) || !blob.size || blob.size > 10 * 1024 * 1024) {
       throw new Error(t("The reference must be a PNG, JPEG or WebP image up to 10 MB."));
     }
     response = await fetchImpl('/api/videos/references', {
-      method: 'POST', credentials: 'same-origin', headers: { 'content-type': blob.type }, body: blob, signal,
+      method: 'POST', credentials: 'same-origin', headers: { ...(await guestDeviceHeaders()), 'content-type': blob.type }, body: blob, signal,
     });
   }
   const result = await response.json();
@@ -25,7 +26,7 @@ export async function prepareImageForVideo({ image, width, height, fetchImpl = f
     throw Object.assign(new Error(localizedErrorMessage(result.message, result.code, 'Image transfer failed. Please try again.', locale)), { status: response.status });
   }
   const aspectRatio = height > width ? '9:16' : '16:9';
-  return localizedPath(`/app/video/minimax-h3?reference=${result.id}&aspect_ratio=${encodeURIComponent(aspectRatio)}`, locale);
+  return localizedPath(`/app/video/seedance-2-5?reference=${result.id}&aspect_ratio=${encodeURIComponent(aspectRatio)}`, locale);
 }
 
 export async function loadVideoReference(id, { fetchImpl = fetch, signal } = {}) {

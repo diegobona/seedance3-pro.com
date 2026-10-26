@@ -1,14 +1,19 @@
+import { guestDeviceHash } from './guest-device'
+
 export const GUEST_VIDEO_SECONDS = 10
 const COOKIE_NAME = 'seedance_guest_video'
 const UUID = '[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}'
 const COOKIE_PATTERN = new RegExp(`^(${UUID})\\.([0-9a-f]{64})$`)
 
-export interface GuestVideoIdentity { id: string; userId: string; networkHash: string }
+export interface GuestVideoIdentity { id: string; userId: string; networkHash: string; deviceHash?: string | null; budgetKey?: string; claimedUserId?: string | null }
 export interface GuestVideoTrialStore {
   getById(id: string): Promise<GuestVideoIdentity | null>
   hasNetwork(networkHash: string): Promise<boolean>
+  hasDevice?(deviceHash: string): Promise<boolean>
+  bindDevice?(deviceHash: string, userId: string): Promise<void>
   create(identity: GuestVideoIdentity): Promise<void>
   getBalance(userId: string): Promise<number>
+  syncBudget?(networkHashes: string[], budgetKey: string): Promise<void>
 }
 export interface GuestVideoAccess {
   session: { user: { id: string; isGuest: true } }
@@ -19,7 +24,7 @@ interface Options { secret: string; store: GuestVideoTrialStore; create?: boolea
 export class GuestVideoTrialError extends Error {
   constructor(public code: 'GUEST_TRIAL_USED' | 'GUEST_TRIAL_UNAVAILABLE') {
     super(code === 'GUEST_TRIAL_USED'
-      ? 'This network has already claimed the guest video trial. Sign up to keep creating.'
+      ? 'This device or network has already claimed the guest video trial. Sign up to keep creating.'
       : 'Guest video generation is temporarily unavailable. Please try again later.')
   }
 }
@@ -33,7 +38,7 @@ function hex(bytes: ArrayBuffer) {
 async function sign(secret: string, value: string) {
   return hex(await crypto.subtle.sign('HMAC', await signingKey(secret), new TextEncoder().encode(value)))
 }
-async function readIdentity(request: Request, { secret, store }: Options) {
+export async function readGuestVideoIdentity(request: Request, { secret, store }: Options) {
   const cookie = (request.headers.get('cookie') ?? '').split(';').map(value => value.trim())
     .find(value => value.startsWith(`${COOKIE_NAME}=`))?.slice(COOKIE_NAME.length + 1) ?? ''
   const match = COOKIE_PATTERN.exec(cookie)
@@ -43,24 +48,38 @@ async function readIdentity(request: Request, { secret, store }: Options) {
     Uint8Array.from(signature.match(/../g)!, pair => parseInt(pair, 16)), new TextEncoder().encode(`guest-video:${id}`))
   return valid ? store.getById(id) : null
 }
-async function networkHash(request: Request, secret: string) {
+export async function guestVideoNetworkHash(request: Request, secret: string, shared: boolean | string = false) {
   // Only Cloudflare's trusted header is accepted in production, never X-Forwarded-For.
   const local = ['localhost', '127.0.0.1', '[::1]'].includes(new URL(request.url).hostname)
   const ip = request.headers.get('cf-connecting-ip')?.trim().toLowerCase() || (local ? 'local-development' : '')
   if (!ip || ip.length > 64) throw new GuestVideoTrialError('GUEST_TRIAL_UNAVAILABLE')
-  return sign(secret, `guest-video-network:${ip}`)
+  return sign(secret, `${typeof shared === "string" ? shared : shared ? "guest-budget-network" : "guest-video-network"}:${ip}`)
 }
 export async function resolveGuestVideoTrial(request: Request, options: Options): Promise<GuestVideoAccess | null> {
-  const existing = await readIdentity(request, options)
-  if (existing) return { session: { user: { id: existing.userId, isGuest: true } } }
+  if (options.store.syncBudget) {
+    const [own,other,budget] = await Promise.all([
+      guestVideoNetworkHash(request,options.secret),
+      guestVideoNetworkHash(request,options.secret,'guest-image-network'),
+      guestVideoNetworkHash(request,options.secret,true),
+    ])
+    await options.store.syncBudget([own,other],budget)
+  }
+  const existing = await readGuestVideoIdentity(request, options)
+  const deviceHash = await guestDeviceHash(request, options.secret)
+  if (existing?.claimedUserId) throw new GuestVideoTrialError('GUEST_TRIAL_USED')
+  if (existing) {
+    if (deviceHash) await options.store.bindDevice?.(deviceHash, existing.userId)
+    return { session: { user: { id: existing.userId, isGuest: true } } }
+  }
   if (!options.create) return null
-  const hash = await networkHash(request, options.secret)
-  if (await options.store.hasNetwork(hash)) throw new GuestVideoTrialError('GUEST_TRIAL_USED')
-  const identity = { id: crypto.randomUUID(), userId: `guest-${crypto.randomUUID()}`, networkHash: hash }
+  const hash = await guestVideoNetworkHash(request, options.secret)
+  const alreadyClaimed = async () => await options.store.hasNetwork(hash) || Boolean(deviceHash && await options.store.hasDevice?.(deviceHash))
+  if (await alreadyClaimed()) throw new GuestVideoTrialError('GUEST_TRIAL_USED')
+  const identity = { id: crypto.randomUUID(), userId: `guest-${crypto.randomUUID()}`, networkHash: hash, deviceHash, budgetKey: await guestVideoNetworkHash(request,options.secret,true) }
   try {
     await options.store.create(identity)
   } catch (error) {
-    if (await options.store.hasNetwork(hash)) throw new GuestVideoTrialError('GUEST_TRIAL_USED')
+    if (await alreadyClaimed()) throw new GuestVideoTrialError('GUEST_TRIAL_USED')
     throw error
   }
   const signature = await sign(options.secret, `guest-video:${identity.id}`)
@@ -70,9 +89,11 @@ export async function resolveGuestVideoTrial(request: Request, options: Options)
   }
 }
 export async function getGuestVideoBalance(request: Request, options: Options) {
-  const identity = await readIdentity(request, options)
+  const identity = await readGuestVideoIdentity(request, options)
+  const deviceHash = await guestDeviceHash(request, options.secret)
   const remaining = identity ? await options.store.getBalance(identity.userId)
-    : await options.store.hasNetwork(await networkHash(request, options.secret)) ? 0 : GUEST_VIDEO_SECONDS
+    : await options.store.hasNetwork(await guestVideoNetworkHash(request, options.secret))
+      || (deviceHash && await options.store.hasDevice?.(deviceHash)) ? 0 : GUEST_VIDEO_SECONDS
   return { remaining, generationCost: 5, guest: true, maxDuration: GUEST_VIDEO_SECONDS, expiresDaily: false }
 }
 export function withGuestVideoCookie(response: Response, guest: GuestVideoAccess | null) {

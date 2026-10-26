@@ -10,7 +10,7 @@ import { gptImageCases, gptImageCaseTryUrl } from '../src/data/gpt-image-cases'
 test('localized navigation retains queries and leaves API and media URLs neutral', () => {
   assert.equal(localeFromPath('/zh/app/video/minimax-h3'), 'zh')
   assert.equal(localeFromPath('/app'), 'en')
-  assert.equal(localizedPath('/minimax-h3-prompts/corgi-sprint', 'zh'), '/zh/minimax-h3-prompts/corgi-sprint')
+  assert.equal(localizedPath('/minimax-h3-prompts/corgi-sprint', 'zh'), '/zh/seedance-2-5-prompts/corgi-sprint')
   assert.equal(localizedPath('/zh/app/?model=pose-to-image#scene', 'en'), '/app/?model=pose-to-image#scene')
   assert.equal(localizedPath('/api/credits/balance', 'zh'), '/api/credits/balance')
   assert.equal(localizedPath('/media/showcase-h3/corgi.mp4', 'zh'), '/media/showcase-h3/corgi.mp4')
@@ -33,28 +33,28 @@ test('Chinese editorial case data preserves the exact generation prompt and payl
 
 test('Chinese route metadata has translated text, OG locale and self canonical', () => {
   const head = localizeHead({
-    meta: [{ title: 'MiniMax H3 Prompt Library | Original Examples' }, { name: 'description', content: h3VideoCases[0].summary + ' Watch the original video and read the exact prompt used to create it.' }],
+    meta: [{ title: 'Seedance 2.5 Prompt Library | Original Examples' }, { name: 'description', content: h3VideoCases[0].summary + ' Watch the original video and read the exact prompt used to create it.' }],
     links: [{ rel: 'canonical', href: 'https://seedance3-pro.com/minimax-h3-prompts/foldable-origami-crane' }],
   }, '/minimax-h3-prompts/$slug', 'zh')
-  assert.equal(head.meta[0].title, 'MiniMax H3 提示词库 | 原创示例')
+  assert.equal(head.meta[0].title, 'Seedance 2.5 提示词库 | 原创示例')
   assert.match(String(head.meta[1].content), /咖啡馆/)
   assert.ok(!String(head.meta[1].content).includes('Watch the original'))
-  assert.equal(head.links[0].href, 'https://seedance3-pro.com/zh/minimax-h3-prompts/foldable-origami-crane')
+  assert.equal(head.links[0].href, 'https://seedance3-pro.com/zh/seedance-2-5-prompts/foldable-origami-crane')
   assert.equal(head.meta.at(-1)?.content, 'zh_CN')
 })
 
 test('SSR derives Chinese from router pathname without a browser or language cookie', async () => {
   function LocaleProbe() {
     const { t, path } = useSiteI18n()
-    return createElement('section', null, createElement('h1', null, t('MiniMax H3 Prompt Library')), createElement('a', { href: path('/app/video/minimax-h3') }, t('Try Now')))
+    return createElement('section', null, createElement('h1', null, t('Seedance 2.5 Prompt Library')), createElement('a', { href: path('/app/video/minimax-h3') }, t('Try Now')))
   }
   const root = createRootRoute()
   const page = createRoute({ getParentRoute: () => root, path: '/zh/minimax-h3-prompts', component: LocaleProbe })
   const router = createRouter({ routeTree: root.addChildren([page]), history: createMemoryHistory({ initialEntries: ['/zh/minimax-h3-prompts'] }) })
   await router.load()
   const html = renderToString(createElement(RouterProvider, { router }))
-  assert.match(html, /MiniMax H3 提示词库/)
-  assert.match(html, /href="\/zh\/app\/video\/minimax-h3"/)
+  assert.match(html, /Seedance 2.5 提示词库/)
+  assert.match(html, /href="\/zh\/app\/video\/seedance-2-5"/)
   assert.match(html, /立即试用/)
   assert.equal(translate('en', 'Try Now'), 'Try Now')
 })

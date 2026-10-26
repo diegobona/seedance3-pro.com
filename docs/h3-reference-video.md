@@ -1,31 +1,39 @@
 # H3 reference-image video generation
 
-The H3 studio supports text-to-video and reference-to-video. The latter accepts
-one PNG, JPEG or WebP image, at most 10 MiB. File selection, clipboard paste,
-generated-image handoff and API validation all enforce the one-image limit.
-Remove the current image before choosing a replacement. A multi-image request is
-rejected before uploads, credit reservation or provider submission.
-Both modes use the existing 480p trial and one credit per output second. Guests
+The H3 studio supports text-to-video and reference-to-video. Reference mode accepts
+1–9 PNG, JPEG or WebP images, at most 10 MiB each, including for guests. File
+selection, clipboard paste, generated-image handoff and API validation enforce
+the nine-image limit. Invalid selections are rejected before any upload; empty,
+duplicate or invalid reference IDs are rejected before credit reservation.
+Both modes use 768p and one credit per output second, independent of image count. Guests
 receive 10 lifetime video seconds, default to 5 seconds, and may choose 5 or 10.
 Signed-in users retain the existing 5/10/15-second settings and daily credits.
-Reference mode supports 16:9 and 9:16; text mode also supports 1:1.
+Both modes support 16:9, 9:16 and 1:1. References retain the complete source inside
+a 768P frame (1344×768, 768×1344 or 768×768), replacing the previous 480P preparation.
+The homepage retains its simple one-image picker; the H3 workspace supports nine.
 
 ## Provider contract
 
-- `vars.H3_REFERENCE_PROVIDER` selects the channel for new single-image jobs.
-  Source configuration stages `autodl`; change it to `compshare` only after the
-  server-side `COMPSHARE_API_KEY` is configured. See [CompShare setup](compshare-first-frame.md).
-- AutoDL reference workflow: `minimax_h3_image_audio_to_video_v2_15s`, using
-  `prompt`, `duration`, mapped `resolution`, and the single `ref_image_0`.
-  This channel treats the image as a reference without a first-frame constraint.
-- CompShare reference workflow marker: `compshare:minimax-h3:first-frame`, using
+- `vars.H3_REFERENCE_PROVIDER=autodl-upgraded` selects `minimax_h3_zm_u24` for new
+  reference jobs. It sends `prompt`, `duration`, mapped `768p横` / `768p竖` /
+  `768p(1:1)` and ordered `ref_image_0` through `ref_image_8` as applicable. It uses
+  reference conditioning, without a strict first-frame guarantee.
+- The retained `autodl` setting uses historical workflow
+  `minimax_h3_image_audio_to_video_v2_15s` with its old single-image adapter contract.
+- CompShare is inactive for new jobs, but its code and credentials are retained.
+  The `compshare` setting uses marker `compshare:minimax-h3:first-frame`, using
   `MiniMax-H3`, one image with `role:first_frame`, `480P`, the selected duration
   and 16:9/9:16 ratio, and `use_context_ir:true`. Its prompt limit is 7,000 characters.
+  A full rollback must restore the old 480P/single-image client and route gates as
+  well as this setting; changing the setting alone does not upgrade that adapter.
 - Text workflow remains `minimax_h3_lightx2v_no_pic`.
-- Both polling paths use each task's stored workflow, including after a switch
+- All polling paths use each task's stored workflow, including after a switch
   or rollback. Existing credit reservation/refund and activity-gated reconciliation
   remain in use. No new quota tables or migrations are needed.
-- Contract sources: [AutoDL](https://www.autodl.art/large-model/comfyui/minimax_h3_image_audio_to_video_v2_15s),
+- AutoDL's public upgraded-workflow config lists 768P at ¥0.05/output second at
+  peak and ¥0.04 off peak, without a per-reference price. This is a published
+  configuration snapshot, not a guarantee of actual image fidelity or billing.
+- Contract sources: [AutoDL upgraded workflow](https://www.autodl.art/large-model/comfyui/minimax_h3_zm_u24),
   [CompShare](https://www.compshare.cn/docs/minimax-h3/api/minimax-h3-video-api).
 
 ## Reference storage
@@ -47,6 +55,27 @@ then constructs the provider URLs on the canonical production domain.
 The task records the correct workflow ID without persisting prompts or reference URLs.
 
 ## Verification
+
+The 2026-10-20 release is live on Worker version
+`e9e35466-d761-4bf5-a705-fffd153220d9` and Pages deployment `045710f8`.
+Both bilingual homepages and H3 workspaces serve 768P; the workspace accepts nine
+images and the homepage bundle matches the locally built artifact. An isolated
+guest submitted two public reference images through the protected upload and
+generation routes. AutoDL `minimax_h3_zm_u24` returned a 1344×768 H.264 video at
+24 FPS with AAC audio (5.17-second container for a five-second request), after
+146 seconds of provider execution. The task settled once for five application
+credits; the synthetic guest retained five of its original ten seconds. The
+output combined the origami fox subject and observatory background. The isolated
+guest, task, credit reservation and two temporary R2 references were removed after
+verification, without consuming a real visitor’s trial allowance. This one
+trial verifies multi-reference integration, not a cross-provider quality ranking.
+Published peak pricing predicts ¥0.25 for the request; actual provider billing
+was not independently exposed in the result metadata.
+
+83 focused JavaScript and 67 focused TypeScript/D1 tests passed, as did the
+build/typecheck and deployment dry run. Full-suite baseline comparison found no
+new failing tests; unrelated pre-existing snapshot/model/news tests remain
+failing (24 JavaScript and 7 TypeScript, with live Neon tests disabled).
 
 Offline tests cover the CompShare request/status contract, persisted provider
 routing, D1 settlement/refund idempotency, guest scope, ownership, and idle activity.

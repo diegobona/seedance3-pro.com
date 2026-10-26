@@ -1,18 +1,47 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+test('upgraded reference preflight accepts nine unique images and square output', async () => {
+  const { preflightVideoGenerationRequest } = await import('../scripts/autodl-video.mjs');
+  const referenceImageIds = Array.from({ length: 9 }, () => crypto.randomUUID());
+  const payload = { prompt: 'Combine the references', duration: 5, resolution: '768p', aspectRatio: '1:1', referenceImageIds };
+  const result = await preflightVideoGenerationRequest(videoRequest(JSON.stringify(payload)));
+  assert.equal(result.ok, true);
+  assert.deepEqual(result.payload, payload);
+  for (const ids of [[], [...referenceImageIds, crypto.randomUUID()], [referenceImageIds[0], referenceImageIds[0]], ['invalid']]) {
+    const rejected = await preflightVideoGenerationRequest(videoRequest(JSON.stringify({ ...payload, referenceImageIds: ids })));
+    assert.equal(rejected.ok, false);
+  }
+});
+
+test('upgraded submission maps nine references in order to its explicit workflow', async () => {
+  const { submitAutodlVideoTask } = await import('../scripts/autodl-video.mjs');
+  const references = Array.from({ length: 9 }, (_, i) => `https://example.com/image-${i}.png`);
+  let calls = 0;
+  await submitAutodlVideoTask({ prompt: 'Combine the references', duration: 5, resolution: '768p', aspectRatio: '1:1', referenceImageUrls: references }, {
+    token: 'test-token', workflowId: 'minimax_h3_zm_u24', fetchImpl: async (url, init) => {
+      calls++;
+      assert.equal(url, 'https://autodl.art/api/v1/comfyui/comfyui_workflow/minimax_h3_zm_u24');
+      assert.deepEqual(JSON.parse(init.body), { prompt: 'Combine the references', duration: 5, resolution: '768p(1:1)',
+        ...Object.fromEntries(references.map((url, i) => [`ref_image_${i}`, url])) });
+      return Response.json({ code: 'Success', data: { task_id: 'upgraded-task' } });
+    },
+  });
+  assert.equal(calls, 1);
+});
+
 import * as autodlVideo from "../scripts/autodl-video.mjs";
 
-test("reference video accepts one image and rejects multiple images, square format or arbitrary URLs", async () => {
+test("reference preflight rejects empty, duplicate, excessive or arbitrary reference IDs", async () => {
   const base = { prompt: "A scene", duration: 5, resolution: "480p", aspectRatio: "16:9" };
   const ids = [crypto.randomUUID()];
   const accepted = await autodlVideo.preflightVideoGenerationRequest(videoRequest(JSON.stringify({ ...base, referenceImageIds: ids })));
   assert.equal(accepted.ok, true);
   assert.deepEqual(accepted.payload.referenceImageIds, ids);
   for (const extra of [
-    { referenceImageIds: [] }, { referenceImageIds: [...ids, crypto.randomUUID()] },
+    { referenceImageIds: [] }, { referenceImageIds: Array.from({ length: 10 }, () => crypto.randomUUID()) },
     { referenceImageIds: [ids[0], ids[0]] }, { referenceImageIds: ['https://arbitrary.example/image.png'] },
-    { referenceImageIds: ids, aspectRatio: '1:1' }, { referenceImageUrls: ['https://arbitrary.example/image.png'] },
+    { referenceImageUrls: ['https://arbitrary.example/image.png'] },
   ]) {
     assert.equal((await autodlVideo.preflightVideoGenerationRequest(videoRequest(JSON.stringify({ ...base, ...extra })))).ok, false);
   }

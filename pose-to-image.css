@@ -1,4 +1,4 @@
-.pose-page { background: radial-gradient(ellipse at 84% 9%, rgba(216,255,115,.065), transparent 38rem), var(--bg); }
+.pose-page { background: radial-gradient(ellipse at 84% 9%, rgba(58,141,222,.065), transparent 38rem), var(--bg); }
 .pose-page :is(a, summary, video):focus-visible { outline: 3px solid var(--lime); outline-offset: 5px; }
 .pose-page :is(section, main) { scroll-margin-top: 98px; }
 .pose-page h2 { margin: 0; font-size: clamp(32px, 3.8vw, 50px); font-weight: 750; line-height: 1.08; letter-spacing: -.045em; text-wrap: balance; }
@@ -16,7 +16,7 @@
 .pose-text-link { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; color: var(--text); font-size: 14px; font-weight: 700; text-decoration: underline; text-decoration-color: rgba(255,255,255,.28); text-underline-offset: 5px; }
 .pose-text-link:hover { color: var(--lime); text-decoration-color: var(--lime); }
 .pose-text-link span { text-decoration: none; }
-.pose-recording { min-width: 0; overflow: hidden; margin: 0; border: 1px solid rgba(216,255,115,.23); border-radius: 20px; background: #0d0f11; box-shadow: 0 30px 90px rgba(0,0,0,.35); }
+.pose-recording { min-width: 0; overflow: hidden; margin: 0; border: 1px solid rgba(58,141,222,.23); border-radius: 20px; background: #0d0f11; box-shadow: 0 30px 90px rgba(0,0,0,.35); }
 .pose-recording-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 16px 20px; color: var(--muted); font-size: 11px; }
 .pose-recording-heading > span:first-child { display: flex; align-items: center; gap: 8px; color: var(--text); font-size: 12px; font-weight: 700; }
 .pose-recording-heading i { width: 6px; height: 6px; border-radius: 50%; background: var(--lime); }
@@ -46,7 +46,7 @@
 
 .pose-expectations { display: grid; grid-template-columns: minmax(0,1.1fr) minmax(0,.9fr); align-items: start; gap: 96px; }
 .pose-expectations-copy > p:not(.eyebrow) { margin: 24px 0 0; color: var(--muted); font-size: 15px; line-height: 1.85; }
-.pose-access-panel { padding: 32px; border: 1px solid rgba(216,255,115,.21); border-radius: 20px; background: linear-gradient(140deg, rgba(216,255,115,.075), rgba(216,255,115,.015)); }
+.pose-access-panel { padding: 32px; border: 1px solid rgba(58,141,222,.21); border-radius: 20px; background: linear-gradient(140deg, rgba(58,141,222,.075), rgba(58,141,222,.015)); }
 .pose-panel-label { color: var(--lime); font-size: 11px; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
 .pose-access-panel h3 { margin: 18px 0; font-size: 27px; font-weight: 700; line-height: 1.15; letter-spacing: -.035em; }
 .pose-access-panel p { margin: 0 0 18px; color: #c1c3b8; font-size: 14px; line-height: 1.8; }
@@ -61,7 +61,7 @@
 .pose-faq details p { padding: 0 22px 24px; font-size: 14px; }
 
 .pose-related-section { padding-top: 0; }
-.pose-related { display: flex; align-items: center; justify-content: space-between; gap: 56px; padding: 40px; border: 1px solid var(--line-strong); border-radius: 22px; background: linear-gradient(130deg, rgba(216,255,115,.055), rgba(255,255,255,.018)); }
+.pose-related { display: flex; align-items: center; justify-content: space-between; gap: 56px; padding: 40px; border: 1px solid var(--line-strong); border-radius: 22px; background: linear-gradient(130deg, rgba(58,141,222,.055), rgba(255,255,255,.018)); }
 .pose-related h2 { max-width: 600px; font-size: clamp(30px, 3.6vw, 44px); }
 .pose-related p:not(.eyebrow) { max-width: 580px; margin: 18px 0 0; color: var(--muted); font-size: 14px; line-height: 1.8; }
 .pose-related .eyebrow { margin-bottom: 14px; }

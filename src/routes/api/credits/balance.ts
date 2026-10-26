@@ -9,6 +9,7 @@ import { createGuestVideoTrialStore } from '../../../db/guest-video-trials'
 import { getGuestVideoBalance, guestVideoTrialErrorResponse } from '../../../lib/guest-video-trial'
 import { createGuestImageTrialStore } from '../../../db/guest-image-trials'
 import { getGuestImageBalance } from '../../../lib/guest-image-trial'
+import { reconcileGuestCredits } from '../../../lib/guest-credit-reconciliation'
 
 export const Route = createFileRoute('/api/credits/balance')({
   server: {
@@ -21,9 +22,11 @@ export const Route = createFileRoute('/api/credits/balance')({
             request,
             getSession: async (sessionRequest) => {
               const session = await createAuth(sessionRequest, env).api.getSession({ headers: sessionRequest.headers })
+              if (session?.user?.id) await reconcileGuestCredits(sessionRequest, session.user.id, env.BETTER_AUTH_SECRET, db)
               return session?.user?.id ? { user: { id: session.user.id } } : null
             },
             getBalance: (userId) => creditStore.getBalance(userId),
+            ...(creditStore.getBreakdown ? { getBreakdown: (userId: string) => creditStore.getBreakdown!(userId) } : {}),
             ...(new URL(request.url).searchParams.get('guest_video') === '1' ? {
               getGuestBalance: () => getGuestVideoBalance(request, {
                 secret: env.BETTER_AUTH_SECRET, store: createGuestVideoTrialStore(db),

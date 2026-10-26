@@ -2,6 +2,7 @@ import { readFile, writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { localizedPath } from '../app/site-locale.mjs'
+import { publicModelPath } from '../app/public-model-paths.mjs'
 
 const ORIGIN = 'https://seedance3-pro.com'
 export function bilingualSitemap(xml) {
@@ -12,12 +13,13 @@ export function bilingualSitemap(xml) {
   const blocks = []
   const seen = new Set()
   for (const block of englishBlocks) {
-    const loc = block.match(/<loc>([^<]+)<\/loc>/)[1]
+    const oldLoc = block.match(/<loc>([^<]+)<\/loc>/)[1]
+    const loc = publicModelPath(oldLoc)
     if (seen.has(loc)) continue
     seen.add(loc)
     const path = new URL(loc).pathname
     const zhUrl = ORIGIN + localizedPath(path, 'zh')
-    const clean = block.replace(/\s*<xhtml:link\b[^>]*\/>/g, '').replace(/\s*<\/url>$/, '</url>')
+    const clean = block.replace(`<loc>${oldLoc}</loc>`, `<loc>${loc}</loc>`).replace(/\s*<xhtml:link\b[^>]*\/>/g, '').replace(/\s*<\/url>$/, '</url>')
     const alternates = `\n    <xhtml:link rel="alternate" hreflang="en" href="${loc}"/>\n    <xhtml:link rel="alternate" hreflang="zh-Hans" href="${zhUrl}"/>\n    <xhtml:link rel="alternate" hreflang="x-default" href="${loc}"/>\n  `
     blocks.push(clean.replace('</url>', alternates + '</url>'))
     blocks.push(clean.replace(`<loc>${loc}</loc>`, `<loc>${zhUrl}</loc>`).replace('</url>', alternates + '</url>'))

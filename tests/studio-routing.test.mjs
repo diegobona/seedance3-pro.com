@@ -72,14 +72,14 @@ function assertNonEmptyCssValue(styles, property, description) {
 
 test("studio model URLs use the selected model while preserving other URL state", async () => {
   const { buildModelUrl, normalizeModelId } = await import("../app/model-routing.mjs");
-  const available = new Set(["minimax-h3", "seedance-3", "pose-to-image", "nano-banana-2-lite", "gpt-image-2"]);
+  const available = new Set(["minimax-h3", "seedance-3", "pose-to-image", "nano-banana-2-lite", "gpt-image-2", "gpt-image-2-5-1k"]);
 
   assert.equal(normalizeModelId("nano-banana-2-lite", available), "nano-banana-2-lite");
   assert.equal(normalizeModelId("pose-to-image", available), "pose-to-image");
-  assert.equal(normalizeModelId("unknown", available), "gpt-image-2");
+  assert.equal(normalizeModelId("unknown", available), "gpt-image-2-5-1k");
   assert.equal(
     buildModelUrl("https://www.seedance3-pro.com/app/?model=minimax-h3&ref=showcase#editor", "gpt-image-2"),
-    "/app/?model=gpt-image-2&ref=showcase#editor"
+    "/app/image/gpt-image-2-5?ref=showcase#editor"
   );
 });
 
@@ -173,7 +173,7 @@ test("available model detection follows the rendered enabled buttons", () => {
   assert.match(script, /normalizeModelId\(modelId,\s*availableModelIds\)/i);
 });
 
-test("H3 trial controls expose text and reference modes, 5\/10\/15 seconds, 480p, and safe aspect ratios", () => {
+test("H3 trial controls expose text and reference modes, 5\/10\/15 seconds, 768p, and safe aspect ratios", () => {
   const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
   const videoSettings = route.match(/<div[^>]+id="video-settings"[\s\S]*?<\/div>/i)?.[0] || "";
 
@@ -182,8 +182,8 @@ test("H3 trial controls expose text and reference modes, 5\/10\/15 seconds, 480p
     assert.match(videoSettings, new RegExp(`value=["']${duration}["']`));
   }
   assert.match(videoSettings, /id="video-resolution"[^>]*disabled/i);
-  assert.match(videoSettings, /value="480p"/i);
-  assert.doesNotMatch(videoSettings, /768p/i);
+  assert.match(videoSettings, /value="768p"/i);
+  assert.doesNotMatch(videoSettings, /480p/i);
   assert.match(videoSettings, /id="video-aspect-ratio"/i);
   for (const ratio of ["9:16", "16:9", "1:1"]) assert.match(videoSettings, new RegExp(`value=["']${ratio}["']`));
 
@@ -224,21 +224,22 @@ test("H3 duration drives credit and generate labels without changing GPT Image b
   assert.match(script, /resolution:\s*imageQuality\.value/i);
 });
 
-test("GPT Image 2 is the only image model in both studio sidebars", () => {
+test("GPT Image 2.5 is the only current image generator in both studio sidebars", () => {
   const html = readFileSync(resolve(root, "app", "legacy-preview.html"), "utf8");
   const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
 
   for (const [shellName, markup] of [["legacy studio", html], ["TanStack studio", route]]) {
-    const gptImage = markup.indexOf('data-model="gpt-image-2"');
-    assert.ok(gptImage >= 0, `${shellName} should contain GPT Image 2`);
+    const gptImage = markup.indexOf('data-model="gpt-image-2-5-1k"');
+    assert.ok(gptImage >= 0, `${shellName} should contain GPT Image 2.5`);
+    assert.doesNotMatch(markup, /data-model="gpt-image-2"/);
     assert.doesNotMatch(markup, /data-model="nano-banana-2-lite"/i);
   }
 });
 
-test("only H3 and GPT Image 2 show their entry price in the studio sidebar", () => {
+test("H3 and GPT Image 2.5 show their entry price in the studio sidebar", () => {
   const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
-  for (const modelId of ["minimax-h3", "gpt-image-2"])
-    assert.match(modelButtonMarkup(route, modelId), /<em className="price-badge">(?:FROM |\{t\(["']FROM ["']\)\})<b>\$0\.01<\/b><\/em>/i);
+  for (const modelId of ["minimax-h3", "gpt-image-2-5-1k"])
+    assert.match(modelButtonMarkup(route, modelId), /<em className="price-badge"><b>\$0\.01<\/b>/i);
   assert.doesNotMatch(route, /data-model="seedance-2-5"/i);
 });
 
@@ -371,7 +372,7 @@ test("Pose Studio exposes only the focused ragdoll IK workspace in the TanStack 
   assert.match(script, /initializePoseStudio/i);
 });
 
-test("Use this pose captures the clean mannequin and transfers it into GPT Image 2", () => {
+test("Use this pose captures the clean mannequin and transfers it into the current image model", () => {
   const route = readFileSync(resolve(root, "src", "routes", "app.tsx"), "utf8");
   const studio = readFileSync(resolve(root, "app", "studio.js"), "utf8");
   const poseStudio = readFileSync(resolve(root, "app", "pose-studio.mjs"), "utf8");
@@ -384,7 +385,7 @@ test("Use this pose captures the clean mannequin and transfers it into GPT Image
   assert.match(poseStudio, /handles\.forEach[\s\S]*visible\s*=\s*false/i);
   assert.match(poseStudio, /grid\.visible\s*=\s*false/i);
   assert.match(studio, /onUsePose\s*:\s*async/i);
-  assert.match(studio, /selectModel\(["']gpt-image-2["'][\s\S]*syncUrl\s*:\s*true/i);
+  assert.match(studio, /selectModel\(DEFAULT_MODEL_ID,[\s\S]*syncUrl\s*:\s*true/i);
   assert.match(studio, /setReferenceImage\(/i);
   assert.match(studio, /buildPoseReferencePrompt/);
 });

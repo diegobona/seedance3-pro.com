@@ -1,0 +1,78 @@
+:root {
+  color-scheme: dark;
+  --brand-blue: #2f57c2;
+  --brand-bright: #3a8dde;
+  --brand-cyan: #1ecad3;
+  --brand-aqua: #78ded4;
+  --brand-primary: #2f57c2;
+  --brand-primary-hover: #365fca;
+  --brand-primary-ink: #fff;
+  --brand-accent: #78ded4;
+  --lime: var(--brand-accent);
+  --lime-strong: var(--brand-cyan);
+  --cyan: var(--brand-aqua);
+}
+
+/* Preserve the existing dark surfaces and component geometry. */
+:is(.button.primary, .showcase-try, .home-showcase .showcase-try,
+    .studio-credit-pack-link, .studio-trial-register, .auth-submit,
+    .generate-button:not(:disabled), .preview-action, .view-generation-result,
+    .pose-add-button, .pose-export-actions button:first-child,
+    .pose-result-buttons button:last-child:not(:disabled), .resource-primary,
+    .studio-showcase-actions .studio-showcase-primary,
+    .muse-template-detail > button, .h3-example-title button, .video-case-actions a,
+    .image-result-actions .animate-image-button, .billing-page .credit-pack-purchase > button):not(.disabled):not(:disabled) {
+  background: var(--brand-primary) !important;
+  border-color: var(--brand-primary) !important;
+  color: var(--brand-primary-ink) !important;
+  box-shadow: 0 6px 22px #2f57c225;
+}
+:is(.button.primary, .showcase-try, .studio-credit-pack-link,
+    .studio-trial-register, .auth-submit, .generate-button,
+    .preview-action, .view-generation-result, .pose-add-button,
+    .resource-primary, .studio-showcase-primary):hover:not(:disabled):not(.disabled) {
+  background: var(--brand-primary-hover) !important;
+  border-color: var(--brand-bright) !important;
+  color: var(--brand-primary-ink) !important;
+}
+.button.primary.disabled {
+  background: #ffffff0a !important;
+  border-color: var(--line) !important;
+  color: var(--muted) !important;
+  box-shadow: none;
+}
+.home-generate:disabled, .generate-button:disabled { box-shadow: none; }
+.home-generate:disabled, .generate-button:disabled, .pose-result-buttons button:disabled,
+.studio-credit-pack-link:disabled, .auth-submit:disabled, .preview-action:disabled,
+.pose-add-button:disabled, .h3-example-title button:disabled {
+  background: #242b35;
+  border-color: #3a4350;
+  color: #8b99aa;
+}
+.home-result-actions > .button.primary,
+.article-content .button.primary { color: var(--brand-primary-ink) !important; }
+.studio-trial-notice .studio-trial-daily {
+  background: #3a8dde22;
+  color: var(--brand-aqua);
+}
+.studio-trial-notice[data-trial-state="guest-available"] .studio-trial-daily {
+  background: none;
+  color: inherit;
+}
+.studio-trial-icon { background: #3a8dde22; color: var(--brand-aqua); }
+.brand-mark, .studio-brand > img, .resource-brand > img {
+  object-fit: contain;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.brand > span {
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-weight: 800;
+  letter-spacing: -.045em;
+}
+.billing-page a { color: #9cdbef; }
+.billing-page .billing-pack { border-color: #3a8dde66; background: #121b29; }
+.billing-pack-output { border-color: #3a8dde55; background: linear-gradient(125deg,#172745,#123139); }
+.billing-pack-output strong { color: var(--brand-aqua); }

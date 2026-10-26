@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm'
-import { DAILY_CREDIT_TIME_ZONE, DAILY_FREE_CREDIT_GRANT } from '../lib/generation-credits'
+import { DAILY_CREDIT_TIME_ZONE, DAILY_FREE_CREDIT_GRANT, LEGACY_TRIAL_CREDIT_GRANT } from '../lib/generation-credits'
 
 // The database clock defines one shared day for every region and request.
 export const creditDay = sql`(now() AT TIME ZONE ${DAILY_CREDIT_TIME_ZONE})::date`
@@ -8,7 +8,7 @@ export function availableDailyCredits(alias: string) {
   const account = sql.identifier(alias)
   return sql`CASE
     WHEN ${account}."daily_credit_date" = ${creditDay} THEN ${account}."daily_free_credits"
-    WHEN ${account}."plan" = 'free' THEN ${DAILY_FREE_CREDIT_GRANT}
+    WHEN ${account}."plan" <> 'guest' THEN ${DAILY_FREE_CREDIT_GRANT}
     ELSE 0 END`
 }
 
@@ -18,9 +18,9 @@ export function effectiveCreditBalance(alias: string) {
     ${account}."credit_balance" - CASE
       WHEN ${account}."daily_credit_date" IS NULL THEN
         CASE WHEN ${account}."plan" = 'free'
-          THEN LEAST(${account}."credit_balance", ${DAILY_FREE_CREDIT_GRANT}) ELSE 0 END
+          THEN LEAST(${account}."credit_balance", ${LEGACY_TRIAL_CREDIT_GRANT}) ELSE 0 END
       ELSE ${account}."daily_free_credits" END
-    + CASE WHEN ${account}."plan" = 'free' THEN ${DAILY_FREE_CREDIT_GRANT} ELSE 0 END
+    + CASE WHEN ${account}."plan" <> 'guest' THEN ${DAILY_FREE_CREDIT_GRANT} ELSE 0 END
     ELSE ${account}."credit_balance" END`
 }
 

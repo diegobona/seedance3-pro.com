@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { createCreditSummaryController } from '../app/studio-controls.mjs';
 
-function harness({ context = 'guest-image', remaining = 10, duration = '5' } = {}) {
+function harness({ context = 'guest-image', remaining = context === 'guest-image' ? 2 : 10, duration = '5' } = {}) {
   let pending = false;
   const quantity = Object.assign(new EventTarget(), { value: '1' });
   const seconds = Object.assign(new EventTarget(), { value: duration });
@@ -12,7 +12,7 @@ function harness({ context = 'guest-image', remaining = 10, duration = '5' } = {
     container: { classList: { toggle: (key, value) => { flags[key] = value; } } },
     quantityControl: quantity, additionalCostControls: [seconds],
     costElement: { textContent: '' }, currentBalanceElement: balanceElement, balanceLabelElement: label,
-    getContext: () => context, getCost: () => context === 'guest-video' ? Number(seconds.value) : Number(quantity.value) * 5,
+    getContext: () => context, getCost: () => context === 'guest-video' ? Number(seconds.value) : Number(quantity.value),
     isGenerationPending: () => pending,
     eventTarget: events, onChange: state => states.push(state),
     fetchImpl: async () => Response.json({ credits: { remaining, guest: context !== 'account', expiresDaily: false } }),
@@ -34,14 +34,14 @@ test('selecting one or two images previews one or zero images without spending t
   const h = harness();
   try {
     await h.controller.loadBalance();
-    assert.equal(h.states.at(-1).displayBalance, 5);
+    assert.equal(h.states.at(-1).displayBalance, 1);
     assert.equal(h.balanceElement.textContent, '1 image remaining');
-    assert.equal(h.states.at(-1).currentBalance, 10);
+    assert.equal(h.states.at(-1).currentBalance, 2);
     assert.equal(h.label.textContent, 'AFTER GENERATION');
     h.select('2');
     assert.equal(h.states.at(-1).displayBalance, 0);
     assert.equal(h.balanceElement.textContent, '0 images remaining');
-    assert.equal(h.states.at(-1).currentBalance, 10);
+    assert.equal(h.states.at(-1).currentBalance, 2);
     assert.equal(h.flags['is-exhausted'], false);
     assert.equal(h.flags['is-insufficient'], false);
   } finally { h.controller.destroy(); }
@@ -87,19 +87,19 @@ test('image success and refund show actual balances until a new selection, inclu
   const h = harness();
   try {
     await h.controller.loadBalance();
-    h.credits(5);
-    assert.equal(h.states.at(-1).displayBalance, 5);
+    h.credits(1);
+    assert.equal(h.states.at(-1).displayBalance, 1);
     assert.equal(h.balanceElement.textContent, '1 image remaining');
     assert.equal(h.label.textContent, 'REMAINING');
     await h.controller.loadBalance();
-    assert.equal(h.states.at(-1).displayBalance, 5, 'loading after completion must not subtract again');
+    assert.equal(h.states.at(-1).displayBalance, 1, 'loading after completion must not subtract again');
     await h.focus();
-    assert.equal(h.states.at(-1).displayBalance, 5, 'focusing a completed task keeps its actual balance');
+    assert.equal(h.states.at(-1).displayBalance, 1, 'focusing a completed task keeps its actual balance');
     h.select('1');
     assert.equal(h.states.at(-1).displayBalance, 0);
     assert.equal(h.flags['is-exhausted'], false);
-    h.credits(10);
-    assert.equal(h.states.at(-1).displayBalance, 10, 'a refund is already reflected in the actual balance');
+    h.credits(2);
+    assert.equal(h.states.at(-1).displayBalance, 2, 'a refund is already reflected in the actual balance');
     h.select('2');
     assert.equal(h.states.at(-1).displayBalance, 0);
   } finally { h.controller.destroy(); }
@@ -113,13 +113,13 @@ test('guest control fallback is applied before cost and projection are computed'
     quantityControl: quantity, costElement: { textContent: '' }, currentBalanceElement: { textContent: '' },
     container: { classList: { toggle() {} } }, eventTarget: new EventTarget(), getContext: () => 'guest-image',
     prepareControls: remaining => { quantity.value = guestImageQuantityState({ guest: true, remaining, value: quantity.value }).value; },
-    fetchImpl: async () => Response.json({ credits: { remaining: 5, guest: true, expiresDaily: false } }),
+    fetchImpl: async () => Response.json({ credits: { remaining: 1, guest: true, expiresDaily: false } }),
     onChange: state => states.push(state),
   });
   try {
     await controller.loadBalance();
     assert.equal(quantity.value, '1');
-    assert.equal(states.at(-1).cost, 5);
+    assert.equal(states.at(-1).cost, 1);
     assert.equal(states.at(-1).displayBalance, 0);
     assert.equal(states.at(-1).insufficient, false);
   } finally { controller.destroy(); }
@@ -168,10 +168,10 @@ test('unknown balances stay unknown, account previews agree, and other quota poo
   try {
     assert.equal(h.states.at(-1).displayBalance, null);
     await h.controller.loadBalance();
-    assert.equal(h.states.at(-1).displayBalance, 10);
+    assert.equal(h.states.at(-1).displayBalance, 14);
     h.credits(0, 5, 'guest-image');
     assert.equal(h.states.at(-1).currentBalance, 15);
-    assert.equal(h.states.at(-1).displayBalance, 10);
+    assert.equal(h.states.at(-1).displayBalance, 14);
     await h.controller.reset();
     assert.equal(h.label.textContent, 'AFTER GENERATION');
   } finally { h.controller.destroy(); }
@@ -187,7 +187,7 @@ test('Chinese image and H3 summaries distinguish forecast and actual remaining i
         await h.controller.loadBalance();
         assert.equal(h.balanceElement.textContent, expected);
         assert.equal(h.label.textContent, '生成后预计剩余');
-        h.credits(5);
+        h.credits(context === 'guest-image' ? 1 : 5);
         assert.equal(h.balanceElement.textContent, expected);
         assert.equal(h.label.textContent, '实际剩余');
       } finally { h.controller.destroy(); }

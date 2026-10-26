@@ -4,11 +4,11 @@ export const IMAGE_MODEL_HEADER = 'x-seedance-image-model';
 // Website IDs are distinct from provider aliases. Only these models may be billed or sent upstream.
 const imageModels = Object.freeze({
   'gpt-image-2': Object.freeze({
-    name: 'GPT Image 2', providerModel: 'gpt-image-2', quality: 'medium', creditCost: 5, maxReferences: 16,
+    name: 'GPT Image 2', providerModel: 'gpt-image-2', quality: 'medium', creditCost: 1, maxReferences: 16,
     sizes: Object.freeze({ '1:1': '1024x1024', '3:2': '1536x1024', '2:3': '1024x1536' }),
   }),
   'gpt-image-2-5-1k': Object.freeze({
-    name: 'GPT Image 2.5', providerModel: 'gpt-image-2.5-1k', quality: 'low', creditCost: 5, maxReferences: 16,
+    name: 'GPT Image 2.5', providerModel: 'gpt-image-2.5-1k', quality: 'low', creditCost: 1, maxReferences: 16,
     sizes: Object.freeze({
       '1:1': '1254x1254', '3:2': '1536x1024', '2:3': '1024x1536',
       '3:4': '1086x1448', '4:3': '1448x1086', '4:5': '1122x1402', '5:4': '1402x1122',

@@ -82,7 +82,7 @@ test('localized video requests preserve provider enums and local API routes', as
         assert.ok(url.startsWith('/api/videos/'));
         if (url === '/api/videos/generate') {
           assert.deepEqual(JSON.parse(options.body), {
-            prompt: 'Original camera motion', duration: 10, resolution: '480p', aspectRatio: '9:16',
+            prompt: 'Original camera motion', duration: 10, resolution: '768p', aspectRatio: '9:16',
           });
           return Response.json({ success: true, task: { id: taskId, status: 'queued' } });
         }
@@ -90,7 +90,7 @@ test('localized video requests preserve provider enums and local API routes', as
       },
     });
     assert.equal(result.status, 'succeeded');
-    await assert.rejects(requestVideoGeneration({ referenceFiles: Array(2).fill({}) }), /只能上传一张参考图/);
+    await assert.rejects(requestVideoGeneration({ referenceFiles: Array(10).fill({}) }), /最多支持 9 张参考图/);
   });
 });
 
@@ -104,7 +104,7 @@ test('image-to-video and Pose share URLs retain Chinese locale and scene/referen
         return Response.json({ success: true, id: referenceId });
       },
     });
-    assert.equal(destination, `/zh/app/video/minimax-h3?reference=${referenceId}&aspect_ratio=9%3A16`);
+    assert.equal(destination, `/zh/app/video/seedance-2-5?reference=${referenceId}&aspect_ratio=9%3A16`);
     assert.equal(buildModelUrl('https://example.com/zh/app/?reference=abc#editor', 'pose-to-image'), '/zh/app/?reference=abc&model=pose-to-image#editor');
     assert.equal(buildPoseShareUrl('https://example.com/zh/app/image/gpt-image-2?model=pose-to-image', 'scene-data'), 'https://example.com/zh/app/?model=pose-to-image#pose=scene-data');
     assert.equal(buildPoseShareUrl('https://example.com/app/image/gpt-image-2', 'scene-data'), 'https://example.com/app/?model=pose-to-image#pose=scene-data');
@@ -162,10 +162,10 @@ test('credit summary updates remain localized when balance is fetched or changed
       quantityControl, eventTarget: events,
       fetchImpl: async () => Response.json({ credits: { remaining: 25 } }),
     });
-    assert.equal(costElement.textContent, '10 积分');
+    assert.equal(costElement.textContent, '2 积分');
     assert.equal(currentBalanceElement.textContent, '— 积分');
     await controller.loadBalance();
-    assert.equal(currentBalanceElement.textContent, '15 积分');
+    assert.equal(currentBalanceElement.textContent, '23 积分');
     events.dispatchEvent(new CustomEvent('seedance:credits-updated', { detail: { remaining: 15 } }));
     assert.equal(currentBalanceElement.textContent, '15 积分');
     controller.destroy();

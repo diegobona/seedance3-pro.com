@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { withRelatedReading } from './related-reading.mjs';
+import { publicModelPath } from '../app/public-model-paths.mjs';
 
 const SCRIPT_ROOT = path.dirname(fileURLToPath(import.meta.url));
 const DEFAULT_ROOT = path.resolve(SCRIPT_ROOT, '..');
@@ -11,7 +12,7 @@ const ATTR_PATTERN = /([\w:-]+)\s*=\s*("([^"]*)"|'([^']*)')/g;
 const TEXT_ATTRIBUTES = new Set(['alt', 'aria-label', 'title', 'placeholder']);
 const SCHEMA_TEXT_KEYS = new Set(['name', 'headline', 'description', 'text', 'articleBody', 'keywords', 'caption']);
 const RESOURCE_PREFIX = /^\/(?:assets|media|blog-assets|api|admin|app\/pose-assets)(?:\/|$)/;
-const PUBLIC_DYNAMIC_PREFIX = /^\/(?:app(?:\/|$)|minimax-h3-prompts(?:\/|$)|gpt-image-2-prompts(?:\/|$)|muse-video-prompts(?:\/|$)|muse-image-prompts(?:\/|$)|ai-christmas-photo-prompt(?:\/|$)|nano-banana-2-lite-prompts(?:\/|$)|seedance-3-0-prompts(?:\/|$)|prompt-guide(?:\/|$)|login(?:\/|$)|account(?:\/|$)|signup(?:\/|$))/;
+const PUBLIC_DYNAMIC_PREFIX = /^\/(?:app(?:\/|$)|seedance-2-5-prompts(?:\/|$)|gpt-image-2-5-prompts(?:\/|$)|minimax-h3-prompts(?:\/|$)|gpt-image-2-prompts(?:\/|$)|muse-video-prompts(?:\/|$)|muse-image-prompts(?:\/|$)|ai-christmas-photo-prompt(?:\/|$)|nano-banana-2-lite-prompts(?:\/|$)|seedance-3-0-prompts(?:\/|$)|prompt-guide(?:\/|$)|login(?:\/|$)|account(?:\/|$)|signup(?:\/|$))/;
 const VOID_ELEMENTS = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr']);
 
 export function decodeText(text) {
@@ -31,10 +32,10 @@ export function localizedUrl(value, englishPath, publicPaths) {
   let url;
   try { url = new URL(original, `${ORIGIN}${englishPath}`); } catch { return original; }
   if (url.origin !== ORIGIN) return original;
-  const pathname = url.pathname.replace(/\.html$/, '').replace(/^\/index$/, '/');
+  const pathname = publicModelPath(url.pathname.replace(/\.html$/, '').replace(/^\/index$/, '/'));
   if (pathname.startsWith('/zh/')) return `${pathname}${url.search}${url.hash}`;
   if (RESOURCE_PREFIX.test(pathname)) return `${url.pathname}${url.search}${url.hash}`;
-  if (publicPaths.has(pathname) || (PUBLIC_DYNAMIC_PREFIX.test(pathname) && !/\.[a-z0-9]{1,6}$/i.test(url.pathname))) return `/zh${pathname === '/' ? '/' : pathname}${url.search}${url.hash}`;
+  if (publicPaths.has(pathname) || (PUBLIC_DYNAMIC_PREFIX.test(pathname) && !/\.[a-z0-9]{1,6}$/i.test(pathname))) return `/zh${pathname === '/' ? '/' : pathname}${url.search}${url.hash}`;
   return `${url.pathname}${url.search}${url.hash}`;
 }
 

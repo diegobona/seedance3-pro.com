@@ -9,8 +9,8 @@ const read = (path) => readFileSync(resolve(root, path), 'utf8')
 
 test('legacy model URLs resolve to one canonical tool URL', () => {
   const config = JSON.parse(read('wrangler.jsonc'))
-  assert.equal(canonicalModelPath('minimax-h3'), '/app/video/minimax-h3')
-  assert.equal(canonicalModelPath('gpt-image-2'), '/app/image/gpt-image-2')
+  assert.equal(canonicalModelPath('minimax-h3'), '/app/video/seedance-2-5')
+  assert.equal(canonicalModelPath('gpt-image-2'), '/app/image/gpt-image-2-5')
   assert.equal(canonicalModelPath('pose-to-image'), null)
   assert.equal(canonicalModelPath('__proto__'), null)
   for (const [oldPath, expected] of [
@@ -23,7 +23,7 @@ test('legacy model URLs resolve to one canonical tool URL', () => {
     ['/app/?model=minimax-h3', '/app/video/minimax-h3'],
     ['/app/?model=gpt-image-2', '/app/image/gpt-image-2'],
   ]) {
-    assert.equal(legacyModelRedirect(new URL(oldPath, 'https://seedance3-pro.com')), expected)
+    assert.equal(legacyModelRedirect(new URL(oldPath, 'https://seedance3-pro.com')), expected.replace('/video/minimax-h3', '/video/seedance-2-5').replace('/image/gpt-image-2', '/image/gpt-image-2-5'))
     if (!oldPath.startsWith('/app')) {
       for (const host of ['seedance3-pro.com', 'www.seedance3-pro.com']) {
         assert.ok(config.routes.some(route => route.pattern === host + oldPath || route.pattern === `${host}/*`), `${host}${oldPath} must reach the redirect handler`)
@@ -31,26 +31,26 @@ test('legacy model URLs resolve to one canonical tool URL', () => {
       assert.ok(config.assets.run_worker_first.includes(oldPath) || config.assets.run_worker_first.includes('/*'))
     }
   }
-  assert.equal(legacyModelRedirect(new URL('/gpt-image-2.html?utm_source=newsletter', 'https://seedance3-pro.com')), '/app/image/gpt-image-2?utm_source=newsletter')
-  assert.equal(legacyModelRedirect(new URL('/zh/gpt-image-2.html?utm_source=newsletter', 'https://seedance3-pro.com')), '/zh/app/image/gpt-image-2?utm_source=newsletter')
+  assert.equal(legacyModelRedirect(new URL('/gpt-image-2.html?utm_source=newsletter', 'https://seedance3-pro.com')), '/app/image/gpt-image-2-5?utm_source=newsletter')
+  assert.equal(legacyModelRedirect(new URL('/zh/gpt-image-2.html?utm_source=newsletter', 'https://seedance3-pro.com')), '/zh/app/image/gpt-image-2-5?utm_source=newsletter')
   assert.equal(legacyModelRedirect(new URL('/app/?model=pose-to-image', 'https://seedance3-pro.com')), null)
-  assert.equal(legacyModelRedirect(new URL('/app/?model=gpt-image-2&prompt=example', 'https://seedance3-pro.com')), null)
+  assert.equal(legacyModelRedirect(new URL('/app/?model=gpt-image-2&prompt=example', 'https://seedance3-pro.com')), '/app/image/gpt-image-2-5?prompt=example')
 })
 
 test('sitemap publishes new model pages and excludes redirects, workspace and empty future routes', () => {
   const sitemap = read('sitemap.xml')
   const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1])
   assert.equal(new Set(urls).size, urls.length)
-  for (const path of ['/app/video/minimax-h3', '/app/image/gpt-image-2', '/pose-to-image', '/app/video/muse-video', '/app/image/muse-image', '/app/video/seedance-3', '/muse-video-prompts', '/muse-image-prompts', '/seedance-3-0-prompts']) {
+  for (const path of ['/app/video/seedance-2-5', '/app/image/gpt-image-2-5', '/app/image/gpt-image-2-5-1k', '/pose-to-image']) {
     assert.ok(urls.includes(`https://seedance3-pro.com${path}`), path)
     assert.ok(urls.includes(`https://seedance3-pro.com/zh${path}`), 'Chinese edition of ' + path)
   }
   assert.ok(!urls.includes('https://seedance3-pro.com/app/'))
-  for (const path of ['/minimax-h3-ai-video-generator.html', '/gpt-image-2.html', '/prompt-guide', '/prompts/gpt-image-2/images', '/pricing.html', '/nano-banana-2-lite.html', '/app/video/seedance-2-5']) {
-    assert.ok(!urls.some(url => url.includes(path)), path)
+  for (const path of ['/minimax-h3-ai-video-generator.html', '/gpt-image-2.html', '/prompt-guide', '/prompts/gpt-image-2/images', '/pricing.html', '/nano-banana-2-lite.html', '/app/video/minimax-h3', '/app/image/gpt-image-2']) {
+    assert.ok(!urls.some(url => new URL(url).pathname === path || new URL(url).pathname === '/zh' + path), path)
   }
-  assert.ok(urls.includes('https://seedance3-pro.com/minimax-h3-prompts'))
-  assert.ok(urls.includes('https://seedance3-pro.com/gpt-image-2-prompts'))
+  assert.ok(urls.includes('https://seedance3-pro.com/seedance-2-5-prompts'))
+  assert.ok(urls.includes('https://seedance3-pro.com/gpt-image-2-5-prompts'))
   assert.ok(!urls.includes('https://seedance3-pro.com/prompts/minimax-h3/videos'))
   assert.match(read('robots.txt'), /Sitemap: https:\/\/seedance3-pro\.com\/sitemap.xml/)
 })
@@ -69,10 +69,10 @@ test('Pose content remains on its existing public URLs and generic workspace is 
 
 test('the homepage directs model searches to distinct model tool pages', () => {
   const homepage = read('index.html')
-  assert.match(homepage, /href="\.\/app\/video\/minimax-h3"/)
-  assert.match(homepage, /href="\.\/app\/image\/gpt-image-2"/)
+  assert.match(homepage, /href="\.\/app\/video\/seedance-2-5"/)
+  assert.match(homepage, /href="\.\/app\/image\/gpt-image-2-5-1k"/)
   assert.match(homepage, /href="\.\/pose-to-image"/)
-  for (const path of ['./prompt-guide', './minimax-h3-prompts', './gpt-image-2-prompts', './seedance-3-0-prompts']) {
+  for (const path of ['./prompt-guide', './seedance-2-5-prompts', './gpt-image-2-5-prompts', './seedance-3-0-prompts']) {
     assert.ok(homepage.includes(`href="${path}"`), `${path} should be linked from the footer`)
   }
   assert.match(homepage, /<a href="\.\/showcase">Showcase<\/a>/)

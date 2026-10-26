@@ -5,11 +5,11 @@ import { videoReferenceFrameSize, videoReferenceLayout, prepareVideoReferenceFra
 const near = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-8, `${actual} != ${expected}`);
 const original = () => new File(['source'], 'original.jpg', { type: 'image/jpeg' });
 
-test('the reported 1080x938 image fits native landscape and portrait frames without changing its proportions', () => {
+test('the reported 1080x938 image fits 768P landscape and portrait frames without changing its proportions', () => {
   for (const [ratio, size, edges] of [
-    ['16:9', [864, 480], ['horizontal', 480]],
-    ['9:16', [480, 864], ['vertical', 480]],
-    ['1:1', [480, 480], ['vertical', 480]],
+    ['16:9', [1344, 768], ['horizontal', 768]],
+    ['9:16', [768, 1344], ['vertical', 768]],
+    ['1:1', [768, 768], ['vertical', 768]],
   ]) {
     assert.deepEqual(videoReferenceFrameSize(ratio), { width: size[0], height: size[1] });
     const fit = videoReferenceLayout(1080, 938, ratio);
@@ -57,11 +57,11 @@ test('preparation fills an opaque black frame, draws the whole image equally sca
   const g = graphics(); const file = original();
   const prepared = await prepareVideoReferenceFrame(file, { aspectRatio: '16:9', ...g.options });
   assert.equal(prepared, g.encoded);
-  assert.deepEqual(g.fills, [['#000000', 0, 0, 864, 480]]);
+  assert.deepEqual(g.fills, [['#000000', 0, 0, 1344, 768]]);
   assert.equal(g.draws.length, 1);
   const [image, x, y, width, height] = g.draws[0];
   assert.equal(image, g.image);
-  near(width / 1080, height / 938); near(x * 2 + width, 864); near(y * 2 + height, 480);
+  near(width / 1080, height / 938); near(x * 2 + width, 1344); near(y * 2 + height, 768);
   assert.equal(g.closed(), 1);
   assert.equal(g.canvas.width, 0); assert.equal(g.canvas.height, 0);
   assert.equal(file.name, 'original.jpg'); assert.equal(await file.text(), 'source');

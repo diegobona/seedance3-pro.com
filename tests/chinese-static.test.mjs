@@ -36,7 +36,7 @@ test('localized links preserve queries and fragments while shared resources rema
   const pages = new Set(['/', '/blog', '/features']);
   assert.equal(localizedUrl('./features.html?ref=partner#camera', '/blog', pages), '/zh/features?ref=partner#camera');
   assert.equal(localizedUrl('./?ref=partner#top', '/features', pages), '/zh/?ref=partner#top');
-  assert.equal(localizedUrl('/app/video/minimax-h3?prompt=one%20shot', '/', pages), '/zh/app/video/minimax-h3?prompt=one%20shot');
+  assert.equal(localizedUrl('/app/video/minimax-h3?prompt=one%20shot', '/', pages), '/zh/app/video/seedance-2-5?prompt=one%20shot');
   assert.equal(localizedUrl('./assets/image.webp?v=2', '/features', pages), '/assets/image.webp?v=2');
   assert.equal(localizedUrl('/api/generate?job=1', '/features', pages), '/api/generate?job=1');
   assert.equal(localizedUrl('/admin/', '/features', pages), '/admin/');
@@ -77,7 +77,7 @@ test('generator renders explicit Chinese CMS overrides and keeps English content
   assert.match(generated, /使用 Seedance 和 GPT Image 2 的 AI 图像流程。/);
   assert.match(generated, /<blockquote><p>用户提供的中文引用。<\/p><\/blockquote>/);
   assert.doesNotMatch(generated, /Untranslated English draft/);
-  assert.match(generated, /href="\/zh\/app\/video\/minimax-h3\?ref=author#editor"/);
+  assert.match(generated, /href="\/zh\/app\/video\/seedance-2-5\?ref=author#editor"/);
   assert.match(generated, /src="\/blog-assets\/example.webp"/);
   assert.match(updatedEnglish, /Untranslated English draft stays private to the original page\./);
   const collected = await collectTranslationSources({ rootDirectory: fixture });

@@ -80,13 +80,21 @@ export function createTrackedVideoTaskStore(
   }
   return {
     ...store,
-    async reserveAndCreate(userId, credits, metadata) {
+    async reserveAndCreate(userId, credits, metadata, _localTaskId, options) {
       const taskId = crypto.randomUUID()
       // Persist recovery before SQL. A crash after debit must never hide a pending task.
       await activity.track(taskId)
-      const result = await store.reserveAndCreate(userId, credits, metadata, taskId)
-      if (!result) await removeSafely(taskId)
-      return result
+      try {
+        const result = await store.reserveAndCreate(userId, credits, metadata, taskId, options)
+        if (!result) await removeSafely(taskId)
+        return result
+      } catch (error) {
+        // Policy rejections happen before a reservation. An unknown database error
+        // may occur after commit, so retain its recovery marker.
+        if (['FREE_BUDGET_EXCEEDED', 'BILLING_HOLD', 'CREDIT_BACKEND_UNSUPPORTED']
+          .includes(String((error as { code?: unknown } | null)?.code))) await removeSafely(taskId)
+        throw error
+      }
     },
     async finalizeSubmissionFailure(...args) {
       const result = await store.finalizeSubmissionFailure(...args)

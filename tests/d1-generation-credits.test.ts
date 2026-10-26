@@ -10,8 +10,10 @@ import { createD1TestDatabase } from './helpers/d1-test-db'
 
 async function addUser(db: D1Database, id: string, balance: number, plan = 'paid', daily = 0, day: string | null = null) {
   await db.prepare(`INSERT INTO "user" (id, name, email, plan, credit_balance, daily_free_credits, daily_credit_date)
-    VALUES (?, ?, ?, ?, ?, ?, ?)`).bind(id, id, `${id}@example.test`, plan, balance, daily, day).run()
+    VALUES (?, ?, ?, ?, ?, ?, ?)`).bind(id, id, `${id}@example.test`, plan, balance, daily, day ?? (plan === 'paid' ? await globalsToday(db) : null)).run()
 }
+
+async function globalsToday(db: D1Database) { return (await db.prepare(`SELECT date('now','+8 hours') AS day`).first<{day:string}>())!.day }
 
 async function day(db: D1Database, offset = 0) {
   const row = await db.prepare(`SELECT date('now', '+8 hours', ?) AS day`).bind(`${offset} days`).first<{ day: string }>()
@@ -42,15 +44,15 @@ test('D1 daily grants replace yesterday free credits while preserving permanent 
   try {
     await addUser(db, 'daily', 70, 'free', 5, await day(db, -1))
     const store = createD1GenerationCreditStore(db)
-    assert.equal(await getD1CurrentCreditBalance(db, 'daily'), 80)
+    assert.equal(await getD1CurrentCreditBalance(db, 'daily'), 70)
     const reservation = await store.reserve('daily', 20)
     assert.ok(reservation)
-    assert.equal(reservation.remainingCredits, 60)
+    assert.equal(reservation.remainingCredits, 50)
     const row = await db.prepare('SELECT daily_free_credits, daily_credit_date FROM generation_credit_reservation WHERE id = ?')
       .bind(reservation.id).first<{ daily_free_credits: number; daily_credit_date: string }>()
-    assert.equal(row!.daily_free_credits, 15)
+    assert.equal(row!.daily_free_credits, 5)
     assert.equal(row!.daily_credit_date, await day(db))
-    assert.equal(await store.getBalance('daily'), 60)
+    assert.equal(await store.getBalance('daily'), 50)
   } finally {
     await dispose()
   }
@@ -78,7 +80,7 @@ test('D1 cross-day refunds return permanent credits without carrying yesterday f
   try {
     const today = await day(db)
     const yesterday = await day(db, -1)
-    await addUser(db, 'cross-day', 35, 'free', 15, today)
+    await addUser(db, 'cross-day', 30, 'free', 5, today)
     const store = createD1GenerationCreditStore(db)
     const reservation = await store.reserve('cross-day', 20)
     assert.ok(reservation)
@@ -86,10 +88,10 @@ test('D1 cross-day refunds return permanent credits without carrying yesterday f
       db.prepare('UPDATE "user" SET daily_credit_date = ? WHERE id = ?').bind(yesterday, 'cross-day'),
       db.prepare('UPDATE generation_credit_reservation SET daily_credit_date = ? WHERE id = ?').bind(yesterday, reservation.id),
     ])
-    assert.deepEqual(await store.refund(reservation.id), { remainingCredits: 35 })
-    assert.deepEqual(await store.refund(reservation.id), { remainingCredits: 35 })
+    assert.deepEqual(await store.refund(reservation.id), { remainingCredits: 30 })
+    assert.deepEqual(await store.refund(reservation.id), { remainingCredits: 30 })
     const row = await db.prepare('SELECT daily_free_credits, daily_credit_date FROM "user" WHERE id = ?').bind('cross-day').first()
-    assert.deepEqual(row, { daily_free_credits: 15, daily_credit_date: today })
+    assert.deepEqual(row, { daily_free_credits: 5, daily_credit_date: today })
   } finally {
     await dispose()
   }
@@ -142,9 +144,10 @@ test('D1 normalizes legacy daily dates and rejects invalid credit amounts', asyn
   try {
     await addUser(db, 'legacy-free', 20, 'free')
     await addUser(db, 'legacy-paid', 20)
+    await db.prepare('UPDATE "user" SET daily_credit_date=NULL WHERE id=?').bind('legacy-paid').run()
     const store = createD1GenerationCreditStore(db)
-    assert.equal(await store.getBalance('legacy-free'), 20)
-    assert.equal(await store.getBalance('legacy-paid'), 20)
+    assert.equal(await store.getBalance('legacy-free'), 10)
+    assert.equal(await store.getBalance('legacy-paid'), 25)
     assert.equal(await store.getBalance('missing'), 0)
     for (const amount of [0, -1, 0.5, Infinity, Number.MAX_SAFE_INTEGER + 1]) {
       await assert.rejects(store.reserve('legacy-paid', amount), /positive integer/)
@@ -168,11 +171,11 @@ test('D1 enables credit triggers after import without charging existing reservat
       }
     }
     await apply(names[0])
-    await addUser(db, 'imported', 5)
+    await addUser(db, 'imported', 5, 'guest')
     await db.prepare('UPDATE "user" SET generation_count = 3, monthly_generation_count = 2 WHERE id = ?').bind('imported').run()
     await db.prepare(`INSERT INTO generation_credit_reservation (id, user_id, credits, status)
       VALUES ('imported-reservation', 'imported', 5, 'reserved')`).run()
-    await apply('0002_credit_triggers.sql')
+    for (const name of names.slice(1)) await apply(name)
     const store = createD1GenerationCreditStore(db)
     assert.equal(await store.getBalance('imported'), 5)
     assert.deepEqual(await store.refund('imported-reservation'), { remainingCredits: 10 })
@@ -198,10 +201,10 @@ test('D1 reservation insert applies the current daily grant when an earlier refr
     await statements[statements.length - 1].run()
     const account = await db.prepare('SELECT credit_balance, daily_free_credits, daily_credit_date FROM "user" WHERE id = ?')
       .bind('midnight').first()
-    assert.deepEqual(account, { credit_balance: 60, daily_free_credits: 0, daily_credit_date: today })
+    assert.deepEqual(account, { credit_balance: 50, daily_free_credits: 0, daily_credit_date: today })
     const reservation = await db.prepare('SELECT daily_free_credits, daily_credit_date FROM generation_credit_reservation WHERE id = ?')
       .bind('midnight-reservation').first()
-    assert.deepEqual(reservation, { daily_free_credits: 15, daily_credit_date: today })
+    assert.deepEqual(reservation, { daily_free_credits: 5, daily_credit_date: today })
   } finally {
     await dispose()
   }

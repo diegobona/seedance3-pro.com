@@ -8,7 +8,7 @@ test('regional defaults use CN/TW/HK and ignore browser language outside these r
   for (const country of ['CN', 'TW', 'HK']) {
     const response = localeRedirect(new Request('https://seedance3-pro.com/app/image/gpt-image-2?ref=anyposes', { headers: { 'accept-language': 'en-US' } }), country)
     assert.equal(response.status, 302)
-    assert.equal(response.headers.get('location'), 'https://seedance3-pro.com/zh/app/image/gpt-image-2?ref=anyposes')
+    assert.equal(response.headers.get('location'), 'https://seedance3-pro.com/zh/app/image/gpt-image-2-5?ref=anyposes')
     assert.match(response.headers.get('cache-control'), /no-store/)
   }
   for (const country of ['US', 'SG', 'JP', 'MO', undefined]) {
@@ -22,7 +22,7 @@ test('manual choices persist, preserve prompts and explicit Chinese URLs do not 
   assert.equal(preferredLocale('seedance_locale=invalid', 'HK'), 'zh')
   assert.equal(localeRedirect(new Request('https://seedance3-pro.com/zh/features'), 'US'), null)
   const response = localeRedirect(new Request('https://seedance3-pro.com/zh/app/video/minimax-h3?ref=anyposes&prompt=hello&lang=en'), 'CN')
-  assert.equal(response.headers.get('location'), 'https://seedance3-pro.com/app/video/minimax-h3?ref=anyposes&prompt=hello')
+  assert.equal(response.headers.get('location'), 'https://seedance3-pro.com/app/video/seedance-2-5?ref=anyposes&prompt=hello')
   assert.match(response.headers.get('set-cookie'), /seedance_locale=en; Path=\//)
   assert.equal(localeRedirect(new Request(response.headers.get('location'), { headers: { cookie: 'seedance_locale=en' } }), 'CN'), null)
 })
@@ -39,7 +39,7 @@ test('APIs, methods and resources are never language redirected', () => {
 
 test('browser language switches preserve SSR hrefs, queries and hashes for both choices', () => {
   const script = readFileSync(new URL('../assets/site-language.js', import.meta.url), 'utf8')
-  for (const currentPath of ['/', '/zh/', '/zh/app/video/minimax-h3?ref=anyposes&prompt=hello%20world#editor', '/app/image/gpt-image-2?lang=en&prompt=hello%20world#preview']) {
+  for (const currentPath of ['/', '/zh/', '/zh/app/video/seedance-2-5?ref=anyposes&prompt=hello%20world#editor', '/app/image/gpt-image-2-5?lang=en&prompt=hello%20world#preview']) {
     const handlers = new Map()
     let changedHrefs = 0
     const links = ['zh', 'en'].map(locale => {
@@ -77,7 +77,7 @@ test('browser language switches preserve SSR hrefs, queries and hashes for both 
 test('an explicit Chinese switch persists the choice and removes only the language query', () => {
   const switchedPath = languageSwitchPath('/app/video/minimax-h3?ref=anyposes&prompt=hello%20world', 'zh')
   const response = localeRedirect(new Request('https://seedance3-pro.com' + switchedPath), 'US')
-  assert.equal(response.headers.get('location'), 'https://seedance3-pro.com/zh/app/video/minimax-h3?ref=anyposes&prompt=hello+world')
+  assert.equal(response.headers.get('location'), 'https://seedance3-pro.com/zh/app/video/seedance-2-5?ref=anyposes&prompt=hello+world')
   assert.match(response.headers.get('set-cookie'), /seedance_locale=zh;/)
   assert.equal(localeRedirect(new Request(response.headers.get('location'), { headers: { cookie: 'seedance_locale=zh' } }), 'US'), null)
 })

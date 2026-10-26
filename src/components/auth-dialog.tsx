@@ -1,6 +1,7 @@
 import { useSiteI18n } from '../lib/site-i18n'
 import { useEffect, useState, type FormEvent } from 'react'
 import { authClient } from '../lib/auth-client'
+import { EMAIL_PASSWORD_AUTH_ENABLED } from '../../app/auth-methods.mjs'
 
 type AuthMode = 'login' | 'register'
 
@@ -45,6 +46,7 @@ export function AuthDialog({ open, initialMode = 'login', onClose, onAuthenticat
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    if (!EMAIL_PASSWORD_AUTH_ENABLED) return
     setError('')
     if (mode === 'register' && password !== confirmPassword) {
       setError(t('Passwords do not match.'))
@@ -97,15 +99,22 @@ export function AuthDialog({ open, initialMode = 'login', onClose, onAuthenticat
         <button className="auth-dialog-close" type="button" onClick={onClose} aria-label={t("Close login dialog")}>×</button>
         <span className="auth-eyebrow">{t("SEEDANCE ACCOUNT")}</span>
         <h2 id="auth-dialog-title">{mode === 'login' ? t("Welcome back") : t("Create your account")}</h2>
-        <p>{t("Sign in to generate and edit images. Your account will also hold future credits and plan limits.")}</p>
+        <p>{EMAIL_PASSWORD_AUTH_ENABLED
+          ? t("Sign in to generate and edit images. Your account will also hold future credits and plan limits.")
+          : t("Continue with Google to sign in or create your account.")}</p>
 
+        {EMAIL_PASSWORD_AUTH_ENABLED && (
         <div className="auth-mode-tabs" role="tablist" aria-label={t("Authentication mode")}>
           <button type="button" className={mode === 'login' ? 'is-active' : ''} onClick={() => { setMode('login'); setConfirmPassword(''); setError('') }}>{t("Log in")}</button>
           <button type="button" className={mode === 'register' ? 'is-active' : ''} onClick={() => { setMode('register'); setConfirmPassword(''); setError('') }}>{t("Register")}</button>
         </div>
+        )}
 
         <button className="google-auth-button" type="button" onClick={signInWithGoogle} disabled={pending}>
           <span aria-hidden="true">{t("G")}</span>{t("Continue with Google")}</button>
+        {!EMAIL_PASSWORD_AUTH_ENABLED && error && <div className="auth-error" role="alert">{t(error)}</div>}
+        {EMAIL_PASSWORD_AUTH_ENABLED && (
+        <>
         <div className="auth-divider"><span>{t("or use email")}</span></div>
 
         <form onSubmit={submit}>
@@ -122,6 +131,8 @@ export function AuthDialog({ open, initialMode = 'login', onClose, onAuthenticat
             {pending ? t("Please wait…") : mode === 'login' ? t("Log in") : t("Create account")}
           </button>
         </form>
+        </>
+        )}
       </section>
     </div>
   )

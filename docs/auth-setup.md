@@ -36,7 +36,7 @@ AUTODL_TOKEN=...
 node -e "console.log(require('node:crypto').randomBytes(32).toString('base64url'))"
 ```
 
-Google credentials are optional while testing email/password authentication. If they are absent, email registration and login still work.
+Google credentials are required for the currently enabled sign-in method. Email/password authentication is temporarily disabled through `EMAIL_PASSWORD_AUTH_ENABLED = false` in `app/auth-methods.mjs`. The homepage dialog, studio dialog, and server all use this shared switch: email/password forms stay unmounted and direct sign-up/sign-in requests are rejected. The original email handlers, forms, and account data are retained. To restore email/password authentication, set the switch to `true`, rebuild, and deploy both the Worker and static assets. Email-only tests are retained and automatically resume when the switch is enabled.
 
 ## 3. Configure AutoDL video generation
 

@@ -3,6 +3,16 @@ import test from "node:test";
 
 const LOCAL_TASK_ID = "123e4567-e89b-42d3-a456-426614174000";
 
+test('homepage and workspace use the same append limit and whole-batch reference validation', async () => {
+  const { validateVideoReferenceFiles } = await import('../app/video-generation.mjs');
+  assert.equal(typeof validateVideoReferenceFiles,'function');
+  const image=new File(['ok'],'reference.png',{type:'image/png'});
+  assert.doesNotThrow(()=>validateVideoReferenceFiles([image],{existingCount:8}));
+  assert.throws(()=>validateVideoReferenceFiles([image,image],{existingCount:8}),/up to 9 reference images/i);
+  assert.throws(()=>validateVideoReferenceFiles([image,new File(['bad'],'bad.gif',{type:'image/gif'})]),/PNG, JPEG or WebP/i);
+  assert.throws(()=>validateVideoReferenceFiles([new File([new Uint8Array(10*1024*1024+1)],'large.png',{type:'image/png'})]),/10 MB/i);
+});
+
 test('guest status credits retain their owner scope when resuming after login', async () => {
   const { pollVideoGenerationTask } = await import('../app/video-generation.mjs');
   const result = await pollVideoGenerationTask({ taskId: LOCAL_TASK_ID, fetchImpl: async () => Response.json({
@@ -11,10 +21,10 @@ test('guest status credits retain their owner scope when resuming after login', 
   assert.deepEqual(result.credits, { cost: 5, remaining: 5, context: 'guest-video' });
 });
 
-test("image-to-video uploads one reference before submitting and polling", async () => {
+test("image-to-video uploads nine ordered references before submitting and polling", async () => {
   const { requestVideoGeneration } = await import('../app/video-generation.mjs');
-  const ids = [crypto.randomUUID()];
-  const files = [new File(['first'], 'a.png', { type: 'image/png' })];
+  const ids = Array.from({ length: 9 }, () => crypto.randomUUID());
+  const files = Array.from({ length: 9 }, (_, i) => new File([String(i)], `${i}.png`, { type: 'image/png' }));
   let uploads = 0;
   const result = await requestVideoGeneration({ prompt: 'Make a scene', referenceFiles: files, prepareReferenceImpl: async file => file, fetchImpl: async (url, init) => {
     if (url === '/api/videos/references') {
@@ -22,7 +32,7 @@ test("image-to-video uploads one reference before submitting and polling", async
       return Response.json({ success: true, id: ids[uploads++] }, { status: 201 });
     }
     if (url === '/api/videos/generate') {
-      assert.equal(uploads, 1);
+      assert.equal(uploads, 9);
       assert.deepEqual(JSON.parse(init.body).referenceImageIds, ids);
       return Response.json({ success: true, task: { id: LOCAL_TASK_ID, status: 'queued' } }, { status: 202 });
     }
@@ -31,14 +41,14 @@ test("image-to-video uploads one reference before submitting and polling", async
   assert.equal(result.status, 'succeeded');
 });
 
-test("multiple video reference files are rejected before upload or generation", async () => {
+test("more than nine video reference files are rejected before upload or generation", async () => {
   const { requestVideoGeneration } = await import('../app/video-generation.mjs');
   let calls = 0;
   await assert.rejects(requestVideoGeneration({
     prompt: 'Animate the image',
-    referenceFiles: ['first', 'second'].map(name => new File([name], `${name}.png`, { type: 'image/png' })),
+    referenceFiles: Array.from({ length: 10 }, (_, i) => new File([String(i)], `${i}.png`, { type: 'image/png' })),
     fetchImpl: async () => { calls++; return Response.json({ success: false }); },
-  }), /only one reference image/i);
+  }), /up to 9 reference images/i);
   assert.equal(calls, 0);
 });
 
@@ -51,6 +61,17 @@ test("a rejected upload never submits a paid video job", async () => {
     return Response.json({ success: false, message: 'Log in' }, { status: 401 });
   } }), (error) => error.status === 401);
   assert.equal(calls, 1);
+});
+
+test('an invalid later reference is rejected before any upload or paid submission', async () => {
+  const { requestVideoGeneration } = await import('../app/video-generation.mjs');
+  let calls = 0;
+  await assert.rejects(requestVideoGeneration({ prompt: 'Combine',
+    referenceFiles: [new File(['good'], 'good.png', { type: 'image/png' }), new File(['bad'], 'bad.txt', { type: 'text/plain' })],
+    prepareReferenceImpl: async file => file,
+    fetchImpl: async () => { calls++; return Response.json({ success: true, id: crypto.randomUUID() }); },
+  }), /PNG, JPEG or WebP/i);
+  assert.equal(calls, 0);
 });
 
 function jsonResponse(payload, { status = 200, headers = {} } = {}) {
@@ -98,7 +119,7 @@ test('failed or aborted frame preparation prevents uploads and paid video submis
   }
 });
 
-test("video generation submits a fixed 480p payload and polls only the local task id", async () => {
+test("video generation submits a fixed 768p payload and polls only the local task id", async () => {
   const { requestVideoGeneration } = await import("../app/video-generation.mjs");
   const calls = [];
   const updates = [];
@@ -151,7 +172,7 @@ test("video generation submits a fixed 480p payload and polls only the local tas
   assert.deepEqual(JSON.parse(calls[0].init.body), {
     prompt: "A paper bird takes flight",
     duration: 5,
-    resolution: "480p",
+    resolution: "768p",
     aspectRatio: "9:16"
   });
   assert.equal(calls[1].url, `/api/videos/status?task=${encodeURIComponent(LOCAL_TASK_ID)}`);

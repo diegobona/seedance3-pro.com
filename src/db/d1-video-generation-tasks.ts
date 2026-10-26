@@ -1,5 +1,5 @@
 import type { VideoGenerationTask, VideoGenerationTaskStore, VideoTaskTransitionResult } from '../lib/protected-video-generation'
-import { D1_NOW_SQL, d1EffectiveCreditBalance, getD1CurrentCreditBalance, prepareD1CreditReservation } from './d1-generation-credits'
+import { creditBatch, D1_NOW_SQL, d1EffectiveCreditBalance, getD1CurrentCreditBalance, prepareD1CreditReservation } from './d1-generation-credits'
 
 type TaskRow = Record<string, string | number | null>
 const ACTIVE = "('submitting','queued','running')"
@@ -27,7 +27,7 @@ function errorMessage(message: unknown) {
   return (typeof message === 'string' && message ? message : 'Video provider request failed.').slice(0, 500)
 }
 
-export function createD1VideoGenerationTaskStore(db: D1Database): VideoGenerationTaskStore {
+export function createD1VideoGenerationTaskStore(db: D1Database, networkKey?: string): VideoGenerationTaskStore {
   const current = (id: string, reservationId?: string) => db.prepare(`SELECT task.*, ${d1EffectiveCreditBalance()} AS remaining_credits
     FROM video_generation_task AS task JOIN "user" AS account ON account.id=task.user_id WHERE task.id=?
     ${reservationId ? 'AND task.reservation_id=?' : ''}`).bind(...(reservationId ? [id, reservationId] : [id]))
@@ -60,10 +60,10 @@ export function createD1VideoGenerationTaskStore(db: D1Database): VideoGeneratio
     return transition(results[2].results[0])
   }
   return {
-    async reserveAndCreate(userId, credits, metadata, localTaskId = crypto.randomUUID()) {
+    async reserveAndCreate(userId, credits, metadata, localTaskId = crypto.randomUUID(), options = {}) {
       const reservationId = crypto.randomUUID()
-      const results = await db.batch<TaskRow>([
-        ...prepareD1CreditReservation(db, userId, credits, reservationId),
+      const results = await creditBatch<TaskRow>(db, [
+        ...prepareD1CreditReservation(db, userId, credits, reservationId, { ...options, ...(networkKey ? { networkKey } : {}) }),
         db.prepare(`INSERT INTO video_generation_task
           (id,user_id,reservation_id,workflow_id,duration,resolution,aspect_ratio,status,poll_attempts,created_at,updated_at)
           SELECT ?,user_id,id,?,?,?,?, 'submitting',0,${D1_NOW_SQL},${D1_NOW_SQL}

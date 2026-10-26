@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises'
 import test from 'node:test'
 import { createAuth } from '../src/lib/auth'
 import { createD1TestDatabase } from './helpers/d1-test-db'
+import { EMAIL_PASSWORD_AUTH_ENABLED } from '../app/auth-methods.mjs'
 
 const origin = 'https://seedance3-pro.com'
 const secret = 'd1-test-auth-secret-at-least-32-characters-long'
@@ -42,7 +43,7 @@ test('D1 schema preserves all product tables, integer millisecond defaults, and 
   }
 })
 
-test('Better Auth signs up and signs in through D1 without a Neon connection', async () => {
+test('Better Auth signs up and signs in through D1 without a Neon connection', { skip: !EMAIL_PASSWORD_AUTH_ENABLED }, async () => {
   const { db, dispose } = await createD1TestDatabase()
   try {
     const environment = { DATABASE_BACKEND: 'd1', DB: db, BETTER_AUTH_SECRET: secret }
@@ -55,7 +56,7 @@ test('Better Auth signs up and signs in through D1 without a Neon connection', a
     assert.equal(signup.status, 200, await signup.clone().text())
     const signupBody = await signup.json() as { user: { id: string; emailVerified: boolean; creditBalance: number; createdAt: string; trialCreditsGrantedAt: string }; token: string }
     assert.equal(signupBody.user.emailVerified, false)
-    assert.equal(signupBody.user.creditBalance, 15)
+    assert.equal(signupBody.user.creditBalance, 5)
     assert.ok(Number.isFinite(Date.parse(signupBody.user.createdAt)))
     assert.ok(Number.isFinite(Date.parse(signupBody.user.trialCreditsGrantedAt)))
     assert.ok(signupBody.token)
@@ -83,7 +84,7 @@ test('Better Auth signs up and signs in through D1 without a Neon connection', a
     assert.equal(session.status, 200, await session.clone().text())
     const sessionBody = await session.json() as { user: { id: string; creditBalance: number; emailVerified: boolean; subscriptionExpiresAt: string }; session: { expiresAt: string } }
     assert.equal(sessionBody.user.id, signupBody.user.id)
-    assert.equal(sessionBody.user.creditBalance, 15)
+    assert.equal(sessionBody.user.creditBalance, 5)
     assert.equal(sessionBody.user.emailVerified, true)
     assert.equal(Date.parse(sessionBody.user.subscriptionExpiresAt), subscriptionExpiry)
     assert.ok(Date.parse(sessionBody.session.expiresAt) > Date.now())

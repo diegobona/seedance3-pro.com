@@ -1,0 +1,145 @@
+✔ multi-image generation reserves one credit per requested image (14.0365ms)
+✔ multi-image generation reports the dynamic cost when credits are insufficient (2.0397ms)
+✔ anonymous image generation is rejected before provider work (0.9827ms)
+✔ insufficient credits reject generation before provider work (1.5726ms)
+✔ request preflight rejects invalid envelopes before reserving credits (0.724ms)
+✔ successful image generation settles one credit and exposes the remaining balance (3.406ms)
+✔ credit settlement retries once after a transient database failure (2.387ms)
+✔ successful responses refresh the balance after settlement (0.4903ms)
+✔ a failed post-settlement balance refresh never discards the paid image (0.5875ms)
+✔ failed provider responses refund credits and expose the restored balance (1.5709ms)
+✔ unusable successful provider responses are refunded instead of billed (1.0689ms)
+✔ malformed base64 provider responses are refunded instead of billed (0.5828ms)
+✔ thrown provider errors refund credits and return the restored balance (0.9908ms)
+✔ credit refunds retry once after a transient database failure (0.7387ms)
+✔ guests may reserve five seconds and keep the other five seconds (25.4983ms)
+✔ guests cannot submit fifteen seconds or resolutions other than 768p (1.3418ms)
+✔ an exhausted guest is prompted to register without submitting to the provider (0.4195ms)
+✖ reference generation records the correct workflow while keeping duration-based credits (4.2607ms)
+✔ trusted selection persists CompShare and submits the actual reservation ID and workflow (0.8029ms)
+✔ trusted resolver rejects unavailable credentials before reserving; client workflow fields are rejected (2.5434ms)
+✔ start authenticates before validation, credits, or provider work (0.3371ms)
+✔ start returns preflight failures without charging or submitting (0.2689ms)
+✖ start reserves one credit per second without persisting the prompt, then submits and attaches once (0.8925ms)
+✔ start returns insufficient credits without submitting (0.6428ms)
+✔ start converts database failures to a safe service response (0.3843ms)
+✔ definite submit failure terminalizes as failed and refunds (0.3195ms)
+✔ ambiguous submit failure is not retried and terminalizes as submission_unknown (0.2402ms)
+✔ attachment retries once, then refunds as submission_unknown and returns a safe 503 (0.4767ms)
+✔ poll authenticates before task lookup or provider work (1.2449ms)
+✔ guest polling identifies guest seconds even after an account signs in (1.5928ms)
+✔ poll hides tasks owned by another user (3.7376ms)
+✔ poll passes the persisted workflow only after ownership and lease checks, and never starts a task (2.0513ms)
+✔ missing persisted CompShare credentials schedule retry without refund or AutoDL fallback (0.3686ms)
+✔ poll returns a cached terminal success without claiming or querying (0.7298ms)
+✔ queued provider state schedules another poll without changing credits (2.2082ms)
+✔ a terminal transition won by an overlapping poll returns the cached terminal result (0.9075ms)
+✔ running provider state records running and schedules another poll without changing credits (1.3956ms)
+✔ transient query failures schedule a retry without refunding (1.2357ms)
+✔ poll converts scheduling database failures to a safe service response (1.5037ms)
+✔ explicit provider failure atomically terminalizes and refunds (0.6538ms)
+✔ usable HTTPS mp4 success atomically settles and is cached for repeated polls (1.3271ms)
+✔ expired tasks never expose a late provider result (0.6832ms)
+✔ all accounts receive daily five, spending free first with separate paid balance (5133.1993ms)
+✔ refunded retries retain supplier budget and explicit paid-only remains available (6057.0265ms)
+✔ partial settlement refunds paid portion first once without releasing supplier budget (5015.6487ms)
+✔ free budget reservations serialize concurrent retries and billing holds block paid continuation (6109.3432ms)
+✔ migration converts existing guest image balance and pending refunds from five credits to one (3520.1302ms)
+✔ D1 reservations prevent concurrent overspending and duplicate refunds (5441.135ms)
+✔ D1 daily grants replace yesterday free credits while preserving permanent credits (5191.0561ms)
+✔ D1 settlement increments generation counts once and cannot later refund (5210.529ms)
+✔ D1 cross-day refunds return permanent credits without carrying yesterday free credits (5329.1921ms)
+✔ D1 recovers abandoned image reservations but protects active video reservations (5352.2821ms)
+✔ D1 reservation helpers roll back the debit when the following task insert fails (4787.1512ms)
+✔ D1 normalizes legacy daily dates and rejects invalid credit amounts (5100.4845ms)
+✔ D1 enables credit triggers after import without charging existing reservations twice (5259.3091ms)
+✔ D1 reservation insert applies the current daily grant when an earlier refresh becomes stale (5143.475ms)
+✔ guest pending and successful usage merges once, retains cost and disables subsequent guest access (7849.5373ms)
+✔ signed-in network cannot claim either guest allowance after logout (5267.2786ms)
+✔ image and video guests on the same trusted network share the daily supplier-cost cap (6121.3602ms)
+✔ reconciled pending video credits are protected from stale image reservation recovery (5801.0256ms)
+✔ concurrent different accounts share exactly ten free credits and rejected videos create no task (6588.2409ms)
+✔ guest images, guest videos and registered accounts share one pool, with paid continuation (6276.135ms)
+✔ refunds and partial image delivery release only unused network credits, idempotently (6440.4361ms)
+✔ network snapshot survives account IP changes; prior Beijing days do not count (5783.2974ms)
+✔ network rejection prevents both image and video supplier calls (5521.4637ms)
+✔ only the trusted edge IP determines the request key; browser hints cannot choose a budget (8.1681ms)
+✔ D1 video reserves and creates atomically under concurrency, rolling back a task insert failure (6644.1074ms)
+✔ concurrent requests submit exactly one video within the guest ten-second or registered five-credit allowance (7746.515ms)
+✔ D1 video leases reject stale transitions and success settles only once (5736.727ms)
+✔ D1 video failure and crashed submission expiry refund once and preserve terminal state (5851.1354ms)
+✔ D1 video retry uses bounded delays and global claims include only due unleased tasks (5171.0097ms)
+✔ D1 cron works without Neon credentials and returns to zero database work after terminal cleanup (5220.167ms)
+ℹ tests 72
+ℹ suites 0
+ℹ pass 70
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 47633.5506
+
+✖ failing tests:
+
+test at tests\auth-video-route.test.ts:1:2261
+✖ reference generation records the correct workflow while keeping duration-based credits (4.2607ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      'user-1',
+      10,
+      {
+        aspectRatio: '16:9',
+  ...
+      },
+  +   undefined,
+  +   {
+  +     paidOnly: false,
+  +     unitCostMicros: 60000
+  +   }
+    ]
+  
+      at TestContext.<anonymous> (D:\Asideproject\! 网站、插件、APP\Seedance3\tests\auth-video-route.test.ts:56:10)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'user-1', 10, { workflowId: 'minimax_h3_image_audio_to_video_v2_15s', duration: 10, resolution: '768p', aspectRatio: '16:9' }, undefined, { unitCostMicros: 60000, paidOnly: false } ],
+    expected: [ 'user-1', 10, { workflowId: 'minimax_h3_image_audio_to_video_v2_15s', duration: 10, resolution: '768p', aspectRatio: '16:9' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests\auth-video-route.test.ts:1:7350
+✖ start reserves one credit per second without persisting the prompt, then submits and attaches once (0.8925ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      [
+        'user-1',
+        10,
+        {
+  ...
+        },
+  +     undefined,
+  +     {
+  +       paidOnly: false,
+  +       unitCostMicros: 60000
+  +     }
+      ]
+    ]
+  
+      at TestContext.<anonymous> (D:\Asideproject\! 网站、插件、APP\Seedance3\tests\auth-video-route.test.ts:202:10)
+      at async Test.run (node:internal/test_runner/test:1125:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ [ 'user-1', 10, [Object], undefined, [Object] ] ],
+    expected: [ [ 'user-1', 10, [Object] ] ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
