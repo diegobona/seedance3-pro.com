@@ -1,23 +1,23 @@
 import { createFileRoute } from '@tanstack/react-router'
 import '@tanstack/react-start'
 import { env } from 'cloudflare:workers'
-import {
-  preflightVideoGenerationRequest,
-} from '../../../../scripts/autodl-video.mjs'
-import { selectVideoWorkflow, assertVideoProviderConfigured, submitVideoTask, COMPSHARE_FIRST_FRAME_WORKFLOW_ID } from '../../../lib/video-providers'
-import { createAppDatabase, databaseConfigured } from '../../../db'
+import { readVideoGenerationInput } from '../../../lib/video-generation-input'
+import { selectVideoWorkflow, assertVideoProviderConfigured, submitVideoTask, COMPSHARE_FIRST_FRAME_WORKFLOW_ID, YIR_IMAGE_WORKFLOW_ID, SEEAPI_IMAGE_WORKFLOW_ID } from '../../../lib/video-providers'
+import { createAppDatabase, databaseConfigured, isD1Database } from '../../../db'
+import { recordVideoCreation } from '../../../lib/creation-library'
 import { createVideoGenerationTaskStore } from '../../../db/video-generation-tasks'
 import { createTrackedVideoTaskStore, createVideoTaskActivity } from '../../../lib/video-task-activity'
 import { createAuth } from '../../../lib/auth'
+import { verifyGuestVideoRequest } from '../../../lib/guest-video-verification'
 import { reconcileGuestCredits } from '../../../lib/guest-credit-reconciliation'
 import { createGuestVideoTrialStore } from '../../../db/guest-video-trials'
 import { resolveGuestVideoTrial, withGuestVideoCookie, guestVideoTrialErrorResponse, guestVideoNetworkHash } from '../../../lib/guest-video-trial'
 import { readGuestVideoResourceOwner } from '../../../lib/guest-resource-ownership'
-import { resolveVideoReferences } from '../../../lib/video-references'
+import { resolveVideoReferences, uploadVideoReference } from '../../../lib/video-references'
+import { areSeeApiReferencesReachable } from '../../../../scripts/seeapi-video.mjs'
 import {
   protectVideoGenerationStart,
   guestVideoPayloadError,
-  type VideoGenerationPreflight,
 } from '../../../lib/protected-video-generation'
 
 function jsonError(status: number, code: string, message: string) {
@@ -83,28 +83,33 @@ export const Route = createFileRoute('/api/videos/generate')({
 
         try {
           // Validate before provisioning a guest or assigning their lifetime allowance.
-          const validation = await preflightVideoGenerationRequest(request) as VideoGenerationPreflight
+          const validation = await readVideoGenerationInput(request)
           if (!validation.ok) return validation.response
+          const db = createAppDatabase(env)
+          const session = await createAuth(request, env).api.getSession({ headers: request.headers })
+          if (!session?.user?.id) {
+            const error = guestVideoPayloadError(validation.payload)
+            if (error) return error
+            const verification = await verifyGuestVideoRequest(request, env, 'guest_video_generate')
+            if (verification) return verification
+          }
           let workflowId: string
           try {
-            workflowId = selectVideoWorkflow(validation.payload, env)
+            workflowId = selectVideoWorkflow(validation.payload, env, { guest: !session?.user?.id })
             assertVideoProviderConfigured(workflowId, env)
           } catch (error) {
             logVideoEvent('video_generate_unavailable', safeProviderLogDetails(error))
             if ((error as { code?: string }).code === 'COMPSHARE_CONFIGURATION_ERROR') {
               return jsonError(400, 'INVALID_VIDEO_REQUEST', 'Reference video input is invalid. The prompt cannot exceed 7,000 characters.')
             }
+            if ((error as { code?: string }).code === 'SEEAPI_INPUT_ERROR') {
+              return jsonError(400, 'INVALID_VIDEO_REQUEST', 'Guest videos support 5 seconds at 768p with one reference image.')
+            }
             return unavailableResponse()
           }
-          const db = createAppDatabase(env)
           const networkKey = await guestVideoNetworkHash(request, env.BETTER_AUTH_SECRET, 'daily-free-network')
           const taskStore = createTrackedVideoTaskStore(createVideoGenerationTaskStore(db, networkKey), createVideoTaskActivity(env.VIDEO_REFERENCES))
-          const session = await createAuth(request, env).api.getSession({ headers: request.headers })
           if (session?.user?.id) await reconcileGuestCredits(request, session.user.id, env.BETTER_AUTH_SECRET, db)
-          if (!session?.user?.id) {
-            const error = guestVideoPayloadError(validation.payload)
-            if (error) return error
-          }
           const guestStore = createGuestVideoTrialStore(db)
           const guest = session?.user?.id ? null : await resolveGuestVideoTrial(request, {
             secret: env.BETTER_AUTH_SECRET, store: guestStore, create: true,
@@ -147,14 +152,41 @@ export const Route = createFileRoute('/api/videos/generate')({
                   ),
                 }
               }
+              if (validation.reference) {
+                // Verification has already succeeded for this entire operation.
+                // Preserve the quota check before writing a reference; reservation
+                // below remains atomic and is the final authority on available credits.
+                if (guest && await guestStore.getBalance(userId) < 5) {
+                  return { ok: false as const, response: jsonError(403, 'GUEST_TRIAL_USED',
+                    'This device or network has already claimed the guest video trial. Sign up to keep creating.') }
+                }
+                const upload = await uploadVideoReference(new Request(request.url, {
+                  method: 'POST', headers: { 'content-type': validation.reference.type }, body: validation.reference,
+                }), { getUserId: async () => userId, bucket: env.VIDEO_REFERENCES, limiter: env.VIDEO_UPLOAD_RATE_LIMITER })
+                if (!upload.ok) return { ok: false as const, response: upload }
+                const uploaded = await upload.json() as { id: string }
+                validation.payload.referenceImageIds = [uploaded.id]
+              }
               if (validation.payload.referenceImageIds) {
                 try {
+                  const referenceOrigin = workflowId === YIR_IMAGE_WORKFLOW_ID ? env.YIR_PUBLIC_REFERENCE_ORIGIN : env.SEEAPI_PUBLIC_REFERENCE_ORIGIN
+                  const localSeeApi = [SEEAPI_IMAGE_WORKFLOW_ID, YIR_IMAGE_WORKFLOW_ID].includes(workflowId)
+                    && ['localhost', '127.0.0.1', '[::1]'].includes(new URL(request.url).hostname)
+                  if (localSeeApi && !referenceOrigin?.trim()) {
+                    return { ok: false as const, response: jsonError(400, 'LOCAL_REFERENCE_ORIGIN_REQUIRED',
+                      'Local reference images need a public HTTPS image bridge before they can be used by the video provider.') }
+                  }
                   validation.payload.referenceImageUrls = await resolveVideoReferences(
                     validation.payload.referenceImageIds, userId, env.VIDEO_REFERENCES,
                     Date.now(), guestResourceOwner ? [guestResourceOwner] : [],
-                    { inline: workflowId === COMPSHARE_FIRST_FRAME_WORKFLOW_ID
+                    { ...(localSeeApi ? { publicOrigin: referenceOrigin!.trim() } : {}),
+                      inline: workflowId === COMPSHARE_FIRST_FRAME_WORKFLOW_ID
                       && ['localhost', '127.0.0.1', '[::1]'].includes(new URL(request.url).hostname) },
                   )
+                  if (localSeeApi && !await areSeeApiReferencesReachable(validation.payload.referenceImageUrls)) {
+                    return { ok: false as const, response: jsonError(503, 'LOCAL_REFERENCE_UNAVAILABLE',
+                      'The reference image connection is unavailable. Generation was not submitted and your allowance was not charged.') }
+                  }
                 } catch {
                   return { ok: false as const, response: jsonError(400, 'INVALID_VIDEO_REFERENCE',
                     'A reference image expired or is unavailable. Please remove it and upload it again.') }
@@ -163,6 +195,10 @@ export const Route = createFileRoute('/api/videos/generate')({
               return validation
             },
             submit: async (payload, context) => {
+              if(session?.user?.id && isD1Database(db)) {
+                try { await recordVideoCreation(db,context.localTaskId,session.user.id,payload.prompt,context.workflowId) }
+                catch { logVideoEvent('creation_video_metadata_deferred') }
+              }
               try {
                 return await submitVideoTask(payload, { ...context, environment: env })
               } catch (error) {

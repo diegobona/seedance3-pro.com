@@ -1,3 +1,4 @@
+import { REGISTERED_FREE_CREDITS_ENABLED } from '../../app/credit-policy.mjs'
 import { useSiteI18n } from '../lib/site-i18n'
 type ModelId = 'seedance-2-5' | 'minimax-h3' | 'gpt-image-2' | 'gpt-image-2-5-1k'
 
@@ -34,10 +35,12 @@ const content = {
       'Choose Text to video, or select Reference to video and upload your images.',
       'Describe one main action and the camera movement. With multiple images, identify each subject or setting by its image number.',
       'Choose your duration and aspect ratio, and review the available resolution in the form.',
-      'Try 5 or 10 seconds at 768p without signing in. Guests get 10 free seconds in total; sign up for daily free credits.',
+      REGISTERED_FREE_CREDITS_ENABLED
+        ? 'Try two 5-second videos at 768p without signing in (10 free seconds in total); sign up for daily free credits.'
+        : 'Try two 5-second videos at 768p without signing in (10 free seconds in total, once). After the trial, log in and buy credits to continue.',
     ],
     questions: [
-      ['Can I try Seedance 2.5 without an account?', 'Yes. Guests get 10 free video seconds in total at 768p. Generate two 5-second videos or one 10-second video. The default is 5 seconds; failed generations refund the reserved seconds.'],
+      ['Can I try Seedance 2.5 without an account?', 'Yes. Guests can generate two 5-second videos at 768p, for 10 free seconds in total. Each successful generation uses 5 seconds; failed generations refund the reserved seconds.'],
       ['Can Seedance 2.5 generate a video from a single image?', 'Yes. Select Reference to video, upload one image, and describe the action and camera movement you want. You can also add more reference images to guide the scene.'],
       ['How do I use multiple reference images?', 'Select Reference to video and add your images within the limits shown in the upload area. Images are numbered in upload order. For example: use Image 1 as the setting and animate the character from Image 2 walking through it.'],
       ['What video lengths and formats are available here?', 'The form shows the available duration, resolution and aspect ratio for your selected mode. Check these controls when setting up your video.'],
@@ -117,10 +120,7 @@ export function ModelLandingContent({ modelId }: { modelId: string }) {
         <nav className="model-landing-links" aria-label={t("Explore related tools")}>
           <a href={path("/")}>{t("Seedance home")}</a>
           <a href={path("/app/video/seedance-2-5")}>{t("Seedance 2.5 video")}</a>
-          <a href={path('/app/video/flux-3')}>FLUX 3</a>
           <a href={path("/app/image/gpt-image-2-5-1k")}>{t("GPT Image 2.5")}</a>
-          <a href={path("/app/video/muse-video")}>Muse Video</a>
-          <a href={path("/app/image/muse-image")}>Muse Image</a>
           <a href={path("/pose-to-image")}>{t("Pose Control")}</a>
           <a href={path("/showcase")}>{t("Showcase")}</a>
           {modelId === 'minimax-h3' && <a href={path("/seedance-2-5-prompts")} target="_blank" rel="noopener noreferrer">{t("Seedance 2.5 Prompt Library")}</a>}

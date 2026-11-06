@@ -1,0 +1,7 @@
+.checkout-handoff { display: grid; place-items: center; min-height: 100svh; box-sizing: border-box; padding: 24px; background: #090c10; color: #e6edf4; font-family: var(--font-sans, system-ui, sans-serif); }
+.checkout-handoff-content { width: min(100%, 420px); text-align: center; }
+.checkout-brand { color: #e6edf4; font-size: 16px; font-weight: 750; text-decoration: none; }
+.checkout-handoff-content p { margin: 24px 0 18px; color: #b4c4d3; font-size: 14px; line-height: 1.6; }
+.checkout-handoff-content button { padding: 10px 18px; border: 0; border-radius: 8px; background: #315bc7; color: white; font: inherit; cursor: pointer; }
+.checkout-back { display: block; width: fit-content; margin: 18px auto 0; padding: 10px; color: #8acfc9; font-size: 13px; text-decoration: none; }
+.checkout-back:hover { text-decoration: underline; }

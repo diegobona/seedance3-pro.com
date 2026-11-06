@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>退款政策 | SEEDANCE 3.0</title>
-  <meta name="description" content="了解未使用积分包退款、重复扣款、积分未到账，以及生成失败后积分返还的处理方式。">
+  <meta name="description" content="积分包全额与部分退款、申请方式、处理状态和到账时间。">
   <meta name="theme-color" content="#090c0c">
   <link rel="canonical" href="https://seedance3-pro.com/zh/refund-policy">
   <link rel="alternate" hreflang="en" href="https://seedance3-pro.com/refund-policy">
@@ -13,27 +13,49 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SEEDANCE 3.0">
   <meta property="og:title" content="退款政策 | SEEDANCE 3.0">
-  <meta property="og:description" content="了解未使用积分包退款、重复扣款、积分未到账，以及生成失败后积分返还的处理方式。">
+  <meta property="og:description" content="积分包全额与部分退款、申请方式、处理状态和到账时间。">
   <meta property="og:url" content="https://seedance3-pro.com/zh/refund-policy">
   <meta property="og:locale" content="zh_CN">
   <meta property="og:locale:alternate" content="en_US">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=20261024-blue-brand">
-  <link rel="stylesheet" href="/site.css?v=20261024-blue-brand">
-  <link rel="stylesheet" href="/assets/site-language.css?v=20261024-blue-brand">
-  <link rel="stylesheet" href="/assets/site-trust.css?v=20261024-blue-brand">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=20261028-checkout-ui">
+  <link rel="stylesheet" href="/site.css?v=20261028-checkout-ui">
+  <link rel="stylesheet" href="/assets/site-language.css?v=20261028-checkout-ui">
+  <link rel="stylesheet" href="/assets/site-trust.css?v=20261101-credit-packs">
   <script src="/assets/site-language.js" defer></script>
-  <link rel="stylesheet" href="/assets/site-navigation.css?v=20261024-blue-brand">
+  <link rel="stylesheet" href="/assets/site-navigation.css?v=20261031-creations">
   <script src="/assets/site-navigation.js" defer></script>
-  <script type="module" src="/assets/site-account.mjs?v=20261020-purchase"></script>
+  <script type="module" src="/assets/site-account.mjs?v=20261031-orders"></script>
   <link data-site-typography rel="preload" href="/assets/fonts/source-serif-4-roman.woff2" as="font" type="font/woff2" crossorigin>
   <link data-site-typography rel="stylesheet" href="/assets/fonts/noto-serif-sc.css?v=20261024-editorial">
   <link data-site-typography rel="stylesheet" href="/assets/site-typography.css?v=20261024-editorial">
-  <link data-site-brand rel="stylesheet" href="/assets/site-brand.css?v=20261024-blue-brand">
+  <link data-site-brand rel="stylesheet" href="/assets/site-brand.css?v=20261028-checkout-ui">
+  <link rel="stylesheet" href="/assets/site-promo.css?v=20261028-carousel">
+  <script type="module" src="/assets/site-promo-init.mjs?v=20261028-carousel"></script>
 </head>
 <body class="trust-page">
+<!-- SITE_PROMO_START -->
+<aside class="site-promo" aria-label="视频创作优惠" aria-roledescription="轮播" data-site-promo>
+  <div class="site-promo-inner">
+    <svg class="site-promo-sparkle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2L12 3Z"/><path d="M20 2v4m-2-2h4"/></svg>
+    <div class="site-promo-track" aria-live="off">
+      <div class="site-promo-slide" data-promo-slide="0" role="group" aria-label="1 / 2">
+        <p class="site-promo-copy"><strong>无需登录即可免费使用</strong><span> — 立即创建您的第一段视频</span></p>
+        <a class="site-promo-action" href="/zh/app/video/seedance-2-5">免费开始<span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="site-promo-slide" data-promo-slide="1" role="group" aria-label="2 / 2" hidden>
+        <p class="site-promo-copy"><strong>AI 视频</strong><span> — 积分包 US$11.90 起</span></p>
+        <a class="site-promo-action" href="/zh/app/video/seedance-2-5">立即尝试<span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+    <div class="site-promo-dots" role="group" aria-label="选择横幅"><button type="button" data-promo-dot="0" aria-label="显示第 1 条" aria-pressed="true"><span></span></button><button type="button" data-promo-dot="1" aria-label="显示第 2 条" aria-pressed="false"><span></span></button></div>
+  </div>
+  <button class="site-promo-close" type="button" data-promo-close aria-label="关闭横幅">×</button>
+</aside>
+<!-- SITE_PROMO_END -->
+
   <header class="site-header" data-site-header>
     <div class="container inner">
-      <a class="brand" href="/zh/" aria-label="SEEDANCE 3.0 首页"><img class="brand-mark" src="/assets/seedance-mark.svg?v=20261024-blue-brand" width="40" height="40" alt=""><span>SEEDANCE 3.0</span></a>
+      <a class="brand" href="/zh/" aria-label="SEEDANCE 3.0 首页"><img class="brand-mark" src="/assets/seedance-mark.svg?v=20261028-checkout-ui" width="40" height="40" alt=""><span>SEEDANCE 3.0</span></a>
       <nav class="desktop-nav compact-nav" aria-label="主导航"><a href="/zh/app/video/seedance-2-5">AI Video</a><a href="/zh/app/image/gpt-image-2-5-1k">AI Image</a><a class="home-extra-nav" href="/zh/pricing">价格</a><a class="home-extra-nav" href="/zh/seedance-3-0-release-date">发布时间</a><a class="home-extra-nav" href="/zh/showcase">作品展示</a><a class="home-extra-nav" href="/zh/blog">博客</a></nav>
       <div class="header-actions">
         <nav class="site-language-switch" data-site-language-switch aria-label="网站语言"><a href="/zh/refund-policy?lang=zh" data-language="zh" lang="zh-Hans" aria-current="true">中文</a><span aria-hidden="true">|</span><a href="/refund-policy?lang=en" data-language="en" lang="en">EN</a></nav>
@@ -46,42 +68,82 @@
   </header>
   <main id="main-content" class="trust-document">
     <article aria-labelledby="page-title">
-      <p class="trust-date">生效及更新日期：<time datetime="2026-10-21">2026-10-21</time></p>
       <h1 id="page-title">退款政策</h1>
-      <p class="trust-lead">生成失败后的积分返还，与购买款项退回支付方式，是两种不同的处理流程。</p>
-      <nav class="trust-toc" aria-label="本页目录"><a href="#unused">1. 完全未使用的积分包</a><a href="#generation">2. 生成失败与积分返还</a><a href="#request">3. 如何申请款项退款</a><a href="#review">4. 退款或支付争议期间的积分</a><a href="#timing">5. 退款方式与到账时间</a><a href="#rights">6. 法定权利</a></nav>
+      <p class="trust-lead">了解积分包退款与积分返还，以及如何提交退款申请。</p>
+      <nav class="trust-toc" aria-label="本页目录"><a href="#about">1. 关于我们</a><a href="#summary">2. 简要说明</a><a href="#unused">3. 完全未使用的积分包</a><a href="#partial">4. 已部分使用的积分包</a><a href="#generation">5. 生成失败与积分返还</a><a href="#request">6. 如何申请退款</a><a href="#timing">7. 已批准的退款与到账时间</a><a href="#review">8. 退款或争议期间的积分</a><a href="#disputes">9. 争议与拒付</a><a href="#abuse">10. 滥用</a><a href="#subscriptions">11. 取消订阅</a><a href="#rights">12. 你的法定权利</a><a href="#changes">13. 政策变更</a><a href="#contact">14. 联系方式</a></nav>
+      <section aria-labelledby="about">
+        <h2 id="about">1. 关于我们</h2>
+        <p>本政策由 ColdStone科技有限公司（以下称“我们”）提供，适用于在 <a href="https://seedance3-pro.com/">seedance3-pro.com</a> 上购买的全部积分包与订阅，并与我们的<a href="https://seedance3-pro.com/zh/terms">服务协议</a>、<a href="https://seedance3-pro.com/zh/privacy">隐私政策</a>一并适用。</p>
+      </section>
+      <section aria-labelledby="summary">
+        <h2 id="summary">2. 简要说明</h2>
+        <ul><li>积分包完全未使用，并在购买后 7 天内申请：全额退款。</li><li>积分包已部分使用：我们按该积分包自身的每积分单价，退还尚未使用的部分。</li><li>某次生成失败：积分退回账户余额。这属于积分返还，不构成付款退款。</li><li>批准的退款，我们不扣除任何手续费。</li><li>申请退款不会被我们用作封禁账户的理由。</li><li>如果你已经向银行发起争议，也请仍然联系我们，我们处理的速度通常比争议流程更快。</li></ul>
+      </section>
       <section aria-labelledby="unused">
-        <h2 id="unused">1. 完全未使用的积分包</h2>
-        <div class="trust-callout"><p>如果购买的积分包<strong>完全未使用</strong>，你可以在<strong>购买后 7 个自然日内</strong>申请整包全额退款。</p></div><p>如果该积分包中的购买积分已有使用，我们通常不对剩余积分提供部分退款。每日免费积分与购买积分是不同余额；审核时会核对与该购买积分包相关的使用记录。</p><p>重复扣款和经核实的积分未到账问题会单独审核。如果遇到这两类问题，即使已超过 7 天，也请联系客服。</p>
+        <h2 id="unused">3. 完全未使用的积分包</h2>
+        <p>购买后 7 个自然日内，如该积分包内的积分完全未使用，你可以申请全额退款。</p><p>“完全未使用”指该积分包内没有任何积分被生成任务消耗，无论整笔还是部分。同一账户、同一积分包仅可申请一次。</p><p>重复扣款与经核实的未交付情形，独立于本条处理，不受 7 天期限限制。出现上述任一种情况，请随时联系我们。</p>
+      </section>
+      <section aria-labelledby="partial">
+        <h2 id="partial">4. 已部分使用的积分包</h2>
+        <p>如该积分包已有部分积分被使用，我们退还剩余部分：</p><p class="refund-formula"><code>退款金额 = 实付金额 −（已消耗积分 × 该积分包每积分单价）</code></p><p>每积分单价为该积分包价格除以其包含的积分数量。大积分包内含的折扣与加赠已体现在该包自身的每积分单价中，因此退款金额不会超过你的实付金额。</p><p>余额计算规则：</p><ul><li>积分按购买时间先后扣减，先购入者先扣。</li><li>赠送积分先于付费积分扣减。</li><li>订单页面会展示每一笔购买中剩余多少积分。如对计算结果有异议，可向我们索取用量对账单，我们会提供。</li></ul>
       </section>
       <section aria-labelledby="generation">
-        <h2 id="generation">2. 生成失败与积分返还</h2>
-        <p>经确认的生成失败，会按生成规则将积分退回原积分来源。已过期的每日积分不会补入新一天的额度。一次生成多张图片时，按实际交付的图片计费。</p><p>积分返还只调整积分余额，不会将购买款项退回支付方式。如果任务长时间未完成或积分返还有误，请提供任务编号和大致生成时间，交由客服审核。</p>
+        <h2 id="generation">5. 生成失败与积分返还</h2>
+        <p>经确认的生成失败，按服务规则将积分退回其原始来源。</p><p>积分返还只改变你的积分余额，不会向你的付款方式退还资金。</p><p>如任务长时间卡住，或积分返还疑似缺失，请在 30 天内联系客服，并提供任务 ID 与大致生成时间。我们会核查任务记录并回复。确认为失败的，积分予以退回；如同类失败反复发生，你可以在第 4 条项下申请付款退款。</p>
       </section>
       <section aria-labelledby="request">
-        <h2 id="request">3. 如何申请款项退款</h2>
-        <p>请发送邮件至 <a href="mailto:zw83716@gmail.com">zw83716@gmail.com</a>，并提供：</p><ul><li>账户使用的邮箱地址。</li><li>订单编号或付款凭证编号。</li><li>购买日期与申请原因。</li></ul><p>如果存在重复扣款或购买积分未到账，请说明具体情况并附上相关订单编号。<strong>请勿发送完整银行卡号、安全码、密码或登录令牌。</strong></p>
-      </section>
-      <section aria-labelledby="review">
-        <h2 id="review">4. 退款或支付争议期间的积分</h2>
-        <p>系统记录退款或支付争议时，会撤销<strong>该笔付款对应的整包积分</strong>，包括其中的剩余积分，并<strong>暂停购买与生成，等待人工审核</strong>。此处理不会撤销每日免费积分，但审核期间生成仍会暂停。已使用的购买积分可能形成需要审核的积分缺口。</p><p>如果退款失败、被取消，或支付争议已解决，积分与账户使用权限仍可能需要客服审核后恢复。请联系客服确认，不要假定系统会自动恢复。</p>
+        <h2 id="request">6. 如何申请退款</h2>
+        <div class="refund-request-highlight"><p><strong>请在<a href="https://seedance3-pro.com/zh/billing#orders">订单记录</a>中对应订单上使用“申请退款”入口，或发邮件至 <a href="mailto:zw83716@gmail.com">zw83716@gmail.com</a></strong></p></div><p>并提供：</p><ul><li>你账户使用的邮箱地址；</li><li>订单号或付款凭证号；</li><li>购买日期及申请退款的原因；</li><li>若涉及重复扣款或未交付，请附上相关订单号。</li></ul><p>请不要发送完整卡号、卡片安全码、密码或登录令牌。</p><p>我们在 8 小时内确认收到，1 个工作日内给出处理结论。结果会通过邮件告知，并同步显示在订单页面，你可以随时看到申请是否正在处理。</p>
       </section>
       <section aria-labelledby="timing">
-        <h2 id="timing">5. 退款方式与到账时间</h2>
-        <p>获批的退款将退回<strong>原支付方式</strong>。通常需要 <strong>5–10 个工作日</strong>到账，具体取决于 Stripe、银行及支付方式，部分情况可能需要更长时间。</p><p>如果已批准的退款在预计处理期后仍未到账，请回复原客服邮件并提供订单编号，我们会协助查询状态。</p>
+        <h2 id="timing">7. 已批准的退款与到账时间</h2>
+        <p>批准的退款退回原付款方式。通常需要 5 个工作日左右到账，具体取决于 Stripe、你的发卡行以及付款方式，个别情况可能更久。</p><p>我们不扣除任何手续费或处理费，退款金额即你的实付金额。</p><p>如超过上述时间仍未到账，请回复客服邮件并附上订单号，我们会向支付服务商核查状态。</p>
+      </section>
+      <section aria-labelledby="review">
+        <h2 id="review">8. 退款或争议期间的积分</h2>
+        <p>退款发生后，该笔购买所对应的积分将从余额中移除，包括尚未使用的部分。已使用的积分，按第 4 条的每积分单价视为已消费。</p><p>对于差额，我们不会在事后向你补收费用，除非经证实存在欺诈或支付滥用（例如盗刷卡片，或持卡人在无购买事实的情况下向银行撤销付款）。</p><p>如退款失败、被取消，或争议处理结果支持你，请联系我们。我们会在适当情况下恢复访问权限，但倾向于先核实再恢复，请不要默认积分会自动回到账户。</p>
+      </section>
+      <section aria-labelledby="disputes">
+        <h2 id="disputes">9. 争议与拒付</h2>
+        <p>在向银行发起争议之前，请先联系我们。争议流程漫长、双方都会产生费用，而且通常比直接退款让你等得更久。</p><p>我们不会仅仅因为客户申请退款或发起争议，就封禁账户、暂停生成或限制购买。只有在掌握具体的欺诈或滥用证据时，我们才会限制访问，并会以书面形式告知理由。</p><p>如果争议已经发起，请带着争议编号邮件联系我们。若退款获批，我们会执行退款，你可以请银行关闭该争议。</p>
+      </section>
+      <section aria-labelledby="abuse">
+        <h2 id="abuse">10. 滥用</h2>
+        <p>存在明确滥用情形的，我们可以拒绝退款，例如：</p><ul><li>跨多个账户反复购买后申请退款；</li><li>同一张卡或同一台设备在多个账户上获取积分后退款；</li><li>将通过退款申请获得的积分转售。</li></ul><p>拒绝退款时，我们会书面说明理由，并指出涉及的具体交易。</p>
+      </section>
+      <section aria-labelledby="subscriptions">
+        <h2 id="subscriptions">11. 取消订阅</h2>
+        <p>你可以随时在账户页面取消订阅，取消于当前计费周期结束时生效，此后不再产生扣款。本周期内已发放的积分，按第 3、4 条处理。</p>
       </section>
       <section aria-labelledby="rights">
-        <h2 id="rights">6. 法定权利</h2>
-        <p>本政策不限制适用法律赋予你的任何强制性消费者权利或救济。</p><p>相关信息请参阅<a href="/zh/terms">服务条款</a>、<a href="/zh/privacy">隐私政策</a>和<a href="/zh/about">关于与联系</a>。</p>
+        <h2 id="rights">12. 你的法定权利</h2>
+        <p>本政策不限制你依据适用法律享有的任何强制性消费者权利或救济。</p><p>如你是欧盟或英国的消费者，你对数字内容享有 14 天撤回权。购买并立即开始生成，即表示你明确要求立即履行，并确认在数字内容已提供后丧失撤回权。如你尚未使用任何积分，可在 14 天内发邮件行使该权利，我们将全额退款。</p>
+      </section>
+      <section aria-labelledby="changes">
+        <h2 id="changes">13. 政策变更</h2>
+        <p>我们可能更新本政策。以你购买时本页面公布的版本为准，变更不溯及既往。在变更后 30 天内依据旧版本提出的申请，按旧版本处理。</p>
+      </section>
+      <section aria-labelledby="contact">
+        <h2 id="contact">14. 联系方式</h2>
+        <address>ColdStone科技有限公司<br><a href="mailto:zw83716@gmail.com">zw83716@gmail.com</a></address>
       </section>
     </article>
   </main>
   <footer class="site-footer"><!-- SITE_TRUST_START -->
-<div class="trust-footer" data-site-trust>
-  <div class="trust-operator"><span>运营者: ColdStone Technology Co., Ltd.</span><a href="mailto:zw83716@gmail.com">zw83716@gmail.com</a></div>
-  <nav aria-label="服务与政策"><a href="/zh/about">关于与联系</a><a href="/zh/refund-policy">退款政策</a><a href="/zh/privacy">隐私政策</a><a href="/zh/terms">服务条款</a></nav>
+<div class="trust-footer trust-footer-compact" data-site-trust>
+  <span class="trust-copyright">© 2026 ColdStone Technology Co., Ltd.</span>
+  <nav aria-label="服务与政策"><a href="/zh/privacy">隐私政策</a><span aria-hidden="true">·</span><a href="/zh/terms">服务条款</a><span aria-hidden="true">·</span><a href="/zh/refund-policy">退款政策</a><span aria-hidden="true">·</span><button type="button" class="footer-contact-trigger" popovertarget="footer-contact">联系我们</button></nav>
+  <div id="footer-contact" class="footer-contact-popover" popover="auto" role="dialog" aria-label="联系我们">
+    <button type="button" class="footer-contact-close" popovertarget="footer-contact" popovertargetaction="hide" aria-label="关闭">×</button>
+    <h2>联系我们</h2>
+    <p>有使用或订单问题，请通过邮箱联系我们。</p>
+    <div class="footer-contact-email"><span>zw83716@gmail.com</span><button type="button" data-copy-contact="zw83716@gmail.com" data-copied="已复制" data-copy-failed="复制失败，请选中邮箱手动复制。">复制邮箱</button></div>
+    <div class="footer-contact-status" role="status" aria-live="polite"></div>
+    <a class="footer-contact-mail" href="mailto:zw83716@gmail.com">打开邮件应用 ↗</a>
+  </div>
 </div>
 <!-- SITE_TRUST_END -->
 </footer>
+<script src="/assets/site-contact.js?v=20261101-contact" defer></script>
 </body>
 </html>

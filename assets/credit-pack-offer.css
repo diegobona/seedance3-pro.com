@@ -1,0 +1,26 @@
+.credit-pack-offer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 7px 12px;
+  min-width: 0;
+  margin: 0 0 10px;
+  padding: 0;
+  text-align: left;
+}
+.credit-offer-badge, .studio-pack-summary .credit-offer-badge { display: inline-flex; align-items: center; gap: 5px; padding: 5px 9px; border-radius: 7px; background: linear-gradient(100deg, #ff8709, #ff5524 55%, #ff2947); color: #fff; font-size: 12px; font-weight: 800; line-height: 1.4; white-space: nowrap; }
+.credit-offer-flame { font-size: 15px; line-height: 1; }
+.credit-offer-timer, .studio-pack-summary .credit-offer-timer { display: inline-flex; align-items: baseline; gap: 1px; color: #e9cf98; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1.5; white-space: nowrap; }
+.credit-offer-days { display: inline-flex; align-items: baseline; gap: 3px; margin-right: 5px; }
+.credit-offer-days > small { font-family: var(--font-sans, system-ui, sans-serif); font-size: 12px; font-weight: 500; }
+.credit-offer-digit { padding: 0; }
+.credit-offer-colon { opacity: .7; }
+.studio-trial-actions:has(.credit-pack-offer) { padding: 12px 14px; }
+.billing-pack > .credit-pack-offer, .credit-pricing-card > .credit-pack-offer { margin-bottom: 16px; }
+@media (max-width: 420px) {
+  .credit-pack-offer { gap: 6px 8px; }
+  .credit-offer-badge, .studio-pack-summary .credit-offer-badge { padding: 5px 8px; font-size: 11px; }
+  .credit-offer-timer, .studio-pack-summary .credit-offer-timer { font-size: 14px; }
+  .credit-offer-days > small { font-size: 11px; }
+}

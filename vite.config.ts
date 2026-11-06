@@ -49,7 +49,8 @@ export default defineConfig(({ command }) => ({
       config: command === 'serve' ? (config) => {
         // Mutate the resolved assets config: returned arrays merge with Wrangler's /*.
         config.assets = { ...config.assets, run_worker_first: [
-          '/api/*', '/_serverFn/*', '/billing', '/billing/', '/zh/billing', '/zh/billing/', '/app', '/app/', '/app/video/*', '/app/image/*', '/zh/app', '/zh/app/', '/zh/app/video/*', '/zh/app/image/*',
+          '/refund-review', '/refund-review/', '/zh/refund-review', '/zh/refund-review/',
+          '/api/*', '/_serverFn/*', '/creations', '/creations/', '/zh/creations', '/zh/creations/', '/billing', '/billing/', '/zh/billing', '/zh/billing/', '/checkout', '/checkout/', '/zh/checkout', '/zh/checkout/', '/app', '/app/', '/app/video/*', '/app/image/*', '/zh/app', '/zh/app/', '/zh/app/video/*', '/zh/app/image/*',
           '/flux-3', '/flux-3.html', '/flux-3-video-generator', '/flux-3-video-generator.html',
           '/zh/flux-3', '/zh/flux-3.html', '/zh/flux-3-video-generator', '/zh/flux-3-video-generator.html',
           '/prompt-guide', '/zh/prompt-guide', '/minimax-h3-prompts*', '/gpt-image-2-prompts*', '/seedance-3-0-prompts*',

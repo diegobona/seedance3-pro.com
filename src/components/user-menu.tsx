@@ -1,10 +1,12 @@
+import { REGISTERED_FREE_CREDITS_ENABLED } from '../../app/credit-policy.mjs'
 import { useSiteI18n } from '../lib/site-i18n'
 import { useEffect, useRef, useState } from 'react'
 import { authClient } from '../lib/auth-client'
 import { millisecondsUntilCreditReset } from '../../app/daily-credits.mjs'
 import { DAILY_FREE_CREDIT_GRANT } from '../lib/generation-credits'
 import { guestDeviceHeaders } from '../../assets/guest-device.mjs'
-import { openCreditPurchase } from '../../assets/credit-checkout.mjs'
+import { creditPurchaseUrl, openCreditPurchase } from '../../assets/credit-checkout.mjs'
+import { initializeCheckoutReturnStatus } from '../../assets/checkout-return-status.mjs'
 
 interface UserMenuProps {
   onLogin: () => void
@@ -23,7 +25,7 @@ interface CreditState extends CreditSummary {
 }
 
 export function UserMenu({ onLogin }: UserMenuProps) {
-  const { t, path, locale } = useSiteI18n()
+  const { t, locale } = useSiteI18n()
   const { data: session, isPending, error } = authClient.useSession()
   const [open, setOpen] = useState(false)
   const [purchasing, setPurchasing] = useState(false)
@@ -82,7 +84,7 @@ export function UserMenu({ onLogin }: UserMenuProps) {
             paidRemaining: typeof summary.paidRemaining === 'number' && creditVersion === requestVersion ? summary.paidRemaining : null,
           })
           window.clearTimeout(dailyResetTimer)
-          dailyResetTimer = window.setTimeout(() => { void loadCredits() }, millisecondsUntilCreditReset())
+          if (REGISTERED_FREE_CREDITS_ENABLED) dailyResetTimer = window.setTimeout(() => { void loadCredits() }, millisecondsUntilCreditReset())
         }
       } catch (fetchError) {
         if (fetchError instanceof DOMException && fetchError.name === 'AbortError') return
@@ -108,14 +110,22 @@ export function UserMenu({ onLogin }: UserMenuProps) {
     void loadCredits()
     const refreshCredits = () => { void loadCredits() }
     window.addEventListener('focus', refreshCredits)
+    window.addEventListener('seedance:payment-verified', refreshCredits)
     window.addEventListener('seedance:credits-updated', updateCredits)
     return () => {
       active = false
       controller.abort()
       window.clearTimeout(dailyResetTimer)
       window.removeEventListener('focus', refreshCredits)
+      window.removeEventListener('seedance:payment-verified', refreshCredits)
       window.removeEventListener('seedance:credits-updated', updateCredits)
     }
+  }, [session?.user?.id])
+
+  useEffect(() => {
+    // BillingPage already verifies its returned checkout against account history.
+    if (/^\/(?:zh\/)?billing\/?$/.test(window.location.pathname)) return
+    return initializeCheckoutReturnStatus({ userId: session?.user?.id || '' })
   }, [session?.user?.id])
 
   if (isPending && !error) return <span className="auth-loading" aria-label={t("Loading account")} />
@@ -139,11 +149,16 @@ export function UserMenu({ onLogin }: UserMenuProps) {
         <div className="user-menu-panel">
           <strong>{displayName}</strong>
           <small>{session.user.email}</small>
+          <a className="user-menu-billing" href={locale==='zh'?'/zh/creations':'/creations'}>{locale==='zh'?'我的作品':'My creations'}</a>
+          <a className="user-menu-billing" href={(locale==='zh'?'/zh':'')+'/billing#orders'}>{locale==='zh'?'订单记录':'Order history'}</a>
           <div className="user-menu-credit-row"><span>{t("Credits")}</span><strong>{currentCredits?.remaining ?? '—'}</strong></div>
-          <div className="user-menu-credit-row"><span>{t("Daily credits")}</span><strong>{currentCredits?.dailyRemaining ?? '—'}</strong></div>
+          {REGISTERED_FREE_CREDITS_ENABLED && <div className="user-menu-credit-row"><span>{t("Daily credits")}</span><strong>{currentCredits?.dailyRemaining ?? '—'}</strong></div>}
           <div className="user-menu-credit-row"><span>{t("Purchased credits")}</span><strong>{currentCredits?.paidRemaining ?? '—'}</strong></div>
-          <small>{t("Daily: resets at 00:00 Asia/Shanghai. Purchased: never expires.")}</small>
-          <a className="user-menu-billing" href={path('/billing') + '?checkout=start'} target="_blank" rel="noopener noreferrer" aria-busy={purchasing} onClick={async event => {
+          <small>{t(REGISTERED_FREE_CREDITS_ENABLED ? "Daily: resets at 00:00 Asia/Shanghai. Purchased: never expires." : "Purchased credits never expire.")}</small>
+          <a className="user-menu-billing" href={creditPurchaseUrl(locale)} target="_blank" rel="noopener noreferrer" aria-busy={purchasing}
+            onPointerDown={event => { event.currentTarget.href = creditPurchaseUrl(locale) }}
+            onContextMenu={event => { event.currentTarget.href = creditPurchaseUrl(locale) }}
+            onKeyDown={event => { event.currentTarget.href = creditPurchaseUrl(locale) }} onClick={async event => {
             if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
             event.preventDefault()
             if (purchasing) return
@@ -151,7 +166,7 @@ export function UserMenu({ onLogin }: UserMenuProps) {
             try { await openCreditPurchase({ locale }) }
             catch { setPurchaseError(true) }
             finally { setPurchasing(false) }
-          }}>{t("Buy credits & billing")}</a>
+          }}>{locale==='zh'?'购买积分':'Buy credits'}</a>
           {purchaseError && <p role="alert">{locale === 'zh' ? '无法打开付款页面，请重试。' : 'Could not open checkout. Please try again.'}</p>}
           <button type="button" onClick={async () => {
             await authClient.signOut()

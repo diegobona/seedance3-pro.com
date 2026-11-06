@@ -2,12 +2,14 @@ import { HeadContent, Scripts, createRootRoute, useRouterState } from '@tanstack
 import type { ReactNode } from 'react'
 import poseEntryVisibility from '../../assets/pose-entry-visibility.js?raw'
 import '../../assets/pose-entry-visibility.css'
+import siteContact from '../../assets/site-contact.js?raw'
 import siteLanguage from '../../assets/site-language.js?raw'
 import '../../assets/site-language.css'
 import { localeFromPath, localizedPath } from '../../app/site-locale.mjs'
 import { SiteTrustFooter } from '../components/site-trust'
 import { PLAUSIBLE_INIT, PLAUSIBLE_SCRIPT_URL } from '../lib/plausible'
 import { BRAND_VERSION } from '../../app/site-brand.mjs'
+import { SitePromoBanner } from '../components/site-promo-banner'
 
 export const Route = createRootRoute({
   head: () => ({
@@ -38,6 +40,7 @@ function RootDocument({ children }: { children: ReactNode }) {
         <link rel="stylesheet" href="/assets/fonts/noto-serif-sc.css?v=20261024-editorial" />
         <link rel="stylesheet" href="/assets/site-typography.css?v=20261024-editorial" />
         <link data-site-brand rel="stylesheet" href={`/assets/site-brand.css?v=${BRAND_VERSION}`} />
+        <link rel="stylesheet" href="/assets/site-promo.css?v=20261028-carousel" />
         <link rel="alternate" hrefLang="en" href={enUrl} />
         <link rel="alternate" hrefLang="zh-Hans" href={zhUrl} />
         <link rel="alternate" hrefLang="x-default" href={enUrl} />
@@ -49,8 +52,10 @@ function RootDocument({ children }: { children: ReactNode }) {
         </>}
       </head>
       <body>
+        <SitePromoBanner locale={locale} />
         {children}
-        {!/^\/(?:zh\/)?billing\/?$/.test(pathname) && <SiteTrustFooter />}
+        {!/^\/(?:zh\/)?(?:billing|checkout)\/?$/.test(pathname) && <SiteTrustFooter />}
+        <script dangerouslySetInnerHTML={{ __html: siteContact }} />
         <Scripts />
       </body>
     </html>

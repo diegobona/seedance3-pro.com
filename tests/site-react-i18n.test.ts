@@ -16,6 +16,16 @@ test('localized navigation retains queries and leaves API and media URLs neutral
   assert.equal(localizedPath('/media/showcase-h3/corgi.mp4', 'zh'), '/media/showcase-h3/corgi.mp4')
 })
 
+test('guest trial instructions and success-based allowance are translated as two five-second videos', () => {
+  const instructions = translate('zh', 'Try two 5-second videos at 768p without signing in (10 free seconds in total, once). After the trial, log in and buy credits to continue.')
+  assert.match(instructions, /两次/)
+  assert.match(instructions, /每次固定 5 秒，共 10 秒/)
+  assert.doesNotMatch(instructions, /可选 5 秒或 10 秒/)
+  const answer = translate('zh', 'Yes. Guests can generate two 5-second videos at 768p, for 10 free seconds in total. Each successful generation uses 5 seconds; failed generations refund the reserved seconds.')
+  assert.match(answer, /每次生成成功消耗 5 秒额度/)
+  assert.match(answer, /生成失败会返还预扣的秒数/)
+});
+
 test('Chinese editorial case data preserves the exact generation prompt and payload', () => {
   for (const original of [...h3VideoCases, ...gptImageCases]) {
     const chinese = localizedContent(original, 'zh')

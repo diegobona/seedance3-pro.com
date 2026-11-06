@@ -9,8 +9,10 @@ function previewRatio(value) {
     ? `${width} / ${height}` : '1 / 1';
 }
 
-function elapsedTime(startedAt, now) {
-  const seconds = Math.max(0, Math.floor((now - startedAt) / 1000));
+export function elapsedTime(startedAt, now, adjustVideoWaitDisplay = false) {
+  const actualSeconds = Math.max(0, Math.floor((now - startedAt) / 1000));
+  // Presentation only: keep the task start time and polling deadlines unchanged.
+  const seconds = actualSeconds - (adjustVideoWaitDisplay && actualSeconds >= 125 ? 60 : 0);
   return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
 }
 
@@ -107,7 +109,7 @@ export function createGenerationPreviewController({
     if (destroyed) return;
     const state = states.get(selectedModel);
     if (state?.phase === 'pending') {
-      elapsed.textContent = t('Waiting {time}', { time: elapsedTime(state.job.startedAt, nowImpl()) }, currentLocale());
+      elapsed.textContent = t('Waiting {time}', { time: elapsedTime(state.job.startedAt, nowImpl(), state.job.kind === 'video' && state.job.adjustVideoWaitDisplay) }, currentLocale());
     }
   }
 
@@ -234,14 +236,14 @@ export function createGenerationPreviewController({
     return snapshot();
   }
 
-  function begin({ modelId, kind = 'image', modelName = modelId, count = 1, aspectRatio = '1:1', isPose = false, startedAt } = {}) {
+  function begin({ modelId, kind = 'image', modelName = modelId, count = 1, aspectRatio = '1:1', isPose = false, startedAt, adjustVideoWaitDisplay = false } = {}) {
     if (destroyed) return null;
     const state = modelState(modelId);
     const handle = Object.freeze({ modelId, token: ++sequence });
     const requestedCount = Number.isFinite(Number(count)) ? Math.floor(Number(count)) : 1;
     state.phase = 'pending';
     state.job = {
-      handle, modelId, modelName, kind, isPose,
+      handle, modelId, modelName, kind, isPose, adjustVideoWaitDisplay,
       count: kind === 'video' ? 1 : Math.min(3, Math.max(1, requestedCount)),
       aspectRatio,
       ratio: previewRatio(aspectRatio),

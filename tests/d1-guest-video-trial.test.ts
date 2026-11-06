@@ -83,6 +83,56 @@ test('D1 guests spend five plus five seconds, cannot overspend, and refund only 
   } finally { await dispose() }
 })
 
+test('D1 guest allowance covers exactly two successful five-second videos across text and reference modes', async () => {
+  const { db, dispose } = await createD1TestDatabase()
+  try {
+    const store = await guestStore(db)
+    const id = crypto.randomUUID()
+    const userId = `guest-${id}`
+    await store.create({ id, userId, networkHash: 'two-five-second-successes' })
+    const { createVideoGenerationTaskStore } = await import('../src/db/video-generation-tasks')
+    const { protectVideoGenerationStart } = await import('../src/lib/protected-video-generation')
+    const tasks = createVideoGenerationTaskStore(db)
+    let submissions = 0
+    const start = (duration = 5, reference = false) => protectVideoGenerationStart({
+      request: new Request('https://seedance3-pro.com/api/videos/generate'),
+      getSession: async () => ({ user: { id: userId, isGuest: true } }),
+      taskStore: tasks,
+      preflight: async () => ({ ok: true, payload: {
+        prompt: 'A test scene', duration, resolution: '768p', aspectRatio: '16:9',
+        ...(reference ? { referenceImageIds: [crypto.randomUUID()] } : {}),
+      } }),
+      submit: async payload => {
+        assert.equal(payload.duration, 5)
+        return { providerTaskId: `synthetic-provider-${++submissions}` }
+      },
+    })
+
+    const combined = await start(10)
+    assert.equal(combined.status, 400, 'guests cannot spend both opportunities in one long video')
+    assert.equal(submissions, 0)
+    assert.equal(await store.getBalance(userId), 10)
+
+    for (const reference of [false, true]) {
+      const response = await start(5, reference)
+      assert.equal(response.status, 202)
+      const result = await response.json() as { task: { id: string } }
+      const task = await tasks.claimForPoll(result.task.id, userId, new Date(Date.now() + 60_000), 30_000)
+      assert.ok(task?.leaseUntil)
+      assert.equal(task.duration, 5)
+      const success = await tasks.finalizeSuccess(result.task.id, 'https://example.test/video.mp4', task.leaseUntil)
+      assert.equal(success.task.status, 'succeeded')
+      assert.equal(await store.getBalance(userId), reference ? 0 : 5)
+    }
+
+    const third = await start()
+    assert.equal(third.status, 402)
+    assert.equal((await third.json() as { code: string }).code, 'GUEST_TRIAL_INSUFFICIENT')
+    assert.equal(submissions, 2)
+    assert.equal(await store.getBalance(userId), 0)
+  } finally { await dispose() }
+})
+
 test('D1 signed guest cookies survive refresh and cannot create authenticated image sessions', async () => {
   const { db, dispose } = await createD1TestDatabase()
   try {
@@ -103,7 +153,7 @@ test('D1 signed guest cookies survive refresh and cannot create authenticated im
   } finally { await dispose() }
 })
 
-test('D1 can spend the full ten-second allowance in one video without daily credits', async () => {
+test('D1 guests spend two five-second reservations without receiving daily credits', async () => {
   const { db, dispose } = await createD1TestDatabase()
   try {
     const store = await guestStore(db)
@@ -112,7 +162,10 @@ test('D1 can spend the full ten-second allowance in one video without daily cred
     await store.create({ id, userId, networkHash: 'c'.repeat(64) })
     const { createVideoGenerationTaskStore } = await import('../src/db/video-generation-tasks')
     const tasks = createVideoGenerationTaskStore(db)
-    assert.ok(await tasks.reserveAndCreate(userId, 10, { workflowId: 'test-workflow', duration: 10, resolution: '480p', aspectRatio: '16:9' }))
+    const metadata = { workflowId: 'test-workflow', duration: 5, resolution: '768p', aspectRatio: '16:9' }
+    assert.ok(await tasks.reserveAndCreate(userId, 5, metadata))
+    assert.equal(await store.getBalance(userId), 5)
+    assert.ok(await tasks.reserveAndCreate(userId, 5, metadata))
     assert.equal(await store.getBalance(userId), 0)
     const account = await db.prepare('SELECT plan,daily_free_credits FROM "user" WHERE id=?').bind(userId).first<{ plan: string; daily_free_credits: number }>()
     assert.equal(account?.plan, 'guest')

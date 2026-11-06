@@ -3,6 +3,14 @@
 .h3-examples-heading span { color: #b7eefd; font-size: 11px; font-weight: 800; letter-spacing: .13em; }
 .h3-examples-heading small { color: #8b9397; font-size: 10px; letter-spacing: .07em; }
 .h3-example-player { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 15px; background: #090a0c; object-fit: contain; }
+.h3-example-pagination { display:flex; align-items:center; justify-content:center; gap:4px; padding:12px 0 0; }
+.h3-example-pagination button { display:flex; align-items:center; justify-content:center; width:28px; height:28px; padding:0; border:0; border-radius:16px; background:transparent; cursor:pointer; }
+.h3-example-pagination button::after { content:''; width:9px; height:9px; border-radius:999px; background:#52585b; transition:width .18s ease, background .18s ease; }
+.h3-example-pagination button.is-selected { width:40px; }
+.h3-example-pagination button.is-selected::after { width:30px; background:#f3f5f4; }
+.h3-example-pagination button:hover::after { background:#a2b3b7; }
+.h3-example-pagination button:focus-visible { outline:2px solid #78ded4; outline-offset:2px; }
+@media (prefers-reduced-motion:reduce) { .h3-example-pagination button::after { transition:none; } }
 .h3-example-details { padding: 17px 6px 14px; }
 .h3-example-title { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .h3-example-title span { color: #94a4a6; font-size: 10px; font-weight: 800; letter-spacing: .12em; }
@@ -17,3 +25,7 @@
 .h3-example-options video { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 7px; background: #111315; object-fit: cover; pointer-events: none; }
 .h3-example-options span { display: block; overflow: hidden; padding: 8px 4px 5px; font-size: 11px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
 @media (max-width: 620px) { .h3-example-title { align-items: flex-start; } .h3-example-title button { padding: 9px 11px; } .h3-example-options { gap: 5px; } .h3-example-options span { font-size: 10px; } }
+
+.h3-example-source{display:inline-block;margin-top:10px;color:#89979f;font-size:11px;line-height:1.5;text-decoration:none}.h3-example-source:hover{color:#78ded4;text-decoration:underline}
+
+.h3-example-options img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:7px}

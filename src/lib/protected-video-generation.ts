@@ -1,5 +1,6 @@
 import { withCreditHeaders, type CreditReservationOptions } from './generation-credits'
 import { creditBudgetErrorResponse } from './credit-budget-response'
+import { GUEST_VIDEO_DURATION_SECONDS } from '../../app/guest-video.mjs'
 
 export const VIDEO_WORKFLOW_ID = 'minimax_h3_lightx2v_no_pic'
 export const REFERENCE_VIDEO_WORKFLOW_ID = 'minimax_h3_image_audio_to_video_v2_15s'
@@ -29,9 +30,9 @@ export type VideoGenerationPreflight =
 type SessionLike = { user: { id: string; isGuest?: boolean } } | null
 
 export function guestVideoPayloadError(payload: VideoGenerationPayload) {
-  if ([5, 10].includes(payload.duration) && payload.resolution === '768p') return null
+  if (payload.duration === GUEST_VIDEO_DURATION_SECONDS && payload.resolution === '768p') return null
   return Response.json({ success: false, code: 'GUEST_TRIAL_PARAMETERS',
-    message: 'Guest videos support 5 or 10 seconds at 768p.' }, {
+    message: 'Guest videos support 5 seconds per generation at 768p.' }, {
     status: 400, headers: { 'cache-control': 'no-store' },
   })
 }
@@ -86,14 +87,14 @@ export interface VideoGenerationTaskStore {
   ): Promise<VideoGenerationTask>
   markRunning(localTaskId: string, now: Date, retryAfterSeconds: number | undefined, expectedLeaseUntil: Date): Promise<VideoGenerationTask>
   finalizeSuccess(localTaskId: string, resultUrl: string, expectedLeaseUntil: Date): Promise<VideoTaskTransitionResult>
-  finalizeFailure(localTaskId: string, message: string, expectedLeaseUntil: Date): Promise<VideoTaskTransitionResult>
+  finalizeFailure(localTaskId: string, message: string, expectedLeaseUntil: Date, freeCostRefundable?: boolean): Promise<VideoTaskTransitionResult>
   expireOverdue(now?: Date): Promise<VideoGenerationTask[]>
   getBalance(userId: string): Promise<number>
 }
 
 export type VideoProviderQueryResult =
   | { status: 'queued' | 'running' | 'unknown'; terminal: false; retryAfterSeconds?: number }
-  | { status: 'failed'; terminal: true }
+  | { status: 'failed'; terminal: true; freeCostRefundable?: boolean }
   | { status: 'succeeded'; terminal: true; videoUrl: string }
 
 export type VideoTaskProviderContext = { workflowId: string; localTaskId: string }
@@ -379,7 +380,9 @@ async function protectVideoGenerationPollUnsafe({
   }
 
   if (providerResult.status === 'failed') {
-    const finalized = await taskStore.finalizeFailure(claimed.id, 'Video generation failed.', claimed.leaseUntil)
+    const finalized = providerResult.freeCostRefundable
+      ? await taskStore.finalizeFailure(claimed.id, 'Video generation failed.', claimed.leaseUntil, true)
+      : await taskStore.finalizeFailure(claimed.id, 'Video generation failed.', claimed.leaseUntil)
     if (!isTerminal(finalized.task.status)) return pendingResponse(finalized.task, finalized.remainingCredits, true)
     return terminalResponse(finalized.task, finalized.remainingCredits)
   }

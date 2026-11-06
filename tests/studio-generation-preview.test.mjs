@@ -45,10 +45,38 @@ async function setup(context, { modelId, deferAnimate } = {}) {
   return { ...environment, requests };
 }
 
+test('account video wait notice appears after one minute, hides on image selection, and clears on completion', async context => {
+  const { element, input, advance, selectModel, requests } = await setup(context, { modelId: 'minimax-h3' });
+  input('studio-prompt', 'Slow orbit around a red sculpture');
+  element('generate-button').click(); await flush();
+  const notice = element('preview-pending').querySelector('.video-wait-notice');
+  requests.videoPosts()[0].resolve(videoResult('queued')); await flush();
+  advance(59_000); assert.equal(notice.hidden, true);
+  advance(1000); assert.equal(notice.hidden, false);
+  selectModel('gpt-image-2'); assert.equal(notice.hidden, true);
+  selectModel('minimax-h3'); assert.equal(notice.hidden, false);
+  requests.videoGets()[0].resolve(videoResult('succeeded')); await flush();
+  assert.equal(notice.hidden, true);
+  assert.equal(element('generation-preview').dataset.state, 'succeeded');
+});
+
+test('terminal video failure removes the late-generation notice', async context => {
+  const { element, input, advance, requests } = await setup(context, { modelId: 'minimax-h3' });
+  input('studio-prompt', 'A quiet forest');
+  element('generate-button').click(); await flush();
+  requests.videoPosts()[0].resolve(videoResult('queued')); await flush();
+  advance(60_000);
+  const notice = element('preview-pending').querySelector('.video-wait-notice');
+  assert.equal(notice.hidden, false);
+  requests.videoGets()[0].resolve(videoResult('failed')); await flush();
+  assert.equal(notice.hidden, true);
+});
+
 test('real studio keeps overlapping image/video jobs on their captured models through delayed completion', async context => {
   const { element, input, selectModel, requests } = await setup(context);
   input('studio-prompt', 'A silver cup on a blue table');
   element('generate-button').click();
+  await flush();
   assert.equal(requests.images().length, 1);
   assert.equal(element('generation-preview').dataset.state, 'pending');
   assert.equal(element('generation-preview').dataset.model, 'gpt-image-2');
@@ -57,6 +85,7 @@ test('real studio keeps overlapping image/video jobs on their captured models th
   await flush();
   input('studio-prompt', 'Slow orbit around a red sculpture');
   element('generate-button').click();
+  await flush();
   assert.equal(requests.videoPosts().length, 1, 'video can start while an image request is unresolved');
   assert.equal(element('generation-preview').dataset.model, 'minimax-h3');
   requests.videoPosts()[0].resolve(videoResult('queued'));
@@ -83,6 +112,7 @@ test('switching between image models restores their pending and completed previe
   const { element, input, selectModel, requests } = await setup(context);
   input('studio-prompt', 'First model prompt');
   element('generate-button').click();
+  await flush();
   selectModel('gpt-image-2-5-1k');
   await flush();
   assert.equal(element('generation-preview').dataset.state, 'idle');
@@ -97,6 +127,7 @@ test('switching between image models restores their pending and completed previe
   assert.equal(element('result-gallery').querySelector('img'), null);
   input('studio-prompt', 'Second model prompt');
   element('generate-button').click();
+  await flush();
   assert.equal(requests.images()[1].options.body.get('model'), 'gpt-image-2-5-1k');
   selectModel('gpt-image-2');
   await flush();
@@ -114,10 +145,12 @@ test('video status callbacks and a background video completion leave the current
   const { element, input, selectModel, requests } = await setup(context, { modelId: 'minimax-h3' });
   input('studio-prompt', 'A delayed video scene');
   element('generate-button').click();
+  await flush();
   selectModel('gpt-image-2');
   await flush();
   input('studio-prompt', 'An image while the video is running');
   element('generate-button').click();
+  await flush();
   const imageStatus = element('preview-status').textContent;
   const formStatus = element('generation-status').textContent;
   requests.videoPosts()[0].resolve(videoResult('queued'));
@@ -145,6 +178,7 @@ test('a prior image retains its exact download and animate action nodes across a
   const { element, input, selectModel, requests, navigations } = await setup(context);
   input('studio-prompt', 'First retained image');
   element('generate-button').click();
+  await flush();
   requests.images()[0].resolve(imageResult('retained', { animateId }));
   await flush();
   const item = element('result-gallery').querySelector('.result-item');
@@ -152,6 +186,7 @@ test('a prior image retains its exact download and animate action nodes across a
   const animate = item.querySelector('.animate-image-button');
   input('studio-prompt', 'A second image');
   element('generate-button').click();
+  await flush();
   assert.equal(element('generation-history-list').contains(item), true);
   requests.images()[1].resolve(imageResult('latest'));
   await flush();
@@ -173,6 +208,7 @@ test('real video polling timeout stays pending and explicit resume only GETs the
   const { element, input, advance, selectModel, requests, sessionStorage } = await setup(context, { modelId: 'minimax-h3' });
   input('studio-prompt', 'A cloud drifts across the sky');
   element('generate-button').click();
+  await flush();
   requests.videoPosts()[0].resolve(videoResult('queued'));
   await flush();
   requests.videoGets()[0].resolve(videoResult('running'));
@@ -209,6 +245,7 @@ test('explicit image failure retry restores the captured model, prompt, quantity
   change('image-quantity', '2');
   change('image-aspect-ratio', '16:9');
   element('generate-button').click();
+  await flush();
   const original = requests.images()[0].options.body;
   requests.images()[0].resolve(json({ success: false, message: 'Provider temporarily unavailable', code: 'IMAGE_GENERATION_FAILED' }, 503));
   await flush();
@@ -237,6 +274,7 @@ test('terminal video failure retry uses the captured prompt and video settings a
   change('video-duration', '10');
   change('video-aspect-ratio', '9:16');
   element('generate-button').click();
+  await flush();
   const original = JSON.parse(requests.videoPosts()[0].options.body);
   requests.videoPosts()[0].resolve(videoResult('queued'));
   await flush();
@@ -321,6 +359,7 @@ test('switching H3 back to text mode does not upload or submit hidden reference 
   input('studio-prompt', 'A text-only cinematic scene');
   element('generate-button').click();
   await flush();
+  await flush();
   assert.equal(requests.calls.filter(call => call.url === '/api/videos/references').length, 0);
   assert.equal(requests.videoPosts().length, 1);
   const submitted = JSON.parse(requests.videoPosts()[0].options.body);
@@ -337,6 +376,7 @@ test('an image animate action becomes retryable after its transfer fails while i
   const { element, input, selectModel, requests } = await setup(context, { deferAnimate: true });
   input('studio-prompt', 'Retain this image while a transfer is pending');
   element('generate-button').click();
+  await flush();
   requests.images()[0].resolve(imageResult('transfer-retry', { animateId }));
   await flush();
   const animate = element('result-gallery').querySelector('.animate-image-button');

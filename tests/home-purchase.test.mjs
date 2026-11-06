@@ -3,6 +3,14 @@ import assert from 'node:assert/strict';
 const { createHomePurchaseController, homeGenerationAction } = await import('../app/home-purchase.mjs').catch(() => ({}));
 const storage = () => { const map = new Map(); return {getItem:k=>map.get(k)??null,setItem:(k,v)=>map.set(k,v),removeItem:k=>map.delete(k)}; };
 
+test('new-tab purchase retains the specific billing restriction and service errors', async () => {
+ for (const [code, message] of [['BILLING_HOLD','hold'],['BILLING_UNAVAILABLE','unavailable'],['POPUP_BLOCKED','popup']]) {
+  const messages=[];
+  const controller=createHomePurchaseController({openPurchase:async()=>{throw {code};},onMessage:value=>messages.push(value)});
+  await controller.buy();assert.equal(messages.at(-1),message);
+ }
+});
+
 test('homepage purchase opens immediately in a separate tab without saving or navigating away', () => {
  let opened = 0;
  const controller = createHomePurchaseController({

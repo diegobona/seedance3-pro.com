@@ -3,6 +3,7 @@ import { withSiteTrust } from './site-trust.mjs';
 import { withModelDisplayNames } from './model-display-names.mjs';
 import { withPublicModelPaths } from './public-model-paths.mjs';
 import { withSiteTypography } from './site-typography.mjs';
+import { withSitePromo } from './site-promo.mjs';
 
 export const PUBLIC_NAVIGATION = [
   { href: '/app/video/seedance-2-5', en: 'AI Video', zh: 'AI Video' },
@@ -38,19 +39,19 @@ export function renderSiteHeader({ pathname = '/', locale = 'en' } = {}) {
 
 export function withSiteNavigation(html, pathname = '/') {
   html = withPublicModelPaths(withModelDisplayNames(html)).replace(/<nav\b[^>]*class="[^\"]*\bfooter-(?:model|credit)-links\b[^\"]*"[^>]*>[\s\S]*?<\/nav>\s*/gi, '');
-  if (!/<header\b[^>]*class="site-header"/.test(html)) return withSiteTypography(withSiteTrust(html, pathname));
+  if (!/<header\b[^>]*class="site-header"/.test(html)) return withSitePromo(withSiteTypography(withSiteTrust(html, pathname)), pathname);
   const locale = pathname.startsWith('/zh/') || pathname === '/zh' ? 'zh' : 'en';
   let output = html.replace(/<header\b[^>]*class="site-header"[^>]*>[\s\S]*?<\/header>/, renderSiteHeader({ pathname, locale }));
-  output = output.replace(/href="\/assets\/site-navigation\.css(?:\?[^\"]*)?"/g, 'href="/assets/site-navigation.css?v=20261020-purchase"');
+  output = output.replace(/href="\/assets\/site-navigation\.css(?:\?[^\"]*)?"/g, 'href="/assets/site-navigation.css?v=20261030-underline"');
   if (!output.includes('href="/assets/site-navigation.css?')) {
-    output = output.replace('</head>', '  <link rel="stylesheet" href="/assets/site-navigation.css?v=20261020-purchase">\n</head>');
+    output = output.replace('</head>', '  <link rel="stylesheet" href="/assets/site-navigation.css?v=20261030-underline">\n</head>');
   }
   if (!output.includes('src="/assets/site-navigation.js"')) {
     output = output.replace('</head>', '  <script src="/assets/site-navigation.js" defer></script>\n</head>');
   }
-  output=output.replace(/src="\/assets\/site-account\.mjs(?:\?[^\"]*)?"/g,'src="/assets/site-account.mjs?v=20261020-purchase"');
+  output=output.replace(/src="\/assets\/site-account\.mjs(?:\?[^\"]*)?"/g,'src="/assets/site-account.mjs?v=20261031-orders"');
   if (!output.includes('src="/assets/site-account.mjs?')) {
-    output = output.replace('</head>', '  <script type="module" src="/assets/site-account.mjs?v=20261020-purchase"></script>\n</head>');
+    output = output.replace('</head>', '  <script type="module" src="/assets/site-account.mjs?v=20261031-orders"></script>\n</head>');
   }
-  return withSiteTypography(withSiteTrust(output, pathname));
+  return withSitePromo(withSiteTypography(withSiteTrust(output, pathname)), pathname);
 }

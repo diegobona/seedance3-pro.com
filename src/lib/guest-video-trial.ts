@@ -1,4 +1,5 @@
 import { guestDeviceHash } from './guest-device'
+import { GUEST_VIDEO_DURATION_SECONDS } from '../../app/guest-video.mjs'
 
 export const GUEST_VIDEO_SECONDS = 10
 const COOKIE_NAME = 'seedance_guest_video'
@@ -9,6 +10,7 @@ export interface GuestVideoIdentity { id: string; userId: string; networkHash: s
 export interface GuestVideoTrialStore {
   getById(id: string): Promise<GuestVideoIdentity | null>
   hasNetwork(networkHash: string): Promise<boolean>
+  bindNetwork?(networkHash: string, userId: string): Promise<void>
   hasDevice?(deviceHash: string): Promise<boolean>
   bindDevice?(deviceHash: string, userId: string): Promise<void>
   create(identity: GuestVideoIdentity): Promise<void>
@@ -68,6 +70,11 @@ export async function resolveGuestVideoTrial(request: Request, options: Options)
   const deviceHash = await guestDeviceHash(request, options.secret)
   if (existing?.claimedUserId) throw new GuestVideoTrialError('GUEST_TRIAL_USED')
   if (existing) {
+    // A generation/upload on a new network must not leave that network eligible
+    // for a fresh wallet after cookie deletion. Read-only status calls do not bind.
+    if (options.create) await options.store.bindNetwork?.(
+      await guestVideoNetworkHash(request, options.secret), existing.userId,
+    )
     if (deviceHash) await options.store.bindDevice?.(deviceHash, existing.userId)
     return { session: { user: { id: existing.userId, isGuest: true } } }
   }
@@ -94,7 +101,7 @@ export async function getGuestVideoBalance(request: Request, options: Options) {
   const remaining = identity ? await options.store.getBalance(identity.userId)
     : await options.store.hasNetwork(await guestVideoNetworkHash(request, options.secret))
       || (deviceHash && await options.store.hasDevice?.(deviceHash)) ? 0 : GUEST_VIDEO_SECONDS
-  return { remaining, generationCost: 5, guest: true, maxDuration: GUEST_VIDEO_SECONDS, expiresDaily: false }
+  return { remaining, generationCost: GUEST_VIDEO_DURATION_SECONDS, guest: true, maxDuration: GUEST_VIDEO_DURATION_SECONDS, expiresDaily: false }
 }
 export function withGuestVideoCookie(response: Response, guest: GuestVideoAccess | null) {
   if (!guest?.setCookie) return response

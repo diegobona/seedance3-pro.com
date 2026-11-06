@@ -43,7 +43,6 @@ function renderPage(slug, locale) {
   <header class="site-header"></header>
   <main id="main-content" class="trust-document">
     <article aria-labelledby="page-title">
-      <p class="trust-date">${zh ? '生效及更新日期：' : 'Effective and updated: '}<time datetime="${page.updatedAt}">${page.updatedAt}</time></p>
       <h1 id="page-title">${escape(page.title)}</h1>
       <p class="trust-lead">${escape(page.lead)}</p>
       <nav class="trust-toc" aria-label="${zh ? '本页目录' : 'On this page'}">${toc}</nav>

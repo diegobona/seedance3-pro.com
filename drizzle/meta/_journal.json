@@ -43,6 +43,13 @@
       "when": 1791079336586,
       "tag": "0005_natural_iron_monger",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1792972800000,
+      "tag": "0006_pause_registered_credit_grants",
+      "breakpoints": true
     }
   ]
 }

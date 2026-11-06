@@ -1,3 +1,4 @@
+import { REGISTERED_FREE_CREDITS_ENABLED } from '../../app/credit-policy.mjs'
 import { sql } from 'drizzle-orm'
 import { DAILY_CREDIT_TIME_ZONE, DAILY_FREE_CREDIT_GRANT, LEGACY_TRIAL_CREDIT_GRANT } from '../lib/generation-credits'
 
@@ -5,6 +6,7 @@ import { DAILY_CREDIT_TIME_ZONE, DAILY_FREE_CREDIT_GRANT, LEGACY_TRIAL_CREDIT_GR
 export const creditDay = sql`(now() AT TIME ZONE ${DAILY_CREDIT_TIME_ZONE})::date`
 
 export function availableDailyCredits(alias: string) {
+  if (!REGISTERED_FREE_CREDITS_ENABLED) return sql`0`
   const account = sql.identifier(alias)
   return sql`CASE
     WHEN ${account}."daily_credit_date" = ${creditDay} THEN ${account}."daily_free_credits"
@@ -14,6 +16,10 @@ export function availableDailyCredits(alias: string) {
 
 export function effectiveCreditBalance(alias: string) {
   const account = sql.identifier(alias)
+  if (!REGISTERED_FREE_CREDITS_ENABLED) return sql`(${account}."credit_balance" - CASE
+    WHEN ${account}."daily_credit_date" IS NULL AND ${account}."plan" = 'free'
+      THEN LEAST(${account}."credit_balance", ${LEGACY_TRIAL_CREDIT_GRANT})
+    ELSE ${account}."daily_free_credits" END)`
   return sql`CASE WHEN ${account}."daily_credit_date" IS DISTINCT FROM ${creditDay} THEN
     ${account}."credit_balance" - CASE
       WHEN ${account}."daily_credit_date" IS NULL THEN

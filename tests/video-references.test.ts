@@ -55,6 +55,17 @@ test('local inline references contain the owned original bytes without depending
   assert.match((await resolveVideoReferences([id], 'owner', h.bucket, now))[0], /^https:\/\/seedance3-pro\.com\//)
 })
 
+test('an explicit local image bridge origin preserves ownership, lifetime and opaque image IDs', async () => {
+  const h = setup()
+  const { id } = await (await uploadVideoReference(h.request(), h.options)).json() as { id: string }
+  const [url] = await resolveVideoReferences([id], 'owner', h.bucket, now, [], { publicOrigin: 'https://local-images.example' })
+  assert.equal(url, `https://local-images.example/api/videos/references?id=${id}`)
+  await assert.rejects(resolveVideoReferences([id], 'not-owner', h.bucket, now, [], { publicOrigin: 'https://local-images.example' }), /unavailable/)
+  for (const publicOrigin of ['http://local-images.example','https://local-images.example/path','https://local-images.example?token=key']) {
+    await assert.rejects(resolveVideoReferences([id], 'owner', h.bucket, now, [], { publicOrigin }), /HTTPS/)
+  }
+})
+
 test('upload rejects cross-origin and rate-limited requests before storing', async () => {
   const h = setup()
   const cross = h.request()

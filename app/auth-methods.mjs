@@ -1,3 +1,3 @@
-// Temporarily hide email/password authentication and reject it on the server.
-// Keep the original flows intact; set true and rebuild/deploy to restore them.
-export const EMAIL_PASSWORD_AUTH_ENABLED = false;
+// Shared switch for the email/password API and both authentication dialogs.
+// Set false and rebuild/deploy to temporarily hide and disable these flows.
+export const EMAIL_PASSWORD_AUTH_ENABLED = true;

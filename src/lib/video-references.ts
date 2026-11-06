@@ -89,8 +89,10 @@ export async function serveVideoReference(request: Request, bucket?: R2Bucket, n
   })
 }
 
-export async function resolveVideoReferences(ids: string[], userId: string, bucket?: R2Bucket, now = Date.now(), additionalOwnerIds: string[] = [], { inline = false } = {}) {
+export async function resolveVideoReferences(ids: string[], userId: string, bucket?: R2Bucket, now = Date.now(), additionalOwnerIds: string[] = [], { inline = false, publicOrigin = 'https://seedance3-pro.com' } = {}) {
   if (!bucket) throw new Error('Reference uploads are unavailable.')
+  const origin = new URL(publicOrigin)
+  if (origin.protocol !== 'https:' || origin.username || origin.password || origin.pathname !== '/' || origin.search || origin.hash) throw new Error('A public HTTPS reference origin is required.')
   const urls: string[] = []
   for (const id of ids) {
     if (!ID_PATTERN.test(id)) throw new Error('Invalid reference image.')
@@ -109,7 +111,7 @@ export async function resolveVideoReferences(ids: string[], userId: string, buck
       if (bytes.length < 12 || bytes.length > MAX_BYTES || !matchesImageType(bytes, type)) throw new Error('Invalid reference image.')
       urls.push(`data:${type};base64,${Buffer.from(bytes).toString('base64')}`)
     } else {
-      urls.push(`https://seedance3-pro.com/api/videos/references?id=${id}`)
+      urls.push(`${origin.origin}/api/videos/references?id=${id}`)
     }
   }
   return urls

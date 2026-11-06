@@ -394,7 +394,7 @@ export function createVideoGenerationTaskStore(db: AppDatabase, networkKey?: str
       return taskAndBalance(db, localTaskId)
     },
 
-    async finalizeFailure(localTaskId, message, expectedLeaseUntil) {
+    async finalizeFailure(localTaskId, message, expectedLeaseUntil, freeCostRefundable = false) {
       const result = await db.execute<TaskRow>(sql`
         WITH finalized AS (
           UPDATE "video_generation_task" AS task
@@ -410,7 +410,9 @@ export function createVideoGenerationTaskStore(db: AppDatabase, networkKey?: str
           RETURNING task.*
         ), refunded AS (
           UPDATE "generation_credit_reservation" AS reservation
-          SET "status" = 'refunded', "updated_at" = now()
+          SET "status" = 'refunded', "updated_at" = now(),
+              "free_cost_micros" = CASE WHEN ${freeCostRefundable} AND finalized."workflow_id" LIKE 'seeapi:%'
+                THEN 0 ELSE reservation."free_cost_micros" END
           FROM finalized
           WHERE reservation."id" = finalized."reservation_id"
             AND reservation."status" = 'reserved'

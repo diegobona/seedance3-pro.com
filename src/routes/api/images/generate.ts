@@ -8,7 +8,8 @@ import {
   handleImageGenerationRequest,
   preflightImageGenerationRequest,
 } from '../../../../scripts/tuzi-image.mjs'
-import { createAppDatabase } from '../../../db'
+import { createAppDatabase, isD1Database } from '../../../db'
+import { saveGeneratedImages } from '../../../lib/creation-storage'
 import { createGenerationCreditStore } from '../../../db/generation-credits'
 import { createAuth } from '../../../lib/auth'
 import { generateImageWithGuestAccess } from '../../../lib/guest-image-generation'
@@ -38,8 +39,11 @@ export const Route = createFileRoute('/api/images/generate')({
           generate: async (protectedRequest, userId) => handleImageGenerationRequest(
             protectedRequest,
             env,
-            { skipPreflight: true, fetchImpl: createTuziTlsFetch(connect), prepareImages: (images: Array<{ url?: string; dataUrl?: string }>) =>
-              prepareImageAnimation(images, userId, env.VIDEO_REFERENCES) },
+            { skipPreflight: true, fetchImpl: createTuziTlsFetch(connect), prepareImages: async (images: Array<{ url?: string; dataUrl?: string }>,details:{prompt:string;model:string}) => {
+              const prepared=await prepareImageAnimation(images,userId,env.VIDEO_REFERENCES)
+              if(isD1Database(db))await saveGeneratedImages(db,env.VIDEO_REFERENCES,prepared,userId,details)
+              return prepared
+            } },
           ),
         })
       },

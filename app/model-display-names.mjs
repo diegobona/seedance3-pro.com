@@ -1,7 +1,7 @@
 // Public labels only; URLs, provider IDs and generation prompts keep their values.
 function longNames(text) {
   return String(text)
-    .replace(/\bMiniMax\s+H3\b/gi, 'Seedance 2.5')
+    .replace(/\bMiniMax\s+H3(?:\s+Max\s+Turbo)?\b/gi, 'Seedance 2.5')
     .replace(/\bGPT[\s-]*Image\s*2(?![.\d])/gi, 'GPT Image 2.5');
 }
 

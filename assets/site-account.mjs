@@ -1,6 +1,8 @@
+import { initializeHeaderTrialEntry } from './header-trial-entry.mjs';
 // Public pages read the same cookie-backed session as the model workspace.
 import { guestDeviceHeaders } from './guest-device.mjs';
 import { bindCreditPurchaseLink, requestCreditCheckout } from './credit-checkout.mjs';
+import { initializeCheckoutReturnStatus } from './checkout-return-status.mjs';
 export async function loadSiteAccount({ fetchImpl = fetch, signal, onSession = () => {} } = {}) {
   const options = { credentials: 'same-origin', cache: 'no-store', headers: { accept: 'application/json' }, signal };
   const response = await fetchImpl('/api/auth/get-session', options);
@@ -24,10 +26,15 @@ export async function loadSiteAccount({ fetchImpl = fetch, signal, onSession = (
 
 export function initializeSiteAccount(root, { fetchImpl = fetch, eventTarget = window } = {}) {
   const doc = root.ownerDocument;
+  const primary = doc.querySelector('[data-home-primary]') || doc.querySelector('.site-header .header-actions > a.button.small');
+  const cleanupTrialEntry = primary ? initializeHeaderTrialEntry(primary, { fetchImpl, eventTarget }) : null;
   const zh = doc.documentElement.lang.startsWith('zh');
   const text = (en, cn) => zh ? cn : en;
   const path = value => (zh ? '/zh' : '') + value;
   let active = true, version = 0, controller, userKey = '', toggle, panel, creditValue;
+  let checkoutUserId = '', cleanupCheckoutReturn;
+  // The homepage's purchase controller already verifies its own payment return.
+  const hasOwnPaymentStatus = ['/', '/index.html', '/zh', '/zh/', '/zh/index.html'].includes(eventTarget.location.pathname);
   const element = (tag, className, value) => {
     const node = doc.createElement(tag); node.className = className;
     if (value !== undefined) node.textContent = value;
@@ -38,18 +45,18 @@ export function initializeSiteAccount(root, { fetchImpl = fetch, eventTarget = w
     toggle?.setAttribute('aria-expanded', 'false');
   }
   function render(user) {
+    const owner = user?.id || '';
+    if (owner !== checkoutUserId) {
+      cleanupCheckoutReturn?.(); checkoutUserId = owner;
+      cleanupCheckoutReturn = hasOwnPaymentStatus ? null : initializeCheckoutReturnStatus({ userId: owner, eventTarget, fetchImpl });
+    }
     const key = user ? JSON.stringify([user.id, user.name, user.email, user.image]) : 'guest';
     if (key === userKey) return;
     userKey = key; toggle = panel = creditValue = null;
-    const primary=doc.querySelector('[data-home-primary]');
-    if(primary){
-      primary.textContent=user?text('Buy credits','购买积分'):text('Try for free','免费试用');
-      if(user){primary.dataset.homeBuy='';primary.target='_blank';primary.rel='noopener noreferrer';}
-      else{delete primary.dataset.homeBuy;primary.removeAttribute('target');primary.removeAttribute('rel');}
-      primary.href=user?path('/billing')+'?checkout=start':'#create';
-    }
     eventTarget.dispatchEvent(new CustomEvent('seedance:account-changed'));
     root.replaceChildren();
+    const creations = element('a', 'site-account-creations', text('My creations', '我的作品'));
+    creations.href = path('/creations'); root.append(creations);
     if (!user) {
       const link = element('a', 'site-account-login', text('Log in', '登录'));
       link.dataset.accountLogin = ''; link.href = path('/app') + '?auth=login'; root.append(link);
@@ -77,11 +84,11 @@ export function initializeSiteAccount(root, { fetchImpl = fetch, eventTarget = w
     panel = element('div', 'site-account-panel'); panel.hidden = true;
     panel.append(element('strong', '', name));
     if (user.email) panel.append(element('small', '', String(user.email)));
-    const billing = element('a', 'site-account-billing', text('Buy credits & billing', '购买积分与账单')); billing.href = path('/billing') + '?checkout=start';
+    const billing = element('a', 'site-account-billing', text('Buy credits', '购买积分')); billing.href = path('/checkout');
     billing.target = '_blank'; billing.rel = 'noopener noreferrer';
     bindCreditPurchaseLink(billing, { locale: zh ? 'zh' : 'en', eventTarget, requestCheckout: options => requestCreditCheckout({ ...options, fetchImpl }) });
     const workspace = element('a', '', text('Open workspace', '打开工作台')); workspace.href = path('/app');
-    const details=element('a','site-account-details',text('Credits','积分包'));details.href=path('/pricing');
+    const details=element('a','site-account-details',text('Order history','订单记录'));details.href=path('/billing')+'#orders';
     const logout = element('button', 'site-account-logout', text('Log out', '退出登录')); logout.type = 'button';
     const error = element('small', 'site-account-error'); error.hidden = true;
     logout.addEventListener('click', async () => {
@@ -94,7 +101,7 @@ export function initializeSiteAccount(root, { fetchImpl = fetch, eventTarget = w
         logout.disabled = false; error.textContent = text('Unable to log out. Please try again.', '退出失败，请重试。'); error.hidden = false;
       }
     });
-    panel.append(billing, details, workspace, logout, error);
+    panel.append(details, billing, workspace, logout, error);
     toggle.addEventListener('click', () => { panel.hidden = !panel.hidden; toggle.setAttribute('aria-expanded', String(!panel.hidden)); });
     root.append(pill, toggle, panel);
   }
@@ -114,7 +121,7 @@ export function initializeSiteAccount(root, { fetchImpl = fetch, eventTarget = w
   eventTarget.addEventListener('seedance:auth-changed',refresh);eventTarget.addEventListener('seedance:payment-verified',refresh);
   void refresh();
   return () => {
-    active = false; version += 1; controller?.abort();
+    active = false; version += 1; controller?.abort(); cleanupTrialEntry?.(); cleanupCheckoutReturn?.();
     doc.removeEventListener('mousedown', outside); doc.removeEventListener('keydown', escape); doc.removeEventListener('visibilitychange', visible);
     eventTarget.removeEventListener('focus', refresh); eventTarget.removeEventListener('pageshow', refresh); eventTarget.removeEventListener('seedance:credits-updated', creditsUpdated);
     eventTarget.removeEventListener('seedance:auth-changed',refresh);eventTarget.removeEventListener('seedance:payment-verified',refresh);

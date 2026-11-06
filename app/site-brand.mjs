@@ -1,8 +1,11 @@
-export const BRAND_VERSION = '20261024-blue-brand';
+export const BRAND_VERSION = '20261028-checkout-ui';
 export const BRAND_MARK = `/assets/seedance-mark.svg?v=${BRAND_VERSION}`;
 
 export function brandAssetUrl(path) {
-  return `${path.split('?')[0]}?v=${BRAND_VERSION}`;
+  const assetPath = path.split('?')[0];
+  const version = /\/(?:site-navigation|home-video)\.css$/.test(assetPath) ? '20261031-creations'
+    : assetPath.endsWith('/home-video.js') || assetPath.endsWith('/site-trust.css') ? '20261101-credit-packs' : BRAND_VERSION;
+  return `${assetPath}?v=${version}`;
 }
 
 export function withSiteBrand(html) {

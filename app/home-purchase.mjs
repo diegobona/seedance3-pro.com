@@ -1,4 +1,4 @@
-import {requestCreditCheckout, openCreditPurchase, rememberCheckoutIntent, hasCheckoutIntent, clearCheckoutIntent} from '../assets/credit-checkout.mjs';
+import {requestCreditCheckout, openCreditPurchase, rememberCheckoutIntent, hasCheckoutIntent, clearCheckoutIntent, creditCheckoutErrorMessage} from '../assets/credit-checkout.mjs';
 import {verifiedCheckoutStatus} from './daily-credits.mjs';
 
 export function homeGenerationAction({guest, remaining, duration, freeBudgetBlocked=false, paidRemaining=0}) {
@@ -29,7 +29,7 @@ export function createHomePurchaseController({locale='en',path='/',storage=null,
     if(busy || authenticating)return;
     if(openPurchase){
       clearCheckoutIntent(storage);changeBusy(true);onMessage('');
-      try{await openPurchase();}catch{onMessage('checkout-error');}finally{changeBusy(false);}
+      try{await openPurchase();}catch(error){onMessage(error?.code==='BILLING_HOLD'?'hold':error?.code==='BILLING_UNAVAILABLE'?'unavailable':error?.code==='POPUP_BLOCKED'?'popup':'checkout-error');}finally{changeBusy(false);}
       return;
     }
     const current=epoch;changeBusy(true);onMessage('');clearCheckoutIntent(storage);
@@ -58,7 +58,9 @@ export function initializeHomePurchase({eventTarget=window,doc=document,fetchImp
       'draft-error':text('Could not save your draft. Please try again before leaving this page.','无法保存草稿，请重试后再离开页面。'),
       'checkout-error':text('Could not open checkout. Please try again.','无法打开付款页面，请重试。'),
       'auth-error':text('Could not open sign in. Please try again.','无法打开登录窗口，请重试。'),
-      hold:text('Your payment needs review. Please contact support.','账户支付需要审核，请联系支持。'),
+      hold:creditCheckoutErrorMessage({code:'BILLING_HOLD'},locale),
+      unavailable:creditCheckoutErrorMessage({code:'BILLING_UNAVAILABLE'},locale),
+      popup:creditCheckoutErrorMessage({code:'POPUP_BLOCKED'},locale),
       pending:text('Waiting for payment confirmation. Your draft is saved.','正在等待支付确认，你的草稿已保留。'),
       cancelled:text('Checkout cancelled. Your draft is still here.','已取消付款，草稿已保留。'),
       reversed:text('This payment was reversed. Please check your billing history.','此笔付款已撤销，请查看账单记录。'),
@@ -95,7 +97,7 @@ export function initializeHomePurchase({eventTarget=window,doc=document,fetchImp
   const click=event=>{
     if(event.target.closest('.auth-dialog-backdrop'))return;
     if(event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
-    const buy=event.target.closest('[data-home-buy]');
+    const buy=event.target.closest('[data-home-buy], .home-member-purchase');
     const auth=event.target.closest('[data-home-auth], [data-account-login]');
     if(buy){event.preventDefault();void controller.buy();}
     else if(auth){event.preventDefault();void controller.auth({mode:auth.dataset.homeAuth||'login'});}

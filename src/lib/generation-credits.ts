@@ -1,4 +1,6 @@
-export const DAILY_FREE_CREDIT_GRANT = 5
+import { REGISTERED_FREE_CREDITS_ENABLED } from '../../app/credit-policy.mjs'
+
+export const DAILY_FREE_CREDIT_GRANT = REGISTERED_FREE_CREDITS_ENABLED ? 5 : 0
 // Existing unclassified trial balances used the old 15-credit allowance.
 export const LEGACY_TRIAL_CREDIT_GRANT = 15
 export const DAILY_CREDIT_TIME_ZONE = 'Asia/Shanghai'

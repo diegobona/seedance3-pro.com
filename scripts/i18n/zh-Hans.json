@@ -3,6 +3,30 @@
   "notes": "Exact English source and reviewed Simplified Chinese translation. Original model names, prices, code and example prompts are preserved.",
   "entries": [
     {
+      "source": "Ultra-fast generation",
+      "translation": "超快生成速度"
+    },
+    {
+      "source": "FREE VIDEO SECONDS",
+      "translation": "秒视频免费体验"
+    },
+    {
+      "source": "Open video generator",
+      "translation": "打开视频生成器"
+    },
+    {
+      "source": "Loading countdown",
+      "translation": "正在加载倒计时"
+    },
+    {
+      "source": "days",
+      "translation": "天"
+    },
+    {
+      "source": "No credits charged if generation fails",
+      "translation": "生成失败不扣积分"
+    },
+    {
       "source": "No login. No sign-up.",
       "translation": "无需登录 · 无需注册"
     },
@@ -27,16 +51,8 @@
       "translation": "免费体验 10 秒视频"
     },
     {
-      "source": "Buy 500 video seconds ↗",
-      "translation": "购买 500 秒视频 ↗"
-    },
-    {
       "source": "Credits never expire. No subscription.",
       "translation": "积分永久有效，无订阅。"
-    },
-    {
-      "source": "for 500 seconds of video",
-      "translation": "可生成总计 500 秒视频"
     },
     {
       "source": "Seedance 3.0 isn’t available yet. Start creating with Seedance 2.5 while you wait.",
@@ -53,10 +69,6 @@
     {
       "source": "Try 10 seconds free. No sign-up or login required.",
       "translation": "先免费体验 10 秒，无需注册或登录。"
-    },
-    {
-      "source": "US$4.99 buys 500 seconds of video. Credits never expire. No subscription.",
-      "translation": "US$4.99 可生成总计 500 秒视频。积分永久有效，无订阅。"
     },
     {
       "source": "A 10-second video ≈ US$0.10",
@@ -8859,10 +8871,6 @@
       "translation": "领取每日 5 个免费积分。"
     },
     {
-      "source": "5 free credits every day. Buy 500 nonexpiring credits for US$4.99 once. No subscription or auto-renewal.",
-      "translation": "每天 5 免费积分；US$4.99 一次性购买 500 永久积分。无订阅、无自动续费。"
-    },
-    {
       "source": "Every signed-in account gets 5 free credits daily, including accounts that purchase credits.",
       "translation": "所有登录账户每天获得 5 免费积分，包括购买过积分的用户。"
     },
@@ -8921,10 +8929,6 @@
     {
       "source": "US$0.01",
       "translation": "US$0.01"
-    },
-    {
-      "source": "US$4.99",
-      "translation": "US$4.99"
     },
     {
       "source": "One-time payment, no auto-renewal. Request a refund within 7 days for a completely unused purchased pack.",
@@ -9015,8 +9019,252 @@
       "translation": "Seedance 3.0 暂未开放，先用 2.5 开始创作。"
     },
     {
-      "source": "Lowest price online",
-      "translation": "全网最低价"
+      "source": "AFTER YOUR TRIAL",
+      "translation": "体验之后"
+    },
+    {
+      "source": "Log in and buy credits to continue",
+      "translation": "登录并购买积分后继续"
+    },
+    {
+      "source": "and buy a credit pack to keep creating.",
+      "translation": "后购买积分包继续创作。"
+    },
+    {
+      "source": "Pricing | SEEDANCE 3.0",
+      "translation": "价格 | SEEDANCE 3.0"
+    },
+    {
+      "source": "One-time credit packs at $11.90, $24.90 and $49.90. Up to 30% bonus credits for videos and images. Credits never expire. No subscription.",
+      "translation": "一次性积分包：$11.90、$24.90、$49.90。最多赠送 30% 积分，视频与图片通用，积分永久有效，无需订阅。"
+    },
+    {
+      "source": "Up to 30% bonus credits",
+      "translation": "最高赠送 30% 积分"
+    },
+    {
+      "source": "Packs from US$11.90",
+      "translation": "积分包 US$11.90 起"
+    },
+    {
+      "source": "— Packs from US$11.90",
+      "translation": "— 积分包 US$11.90 起"
+    },
+    {
+      "source": "1,100 credits · US$11.90",
+      "translation": "1,100 积分 · US$11.90"
+    },
+    {
+      "source": "US$11.90",
+      "translation": "US$11.90"
+    },
+    {
+      "source": "for 1,100 seconds of video",
+      "translation": "可生成总计 1,100 秒视频"
+    },
+    {
+      "source": "Buy 1,100 video seconds ↗",
+      "translation": "购买 1,100 秒视频 ↗"
+    },
+    {
+      "source": "ONE-TIME PACKS · CREDITS NEVER EXPIRE",
+      "translation": "一次购买 · 积分永久有效"
+    },
+    {
+      "source": "More credits. More possibilities.",
+      "translation": "为下一次创作，准备更多可能"
+    },
+    {
+      "source": "Choose your pack and start creating videos and images. No subscription.",
+      "translation": "选择积分包，开始创作视频与图片。无需订阅。"
+    },
+    {
+      "source": "Credits never expire",
+      "translation": "积分永久有效"
+    },
+    {
+      "source": "credits",
+      "translation": "积分"
+    },
+    {
+      "source": "seconds",
+      "translation": "秒"
+    },
+    {
+      "source": "TOTAL VIDEO GENERATION",
+      "translation": "累计视频生成时长"
+    },
+    {
+      "source": "A smaller pack to get started",
+      "translation": "轻量起步，按需创作"
+    },
+    {
+      "source": "One-time payment · No subscription",
+      "translation": "一次购买 · 无订阅"
+    },
+    {
+      "source": "Save",
+      "translation": "节省"
+    },
+    {
+      "source": "per credit vs. Starter",
+      "translation": "（每积分单价相较入门包）"
+    },
+    {
+      "source": "☆ MOST POPULAR",
+      "translation": "☆ 最受欢迎"
+    },
+    {
+      "source": "Video totals assume all credits are used for video at 1 credit per second, across multiple generations. Credits can also be used for images, reducing the available video allowance. Bonuses are relative to each pack’s base credits; savings compare the price per credit with Starter. All prices are in USD.",
+      "translation": "视频额度按 1 积分 / 秒、全部积分用于视频计算，为多次生成的累计时长。积分也可用于图片；用于图片后，视频额度相应减少。赠送比例以各档基础积分计算；节省比例以入门包每积分单价计算。所有价格均为美元。"
+    },
+    {
+      "source": "Video creation offers",
+      "translation": "视频创作优惠"
+    },
+    {
+      "source": "No login needed",
+      "translation": "无需登录即可免费使用"
+    },
+    {
+      "source": "— Create your first video for free",
+      "translation": "— 立即创建您的第一段视频"
+    },
+    {
+      "source": "Start for free",
+      "translation": "免费开始"
+    },
+    {
+      "source": "AI video",
+      "translation": "AI 视频"
+    },
+    {
+      "source": "Try now",
+      "translation": "立即尝试"
+    },
+    {
+      "source": "Choose an offer",
+      "translation": "选择横幅"
+    },
+    {
+      "source": "Show offer 1",
+      "translation": "显示第 1 条"
+    },
+    {
+      "source": "Show offer 2",
+      "translation": "显示第 2 条"
+    },
+    {
+      "source": "Dismiss banner",
+      "translation": "关闭横幅"
+    },
+    {
+      "source": "© 2026 ColdStone Technology Co., Ltd.",
+      "translation": "© 2026 ColdStone Technology Co., Ltd."
+    },
+    {
+      "source": "Refund Policy",
+      "translation": "退款政策"
+    },
+    {
+      "source": "Contact us",
+      "translation": "联系我们"
+    },
+    {
+      "source": "For help with the service or an order, email us.",
+      "translation": "有使用或订单问题，请通过邮箱联系我们。"
+    },
+    {
+      "source": "Copy email",
+      "translation": "复制邮箱"
+    },
+    {
+      "source": "Open email app ↗",
+      "translation": "打开邮件应用 ↗"
+    },
+    {
+      "source": "Starter Pack",
+      "translation": "入门积分包"
+    },
+    {
+      "source": "$0.0108/credit",
+      "translation": "$0.0108/积分"
+    },
+    {
+      "source": "1,000 base +",
+      "translation": "1,000 基础 +"
+    },
+    {
+      "source": "100 bonus credits",
+      "translation": "100 赠送积分"
+    },
+    {
+      "source": "+10% bonus credits",
+      "translation": "+10% 积分赠送"
+    },
+    {
+      "source": "18 min 20 sec · 220 × 5-second videos",
+      "translation": "18 分 20 秒 · 220 条 5 秒视频"
+    },
+    {
+      "source": "Get 1,100 credits",
+      "translation": "购买 1,100 积分"
+    },
+    {
+      "source": "Creator Pack",
+      "translation": "创作积分包"
+    },
+    {
+      "source": "$0.0083/credit",
+      "translation": "$0.0083/积分"
+    },
+    {
+      "source": "2,500 base +",
+      "translation": "2,500 基础 +"
+    },
+    {
+      "source": "500 bonus credits",
+      "translation": "500 赠送积分"
+    },
+    {
+      "source": "+20% bonus credits",
+      "translation": "+20% 积分赠送"
+    },
+    {
+      "source": "50 min · 600 × 5-second videos",
+      "translation": "50 分钟 · 600 条 5 秒视频"
+    },
+    {
+      "source": "Get 3,000 credits",
+      "translation": "购买 3,000 积分"
+    },
+    {
+      "source": "Pro Pack",
+      "translation": "专业积分包"
+    },
+    {
+      "source": "$0.0077/credit",
+      "translation": "$0.0077/积分"
+    },
+    {
+      "source": "5,000 base +",
+      "translation": "5,000 基础 +"
+    },
+    {
+      "source": "1,500 bonus credits",
+      "translation": "1,500 赠送积分"
+    },
+    {
+      "source": "+30% bonus credits",
+      "translation": "+30% 积分赠送"
+    },
+    {
+      "source": "108 min 20 sec · 1,300 × 5-second videos",
+      "translation": "108 分 20 秒 · 1,300 条 5 秒视频"
+    },
+    {
+      "source": "Get 6,500 credits",
+      "translation": "购买 6,500 积分"
     }
   ]
 }

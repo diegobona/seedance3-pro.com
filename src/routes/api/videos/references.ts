@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import '@tanstack/react-start'
 import { env } from 'cloudflare:workers'
 import { createAuth } from '../../../lib/auth'
+import { verifyGuestVideoRequest } from '../../../lib/guest-video-verification'
 import { createAppDatabase } from '../../../db'
 import { createGuestVideoTrialStore } from '../../../db/guest-video-trials'
 import { resolveGuestVideoTrial, withGuestVideoCookie, guestVideoTrialErrorResponse, GuestVideoTrialError, type GuestVideoAccess } from '../../../lib/guest-video-trial'
@@ -16,6 +17,10 @@ export const Route = createFileRoute('/api/videos/references')({
           const origin = request.headers.get('origin')
           if (origin && origin !== new URL(request.url).origin) return Response.json({ success: false, message: 'Cross-site upload is not allowed.' }, { status: 403 })
           const session = await createAuth(request, env).api.getSession({ headers: request.headers })
+          if (!session?.user?.id) {
+            const verification = await verifyGuestVideoRequest(request, env, 'guest_video_reference')
+            if (verification) return verification
+          }
           const store = createGuestVideoTrialStore(createAppDatabase(env))
           guest = session?.user?.id ? null : await resolveGuestVideoTrial(request, {
             secret: env.BETTER_AUTH_SECRET, store, create: true,

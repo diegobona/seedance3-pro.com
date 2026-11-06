@@ -11,11 +11,24 @@ export const TRUST_LINKS = [
   { href: '/terms', en: 'Terms of service', zh: '服务条款' },
 ];
 
-export function renderTrustFooter(locale = 'en') {
+export function renderTrustFooter(locale = 'en', { compact = false, popupId = 'footer-contact' } = {}) {
   const zh = locale === 'zh';
-  return `<div class="trust-footer" data-site-trust>
-  <div class="trust-operator"><span>${zh ? '运营者' : 'Operated by'}: ${SITE_OPERATOR}</span><a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a></div>
-  <nav aria-label="${zh ? '服务与政策' : 'Service and policies'}">${TRUST_LINKS.map(link => `<a href="${localizedPath(link.href, locale)}">${zh ? link.zh : link.en}</a>`).join('')}</nav>
+  const links = [
+    { href: '/privacy', label: zh ? '隐私政策' : 'Privacy' },
+    { href: '/terms', label: zh ? '服务条款' : 'Terms' },
+    { href: '/refund-policy', label: zh ? '退款政策' : 'Refund Policy' },
+  ];
+  return `<div class="trust-footer trust-footer-compact" data-site-trust>
+  <span class="trust-copyright">© 2026 ${SITE_OPERATOR}</span>
+  <nav aria-label="${zh ? '服务与政策' : 'Service and policies'}">${links.map(link => `<a href="${localizedPath(link.href, locale)}">${link.label}</a>`).join('<span aria-hidden="true">·</span>')}<span aria-hidden="true">·</span><button type="button" class="footer-contact-trigger" popovertarget="${popupId}">${zh ? '联系我们' : 'Contact'}</button></nav>
+  <div id="${popupId}" class="footer-contact-popover" popover="auto" role="dialog" aria-label="${zh ? '联系我们' : 'Contact us'}">
+    <button type="button" class="footer-contact-close" popovertarget="${popupId}" popovertargetaction="hide" aria-label="${zh ? '关闭' : 'Close'}">×</button>
+    <h2>${zh ? '联系我们' : 'Contact us'}</h2>
+    <p>${zh ? '有使用或订单问题，请通过邮箱联系我们。' : 'For help with the service or an order, email us.'}</p>
+    <div class="footer-contact-email"><span>${SUPPORT_EMAIL}</span><button type="button" data-copy-contact="${SUPPORT_EMAIL}" data-copied="${zh ? '已复制' : 'Copied'}" data-copy-failed="${zh ? '复制失败，请选中邮箱手动复制。' : 'Could not copy. Select the email address to copy it manually.'}">${zh ? '复制邮箱' : 'Copy email'}</button></div>
+    <div class="footer-contact-status" role="status" aria-live="polite"></div>
+    <a class="footer-contact-mail" href="mailto:${SUPPORT_EMAIL}">${zh ? '打开邮件应用' : 'Open email app'} ↗</a>
+  </div>
 </div>`;
 }
 
@@ -32,16 +45,21 @@ export function renderPurchaseAssurance(locale = 'en', popupId = 'purchase-suppo
 export function withSiteTrust(html, pathname = '/') {
   if (!/<footer\b/i.test(html)) return html;
   const locale = pathname === '/zh' || pathname.startsWith('/zh/') ? 'zh' : 'en';
-  const footer = `<!-- SITE_TRUST_START -->\n${renderTrustFooter(locale)}\n<!-- SITE_TRUST_END -->\n`;
+  const compact = /^\/(?:zh\/)?pricing(?:\.html)?\/?$/.test(pathname);
+  const footer = `<!-- SITE_TRUST_START -->\n${renderTrustFooter(locale, { compact })}\n<!-- SITE_TRUST_END -->\n`;
   let output = html.includes('<!-- SITE_TRUST_START -->')
     ? html.replace(/<!-- SITE_TRUST_START -->[\s\S]*?<!-- SITE_TRUST_END -->\n?/, footer)
     : html.replace(/<\/footer>/i, footer + '</footer>');
-  output = output.replace(/href="\/assets\/site-trust\.css(?:\?[^\"]*)?"/g, 'href="/assets/site-trust.css?v=20261023-email"');
+  output = output.replace(/<(p|span)\b[^>]*>© 2026 SEEDANCE 3\.0[^<]*<\/\1>/g, '').replace(/<div class="copyright">\s*<\/div>/g, '');
+  output = output.replace(/href="\/assets\/site-trust\.css(?:\?[^\"]*)?"/g, 'href="/assets/site-trust.css?v=20261101-contact"');
   if (!output.includes('href="/assets/site-trust.css')) {
-    output = output.replace('</head>', '  <link rel="stylesheet" href="/assets/site-trust.css?v=20261023-email">\n</head>');
+    output = output.replace('</head>', '  <link rel="stylesheet" href="/assets/site-trust.css?v=20261101-contact">\n</head>');
   }
-  // Keep the single-pack pricing page compact; policies remain in its footer.
-  if (/^\/(?:zh\/)?pricing(?:\.html)?\/?$/.test(pathname)) {
+  if (!output.includes('src="/assets/site-contact.js')) {
+    output = output.replace('</body>', '<script src="/assets/site-contact.js?v=20261101-contact" defer></script>\n</body>');
+  }
+  // Keep purchase summaries compact; policies remain in the page footer.
+  if (/^\/(?:zh\/)?(?:pricing|seedance-3-0-release-date)(?:\.html)?\/?$/.test(pathname)) {
     return output.replace(/\s*<p\b[^>]*\bdata-purchase-assurance\b[^>]*>[\s\S]*?<\/p>/g, '');
   }
   const purchaseTarget = /(<a\b[^>]*\bdata-credit-pack-buy\b[^>]*>[\s\S]*?<\/a>|<button\b[^>]*\bdata-home-generate\b[^>]*>[\s\S]*?<\/button>)/;

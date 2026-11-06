@@ -6,6 +6,7 @@ import {
   type VideoGenerationTask,
 } from '../src/lib/protected-video-generation'
 import { preflightVideoGenerationRequest } from '../scripts/autodl-video.mjs'
+import { areSeeApiReferencesReachable } from '../scripts/seeapi-video.mjs'
 import { COMPSHARE_FIRST_FRAME_WORKFLOW_ID as compshare, selectVideoWorkflow, assertVideoProviderConfigured, queryVideoTask } from '../src/lib/video-providers'
 
 const validPayload = {
@@ -14,6 +15,23 @@ const validPayload = {
   resolution: '768p',
   aspectRatio: '16:9',
 }
+
+test('a disconnected local image tunnel is rejected before credits or provider submission', async () => {
+  const harness = startHarness({ getSession: async () => ({ user: { id: 'guest-1', isGuest: true } }),
+    preflight: async () => {
+      const reachable = await areSeeApiReferencesReachable(['https://example.test/frame.png'], {
+        fetchImpl: async () => new Response('no tunnel', { status: 502 }),
+      })
+      return reachable ? { ok: true, payload: { ...validPayload, duration: 5 } }
+        : { ok: false, response: Response.json({ code: 'LOCAL_REFERENCE_UNAVAILABLE' }, { status: 503 }) }
+    },
+  })
+  const response = await protectVideoGenerationStart(harness.options as never)
+  assert.equal(response.status, 503)
+  assert.equal((await response.json() as { code: string }).code, 'LOCAL_REFERENCE_UNAVAILABLE')
+  assert.equal(harness.calls.reserve.length, 0)
+  assert.equal(harness.calls.submit, 0)
+})
 
 test('guests may reserve five seconds and keep the other five seconds', async () => {
   const harness = startHarness({ getSession: async () => ({ user: { id: 'guest-1', isGuest: true } }),
@@ -25,8 +43,9 @@ test('guests may reserve five seconds and keep the other five seconds', async ()
   assert.equal(response.headers.get('x-seedance-credit-scope'), 'guest-video')
 })
 
-test('guests cannot submit fifteen seconds or resolutions other than 768p', async () => {
-  for (const payload of [{ ...validPayload, duration: 15 }, { ...validPayload, resolution: '480p' }]) {
+test('guests cannot combine both trials into ten seconds or use other lengths and resolutions', async () => {
+  for (const payload of [{ ...validPayload, duration: 10 }, { ...validPayload, duration: 15 },
+    { ...validPayload, duration: 5, resolution: '480p' }]) {
     const harness = startHarness({ getSession: async () => ({ user: { id: 'guest-1', isGuest: true } }),
       preflight: async () => ({ ok: true, payload }) })
     const response = await protectVideoGenerationStart(harness.options as never)
@@ -38,7 +57,8 @@ test('guests cannot submit fifteen seconds or resolutions other than 768p', asyn
 })
 
 test('an exhausted guest is prompted to register without submitting to the provider', async () => {
-  const harness = startHarness({ getSession: async () => ({ user: { id: 'guest-1', isGuest: true } }) })
+  const harness = startHarness({ getSession: async () => ({ user: { id: 'guest-1', isGuest: true } }),
+    preflight: async () => ({ ok: true, payload: { ...validPayload, duration: 5 } }) })
   harness.options.taskStore.reserveAndCreate = async () => null as never
   const response = await protectVideoGenerationStart(harness.options as never)
   assert.equal(response.status, 402)

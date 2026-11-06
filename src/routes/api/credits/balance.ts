@@ -28,8 +28,10 @@ export const Route = createFileRoute('/api/credits/balance')({
             getBalance: (userId) => creditStore.getBalance(userId),
             ...(creditStore.getBreakdown ? { getBreakdown: (userId: string) => creditStore.getBreakdown!(userId) } : {}),
             ...(new URL(request.url).searchParams.get('guest_video') === '1' ? {
-              getGuestBalance: () => getGuestVideoBalance(request, {
-                secret: env.BETTER_AUTH_SECRET, store: createGuestVideoTrialStore(db),
+              getGuestBalance: async () => ({
+                ...await getGuestVideoBalance(request, { secret: env.BETTER_AUTH_SECRET, store: createGuestVideoTrialStore(db) }),
+                ...(env.GUEST_VIDEO_PROVIDER === 'yir' ? { videoModelName: 'MiniMax H3', videoResolutionLabel: '768P', maxReferences: 1 } : {}),
+                ...(env.GUEST_VIDEO_PROVIDER === 'seeapi' ? { videoModelName: 'MiniMax H3 Max Turbo', videoResolutionLabel: '768P', maxReferences: 1 } : {}),
               }),
             } : new URL(request.url).searchParams.get('guest_image') === '1' ? {
               getGuestBalance: () => getGuestImageBalance(request, {

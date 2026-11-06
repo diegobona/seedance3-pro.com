@@ -1,7 +1,10 @@
+import { REGISTERED_FREE_CREDITS_ENABLED } from '../../app/credit-policy.mjs'
 import { GPT_IMAGE_2_CREDIT_COST, type GenerationCreditStore, withCreditHeaders } from './generation-credits'
 import { creditBudgetErrorResponse } from './credit-budget-response'
 
-const DAILY_CREDITS_USED_MESSAGE = 'Today’s free credits are used up. Your daily allowance will refresh at the next reset.'
+const DAILY_CREDITS_USED_MESSAGE = REGISTERED_FREE_CREDITS_ENABLED
+  ? 'Today’s free credits are used up. Your daily allowance will refresh at the next reset.'
+  : 'Your credits are used up. Buy credits to keep creating.'
 
 type SessionLike = { user: { id: string; isGuest?: boolean } } | null
 

@@ -1,4 +1,6 @@
 interface Env {
+  RESEND_API_KEY?: string
+  REFUND_EMAIL_FROM?: string
   DB?: WorkerBindings['DB']
   DATABASE_BACKEND?: string
   DATABASE_MIGRATION_PAUSED?: string

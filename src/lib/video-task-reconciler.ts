@@ -148,7 +148,8 @@ async function reconcileClaimedTask(
   }
 
   if (providerResult.status === 'failed') {
-    await store.finalizeFailure(task.id, 'Video generation failed.', task.leaseUntil)
+    if (providerResult.freeCostRefundable) await store.finalizeFailure(task.id, 'Video generation failed.', task.leaseUntil, true)
+    else await store.finalizeFailure(task.id, 'Video generation failed.', task.leaseUntil)
     return
   }
 

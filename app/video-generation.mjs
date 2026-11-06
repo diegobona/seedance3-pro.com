@@ -1,6 +1,7 @@
 import { t, localizedErrorMessage } from './i18n.mjs';
 import { prepareVideoReferenceFrame } from './video-reference-frame.mjs';
 import { guestDeviceHeaders } from '../assets/guest-device.mjs';
+import { fetchWithGuestVideoVerification } from './guest-video-verification.mjs';
 const LOCAL_TASK_UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const TERMINAL_STATUSES = new Set(["succeeded", "failed", "expired", "submission_unknown"]);
 const RETRIABLE_HTTP_STATUSES = new Set([408, 425, 429, 500, 502, 503, 504]);
@@ -256,6 +257,7 @@ export async function requestVideoGeneration({
 } = {}) {
   throwIfAborted(signal);
   const referenceImageIds = [];
+  let singleReference;
   // Validate the whole selection before uploading any reference.
   validateVideoReferenceFiles(referenceFiles);
   for (const [index, file] of referenceFiles.entries()) {
@@ -265,34 +267,45 @@ export async function requestVideoGeneration({
     onUpload({ index: index + 1, total: referenceFiles.length });
     const prepared = await prepareReferenceImpl(file, { aspectRatio, signal });
     throwIfAborted(signal);
-    const upload = await fetchImpl("/api/videos/references", {
+    if (referenceFiles.length === 1) {
+      singleReference = prepared;
+      continue;
+    }
+    const upload = await fetchWithGuestVideoVerification("/api/videos/references", {
       method: "POST", credentials: "same-origin",
       headers: { ...(await guestDeviceHeaders()), "content-type": prepared.type, accept: "application/json" },
       body: prepared, signal,
-    });
+    }, fetchImpl);
     const result = await responsePayload(upload);
     if (!upload.ok || !result?.success) throw errorFromResponse(upload, result);
     if (!LOCAL_TASK_UUID_PATTERN.test(result.id)) throw videoError(t("Reference upload returned an invalid response."));
     referenceImageIds.push(result.id);
   }
-  const response = await fetchImpl("/api/videos/generate", {
+  const requestPayload = JSON.stringify({
+    prompt: String(prompt || "").trim(),
+    duration: Number(duration),
+    resolution: "768p",
+    aspectRatio: String(aspectRatio || "16:9"),
+    ...(referenceImageIds.length ? { referenceImageIds } : {})
+  });
+  let body = requestPayload;
+  if (singleReference) {
+    body = new FormData();
+    body.append('payload', requestPayload);
+    body.append('reference', singleReference, 'reference');
+  }
+  const response = await fetchWithGuestVideoVerification("/api/videos/generate", {
     method: "POST",
     credentials: "same-origin",
     headers: {
       ...(await guestDeviceHeaders()),
       accept: "application/json",
       ...(paidOnly === true ? { 'x-seedance-credit-source': 'paid' } : {}),
-      "content-type": "application/json"
+      ...(singleReference ? {} : { "content-type": "application/json" })
     },
-    body: JSON.stringify({
-      prompt: String(prompt || "").trim(),
-      duration: Number(duration),
-      resolution: "768p",
-      aspectRatio: String(aspectRatio || "16:9"),
-      ...(referenceImageIds.length ? { referenceImageIds } : {})
-    }),
+    body,
     signal
-  });
+  }, fetchImpl);
   const credits = parseCredits(response);
   const payload = await responsePayload(response);
   if (!response.ok || !payload?.success) throw errorFromResponse(response, payload, credits);

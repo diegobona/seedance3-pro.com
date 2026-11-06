@@ -1,3 +1,4 @@
+import { REGISTERED_FREE_CREDITS_ENABLED } from './credit-policy.mjs'
 import { t } from './i18n.mjs';
 import { guestDeviceHeaders } from '../assets/guest-device.mjs';
 import { DEFAULT_IMAGE_MODEL, getImageModel, imageSizeForAspectRatio } from './image-models.mjs';
@@ -178,6 +179,7 @@ export function createCreditSummaryController({
 
   function scheduleDailyReset() {
     if (dailyResetTimer !== null) clearTimeoutImpl(dailyResetTimer);
+    if (!REGISTERED_FREE_CREDITS_ENABLED) return;
     dailyResetTimer = setTimeoutImpl(() => { void loadBalance(); }, millisecondsUntilCreditReset(nowImpl()));
     dailyResetTimer?.unref?.();
   }
@@ -202,13 +204,13 @@ export function createCreditSummaryController({
     if (debitElement) {
       debitElement.hidden = true;
       debitElement.textContent = debit
-        ? t('Next generation: {daily} daily + {paid} purchased credits.', debit)
+        ? REGISTERED_FREE_CREDITS_ENABLED ? t('Next generation: {daily} daily + {paid} purchased credits.', debit) : t('Next generation: {paid} purchased credits.', debit)
         : t('Loading credit breakdown…');
     }
     if (splitBalanceElement) {
       splitBalanceElement.hidden = true;
       splitBalanceElement.textContent = debit
-        ? t('Balance: {daily} daily · {paid} purchased', { daily: creditBreakdown.dailyRemaining, paid: creditBreakdown.paidRemaining })
+        ? REGISTERED_FREE_CREDITS_ENABLED ? t('Balance: {daily} daily · {paid} purchased', { daily: creditBreakdown.dailyRemaining, paid: creditBreakdown.paidRemaining }) : t('Balance: {paid} purchased credits', { paid: creditBreakdown.paidRemaining })
         : t('Loading credit breakdown…');
     }
     if (balanceLabelElement) balanceLabelElement.textContent = t(preview ? 'AFTER GENERATION' : 'REMAINING');
@@ -303,6 +305,7 @@ export function createCreditSummaryController({
   eventTarget.addEventListener("seedance:credits-updated", handleCreditsUpdated);
   eventTarget.addEventListener("seedance:auth-changed", handleAuthChanged);
   eventTarget.addEventListener("focus", handleFocus);
+  eventTarget.addEventListener("seedance:payment-verified", handleFocus);
   render();
 
   return {
@@ -330,6 +333,7 @@ export function createCreditSummaryController({
       eventTarget.removeEventListener("seedance:credits-updated", handleCreditsUpdated);
       eventTarget.removeEventListener("seedance:auth-changed", handleAuthChanged);
       eventTarget.removeEventListener("focus", handleFocus);
+      eventTarget.removeEventListener("seedance:payment-verified", handleFocus);
     }
   };
 }

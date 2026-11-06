@@ -36,17 +36,6 @@ export const h3VideoCases: H3VideoCase[] = [
     posterUrl: mediaRoot + '/smart-glasses-coffee.jpg',
   },
   {
-    slug: 'corgi-sprint',
-    title: 'The corgi wins the sprint',
-    seoTitle: 'Corgi Wins a Sprint AI Video Prompt | Seedance 2.5',
-    summary: 'A serious track sprint gets an unexpected winner: a delighted corgi.',
-    creativeNote: 'The sports-camera treatment makes a small neighborhood race feel momentous. Keeping the runner, corgi and finish line in one short shot makes the comic reversal immediate.',
-    prompt: 'Five-second single shot at a fictional neighborhood running track. A serious adult sprinter explodes off the starting line, but a tiny corgi dashes past and crosses the finish tape first. The runner stops and stares; the corgi looks delighted. Dramatic sports-camera energy, playful comedy, 16:9, no official marks or text.',
-    aspectRatio: '16:9',
-    videoUrl: mediaRoot + '/corgi-sprint.mp4',
-    posterUrl: mediaRoot + '/corgi-sprint.jpg',
-  },
-  {
     slug: 'cat-fashion-runway',
     title: 'The cat steals the runway',
     seoTitle: 'Black Cat Fashion Runway Video Prompt | Seedance 2.5',

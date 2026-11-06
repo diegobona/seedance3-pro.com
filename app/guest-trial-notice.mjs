@@ -1,9 +1,14 @@
+import { REGISTERED_FREE_CREDITS_ENABLED } from './credit-policy.mjs'
 import { t, currentLocale } from './i18n.mjs';
 
 export function renderGuestTrialNotice(element, kind, { href, onSignup, locale = currentLocale() }) {
-  const message = t(kind === 'image'
-    ? 'Your free images are used up. Sign up for 5 free credits every day.'
-    : 'Your free video seconds are used up. Sign up for 5 free credits every day.', {}, locale);
+  const message = t(REGISTERED_FREE_CREDITS_ENABLED
+    ? kind === 'image'
+      ? 'Your free images are used up. Sign up for 5 free credits every day.'
+      : 'Your free video seconds are used up. Sign up for 5 free credits every day.'
+    : kind === 'image'
+      ? 'Your free images are used up. Sign up or log in, then buy credits to keep creating.'
+      : 'Your free video seconds are used up. Sign up or log in, then buy credits to keep creating.', {}, locale);
   const label = t('Sign up', {}, locale);
   const index = message.indexOf(label);
   const link = element.ownerDocument.createElement('a');

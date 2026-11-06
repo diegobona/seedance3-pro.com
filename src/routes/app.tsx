@@ -1,3 +1,4 @@
+import { REGISTERED_FREE_CREDITS_ENABLED } from '../../app/credit-policy.mjs'
 import { BRAND_MARK } from '../../app/site-brand.mjs'
 import { localizeHead } from '../lib/site-i18n'
 import { SiteLanguageSwitch } from '../components/site-language-switch'
@@ -8,6 +9,7 @@ import { AuthDialog } from '../components/auth-dialog'
 import { authClient } from '../lib/auth-client'
 import { UserMenu } from '../components/user-menu'
 import { CreditPackPurchase } from '../components/credit-pack-purchase'
+import { CreditPackOffer } from '../components/credit-pack-offer'
 import { ModelLandingContent } from '../components/model-landing-content'
 import { Flux3LandingContent, Flux3LandingEntry } from '../components/flux-3-landing-content'
 import { flux3Content } from '../../app/flux-3-content.mjs'
@@ -17,6 +19,7 @@ import { DAILY_FREE_CREDIT_GRANT } from '../lib/generation-credits'
 import { getImageModel } from '../../app/image-models.mjs'
 import { DEFAULT_MODEL_ID } from '../../app/model-routing.mjs'
 import '../../app/studio.css'
+import '../../assets/video-credit-assurance.css'
 import '../styles/auth.css'
 import '../styles/model-landing.css'
 import crossedArmsPresetImage from '../../app/pose-assets/presets/anyposes-crossed-arms.png'
@@ -60,7 +63,7 @@ export function StudioPage({ initialModel = DEFAULT_MODEL_ID, modelLanding = fal
   const [authOpen, setAuthOpen] = useState(false)
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login')
   const { data: session, isPending: authPending } = authClient.useSession()
-  const trialNoticeTitle = t(session?.user || authPending ? 'Daily free credits' : 'Free trial')
+  const trialNoticeTitle = t(session?.user || authPending ? REGISTERED_FREE_CREDITS_ENABLED ? 'Daily free credits' : 'Credits' : 'Free trial')
   const [dailyTrialBefore, dailyTrialAfter] = t(!session?.user
     ? 'Sign up to get {credits} free credits {daily}, shared across images and videos.'
     : 'All signed-in accounts get {credits} credits {daily}, shared across images and videos.').replace('{credits}', String(DAILY_FREE_CREDIT_GRANT)).split('{daily}')
@@ -114,9 +117,8 @@ export function StudioPage({ initialModel = DEFAULT_MODEL_ID, modelLanding = fal
           <button className="sidebar-close" type="button" aria-label={t("Close model navigation")}>×</button>
           <nav aria-label={t("Model navigation")}>
             <div className="nav-section">
-              <div className="section-heading"><span>{t("AI VIDEO")}</span><span>03</span></div>
+              <div className="section-heading"><span>{t("AI VIDEO")}</span><span>02</span></div>
               <button className={`model-button price-model${initiallyH3 ? ' is-active' : ''}`} type="button" data-model="minimax-h3"><span className="model-symbol cyan">{t("S2.5")}</span><span><strong>{t("Seedance 2.5")}</strong><small>{t("Text-to-video, image-to-video")}</small></span><em className="price-badge"><b>$0.01</b>{t("/sec")}</em></button>
-              <a className="model-button release-model" href={path("/app/video/muse-video")}><span className="model-symbol cyan">MV</span><span className="release-model-copy"><span className="release-title-row"><strong>Muse Video</strong><em className="release-status">{t("Coming soon")}</em></span><small>{t("Workspace preview")}</small></span></a>
               <a className="model-button release-model" href={path("/app/video/seedance-3")}><img src={BRAND_MARK} width="40" height="40" alt="" style={{ flexShrink: 0 }} /><span className="release-model-copy"><span className="release-title-row"><strong>{t("SEEDANCE 3.0")}</strong><em className="release-status">{t("Coming soon")}</em></span><small>{t("Workspace preview")}</small></span></a>
             </div>
             <div className="nav-section">
@@ -129,27 +131,24 @@ export function StudioPage({ initialModel = DEFAULT_MODEL_ID, modelLanding = fal
                 <em className="signature">{t("SIGNATURE")}</em>
                 <span className="workflow-cta">{t("Open Pose Studio ")}<b>↗</b></span>
               </button>
-              <div className="section-heading image-models-heading"><span>{t("IMAGE MODELS")}</span><span>02</span></div>
+              <div className="section-heading image-models-heading"><span>{t("IMAGE MODELS")}</span><span>01</span></div>
               <button className={`model-button price-model${initiallyGpt25 ? ' is-active' : ''}`} type="button" data-model="gpt-image-2-5-1k"><span className="model-symbol orange">G2.5</span><span><strong>{t("GPT Image 2.5")}</strong><small>{t("Generation & editing")}</small></span><em className="price-badge"><b>$0.01</b>{t("/image")}</em></button>
-              <a className="model-button release-model" href={path("/app/image/muse-image")}><span className="model-symbol orange">MI</span><span className="release-model-copy"><span className="release-title-row"><strong>Muse Image</strong><em className="release-status">{t("Coming soon")}</em></span><small>{t("Workspace preview")}</small></span></a>
             </div>
             <div className="nav-section showcase-nav-section">
-              <div className="section-heading"><span>{t("PROMPT LIBRARIES")}</span><span>06</span></div>
+              <div className="section-heading"><span>{t("PROMPT LIBRARIES")}</span><span>04</span></div>
               <a className="showcase-nav-link" href={path("/ai-christmas-photo-prompt")}><span className="model-symbol orange">CP</span><span>{t("Christmas Photo Prompts")}<small>{t("Seasonal collection")}</small></span></a>
               <a className="showcase-nav-link" href={path("/seedance-2-5-prompts")} target="_blank" rel="noopener"><span className="model-symbol cyan">{t("S2.5")}</span><span>{t("Seedance 2.5 Prompt Library")}</span></a>
               <a className="showcase-nav-link" href={path("/gpt-image-2-5-prompts")} target="_blank" rel="noopener"><span className="model-symbol orange">{t("G2")}</span><span>{t("GPT Image 2 Prompt Library")}</span></a>
-              <a className="showcase-nav-link" href={path("/muse-video-prompts")} target="_blank" rel="noopener"><span className="model-symbol cyan">MV</span><span>{t("Muse Video Prompt Library")}</span></a>
-              <a className="showcase-nav-link" href={path("/muse-image-prompts")} target="_blank" rel="noopener"><span className="model-symbol orange">MI</span><span>{t("Muse Image Prompt Library")}</span></a>
               <a className="showcase-nav-link" href={path("/seedance-3-0-prompts")} target="_blank" rel="noopener"><img src={BRAND_MARK} width="34" height="34" alt="" /><span>{t("Seedance 3.0 Prompt Library")}<small>{t("Planned tests")}</small></span></a>
             </div>
           </nav>
-          <div className="sidebar-foot"><a href={path("/")}>{t("← Back to SEEDANCE 3.0")}</a></div>
+          <div className="sidebar-foot"><a href={path('/creations')} className="studio-creations-link">{locale==='zh'?'我的作品 ↗':'My creations ↗'}</a><a href={path("/")}>{t("← Back to SEEDANCE 3.0")}</a></div>
         </aside>
 
         <main className="workspace" id="workspace">
           <header className="workspace-header">
             <div><button className="sidebar-open" type="button" aria-label={t("Open model navigation")}>☰</button><a href={path("/")}>{t("Home")}</a><a href={path('/pricing')} target="_blank" rel="noopener noreferrer">{t('Pricing')}</a></div>
-            <div className="workspace-header-account"><SiteLanguageSwitch /><UserMenu onLogin={() => openAuth()} /></div>
+            <div className="workspace-header-account"><a className="studio-creations-link" href={path('/creations')}>{locale==='zh'?'我的作品':'My creations'}</a><SiteLanguageSwitch /><UserMenu onLogin={() => openAuth()} /></div>
           </header>
 
           <div className="workspace-body">
@@ -165,17 +164,18 @@ export function StudioPage({ initialModel = DEFAULT_MODEL_ID, modelLanding = fal
                 <span className="studio-trial-icon" aria-hidden="true">✦</span>
                 <div>
                 <strong id="trial-notice-title">{trialNoticeTitle}</strong><span id="trial-guest-message" hidden={!(initialGuestImage || initialGuestVideo)}>{t('Try for free. No sign-up or login required.')}</span>
-                <p id="trial-allowance-message" className="studio-daily-allowance">{dailyTrialBefore}<strong className="studio-trial-daily">{t("daily")}</strong>{dailyTrialAfter}</p>
-                <p id="daily-credit-reset-notice">{t('Credits reset daily and do not accumulate.')}</p>
+                <p id="trial-allowance-message" className="studio-daily-allowance" hidden={!REGISTERED_FREE_CREDITS_ENABLED}>{dailyTrialBefore}<strong className="studio-trial-daily">{t("daily")}</strong>{dailyTrialAfter}</p>
+                <p id="daily-credit-reset-notice" hidden={!REGISTERED_FREE_CREDITS_ENABLED}>{t('Credits reset daily and do not accumulate.')}</p>
+                <p id="trial-purchase-message" hidden={REGISTERED_FREE_CREDITS_ENABLED}>{t(session?.user ? 'Buy credits to keep creating. Purchased credits never expire.' : initiallyVideo ? 'Two free videos, 5 seconds each. 10 seconds total.' : 'Guests get a one-time free trial.')}</p>
                 </div>
               </div>
               <div className="studio-trial-actions">
                 <div className="studio-pack-summary">
-                  <p id="studio-pack-lowest-price" className="studio-pack-lowest-price" hidden={!initiallyVideo}>{locale === 'zh' ? '全网最低价' : 'LOWEST PRICE ONLINE'}</p>
-                  <p className="studio-pack-price">US$4.99 <small>{locale === 'zh' ? '500 积分' : '500 credits'}</small></p>
+                  <CreditPackOffer />
+                  <p className="studio-pack-price">US$11.90 <small>{locale === 'zh' ? '1,100 积分' : '1,100 credits'}</small></p>
                   <p id="studio-pack-output" className="studio-pack-output">{initiallyVideo
-                    ? locale === 'zh' ? '可生成总计 500 秒视频' : '500 seconds of video'
-                    : locale === 'zh' ? '可生成 500 张图片或 500 秒视频' : '500 images or 500 seconds of video'}</p>
+                    ? locale === 'zh' ? '可生成总计 1,100 秒视频' : '1,100 seconds of video'
+                    : locale === 'zh' ? '可生成 1,100 张图片或 1,100 秒视频' : '1,100 images or 1,100 seconds of video'}</p>
                   <small>{locale === 'zh' ? '永久有效 · 无订阅' : 'Never expires · No subscription'}</small>
                 </div>
                 <CreditPackPurchase className="studio-credit-pack-link" showAssurance={false} />
@@ -206,7 +206,7 @@ export function StudioPage({ initialModel = DEFAULT_MODEL_ID, modelLanding = fal
                   <div className="prompt-tools" hidden={initiallyVideo}><button id="prompt-structure-button" type="button">{t("✦ Prompt structure")}</button><button id="example-prompt-button" type="button">{t("View examples")}</button></div>
                 </div>
                 <div className="settings-grid" id="video-settings" hidden={!initiallyVideo}>
-                  <label>{t("Duration")}<select id="video-duration" defaultValue="5"><option value="5">{t("5 seconds")}</option><option value="10">{t("10 seconds")}</option><option value="15" disabled>{t("15 seconds")}</option></select></label>
+                  <label>{t("Duration")}<select id="video-duration" defaultValue="5" aria-describedby="guest-video-duration-hint"><option value="5">{t("5 seconds")}</option>{session?.user && <><option value="10">{t("10 seconds")}</option><option value="15">{t("15 seconds")}</option></>}</select><small id="guest-video-duration-hint" className="guest-duration-hint" hidden={Boolean(session?.user)}>{t("Free trial: 5 seconds per video.")}</small></label>
                   <label className="resolution-setting"><span className="resolution-heading"><span>{t("Resolution")}</span><small>{t("TRIAL · 768P")}</small></span><select id="video-resolution" value="768p" disabled><option value="768p">{t("768p")}</option></select></label>
                   <label>{t("Aspect ratio")}<select id="video-aspect-ratio" defaultValue="16:9"><option value="9:16">{t("9:16 portrait")}</option><option value="16:9">{t("16:9 landscape")}</option><option value="1:1">{t("1:1 square")}</option></select></label>
                 </div>
@@ -230,11 +230,12 @@ export function StudioPage({ initialModel = DEFAULT_MODEL_ID, modelLanding = fal
                   <p id="credit-balance-split" hidden />
                   <p id="credit-debit-preview" hidden />
                   <label id="paid-only-option" hidden><input id="paid-only-checkbox" type="checkbox" />{t("Use purchased credits only for this generation")}</label>
-                  <p id="free-budget-notice" hidden role="status">{t("Today’s free generation budget is reached. Wait until reset, or explicitly choose purchased credits.")}</p>
-                  <p id="credit-purchase-notice" hidden role="status">{t("Not enough credits.")} <a href={path('/billing') + '?checkout=start'} target="_blank" rel="noopener noreferrer">{t("Buy 500 credits · $4.99")} ↗</a></p>
+                  <p id="free-budget-notice" hidden role="status" />
+                  <p id="credit-purchase-notice" hidden role="status">{t("Not enough credits.")} <a href={path('/checkout')} target="_blank" rel="noopener noreferrer">{t("Buy Credits")} ↗</a></p>
                 </div>
                 <p className="launch-notice" id="launch-notice" role="note" hidden>{initiallyVideo ? t("Launching soon. Video generation at $0.01/second.") : initiallyGpt25 ? t("GPT Image 2.5 uses 1 credit per image.") : t("Launching soon. Image generation at $0.01/image.")}</p>
                 <button className="generate-button" id="generate-button" type="button" disabled><span id="generate-button-label">{initialGuestImage ? t('Generate 1 image · free') : initiallyVideo ? t("Generate video · 5 credits") : t("Generate image · 1 credit")}</span></button>
+                <p className="video-credit-assurance" id="video-credit-assurance" role="note" hidden={!initiallyVideo}><span className="video-speed-note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-9 12h7l-1 8 10-12h-7l1-8Z" /></svg>{t('Ultra-fast generation')}</span><span className="video-credit-assurance-item"><span className="video-credit-assurance-icon" aria-hidden="true">✓</span><span>{t('No credits charged if generation fails')}</span></span></p>
                 <div className="generation-status" id="generation-status" role="status" aria-live="polite" />
               </section>
 
@@ -279,6 +280,7 @@ export function StudioPage({ initialModel = DEFAULT_MODEL_ID, modelLanding = fal
                     <div className="preview-placeholders" id="preview-placeholders" aria-hidden="true" />
                     <p id="preview-status" role="status" aria-live="polite" />
                     <button className="preview-action" id="preview-resume" type="button" hidden>{t("Continue checking")}</button>
+                    <a id="preview-creations" className="studio-creations-link" href={path('/creations')} hidden>{locale==='zh'?'可稍后回来查看 · 我的作品 ↗':'You can return later · My creations ↗'}</a>
                   </section>
                 <div className="context-card result-card" id="result-card" hidden>
                   <div className="result-heading"><span id="result-heading-label">{t("GENERATED IMAGES")}</span><small id="result-model-label">{t(initiallyGpt25 ? "GPT Image 2.5" : "GPT Image 2")}</small></div>

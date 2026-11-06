@@ -52,12 +52,12 @@ test("more than nine video reference files are rejected before upload or generat
   assert.equal(calls, 0);
 });
 
-test("a rejected upload never submits a paid video job", async () => {
+test("a rejected combined reference request never retries or polls a video job", async () => {
   const { requestVideoGeneration } = await import('../app/video-generation.mjs');
   let calls = 0;
   await assert.rejects(requestVideoGeneration({ prompt: 'Scene', referenceFiles: [new File(['data'], 'x.png', { type: 'image/png' })], prepareReferenceImpl: async file => file, fetchImpl: async (url) => {
     calls++;
-    assert.equal(url, '/api/videos/references');
+    assert.equal(url, '/api/videos/generate');
     return Response.json({ success: false, message: 'Log in' }, { status: 401 });
   } }), (error) => error.status === 401);
   assert.equal(calls, 1);
@@ -88,15 +88,16 @@ test('every new reference generation prepares its captured ratio and uploads the
       prepareReferenceImpl: async (file, options) => {
         assert.equal(file, source); assert.equal(options.aspectRatio, aspectRatio); preparedCount++; return prepared;
       }, fetchImpl: async (url, options) => {
-        if (url === '/api/videos/references') {
-          assert.equal(preparedCount, 1); assert.equal(options.body, prepared);
-          assert.equal(options.headers['content-type'], 'image/png');
-          return Response.json({ success: true, id: crypto.randomUUID() }, { status: 201 });
-        }
         if (url === '/api/videos/generate') {
-          assert.equal(JSON.parse(options.body).aspectRatio, aspectRatio);
+          assert.equal(preparedCount, 1);
+          assert.ok(options.body instanceof FormData);
+          assert.equal(options.headers['content-type'], undefined);
+          assert.equal(await options.body.get('reference').text(), await prepared.text());
+          assert.equal(options.body.get('reference').type, 'image/png');
+          assert.equal(JSON.parse(options.body.get('payload')).aspectRatio, aspectRatio);
           return Response.json({ success: true, task: { id: LOCAL_TASK_ID, status: 'queued' } }, { status: 202 });
         }
+        assert.ok(url.startsWith('/api/videos/status?'), 'a single reference must not use a separate upload endpoint');
         return Response.json({ success: true, task: { id: LOCAL_TASK_ID, status: 'succeeded', resultUrl: 'https://media.example/fitted.mp4' } });
       } });
     assert.equal(preparedCount, 1);

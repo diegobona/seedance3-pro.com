@@ -23,6 +23,27 @@ async function inLocale(locale, run) {
   }
 }
 
+test('guest trial duration errors describe a fixed five-second generation in Chinese', () => {
+  const error = localizedErrorMessage('Guest videos support 5 seconds per generation at 768p.', 'GUEST_TRIAL_PARAMETERS', '', 'zh');
+  assert.match(error, /每次固定生成 5 秒/);
+  assert.doesNotMatch(error, /或 10 秒|一次 10 秒/);
+});
+
+test('free safety-budget errors keep the remaining allowance and differ from network limits', () => {
+  const source = 'The free trial is temporarily unavailable on this network. Log in and buy credits to continue.';
+  const english = localizedErrorMessage(source, 'FREE_BUDGET_EXCEEDED', '', 'en');
+  const chinese = localizedErrorMessage(source, 'FREE_BUDGET_EXCEEDED', '', 'zh');
+  assert.match(english, /safety budget/);
+  assert.match(english, /not charged/);
+  assert.match(english, /remaining allowance is unchanged/);
+  assert.doesNotMatch(english, /network|buy credits|Log in/);
+  assert.match(chinese, /安全预算/);
+  assert.match(chinese, /未扣/);
+  assert.match(chinese, /剩余体验额度.*不变/);
+  assert.doesNotMatch(chinese, /网络|登录|购买/);
+  assert.notEqual(localizedErrorMessage(source, 'NETWORK_FREE_BUDGET_EXCEEDED', '', 'zh'), chinese);
+});
+
 test('dynamic UI re-evaluates locale and keeps unknown strings and user values intact', async () => {
   await inLocale('zh', () => {
     assert.equal(currentLocale(), 'zh');

@@ -36,27 +36,49 @@
       }
     }
   </script>
-  <link rel="icon" type="image/svg+xml" href="./favicon.svg?v=20261024-blue-brand">
-  <link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="./favicon.ico?v=20261024-blue-brand">
-  <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png?v=20261024-blue-brand">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg?v=20261028-checkout-ui">
+  <link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="./favicon.ico?v=20261028-checkout-ui">
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png?v=20261028-checkout-ui">
   <link rel="alternate" hreflang="en" href="https://seedance3-pro.com/features">
   <link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/features">
   <link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/features">
-  <link rel="stylesheet" href="/assets/site-language.css?v=20261024-blue-brand">
+  <link rel="stylesheet" href="/assets/site-language.css?v=20261028-checkout-ui">
   <script src="/assets/site-language.js" defer></script>
   <meta property="og:locale" content="en_US">
   <meta property="og:locale:alternate" content="zh_CN">
-  <link rel="stylesheet" href="/assets/site-trust.css?v=20261024-blue-brand">
+  <link rel="stylesheet" href="/assets/site-trust.css?v=20261101-credit-packs">
   <link data-site-typography rel="preload" href="/assets/fonts/source-serif-4-roman.woff2" as="font" type="font/woff2" crossorigin>
   <link data-site-typography rel="stylesheet" href="/assets/fonts/noto-serif-sc.css?v=20261024-editorial">
   <link data-site-typography rel="stylesheet" href="/assets/site-typography.css?v=20261024-editorial">
-  <link data-site-brand rel="stylesheet" href="/assets/site-brand.css?v=20261024-blue-brand">
+  <link data-site-brand rel="stylesheet" href="/assets/site-brand.css?v=20261028-checkout-ui">
+  <link rel="stylesheet" href="/assets/site-promo.css?v=20261028-carousel">
+  <script type="module" src="/assets/site-promo-init.mjs?v=20261028-carousel"></script>
 </head>
 <body class="bg-slate-950 text-slate-100 antialiased">
+<!-- SITE_PROMO_START -->
+<aside class="site-promo" aria-label="Video creation offers" aria-roledescription="carousel" data-site-promo>
+  <div class="site-promo-inner">
+    <svg class="site-promo-sparkle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2L12 3Z"/><path d="M20 2v4m-2-2h4"/></svg>
+    <div class="site-promo-track" aria-live="off">
+      <div class="site-promo-slide" data-promo-slide="0" role="group" aria-label="1 / 2">
+        <p class="site-promo-copy"><strong>No login needed</strong><span> — Create your first video for free</span></p>
+        <a class="site-promo-action" href="/app/video/seedance-2-5">Start for free<span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="site-promo-slide" data-promo-slide="1" role="group" aria-label="2 / 2" hidden>
+        <p class="site-promo-copy"><strong>AI video</strong><span> — Packs from US$11.90</span></p>
+        <a class="site-promo-action" href="/app/video/seedance-2-5">Try now<span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+    <div class="site-promo-dots" role="group" aria-label="Choose an offer"><button type="button" data-promo-dot="0" aria-label="Show offer 1" aria-pressed="true"><span></span></button><button type="button" data-promo-dot="1" aria-label="Show offer 2" aria-pressed="false"><span></span></button></div>
+  </div>
+  <button class="site-promo-close" type="button" data-promo-close aria-label="Dismiss banner">×</button>
+</aside>
+<!-- SITE_PROMO_END -->
+
   <header class="sticky top-0 z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl">
     <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
       <a href="./" class="flex items-center gap-3">
-        <img src="./assets/seedance-mark.svg?v=20261024-blue-brand" width="40" height="40" alt="" style="flex-shrink:0">
+        <img src="./assets/seedance-mark.svg?v=20261028-checkout-ui" width="40" height="40" alt="" style="flex-shrink:0">
         <span class="text-sm font-semibold tracking-[0.2em] text-slate-200">SEEDANCE 3.0</span>
       </a>
       <nav class="hidden items-center gap-7 text-sm text-slate-300 lg:flex">
@@ -119,7 +141,7 @@
 
   <footer class="border-t border-white/10 bg-slate-950">
     <div class="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-8 text-sm text-slate-400 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-      <p>© 2026 SEEDANCE 3.0 · seedance3-pro.com</p>
+      
       <div class="flex gap-4">
         <a href="./" class="hover:text-slate-200">Home</a>
         <a href="./pricing" class="hover:text-slate-200">Pricing</a>
@@ -129,11 +151,20 @@
     </div>
 <div class="site-language-footer-control"><nav class="site-language-switch" data-site-language-switch data-language-footer aria-label="Site language"><a href="/zh/features?lang=zh" data-language="zh" lang="zh-Hans">中文</a><span aria-hidden="true">|</span><a href="/features?lang=en" data-language="en" lang="en" aria-current="true">EN</a></nav></div>
 <!-- SITE_TRUST_START -->
-<div class="trust-footer" data-site-trust>
-  <div class="trust-operator"><span>Operated by: ColdStone Technology Co., Ltd.</span><a href="mailto:zw83716@gmail.com">zw83716@gmail.com</a></div>
-  <nav aria-label="Service and policies"><a href="/about">About & contact</a><a href="/refund-policy">Refund policy</a><a href="/privacy">Privacy</a><a href="/terms">Terms of service</a></nav>
+<div class="trust-footer trust-footer-compact" data-site-trust>
+  <span class="trust-copyright">© 2026 ColdStone Technology Co., Ltd.</span>
+  <nav aria-label="Service and policies"><a href="/privacy">Privacy</a><span aria-hidden="true">·</span><a href="/terms">Terms</a><span aria-hidden="true">·</span><a href="/refund-policy">Refund Policy</a><span aria-hidden="true">·</span><button type="button" class="footer-contact-trigger" popovertarget="footer-contact">Contact</button></nav>
+  <div id="footer-contact" class="footer-contact-popover" popover="auto" role="dialog" aria-label="Contact us">
+    <button type="button" class="footer-contact-close" popovertarget="footer-contact" popovertargetaction="hide" aria-label="Close">×</button>
+    <h2>Contact us</h2>
+    <p>For help with the service or an order, email us.</p>
+    <div class="footer-contact-email"><span>zw83716@gmail.com</span><button type="button" data-copy-contact="zw83716@gmail.com" data-copied="Copied" data-copy-failed="Could not copy. Select the email address to copy it manually.">Copy email</button></div>
+    <div class="footer-contact-status" role="status" aria-live="polite"></div>
+    <a class="footer-contact-mail" href="mailto:zw83716@gmail.com">Open email app ↗</a>
+  </div>
 </div>
 <!-- SITE_TRUST_END -->
 </footer>
+<script src="/assets/site-contact.js?v=20261101-contact" defer></script>
 </body>
 </html>

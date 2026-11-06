@@ -164,7 +164,7 @@ export async function handleImageGenerationRequest(request, env = {}, options = 
       fetchImpl: options.fetchImpl || fetch,
       timeoutMs: options.timeoutMs || UPSTREAM_TIMEOUT_MS
     });
-    if (options.prepareImages) images = await options.prepareImages(images);
+    if (options.prepareImages) images = await options.prepareImages(images, { prompt, model: modelResult.value });
     return json({
       success: true,
       mode: imageValues.length ? "image-to-image" : "text-to-image",

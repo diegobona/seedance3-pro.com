@@ -2,11 +2,33 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import { selectVideoWorkflow, assertVideoProviderConfigured, submitVideoTask, queryVideoTask, COMPSHARE_FIRST_FRAME_WORKFLOW_ID as compshare } from '../src/lib/video-providers'
 import { VIDEO_WORKFLOW_ID as text, REFERENCE_VIDEO_WORKFLOW_ID as reference } from '../src/lib/protected-video-generation'
+import { SEEAPI_TEXT_WORKFLOW_ID as seeText, SEEAPI_IMAGE_WORKFLOW_ID as seeImage } from '../scripts/seeapi-video.mjs'
 
 const payload = { prompt: 'A cloud moves', duration: 5, resolution: '480p', aspectRatio: '16:9' }
 const image = { ...payload, referenceImageIds: [crypto.randomUUID()], referenceImageUrls: ['https://seedance3-pro.com/api/videos/references?id=one'] }
 const environment = { H3_REFERENCE_PROVIDER: 'compshare', AUTODL_TOKEN: 'autodl-token', COMPSHARE_API_KEY: 'sk-ml-private' }
 const localTaskId = crypto.randomUUID()
+
+test('SeeAPI local switch affects guest text/reference jobs only; paid and historical AutoDL remain available', async () => {
+  const environment = { GUEST_VIDEO_PROVIDER: 'seeapi', SEEAPI_API_KEY: 'see-key', AUTODL_TOKEN: 'old-key', H3_REFERENCE_PROVIDER: 'autodl-upgraded' }
+  const input = { ...payload, resolution: '768p' }
+  assert.equal(selectVideoWorkflow(input, environment, { guest: true }), seeText)
+  assert.equal(selectVideoWorkflow({ ...image, resolution: '768p' }, environment, { guest: true }), seeImage)
+  assert.equal(selectVideoWorkflow(input, environment), text)
+  assert.equal(selectVideoWorkflow({ ...image, resolution: '768p' }, environment), 'minimax_h3_zm_u24')
+  assert.throws(() => selectVideoWorkflow({ ...input, duration: 10 }, environment, { guest: true }))
+  assert.throws(() => selectVideoWorkflow({ ...image, resolution: '768p', referenceImageIds: [crypto.randomUUID(), crypto.randomUUID()] }, environment, { guest: true }))
+  assert.doesNotThrow(() => assertVideoProviderConfigured(seeText, environment))
+  assert.throws(() => assertVideoProviderConfigured(seeText, { AUTODL_TOKEN: 'never-fallback' }))
+  assert.deepEqual(await submitVideoTask(input, { workflowId: seeText, environment, localTaskId, fetchImpl: async url => {
+    assert.equal(url, 'https://api.seeapi.com/v1/generations')
+    return Response.json({ generation: { id: 'task-seeapi' } }, { status: 202 })
+  } }), { providerTaskId: 'task-seeapi' })
+  assert.deepEqual(await queryVideoTask('task-seeapi', { workflowId: seeText, environment: { SEEAPI_API_KEY: 'see-key' }, fetchImpl: async url => {
+    assert.equal(url, 'https://api.seeapi.com/v1/generations/task-seeapi')
+    return Response.json({ generation: { status: 'processing' } })
+  } }), { status: 'running', terminal: false })
+})
 
 test('upgraded switch selects and submits 768p multi-reference jobs, retaining historical polling', async () => {
   const workflowId = 'minimax_h3_zm_u24'

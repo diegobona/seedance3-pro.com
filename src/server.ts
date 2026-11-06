@@ -2,14 +2,17 @@ import handler from '@tanstack/react-start/server-entry'
 import legacyWorker from '../worker.js'
 import { reconcileVideoGenerationTasks } from './lib/video-task-reconciler'
 import { legacyModelRedirect } from '../app/seo-routes.mjs'
+import { hiddenModelDestination } from '../app/hidden-models.mjs'
 import { partnerImageRedirect } from '../app/partner-image-redirect.mjs'
 import { localeFromPath, stripLocalePath, localeRedirect } from '../app/site-locale.mjs'
 import { canonicalSiteRedirect, fetchPublicPage, isStudioDocument } from './lib/site-static-proxy'
+import { maintainCreationLibrary } from './lib/creation-storage'
 import poseEntryVisibility from '../assets/pose-entry-visibility.js?raw'
 import { collectSeedanceNews, NEWS_CRON, readNewsState } from './lib/seedance-news'
 import { newsDocument, newsPageRequest, rewriteNewsResponse } from './lib/seedance-news-page'
 import { databaseMaintenanceResponse } from './lib/database-maintenance'
 import { withPlausibleAnalytics } from './lib/plausible'
+import { processRefundNotifications } from './lib/refund-notifications'
 
 interface WorkerContext {
   waitUntil(promise: Promise<unknown>): void
@@ -45,6 +48,12 @@ export default {
     const url = new URL(request.url)
     const { pathname } = url
     const basePath = stripLocalePath(pathname)
+    if (request.method === 'GET' || request.method === 'HEAD') {
+      const destination = hiddenModelDestination(url)
+      if (destination) return new Response(null, { status: 302, headers: {
+        location: new URL(destination, url.origin).href, 'cache-control': 'no-store',
+      } })
+    }
     // Attribute partner links before canonical or locale hops can lose Referer.
     const partnerRedirect = partnerImageRedirect(request)
     if (partnerRedirect) return partnerRedirect
@@ -96,6 +105,8 @@ export default {
     }
     const legacyScheduled = Promise.resolve(legacyWorker.scheduled(controller, env, ctx))
     ctx.waitUntil(reconcileVideoGenerationTasks(env))
+    ctx.waitUntil(maintainCreationLibrary(env))
+    ctx.waitUntil(processRefundNotifications(env))
     return legacyScheduled
   },
 } satisfies WorkerHandler

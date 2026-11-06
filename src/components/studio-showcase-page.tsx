@@ -1,10 +1,10 @@
+import { SeedanceVideoPromptCards } from './seedance-video-prompt-cards'
 import { BRAND_MARK } from '../../app/site-brand.mjs'
 import { SiteLanguageSwitch } from './site-language-switch'
 import { useSiteI18n } from '../lib/site-i18n'
-import { useCallback, useEffect, useState, type ReactNode } from 'react'
+import { useCallback, useState, type ReactNode } from 'react'
 import { AuthDialog } from './auth-dialog'
 import { UserMenu } from './user-menu'
-import { h3VideoCases, h3VideoCaseTryUrl, h3VideoCaseUrl } from '../data/h3-video-cases'
 import { gptImageCases, gptImageCaseTryUrl, gptImageCaseUrl } from '../data/gpt-image-cases'
 import { seedance3PlannedPrompts, seedance3PromptTryUrl } from '../data/seedance3-planned-prompts'
 import { museImagePrompts, museVideoPrompts, musePromptTryUrl, type MuseModel } from '../data/muse-prompts'
@@ -21,7 +21,7 @@ const showcaseContent = {
   'minimax-h3': {
     label: 'AI VIDEO / VIDEO PROMPTS',
     title: 'Seedance 2.5 Prompt Library',
-    description: 'Explore Seedance 2.5 video prompts through original scenes. Open a video for its exact prompt, or select Try Now to make your own version.',
+    description: 'Explore short-shot prompt templates and video examples. Copy a prompt or open it in the generator to make your own version.',
   },
   'gpt-image-2': {
     label: 'AI IMAGE / IMAGE PROMPTS',
@@ -49,52 +49,6 @@ const showcaseContent = {
     description: 'Start an image draft with these writing templates for composition, lighting and visual style. Read a prompt and open it in the Muse Image workspace. Generation is not available in this workspace yet.',
   },
 } as const
-
-function H3ShowcaseGrid() {
-  const { t } = useSiteI18n()
-  useEffect(() => {
-    const videos = Array.from(document.querySelectorAll<HTMLVideoElement>('.studio-showcase-video'))
-    if (!('IntersectionObserver' in window)) {
-      videos.forEach((video) => {
-        if (video.dataset.src) video.src = video.dataset.src
-        void video.play().catch(() => {})
-      })
-      return () => videos.forEach((video) => video.pause())
-    }
-    const observer = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-        const video = entry.target as HTMLVideoElement
-        if (entry.isIntersecting) {
-          if (!video.src && video.dataset.src) video.src = video.dataset.src
-          void video.play().catch(() => {})
-        } else {
-          video.pause()
-        }
-      }
-    }, { threshold: 0.25 })
-    videos.forEach((video) => observer.observe(video))
-    return () => {
-      observer.disconnect()
-      videos.forEach((video) => video.pause())
-    }
-  }, [])
-
-  return (
-    <section className="studio-showcase-grid" aria-label={t("Original Seedance 2.5 video prompts")}>
-      {h3VideoCases.map((videoCase) => (
-        <ShowcaseCard
-          key={videoCase.slug}
-          title={videoCase.title}
-          caseUrl={h3VideoCaseUrl(videoCase.slug)}
-          tryUrl={h3VideoCaseTryUrl(videoCase)}
-          modelLabel="Seedance 2.5"
-          portrait={videoCase.aspectRatio === '9:16'}
-          media={<video className="studio-showcase-video" muted loop playsInline preload="none" poster={videoCase.posterUrl} data-src={videoCase.videoUrl} aria-hidden="true" />}
-        />
-      ))}
-    </section>
-  )
-}
 
 function ShowcaseCard({ title, caseUrl, tryUrl, modelLabel, portrait, media }: {
   title: string
@@ -227,9 +181,8 @@ export function StudioShowcasePage({ model }: { model: StudioShowcaseModel }) {
           <button className="sidebar-close" type="button" aria-label={t("Close model navigation")} onClick={() => setSidebarOpen(false)}>×</button>
           <nav aria-label={t("Model navigation")}>
             <div className="nav-section">
-              <div className="section-heading"><span>{t("AI VIDEO")}</span><span>03</span></div>
+              <div className="section-heading"><span>{t("AI VIDEO")}</span><span>02</span></div>
               <a className="model-button price-model" href={path("/app/video/seedance-2-5")}><span className="model-symbol cyan">{t("S2.5")}</span><span><strong>{t("Seedance 2.5")}</strong><small>{t("Text-to-video, image-to-video")}</small></span><em className="price-badge"><b>$0.01</b>{t("/sec")}</em></a>
-              <a className="model-button release-model" href={path('/app/video/muse-video')}><span className="model-symbol cyan">MV</span><span className="release-model-copy"><span className="release-title-row"><strong>{t('Muse Video')}</strong><em className="release-status">{t('Coming soon')}</em></span><small>{t('Workspace preview')}</small></span></a>
               <a className="model-button release-model" href={path("/app/video/seedance-3")}><img src={BRAND_MARK} width="40" height="40" alt="" style={{ flexShrink: 0 }} /><span className="release-model-copy"><span className="release-title-row"><strong>{t("SEEDANCE 3.0")}</strong><em className="release-status">{t("Coming soon")}</em></span><small>{t("Workspace preview")}</small></span></a>
             </div>
             <div className="nav-section">
@@ -240,17 +193,14 @@ export function StudioShowcasePage({ model }: { model: StudioShowcaseModel }) {
                 <em className="signature">{t("SIGNATURE")}</em>
                 <span className="workflow-cta">{t("Open Pose Studio ")}<b>↗</b></span>
               </a>
-              <div className="section-heading image-models-heading"><span>{t("IMAGE MODELS")}</span><span>02</span></div>
+              <div className="section-heading image-models-heading"><span>{t("IMAGE MODELS")}</span><span>01</span></div>
               <a className="model-button price-model" href={path("/app/image/gpt-image-2-5-1k")}><span className="model-symbol orange">G2.5</span><span><strong>{t("GPT Image 2.5")}</strong><small>{t("Generation & editing")}</small></span><em className="price-badge"><b>$0.01</b>{t("/image")}</em></a>
-              <a className="model-button release-model" href={path('/app/image/muse-image')}><span className="model-symbol orange">MI</span><span className="release-model-copy"><span className="release-title-row"><strong>{t('Muse Image')}</strong><em className="release-status">{t('Coming soon')}</em></span><small>{t('Workspace preview')}</small></span></a>
             </div>
             <div className="nav-section showcase-nav-section">
-              <div className="section-heading"><span>{t("PROMPT LIBRARIES")}</span><span>06</span></div>
+              <div className="section-heading"><span>{t("PROMPT LIBRARIES")}</span><span>04</span></div>
               <a className="showcase-nav-link" href={path("/seedance-2-5-prompts")} target="_blank" rel="noopener noreferrer" aria-current={model === 'minimax-h3' ? 'page' : undefined}><span className="model-symbol cyan">{t("S2.5")}</span><span>{t("Seedance 2.5 Prompt Library")}</span></a>
               <a className="showcase-nav-link" href={path("/gpt-image-2-5-prompts")} target="_blank" rel="noopener noreferrer" aria-current={model === 'gpt-image-2' ? 'page' : undefined}><span className="model-symbol orange">{t("G2")}</span><span>{t("GPT Image 2 Prompt Library")}</span></a>
               <a className="showcase-nav-link christmas-showcase-link" href={path('/ai-christmas-photo-prompt')} aria-current={model === 'christmas-photo' ? 'page' : undefined}><span className="model-symbol christmas-symbol">CP</span><span>{t('Christmas Photo Prompts')}<small>{t('Seasonal collection')}</small></span></a>
-              <a className="showcase-nav-link" href={path('/muse-video-prompts')} target="_blank" rel="noopener noreferrer" aria-current={model === 'muse-video' ? 'page' : undefined}><span className="model-symbol cyan">MV</span><span>{t('Muse Video Prompt Library')}</span></a>
-              <a className="showcase-nav-link" href={path('/muse-image-prompts')} target="_blank" rel="noopener noreferrer" aria-current={model === 'muse-image' ? 'page' : undefined}><span className="model-symbol orange">MI</span><span>{t('Muse Image Prompt Library')}</span></a>
               <a className="showcase-nav-link" href={path("/seedance-3-0-prompts")} target="_blank" rel="noopener noreferrer" aria-current={model === 'seedance-3-0' ? 'page' : undefined}><img src={BRAND_MARK} width="34" height="34" alt="" /><span>{t("Seedance 3.0 Prompt Library")}<small>{t("Planned tests")}</small></span></a>
             </div>
           </nav>
@@ -268,7 +218,7 @@ export function StudioShowcasePage({ model }: { model: StudioShowcaseModel }) {
               <h1>{t(content.title)}</h1>
               {content.description && <p>{t(content.description)}</p>}
             </div>
-            {model === 'minimax-h3' ? <H3ShowcaseGrid /> : model === 'gpt-image-2' ? <GptImageShowcaseGrid /> : model === 'seedance-3-0' ? <Seedance3PlannedGrid /> : model === 'christmas-photo' ? <ChristmasPhotoPrompts /> : <MusePromptGrid model={model} />}
+            {model === 'minimax-h3' ? <><SeedanceVideoPromptCards /><SeedanceVideoPromptCards bottom /></> : model === 'gpt-image-2' ? <GptImageShowcaseGrid /> : model === 'seedance-3-0' ? <Seedance3PlannedGrid /> : model === 'christmas-photo' ? <ChristmasPhotoPrompts /> : <MusePromptGrid model={model} />}
             {(model === 'minimax-h3' || model === 'gpt-image-2') && <PromptLibraryGuide model={model} />}
           </div>
         </main>
@@ -277,3 +227,4 @@ export function StudioShowcasePage({ model }: { model: StudioShowcaseModel }) {
     </>
   )
 }
+

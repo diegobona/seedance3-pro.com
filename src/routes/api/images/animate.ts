@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import '@tanstack/react-start'
 import { env } from 'cloudflare:workers'
 import { createAuth } from '../../../lib/auth'
+import { verifyGuestVideoRequest } from '../../../lib/guest-video-verification'
 import { createAppDatabase } from '../../../db'
 import { createGuestImageTrialStore } from '../../../db/guest-image-trials'
 import { createGuestVideoTrialStore } from '../../../db/guest-video-trials'
@@ -10,11 +11,15 @@ import { transferImageWithGuestAccess } from '../../../lib/guest-image-animation
 export const Route = createFileRoute('/api/images/animate')({
   server: { handlers: { POST: async ({ request }) => {
     try {
+      const session = await createAuth(request, env).api.getSession({ headers: request.headers })
+      if (!session?.user?.id) {
+        const verification = await verifyGuestVideoRequest(request, env, 'guest_video_reference')
+        if (verification) return verification
+      }
       const db = createAppDatabase(env)
       return await transferImageWithGuestAccess(request, {
         secret: env.BETTER_AUTH_SECRET,
         getSession: async () => {
-          const session = await createAuth(request, env).api.getSession({ headers: request.headers })
           return session?.user?.id ? { user: { id: session.user.id } } : null
         },
         imageStore: createGuestImageTrialStore(db), videoStore: createGuestVideoTrialStore(db),

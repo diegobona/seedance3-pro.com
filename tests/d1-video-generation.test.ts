@@ -32,25 +32,26 @@ test('D1 video reserves and creates atomically under concurrency, rolling back a
   } finally { await h.dispose() }
 })
 
-test('concurrent requests submit exactly one video within the guest ten-second or registered five-credit allowance', async () => {
+test('concurrent requests submit two five-second guest videos or one registered video using purchased credits', async () => {
   const h = await createD1TestDatabase()
   try {
     const store = videoStore.createVideoGenerationTaskStore(h.db as unknown as Database)
-    // Exercise both the lifetime guest allowance and today's registered allowance.
+    // Registered gifts are paused; a free-plan account can still spend purchased credits.
     for (const plan of ['guest', 'free']) {
       const allowance = plan === 'guest' ? 10 : 5
+      const accepted = plan === 'guest' ? 2 : 1
       const userId = `ten-second-concurrency-${plan}`
       await h.db.prepare(`INSERT INTO "user"
         (id,name,email,plan,credit_balance,daily_free_credits,daily_credit_date)
         VALUES (?,?,?,?,?,?,date('now','+8 hours'))`)
-        .bind(userId, userId, `${userId}@example.test`, plan, allowance, plan === 'free' ? allowance : 0).run()
+        .bind(userId, userId, `${userId}@example.test`, plan, allowance, 0).run()
       let submissions = 0
       const responses = await Promise.all(Array.from({ length: 4 }, () => protectVideoGenerationStart({
         request: new Request('https://seedance3-pro.com/api/videos/generate', { method: 'POST' }),
         getSession: async () => ({ user: { id: userId, isGuest: plan === 'guest' } }),
         preflight: async () => ({ ok: true, payload: {
           prompt: 'Local concurrency regression; no supplier request.',
-          duration: allowance, resolution: '768p', aspectRatio: '16:9',
+          duration: 5, resolution: '768p', aspectRatio: '16:9',
         } }),
         taskStore: store,
         submit: async () => {
@@ -58,13 +59,13 @@ test('concurrent requests submit exactly one video within the guest ten-second o
           return { providerTaskId: `local-only-${crypto.randomUUID()}` }
         },
       })))
-      assert.deepEqual(responses.map(response => response.status).sort(), [202, 402, 402, 402], plan)
-      assert.equal(submissions, 1, plan)
+      assert.deepEqual(responses.map(response => response.status).sort(), [...Array(accepted).fill(202), ...Array(4 - accepted).fill(402)], plan)
+      assert.equal(submissions, accepted, plan)
       assert.equal(await store.getBalance(userId), 0, plan)
       assert.deepEqual(await h.db.prepare(`SELECT count(*) AS tasks,sum(duration) AS seconds
-        FROM video_generation_task WHERE user_id=?`).bind(userId).first(), { tasks: 1, seconds: allowance }, plan)
+        FROM video_generation_task WHERE user_id=?`).bind(userId).first(), { tasks: accepted, seconds: allowance }, plan)
       assert.deepEqual(await h.db.prepare(`SELECT count(*) AS reservations,sum(credits) AS credits
-        FROM generation_credit_reservation WHERE user_id=?`).bind(userId).first(), { reservations: 1, credits: allowance }, plan)
+        FROM generation_credit_reservation WHERE user_id=?`).bind(userId).first(), { reservations: accepted, credits: allowance }, plan)
     }
   } finally { await h.dispose() }
 })

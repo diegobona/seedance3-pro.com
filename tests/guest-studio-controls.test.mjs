@@ -19,11 +19,14 @@ test('image responses keep guest credit events separate from video and account b
   assert.deepEqual(result.credits, { cost: 5, remaining: 5, context: 'guest-image' });
 });
 
-test('guest duration defaults to five, caps at ten, and uses the remaining seconds', async () => {
+test('guest duration stays fixed at five seconds while paid durations use the balance', async () => {
   const { guestVideoDurationState } = await import('../app/guest-video.mjs');
-  assert.deepEqual(guestVideoDurationState({ guest: true, remaining: 10, value: '5' }), { value: '5', disabled: [15] });
+  assert.deepEqual(guestVideoDurationState({ guest: true, remaining: 10, value: '5' }), { value: '5', disabled: [10, 15] });
+  assert.deepEqual(guestVideoDurationState({ guest: true, remaining: 10, value: '10' }), { value: '5', disabled: [10, 15] });
   assert.deepEqual(guestVideoDurationState({ guest: true, remaining: 5, value: '10' }), { value: '5', disabled: [10, 15] });
-  assert.deepEqual(guestVideoDurationState({ guest: true, remaining: 10, value: '15' }), { value: '5', disabled: [15] });
+  assert.deepEqual(guestVideoDurationState({ guest: true, remaining: 10, value: '15' }), { value: '5', disabled: [10, 15] });
+  assert.deepEqual(guestVideoDurationState({ guest: true, remaining: 0, value: '5' }), { value: '5', disabled: [5, 10, 15] });
+  assert.deepEqual(guestVideoDurationState({ guest: false, remaining: 10, value: '10' }), { value: '10', disabled: [15] });
   assert.deepEqual(guestVideoDurationState({ guest: false, remaining: 15, value: '15' }), { value: '15', disabled: [] });
   assert.deepEqual(guestVideoDurationState({ guest: false, remaining: 10, value: '15' }), { value: '5', disabled: [15] });
   assert.deepEqual(guestVideoDurationState({ guest: false, remaining: 5, value: '10' }), { value: '5', disabled: [10, 15] });

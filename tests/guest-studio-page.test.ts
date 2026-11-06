@@ -4,6 +4,7 @@ import { registerHooks } from 'node:module'
 import { createElement } from 'react'
 import { renderToString } from 'react-dom/server'
 import { createMemoryHistory, createRootRoute, createRoute, createRouter, RouterProvider } from '@tanstack/react-router'
+import { REGISTERED_FREE_CREDITS_ENABLED } from '../app/credit-policy.mjs'
 
 const hooks = registerHooks({
   load(url, context, nextLoad) {
@@ -30,7 +31,7 @@ test('generation purchase prompt is hidden until needed and opens checkout in a 
     const html = await render(`${prefix}/app/video/seedance-2-5`)
     const notice = html.match(/<p\b[^>]*id="credit-purchase-notice"[^>]*>[\s\S]*?<\/p>/)?.[0] ?? ''
     assert.match(notice, /\bhidden=""/)
-    assert.ok(notice.includes(`href="${prefix}/billing?checkout=start"`))
+    assert.ok(notice.includes(`href="${prefix}/checkout"`))
     assert.match(notice, /target="_blank" rel="noopener noreferrer"/)
     assert.match(notice, prefix ? /额度不足。/ : /Not enough credits\./)
     assert.match(html, /id="credit-balance-split" hidden=""><\/p>/)
@@ -41,13 +42,23 @@ test('generation purchase prompt is hidden until needed and opens checkout in a 
 test('SSR uses a neutral allowance heading while the account session is unresolved in both languages', async () => {
   for (const prefix of ['', '/zh']) {
     const html = await render(`${prefix}/app/video/minimax-h3`)
-    const expected = prefix ? '每日免费积分' : 'Daily free credits'
+    const expected = REGISTERED_FREE_CREDITS_ENABLED
+      ? prefix ? '每日免费积分' : 'Daily free credits'
+      : prefix ? '积分' : 'Credits'
     assert.match(html, new RegExp(`<aside\\b[^>]*class="studio-trial-notice"[^>]*aria-label="${expected}"`))
     assert.match(html, new RegExp(`<strong id="trial-notice-title">${expected}</strong>`))
   }
 })
 
-test('guest H3 landing is registration-free, defaults to five seconds and caps selection at ten in both languages', async () => {
+test('initial guest HTML contains no prefilled network failure before a trial request', async () => {
+  for (const prefix of ['', '/zh']) {
+    const html = await render(`${prefix}/app/video/seedance-2-5`)
+    assert.match(html, /id="free-budget-notice" hidden="" role="status"><\/p>/)
+    assert.doesNotMatch(html, /The free trial is temporarily unavailable on this network|当前网络暂时无法使用免费体验/)
+  }
+})
+
+test('guest video landing shows only five seconds and explains both free attempts in both languages', async () => {
   for (const prefix of ['', '/zh']) {
     const html = await render(`${prefix}/app/video/minimax-h3`)
     const notice = html.match(/<aside\b[^>]*class="studio-trial-notice"[^>]*>([\s\S]*?)<\/aside>/)?.[1] ?? ''
@@ -56,14 +67,16 @@ test('guest H3 landing is registration-free, defaults to five seconds and caps s
     assert.doesNotMatch(notice, /studio-trial-register|480p/)
     const duration = html.match(/<select\b[^>]*id="video-duration"[^>]*>([\s\S]*?)<\/select>/)?.[1] ?? ''
     assert.match(duration, /<option\b[^>]*value="5"[^>]*selected/)
-    assert.match(duration, /<option\b[^>]*value="15"[^>]*disabled/)
+    assert.equal((duration.match(/<option\b/g) || []).length, 1)
+    assert.doesNotMatch(duration, /value="(?:10|15)"/)
+    assert.match(html, prefix ? /每次 5 秒，共 10 秒/ : /Two free videos, 5 seconds each/)
     assert.match(html, /data-authenticated="false"/)
     assert.match(html, prefix ? /生成后预计剩余/ : /AFTER GENERATION/)
     assert.match(html, prefix ? /剩余 — 秒/ : /— seconds remaining/)
   }
 })
 
-test('H3 permits nine references and displays 768p in both languages', async () => {
+test('video form retains its provider resolution value and displays 1080P in both languages', async () => {
   for (const prefix of ['', '/zh']) {
     const html = await render(`${prefix}/app/video/minimax-h3`)
     const fileInput = html.match(/<input\b[^>]*id="video-reference-input"[^>]*>/)?.[0] ?? ''
@@ -72,6 +85,7 @@ test('H3 permits nine references and displays 768p in both languages', async () 
     assert.match(html, /id="video-reference-count">0 \/ 9</)
     assert.match(html, prefix ? /1–9 张图 · PNG、JPEG 或 WebP · 每张最大 10 MB/ : /1–9 images · PNG, JPEG or WebP · max 10 MB each/)
     assert.match(html, /value="768p"/)
+    assert.match(html, /value="768p"[^>]*>1080P<\/option>/)
     assert.doesNotMatch(html, /Describe how the subjects in Image 1, Image 2|描述图 1、图 2 等图像中的主体应如何互动/)
     assert.match(html, prefix ? /说明每张参考图的用途/ : /Describe the role of each reference image/)
   }

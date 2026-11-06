@@ -1,3 +1,4 @@
+import { REGISTERED_FREE_CREDITS_ENABLED } from '../../app/credit-policy.mjs'
 import { GPT_IMAGE_2_CREDIT_COST, DAILY_FREE_CREDIT_GRANT, DAILY_CREDIT_TIME_ZONE } from './generation-credits'
 
 type SessionLike = { user: { id: string } } | null
@@ -41,7 +42,7 @@ export async function getCreditBalanceResponse({ request, getSession, getBalance
       generationCost: GPT_IMAGE_2_CREDIT_COST,
       dailyGrant: DAILY_FREE_CREDIT_GRANT,
       resetTimeZone: DAILY_CREDIT_TIME_ZONE,
-      expiresDaily: true,
+      expiresDaily: REGISTERED_FREE_CREDITS_ENABLED,
     },
   }, {
     headers: { 'cache-control': 'no-store' },

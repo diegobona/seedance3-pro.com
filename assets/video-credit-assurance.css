@@ -1,0 +1,35 @@
+.video-credit-assurance {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 10px 0 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #9dbeb0;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.video-credit-assurance[hidden] { display: none !important; }
+
+.video-credit-assurance-item, .video-speed-note { display: inline-flex; align-items: center; gap: 7px; }
+.video-speed-note { color: #72dbd1; font-weight: 700; }
+.video-speed-note svg { width: 15px; height: 17px; flex: 0 0 15px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linejoin: round; }
+
+.video-credit-assurance-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 16px;
+  width: 16px;
+  color: #8bc7af;
+  font-size: 16px;
+  line-height: 1;
+}

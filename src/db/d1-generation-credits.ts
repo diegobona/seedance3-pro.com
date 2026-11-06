@@ -1,3 +1,4 @@
+import { REGISTERED_FREE_CREDITS_ENABLED } from '../../app/credit-policy.mjs'
 import { CreditPolicyError, DAILY_FREE_CREDIT_GRANT, LEGACY_TRIAL_CREDIT_GRANT, type CreditReservationOptions, type CreditBreakdown, type GenerationCreditStore } from '../lib/generation-credits'
 
 export const D1_NOW_SQL = "CAST(unixepoch('subsec') * 1000 AS INTEGER)"
@@ -9,6 +10,7 @@ function accountAlias(alias: string) {
 }
 
 export function d1AvailableDailyCredits(alias = 'account') {
+  if (!REGISTERED_FREE_CREDITS_ENABLED) return '0'
   const account = accountAlias(alias)
   return `(CASE WHEN ${account}.daily_credit_date = ${D1_CREDIT_DAY_SQL} THEN ${account}.daily_free_credits
     WHEN ${account}.plan <> 'guest' THEN ${DAILY_FREE_CREDIT_GRANT} ELSE 0 END)`
@@ -16,6 +18,10 @@ export function d1AvailableDailyCredits(alias = 'account') {
 
 export function d1EffectiveCreditBalance(alias = 'account') {
   const account = accountAlias(alias)
+  if (!REGISTERED_FREE_CREDITS_ENABLED) return `(${account}.credit_balance - CASE
+    WHEN ${account}.daily_credit_date IS NULL AND ${account}.plan = 'free'
+      THEN min(${account}.credit_balance, ${LEGACY_TRIAL_CREDIT_GRANT})
+    ELSE ${account}.daily_free_credits END)`
   return `(CASE WHEN ${account}.daily_credit_date IS NOT ${D1_CREDIT_DAY_SQL} THEN
     ${account}.credit_balance - CASE WHEN ${account}.daily_credit_date IS NULL
       THEN CASE WHEN ${account}.plan = 'free' THEN min(${account}.credit_balance, ${LEGACY_TRIAL_CREDIT_GRANT}) ELSE 0 END

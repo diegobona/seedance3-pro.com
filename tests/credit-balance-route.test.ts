@@ -5,7 +5,7 @@ import { getCreditBalanceResponse } from '../src/lib/credit-balance-response'
 const request = new Request('https://seedance3-pro.com/api/credits/balance')
 
 test('explicit guest video balances expose ten seconds without granting account credits', async () => {
-  const credits = { remaining: 5, guest: true, generationCost: 5, maxDuration: 10, expiresDaily: false }
+  const credits = { remaining: 5, guest: true, generationCost: 5, maxDuration: 5, expiresDaily: false }
   const response = await getCreditBalanceResponse({ request, getSession: async () => null,
     getBalance: async () => { throw new Error('must not read account balance') }, getGuestBalance: async () => credits } as never)
   assert.equal(response.status, 200)

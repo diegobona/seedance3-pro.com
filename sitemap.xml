@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://seedance3-pro.com/</loc>
-    <lastmod>2026-10-17</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/"/>
@@ -11,7 +11,7 @@
   </url>
   <url>
     <loc>https://seedance3-pro.com/zh/</loc>
-    <lastmod>2026-10-17</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/"/>
@@ -486,24 +486,8 @@
     <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/seedance-2-5-prompts/smart-glasses-coffee"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/seedance-2-5-prompts/smart-glasses-coffee"/>
   </url>
-  <url>
-    <loc>https://seedance3-pro.com/seedance-2-5-prompts/corgi-sprint</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/seedance-2-5-prompts/corgi-sprint"/>
-    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/seedance-2-5-prompts/corgi-sprint"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/seedance-2-5-prompts/corgi-sprint"/>
-  </url>
-  <url>
-    <loc>https://seedance3-pro.com/zh/seedance-2-5-prompts/corgi-sprint</loc>
-    <lastmod>2026-09-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/seedance-2-5-prompts/corgi-sprint"/>
-    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/seedance-2-5-prompts/corgi-sprint"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/seedance-2-5-prompts/corgi-sprint"/>
-  </url>
+  
+  
   <url>
     <loc>https://seedance3-pro.com/seedance-2-5-prompts/cat-fashion-runway</loc>
     <lastmod>2026-09-25</lastmod>
@@ -666,42 +650,10 @@
     <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/seedance-3-0-release-date"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/seedance-3-0-release-date"/>
   </url>
-  <url>
-    <loc>https://seedance3-pro.com/muse-video-prompts</loc>
-    <lastmod>2026-10-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/muse-video-prompts"/>
-    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/muse-video-prompts"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/muse-video-prompts"/>
-  </url>
-  <url>
-    <loc>https://seedance3-pro.com/zh/muse-video-prompts</loc>
-    <lastmod>2026-10-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/muse-video-prompts"/>
-    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/muse-video-prompts"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/muse-video-prompts"/>
-  </url>
-  <url>
-    <loc>https://seedance3-pro.com/muse-image-prompts</loc>
-    <lastmod>2026-10-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/muse-image-prompts"/>
-    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/muse-image-prompts"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/muse-image-prompts"/>
-  </url>
-  <url>
-    <loc>https://seedance3-pro.com/zh/muse-image-prompts</loc>
-    <lastmod>2026-10-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/muse-image-prompts"/>
-    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/muse-image-prompts"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/muse-image-prompts"/>
-  </url>
+  
+  
+  
+  
   <url>
     <loc>https://seedance3-pro.com/seedance-3-0-prompts</loc>
     <lastmod>2026-10-13</lastmod>
@@ -756,22 +708,6 @@
     <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/seedance-3-0"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/seedance-3-0"/>
   </url>
-  <url>
-    <loc>https://seedance3-pro.com/app/video/flux-3</loc>
-    <lastmod>2026-10-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/app/video/flux-3"/>
-    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/app/video/flux-3"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/app/video/flux-3"/>
-  </url>
-  <url>
-    <loc>https://seedance3-pro.com/zh/app/video/flux-3</loc>
-    <lastmod>2026-10-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://seedance3-pro.com/app/video/flux-3"/>
-    <xhtml:link rel="alternate" hreflang="zh-Hans" href="https://seedance3-pro.com/zh/app/video/flux-3"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://seedance3-pro.com/app/video/flux-3"/>
-  </url>
+  
+  
 </urlset>

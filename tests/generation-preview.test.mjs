@@ -83,6 +83,25 @@ test('one real elapsed timer covers concurrent jobs and preserves placeholder no
   controller.destroy();
 });
 
+test('account video display steps back once at 125 seconds without changing task timing', async () => {
+  const { controller, fixture, elements } = await setup();
+  controller.selectModel('video');
+  controller.begin({ modelId: 'video', kind: 'video', adjustVideoWaitDisplay: true });
+  const startedAt = controller.getState().job.startedAt;
+  fixture.advance(124_000);
+  assert.equal(elements['preview-elapsed'].textContent, 'Waiting 2:04');
+  fixture.advance(1_000);
+  assert.equal(elements['preview-elapsed'].textContent, 'Waiting 1:05');
+  fixture.advance(61_000);
+  assert.equal(elements['preview-elapsed'].textContent, 'Waiting 2:06');
+  assert.equal(controller.getState().job.startedAt, startedAt);
+  controller.begin({ modelId: 'video', kind: 'video', startedAt });
+  assert.equal(elements['preview-elapsed'].textContent, 'Waiting 3:06');
+  controller.begin({ modelId: 'video', kind: 'image', startedAt, adjustVideoWaitDisplay: true });
+  assert.equal(elements['preview-elapsed'].textContent, 'Waiting 3:06');
+  controller.destroy();
+});
+
 test('failed retry and paused resume only call their explicit actions', async () => {
   const retries = [];
   const { controller, elements, fixture } = await setup({}, { onRetry: (...args) => retries.push(args) });

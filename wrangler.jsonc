@@ -10,7 +10,11 @@
   "vars": {
     "DATABASE_BACKEND": "d1",
     "DATABASE_MIGRATION_PAUSED": "0",
-    "H3_REFERENCE_PROVIDER": "autodl-upgraded"
+    "H3_REFERENCE_PROVIDER": "autodl-upgraded",
+    "GUEST_VIDEO_PROVIDER": "yir",
+    "TURNSTILE_HOSTNAMES": "seedance3-pro.com,www.seedance3-pro.com",
+    "REFUND_ADMIN_USER_IDS": "fQjNf64QD19mP3V70J8yvYD1Lbx7WtdE",
+    "REFUND_EMAIL_FROM": "refunds@notify.seedance3-pro.com"
   },
   "d1_databases": [
     {
@@ -80,3 +84,4 @@
     }
   ]
 }
+

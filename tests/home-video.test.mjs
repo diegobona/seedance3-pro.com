@@ -3,6 +3,12 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { saveVideoHandoff, readVideoHandoff } from '../app/studio-handoff.mjs';
 
+test('homepage preserves the localized video error instead of relabeling personal budget failures as network failures', async () => {
+  const source = await readFile('app/home-video.mjs', 'utf8');
+  assert.doesNotMatch(source, /The free trial is temporarily unavailable on this network/);
+  assert.match(source, /message\(error\.message \|\| text\('Please try again\.'/);
+});
+
 test('homepage handoff keeps the original reference, draft settings and accepted task without submitting anything', async () => {
   const values = new Map(), files = new Map();
   const storage = { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value), removeItem: key => values.delete(key) };

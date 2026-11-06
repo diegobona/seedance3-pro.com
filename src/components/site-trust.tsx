@@ -5,7 +5,8 @@ import '../../assets/site-trust.css'
 
 export function SiteTrustFooter() {
   const { locale } = useSiteI18n()
-  return <footer className="trust-shell" dangerouslySetInnerHTML={{ __html: renderTrustFooter(locale) }} />
+  const popupId = 'footer-contact-' + useId().replace(/[^a-zA-Z0-9_-]/g, '')
+  return <footer className="trust-shell" dangerouslySetInnerHTML={{ __html: renderTrustFooter(locale, { popupId }) }} />
 }
 
 export function PurchaseAssurance() {

@@ -1,3 +1,4 @@
+import { REGISTERED_FREE_CREDITS_ENABLED } from './credit-policy.mjs'
 import { localeFromPath } from './site-locale.mjs';
 import { videoResolutionLabel } from './video-resolution-label.mjs';
 import { modelDisplayNames } from './model-display-names.mjs';
@@ -5,6 +6,37 @@ import { modelDisplayNames } from './model-display-names.mjs';
 // Keys remain readable English; prompts, model IDs and provider enum values are
 // deliberately kept out of this dictionary's automatic UI translation path.
 export const ZH_MESSAGES = Object.freeze({
+  "Security check": "安全验证",
+  "Loading security check…": "正在加载安全验证…",
+  "You will continue automatically after verification.": "验证通过后将自动继续",
+  "Back to creating": "返回创作",
+  "Cancel": "取消",
+  "Please complete the security check to continue.": "请完成安全验证后继续。",
+  "Verification is temporarily unavailable. Please try again later.": "安全验证暂时不可用，请稍后重试。",
+  "Verification failed. Please try again.": "安全验证未通过，请重试。",
+  "Verification could not load. Please try again.": "安全验证加载失败，请重试。",
+  "Verification cancelled. Please try again.": "已取消安全验证，请重试。",
+  "Verification timed out. Please try again.": "安全验证已超时，请重试。",
+  "Your credits are used up. Buy credits to keep creating.": "积分已用完，请购买积分后继续创作。",
+  "Purchased credits never expire.": "购买积分永久有效。",
+  "Buy credits to keep creating. Purchased credits never expire.": "购买积分后继续创作，购买积分永久有效。",
+  "Guests get a one-time free trial.": "游客可获得一次免费体验。",
+  "Two free videos, 5 seconds each. 10 seconds total.": "免费试用 2 次，每次 5 秒，共 10 秒。",
+  "Free trial: 5 seconds per video.": "免费试用每次固定生成 5 秒。",
+  "5 seconds": "5 秒",
+  "10 seconds": "10 秒",
+  "15 seconds": "15 秒",
+  "Your free images are used up. Sign up or log in, then buy credits to keep creating.": "免费图片额度已用完。注册或登录后购买积分，继续创作。",
+  "Your free video seconds are used up. Sign up or log in, then buy credits to keep creating.": "免费视频额度已用完。注册或登录后购买积分，继续创作。",
+  "Sign up or log in, then buy credits to continue": "注册或登录后购买积分，继续创作",
+  "Not enough credits. Buy credits to keep creating. Purchased credits never expire.": "积分不足，请购买积分后继续创作。购买积分永久有效。",
+  "Not enough free video seconds for this duration. Choose 5 seconds, or log in and buy credits to continue.": "剩余免费秒数不足以生成此时长。请选择 5 秒，或登录并购买积分继续。",
+  "Choose fewer images, or log in and buy credits to continue.": "请减少图片数量，或登录并购买积分继续。",
+  "Next generation: {paid} purchased credits.": "下次生成扣费：{paid} 购买积分。",
+  "Balance: {paid} purchased credits": "当前余额：{paid} 购买积分",
+  "The free trial is temporarily unavailable on this network. Log in and buy credits to continue.": "当前网络暂时无法使用免费体验。请登录并购买积分后继续。",
+  "Free generation is temporarily limited by a safety budget. This attempt was not charged; your remaining allowance is unchanged.": "免费生成暂时受到安全预算限制。本次未扣除额度，剩余体验额度保持不变。",
+  "Try two 5-second videos at 768p without signing in (10 free seconds in total, once). After the trial, log in and buy credits to continue.": "无需登录即可免费生成两次 768p 视频，每次固定 5 秒，共 10 秒，仅可领取一次；用完后请登录并购买积分继续。",
   "This network’s daily free allowance is used up. It resets at 00:00 Asia/Shanghai. You can choose to use purchased credits.": "当前网络的每日免费额度已用完，将于北京时间 00:00 重置。你可以主动选择使用购买积分。",
   "Each network shares a daily limit of 10 free credits across guest and registered image/video generation.": "同一网络每天共享 10 积分免费额度，游客和注册用户生成图片、视频均计入。",
   "Pricing": "价格",
@@ -19,9 +51,10 @@ export const ZH_MESSAGES = Object.freeze({
   "Balance: {daily} daily · {paid} purchased": "当前余额：{daily} 每日积分 · {paid} 购买积分",
   "Use purchased credits only for this generation": "本次生成仅使用购买积分",
   "Today’s free generation budget is reached. Wait until reset, or explicitly choose purchased credits.": "今日免费生成预算已达上限。请等待重置，或主动选择使用购买积分。",
-  "Buy 500 credits · $4.99": "购买 500 积分 · $4.99",
-  "500 seconds of video": "可生成总计 500 秒视频",
-  "500 images or 500 seconds of video": "可生成 500 张图片或 500 秒视频",
+  "Buy Credits": "购买积分",
+  "Buy 1,100 credits · $11.90": "购买 1,100 积分 · $11.90",
+  "1,100 seconds of video": "可生成总计 1,100 秒视频",
+  "1,100 images or 1,100 seconds of video": "可生成 1,100 张图片或 1,100 秒视频",
   "1 credit": "1 积分",
   "Generate image · 1 credit": "生成图片 · 1 积分",
   "Generate again · 1 credit": "再次生成 · 1 积分",
@@ -74,7 +107,7 @@ export const ZH_MESSAGES = Object.freeze({
   'Your free images are used up. Sign up for 5 free credits every day.': '免费图片额度已用完，注册后每天赠送 5 积分。',
   'Image generated · {count} free images remaining.': '图片已生成 · 还剩 {count} 张免费图片额度。',
   'Choose fewer images or sign up to keep creating.': '请选择更少的图片数量，或注册后继续生成。',
-  'Choose 5 or 10 seconds.': '可选 5 秒或 10 秒',
+  'Each free video is 5 seconds.': '每次免费视频固定 5 秒。',
   'Free accounts get {credits} credits daily, shared across images and videos.': '免费账户每天获得 {credits} 积分，图片和视频共用。',
   'Sign up to keep creating': '注册后继续创作',
   'Generate video · {seconds}s free': '生成视频 · 免费 {seconds} 秒',
@@ -84,7 +117,7 @@ export const ZH_MESSAGES = Object.freeze({
   'Video generated · {seconds} free seconds remaining.': '视频已生成 · 还剩 {seconds} 秒免费额度。',
   'Your free video seconds are used up. Sign up for 5 free credits every day.': '游客免费视频额度已用完，注册后每天赠送 5 积分。',
   'Not enough free video seconds for this duration. Choose 5 seconds or sign up to keep creating.': '剩余免费秒数不足，请选择 5 秒或注册后继续创作。',
-  'Guest videos support 5 or 10 seconds at 768p.': '游客视频支持 5 秒或 10 秒，固定 768p。',
+  'Guest videos support 5 seconds per generation at 768p.': '游客视频每次固定生成 5 秒，固定 768p。',
   'This network has already claimed the guest video trial. Sign up to keep creating.': '当前网络已领取过游客体验额度，请注册后继续创作。',
   'This device or network has already claimed the guest video trial. Sign up to keep creating.': '当前设备或网络已领取过游客视频额度，请注册后继续创作。',
   'This device or network has already claimed the guest image trial. Sign up to keep creating.': '当前设备或网络已领取过游客图片额度，请注册后继续创作。',
@@ -336,8 +369,8 @@ export function t(message, values = {}, locale = currentLocale()) {
 }
 
 const ERROR_MESSAGES = Object.freeze({
-  FREE_BUDGET_EXCEEDED: 'Today’s free generation budget is reached. Wait until reset, or explicitly choose purchased credits.',
-  NETWORK_FREE_BUDGET_EXCEEDED: 'This network’s daily free allowance is used up. It resets at 00:00 Asia/Shanghai. You can choose to use purchased credits.',
+  FREE_BUDGET_EXCEEDED: REGISTERED_FREE_CREDITS_ENABLED ? 'Today’s free generation budget is reached. Wait until reset, or explicitly choose purchased credits.' : 'Free generation is temporarily limited by a safety budget. This attempt was not charged; your remaining allowance is unchanged.',
+  NETWORK_FREE_BUDGET_EXCEEDED: REGISTERED_FREE_CREDITS_ENABLED ? 'This network’s daily free allowance is used up. It resets at 00:00 Asia/Shanghai. You can choose to use purchased credits.' : 'The free trial is temporarily unavailable on this network. Log in and buy credits to continue.',
   AUTH_REQUIRED: 'Please log in to continue.',
   INSUFFICIENT_CREDITS: 'Insufficient credits. Please check your balance.',
   RATE_LIMITED: 'Too many requests. Please try again later.',
@@ -362,6 +395,7 @@ const ZH_ERROR_MESSAGES = Object.freeze({
 
 export function localizedErrorMessage(message, code = '', fallback = 'Image generation failed.', locale = currentLocale()) {
   const source = String(message || fallback);
+  if (code === 'FREE_BUDGET_EXCEEDED' && !REGISTERED_FREE_CREDITS_ENABLED) return t(ERROR_MESSAGES[code], {}, locale);
   if (locale !== 'zh') return modelDisplayNames(videoResolutionLabel(source));
   if (Object.hasOwn(ZH_MESSAGES, source)) return t(source, {}, locale);
   const known = ERROR_MESSAGES[code];

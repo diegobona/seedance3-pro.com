@@ -1,33 +1,9 @@
 import { useSiteI18n } from '../lib/site-i18n'
 import { useState } from 'react'
-import cinematicVideo from '../../assets/h3-example-cinematic.mp4'
-import productVideo from '../../assets/h3-example-product.mp4'
-import animationVideo from '../../assets/h3-example-animation.mp4'
+import { SEEDANCE_VIDEO_EXAMPLES } from '../../app/seedance-video-examples.mjs'
 import '../styles/h3-video-examples.css'
 
-const examples = [
-  {
-    id: 'cinematic',
-    title: 'Cinematic scene',
-    style: 'CINEMATIC',
-    src: cinematicVideo,
-    prompt: 'At blue hour on a windswept salt flat, a lone traveler in a saffron coat walks toward a glowing glass observatory. One continuous slow dolly-in shot; drifting dust, soft volumetric light, grounded realistic motion, film-grain, high-contrast cinematic color. No text, no logos.',
-  },
-  {
-    id: 'product',
-    title: 'Product film',
-    style: 'COMMERCIAL',
-    src: productVideo,
-    prompt: 'A sculptural matte-black ceramic espresso cup rotates above a pale limestone pedestal as warm morning sunlight slides across the rim. Macro lens, crisp reflections, gentle orbit camera, premium commercial film, clean minimal background. No text, no logos.',
-  },
-  {
-    id: 'animation',
-    title: 'Paper animation',
-    style: 'ANIMATION',
-    src: animationVideo,
-    prompt: 'A tiny paper fox with folded origami fur leaps between floating lanterns over a moonlit forest pond. Handcrafted stop-motion paper texture, playful squash-and-stretch, smooth sideways tracking camera, saturated indigo and amber palette. No text, no logos.',
-  },
-]
+const examples = SEEDANCE_VIDEO_EXAMPLES.slice(0, 3)
 
 export function H3VideoExamples() {
   const { t } = useSiteI18n()
@@ -57,18 +33,15 @@ export function H3VideoExamples() {
   return (
     <section className="context-card h3-examples" aria-label={t("Seedance 2.5 video examples")}>
       <div className="h3-examples-heading"><span>{t("VIDEO EXAMPLES")}</span><small>{t("MADE WITH Seedance 2.5")}</small></div>
-      <video key={selected.id} className="h3-example-player" src={selected.src} controls playsInline preload="metadata" aria-label={`${t(selected.title)} — ${t("Example video")}`} />
-      <div className="h3-example-details">
-        <div className="h3-example-title"><div><span>{t(selected.style)}</span><h2>{t(selected.title)}</h2></div><button type="button" onClick={tryExample}>{t("Try it ↗")}</button></div>
-        <p className="h3-example-prompt">{selected.prompt}</p>
-      </div>
-      <div className="h3-example-options" aria-label={t("Choose an example video")}>
+      <video key={selected.id} className="h3-example-player" src={selected.src} poster={selected.poster} controls playsInline autoPlay muted preload="metadata" onEnded={() => setSelectedIndex(index => (index + 1) % examples.length)} aria-label={`${t(selected.title[0])} — ${t("Example video")}`} />
+      <div className="h3-example-pagination" role="group" aria-label={t("Choose an example video")}>
         {examples.map((example, index) => (
-          <button key={example.id} className={index === selectedIndex ? 'is-selected' : ''} type="button" onClick={() => setSelectedIndex(index)} aria-pressed={index === selectedIndex} aria-label={`${t("Show example")}: ${t(example.title)}`}>
-            <video src={`${example.src}#t=0.1`} muted playsInline preload="metadata" aria-hidden="true" tabIndex={-1} />
-            <span>{t(example.title)}</span>
-          </button>
+          <button key={example.id} className={index === selectedIndex ? 'is-selected' : ''} type="button" onClick={() => setSelectedIndex(index)} aria-pressed={index === selectedIndex} aria-label={`${t("Show example")}: ${t(example.title[0])}`} />
         ))}
+      </div>
+      <div className="h3-example-details">
+        <div className="h3-example-title"><div><span>{t(selected.style)}</span><h2>{t(selected.title[0])}</h2></div><button type="button" onClick={tryExample}>{t("Try it ↗")}</button></div>
+        <p className="h3-example-prompt">{selected.prompt}</p>
       </div>
     </section>
   )

@@ -13,28 +13,38 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AiChristmasPhotoPromptRouteImport } from './routes/ai-christmas-photo-prompt'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as BillingRouteImport } from './routes/billing'
+import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as CreationsRouteImport } from './routes/creations'
 import { Route as GptImage25PromptsRouteImport } from './routes/gpt-image-2-5-prompts'
 import { Route as MuseImagePromptsRouteImport } from './routes/muse-image-prompts'
 import { Route as MuseVideoPromptsRouteImport } from './routes/muse-video-prompts'
 import { Route as PromptGuideRouteImport } from './routes/prompt-guide'
+import { Route as RefundReviewRouteImport } from './routes/refund-review'
 import { Route as Seedance25PromptsRouteImport } from './routes/seedance-2-5-prompts'
 import { Route as Seedance30PromptsRouteImport } from './routes/seedance-3-0-prompts'
+import { Route as ApiCreationsRouteImport } from './routes/api/creations'
 import { Route as ApiLaunchWaitlistRouteImport } from './routes/api/launch-waitlist'
 import { Route as GptImage25PromptsSlugRouteImport } from './routes/gpt-image-2-5-prompts_.$slug'
 import { Route as Seedance25PromptsSlugRouteImport } from './routes/seedance-2-5-prompts_.$slug'
 import { Route as ZhAiChristmasPhotoPromptRouteImport } from './routes/zh.ai-christmas-photo-prompt'
 import { Route as ZhAppRouteImport } from './routes/zh.app'
 import { Route as ZhBillingRouteImport } from './routes/zh.billing'
+import { Route as ZhCheckoutRouteImport } from './routes/zh.checkout'
+import { Route as ZhCreationsRouteImport } from './routes/zh.creations'
 import { Route as ZhGptImage25PromptsRouteImport } from './routes/zh.gpt-image-2-5-prompts'
 import { Route as ZhMuseImagePromptsRouteImport } from './routes/zh.muse-image-prompts'
 import { Route as ZhMuseVideoPromptsRouteImport } from './routes/zh.muse-video-prompts'
 import { Route as ZhPromptGuideRouteImport } from './routes/zh.prompt-guide'
+import { Route as ZhRefundReviewRouteImport } from './routes/zh.refund-review'
 import { Route as ZhSeedance25PromptsRouteImport } from './routes/zh.seedance-2-5-prompts'
 import { Route as ZhSeedance30PromptsRouteImport } from './routes/zh.seedance-3-0-prompts'
+import { Route as ApiAdminRefundRequestsRouteImport } from './routes/api/admin/refund-requests'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApiBillingCheckoutRouteImport } from './routes/api/billing/checkout'
 import { Route as ApiBillingHistoryRouteImport } from './routes/api/billing/history'
+import { Route as ApiBillingRefundRequestsRouteImport } from './routes/api/billing/refund-requests'
 import { Route as ApiBillingWebhookRouteImport } from './routes/api/billing/webhook'
+import { Route as ApiCreationsMediaRouteImport } from './routes/api/creations.media'
 import { Route as ApiCreditsBalanceRouteImport } from './routes/api/credits/balance'
 import { Route as ApiCreditsHistoryRouteImport } from './routes/api/credits/history'
 import { Route as ApiImagesAnimateRouteImport } from './routes/api/images/animate'
@@ -57,6 +67,7 @@ import { Route as ZhGptImage25PromptsSlugRouteImport } from './routes/zh.gpt-ima
 import { Route as ZhSeedance25PromptsSlugRouteImport } from './routes/zh.seedance-2-5-prompts_.$slug'
 import { Route as ApiAdminReferralsAnyposesRouteImport } from './routes/api/admin/referrals/anyposes'
 import { Route as ApiAdminReferralsPixal3dRouteImport } from './routes/api/admin/referrals/pixal3d'
+import { Route as ApiAdminRefundRequestsSyncRouteImport } from './routes/api/admin/refund-requests.sync'
 import { Route as ZhAppImageGptImage25RouteImport } from './routes/zh.app_.image.gpt-image-2-5'
 import { Route as ZhAppImageGptImage251kRouteImport } from './routes/zh.app_.image.gpt-image-2-5-1k'
 import { Route as ZhAppImageMuseImageRouteImport } from './routes/zh.app_.image.muse-image'
@@ -85,6 +96,16 @@ const BillingRoute = BillingRouteImport.update({
   path: '/billing',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreationsRoute = CreationsRouteImport.update({
+  id: '/creations',
+  path: '/creations',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GptImage25PromptsRoute = GptImage25PromptsRouteImport.update({
   id: '/gpt-image-2-5-prompts',
   path: '/gpt-image-2-5-prompts',
@@ -105,6 +126,11 @@ const PromptGuideRoute = PromptGuideRouteImport.update({
   path: '/prompt-guide',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RefundReviewRoute = RefundReviewRouteImport.update({
+  id: '/refund-review',
+  path: '/refund-review',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Seedance25PromptsRoute = Seedance25PromptsRouteImport.update({
   id: '/seedance-2-5-prompts',
   path: '/seedance-2-5-prompts',
@@ -113,6 +139,11 @@ const Seedance25PromptsRoute = Seedance25PromptsRouteImport.update({
 const Seedance30PromptsRoute = Seedance30PromptsRouteImport.update({
   id: '/seedance-3-0-prompts',
   path: '/seedance-3-0-prompts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCreationsRoute = ApiCreationsRouteImport.update({
+  id: '/api/creations',
+  path: '/api/creations',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiLaunchWaitlistRoute = ApiLaunchWaitlistRouteImport.update({
@@ -146,6 +177,16 @@ const ZhBillingRoute = ZhBillingRouteImport.update({
   path: '/zh/billing',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ZhCheckoutRoute = ZhCheckoutRouteImport.update({
+  id: '/zh/checkout',
+  path: '/zh/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ZhCreationsRoute = ZhCreationsRouteImport.update({
+  id: '/zh/creations',
+  path: '/zh/creations',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ZhGptImage25PromptsRoute = ZhGptImage25PromptsRouteImport.update({
   id: '/zh/gpt-image-2-5-prompts',
   path: '/zh/gpt-image-2-5-prompts',
@@ -166,6 +207,11 @@ const ZhPromptGuideRoute = ZhPromptGuideRouteImport.update({
   path: '/zh/prompt-guide',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ZhRefundReviewRoute = ZhRefundReviewRouteImport.update({
+  id: '/zh/refund-review',
+  path: '/zh/refund-review',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ZhSeedance25PromptsRoute = ZhSeedance25PromptsRouteImport.update({
   id: '/zh/seedance-2-5-prompts',
   path: '/zh/seedance-2-5-prompts',
@@ -174,6 +220,11 @@ const ZhSeedance25PromptsRoute = ZhSeedance25PromptsRouteImport.update({
 const ZhSeedance30PromptsRoute = ZhSeedance30PromptsRouteImport.update({
   id: '/zh/seedance-3-0-prompts',
   path: '/zh/seedance-3-0-prompts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminRefundRequestsRoute = ApiAdminRefundRequestsRouteImport.update({
+  id: '/api/admin/refund-requests',
+  path: '/api/admin/refund-requests',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
@@ -191,10 +242,21 @@ const ApiBillingHistoryRoute = ApiBillingHistoryRouteImport.update({
   path: '/api/billing/history',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiBillingRefundRequestsRoute =
+  ApiBillingRefundRequestsRouteImport.update({
+    id: '/api/billing/refund-requests',
+    path: '/api/billing/refund-requests',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiBillingWebhookRoute = ApiBillingWebhookRouteImport.update({
   id: '/api/billing/webhook',
   path: '/api/billing/webhook',
   getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCreationsMediaRoute = ApiCreationsMediaRouteImport.update({
+  id: '/media',
+  path: '/media',
+  getParentRoute: () => ApiCreationsRoute,
 } as any)
 const ApiCreditsBalanceRoute = ApiCreditsBalanceRouteImport.update({
   id: '/api/credits/balance',
@@ -308,6 +370,12 @@ const ApiAdminReferralsPixal3dRoute =
     path: '/api/admin/referrals/pixal3d',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiAdminRefundRequestsSyncRoute =
+  ApiAdminRefundRequestsSyncRouteImport.update({
+    id: '/sync',
+    path: '/sync',
+    getParentRoute: () => ApiAdminRefundRequestsRoute,
+  } as any)
 const ZhAppImageGptImage25Route = ZhAppImageGptImage25RouteImport.update({
   id: '/zh/app_/image/gpt-image-2-5',
   path: '/zh/app/image/gpt-image-2-5',
@@ -349,28 +417,38 @@ export interface FileRoutesByFullPath {
   '/ai-christmas-photo-prompt': typeof AiChristmasPhotoPromptRoute
   '/app': typeof AppRoute
   '/billing': typeof BillingRoute
+  '/checkout': typeof CheckoutRoute
+  '/creations': typeof CreationsRoute
   '/gpt-image-2-5-prompts': typeof GptImage25PromptsRoute
   '/muse-image-prompts': typeof MuseImagePromptsRoute
   '/muse-video-prompts': typeof MuseVideoPromptsRoute
   '/prompt-guide': typeof PromptGuideRoute
+  '/refund-review': typeof RefundReviewRoute
   '/seedance-2-5-prompts': typeof Seedance25PromptsRoute
   '/seedance-3-0-prompts': typeof Seedance30PromptsRoute
+  '/api/creations': typeof ApiCreationsRouteWithChildren
   '/api/launch-waitlist': typeof ApiLaunchWaitlistRoute
   '/gpt-image-2-5-prompts/$slug': typeof GptImage25PromptsSlugRoute
   '/seedance-2-5-prompts/$slug': typeof Seedance25PromptsSlugRoute
   '/zh/ai-christmas-photo-prompt': typeof ZhAiChristmasPhotoPromptRoute
   '/zh/app': typeof ZhAppRoute
   '/zh/billing': typeof ZhBillingRoute
+  '/zh/checkout': typeof ZhCheckoutRoute
+  '/zh/creations': typeof ZhCreationsRoute
   '/zh/gpt-image-2-5-prompts': typeof ZhGptImage25PromptsRoute
   '/zh/muse-image-prompts': typeof ZhMuseImagePromptsRoute
   '/zh/muse-video-prompts': typeof ZhMuseVideoPromptsRoute
   '/zh/prompt-guide': typeof ZhPromptGuideRoute
+  '/zh/refund-review': typeof ZhRefundReviewRoute
   '/zh/seedance-2-5-prompts': typeof ZhSeedance25PromptsRoute
   '/zh/seedance-3-0-prompts': typeof ZhSeedance30PromptsRoute
+  '/api/admin/refund-requests': typeof ApiAdminRefundRequestsRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/billing/checkout': typeof ApiBillingCheckoutRoute
   '/api/billing/history': typeof ApiBillingHistoryRoute
+  '/api/billing/refund-requests': typeof ApiBillingRefundRequestsRoute
   '/api/billing/webhook': typeof ApiBillingWebhookRoute
+  '/api/creations/media': typeof ApiCreationsMediaRoute
   '/api/credits/balance': typeof ApiCreditsBalanceRoute
   '/api/credits/history': typeof ApiCreditsHistoryRoute
   '/api/images/animate': typeof ApiImagesAnimateRoute
@@ -393,6 +471,7 @@ export interface FileRoutesByFullPath {
   '/zh/seedance-2-5-prompts/$slug': typeof ZhSeedance25PromptsSlugRoute
   '/api/admin/referrals/anyposes': typeof ApiAdminReferralsAnyposesRoute
   '/api/admin/referrals/pixal3d': typeof ApiAdminReferralsPixal3dRoute
+  '/api/admin/refund-requests/sync': typeof ApiAdminRefundRequestsSyncRoute
   '/zh/app/image/gpt-image-2-5': typeof ZhAppImageGptImage25Route
   '/zh/app/image/gpt-image-2-5-1k': typeof ZhAppImageGptImage251kRoute
   '/zh/app/image/muse-image': typeof ZhAppImageMuseImageRoute
@@ -406,28 +485,38 @@ export interface FileRoutesByTo {
   '/ai-christmas-photo-prompt': typeof AiChristmasPhotoPromptRoute
   '/app': typeof AppRoute
   '/billing': typeof BillingRoute
+  '/checkout': typeof CheckoutRoute
+  '/creations': typeof CreationsRoute
   '/gpt-image-2-5-prompts': typeof GptImage25PromptsRoute
   '/muse-image-prompts': typeof MuseImagePromptsRoute
   '/muse-video-prompts': typeof MuseVideoPromptsRoute
   '/prompt-guide': typeof PromptGuideRoute
+  '/refund-review': typeof RefundReviewRoute
   '/seedance-2-5-prompts': typeof Seedance25PromptsRoute
   '/seedance-3-0-prompts': typeof Seedance30PromptsRoute
+  '/api/creations': typeof ApiCreationsRouteWithChildren
   '/api/launch-waitlist': typeof ApiLaunchWaitlistRoute
   '/gpt-image-2-5-prompts/$slug': typeof GptImage25PromptsSlugRoute
   '/seedance-2-5-prompts/$slug': typeof Seedance25PromptsSlugRoute
   '/zh/ai-christmas-photo-prompt': typeof ZhAiChristmasPhotoPromptRoute
   '/zh/app': typeof ZhAppRoute
   '/zh/billing': typeof ZhBillingRoute
+  '/zh/checkout': typeof ZhCheckoutRoute
+  '/zh/creations': typeof ZhCreationsRoute
   '/zh/gpt-image-2-5-prompts': typeof ZhGptImage25PromptsRoute
   '/zh/muse-image-prompts': typeof ZhMuseImagePromptsRoute
   '/zh/muse-video-prompts': typeof ZhMuseVideoPromptsRoute
   '/zh/prompt-guide': typeof ZhPromptGuideRoute
+  '/zh/refund-review': typeof ZhRefundReviewRoute
   '/zh/seedance-2-5-prompts': typeof ZhSeedance25PromptsRoute
   '/zh/seedance-3-0-prompts': typeof ZhSeedance30PromptsRoute
+  '/api/admin/refund-requests': typeof ApiAdminRefundRequestsRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/billing/checkout': typeof ApiBillingCheckoutRoute
   '/api/billing/history': typeof ApiBillingHistoryRoute
+  '/api/billing/refund-requests': typeof ApiBillingRefundRequestsRoute
   '/api/billing/webhook': typeof ApiBillingWebhookRoute
+  '/api/creations/media': typeof ApiCreationsMediaRoute
   '/api/credits/balance': typeof ApiCreditsBalanceRoute
   '/api/credits/history': typeof ApiCreditsHistoryRoute
   '/api/images/animate': typeof ApiImagesAnimateRoute
@@ -450,6 +539,7 @@ export interface FileRoutesByTo {
   '/zh/seedance-2-5-prompts/$slug': typeof ZhSeedance25PromptsSlugRoute
   '/api/admin/referrals/anyposes': typeof ApiAdminReferralsAnyposesRoute
   '/api/admin/referrals/pixal3d': typeof ApiAdminReferralsPixal3dRoute
+  '/api/admin/refund-requests/sync': typeof ApiAdminRefundRequestsSyncRoute
   '/zh/app/image/gpt-image-2-5': typeof ZhAppImageGptImage25Route
   '/zh/app/image/gpt-image-2-5-1k': typeof ZhAppImageGptImage251kRoute
   '/zh/app/image/muse-image': typeof ZhAppImageMuseImageRoute
@@ -464,28 +554,38 @@ export interface FileRoutesById {
   '/ai-christmas-photo-prompt': typeof AiChristmasPhotoPromptRoute
   '/app': typeof AppRoute
   '/billing': typeof BillingRoute
+  '/checkout': typeof CheckoutRoute
+  '/creations': typeof CreationsRoute
   '/gpt-image-2-5-prompts': typeof GptImage25PromptsRoute
   '/muse-image-prompts': typeof MuseImagePromptsRoute
   '/muse-video-prompts': typeof MuseVideoPromptsRoute
   '/prompt-guide': typeof PromptGuideRoute
+  '/refund-review': typeof RefundReviewRoute
   '/seedance-2-5-prompts': typeof Seedance25PromptsRoute
   '/seedance-3-0-prompts': typeof Seedance30PromptsRoute
+  '/api/creations': typeof ApiCreationsRouteWithChildren
   '/api/launch-waitlist': typeof ApiLaunchWaitlistRoute
   '/gpt-image-2-5-prompts_/$slug': typeof GptImage25PromptsSlugRoute
   '/seedance-2-5-prompts_/$slug': typeof Seedance25PromptsSlugRoute
   '/zh/ai-christmas-photo-prompt': typeof ZhAiChristmasPhotoPromptRoute
   '/zh/app': typeof ZhAppRoute
   '/zh/billing': typeof ZhBillingRoute
+  '/zh/checkout': typeof ZhCheckoutRoute
+  '/zh/creations': typeof ZhCreationsRoute
   '/zh/gpt-image-2-5-prompts': typeof ZhGptImage25PromptsRoute
   '/zh/muse-image-prompts': typeof ZhMuseImagePromptsRoute
   '/zh/muse-video-prompts': typeof ZhMuseVideoPromptsRoute
   '/zh/prompt-guide': typeof ZhPromptGuideRoute
+  '/zh/refund-review': typeof ZhRefundReviewRoute
   '/zh/seedance-2-5-prompts': typeof ZhSeedance25PromptsRoute
   '/zh/seedance-3-0-prompts': typeof ZhSeedance30PromptsRoute
+  '/api/admin/refund-requests': typeof ApiAdminRefundRequestsRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/billing/checkout': typeof ApiBillingCheckoutRoute
   '/api/billing/history': typeof ApiBillingHistoryRoute
+  '/api/billing/refund-requests': typeof ApiBillingRefundRequestsRoute
   '/api/billing/webhook': typeof ApiBillingWebhookRoute
+  '/api/creations/media': typeof ApiCreationsMediaRoute
   '/api/credits/balance': typeof ApiCreditsBalanceRoute
   '/api/credits/history': typeof ApiCreditsHistoryRoute
   '/api/images/animate': typeof ApiImagesAnimateRoute
@@ -508,6 +608,7 @@ export interface FileRoutesById {
   '/zh/seedance-2-5-prompts_/$slug': typeof ZhSeedance25PromptsSlugRoute
   '/api/admin/referrals/anyposes': typeof ApiAdminReferralsAnyposesRoute
   '/api/admin/referrals/pixal3d': typeof ApiAdminReferralsPixal3dRoute
+  '/api/admin/refund-requests/sync': typeof ApiAdminRefundRequestsSyncRoute
   '/zh/app_/image/gpt-image-2-5': typeof ZhAppImageGptImage25Route
   '/zh/app_/image/gpt-image-2-5-1k': typeof ZhAppImageGptImage251kRoute
   '/zh/app_/image/muse-image': typeof ZhAppImageMuseImageRoute
@@ -523,28 +624,38 @@ export interface FileRouteTypes {
     | '/ai-christmas-photo-prompt'
     | '/app'
     | '/billing'
+    | '/checkout'
+    | '/creations'
     | '/gpt-image-2-5-prompts'
     | '/muse-image-prompts'
     | '/muse-video-prompts'
     | '/prompt-guide'
+    | '/refund-review'
     | '/seedance-2-5-prompts'
     | '/seedance-3-0-prompts'
+    | '/api/creations'
     | '/api/launch-waitlist'
     | '/gpt-image-2-5-prompts/$slug'
     | '/seedance-2-5-prompts/$slug'
     | '/zh/ai-christmas-photo-prompt'
     | '/zh/app'
     | '/zh/billing'
+    | '/zh/checkout'
+    | '/zh/creations'
     | '/zh/gpt-image-2-5-prompts'
     | '/zh/muse-image-prompts'
     | '/zh/muse-video-prompts'
     | '/zh/prompt-guide'
+    | '/zh/refund-review'
     | '/zh/seedance-2-5-prompts'
     | '/zh/seedance-3-0-prompts'
+    | '/api/admin/refund-requests'
     | '/api/auth/$'
     | '/api/billing/checkout'
     | '/api/billing/history'
+    | '/api/billing/refund-requests'
     | '/api/billing/webhook'
+    | '/api/creations/media'
     | '/api/credits/balance'
     | '/api/credits/history'
     | '/api/images/animate'
@@ -567,6 +678,7 @@ export interface FileRouteTypes {
     | '/zh/seedance-2-5-prompts/$slug'
     | '/api/admin/referrals/anyposes'
     | '/api/admin/referrals/pixal3d'
+    | '/api/admin/refund-requests/sync'
     | '/zh/app/image/gpt-image-2-5'
     | '/zh/app/image/gpt-image-2-5-1k'
     | '/zh/app/image/muse-image'
@@ -580,28 +692,38 @@ export interface FileRouteTypes {
     | '/ai-christmas-photo-prompt'
     | '/app'
     | '/billing'
+    | '/checkout'
+    | '/creations'
     | '/gpt-image-2-5-prompts'
     | '/muse-image-prompts'
     | '/muse-video-prompts'
     | '/prompt-guide'
+    | '/refund-review'
     | '/seedance-2-5-prompts'
     | '/seedance-3-0-prompts'
+    | '/api/creations'
     | '/api/launch-waitlist'
     | '/gpt-image-2-5-prompts/$slug'
     | '/seedance-2-5-prompts/$slug'
     | '/zh/ai-christmas-photo-prompt'
     | '/zh/app'
     | '/zh/billing'
+    | '/zh/checkout'
+    | '/zh/creations'
     | '/zh/gpt-image-2-5-prompts'
     | '/zh/muse-image-prompts'
     | '/zh/muse-video-prompts'
     | '/zh/prompt-guide'
+    | '/zh/refund-review'
     | '/zh/seedance-2-5-prompts'
     | '/zh/seedance-3-0-prompts'
+    | '/api/admin/refund-requests'
     | '/api/auth/$'
     | '/api/billing/checkout'
     | '/api/billing/history'
+    | '/api/billing/refund-requests'
     | '/api/billing/webhook'
+    | '/api/creations/media'
     | '/api/credits/balance'
     | '/api/credits/history'
     | '/api/images/animate'
@@ -624,6 +746,7 @@ export interface FileRouteTypes {
     | '/zh/seedance-2-5-prompts/$slug'
     | '/api/admin/referrals/anyposes'
     | '/api/admin/referrals/pixal3d'
+    | '/api/admin/refund-requests/sync'
     | '/zh/app/image/gpt-image-2-5'
     | '/zh/app/image/gpt-image-2-5-1k'
     | '/zh/app/image/muse-image'
@@ -637,28 +760,38 @@ export interface FileRouteTypes {
     | '/ai-christmas-photo-prompt'
     | '/app'
     | '/billing'
+    | '/checkout'
+    | '/creations'
     | '/gpt-image-2-5-prompts'
     | '/muse-image-prompts'
     | '/muse-video-prompts'
     | '/prompt-guide'
+    | '/refund-review'
     | '/seedance-2-5-prompts'
     | '/seedance-3-0-prompts'
+    | '/api/creations'
     | '/api/launch-waitlist'
     | '/gpt-image-2-5-prompts_/$slug'
     | '/seedance-2-5-prompts_/$slug'
     | '/zh/ai-christmas-photo-prompt'
     | '/zh/app'
     | '/zh/billing'
+    | '/zh/checkout'
+    | '/zh/creations'
     | '/zh/gpt-image-2-5-prompts'
     | '/zh/muse-image-prompts'
     | '/zh/muse-video-prompts'
     | '/zh/prompt-guide'
+    | '/zh/refund-review'
     | '/zh/seedance-2-5-prompts'
     | '/zh/seedance-3-0-prompts'
+    | '/api/admin/refund-requests'
     | '/api/auth/$'
     | '/api/billing/checkout'
     | '/api/billing/history'
+    | '/api/billing/refund-requests'
     | '/api/billing/webhook'
+    | '/api/creations/media'
     | '/api/credits/balance'
     | '/api/credits/history'
     | '/api/images/animate'
@@ -681,6 +814,7 @@ export interface FileRouteTypes {
     | '/zh/seedance-2-5-prompts_/$slug'
     | '/api/admin/referrals/anyposes'
     | '/api/admin/referrals/pixal3d'
+    | '/api/admin/refund-requests/sync'
     | '/zh/app_/image/gpt-image-2-5'
     | '/zh/app_/image/gpt-image-2-5-1k'
     | '/zh/app_/image/muse-image'
@@ -695,27 +829,36 @@ export interface RootRouteChildren {
   AiChristmasPhotoPromptRoute: typeof AiChristmasPhotoPromptRoute
   AppRoute: typeof AppRoute
   BillingRoute: typeof BillingRoute
+  CheckoutRoute: typeof CheckoutRoute
+  CreationsRoute: typeof CreationsRoute
   GptImage25PromptsRoute: typeof GptImage25PromptsRoute
   MuseImagePromptsRoute: typeof MuseImagePromptsRoute
   MuseVideoPromptsRoute: typeof MuseVideoPromptsRoute
   PromptGuideRoute: typeof PromptGuideRoute
+  RefundReviewRoute: typeof RefundReviewRoute
   Seedance25PromptsRoute: typeof Seedance25PromptsRoute
   Seedance30PromptsRoute: typeof Seedance30PromptsRoute
+  ApiCreationsRoute: typeof ApiCreationsRouteWithChildren
   ApiLaunchWaitlistRoute: typeof ApiLaunchWaitlistRoute
   GptImage25PromptsSlugRoute: typeof GptImage25PromptsSlugRoute
   Seedance25PromptsSlugRoute: typeof Seedance25PromptsSlugRoute
   ZhAiChristmasPhotoPromptRoute: typeof ZhAiChristmasPhotoPromptRoute
   ZhAppRoute: typeof ZhAppRoute
   ZhBillingRoute: typeof ZhBillingRoute
+  ZhCheckoutRoute: typeof ZhCheckoutRoute
+  ZhCreationsRoute: typeof ZhCreationsRoute
   ZhGptImage25PromptsRoute: typeof ZhGptImage25PromptsRoute
   ZhMuseImagePromptsRoute: typeof ZhMuseImagePromptsRoute
   ZhMuseVideoPromptsRoute: typeof ZhMuseVideoPromptsRoute
   ZhPromptGuideRoute: typeof ZhPromptGuideRoute
+  ZhRefundReviewRoute: typeof ZhRefundReviewRoute
   ZhSeedance25PromptsRoute: typeof ZhSeedance25PromptsRoute
   ZhSeedance30PromptsRoute: typeof ZhSeedance30PromptsRoute
+  ApiAdminRefundRequestsRoute: typeof ApiAdminRefundRequestsRouteWithChildren
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiBillingCheckoutRoute: typeof ApiBillingCheckoutRoute
   ApiBillingHistoryRoute: typeof ApiBillingHistoryRoute
+  ApiBillingRefundRequestsRoute: typeof ApiBillingRefundRequestsRoute
   ApiBillingWebhookRoute: typeof ApiBillingWebhookRoute
   ApiCreditsBalanceRoute: typeof ApiCreditsBalanceRoute
   ApiCreditsHistoryRoute: typeof ApiCreditsHistoryRoute
@@ -778,6 +921,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BillingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/creations': {
+      id: '/creations'
+      path: '/creations'
+      fullPath: '/creations'
+      preLoaderRoute: typeof CreationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/gpt-image-2-5-prompts': {
       id: '/gpt-image-2-5-prompts'
       path: '/gpt-image-2-5-prompts'
@@ -806,6 +963,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PromptGuideRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/refund-review': {
+      id: '/refund-review'
+      path: '/refund-review'
+      fullPath: '/refund-review'
+      preLoaderRoute: typeof RefundReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/seedance-2-5-prompts': {
       id: '/seedance-2-5-prompts'
       path: '/seedance-2-5-prompts'
@@ -818,6 +982,13 @@ declare module '@tanstack/react-router' {
       path: '/seedance-3-0-prompts'
       fullPath: '/seedance-3-0-prompts'
       preLoaderRoute: typeof Seedance30PromptsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/creations': {
+      id: '/api/creations'
+      path: '/api/creations'
+      fullPath: '/api/creations'
+      preLoaderRoute: typeof ApiCreationsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/launch-waitlist': {
@@ -862,6 +1033,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ZhBillingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/zh/checkout': {
+      id: '/zh/checkout'
+      path: '/zh/checkout'
+      fullPath: '/zh/checkout'
+      preLoaderRoute: typeof ZhCheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/zh/creations': {
+      id: '/zh/creations'
+      path: '/zh/creations'
+      fullPath: '/zh/creations'
+      preLoaderRoute: typeof ZhCreationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/zh/gpt-image-2-5-prompts': {
       id: '/zh/gpt-image-2-5-prompts'
       path: '/zh/gpt-image-2-5-prompts'
@@ -890,6 +1075,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ZhPromptGuideRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/zh/refund-review': {
+      id: '/zh/refund-review'
+      path: '/zh/refund-review'
+      fullPath: '/zh/refund-review'
+      preLoaderRoute: typeof ZhRefundReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/zh/seedance-2-5-prompts': {
       id: '/zh/seedance-2-5-prompts'
       path: '/zh/seedance-2-5-prompts'
@@ -902,6 +1094,13 @@ declare module '@tanstack/react-router' {
       path: '/zh/seedance-3-0-prompts'
       fullPath: '/zh/seedance-3-0-prompts'
       preLoaderRoute: typeof ZhSeedance30PromptsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/refund-requests': {
+      id: '/api/admin/refund-requests'
+      path: '/api/admin/refund-requests'
+      fullPath: '/api/admin/refund-requests'
+      preLoaderRoute: typeof ApiAdminRefundRequestsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/auth/$': {
@@ -925,12 +1124,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiBillingHistoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/billing/refund-requests': {
+      id: '/api/billing/refund-requests'
+      path: '/api/billing/refund-requests'
+      fullPath: '/api/billing/refund-requests'
+      preLoaderRoute: typeof ApiBillingRefundRequestsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/billing/webhook': {
       id: '/api/billing/webhook'
       path: '/api/billing/webhook'
       fullPath: '/api/billing/webhook'
       preLoaderRoute: typeof ApiBillingWebhookRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/api/creations/media': {
+      id: '/api/creations/media'
+      path: '/media'
+      fullPath: '/api/creations/media'
+      preLoaderRoute: typeof ApiCreationsMediaRouteImport
+      parentRoute: typeof ApiCreationsRoute
     }
     '/api/credits/balance': {
       id: '/api/credits/balance'
@@ -1086,6 +1299,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAdminReferralsPixal3dRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/admin/refund-requests/sync': {
+      id: '/api/admin/refund-requests/sync'
+      path: '/sync'
+      fullPath: '/api/admin/refund-requests/sync'
+      preLoaderRoute: typeof ApiAdminRefundRequestsSyncRouteImport
+      parentRoute: typeof ApiAdminRefundRequestsRoute
+    }
     '/zh/app_/image/gpt-image-2-5': {
       id: '/zh/app_/image/gpt-image-2-5'
       path: '/zh/app/image/gpt-image-2-5'
@@ -1138,32 +1358,67 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface ApiCreationsRouteChildren {
+  ApiCreationsMediaRoute: typeof ApiCreationsMediaRoute
+}
+
+const ApiCreationsRouteChildren: ApiCreationsRouteChildren = {
+  ApiCreationsMediaRoute: ApiCreationsMediaRoute,
+}
+
+const ApiCreationsRouteWithChildren = ApiCreationsRoute._addFileChildren(
+  ApiCreationsRouteChildren,
+)
+
+interface ApiAdminRefundRequestsRouteChildren {
+  ApiAdminRefundRequestsSyncRoute: typeof ApiAdminRefundRequestsSyncRoute
+}
+
+const ApiAdminRefundRequestsRouteChildren: ApiAdminRefundRequestsRouteChildren =
+  {
+    ApiAdminRefundRequestsSyncRoute: ApiAdminRefundRequestsSyncRoute,
+  }
+
+const ApiAdminRefundRequestsRouteWithChildren =
+  ApiAdminRefundRequestsRoute._addFileChildren(
+    ApiAdminRefundRequestsRouteChildren,
+  )
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AiChristmasPhotoPromptRoute: AiChristmasPhotoPromptRoute,
   AppRoute: AppRoute,
   BillingRoute: BillingRoute,
+  CheckoutRoute: CheckoutRoute,
+  CreationsRoute: CreationsRoute,
   GptImage25PromptsRoute: GptImage25PromptsRoute,
   MuseImagePromptsRoute: MuseImagePromptsRoute,
   MuseVideoPromptsRoute: MuseVideoPromptsRoute,
   PromptGuideRoute: PromptGuideRoute,
+  RefundReviewRoute: RefundReviewRoute,
   Seedance25PromptsRoute: Seedance25PromptsRoute,
   Seedance30PromptsRoute: Seedance30PromptsRoute,
+  ApiCreationsRoute: ApiCreationsRouteWithChildren,
   ApiLaunchWaitlistRoute: ApiLaunchWaitlistRoute,
   GptImage25PromptsSlugRoute: GptImage25PromptsSlugRoute,
   Seedance25PromptsSlugRoute: Seedance25PromptsSlugRoute,
   ZhAiChristmasPhotoPromptRoute: ZhAiChristmasPhotoPromptRoute,
   ZhAppRoute: ZhAppRoute,
   ZhBillingRoute: ZhBillingRoute,
+  ZhCheckoutRoute: ZhCheckoutRoute,
+  ZhCreationsRoute: ZhCreationsRoute,
   ZhGptImage25PromptsRoute: ZhGptImage25PromptsRoute,
   ZhMuseImagePromptsRoute: ZhMuseImagePromptsRoute,
   ZhMuseVideoPromptsRoute: ZhMuseVideoPromptsRoute,
   ZhPromptGuideRoute: ZhPromptGuideRoute,
+  ZhRefundReviewRoute: ZhRefundReviewRoute,
   ZhSeedance25PromptsRoute: ZhSeedance25PromptsRoute,
   ZhSeedance30PromptsRoute: ZhSeedance30PromptsRoute,
+  ApiAdminRefundRequestsRoute: ApiAdminRefundRequestsRouteWithChildren,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiBillingCheckoutRoute: ApiBillingCheckoutRoute,
   ApiBillingHistoryRoute: ApiBillingHistoryRoute,
+  ApiBillingRefundRequestsRoute: ApiBillingRefundRequestsRoute,
   ApiBillingWebhookRoute: ApiBillingWebhookRoute,
   ApiCreditsBalanceRoute: ApiCreditsBalanceRoute,
   ApiCreditsHistoryRoute: ApiCreditsHistoryRoute,

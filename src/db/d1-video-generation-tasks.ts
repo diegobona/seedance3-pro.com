@@ -43,7 +43,7 @@ export function createD1VideoGenerationTaskStore(db: D1Database, networkKey?: st
     ])
     return transition(results[1].results[0]).task
   }
-  async function finalize(id: string, succeeded: boolean, messageOrUrl: string, lease: Date) {
+  async function finalize(id: string, succeeded: boolean, messageOrUrl: string, lease: Date, freeCostRefundable = false) {
     const status = succeeded ? 'succeeded' : 'failed'
     const results = await db.batch<TaskRow>([
       db.prepare(`UPDATE video_generation_task SET status=?,result_url=?,provider_error=?,
@@ -52,9 +52,11 @@ export function createD1VideoGenerationTaskStore(db: D1Database, networkKey?: st
           AND EXISTS(SELECT 1 FROM generation_credit_reservation AS reservation
             WHERE reservation.id=video_generation_task.reservation_id AND reservation.status='reserved')`)
         .bind(status, succeeded ? messageOrUrl : null, succeeded ? null : errorMessage(messageOrUrl), id, lease.getTime()),
-      db.prepare(`UPDATE generation_credit_reservation SET status=?,updated_at=${D1_NOW_SQL}
+      db.prepare(`UPDATE generation_credit_reservation SET status=?,updated_at=${D1_NOW_SQL},
+        free_cost_micros=CASE WHEN ?=1 AND EXISTS(SELECT 1 FROM video_generation_task
+          WHERE id=? AND workflow_id LIKE 'seeapi:%') THEN 0 ELSE free_cost_micros END
         WHERE status='reserved' AND id=(SELECT reservation_id FROM video_generation_task WHERE id=? AND status=?)`)
-        .bind(succeeded ? 'settled' : 'refunded', id, status),
+        .bind(succeeded ? 'settled' : 'refunded', !succeeded && freeCostRefundable ? 1 : 0, id, id, status),
       current(id),
     ])
     return transition(results[2].results[0])
@@ -137,7 +139,7 @@ export function createD1VideoGenerationTaskStore(db: D1Database, networkKey?: st
     scheduleNextPoll: updatePoll,
     markRunning(id, now, retry, lease) { return updatePoll(id, 'running', now, retry, lease) },
     finalizeSuccess(id, url, lease) { return finalize(id, true, url, lease) },
-    finalizeFailure(id, message, lease) { return finalize(id, false, message, lease) },
+    finalizeFailure(id, message, lease, freeCostRefundable) { return finalize(id, false, message, lease, freeCostRefundable) },
     async expireOverdue(now = new Date()) {
       const result = await db.batch<TaskRow>([
         db.prepare(`UPDATE video_generation_task SET status='expired',result_url=NULL,next_poll_at=NULL,

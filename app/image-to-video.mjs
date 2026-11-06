@@ -1,12 +1,13 @@
 import { t, localizedErrorMessage, currentLocale } from './i18n.mjs';
 import { localizedPath } from './site-locale.mjs';
 import { guestDeviceHeaders } from '../assets/guest-device.mjs';
+import { fetchWithGuestVideoVerification } from './guest-video-verification.mjs';
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 
 export async function prepareImageForVideo({ image, width, height, fetchImpl = fetch, signal, locale = currentLocale() }) {
   let response;
   if (UUID.test(image.animateId || "")) {
-    response = await fetchImpl(`/api/images/animate?image=${image.animateId}`, { method: "POST", credentials: "same-origin", headers: await guestDeviceHeaders(), signal });
+    response = await fetchWithGuestVideoVerification(`/api/images/animate?image=${image.animateId}`, { method: "POST", credentials: "same-origin", headers: await guestDeviceHeaders(), signal }, fetchImpl);
   } else {
     let source;
     try {
@@ -17,9 +18,9 @@ export async function prepareImageForVideo({ image, width, height, fetchImpl = f
     if (!['image/png', 'image/jpeg', 'image/webp'].includes(blob.type) || !blob.size || blob.size > 10 * 1024 * 1024) {
       throw new Error(t("The reference must be a PNG, JPEG or WebP image up to 10 MB."));
     }
-    response = await fetchImpl('/api/videos/references', {
+    response = await fetchWithGuestVideoVerification('/api/videos/references', {
       method: 'POST', credentials: 'same-origin', headers: { ...(await guestDeviceHeaders()), 'content-type': blob.type }, body: blob, signal,
-    });
+    }, fetchImpl);
   }
   const result = await response.json();
   if (!response.ok || !result.success || !UUID.test(result.id || '')) {

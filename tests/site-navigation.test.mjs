@@ -36,12 +36,30 @@ test('public footers expose localized policies and direct support without duplic
 
 test('purchase disclosures refresh their language when a public page is localized', () => {
   const input = '<html><head></head><body><a data-credit-pack-buy href="/billing">Buy</a><footer></footer></body></html>';
-  const english = withSiteNavigation(input, '/seedance-3-0-release-date');
-  const chinese = withSiteNavigation(english, '/zh/seedance-3-0-release-date');
+  const english = withSiteNavigation(input, '/showcase');
+  const chinese = withSiteNavigation(english, '/zh/showcase');
   const notice = chinese.match(/<p[^>]*data-purchase-assurance[^>]*>[\s\S]*?<\/p>/)?.[0] || '';
   assert.match(notice, /一次性付款/);
   assert.ok(notice.includes('href="/zh/refund-policy"'));
-  assert.equal(withSiteNavigation(chinese, '/zh/seedance-3-0-release-date'), chinese);
+  assert.equal(withSiteNavigation(chinese, '/zh/showcase'), chinese);
+});
+
+test('compact purchase pages keep policies in the footer after repeated synchronization', () => {
+  for (const prefix of ['', '/zh']) {
+    for (const slug of ['pricing', 'seedance-3-0-release-date']) {
+      for (const suffix of ['', '/', '.html']) {
+        const pathname = `${prefix}/${slug}${suffix}`;
+        const input = '<html><head></head><body><a data-credit-pack-buy href="/billing">Buy</a><p data-purchase-assurance>Old purchase disclosure</p><footer></footer></body></html>';
+        const output = withSiteNavigation(input, pathname);
+        assert.doesNotMatch(output, /data-purchase-assurance|Old purchase disclosure/, pathname);
+        const footer = output.match(/<footer>[\s\S]*?<\/footer>/)?.[0] || '';
+        for (const policy of ['refund-policy', 'terms', 'privacy']) {
+          assert.ok(footer.includes(`href="${prefix}/${policy}"`), `${pathname}: ${policy}`);
+        }
+        assert.equal(withSiteNavigation(output, pathname), output, pathname);
+      }
+    }
+  }
 });
 
 test('all static public pages use the shared header and synchronization is idempotent', async () => {

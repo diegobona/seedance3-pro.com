@@ -1,18 +1,18 @@
+import { SEEDANCE_VIDEO_EXAMPLES } from './seedance-video-examples.mjs';
+import { REGISTERED_FREE_CREDITS_ENABLED } from './credit-policy.mjs'
 import { requestVideoGeneration, pollVideoGenerationTask, validateVideoReferenceFiles } from './video-generation.mjs';
 import { saveVideoHandoff, readVideoHandoff, ACTIVE_VIDEO_TASK_KEY } from './studio-handoff.mjs';
 import { videoReferenceFrameSize } from './video-reference-frame.mjs';
 import {homeGenerationAction, initializeHomePurchase} from './home-purchase.mjs';
 import {millisecondsUntilCreditReset} from './daily-credits.mjs';
 import { guestDeviceHeaders } from '../assets/guest-device.mjs';
+import { syncVideoDurationOptions } from './guest-video.mjs';
+import { modelDisplayNames } from './model-display-names.mjs';
+import { videoResolutionLabel } from './video-resolution-label.mjs';
+import { createVideoWaitNotice } from './video-wait-notice.mjs';
+import { elapsedTime } from './generation-preview.mjs';
 
-export const HOME_VIDEO_EXAMPLES = [
-  { title: ['Cinematic scene', '电影感场景'], src: '/assets/h3-example-cinematic.mp4',
-    prompt: 'At blue hour on a windswept salt flat, a lone traveler in a saffron coat walks toward a glowing glass observatory. One continuous slow dolly-in shot; drifting dust, soft volumetric light, grounded realistic motion, film-grain, high-contrast cinematic color. No text, no logos.' },
-  { title: ['Product film', '产品短片'], src: '/assets/h3-example-product.mp4',
-    prompt: 'A sculptural matte-black ceramic espresso cup rotates above a pale limestone pedestal as warm morning sunlight slides across the rim. Macro lens, crisp reflections, gentle orbit camera, premium commercial film, clean minimal background. No text, no logos.' },
-  { title: ['Paper animation', '纸艺动画'], src: '/assets/h3-example-animation.mp4',
-    prompt: 'A tiny paper fox with folded origami fur leaps between floating lanterns over a moonlit forest pond. Handcrafted stop-motion paper texture, playful squash-and-stretch, smooth sideways tracking camera, saturated indigo and amber palette. No text, no logos.' },
-];
+export const HOME_VIDEO_EXAMPLES = SEEDANCE_VIDEO_EXAMPLES.slice(0, 3);
 
 export function initializeHomeVideo(root = document.querySelector('[data-home-video]'), {
   fetchImpl = fetch, requestImpl = requestVideoGeneration, pollImpl = pollVideoGenerationTask,
@@ -29,51 +29,85 @@ export function initializeHomeVideo(root = document.querySelector('[data-home-vi
   el('thumb')?.remove(); el('remove')?.remove();
   const submit = el('generate'), status = el('status'), player = el('player');
   const pending = el('pending'), result = el('result'), examples = el('examples');
+  const modelOption = [...el('model').options].find(option => option.value === 'minimax-h3') || el('model').options[0];
+  const originalModelLabel = modelOption.textContent;
+  const resolutionLabel = root.querySelector('.home-resolution strong'), originalResolutionLabel = resolutionLabel?.textContent;
+  const referenceHint = el('choose').querySelector('small'), originalReferenceHint = referenceHint?.textContent;
   let references = [], mode = 'text', busy = false, disposed = false, draftEdited = false;
   let guest = true, remaining = null, taskId = '', completed = false, controller = null, selectedExample = 0, pendingTask = false;
   let paidRemaining=0, freeBudgetBlocked=false, purchaseBusy=false, balanceVersion=0, balanceController, dailyTimer;
+  let guestVideoModelName = '', guestMaxReferences = 9, guestVideoResolutionLabel = '';
   let restoreReady=Promise.resolve(), restoreFailed=false;
+  const elapsedLabel = root.querySelector('.home-live-dot');
+  const idlePreviewLabel = elapsedLabel?.textContent;
+  const videoWaitNotice = createVideoWaitNotice({ host: el('preview'), before: el('example-pagination') || result, isAuthenticated: () => !guest, zh,
+    onElapsed: milliseconds => {
+      if (!elapsedLabel) return;
+      elapsedLabel.textContent = milliseconds === null ? idlePreviewLabel
+        : text('Waiting ', '已等待 ') + elapsedTime(0, milliseconds, true);
+      elapsedLabel.style.fontVariantNumeric = 'tabular-nums';
+    },
+  });
   const listeners = [];
   const listen = (node, event, handler) => { node?.addEventListener(event, handler); listeners.push(() => node?.removeEventListener(event, handler)); };
   function message(value, error = false) { status.textContent = value; status.classList.toggle('is-error', error && !busy); }
   const trialUsedUp = () => guest && remaining !== null && remaining < 5;
   const action = () => homeGenerationAction({guest,remaining,duration:duration.value,freeBudgetBlocked,paidRemaining});
+  const referenceLimit = () => guest ? guestMaxReferences : 9;
+  const singleReferenceMessage = () => text('This trial supports 1 reference image. Remove extra images to continue.', '本次试用支持 1 张参考图，请移除多余图片后继续。');
+  const referenceLimitMessage = () => referenceLimit() === 1 ? singleReferenceMessage() : text('Seedance 2.5 supports up to 9 reference images.', 'Seedance 2.5 最多支持 9 张参考图。');
   function update() {
     const showSignup = trialUsedUp() && !busy && !pendingTask;
-    for (const option of duration.options) option.disabled = remaining !== null && Number(option.value) > remaining;
+    if (el('example-source')) el('example-source').hidden = busy || pendingTask || completed;
+    if (el('example-pagination')) el('example-pagination').hidden = busy || pendingTask || completed;
+    syncVideoDurationOptions(duration, guest, seconds => text(`${seconds} seconds`, `${seconds} 秒`));
+    if (el('duration-hint')) el('duration-hint').hidden = !guest;
+    for (const option of duration.options) option.disabled = guest && Number(option.value) !== 5 || remaining !== null && Number(option.value) > remaining;
+    if (guest && !busy && !pendingTask) duration.value = '5';
     if (!busy && remaining !== null && remaining < Number(duration.value) && remaining >= 5) duration.value = '5';
     const next=action(), generating=next==='generate'||next==='paid-generate';
-    submit.disabled = busy || pendingTask || purchaseBusy || generating && (!prompt.value.trim() || mode === 'reference' && !references.length);
+    const referencesOverLimit = mode === 'reference' && references.length > referenceLimit();
+    submit.disabled = busy || pendingTask || purchaseBusy || generating && (!prompt.value.trim() || mode === 'reference' && !references.length || referencesOverLimit);
     submit.textContent = purchaseBusy ? text('Opening checkout…','正在打开付款…') : busy ? text('Generating…', '正在生成…')
-      : next==='auth' ? text('Register / log in to continue', '注册 / 登录后继续')
-      : next==='buy' ? text('Buy 500 credits · US$4.99', '购买 500 积分 · US$4.99')
+      : next==='auth' ? REGISTERED_FREE_CREDITS_ENABLED ? text('Register / log in to continue', '注册 / 登录后继续') : text('Log in and buy credits to continue', '登录并购买积分后继续')
+      : next==='buy' ? text('Buy Credits', '购买积分')
       : next==='paid-generate' ? text(`Generate with purchased credits · ${duration.value} credits`,`使用购买积分生成 · ${duration.value} 积分`)
       : guest ? text('Generate for free ↗', '免费生成视频 ↗') : text('Generate video ↗', '生成视频 ↗');
     el('exhausted').hidden = !showSignup;
     const accountNotice=el('account-notice');
-    if(accountNotice){accountNotice.hidden=guest||!['buy','paid-generate'].includes(next);accountNotice.textContent=freeBudgetBlocked
+    if(accountNotice){accountNotice.hidden=guest||!['buy','paid-generate'].includes(next);accountNotice.textContent=REGISTERED_FREE_CREDITS_ENABLED && freeBudgetBlocked
       ? text('Today’s free allowance is used up. Wait for the daily reset, or use purchased credits.','今日免费额度已用完，可等待积分每日重置，或使用购买积分继续。')
       : text('Not enough credits. Purchased credits never expire.','积分不足，购买积分永久有效。');}
     duration.disabled = ratio.disabled = prompt.disabled = input.disabled = el('model').disabled = busy || pendingTask || purchaseBusy;
     root.querySelectorAll('[data-home-mode]').forEach(button => { button.disabled = busy || pendingTask || purchaseBusy; button.setAttribute('aria-pressed', String(button.dataset.homeMode === mode)); });
-    el('choose').disabled = busy || pendingTask || purchaseBusy || references.length >= 9;
+    el('choose').disabled = busy || pendingTask || purchaseBusy || references.length >= referenceLimit();
+    input.multiple = referenceLimit() > 1;
+    modelOption.textContent = modelDisplayNames(guest && guestVideoModelName || originalModelLabel);
+    if (resolutionLabel) resolutionLabel.textContent = videoResolutionLabel(guest && guestVideoResolutionLabel || originalResolutionLabel);
     grid.querySelectorAll('button').forEach(button => { button.disabled = busy || pendingTask || purchaseBusy; });
     reference.hidden = mode !== 'reference';
     const square = [...ratio.options].find(option => option.value === '1:1');
     if (square) square.disabled = false;
     const frame = videoReferenceFrameSize(ratio.value);
     grid.querySelectorAll('img').forEach(image => { image.style.aspectRatio = `${frame.width} / ${frame.height}`; });
-    if (el('reference-count')) el('reference-count').textContent = `${references.length} / 9`;
-    el('filename').textContent = references.length ? text('Add more images', '继续添加参考图') : text('Choose or paste images', '选择或粘贴参考图');
+    if (el('reference-count')) el('reference-count').textContent = `${references.length} / ${referenceLimit()}`;
+    el('filename').textContent = referenceLimit() === 1
+      ? text('Choose or paste one image', '选择或粘贴一张参考图')
+      : references.length ? text('Add more images', '继续添加参考图') : text('Choose or paste images', '选择或粘贴参考图');
+    if (referenceHint) referenceHint.textContent = referenceLimit() === 1
+      ? text('1 first-frame image · PNG / JPEG / WebP · 10 MB', '1 张首帧参考图 · PNG / JPEG / WebP · 最大 10 MB') : originalReferenceHint;
+    if (referencesOverLimit && !busy && !pendingTask) message(referenceLimitMessage(), true);
+    else if ([singleReferenceMessage(), referenceLimitMessage()].includes(status.textContent)) message(text('Reference images ready.', '参考图已就绪。'));
     el('balance').textContent = remaining === null ? text('10 free seconds · no sign-up or login', '10 秒免费额度 · 无需注册和登录')
       : guest ? text(`${remaining} free seconds remaining`, `实际剩余 ${remaining} 秒免费额度`) : text(`${remaining} credits available`, `可用 ${remaining} 积分`);
+    el('balance').classList.toggle('is-insufficient', remaining !== null && remaining < Number(duration.value) && !busy && !pendingTask);
     el('cost').textContent = guest ? text(`This video: ${duration.value}s free`, `本次免费 ${duration.value} 秒`) : text(`This video: ${duration.value} credits`, `本次 ${duration.value} 积分`);
   }
   function acceptCredits(credits) {
     if (!credits) return;
     remaining = credits.remaining;
     if (credits.context) guest = credits.context === 'guest-video';
-    if(credits.context==='account')window.dispatchEvent(new CustomEvent('seedance:credits-updated',{detail:credits}));
+    if(credits.context==='account'||credits.context==='guest-video')window.dispatchEvent(new CustomEvent('seedance:credits-updated',{detail:credits}));
     update();
   }
   async function loadBalance() {
@@ -83,12 +117,19 @@ export function initializeHomeVideo(root = document.querySelector('[data-home-vi
       const payload = await response.json();
       if (!disposed && version===balanceVersion && response.ok && Number.isSafeInteger(payload.credits?.remaining)) {
         guest = payload.credits.guest === true; remaining = payload.credits.remaining;
+        guestVideoModelName = guest && typeof payload.credits.videoModelName === 'string' ? payload.credits.videoModelName : '';
+        guestMaxReferences = guest && payload.credits.maxReferences === 1 ? 1 : 9;
+        guestVideoResolutionLabel = guest && payload.credits.videoResolutionLabel === '768P' ? '768P' : '';
         paidRemaining=payload.credits.paidRemaining||0;update();
-        clearTimeout(dailyTimer);if(!guest)dailyTimer=setTimeout(()=>{freeBudgetBlocked=false;void loadBalance();},millisecondsUntilCreditReset());
+        clearTimeout(dailyTimer);if(REGISTERED_FREE_CREDITS_ENABLED&&!guest)dailyTimer=setTimeout(()=>{freeBudgetBlocked=false;void loadBalance();},millisecondsUntilCreditReset());
         const intro=document.querySelector('.home-intro-copy');
-        if(intro){intro.querySelector('.home-free-badge').textContent=guest?text('10 FREE SECONDS','首次共 10 秒免费额度'):text('5 DAILY FREE CREDITS','每日 5 免费积分');
-          intro.querySelector('.home-guest-benefit strong').textContent=guest?text('No sign-up or login required','无需注册或登录，即可试用'):text('Credits reset daily and do not accumulate.','积分每日重置，不累积。');
-          intro.querySelector('.home-member-offer').hidden=!guest;}
+        if(intro){intro.dataset.trialState=guest?'guest':'account';
+          const offerValue=intro.querySelector('[data-home-offer-value]');if(offerValue)offerValue.textContent=guest?'10':REGISTERED_FREE_CREDITS_ENABLED?'5':'500';
+          intro.querySelector('.home-free-badge').textContent=guest?text('FREE VIDEO SECONDS','秒视频免费体验'):REGISTERED_FREE_CREDITS_ENABLED?text('DAILY FREE CREDITS','每日免费积分'):text('CREDITS PER PACK','积分／包');
+          intro.querySelector('.home-guest-benefit strong').textContent=guest?text('No sign-up or login required','无需注册或登录，即可试用'):REGISTERED_FREE_CREDITS_ENABLED?text('Credits reset daily and do not accumulate.','积分每日重置，不累积。'):text('Purchased credits never expire.','购买积分永久有效。');
+          intro.querySelector('.home-member-offer').hidden=!REGISTERED_FREE_CREDITS_ENABLED||!guest;
+          const purchaseOffer=intro.querySelector('.home-member-purchase');if(purchaseOffer)purchaseOffer.hidden=REGISTERED_FREE_CREDITS_ENABLED||!guest;
+          const networkLimit=root.querySelector('.home-network-limit');if(networkLimit)networkLimit.hidden=!REGISTERED_FREE_CREDITS_ENABLED;}
       }
     } catch { /* The protected submit endpoint remains authoritative. */ }
   }
@@ -97,11 +138,14 @@ export function initializeHomeVideo(root = document.querySelector('[data-home-vi
     selectedExample = index;
     const example = HOME_VIDEO_EXAMPLES[index];
     if (!completed) {
-      player.src = example.src; player.muted = true; player.loop = false;
+      player.src = example.src; player.poster = example.poster; player.muted = true; player.loop = false;
       el('example-title').textContent = example.title[zh ? 1 : 0];
       void player.play().catch(() => {});
     }
     el('example-count').textContent = `${String(index + 1).padStart(2, '0')} / ${String(HOME_VIDEO_EXAMPLES.length).padStart(2, '0')}`;
+    root.querySelectorAll('[data-home-example-dot]').forEach(button => {
+      button.setAttribute('aria-pressed', String(Number(button.dataset.homeExampleDot) === index));
+    });
     if (fillPrompt) {
       draftEdited=true;
       prompt.value = example.prompt; duration.value = '5'; ratio.value = '16:9'; mode = 'text';
@@ -122,6 +166,7 @@ export function initializeHomeVideo(root = document.querySelector('[data-home-vi
   }
   function addFiles(incoming, { restoring = false } = {}) {
     if (busy || pendingTask || purchaseBusy && !restoring || !incoming.length) return false;
+    if (incoming.length + references.length > referenceLimit()) { message(referenceLimitMessage(), true); return false; }
     try { validateVideoReferenceFiles(incoming, { existingCount: references.length }); }
     catch (error) { message(error.message, true); return false; }
     references.push(...incoming.map(file => ({ file, url: URL.createObjectURL(file) })));
@@ -155,6 +200,7 @@ export function initializeHomeVideo(root = document.querySelector('[data-home-vi
     const captured = draft();
     if (resume) pendingTask = true;
     busy = true; completed = false; controller = new AbortController();
+    videoWaitNotice.start(resume);
     pending.hidden = false; result.hidden = true; examples.hidden = true; player.hidden = true; player.pause();
     message(text(resume ? 'Checking your video…' : 'Preparing your video…', resume ? '正在查看生成进度…' : '正在准备生成…')); update();
     if (matchMedia('(max-width: 760px)').matches) el('preview').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -169,14 +215,22 @@ export function initializeHomeVideo(root = document.querySelector('[data-home-vi
       } };
       const video = resume ? await pollImpl({ ...common, taskId: resume }) : await requestImpl({ ...common,
         prompt: captured.prompt, duration: captured.duration, aspectRatio: captured.aspectRatio,
-        referenceFiles: captured.mode==='reference'?captured.files:[],paidOnly,
+        referenceFiles: captured.mode==='reference'?captured.files:[],paidOnly:paidOnly||!REGISTERED_FREE_CREDITS_ENABLED&&!guest,
         onTask(id) {
           taskId = id; pendingTask = true;
+          videoWaitNotice.bindTask(id);
+          const recovery = pending.querySelector('[data-creation-recovery]') || document.createElement('a');
+          recovery.dataset.creationRecovery = '';
+          recovery.hidden = guest;
+          recovery.href = text('/creations', '/zh/creations');
+          recovery.textContent = text('You can return later · My creations ↗', '可稍后回来查看 · 我的作品 ↗');
+          pending.append(recovery);
           try { sessionStorage.setItem(ACTIVE_VIDEO_TASK_KEY, id); sessionStorage.setItem('seedance:video:active-model', 'minimax-h3'); } catch { /* Current-page polling still works without storage. */ }
         },
       });
       if (disposed) return;
       acceptCredits(video.credits); completed = true; pendingTask = false;
+      videoWaitNotice.stop({ clearSaved: true, completed: true, onReadyClick: () => el('preview').scrollIntoView({ behavior: 'smooth', block: 'center' }) });
       player.src = video.videoUrl; player.muted = false; player.loop = false; player.hidden = false;
       pending.hidden = true; result.hidden = false;
       el('download').href = video.videoUrl;
@@ -186,6 +240,7 @@ export function initializeHomeVideo(root = document.querySelector('[data-home-vi
     } catch (error) {
       if (disposed || error.name === 'AbortError') return;
       acceptCredits(error.credits);
+      videoWaitNotice.stop({ clearSaved: Boolean(error.terminal || error.status === 404 || error.code === 'INVALID_VIDEO_TASK' || !taskId) });
       if(['FREE_BUDGET_EXCEEDED','NETWORK_FREE_BUDGET_EXCEEDED'].includes(error.code))freeBudgetBlocked=true;
       if(error.code==='AUTH_REQUIRED'){window.dispatchEvent(new CustomEvent('seedance:home-auth',{detail:{mode:'login'}}));}
       if (error.terminal || error.status === 404 || error.code === 'INVALID_VIDEO_TASK') { sessionStorage.removeItem(ACTIVE_VIDEO_TASK_KEY); taskId = ''; pendingTask = false; }
@@ -200,6 +255,7 @@ export function initializeHomeVideo(root = document.querySelector('[data-home-vi
     const next=action();
     if(next==='auth'){window.dispatchEvent(new CustomEvent('seedance:home-auth',{detail:{mode:'register'}}));return;}
     if(next==='buy'){window.dispatchEvent(new Event('seedance:home-buy'));return;}
+    videoWaitNotice.prepareNotifications();
     taskId = ''; void run('',next==='paid-generate');
   });
   const edit = () => { draftEdited = true; update(); };
@@ -214,12 +270,15 @@ export function initializeHomeVideo(root = document.querySelector('[data-home-vi
     URL.revokeObjectURL(references[index].url); references.splice(index,1); draftEdited = true;
     renderReferences(); update();
   });
-  listen(el('resume'), 'click', () => { el('resume').hidden = true; void run(taskId); });
+  listen(el('resume'), 'click', () => { videoWaitNotice.prepareNotifications(); el('resume').hidden = true; void run(taskId); });
   root.querySelectorAll('[data-home-mode]').forEach(button => listen(button, 'click', () => { mode = button.dataset.homeMode; edit(); }));
   listen(player, 'ended', () => {
     if (!busy && !pendingTask && !completed && !disposed) useExample((selectedExample + 1) % HOME_VIDEO_EXAMPLES.length);
   });
   listen(el('try'), 'click', () => useExample(selectedExample, true));
+  root.querySelectorAll('[data-home-example-dot]').forEach(button => {
+    listen(button, 'click', () => { if (!completed) useExample(Number(button.dataset.homeExampleDot)); });
+  });
   document.querySelectorAll('[data-home-focus]').forEach(link => listen(link, 'click', event => {
     event.preventDefault(); root.scrollIntoView({ behavior: 'smooth', block: 'start' });
     if (!busy && !pendingTask) prompt.focus({ preventScroll: true });
@@ -233,7 +292,7 @@ export function initializeHomeVideo(root = document.querySelector('[data-home-vi
     if (!value || disposed || draftEdited) return;
     prompt.value = value.prompt; duration.value = String(value.duration === 15 ? 10 : value.duration); ratio.value = value.aspectRatio; mode = value.mode;
     const files = value.files ?? (value.file ? [value.file] : []);
-    if (files.length) addFiles(files, { restoring: true }); update();
+    if (files.length && !addFiles(files, { restoring: true })) restoreFailed = true; update();
   }).catch(() => {restoreFailed=true;message(text('Could not restore your draft. Please reselect your reference images.','无法恢复草稿，请重新选择参考图。'),true);});
   restoreReady=restore;
   useExample(0); update(); void loadBalance();
@@ -241,7 +300,7 @@ export function initializeHomeVideo(root = document.querySelector('[data-home-vi
     const active = sessionStorage.getItem(ACTIVE_VIDEO_TASK_KEY);
     if (active && !disposed) { taskId = active; void run(active); }
   });
-  const cleanup = () => { disposed = true; controller?.abort();balanceVersion++;balanceController?.abort();clearTimeout(dailyTimer); references.forEach(item => URL.revokeObjectURL(item.url)); listeners.forEach(remove => remove()); };
+  const cleanup = () => { disposed = true; controller?.abort();videoWaitNotice.destroy();balanceVersion++;balanceController?.abort();clearTimeout(dailyTimer); references.forEach(item => URL.revokeObjectURL(item.url)); listeners.forEach(remove => remove()); };
   listen(window, 'pagehide', cleanup);
   return cleanup;
 }

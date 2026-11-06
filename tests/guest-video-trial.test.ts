@@ -37,7 +37,7 @@ test('guest creation issues a signed HttpOnly cookie and ten non-renewing second
   assert.equal(resumed?.session.user.id, guest.session.user.id)
   assert.equal(h.identities.size, 1)
   const balance = await getGuestVideoBalance(request(cookie), { secret, store: h.store })
-  assert.deepEqual(balance, { remaining: 10, generationCost: 5, guest: true, maxDuration: 10, expiresDaily: false })
+  assert.deepEqual(balance, { remaining: 10, generationCost: 5, guest: true, maxDuration: 5, expiresDaily: false })
   h.balances.set(guest.session.user.id, 5)
   assert.equal((await getGuestVideoBalance(request(cookie), { secret, store: h.store })).remaining, 5)
 })

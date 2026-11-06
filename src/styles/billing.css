@@ -8,3 +8,39 @@
 .billing-pack-or{font-size:12px;font-weight:700;color:#b8c1d8}
 .billing-page .billing-pack-flexibility{font-size:14px;color:#d1e4f7}
 @media(max-width:420px){.billing-pack-output{gap:12px;padding:20px 14px}.billing-pack-output strong{font-size:38px}.billing-pack-output>div>span{font-size:12px}}
+
+.billing-section-nav{display:flex;gap:24px;margin:24px 0 32px;border-bottom:1px solid #293047}
+.billing-section-nav a{padding:0 0 12px;text-decoration:none;font-weight:650;color:#b8c1d8}
+.billing-section-nav a:first-child{border-bottom:2px solid #75dcd7;color:#8ae9e0}
+.billing-orders{scroll-margin-top:24px;margin:0 0 48px;padding:26px;background:linear-gradient(125deg,#14202b,#101622);border:1px solid #2b3e4c;border-radius:18px}
+.billing-orders-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}
+.billing-orders-heading h2{font-size:26px;margin:0;color:#f2f6f8}
+.billing-orders-heading .billing-eyebrow{font-size:11px;font-weight:750;letter-spacing:.15em;color:#83dfd8;margin:0 0 7px}
+.billing-page .billing-refresh{font-size:13px;padding:8px 14px;background:#1a2936;border-color:#405264;color:#d4e7ed}
+.billing-orders-list table{width:100%;border-collapse:collapse;font-size:14px}
+.billing-orders-list th{text-align:left;color:#94a9b9;font-size:12px;font-weight:600;padding:0 12px 12px}
+.billing-orders-list td{padding:20px 12px;border-top:1px solid #293543;vertical-align:middle}
+.billing-order-identity{width:42%}
+.billing-order-identity strong,.billing-order-identity time,.billing-order-identity code{display:block}
+.billing-order-identity strong{font-size:15px;color:#eff5f7}
+.billing-order-identity time{color:#a9bdca;font-size:12px;margin-top:6px}
+.billing-order-identity code{font-size:10px;color:#8294a5;margin-top:5px;overflow-wrap:anywhere;max-width:290px}
+.billing-order-amount{font-size:17px;font-weight:750;white-space:nowrap;font-variant-numeric:tabular-nums}
+.billing-order-credit-state{display:block;color:#93a9b8;font-size:11px;margin-top:5px}
+.billing-order-state{display:inline-block;font-size:12px;line-height:1.4;white-space:nowrap;color:#a9b8c6;padding:5px 9px;border-radius:6px;background:#273340}
+.billing-order-state.is-paid{color:#92e7c1;background:#143d35}
+.billing-order-state.is-reversed{color:#e2bf92;background:#3b3028}
+.billing-orders-empty{padding:25px 0;text-align:center;color:#d6e5eb}
+.billing-orders-empty p{font-size:14px}
+.billing-orders-error{color:#ffba9d!important;font-size:14px}
+.billing-page .billing-load-more{display:block;margin:22px auto 0;font-size:14px;background:#1c2d3d;border-color:#486174}
+@media(max-width:650px){
+ .billing-orders{padding:20px 16px}.billing-orders-heading h2{font-size:23px}
+ .billing-orders-list table,.billing-orders-list tbody{display:block}
+ .billing-orders-list thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+ .billing-orders-list tr{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid #2c3946;padding:18px 0;gap:15px 8px}
+ .billing-orders-list td{display:block;border:0;padding:0}
+ .billing-orders-list .billing-order-identity{grid-column:1/-1;width:auto}
+ .billing-orders-list td[data-label]::before{content:attr(data-label);display:block;font-size:11px;font-weight:500;color:#8198a9;margin-bottom:5px}
+ .billing-orders-list td:last-child{grid-column:1/-1}.billing-order-identity code{max-width:none}
+}

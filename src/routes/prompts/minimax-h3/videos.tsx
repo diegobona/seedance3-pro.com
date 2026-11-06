@@ -15,7 +15,7 @@ export const Route = createFileRoute('/prompts/minimax-h3/videos')({
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
       { property: 'og:url', content: url },
-      { property: 'og:image', content: 'https://seedance3-pro.com/media/showcase-h3/2026-09-25/corgi-sprint.jpg' },
+      { property: 'og:image', content: 'https://seedance3-pro.com/media/showcase-h3/2026-09-25/cat-fashion-runway.jpg' },
       { name: 'twitter:card', content: 'summary_large_image' },
     ],
     links: [

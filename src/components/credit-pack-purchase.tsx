@@ -3,7 +3,8 @@ import { authClient } from '../lib/auth-client'
 import { useSiteI18n } from '../lib/site-i18n'
 import { PurchaseAssurance } from './site-trust'
 import { AuthDialog } from './auth-dialog'
-import { requestCreditCheckout, openCreditPurchase, rememberCheckoutIntent, hasCheckoutIntent, clearCheckoutIntent } from '../../assets/credit-checkout.mjs'
+import { normalizeCreditReturn, currentCreditReturn } from '../../assets/credit-return.mjs'
+import { openCreditPurchase, rememberCheckoutIntent, hasCheckoutIntent, clearCheckoutIntent, creditCheckoutErrorMessage } from '../../assets/credit-checkout.mjs'
 
 export function CreditPackPurchase({ className, disabled = false, showAssurance = true }: { className?: string; disabled?: boolean; showAssurance?: boolean }) {
   const { locale } = useSiteI18n()
@@ -13,6 +14,8 @@ export function CreditPackPurchase({ className, disabled = false, showAssurance 
   const [error, setError] = useState('')
   const inFlight = useRef(false)
   const loginRequested = useRef(false)
+  const purchaseRoot = useRef<HTMLDivElement>(null)
+  const returnTarget = useRef<string | null>(null)
   const text = (en: string, zh: string) => locale === 'zh' ? zh : en
   const start = useCallback(async () => {
     if (inFlight.current) return
@@ -21,7 +24,9 @@ export function CreditPackPurchase({ className, disabled = false, showAssurance 
     setBusy(true)
     setError('')
     try {
-      window.location.assign(await requestCreditCheckout({ locale }))
+      await openCreditPurchase({ locale, returnTo: returnTarget.current || currentCreditReturn() })
+      inFlight.current = false
+      setBusy(false)
       // Keep the action locked until navigation completes.
     } catch (caught) {
       const code = (caught as { code?: string })?.code
@@ -30,7 +35,7 @@ export function CreditPackPurchase({ className, disabled = false, showAssurance 
         loginRequested.current = true
         setAuthOpen(true)
       } else {
-        setError(code === 'BILLING_HOLD' ? 'hold' : code === 'BILLING_UNAVAILABLE' ? 'unavailable' : 'checkout')
+        setError(code || 'CHECKOUT_FAILED')
       }
       inFlight.current = false
       setBusy(false)
@@ -41,6 +46,7 @@ export function CreditPackPurchase({ className, disabled = false, showAssurance 
     if (isPending) return
     const url = new URL(window.location.href)
     const requested = url.searchParams.get('checkout') === 'start'
+    returnTarget.current = normalizeCreditReturn(url.searchParams.get('return_to')) || currentCreditReturn()
     if (requested) {
       url.searchParams.delete('checkout')
       window.history.replaceState(window.history.state, '', url.href)
@@ -72,20 +78,27 @@ export function CreditPackPurchase({ className, disabled = false, showAssurance 
     setBusy(true)
     setError('')
     try { await openCreditPurchase({ locale }) }
-    catch { setError('checkout') }
+    catch (caught) { setError((caught as { code?: string })?.code || 'CHECKOUT_FAILED') }
     finally { inFlight.current = false; setBusy(false) }
   }
 
-  return <div className="credit-pack-purchase">
+  useEffect(() => {
+    const card = purchaseRoot.current?.closest('.studio-trial-actions, .billing-pack')
+    if (!card) return
+    const click = (event: Event) => {
+      if (!(event.target as Element).closest('a,button,input,select,textarea')) purchaseRoot.current?.querySelector('button')?.click()
+    }
+    card.addEventListener('click', click)
+    return () => card.removeEventListener('click', click)
+  }, [])
+
+  return <div className="credit-pack-purchase" ref={purchaseRoot}>
     <button type="button" className={className} onClick={buy} disabled={disabled || isPending || busy} aria-busy={busy}>
-      {busy ? text('Opening checkout…', '正在打开付款…') : text('Buy credit pack', '购买积分包')}
+      {busy ? text('Choose a pack…', '选择积分包…') : text('Buy Credits', '购买积分')}
       {!busy && <span aria-hidden="true"> ↗</span>}
     </button>
     {showAssurance && <PurchaseAssurance />}
-    {error && <p className="credit-pack-error" role="alert">{error === 'hold'
-      ? text('Your payment needs review. Please contact support.', '账户支付需要审核，请联系支持。')
-      : error === 'unavailable' ? text('Purchases are temporarily unavailable. Please try again later.', '暂时无法购买，请稍后重试。')
-      : text('Could not open checkout. Please try again.', '无法打开付款页面，请重试。')}</p>}
+    {error && <p className="credit-pack-error" role="alert">{creditCheckoutErrorMessage({ code: error }, locale)}</p>}
     <AuthDialog open={authOpen} onClose={closeAuth} onAuthenticated={() => {
       if (!loginRequested.current) return
       loginRequested.current = false

@@ -1,0 +1,26 @@
+.release-example-media { position: relative; }
+.release-video-expand {
+  position: absolute; top: 8px; right: 8px; display: grid; place-items: center;
+  width: 32px; height: 32px; padding: 0; border: 1px solid #ffffff38;
+  border-radius: 8px; background: #080c12b3; color: #fff; cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+.release-video-expand:hover { background: #183842; border-color: #8edfd6; }
+.release-video-expand svg { width: 16px; height: 16px; }
+.release-video-expand:focus-visible, .release-video-close:focus-visible { outline: 2px solid #85e5dc; outline-offset: 3px; }
+.release-video-dialog {
+  width: min(1100px, calc(100vw - 32px)); max-width: none; max-height: calc(100dvh - 32px);
+  margin: auto; padding: 12px; border: 1px solid #34414c; border-radius: 16px;
+  background: #10171e; color: #f1f5f7; box-shadow: 0 24px 100px #0009;
+  font-family: var(--font-sans, system-ui, sans-serif);
+}
+.release-video-dialog::backdrop { background: #020508db; backdrop-filter: blur(8px); }
+.release-video-dialog-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 10px; }
+.release-video-dialog-title { margin: 0; font-size: 14px; font-weight: 600; }
+.release-video-close { display: grid; place-items: center; flex-shrink: 0; width: 36px; height: 36px; padding: 0; border: 0; border-radius: 8px; background: #ffffff0d; color: inherit; font-size: 24px; line-height: 1; cursor: pointer; }
+.release-video-close:hover { background: #ffffff1a; }
+.release-video-player { display: block; width: 100%; max-height: calc(100dvh - 110px); aspect-ratio: 16/9; border-radius: 8px; background: #000; object-fit: contain; }
+@media (max-width: 600px) {
+  .release-video-dialog { width: calc(100vw - 16px); padding: 8px; border-radius: 12px; }
+  .release-video-expand { top: 6px; right: 6px; }
+}
