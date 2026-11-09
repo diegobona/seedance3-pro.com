@@ -30,7 +30,7 @@ export const Route = createFileRoute('/api/credits/balance')({
             ...(new URL(request.url).searchParams.get('guest_video') === '1' ? {
               getGuestBalance: async () => ({
                 ...await getGuestVideoBalance(request, { secret: env.BETTER_AUTH_SECRET, store: createGuestVideoTrialStore(db) }),
-                ...(env.GUEST_VIDEO_PROVIDER === 'yir' ? { videoModelName: 'MiniMax H3', videoResolutionLabel: '768P', maxReferences: 1 } : {}),
+                ...(env.GUEST_VIDEO_PROVIDER === 'yir' ? { videoModelName: 'MiniMax H3', videoResolutionLabel: '768P', maxReferences: 5, videoInputModes: ['text', 'reference', 'frames'] } : {}),
                 ...(env.GUEST_VIDEO_PROVIDER === 'seeapi' ? { videoModelName: 'MiniMax H3 Max Turbo', videoResolutionLabel: '768P', maxReferences: 1 } : {}),
               }),
             } : new URL(request.url).searchParams.get('guest_image') === '1' ? {

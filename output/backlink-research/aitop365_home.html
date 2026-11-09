@@ -1,0 +1,664 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AITop365 - 发现最好的AI工具，探索AI工具库，包含10,000+个AI工具的评价和评论">
+    <meta name="keywords" content="AI工具,人工智能,AI导航,AI工具箱,ChatGPT,AI应用">
+    <meta name="author" content="AITop365">
+    <meta name="robots" content="index,follow">
+    <title>AITop365 - 发现最好的AI工具 | 10000+AI工具导航</title>
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.aitop365.com/">
+    
+    <!-- Open Graph / 微信/QQ分享 -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="AITop365">
+    <meta property="og:title" content="AITop365 - 发现最好的AI工具 | 10000+AI工具导航">
+    <meta property="og:description" content="AITop365 - 发现最好的AI工具，探索AI工具库，包含10,000+个AI工具的评价和评论">
+    <meta property="og:url" content="https://www.aitop365.com/">
+    <meta property="og:image" content="https://www.aitop365.com/logoandtitle.png">
+    <meta property="og:locale" content="zh_CN">
+    
+    <link rel="icon" type="image/x-icon" href="favicon.ico?v=1.0.53">
+    <link rel="alternate icon" href="favicon.ico?v=1.0.53">
+    <link rel="stylesheet" href="styles.css?v=1.0.45">
+    <script>
+        // 版本号配置，更新时修改此值即可强制刷新缓存
+        window.APP_VERSION = '1.0.53';
+    </script>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?acdb87253fe4a6b89bca700451cc6904";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "AITop365",
+      "alternateName": "AI工具导航",
+      "url": "https://www.aitop365.com/",
+      "description": "AITop365 - 发现最好的AI工具，探索AI工具库，包含10,000+个AI工具的评价和评论",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.aitop365.com/category.html?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "AITop365",
+      "url": "https://www.aitop365.com/",
+      "logo": "https://www.aitop365.com/logoandtitle.png",
+      "description": "AITop365是专业的AI工具导航平台，帮助用户发现和探索各种AI工具",
+      "sameAs": [
+        "https://www.aitop365.com/"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "url": "https://www.aitop365.com/cooperation.html"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "首页",
+          "item": "https://www.aitop365.com/"
+        }
+      ]
+    }
+    </script>
+</head>
+<body>
+    <!-- Top Banner -->
+    <div class="top-banner">
+        <div class="banner-content">
+            <span>📰 注册您的站点或添加广告，请联系！ 👉 <a href="cooperation.html">联系我们 → here.</a></span>
+            <button class="close-banner">×</button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <div class="nav-left">
+                <a href="index.html" class="nav-link">首页</a>
+                <div class="dropdown">
+                    <a href="#" class="nav-link">AI分类 ▼</a>
+                    <div class="dropdown-menu" id="categoryDropdown">
+                        <div class="dropdown-loading">加载中...</div>
+                    </div>
+                </div>
+                <a href="latest.html" class="nav-link">最新工具</a>
+                <a href="news.html" class="nav-link">资讯 ↗</a>
+            </div>
+            <a href="index.html" class="logo" aria-label="AITop365">
+                <img src="logoandtitle.png" alt="AITop365 - AI工具导航平台Logo" class="logo-image">
+            </a>
+            <div class="nav-right">
+                <button class="btn-submit" onclick="window.location.href='cooperation.html'">合作</button>
+                <div id="userAuthArea">
+                    <button class="btn-login" id="btnLogin">登录</button>
+                    <div class="user-avatar-container hidden" id="userAvatarContainer">
+                        <div class="user-avatar-circle" id="userAvatar">
+                            <span id="userAvatarText">U</span>
+                        </div>
+                        <div class="user-dropdown" id="userDropdown">
+                            <div class="user-dropdown-item" id="userInfoItem">
+                                <span id="userDisplayName">用户名</span>
+                            </div>
+                            <div class="user-dropdown-divider"></div>
+                            <div class="user-dropdown-item" id="btnLogout">登出</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-card">
+            <div class="hero-badge">
+                ⭐ 创新 • 精进 • 成就
+            </div>
+            <h1 class="hero-title">睁眼看世界，发现最好的AI工具!</h1>
+            <p class="hero-subtitle">探索全网全世界全量最优秀的AI工具，从10000+工具中发现最适合你的AI工具.</p>
+            
+            <div class="search-container">
+                <input type="text" placeholder="请输入关键词：名称，用途, 类别, 需求..." class="search-input">
+                <button class="search-btn">🔍</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Pills -->
+    <section class="categories">
+        <div class="category-pills">
+            <a href="category.html" class="pill">Business & Productivity</a>
+            <a href="#" class="pill">教育 & 开发</a>
+            <a href="#" class="pill">Design & Media</a>
+            <a href="#" class="pill">Lifestyle & Growth</a>
+            <a href="#" class="pill">Writing & Content</a>
+        </div>
+        <div class="category-pills">
+            <a href="#" class="pill">#Customer Service</a>
+            <a href="#" class="pill">#Chatbot</a>
+            <a href="#" class="pill">#Image Generator</a>
+            <a href="#" class="pill">#Education</a>
+            <a href="#" class="pill">#Writing Assistant</a>
+        </div>
+    </section>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+        <div class="filter-left">
+            <label>价格</label>
+            <select class="filter-select">
+                <option>请选择</option>
+                <option>免费</option>
+                <option>免费增值</option>
+                <option>免费试用</option>
+                <option>付费</option>
+                <option>联系定价</option>
+            </select>
+        </div>
+        <div class="filter-right">
+            <label>排序</label>
+            <select class="filter-select">
+                <option>请选择</option>
+                <option>星级</option>
+                <option>最受欢迎</option>
+                <option>最新</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Tools Grid -->
+    <!-- 注意：以下静态卡片仅作为占位符，页面加载时会自动从后端API获取数据并替换 -->
+    <main class="tools-grid">
+        <!-- Tool Card 1 (静态占位符，将被API数据替换) -->
+        <div class="tool-card" data-slug="copilot-cloudways">
+            <div class="tool-image">
+				<div class="price-badge">免费</div>
+                <img src="public/images/copilot-tool.jpg" alt="CoPilot AI工具 - 网站构建和托管AI工具" loading="lazy">
+                <button class="favorite-btn">♡</button>
+            </div>
+            <div class="tool-content">
+                <h3 class="tool-title">工具名称CoPilot – Cloudways </h3>
+                <div class="tool-rating">
+                    <span class="verified-badge">✓</span>
+                    <span class="rating">⭐ 4.6</span>
+                </div>
+                <p class="tool-description">这里是产品简介：Automated backups, 24/7 support, and global server locations for efficient hosting.</p>
+                <div class="tool-tags">
+                    <span class="tag">#Website Builder</span>
+                    <span class="tag">BOOSTED</span>
+                    <span class="tag">Contact for Pricing</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tool Card 2 -->
+        <div class="tool-card" data-slug="thelibrarian">
+            <div class="tool-image">
+                <div class="price-badge">$9/month</div>
+                <img src="public/images/librarian-tool.jpg" alt="TheLibrarian AI工具 - WhatsApp生产力助手" loading="lazy">
+                <button class="favorite-btn">♡</button>
+            </div>
+            <div class="tool-content">
+                <h3 class="tool-title">TheLibrarian <span class="verified-badge">✓</span></h3>
+                <div class="tool-rating">
+                    <span class="rating">⭐ 5.0</span>
+                </div>
+                <p class="tool-description">WhatsApp AI Assistant designed to help Master Your Inbox, Control Your Schedule, and Find Anything You Need — so you can focus on what truly matters.</p>
+                <div class="tool-tags">
+                    <span class="tag">#Productivity</span>
+                    <span class="tag">BOOSTED</span>
+                    <span class="tag">Freemium</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tool Card 3 -->
+        <div class="tool-card" data-slug="vid2txt">
+            <div class="tool-image">
+				<div class="price-badge">免费</div>
+                <img src="public/images/vid2txt-tool.jpg" alt="Vid2txt AI工具 - 视频转文字转录工具" loading="lazy">
+                <button class="favorite-btn">♡</button>
+            </div>
+            <div class="tool-content">
+                <h3 class="tool-title">Vid2txt</h3>
+                <div class="tool-rating">
+                    <span class="rating">⭐ 5.0</span>
+                </div>
+                <p class="tool-description">Automate transcription, timestamps, and export transcripts with ease.</p>
+                <div class="tool-tags">
+                    <span class="tag">#Transcription</span>
+                    <span class="tag">Contact for Pricing</span>
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Tool Card 4 -->
+        <div class="tool-card" data-slug="adcreative-ai">
+            <div class="tool-image">
+                <div class="price-badge">$29/Month</div>
+                <img src="public/images/adcreative-tool.jpg" alt="Adcreative.ai AI工具 - AI广告创意生成工具" loading="lazy">
+                <button class="favorite-btn">♡</button>
+            </div>
+            <div class="tool-content">
+                <h3 class="tool-title">Adcreative.ai</h3>
+                <div class="tool-rating">
+                    <span class="rating">⭐ 3.8</span>
+                </div>
+                <p class="tool-description">Generate high-converting creatives fast, analyze strategies, track performance with insights.</p>
+                <div class="tool-tags">
+                    <span class="tag">#Content Creator</span>
+                    <span class="tag">Free Trial</span>
+                  
+                </div>
+            </div>
+        </div>
+
+        <!-- Tool Card 5 -->
+        <div class="tool-card" data-slug="omnigpt">
+            <div class="tool-image">
+                <div class="price-badge">From $7/mo</div>
+                <img src="public/images/omnigpt-tool.jpg" alt="OmniGPT AI工具 - 多任务自动化AI助手" loading="lazy">
+                <button class="favorite-btn">♡</button>
+            </div>
+            <div class="tool-content">
+                <h3 class="tool-title">OmniGPT</h3>
+                <div class="tool-rating">
+                    <span class="rating">⭐ 5.0</span>
+                </div>
+                <p class="tool-description">Automate tasks, streamline conversations, and access an intuitive user interface for efficient communication.</p>
+                <div class="tool-tags">
+                    <span class="tag">#Productivity</span>
+                    <span class="tag">Paid</span>
+                  
+                </div>
+            </div>
+        </div>
+
+        <!-- Tool Card 6 -->
+        <div class="tool-card" data-slug="reply-io">
+            <div class="tool-image">
+                <div class="price-badge">$60/Month</div>
+                <img src="public/images/reply-tool.jpg" alt="Reply.io AI工具 - 销售外展自动化工具" loading="lazy">
+                <button class="favorite-btn">♡</button>
+            </div>
+            <div class="tool-content">
+                <h3 class="tool-title">Reply.io</h3>
+                <div class="tool-rating">
+                    <span class="rating">⭐ 4.5</span>
+                </div>
+                <p class="tool-description">Automate sales outreach, create personalized emails, track performance and measure results in real-time.</p>
+                <div class="tool-tags">
+                    <span class="tag">#Customer Service</span>
+                    <span class="tag">Freemium</span>
+                   
+                </div>
+            </div>
+        </div>
+
+        <!-- Tool Card 7 -->
+        <div class="tool-card" data-slug="neural-newsletters">
+            <div class="tool-image">
+				<div class="price-badge">免费</div>
+                <img src="public/images/newsletter-tool.jpg" alt="Neural Newsletters AI工具 - AI新闻邮件生成工具" loading="lazy">
+                <button class="favorite-btn">♡</button>
+            </div>
+            <div class="tool-content">
+                <h3 class="tool-title">Neural Newsletters <span class="verified-badge">✓</span></h3>
+                <div class="tool-rating">
+                    <span class="rating">⭐ 5.0</span>
+                </div>
+                <p class="tool-description">Generate, customize, and publish newsletters effortlessly, tailored to your audience's needs and interests.</p>
+                <div class="tool-tags">
+                    <span class="tag">#Marketing</span>
+                    <span class="tag">Contact for Pricing</span>
+                  
+                </div>
+            </div>
+        </div>
+
+        <!-- Tool Card 8 -->
+        <div class="tool-card" data-slug="sheet-plus">
+            <div class="tool-image">
+                <div class="price-badge">$2.99/Month</div>
+                <img src="public/images/sheet-tool.jpg" alt="Sheet+ AI工具 - Excel公式AI生成工具" loading="lazy">
+                <button class="favorite-btn">♡</button>
+            </div>
+            <div class="tool-content">
+                <h3 class="tool-title">Sheet+</h3>
+                <div class="tool-rating">
+                    <span class="rating">⭐ 5.0</span>
+                </div>
+                <p class="tool-description">Generate formulas, automate tasks, and fix errors in formulas to save time - all with natural language capabilities.</p>
+                <div class="tool-tags">
+                    <span class="tag">#Productivity</span>
+                    <span class="tag">Freemium</span>
+                   
+                </div>
+            </div>
+        </div>
+
+        <!-- Tool Card 9 -->
+        <div class="tool-card" data-slug="ai-assistant-pro">
+            <div class="tool-image">
+                <div class="price-badge">免费</div>
+                <img src="public/images/copilot-tool.jpg" alt="AI Assistant Pro AI工具 - 个人AI助手" loading="lazy">
+                <button class="favorite-btn">♡</button>
+            </div>
+            <div class="tool-content">
+                <h3 class="tool-title">AI Assistant Pro</h3>
+                <div class="tool-rating">
+                    <span class="rating">⭐ 4.8</span>
+                </div>
+                <p class="tool-description">Your personal AI assistant for daily tasks, scheduling, and productivity enhancement.</p>
+                <div class="tool-tags">
+                    <span class="tag">#Assistant</span>
+                    <span class="tag">Free</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tool Card 10 -->
+        <div class="tool-card" data-slug="design-ai">
+            <div class="tool-image">
+                <div class="price-badge">$15/Month</div>
+                <img src="public/images/ai-tool-placeholder.jpg" alt="Design AI工具 - AI设计工具，图形和Logo生成" loading="lazy">
+                <button class="favorite-btn">♡</button>
+            </div>
+            <div class="tool-content">
+                <h3 class="tool-title">Design AI</h3>
+                <div class="tool-rating">
+                    <span class="rating">⭐ 4.7</span>
+                </div>
+                <p class="tool-description">Create stunning designs with AI-powered tools for graphics, logos, and branding.</p>
+                <div class="tool-tags">
+                    <span class="tag">#Design</span>
+                    <span class="tag">Paid</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tool Card 11 -->
+        <div class="tool-card" data-slug="code-helper-ai">
+            <div class="tool-image">
+                <div class="price-badge">免费增值</div>
+                <img src="public/images/hero-feature.jpg" alt="Code Helper AI工具 - AI代码补全和调试助手" loading="lazy">
+                <button class="favorite-btn">♡</button>
+            </div>
+            <div class="tool-content">
+                <h3 class="tool-title">Code Helper AI</h3>
+                <div class="tool-rating">
+                    <span class="rating">⭐ 4.9</span>
+                </div>
+                <p class="tool-description">AI-powered code completion and debugging assistant for developers.</p>
+                <div class="tool-tags">
+                    <span class="tag">#Development</span>
+                    <span class="tag">Freemium</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tool Card 12 -->
+        <div class="tool-card" data-slug="content-writer-ai">
+            <div class="tool-image">
+                <div class="price-badge">$25/Month</div>
+                <img src="public/images/ai-tool-placeholder.jpg" alt="Content Writer AI工具 - AI内容写作工具" loading="lazy">
+                <button class="favorite-btn">♡</button>
+            </div>
+            <div class="tool-content">
+                <h3 class="tool-title">Content Writer AI</h3>
+                <div class="tool-rating">
+                    <span class="rating">⭐ 4.6</span>
+                </div>
+                <p class="tool-description">Generate high-quality content for blogs, articles, and social media with AI.</p>
+                <div class="tool-tags">
+                    <span class="tag">#Writing</span>
+                    <span class="tag">Paid</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 显示更多按钮 -->
+        <div class="load-more-container">
+            <a href="category.html" class="btn-load-more">显示更多工具 →</a>
+        </div>
+    </main>
+
+    <!-- Reviews 我的工具 mytools Sidebar -->
+    <aside class="mytools" id="mytoolsSidebar">
+        <div class="mytools-header">
+            <h3>我的工具</h3>
+            <button class="mytools-toggle" id="mytoolsToggle" title="折叠/展开">◀</button>
+        </div>
+        
+        <div class="mytools-content" id="mytoolsContent">
+        <!-- 添加工具区域 -->
+        <div class="mytools-add">
+            <div class="mytools-search">
+                <input type="text" id="mytools-search-input" placeholder="搜索工具名称或输入URL..." class="mytools-input">
+                <button id="mytools-add-btn" class="mytools-add-btn">+</button>
+            </div>
+            <div id="mytools-search-results" class="mytools-search-results" style="display: none;"></div>
+        </div>
+        
+        <!-- 工具列表容器 -->
+        <div id="mytools-list" class="mytools-list">
+            <!-- 工具列表将通过JavaScript动态加载 -->
+        </div>
+        
+        <p class="mytools-cta">清除缓存后会丢失，请及时备份.</p>
+        </div>
+        
+        <!-- 折叠状态显示所有工具的 Logo -->
+        <div class="mytools-collapsed-list" id="mytoolsCollapsedList">
+            <!-- 工具 Logo 列表将通过 JavaScript 动态加载 -->
+        </div>
+    </aside>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <img src="logoandtitle.png" alt="AITop365 - AI工具导航平台" class="footer-logo-image">
+                    </div>
+                    <p class="footer-description">探索国内外最好用的AI 工具.</p>
+                    <div class="footer-social">
+                        <a href="#" target="_blank" class="social-link share-weibo" title="分享到微博" style="font-weight: bold;">微</a>
+                        <a href="#" target="_blank" class="social-link share-zhihu" title="分享到知乎" style="font-weight: bold;">知</a>
+                        <a href="#" target="_blank" class="social-link share-douban" title="分享到豆瓣" style="font-weight: bold;">豆</a>
+                        <a href="#" target="_blank" class="social-link share-bilibili" title="分享到B站" style="font-weight: bold;">B</a>
+                    </div>
+                </div>
+
+                <div class="footer-column">
+                    <h4 class="footer-heading">分类</h4>
+                    <ul class="footer-links">
+                        <li><a href="category.html">AI商业与办公</a></li>
+                        <li><a href="category.html">AI技术与开发</a></li>
+                        <li><a href="category.html">AI设计与多媒体</a></li>
+                        <li><a href="category.html">AI生活成长教育</a></li>
+                        <li><a href="category.html">AI写作与内容</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4 class="footer-heading">资源</h4>
+                    <ul class="footer-links">
+                        <li><a href="category.html">检索AI工具</a></li>
+                        <li><a href="news.html">AI资讯</a></li>
+                        <li><a href="#">API文档</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4 class="footer-heading">我们</h4>
+                    <ul class="footer-links">
+                        <li><a href="cooperation.html">关于我们</a></li>
+                        <li><a href="cooperation.html">联系我们</a></li>
+                        <li><a href="cooperation.html">建议意见</a></li>
+                        <li><a href="cooperation.html">提交工具</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4 class="footer-heading">其他</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">隐私条款</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 AITop365. All rights reserved. | <a href="https://beian.miit.gov.cn/" target="_blank" style="color: inherit; text-decoration: none;">苏ICP备202522878号</a></p>
+                <div class="footer-bottom-links">
+                    <a href="sitemap.xml">Sitemap</a>
+                    <span>•</span>
+                    <a href="#">RSS Feed</a>
+                    <span>•</span>
+                    <a href="#">Status</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 登录/注册弹窗 -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-modal-content">
+            <span class="auth-modal-close" id="authModalClose">&times;</span>
+            
+            <!-- 登录表单 -->
+            <div class="auth-form" id="loginForm">
+                <h2>登录</h2>
+                <form id="loginFormElement">
+                    <div class="form-group">
+                        <label>用户名或邮箱</label>
+                        <input type="text" id="loginUsername" placeholder="请输入用户名或邮箱" required>
+                    </div>
+                    <div class="form-group">
+                        <label>密码</label>
+                        <input type="password" id="loginPassword" placeholder="请输入密码" required>
+                    </div>
+                    <div class="form-error" id="loginError"></div>
+                    <button type="submit" class="btn-auth-primary">登录</button>
+                </form>
+                <div class="auth-switch">
+                    <span>还没有账号？</span>
+                    <a href="#" id="switchToRegister">立即注册</a>
+                </div>
+            </div>
+            
+            <!-- 注册表单 -->
+            <div class="auth-form hidden" id="registerForm">
+                <h2>注册</h2>
+                <form id="registerFormElement">
+                    <div class="form-group">
+                        <label>用户名 <span class="required">*</span></label>
+                        <input type="text" id="registerUsername" placeholder="3-20个字符" required>
+                    </div>
+                    <div class="form-group">
+                        <label>密码 <span class="required">*</span></label>
+                        <input type="password" id="registerPassword" placeholder="6-20个字符" required>
+                    </div>
+                    <div class="form-group">
+                        <label>确认密码 <span class="required">*</span></label>
+                        <input type="password" id="registerPasswordConfirm" placeholder="请再次输入密码" required>
+                    </div>
+                    <div class="form-group">
+                        <label>邮箱 <span class="required">*</span></label>
+                        <input type="email" id="registerEmail" placeholder="用于找回密码" required>
+                        <small class="form-hint">邮箱将作为找回密码的依据</small>
+                    </div>
+                    <div class="form-group">
+                        <label>昵称</label>
+                        <input type="text" id="registerNickname" placeholder="可选，默认使用用户名" maxlength="20">
+                    </div>
+                    <div class="form-group">
+                        <label>验证码 <span class="required">*</span></label>
+                        <div class="captcha-container">
+                            <div class="captcha-input-wrapper">
+                                <input type="text" id="registerCaptchaCode" placeholder="请输入验证码" maxlength="4" required>
+                                <img id="captchaImage" src="" alt="验证码" class="captcha-image-input">
+                                <button type="button" class="btn-refresh-captcha" id="btnRefreshCaptcha">刷新</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-error" id="registerError"></div>
+                    <button type="submit" class="btn-auth-primary">注册</button>
+                </form>
+                <div class="auth-switch">
+                    <span>已有账号？</span>
+                    <a href="#" id="switchToLogin">立即登录</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="api.js?v=1.0.38"></script>
+    <script src="script.js?v=1.0.38"></script>
+    <script>
+        // 设置社交媒体分享链接
+        (function() {
+            const currentUrl = encodeURIComponent(window.location.href);
+            const currentTitle = encodeURIComponent(document.title || 'AITop365 - 发现最好的AI工具');
+            const currentDesc = encodeURIComponent(document.querySelector('meta[name="description"]')?.content || '探索国内外最好用的AI工具');
+            
+            // 微博分享
+            const weiboLink = document.querySelector('.share-weibo');
+            if (weiboLink) {
+                weiboLink.href = `https://service.weibo.com/share/share.php?url=${currentUrl}&title=${currentTitle}`;
+            }
+            
+            // 知乎分享（知乎没有官方分享API，使用搜索链接）
+            const zhihuLink = document.querySelector('.share-zhihu');
+            if (zhihuLink) {
+                zhihuLink.href = `https://www.zhihu.com/search?q=${encodeURIComponent('AITop365 AI工具')}`;
+            }
+            
+            // 豆瓣分享
+            const doubanLink = document.querySelector('.share-douban');
+            if (doubanLink) {
+                doubanLink.href = `https://www.douban.com/share/service?url=${currentUrl}&name=${currentTitle}`;
+            }
+            
+            // B站分享（B站主要是视频平台，使用搜索链接）
+            const bilibiliLink = document.querySelector('.share-bilibili');
+            if (bilibiliLink) {
+                bilibiliLink.href = `https://search.bilibili.com/all?keyword=${encodeURIComponent('AITop365 AI工具')}`;
+            }
+        })();
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,409 @@
+{
+  "name": "futuretools_runway",
+  "url": "https://futuretools.io/tools/runway",
+  "final_url": "https://futuretools.io/tools/runway",
+  "status": 200,
+  "bytes": 93893,
+  "meta": [
+    {
+      "charset": "utf-8"
+    },
+    {
+      "name": "viewport",
+      "content": "width=device-width, initial-scale=1"
+    },
+    {
+      "name": "next-size-adjust",
+      "content": ""
+    },
+    {
+      "name": "description",
+      "content": "Video editing tool with AI background remover and more"
+    },
+    {
+      "name": "author",
+      "content": "Matt Wolfe"
+    },
+    {
+      "name": "keywords",
+      "content": "AI tools,artificial intelligence,AI news,machine learning,AI directory,Matt Wolfe"
+    },
+    {
+      "name": "creator",
+      "content": "Matt Wolfe"
+    },
+    {
+      "name": "robots",
+      "content": "index, follow"
+    },
+    {
+      "name": "googlebot",
+      "content": "index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1"
+    },
+    {
+      "property": "og:title",
+      "content": "Future Tools - Runway"
+    },
+    {
+      "property": "og:description",
+      "content": "Video editing tool with AI background remover and more"
+    },
+    {
+      "property": "og:url",
+      "content": "https://futuretools.io/tools/runway"
+    },
+    {
+      "property": "og:site_name",
+      "content": "Future Tools"
+    },
+    {
+      "property": "og:image",
+      "content": "https://dxukomxvxegiferomewe.supabase.co/storage/v1/object/public/tool-logos/runway.png?t=1771480712678"
+    },
+    {
+      "property": "og:image:alt",
+      "content": "Runway"
+    },
+    {
+      "property": "og:type",
+      "content": "website"
+    },
+    {
+      "name": "twitter:card",
+      "content": "summary"
+    },
+    {
+      "name": "twitter:creator",
+      "content": "@mreflow"
+    },
+    {
+      "name": "twitter:title",
+      "content": "Future Tools - Runway"
+    },
+    {
+      "name": "twitter:description",
+      "content": "Video editing tool with AI background remover and more"
+    },
+    {
+      "name": "twitter:image",
+      "content": "https://dxukomxvxegiferomewe.supabase.co/storage/v1/object/public/tool-logos/runway.png?t=1771480712678"
+    },
+    {
+      "name": "twitter:image:alt",
+      "content": "Runway"
+    }
+  ],
+  "links": [
+    {
+      "class": "group flex items-center gap-2",
+      "href": "/",
+      "text": "Future Tools",
+      "tag": "<a class=\"group flex items-center gap-2\" href=\"/\">"
+    },
+    {
+      "class": "rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-foreground text-muted-foreground",
+      "href": "/news",
+      "text": "AI News",
+      "tag": "<a class=\"rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-foreground text-muted-foreground\" href=\"/news\">"
+    },
+    {
+      "href": "/newsletter",
+      "text": "Subscribe",
+      "tag": "<a href=\"/newsletter\">"
+    },
+    {
+      "class": "block rounded-lg px-3 py-2 text-base font-semibold text-foreground transition-colors hover:bg-accent",
+      "href": "/news",
+      "text": "AI News",
+      "tag": "<a class=\"block rounded-lg px-3 py-2 text-base font-semibold text-foreground transition-colors hover:bg-accent\" href=\"/news\">"
+    },
+    {
+      "class": "block rounded-lg px-3 py-2 text-base font-medium text-foreground/90 transition-colors hover:bg-accent",
+      "href": "/best-ai-tools",
+      "text": "Top 20 AI Tools",
+      "tag": "<a class=\"block rounded-lg px-3 py-2 text-base font-medium text-foreground/90 transition-colors hover:bg-accent\" href=\"/best-ai-tools\">"
+    },
+    {
+      "class": "block rounded-lg px-3 py-2 text-base font-medium text-foreground/90 transition-colors hover:bg-accent",
+      "href": "/tools",
+      "text": "Browse All Tools",
+      "tag": "<a class=\"block rounded-lg px-3 py-2 text-base font-medium text-foreground/90 transition-colors hover:bg-accent\" href=\"/tools\">"
+    },
+    {
+      "class": "block rounded-lg px-3 py-2 text-base font-medium text-foreground/90 transition-colors hover:bg-accent",
+      "href": "/newly-added",
+      "text": "Newly Added Tools",
+      "tag": "<a class=\"block rounded-lg px-3 py-2 text-base font-medium text-foreground/90 transition-colors hover:bg-accent\" href=\"/newly-added\">"
+    },
+    {
+      "class": "block rounded-lg px-3 py-2 text-base font-medium text-foreground/90 transition-colors hover:bg-accent",
+      "href": "/submit-a-tool",
+      "text": "Submit a Tool",
+      "tag": "<a class=\"block rounded-lg px-3 py-2 text-base font-medium text-foreground/90 transition-colors hover:bg-accent\" href=\"/submit-a-tool\">"
+    },
+    {
+      "class": "block rounded-lg px-3 py-2 text-base font-medium text-foreground/90 transition-colors hover:bg-accent",
+      "href": "/blog",
+      "text": "Blog",
+      "tag": "<a class=\"block rounded-lg px-3 py-2 text-base font-medium text-foreground/90 transition-colors hover:bg-accent\" href=\"/blog\">"
+    },
+    {
+      "class": "block rounded-lg px-3 py-2 text-base font-medium text-foreground/90 transition-colors hover:bg-accent",
+      "href": "/insights",
+      "text": "Industry Insights",
+      "tag": "<a class=\"block rounded-lg px-3 py-2 text-base font-medium text-foreground/90 transition-colors hover:bg-accent\" href=\"/insights\">"
+    },
+    {
+      "class": "block rounded-lg px-3 py-2 text-base font-medium text-foreground/90 transition-colors hover:bg-accent",
+      "href": "/newsletter/archive",
+      "text": "Newsletter Archive",
+      "tag": "<a class=\"block rounded-lg px-3 py-2 text-base font-medium text-foreground/90 transition-colors hover:bg-accent\" href=\"/newsletter/archive\">"
+    },
+    {
+      "class": "block rounded-lg px-3 py-2 text-base font-medium text-foreground/90 transition-colors hover:bg-accent",
+      "href": "/about",
+      "text": "About",
+      "tag": "<a class=\"block rounded-lg px-3 py-2 text-base font-medium text-foreground/90 transition-colors hover:bg-accent\" href=\"/about\">"
+    },
+    {
+      "href": "https://www.youtube.com/@mreflow",
+      "target": "_blank",
+      "rel": "noopener noreferrer",
+      "class": "block rounded-lg px-3 py-2 text-base font-medium text-foreground/90 transition-colors hover:bg-accent",
+      "text": "Videos ↗",
+      "tag": "<a href=\"https://www.youtube.com/@mreflow\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"block rounded-lg px-3 py-2 text-base font-medium text-foreground/90 transition-colors hover:bg-accent\">"
+    },
+    {
+      "class": "block rounded-lg px-3 py-2 text-base font-medium text-foreground/90 transition-colors hover:bg-accent",
+      "href": "/glossary",
+      "text": "Glossary",
+      "tag": "<a class=\"block rounded-lg px-3 py-2 text-base font-medium text-foreground/90 transition-colors hover:bg-accent\" href=\"/glossary\">"
+    },
+    {
+      "class": "block rounded-lg px-3 py-2 text-base font-medium text-foreground/90 transition-colors hover:bg-accent",
+      "href": "/faq",
+      "text": "FAQ",
+      "tag": "<a class=\"block rounded-lg px-3 py-2 text-base font-medium text-foreground/90 transition-colors hover:bg-accent\" href=\"/faq\">"
+    },
+    {
+      "class": "block",
+      "href": "/newsletter",
+      "text": "Subscribe",
+      "tag": "<a class=\"block\" href=\"/newsletter\">"
+    },
+    {
+      "class": "transition-colors hover:text-foreground",
+      "href": "/",
+      "text": "Home",
+      "tag": "<a class=\"transition-colors hover:text-foreground\" href=\"/\">"
+    },
+    {
+      "class": "transition-colors hover:text-foreground",
+      "href": "/tools",
+      "text": "Tools",
+      "tag": "<a class=\"transition-colors hover:text-foreground\" href=\"/tools\">"
+    },
+    {
+      "href": "/go/runway",
+      "target": "_blank",
+      "rel": "noopener noreferrer",
+      "class": "inline-flex",
+      "text": "Visit Runway",
+      "tag": "<a href=\"/go/runway\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"inline-flex\">"
+    },
+    {
+      "href": "/go/runway",
+      "target": "_blank",
+      "rel": "noopener noreferrer",
+      "class": "flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-[0_0_24px_-8px_var(--ft-glow)] transition-colors hover:bg-primary/90",
+      "text": "Visit Runway",
+      "tag": "<a href=\"/go/runway\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-[0_0_24px_-8px_var(--ft-glow)] transition-colors hover:bg-primary/90\">"
+    },
+    {
+      "href": "https://x.com/intent/post?text=Runway%20%E2%80%94%20found%20on%20Future%20Tools&url=https%3A%2F%2Ffuturetools.io%2Ftools%2Frunway",
+      "target": "_blank",
+      "rel": "noopener noreferrer",
+      "aria-label": "Share on X",
+      "class": "inline-flex items-center gap-2 rounded-full border border-border/60 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground",
+      "text": "X",
+      "tag": "<a href=\"https://x.com/intent/post?text=Runway%20%E2%80%94%20found%20on%20Future%20Tools&amp;url=https%3A%2F%2Ffuturetools.io%2Ftools%2Frunway\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Share on X\" class=\"inline-flex items-center gap-2 rounded-full border border-border/60 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground\">"
+    },
+    {
+      "href": "https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Ffuturetools.io%2Ftools%2Frunway",
+      "target": "_blank",
+      "rel": "noopener noreferrer",
+      "aria-label": "Share on LinkedIn",
+      "class": "inline-flex items-center gap-2 rounded-full border border-border/60 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground",
+      "text": "LinkedIn",
+      "tag": "<a href=\"https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Ffuturetools.io%2Ftools%2Frunway\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Share on LinkedIn\" class=\"inline-flex items-center gap-2 rounded-full border border-border/60 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground\">"
+    },
+    {
+      "class": "rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/30 hover:text-primary cursor-pointer",
+      "href": "/tools?categories=generative-video-video-editing-matts-picks",
+      "text": "generative-video-video-editing-matts-picks",
+      "tag": "<a class=\"rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/30 hover:text-primary cursor-pointer\" href=\"/tools?categories=generative-video-video-editing-matts-picks\">"
+    },
+    {
+      "class": "text-sm text-muted-foreground transition-colors hover:text-primary",
+      "href": "/news",
+      "text": "AI News",
+      "tag": "<a class=\"text-sm text-muted-foreground transition-colors hover:text-primary\" href=\"/news\">"
+    },
+    {
+      "class": "text-sm text-muted-foreground transition-colors hover:text-primary",
+      "href": "/best-ai-tools",
+      "text": "Top 20 AI Tools",
+      "tag": "<a class=\"text-sm text-muted-foreground transition-colors hover:text-primary\" href=\"/best-ai-tools\">"
+    },
+    {
+      "class": "text-sm text-muted-foreground transition-colors hover:text-primary",
+      "href": "/tools",
+      "text": "All Tools",
+      "tag": "<a class=\"text-sm text-muted-foreground transition-colors hover:text-primary\" href=\"/tools\">"
+    },
+    {
+      "class": "text-sm text-muted-foreground transition-colors hover:text-primary",
+      "href": "/newly-added",
+      "text": "Newly Added",
+      "tag": "<a class=\"text-sm text-muted-foreground transition-colors hover:text-primary\" href=\"/newly-added\">"
+    },
+    {
+      "class": "text-sm text-muted-foreground transition-colors hover:text-primary",
+      "href": "/blog",
+      "text": "Blog",
+      "tag": "<a class=\"text-sm text-muted-foreground transition-colors hover:text-primary\" href=\"/blog\">"
+    },
+    {
+      "class": "text-sm text-muted-foreground transition-colors hover:text-primary",
+      "href": "/insights",
+      "text": "Industry Insights",
+      "tag": "<a class=\"text-sm text-muted-foreground transition-colors hover:text-primary\" href=\"/insights\">"
+    },
+    {
+      "class": "text-sm text-muted-foreground transition-colors hover:text-primary",
+      "href": "/about",
+      "text": "About",
+      "tag": "<a class=\"text-sm text-muted-foreground transition-colors hover:text-primary\" href=\"/about\">"
+    },
+    {
+      "class": "text-sm text-muted-foreground transition-colors hover:text-primary",
+      "href": "/newsletter",
+      "text": "Newsletter",
+      "tag": "<a class=\"text-sm text-muted-foreground transition-colors hover:text-primary\" href=\"/newsletter\">"
+    },
+    {
+      "class": "text-sm text-muted-foreground transition-colors hover:text-primary",
+      "href": "/newsletter/archive",
+      "text": "Newsletter Archive",
+      "tag": "<a class=\"text-sm text-muted-foreground transition-colors hover:text-primary\" href=\"/newsletter/archive\">"
+    },
+    {
+      "class": "text-sm text-muted-foreground transition-colors hover:text-primary",
+      "href": "/glossary",
+      "text": "Glossary",
+      "tag": "<a class=\"text-sm text-muted-foreground transition-colors hover:text-primary\" href=\"/glossary\">"
+    },
+    {
+      "class": "text-sm text-muted-foreground transition-colors hover:text-primary",
+      "href": "/faq",
+      "text": "FAQ",
+      "tag": "<a class=\"text-sm text-muted-foreground transition-colors hover:text-primary\" href=\"/faq\">"
+    },
+    {
+      "class": "text-sm text-muted-foreground transition-colors hover:text-primary",
+      "href": "/submit-a-tool",
+      "text": "Submit a Tool",
+      "tag": "<a class=\"text-sm text-muted-foreground transition-colors hover:text-primary\" href=\"/submit-a-tool\">"
+    },
+    {
+      "href": "https://youtube.com/@mreflow",
+      "target": "_blank",
+      "rel": "noopener noreferrer",
+      "class": "flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary",
+      "text": "YouTube",
+      "tag": "<a href=\"https://youtube.com/@mreflow\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary\">"
+    },
+    {
+      "href": "https://x.com/mreflow",
+      "target": "_blank",
+      "rel": "noopener noreferrer",
+      "class": "flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary",
+      "text": "X",
+      "tag": "<a href=\"https://x.com/mreflow\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary\">"
+    },
+    {
+      "href": "https://instagram.com/mr.eflow/",
+      "target": "_blank",
+      "rel": "noopener noreferrer",
+      "class": "flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary",
+      "text": "Instagram",
+      "tag": "<a href=\"https://instagram.com/mr.eflow/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary\">"
+    },
+    {
+      "href": "https://www.threads.com/@mr.eflow",
+      "target": "_blank",
+      "rel": "noopener noreferrer",
+      "class": "flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary",
+      "text": "Threads",
+      "tag": "<a href=\"https://www.threads.com/@mr.eflow\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary\">"
+    },
+    {
+      "href": "https://www.linkedin.com/in/matt-wolfe-30841712/",
+      "target": "_blank",
+      "rel": "noopener noreferrer",
+      "class": "flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary",
+      "text": "LinkedIn",
+      "tag": "<a href=\"https://www.linkedin.com/in/matt-wolfe-30841712/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary\">"
+    },
+    {
+      "href": "https://www.tiktok.com/@mattrwolfe",
+      "target": "_blank",
+      "rel": "noopener noreferrer",
+      "class": "flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary",
+      "text": "TikTok",
+      "tag": "<a href=\"https://www.tiktok.com/@mattrwolfe\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary\">"
+    },
+    {
+      "href": "https://app.termly.io/document/terms-of-use-for-website/e9e30fa0-42fc-4d01-8def-22f74cf7096f",
+      "target": "_blank",
+      "rel": "noopener noreferrer",
+      "class": "text-sm text-muted-foreground transition-colors hover:text-primary",
+      "text": "Terms of Use",
+      "tag": "<a href=\"https://app.termly.io/document/terms-of-use-for-website/e9e30fa0-42fc-4d01-8def-22f74cf7096f\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-sm text-muted-foreground transition-colors hover:text-primary\">"
+    },
+    {
+      "href": "https://app.termly.io/document/privacy-policy/5667009e-9755-48de-ba93-4a0fe61528d7",
+      "target": "_blank",
+      "rel": "noopener noreferrer",
+      "class": "text-sm text-muted-foreground transition-colors hover:text-primary",
+      "text": "Privacy Policy",
+      "tag": "<a href=\"https://app.termly.io/document/privacy-policy/5667009e-9755-48de-ba93-4a0fe61528d7\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-sm text-muted-foreground transition-colors hover:text-primary\">"
+    },
+    {
+      "href": "https://mattwolfe.com",
+      "target": "_blank",
+      "rel": "noopener noreferrer",
+      "class": "text-sm text-muted-foreground transition-colors hover:text-primary",
+      "text": "MattWolfe.com",
+      "tag": "<a href=\"https://mattwolfe.com\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-sm text-muted-foreground transition-colors hover:text-primary\">"
+    },
+    {
+      "href": "https://buseybench.com",
+      "target": "_blank",
+      "rel": "noopener noreferrer",
+      "class": "text-sm text-muted-foreground transition-colors hover:text-primary",
+      "text": "BuseyBench",
+      "tag": "<a href=\"https://buseybench.com\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-sm text-muted-foreground transition-colors hover:text-primary\">"
+    },
+    {
+      "href": "https://mattwolfe.com",
+      "target": "_blank",
+      "rel": "noopener noreferrer",
+      "class": "font-medium text-foreground transition-colors hover:text-primary",
+      "text": "Matt Wolfe",
+      "tag": "<a href=\"https://mattwolfe.com\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"font-medium text-foreground transition-colors hover:text-primary\">"
+    }
+  ],
+  "hidden_instruction_candidates": [],
+  "text": "Future Tools - Runway try{const t=localStorage.getItem('ft-theme');if(t==='light'){document.documentElement.setAttribute('data-theme','light')}}catch(e){} window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init(); Future Tools AI News Tools Editorial More Subscribe AI News Tools Top 20 AI Tools Browse All Tools Newly Added Tools Submit a Tool Editorial Blog Industry Insights Newsletter Archive More About Videos  ↗ Glossary FAQ Subscribe {\"@context\":\"https://schema.org\",\"@type\":\"SoftwareApplication\",\"name\":\"Runway\",\"description\":\"Video editing tool with AI background remover and more\",\"url\":\"https://runwayml.com/?ref=FutureTools.io\",\"applicationCategory\":\"Generative Video Video Editing\",\"operatingSystem\":\"All\",\"offers\":{\"@type\":\"Offer\",\"priceCurrency\":\"USD\",\"availability\":\"https://schema.org/InStock\"}} {\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://futuretools.io/\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Tools\",\"item\":\"https://futuretools.io/tools\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Runway\",\"item\":\"https://futuretools.io/tools/runway\"}]} Home Tools Runway Runway Video editing tool with AI background remover and more Visit  Runway 173 upvotes Matt's Pick runwayml.com Freemium Upvotes 173 Pricing Freemium Category Generative Video Video Editing In the database since Jul 2024 Overview About  Runway Runway is a next-generation content creation suite that provides powerful AI tools and real-time collaboration to help users create content faster. It offers a range of features including automated background removal, text to image and 3D texture generation, erase and replace, motion tracking, green screen masking, noise removal, and more. It also has a library of professionally crafted templates, animations, effects, and filters. Additionally, Runway provides secure collaboration and user management tools, asset hub, and audio editing capabilities. Newsletter Tools like this change fast New generative-video-video-editing-matts-picks tools launch every week — the newsletter keeps you ahead of what's worth trying. Company Subscribe Free Matt's Pick This tool was selected as one of Matt's Picks! Matt Wolfe personally tests and evaluates AI tools. Matt's Picks are tools that he has used himself and would genuinely recommend to others. See it in action Videos featuring  Runway Visit  Runway runwayml.com At a glance Pricing Freemium API Available Open source No Listed Jul 2024 Upvotes 173 This tool offers a free tier Share this tool X LinkedIn  Copy link Categories generative-video-video-editing-matts-picks Suggest Changes AI news twice a week Join 250,000+ readers getting the most important AI news and coolest tools every Wednesday and Friday. Company Subscribe Free Site AI News Top 20 AI Tools All Tools Newly Added Blog Industry Insights About Newsletter Newsletter Archive Glossary FAQ Submit a Tool Social YouTube X Instagram Threads LinkedIn TikTok Legal Terms of Use Privacy Policy More from Matt MattWolfe.com BuseyBench ©  2026  FutureTools.io. All rights reserved. Built by   Matt Wolfe (self.__next_f=self.__next_f||[]).push([0]) self.__next_f.push([1,\"1:\\\"$Sreact.fragment\\\"\\n3:I[39756,[\\\"/_next/static/chunks/0obioc_cab1yh.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/1kxf7y-yctdh7.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/0q0zn8gps0-qk.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/14mrh2-p_w84d.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\"],\\\"default\\\"]\\n4:I[37457,[\\\"/_next/static/chunks/0obioc_cab1yh.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/1kxf7y-yctdh7.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/0q0zn8gps0-qk.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/14mrh2-p_w84d.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\"],\\\"default\\\"]\\n6:I[97367,[\\\"/_next/static/chunks/0obioc_cab1yh.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/1kxf7y-yctdh7.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/0q0zn8gps0-qk.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/14mrh2-p_w84d.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\"],\\\"OutletBoundary\\\"]\\n7:\\\"$Sreact.suspense\\\"\\na:I[97367,[\\\"/_next/static/chunks/0obioc_cab1yh.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/1kxf7y-yctdh7.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/0q0zn8gps0-qk.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/14mrh2-p_w84d.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\"],\\\"ViewportBoundary\\\"]\\nc:I[97367,[\\\"/_next/static/chunks/0obioc_cab1yh.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/1kxf7y-yctdh7.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/0q0zn8gps0-qk.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/14mrh2-p_w84d.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\"],\\\"MetadataBoundary\\\"]\\ne:I[63491,[\\\"/_next/static/chunks/0obioc_cab1yh.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/1kxf7y-yctdh7.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/0q0zn8gps0-qk.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/14mrh2-p_w84d.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/2lik77w2e6i7r.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\"],\\\"default\\\"]\\n:HL[\\\"/_next/static/chunks/3s8zm3iqhh3z9.css?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"style\\\"]\\n:HL[\\\"/_next/static/chunks/31pxet6ka98rg.css?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"style\\\"]\\n:HL[\\\"/_next/static/media/0c795a286deabae8-s.p.3vm0tq4e-zz_5.woff2?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"font\\\",{\\\"crossOrigin\\\":\\\"\\\",\\\"type\\\":\\\"font/woff2\\\"}]\\n:HL[\\\"/_next/static/media/fba5a26ea33df6a3-s.p.18rizl4rsrl42.woff2?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"font\\\",{\\\"crossOrigin\\\":\\\"\\\",\\\"type\\\":\\\"font/woff2\\\"}]\\n\"]) self.__next_f.push([1,\"0:{\\\"P\\\":null,\\\"c\\\":[\\\"\\\",\\\"tools\\\",\\\"runway\\\"],\\\"q\\\":\\\"\\\",\\\"i\\\":false,\\\"f\\\":[[[\\\"\\\",{\\\"children\\\":[\\\"tools\\\",{\\\"children\\\":[[\\\"slug\\\",\\\"runway\\\",\\\"d\\\",null],{\\\"children\\\":[\\\"__PAGE__\\\",{}]}]}]},\\\"$undefined\\\",\\\"$undefined\\\",16],[[\\\"$\\\",\\\"$1\\\",\\\"c\\\",{\\\"children\\\":[[[\\\"$\\\",\\\"link\\\",\\\"0\\\",{\\\"rel\\\":\\\"stylesheet\\\",\\\"href\\\":\\\"/_next/static/chunks/3s8zm3iqhh3z9.css?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"precedence\\\":\\\"next\\\",\\\"crossOrigin\\\":\\\"$undefined\\\",\\\"nonce\\\":\\\"$undefined\\\"}],[\\\"$\\\",\\\"link\\\",\\\"1\\\",{\\\"rel\\\":\\\"stylesheet\\\",\\\"href\\\":\\\"/_next/static/chunks/31pxet6ka98rg.css?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"precedence\\\":\\\"next\\\",\\\"crossOrigin\\\":\\\"$undefined\\\",\\\"nonce\\\":\\\"$undefined\\\"}],[\\\"$\\\",\\\"script\\\",\\\"script-0\\\",{\\\"src\\\":\\\"/_next/static/chunks/0obioc_cab1yh.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"async\\\":true,\\\"nonce\\\":\\\"$undefined\\\"}],[\\\"$\\\",\\\"script\\\",\\\"script-1\\\",{\\\"src\\\":\\\"/_next/static/chunks/1kxf7y-yctdh7.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"async\\\":true,\\\"nonce\\\":\\\"$undefined\\\"}],[\\\"$\\\",\\\"script\\\",\\\"script-2\\\",{\\\"src\\\":\\\"/_next/static/chunks/0q0zn8gps0-qk.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"async\\\":true,\\\"nonce\\\":\\\"$undefined\\\"}],[\\\"$\\\",\\\"script\\\",\\\"script-3\\\",{\\\"src\\\":\\\"/_next/static/chunks/14mrh2-p_w84d.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"async\\\":true,\\\"nonce\\\":\\\"$undefined\\\"}]],\\\"$L2\\\"]}],{\\\"children\\\":[[\\\"$\\\",\\\"$1\\\",\\\"c\\\",{\\\"children\\\":[null,[\\\"$\\\",\\\"$L3\\\",null,{\\\"parallelRouterKey\\\":\\\"children\\\",\\\"error\\\":\\\"$undefined\\\",\\\"errorStyles\\\":\\\"$undefined\\\",\\\"errorScripts\\\":\\\"$undefined\\\",\\\"template\\\":[\\\"$\\\",\\\"$L4\\\",null,{}],\\\"templateStyles\\\":\\\"$undefined\\\",\\\"templateScripts\\\":\\\"$undefined\\\",\\\"notFound\\\":\\\"$undefined\\\",\\\"forbidden\\\":\\\"$undefined\\\",\\\"unauthorized\\\":\\\"$undefined\\\"}]]}],{\\\"children\\\":[[\\\"$\\\",\\\"$1\\\",\\\"c\\\",{\\\"children\\\":[null,[\\\"$\\\",\\\"$L3\\\",null,{\\\"parallelRouterKey\\\":\\\"children\\\",\\\"error\\\":\\\"$undefined\\\",\\\"errorStyles\\\":\\\"$undefined\\\",\\\"errorScripts\\\":\\\"$undefined\\\",\\\"template\\\":[\\\"$\\\",\\\"$L4\\\",null,{}],\\\"templateStyles\\\":\\\"$undefined\\\",\\\"templateScripts\\\":\\\"$undefined\\\",\\\"notFound\\\":\\\"$undefined\\\",\\\"forbidden\\\":\\\"$undefined\\\",\\\"unauthorized\\\":\\\"$undefined\\\"}]]}],{\\\"children\\\":[[\\\"$\\\",\\\"$1\\\",\\\"c\\\",{\\\"children\\\":[\\\"$L5\\\",[[\\\"$\\\",\\\"script\\\",\\\"script-0\\\",{\\\"src\\\":\\\"/_next/static/chunks/2js7md5jq_795.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"async\\\":true,\\\"nonce\\\":\\\"$undefined\\\"}]],[\\\"$\\\",\\\"$L6\\\",null,{\\\"children\\\":[\\\"$\\\",\\\"$7\\\",null,{\\\"name\\\":\\\"Next.MetadataOutlet\\\",\\\"children\\\":\\\"$@8\\\"}]}]]}],{},null,false,null]},null,false,\\\"$@9\\\"]},null,false,\\\"$@9\\\"]},null,false,null],[\\\"$\\\",\\\"$1\\\",\\\"h\\\",{\\\"children\\\":[null,[\\\"$\\\",\\\"$La\\\",null,{\\\"children\\\":\\\"$Lb\\\"}],[\\\"$\\\",\\\"div\\\",null,{\\\"hidden\\\":true,\\\"children\\\":[\\\"$\\\",\\\"$Lc\\\",null,{\\\"children\\\":[\\\"$\\\",\\\"$7\\\",null,{\\\"name\\\":\\\"Next.Metadata\\\",\\\"children\\\":\\\"$Ld\\\"}]}]}],[\\\"$\\\",\\\"meta\\\",null,{\\\"name\\\":\\\"next-size-adjust\\\",\\\"content\\\":\\\"\\\"}]]}],false]],\\\"m\\\":\\\"$undefined\\\",\\\"G\\\":[\\\"$e\\\",[[\\\"$\\\",\\\"link\\\",\\\"0\\\",{\\\"rel\\\":\\\"stylesheet\\\",\\\"href\\\":\\\"/_next/static/chunks/3s8zm3iqhh3z9.css?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"precedence\\\":\\\"next\\\",\\\"crossOrigin\\\":\\\"$undefined\\\",\\\"nonce\\\":\\\"$undefined\\\"}],[\\\"$\\\",\\\"link\\\",\\\"1\\\",{\\\"rel\\\":\\\"stylesheet\\\",\\\"href\\\":\\\"/_next/static/chunks/31pxet6ka98rg.css?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"precedence\\\":\\\"next\\\",\\\"crossOrigin\\\":\\\"$undefined\\\",\\\"nonce\\\":\\\"$undefined\\\"}]]],\\\"S\\\":false,\\\"h\\\":null,\\\"s\\\":\\\"$undefined\\\",\\\"l\\\":\\\"$undefined\\\",\\\"p\\\":\\\"$undefined\\\",\\\"d\\\":\\\"$undefined\\\"}\\n\"]) self.__next_f.push([1,\"f:[]\\n9:\\\"$Wf\\\"\\nb:[[\\\"$\\\",\\\"meta\\\",\\\"0\\\",{\\\"charSet\\\":\\\"utf-8\\\"}],[\\\"$\\\",\\\"meta\\\",\\\"1\\\",{\\\"name\\\":\\\"viewport\\\",\\\"content\\\":\\\"width=device-width, initial-scale=1\\\"}]]\\n\"]) self.__next_f.push([1,\"10:I[18359,[\\\"/_next/static/chunks/0obioc_cab1yh.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/1kxf7y-yctdh7.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/0q0zn8gps0-qk.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/14mrh2-p_w84d.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\"],\\\"ThemeProvider\\\"]\\n11:I[3374,[\\\"/_next/static/chunks/0obioc_cab1yh.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/1kxf7y-yctdh7.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/0q0zn8gps0-qk.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/14mrh2-p_w84d.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\"],\\\"Header\\\"]\\n12:I[58298,[\\\"/_next/static/chunks/0obioc_cab1yh.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/1kxf7y-yctdh7.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/0q0zn8gps0-qk.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/14mrh2-p_w84d.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/0lqh-rdywdy5y.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\"],\\\"default\\\"]\\n13:I[22016,[\\\"/_next/static/chunks/0obioc_cab1yh.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/1kxf7y-yctdh7.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/0q0zn8gps0-qk.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/14mrh2-p_w84d.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/2js7md5jq_795.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\"],\\\"\\\"]\\n\"]) self.__next_f.push([1,\"2:[\\\"$\\\",\\\"html\\\",null,{\\\"lang\\\":\\\"en\\\",\\\"suppressHydrationWarning\\\":true,\\\"children\\\":[[\\\"$\\\",\\\"head\\\",null,{\\\"children\\\":[[\\\"$\\\",\\\"script\\\",null,{\\\"dangerouslySetInnerHTML\\\":{\\\"__html\\\":\\\"try{const t=localStorage.getItem('ft-theme');if(t==='light'){document.documentElement.setAttribute('data-theme','light')}}catch(e){}\\\"}}],[[\\\"$\\\",\\\"script\\\",null,{\\\"async\\\":true,\\\"src\\\":\\\"https://plausible.io/js/pa-Y9D4FV6mrdiwA27SOUwuN.js\\\"}],[\\\"$\\\",\\\"script\\\",null,{\\\"dangerouslySetInnerHTML\\\":{\\\"__html\\\":\\\"window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init();\\\"}}]]]}],[\\\"$\\\",\\\"body\\\",null,{\\\"className\\\":\\\"syne_53f86cd1-module__kiT3Eq__variable plus_jakarta_sans_8def66c5-module__XA8t6q__variable font-sans antialiased\\\",\\\"children\\\":[\\\"$\\\",\\\"$L10\\\",null,{\\\"children\\\":[[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"relative flex min-h-screen flex-col\\\",\\\"children\\\":[[\\\"$\\\",\\\"$L11\\\",null,{\\\"hiddenHrefs\\\":[\\\"/advertise\\\",\\\"/collections\\\",\\\"/reviews\\\",\\\"/events\\\"]}],[\\\"$\\\",\\\"main\\\",null,{\\\"className\\\":\\\"flex-1\\\",\\\"children\\\":[\\\"$\\\",\\\"$L3\\\",null,{\\\"parallelRouterKey\\\":\\\"children\\\",\\\"error\\\":\\\"$12\\\",\\\"errorStyles\\\":[],\\\"errorScripts\\\":[[\\\"$\\\",\\\"script\\\",\\\"script-0\\\",{\\\"src\\\":\\\"/_next/static/chunks/0lqh-rdywdy5y.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"async\\\":true}]],\\\"template\\\":[\\\"$\\\",\\\"$L4\\\",null,{}],\\\"templateStyles\\\":\\\"$undefined\\\",\\\"templateScripts\\\":\\\"$undefined\\\",\\\"notFound\\\":[[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"mx-auto flex max-w-2xl flex-col items-center px-4 py-24 text-center sm:px-6 lg:px-8\\\",\\\"children\\\":[[\\\"$\\\",\\\"p\\\",null,{\\\"className\\\":\\\"font-display text-7xl font-bold tracking-tight\\\",\\\"children\\\":[\\\"4\\\",[\\\"$\\\",\\\"span\\\",null,{\\\"className\\\":\\\"bg-gradient-to-r from-primary via-violet-400 to-cyan-400 bg-clip-text text-transparent\\\",\\\"children\\\":\\\"0\\\"}],\\\"4\\\"]}],[\\\"$\\\",\\\"h1\\\",null,{\\\"className\\\":\\\"mt-6 font-display text-2xl font-bold\\\",\\\"children\\\":\\\"This page doesn't exist\\\"}],[\\\"$\\\",\\\"p\\\",null,{\\\"className\\\":\\\"mt-3 max-w-md text-muted-foreground leading-relaxed\\\",\\\"children\\\":\\\"The link may be outdated, or the page may have moved. The tools and news are still here — try one of these:\\\"}],[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"mt-8 flex flex-wrap items-center justify-center gap-3\\\",\\\"children\\\":[[\\\"$\\\",\\\"$L13\\\",null,{\\\"href\\\":\\\"/tools\\\",\\\"children\\\":[\\\"$\\\",\\\"button\\\",null,{\\\"className\\\":\\\"inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 cursor-pointer bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 active:scale-[0.98] h-9 px-4 py-2\\\",\\\"ref\\\":\\\"$undefined\\\",\\\"children\\\":\\\"Browse AI Tools\\\"}]}],[\\\"$\\\",\\\"$L13\\\",null,{\\\"href\\\":\\\"/news\\\",\\\"children\\\":[\\\"$\\\",\\\"button\\\",null,{\\\"className\\\":\\\"inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 cursor-pointer border border-border/50 bg-transparent text-foreground hover:bg-accent hover:border-border active:scale-[0.98] h-9 px-4 py-2\\\",\\\"ref\\\":\\\"$undefined\\\",\\\"children\\\":\\\"Latest AI News\\\"}]}],[\\\"$\\\",\\\"$L13\\\",null,{\\\"href\\\":\\\"/\\\",\\\"children\\\":[\\\"$\\\",\\\"button\\\",null,{\\\"className\\\":\\\"inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 cursor-pointer text-muted-foreground hover:bg-accent hover:text-foreground h-9 px-4 py-2\\\",\\\"ref\\\":\\\"$undefined\\\",\\\"children\\\":\\\"Home\\\"}]}]]}]]}],[]],\\\"forbidden\\\":\\\"$undefined\\\",\\\"unauthorized\\\":\\\"$undefined\\\"}]}],[\\\"$\\\",\\\"footer\\\",null,{\\\"className\\\":\\\"border-t border-border/50 bg-surface\\\",\\\"children\\\":[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8\\\",\\\"children\\\":[\\\"$L14\\\",\\\"$L15\\\"]}]}]]}],\\\"$L16\\\"]}]}]]}]\\n\"]) self.__next_f.push([1,\"1d:I[5500,[\\\"/_next/static/chunks/0obioc_cab1yh.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/1kxf7y-yctdh7.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/0q0zn8gps0-qk.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/14mrh2-p_w84d.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/2js7md5jq_795.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\"],\\\"Image\\\"]\\n1e:I[44925,[\\\"/_next/static/chunks/0obioc_cab1yh.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/1kxf7y-yctdh7.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/0q0zn8gps0-qk.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/14mrh2-p_w84d.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\"],\\\"SubscribePopup\\\"]\\n\"]) self.__next_f.push([1,\"14:[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4\\\",\\\"children\\\":[[\\\"$\\\",\\\"div\\\",null,{\\\"children\\\":[[\\\"$\\\",\\\"h3\\\",null,{\\\"className\\\":\\\"font-display text-sm font-semibold text-foreground\\\",\\\"children\\\":\\\"Site\\\"}],[\\\"$\\\",\\\"ul\\\",null,{\\\"className\\\":\\\"mt-4 grid grid-cols-2 gap-x-4 gap-y-2.5\\\",\\\"children\\\":[[\\\"$\\\",\\\"li\\\",\\\"AI News\\\",{\\\"children\\\":[\\\"$\\\",\\\"$L13\\\",null,{\\\"href\\\":\\\"/news\\\",\\\"className\\\":\\\"text-sm text-muted-foreground transition-colors hover:text-primary\\\",\\\"children\\\":\\\"AI News\\\"}]}],[\\\"$\\\",\\\"li\\\",\\\"Top 20 AI Tools\\\",{\\\"children\\\":[\\\"$\\\",\\\"$L13\\\",null,{\\\"href\\\":\\\"/best-ai-tools\\\",\\\"className\\\":\\\"text-sm text-muted-foreground transition-colors hover:text-primary\\\",\\\"children\\\":\\\"Top 20 AI Tools\\\"}]}],[\\\"$\\\",\\\"li\\\",\\\"All Tools\\\",{\\\"children\\\":[\\\"$\\\",\\\"$L13\\\",null,{\\\"href\\\":\\\"/tools\\\",\\\"className\\\":\\\"text-sm text-muted-foreground transition-colors hover:text-primary\\\",\\\"children\\\":\\\"All Tools\\\"}]}],[\\\"$\\\",\\\"li\\\",\\\"Newly Added\\\",{\\\"children\\\":[\\\"$\\\",\\\"$L13\\\",null,{\\\"href\\\":\\\"/newly-added\\\",\\\"className\\\":\\\"text-sm text-muted-foreground transition-colors hover:text-primary\\\",\\\"children\\\":\\\"Newly Added\\\"}]}],[\\\"$\\\",\\\"li\\\",\\\"Blog\\\",{\\\"children\\\":[\\\"$\\\",\\\"$L13\\\",null,{\\\"href\\\":\\\"/blog\\\",\\\"className\\\":\\\"text-sm text-muted-foreground transition-colors hover:text-primary\\\",\\\"children\\\":\\\"Blog\\\"}]}],[\\\"$\\\",\\\"li\\\",\\\"Industry Insights\\\",{\\\"children\\\":[\\\"$\\\",\\\"$L13\\\",null,{\\\"href\\\":\\\"/insights\\\",\\\"className\\\":\\\"text-sm text-muted-foreground transition-colors hover:text-primary\\\",\\\"children\\\":\\\"Industry Insights\\\"}]}],[\\\"$\\\",\\\"li\\\",\\\"About\\\",{\\\"children\\\":[\\\"$\\\",\\\"$L13\\\",null,{\\\"href\\\":\\\"/about\\\",\\\"className\\\":\\\"text-sm text-muted-foreground transition-colors hover:text-primary\\\",\\\"children\\\":\\\"About\\\"}]}],[\\\"$\\\",\\\"li\\\",\\\"Newsletter\\\",{\\\"children\\\":[\\\"$\\\",\\\"$L13\\\",null,{\\\"href\\\":\\\"/newsletter\\\",\\\"className\\\":\\\"text-sm text-muted-foreground transition-colors hover:text-primary\\\",\\\"children\\\":\\\"Newsletter\\\"}]}],[\\\"$\\\",\\\"li\\\",\\\"Newsletter Archive\\\",{\\\"children\\\":[\\\"$\\\",\\\"$L13\\\",null,{\\\"href\\\":\\\"/newsletter/archive\\\",\\\"className\\\":\\\"text-sm text-muted-foreground transition-colors hover:text-primary\\\",\\\"children\\\":\\\"Newsletter Archive\\\"}]}],[\\\"$\\\",\\\"li\\\",\\\"Glossary\\\",{\\\"children\\\":[\\\"$\\\",\\\"$L13\\\",null,{\\\"href\\\":\\\"/glossary\\\",\\\"className\\\":\\\"text-sm text-muted-foreground transition-colors hover:text-primary\\\",\\\"children\\\":\\\"Glossary\\\"}]}],[\\\"$\\\",\\\"li\\\",\\\"FAQ\\\",{\\\"children\\\":[\\\"$\\\",\\\"$L13\\\",null,{\\\"href\\\":\\\"/faq\\\",\\\"className\\\":\\\"text-sm text-muted-foreground transition-colors hover:text-primary\\\",\\\"children\\\":\\\"FAQ\\\"}]}],[\\\"$\\\",\\\"li\\\",\\\"Submit a Tool\\\",{\\\"children\\\":[\\\"$\\\",\\\"$L13\\\",null,{\\\"href\\\":\\\"/submit-a-tool\\\",\\\"className\\\":\\\"text-sm text-muted-foreground transition-colors hover:text-primary\\\",\\\"children\\\":\\\"Submit a Tool\\\"}]}]]}]]}],[\\\"$\\\",\\\"div\\\",null,{\\\"children\\\":[[\\\"$\\\",\\\"h3\\\",null,{\\\"className\\\":\\\"font-display text-sm font-semibold text-foreground\\\",\\\"children\\\":\\\"Social\\\"}],[\\\"$\\\",\\\"ul\\\",null,{\\\"className\\\":\\\"mt-4 grid grid-cols-2 gap-x-4 gap-y-2.5\\\",\\\"children\\\":[[\\\"$\\\",\\\"li\\\",\\\"YouTube\\\",{\\\"children\\\":[\\\"$\\\",\\\"a\\\",null,{\\\"href\\\":\\\"https://youtube.com/@mreflow\\\",\\\"target\\\":\\\"_blank\\\",\\\"rel\\\":\\\"noopener noreferrer\\\",\\\"className\\\":\\\"flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary\\\",\\\"children\\\":[[\\\"$\\\",\\\"svg\\\",null,{\\\"ref\\\":\\\"$undefined\\\",\\\"xmlns\\\":\\\"http://www.w3.org/2000/svg\\\",\\\"width\\\":24,\\\"height\\\":24,\\\"viewBox\\\":\\\"0 0 24 24\\\",\\\"fill\\\":\\\"none\\\",\\\"stroke\\\":\\\"currentColor\\\",\\\"strokeWidth\\\":2,\\\"strokeLinecap\\\":\\\"round\\\",\\\"strokeLinejoin\\\":\\\"round\\\",\\\"className\\\":\\\"lucide lucide-youtube h-4 w-4 shrink-0\\\",\\\"aria-hidden\\\":\\\"true\\\",\\\"children\\\":[[\\\"$\\\",\\\"path\\\",\\\"1q2vi4\\\",{\\\"d\\\":\\\"M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17\\\"}],[\\\"$\\\",\\\"path\\\",\\\"1jp15x\\\",{\\\"d\\\":\\\"m10 15 5-3-5-3z\\\"}],\\\"$undefined\\\"]}],\\\"YouTube\\\"]}]}],[\\\"$\\\",\\\"li\\\",\\\"X\\\",{\\\"children\\\":[\\\"$\\\",\\\"a\\\",null,{\\\"href\\\":\\\"https://x.com/mreflow\\\",\\\"target\\\":\\\"_blank\\\",\\\"rel\\\":\\\"noopener noreferrer\\\",\\\"className\\\":\\\"flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary\\\",\\\"children\\\":[[\\\"$\\\",\\\"svg\\\",null,{\\\"className\\\":\\\"h-4 w-4 shrink-0\\\",\\\"viewBox\\\":\\\"0 0 24 24\\\",\\\"fill\\\":\\\"currentColor\\\",\\\"aria-hidden\\\":\\\"true\\\",\\\"children\\\":[\\\"$\\\",\\\"path\\\",null,{\\\"d\\\":\\\"M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z\\\"}]}],\\\"X\\\"]}]}],[\\\"$\\\",\\\"li\\\",\\\"Instagram\\\",{\\\"children\\\":[\\\"$\\\",\\\"a\\\",null,{\\\"href\\\":\\\"https://instagram.com/mr.eflow/\\\",\\\"target\\\":\\\"_blank\\\",\\\"rel\\\":\\\"noopener noreferrer\\\",\\\"className\\\":\\\"flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary\\\",\\\"children\\\":[\\\"$L17\\\",\\\"Instagram\\\"]}]}],\\\"$L18\\\",\\\"$L19\\\",\\\"$L1a\\\"]}]]}],\\\"$L1b\\\",\\\"$L1c\\\"]}]\\n\"]) self.__next_f.push([1,\"15:[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"mt-12 border-t border-border/50 pt-8\\\",\\\"children\\\":[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"flex flex-col items-center justify-between gap-4 md:flex-row\\\",\\\"children\\\":[[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"flex items-center gap-3\\\",\\\"children\\\":[[\\\"$\\\",\\\"$L1d\\\",null,{\\\"src\\\":\\\"/logo@2x.png\\\",\\\"alt\\\":\\\"Future Tools logo\\\",\\\"width\\\":28,\\\"height\\\":28,\\\"className\\\":\\\"h-7 w-auto\\\"}],[\\\"$\\\",\\\"p\\\",null,{\\\"className\\\":\\\"text-sm text-muted-foreground\\\",\\\"children\\\":[\\\"© \\\",2026,\\\" FutureTools.io. All rights reserved.\\\"]}]]}],[\\\"$\\\",\\\"p\\\",null,{\\\"className\\\":\\\"text-sm text-muted-foreground\\\",\\\"children\\\":[\\\"Built by\\\",\\\" \\\",[\\\"$\\\",\\\"a\\\",null,{\\\"href\\\":\\\"https://mattwolfe.com\\\",\\\"target\\\":\\\"_blank\\\",\\\"rel\\\":\\\"noopener noreferrer\\\",\\\"className\\\":\\\"font-medium text-foreground transition-colors hover:text-primary\\\",\\\"children\\\":\\\"Matt Wolfe\\\"}]]}]]}]}]\\n16:[\\\"$\\\",\\\"$L1e\\\",null,{}]\\n\"]) self.__next_f.push([1,\"17:[\\\"$\\\",\\\"svg\\\",null,{\\\"ref\\\":\\\"$undefined\\\",\\\"xmlns\\\":\\\"http://www.w3.org/2000/svg\\\",\\\"width\\\":24,\\\"height\\\":24,\\\"viewBox\\\":\\\"0 0 24 24\\\",\\\"fill\\\":\\\"none\\\",\\\"stroke\\\":\\\"currentColor\\\",\\\"strokeWidth\\\":2,\\\"strokeLinecap\\\":\\\"round\\\",\\\"strokeLinejoin\\\":\\\"round\\\",\\\"className\\\":\\\"lucide lucide-instagram h-4 w-4 shrink-0\\\",\\\"aria-hidden\\\":\\\"true\\\",\\\"children\\\":[[\\\"$\\\",\\\"rect\\\",\\\"2e1cvw\\\",{\\\"width\\\":\\\"20\\\",\\\"height\\\":\\\"20\\\",\\\"x\\\":\\\"2\\\",\\\"y\\\":\\\"2\\\",\\\"rx\\\":\\\"5\\\",\\\"ry\\\":\\\"5\\\"}],[\\\"$\\\",\\\"path\\\",\\\"9exkf1\\\",{\\\"d\\\":\\\"M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z\\\"}],[\\\"$\\\",\\\"line\\\",\\\"r4j83e\\\",{\\\"x1\\\":\\\"17.5\\\",\\\"x2\\\":\\\"17.51\\\",\\\"y1\\\":\\\"6.5\\\",\\\"y2\\\":\\\"6.5\\\"}],\\\"$undefined\\\"]}]\\n18:[\\\"$\\\",\\\"li\\\",\\\"Threads\\\",{\\\"children\\\":[\\\"$\\\",\\\"a\\\",null,{\\\"href\\\":\\\"https://www.threads.com/@mr.eflow\\\",\\\"target\\\":\\\"_blank\\\",\\\"rel\\\":\\\"noopener noreferrer\\\",\\\"className\\\":\\\"flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary\\\",\\\"children\\\":[[\\\"$\\\",\\\"svg\\\",null,{\\\"className\\\":\\\"h-4 w-4 shrink-0\\\",\\\"viewBox\\\":\\\"0 0 24 24\\\",\\\"fill\\\":\\\"none\\\",\\\"stroke\\\":\\\"currentColor\\\",\\\"strokeWidth\\\":2,\\\"strokeLinecap\\\":\\\"round\\\",\\\"strokeLinejoin\\\":\\\"round\\\",\\\"aria-hidden\\\":\\\"true\\\",\\\"children\\\":[\\\"$\\\",\\\"path\\\",null,{\\\"d\\\":\\\"M19 7.5c-1.333 -3 -3.667 -4.5 -7 -4.5c-5 0 -8 2.5 -8 9s3 9 8 9c4.333 0 7 -2.5 7 -6c0 -3 -1.5 -5 -4 -5c-2.5 0 -4 1.5 -4 4c0 2.5 1.5 4 3 4\\\"}]}],\\\"Threads\\\"]}]}]\\n19:[\\\"$\\\",\\\"li\\\",\\\"LinkedIn\\\",{\\\"children\\\":[\\\"$\\\",\\\"a\\\",null,{\\\"href\\\":\\\"https://www.linkedin.com/in/matt-wolfe-30841712/\\\",\\\"target\\\":\\\"_blank\\\",\\\"rel\\\":\\\"noopener noreferrer\\\",\\\"className\\\":\\\"flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary\\\",\\\"children\\\":[[\\\"$\\\",\\\"svg\\\",null,{\\\"ref\\\":\\\"$undefined\\\",\\\"xmlns\\\":\\\"http://www.w3.org/2000/svg\\\",\\\"width\\\":24,\\\"height\\\":24,\\\"viewBox\\\":\\\"0 0 24 24\\\",\\\"fill\\\":\\\"none\\\",\\\"stroke\\\":\\\"currentColor\\\",\\\"strokeWidth\\\":2,\\\"strokeLinecap\\\":\\\"round\\\",\\\"strokeLinejoin\\\":\\\"round\\\",\\\"className\\\":\\\"lucide lucide-linkedin h-4 w-4 shrink-0\\\",\\\"aria-hidden\\\":\\\"true\\\",\\\"children\\\":[[\\\"$\\\",\\\"path\\\",\\\"c2jq9f\\\",{\\\"d\\\":\\\"M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z\\\"}],[\\\"$\\\",\\\"rect\\\",\\\"mk3on5\\\",{\\\"width\\\":\\\"4\\\",\\\"height\\\":\\\"12\\\",\\\"x\\\":\\\"2\\\",\\\"y\\\":\\\"9\\\"}],[\\\"$\\\",\\\"circle\\\",\\\"bt5ra8\\\",{\\\"cx\\\":\\\"4\\\",\\\"cy\\\":\\\"4\\\",\\\"r\\\":\\\"2\\\"}],\\\"$undefined\\\"]}],\\\"LinkedIn\\\"]}]}]\\n1a:[\\\"$\\\",\\\"li\\\",\\\"TikTok\\\",{\\\"children\\\":[\\\"$\\\",\\\"a\\\",null,{\\\"href\\\":\\\"https://www.tiktok.com/@mattrwolfe\\\",\\\"target\\\":\\\"_blank\\\",\\\"rel\\\":\\\"noopener noreferrer\\\",\\\"className\\\":\\\"flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary\\\",\\\"children\\\":[[\\\"$\\\",\\\"svg\\\",null,{\\\"className\\\":\\\"h-4 w-4 shrink-0\\\",\\\"viewBox\\\":\\\"0 0 24 24\\\",\\\"fill\\\":\\\"currentColor\\\",\\\"aria-hidden\\\":\\\"true\\\",\\\"children\\\":[\\\"$\\\",\\\"path\\\",null,{\\\"d\\\":\\\"M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.75a8.18 8.18 0 0 0 4.77 1.52V6.82a4.83 4.83 0 0 1-1.01-.13z\\\"}]}],\\\"TikTok\\\"]}]}]\\n1b:[\\\"$\\\",\\\"div\\\",null,{\\\"children\\\":[[\\\"$\\\",\\\"h3\\\",null,{\\\"className\\\":\\\"font-display text-sm font-semibold text-foreground\\\",\\\"children\\\":\\\"Legal\\\"}],[\\\"$\\\",\\\"ul\\\",null,{\\\"className\\\":\\\"mt-4 space-y-2.5\\\",\\\"children\\\":[[\\\"$\\\",\\\"li\\\",\\\"Terms of Use\\\",{\\\"children\\\":[\\\"$\\\",\\\"a\\\",null,{\\\"href\\\":\\\"https://app.termly.io/document/terms-of-use-for-website/e9e30fa0-42fc-4d01-8def-22f74cf7096f\\\",\\\"target\\\":\\\"_blank\\\",\\\"rel\\\":\\\"noopener noreferrer\\\",\\\"className\\\":\\\"text-sm text-muted-foreground transition-colors hover:text-primary\\\",\\\"children\\\":\\\"Terms of Use\\\"}]}],[\\\"$\\\",\\\"li\\\",\\\"Privacy Policy\\\",{\\\"children\\\":[\\\"$\\\",\\\"a\\\",null,{\\\"href\\\":\\\"https://app.termly.io/document/privacy-policy/5667009e-9755-48de-ba93-4a0fe61528d7\\\",\\\"target\\\":\\\"_blank\\\",\\\"rel\\\":\\\"noopener noreferrer\\\",\\\"className\\\":\\\"text-sm text-muted-foreground transition-colors hover:text-primary\\\",\\\"children\\\":\\\"Privacy Policy\\\"}]}]]}]]}]\\n1c:[\\\"$\\\",\\\"div\\\",null,{\\\"children\\\":[[\\\"$\\\",\\\"h3\\\",null,{\\\"className\\\":\\\"font-display text-sm font-semibold text-foreground\\\",\\\"children\\\":\\\"More from Matt\\\"}],[\\\"$\\\",\\\"ul\\\",null,{\\\"className\\\":\\\"mt-4 space-y-2.5\\\",\\\"children\\\":[[\\\"$\\\",\\\"li\\\",\\\"MattWolfe.com\\\",{\\\"children\\\":[\\\"$\\\",\\\"a\\\",null,{\\\"href\\\":\\\"https://mattwolfe.com\\\",\\\"target\\\":\\\"_blank\\\",\\\"rel\\\":\\\"noopener noreferrer\\\",\\\"className\\\":\\\"text-sm text-muted-foreground transition-colors hover:text-primary\\\",\\\"children\\\":\\\"MattWolfe.com\\\"}]}],[\\\"$\\\",\\\"li\\\",\\\"BuseyBench\\\",{\\\"children\\\":[\\\"$\\\",\\\"a\\\",null,{\\\"href\\\":\"]) self.__next_f.push([1,\"\\\"https://buseybench.com\\\",\\\"target\\\":\\\"_blank\\\",\\\"rel\\\":\\\"noopener noreferrer\\\",\\\"className\\\":\\\"text-sm text-muted-foreground transition-colors hover:text-primary\\\",\\\"children\\\":\\\"BuseyBench\\\"}]}]]}]]}]\\n\"]) self.__next_f.push([1,\"1f:I[14776,[\\\"/_next/static/chunks/0obioc_cab1yh.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/1kxf7y-yctdh7.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/0q0zn8gps0-qk.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/14mrh2-p_w84d.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/2js7md5jq_795.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\"],\\\"TrackPageView\\\"]\\n\"]) self.__next_f.push([1,\"5:[[\\\"$\\\",\\\"$L1f\\\",null,{\\\"entityType\\\":\\\"tool\\\",\\\"entityId\\\":\\\"runway\\\"}],[\\\"$\\\",\\\"script\\\",null,{\\\"type\\\":\\\"application/ld+json\\\",\\\"dangerouslySetInnerHTML\\\":{\\\"__html\\\":\\\"{\\\\\\\"@context\\\\\\\":\\\\\\\"https://schema.org\\\\\\\",\\\\\\\"@type\\\\\\\":\\\\\\\"SoftwareApplication\\\\\\\",\\\\\\\"name\\\\\\\":\\\\\\\"Runway\\\\\\\",\\\\\\\"description\\\\\\\":\\\\\\\"Video editing tool with AI background remover and more\\\\\\\",\\\\\\\"url\\\\\\\":\\\\\\\"https://runwayml.com/?ref=FutureTools.io\\\\\\\",\\\\\\\"applicationCategory\\\\\\\":\\\\\\\"Generative Video Video Editing\\\\\\\",\\\\\\\"operatingSystem\\\\\\\":\\\\\\\"All\\\\\\\",\\\\\\\"offers\\\\\\\":{\\\\\\\"@type\\\\\\\":\\\\\\\"Offer\\\\\\\",\\\\\\\"priceCurrency\\\\\\\":\\\\\\\"USD\\\\\\\",\\\\\\\"availability\\\\\\\":\\\\\\\"https://schema.org/InStock\\\\\\\"}}\\\"}}],[\\\"$\\\",\\\"script\\\",null,{\\\"type\\\":\\\"application/ld+json\\\",\\\"dangerouslySetInnerHTML\\\":{\\\"__html\\\":\\\"{\\\\\\\"@context\\\\\\\":\\\\\\\"https://schema.org\\\\\\\",\\\\\\\"@type\\\\\\\":\\\\\\\"BreadcrumbList\\\\\\\",\\\\\\\"itemListElement\\\\\\\":[{\\\\\\\"@type\\\\\\\":\\\\\\\"ListItem\\\\\\\",\\\\\\\"position\\\\\\\":1,\\\\\\\"name\\\\\\\":\\\\\\\"Home\\\\\\\",\\\\\\\"item\\\\\\\":\\\\\\\"https://futuretools.io/\\\\\\\"},{\\\\\\\"@type\\\\\\\":\\\\\\\"ListItem\\\\\\\",\\\\\\\"position\\\\\\\":2,\\\\\\\"name\\\\\\\":\\\\\\\"Tools\\\\\\\",\\\\\\\"item\\\\\\\":\\\\\\\"https://futuretools.io/tools\\\\\\\"},{\\\\\\\"@type\\\\\\\":\\\\\\\"ListItem\\\\\\\",\\\\\\\"position\\\\\\\":3,\\\\\\\"name\\\\\\\":\\\\\\\"Runway\\\\\\\",\\\\\\\"item\\\\\\\":\\\\\\\"https://futuretools.io/tools/runway\\\\\\\"}]}\\\"}}],[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"flex flex-col\\\",\\\"children\\\":[[\\\"$\\\",\\\"nav\\\",null,{\\\"className\\\":\\\"border-b border-border/50\\\",\\\"aria-label\\\":\\\"Breadcrumb\\\",\\\"children\\\":[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8\\\",\\\"children\\\":[\\\"$\\\",\\\"ol\\\",null,{\\\"className\\\":\\\"flex items-center gap-1.5 text-sm text-muted-foreground\\\",\\\"children\\\":[[\\\"$\\\",\\\"li\\\",null,{\\\"children\\\":[\\\"$\\\",\\\"$L13\\\",null,{\\\"href\\\":\\\"/\\\",\\\"className\\\":\\\"transition-colors hover:text-foreground\\\",\\\"children\\\":\\\"Home\\\"}]}],[\\\"$\\\",\\\"li\\\",null,{\\\"children\\\":[\\\"$\\\",\\\"svg\\\",null,{\\\"ref\\\":\\\"$undefined\\\",\\\"xmlns\\\":\\\"http://www.w3.org/2000/svg\\\",\\\"width\\\":24,\\\"height\\\":24,\\\"viewBox\\\":\\\"0 0 24 24\\\",\\\"fill\\\":\\\"none\\\",\\\"stroke\\\":\\\"currentColor\\\",\\\"strokeWidth\\\":2,\\\"strokeLinecap\\\":\\\"round\\\",\\\"strokeLinejoin\\\":\\\"round\\\",\\\"className\\\":\\\"lucide lucide-chevron-right h-3.5 w-3.5\\\",\\\"aria-hidden\\\":\\\"true\\\",\\\"children\\\":[[\\\"$\\\",\\\"path\\\",\\\"mthhwq\\\",{\\\"d\\\":\\\"m9 18 6-6-6-6\\\"}],\\\"$undefined\\\"]}]}],[\\\"$\\\",\\\"li\\\",null,{\\\"children\\\":[\\\"$\\\",\\\"$L13\\\",null,{\\\"href\\\":\\\"/tools\\\",\\\"className\\\":\\\"transition-colors hover:text-foreground\\\",\\\"children\\\":\\\"Tools\\\"}]}],[\\\"$\\\",\\\"li\\\",null,{\\\"children\\\":[\\\"$\\\",\\\"svg\\\",null,{\\\"ref\\\":\\\"$undefined\\\",\\\"xmlns\\\":\\\"http://www.w3.org/2000/svg\\\",\\\"width\\\":24,\\\"height\\\":24,\\\"viewBox\\\":\\\"0 0 24 24\\\",\\\"fill\\\":\\\"none\\\",\\\"stroke\\\":\\\"currentColor\\\",\\\"strokeWidth\\\":2,\\\"strokeLinecap\\\":\\\"round\\\",\\\"strokeLinejoin\\\":\\\"round\\\",\\\"className\\\":\\\"lucide lucide-chevron-right h-3.5 w-3.5\\\",\\\"aria-hidden\\\":\\\"true\\\",\\\"children\\\":[[\\\"$\\\",\\\"path\\\",\\\"mthhwq\\\",{\\\"d\\\":\\\"m9 18 6-6-6-6\\\"}],\\\"$undefined\\\"]}]}],[\\\"$\\\",\\\"li\\\",null,{\\\"className\\\":\\\"font-medium text-foreground\\\",\\\"children\\\":\\\"Runway\\\"}]]}]}]}],[\\\"$\\\",\\\"section\\\",null,{\\\"className\\\":\\\"relative overflow-hidden border-b border-border/50\\\",\\\"children\\\":[[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_55%_70%_at_20%_0%,var(--ft-glow)_0%,transparent_70%)]\\\"}],[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_40%_55%_at_95%_100%,var(--ft-glow-highlight)_0%,transparent_70%)]\\\"}],[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[minmax(0,1fr)_420px] lg:px-8 lg:py-16\\\",\\\"children\\\":[[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"min-w-0\\\",\\\"style\\\":{\\\"animation\\\":\\\"fade-in-up 0.5s ease-out both\\\"},\\\"children\\\":[[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"flex items-start gap-5 sm:gap-6\\\",\\\"children\\\":[[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl border border-border/60 bg-gradient-to-br from-primary/20 to-primary/5 shadow-[0_0_40px_-8px_var(--ft-glow)] sm:h-24 sm:w-24\\\",\\\"children\\\":[\\\"$\\\",\\\"$L1d\\\",null,{\\\"src\\\":\\\"https://dxukomxvxegiferomewe.supabase.co/storage/v1/object/public/tool-logos/runway.png?t=1771480712678\\\",\\\"alt\\\":\\\"Runway\\\",\\\"fill\\\":true,\\\"className\\\":\\\"object-cover\\\",\\\"sizes\\\":\\\"96px\\\"}]}],[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"min-w-0\\\",\\\"children\\\":[[\\\"$\\\",\\\"h1\\\",null,{\\\"className\\\":\\\"font-display text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl\\\",\\\"children\\\":[\\\"Runway\\\",null]}],[\\\"$\\\",\\\"p\\\",null,{\\\"className\\\":\\\"mt-2 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg\\\",\\\"children\\\":\\\"Video editing tool with AI background remover and more\\\"}]]}]]}],false,false,[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"mt-7 flex flex-wrap items-center gap-3\\\",\\\"children\\\":[\\\"$L20\\\",\\\"$L21\\\",\\\"$L22\\\"]}]]}],\\\"$L23\\\"]}],\\\"$L24\\\"]}],\\\"$L25\\\",\\\"$L26\\\"]}]]\\n\"]) self.__next_f.push([1,\"27:I[64029,[\\\"/_next/static/chunks/0obioc_cab1yh.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/1kxf7y-yctdh7.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/0q0zn8gps0-qk.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/14mrh2-p_w84d.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/2js7md5jq_795.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\"],\\\"VisitToolLink\\\"]\\n28:I[40108,[\\\"/_next/static/chunks/0obioc_cab1yh.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/1kxf7y-yctdh7.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/0q0zn8gps0-qk.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/14mrh2-p_w84d.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/2js7md5jq_795.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\"],\\\"ToolUpvoteButton\\\"]\\n29:I[54565,[\\\"/_next/static/chunks/0obioc_cab1yh.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/1kxf7y-yctdh7.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/0q0zn8gps0-qk.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/14mrh2-p_w84d.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/2js7md5jq_795.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\"],\\\"NewsletterCTA\\\"]\\n2d:I[27201,[\\\"/_next/static/chunks/0obioc_cab1yh.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/1kxf7y-yctdh7.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/0q0zn8gps0-qk.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/14mrh2-p_w84d.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\"],\\\"IconMark\\\"]\\n20:[\\\"$\\\",\\\"$L27\\\",null,{\\\"href\\\":\\\"/go/runway\\\",\\\"slug\\\":\\\"runway\\\",\\\"placement\\\":\\\"detail_header\\\",\\\"className\\\":\\\"inline-flex\\\",\\\"children\\\":[\\\"$\\\",\\\"button\\\",null,{\\\"className\\\":\\\"inline-flex items-center justify-center whitespace-nowrap rounded-lg font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 cursor-pointer bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.98] h-11 px-6 text-base gap-2 shadow-[0_0_32px_-8px_var(--ft-glow)]\\\",\\\"ref\\\":\\\"$undefined\\\",\\\"children\\\":[\\\"Visit \\\",\\\"Runway\\\",[\\\"$\\\",\\\"svg\\\",null,{\\\"ref\\\":\\\"$undefined\\\",\\\"xmlns\\\":\\\"http://www.w3.org/2000/svg\\\",\\\"width\\\":24,\\\"height\\\":24,\\\"viewBox\\\":\\\"0 0 24 24\\\",\\\"fill\\\":\\\"none\\\",\\\"stroke\\\":\\\"currentColor\\\",\\\"strokeWidth\\\":2,\\\"strokeLinecap\\\":\\\"round\\\",\\\"strokeLinejoin\\\":\\\"round\\\",\\\"className\\\":\\\"lucide lucide-external-link h-4 w-4\\\",\\\"aria-hidden\\\":\\\"true\\\",\\\"children\\\":[[\\\"$\\\",\\\"path\\\",\\\"1q9fwt\\\",{\\\"d\\\":\\\"M15 3h6v6\\\"}],[\\\"$\\\",\\\"path\\\",\\\"gplh6r\\\",{\\\"d\\\":\\\"M10 14 21 3\\\"}],[\\\"$\\\",\\\"path\\\",\\\"a6xqqp\\\",{\\\"d\\\":\\\"M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6\\\"}],\\\"$undefined\\\"]}]]}]}]\\n21:[\\\"$\\\",\\\"$L28\\\",null,{\\\"toolId\\\":\\\"e98cf32f-04c6-4133-90d0-6092fae645e4\\\",\\\"toolName\\\":\\\"Runway\\\",\\\"initialUpvotes\\\":173}]\\n22:[\\\"$\\\",\\\"span\\\",null,{\\\"className\\\":\\\"flex items-center gap-1.5 rounded-lg bg-highlight/10 px-3 py-2 text-sm font-medium text-highlight ring-1 ring-highlight/30\\\",\\\"children\\\":[[\\\"$\\\",\\\"span\\\",null,{\\\"className\\\":\\\"h-2 w-2 rounded-full bg-highlight\\\"}],\\\"Matt's Pick\\\"]}]\\n23:[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"relative\\\",\\\"style\\\":{\\\"animation\\\":\\\"fade-in 0.7s ease-out 0.15s both\\\"},\\\"children\\\":[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"relative overflow-hidden rounded-2xl border border-border/60 bg-card shadow-2xl\\\",\\\"children\\\":[[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"relative aspect-video\\\",\\\"children\\\":[\\\"$\\\",\\\"iframe\\\",null,{\\\"src\\\":\\\"https://www.youtube-nocookie.com/embed/eLs7zpEDnBU\\\",\\\"title\\\":\\\"Runway video\\\",\\\"allow\\\":\\\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\\\",\\\"allowFullScreen\\\":true,\\\"className\\\":\\\"absolute inset-0 h-full w-full\\\"}]}],[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"flex items-center justify-between border-t border-border/50 px-4 py-2.5 text-xs text-muted-foreground\\\",\\\"children\\\":[[\\\"$\\\",\\\"span\\\",null,{\\\"className\\\":\\\"truncate\\\",\\\"children\\\":\\\"runwayml.com\\\"}],[\\\"$\\\",\\\"span\\\",null,{\\\"className\\\":\\\"shrink-0\\\",\\\"children\\\":\\\"Freemium\\\"}]]}]]}]}]\\n\"]) self.__next_f.push([1,\"24:[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"relative border-t border-border/40\\\",\\\"children\\\":[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"mx-auto grid max-w-7xl grid-cols-2 divide-x divide-border/40 px-4 sm:px-6 lg:grid-cols-4 lg:px-8\\\",\\\"children\\\":[[\\\"$\\\",\\\"div\\\",\\\"Upvotes\\\",{\\\"className\\\":\\\"px-4 py-4 first:pl-0 lg:py-5\\\",\\\"children\\\":[[\\\"$\\\",\\\"p\\\",null,{\\\"className\\\":\\\"text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/70\\\",\\\"children\\\":\\\"Upvotes\\\"}],[\\\"$\\\",\\\"p\\\",null,{\\\"className\\\":\\\"mt-0.5 truncate font-display text-sm font-bold sm:text-base\\\",\\\"children\\\":\\\"173\\\"}]]}],[\\\"$\\\",\\\"div\\\",\\\"Pricing\\\",{\\\"className\\\":\\\"px-4 py-4 first:pl-0 lg:py-5\\\",\\\"children\\\":[[\\\"$\\\",\\\"p\\\",null,{\\\"className\\\":\\\"text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/70\\\",\\\"children\\\":\\\"Pricing\\\"}],[\\\"$\\\",\\\"p\\\",null,{\\\"className\\\":\\\"mt-0.5 truncate font-display text-sm font-bold sm:text-base\\\",\\\"children\\\":\\\"Freemium\\\"}]]}],[\\\"$\\\",\\\"div\\\",\\\"Category\\\",{\\\"className\\\":\\\"px-4 py-4 first:pl-0 lg:py-5\\\",\\\"children\\\":[[\\\"$\\\",\\\"p\\\",null,{\\\"className\\\":\\\"text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/70\\\",\\\"children\\\":\\\"Category\\\"}],[\\\"$\\\",\\\"p\\\",null,{\\\"className\\\":\\\"mt-0.5 truncate font-display text-sm font-bold sm:text-base\\\",\\\"children\\\":\\\"Generative Video Video Editing\\\"}]]}],[\\\"$\\\",\\\"div\\\",\\\"In the database since\\\",{\\\"className\\\":\\\"px-4 py-4 first:pl-0 lg:py-5\\\",\\\"children\\\":[[\\\"$\\\",\\\"p\\\",null,{\\\"className\\\":\\\"text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/70\\\",\\\"children\\\":\\\"In the database since\\\"}],[\\\"$\\\",\\\"p\\\",null,{\\\"className\\\":\\\"mt-0.5 truncate font-display text-sm font-bold sm:text-base\\\",\\\"children\\\":\\\"Jul 2024\\\"}]]}]]}]}]\\n\"]) self.__next_f.push([1,\"25:[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8\\\",\\\"children\\\":[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"grid gap-10 lg:grid-cols-[1fr_320px]\\\",\\\"children\\\":[[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"min-w-0 space-y-10\\\",\\\"children\\\":[[\\\"$\\\",\\\"section\\\",null,{\\\"children\\\":[[\\\"$\\\",\\\"p\\\",null,{\\\"className\\\":\\\"text-xs font-semibold uppercase tracking-[0.18em] text-primary\\\",\\\"children\\\":\\\"Overview\\\"}],[\\\"$\\\",\\\"h2\\\",null,{\\\"className\\\":\\\"mt-2 font-display text-2xl font-bold tracking-tight\\\",\\\"children\\\":[\\\"About \\\",\\\"Runway\\\"]}],[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"article-body mt-5 max-w-prose space-y-5 text-[0.95rem]\\\",\\\"children\\\":[[\\\"$\\\",\\\"p\\\",\\\"0\\\",{\\\"children\\\":\\\"Runway is a next-generation content creation suite that provides powerful AI tools and real-time collaboration to help users create content faster. It offers a range of features including automated background removal, text to image and 3D texture generation, erase and replace, motion tracking, green screen masking, noise removal, and more. It also has a library of professionally crafted templates, animations, effects, and filters. Additionally, Runway provides secure collaboration and user management tools, asset hub, and audio editing capabilities.\\\"}]]}]]}],null,[\\\"$\\\",\\\"$L29\\\",null,{\\\"variant\\\":\\\"inline\\\",\\\"title\\\":\\\"Tools like this change fast\\\",\\\"description\\\":\\\"New generative-video-video-editing-matts-picks tools launch every week — the newsletter keeps you ahead of what's worth trying.\\\",\\\"buttonText\\\":\\\"Subscribe Free\\\",\\\"utmCampaign\\\":\\\"tool_detail_inline\\\"}],false,[\\\"$\\\",\\\"section\\\",null,{\\\"className\\\":\\\"rounded-xl border border-highlight/20 bg-highlight/[0.04] p-6\\\",\\\"children\\\":[[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"flex items-center gap-2\\\",\\\"children\\\":[[\\\"$\\\",\\\"span\\\",null,{\\\"className\\\":\\\"h-2.5 w-2.5 rounded-full bg-highlight\\\"}],[\\\"$\\\",\\\"h3\\\",null,{\\\"className\\\":\\\"font-display text-base font-semibold text-foreground\\\",\\\"children\\\":\\\"Matt's Pick\\\"}]]}],[\\\"$\\\",\\\"p\\\",null,{\\\"className\\\":\\\"mt-2 text-sm text-muted-foreground leading-relaxed\\\",\\\"children\\\":\\\"This tool was selected as one of Matt's Picks! Matt Wolfe personally tests and evaluates AI tools. Matt's Picks are tools that he has used himself and would genuinely recommend to others.\\\"}]]}],[\\\"$\\\",\\\"section\\\",null,{\\\"children\\\":[[\\\"$\\\",\\\"p\\\",null,{\\\"className\\\":\\\"text-xs font-semibold uppercase tracking-[0.18em] text-primary\\\",\\\"children\\\":\\\"See it in action\\\"}],[\\\"$\\\",\\\"h2\\\",null,{\\\"className\\\":\\\"mt-2 font-display text-2xl font-bold tracking-tight\\\",\\\"children\\\":[\\\"Videos featuring \\\",\\\"Runway\\\"]}],[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"mt-4 grid gap-4 sm:grid-cols-2\\\",\\\"children\\\":[[\\\"$\\\",\\\"div\\\",\\\"eLs7zpEDnBU\\\",{\\\"className\\\":\\\"overflow-hidden rounded-xl border border-border/50\\\",\\\"children\\\":[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"relative aspect-video\\\",\\\"children\\\":[\\\"$\\\",\\\"iframe\\\",null,{\\\"src\\\":\\\"https://www.youtube-nocookie.com/embed/eLs7zpEDnBU\\\",\\\"title\\\":\\\"YouTube video\\\",\\\"allow\\\":\\\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\\\",\\\"allowFullScreen\\\":true,\\\"className\\\":\\\"absolute inset-0 h-full w-full\\\"}]}]}],[\\\"$\\\",\\\"div\\\",\\\"jgRXKhRQx_g\\\",{\\\"className\\\":\\\"overflow-hidden rounded-xl border border-border/50\\\",\\\"children\\\":[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"relative aspect-video\\\",\\\"children\\\":[\\\"$\\\",\\\"iframe\\\",null,{\\\"src\\\":\\\"https://www.youtube-nocookie.com/embed/jgRXKhRQx_g\\\",\\\"title\\\":\\\"YouTube video\\\",\\\"allow\\\":\\\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\\\",\\\"allowFullScreen\\\":true,\\\"className\\\":\\\"absolute inset-0 h-full w-full\\\"}]}]}],[\\\"$\\\",\\\"div\\\",\\\"7BbibthxCp8\\\",{\\\"className\\\":\\\"overflow-hidden rounded-xl border border-border/50\\\",\\\"children\\\":[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"relative aspect-video\\\",\\\"children\\\":[\\\"$\\\",\\\"iframe\\\",null,{\\\"src\\\":\\\"https://www.youtube-nocookie.com/embed/7BbibthxCp8\\\",\\\"title\\\":\\\"YouTube video\\\",\\\"allow\\\":\\\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\\\",\\\"allowFullScreen\\\":true,\\\"className\\\":\\\"absolute inset-0 h-full w-full\\\"}]}]}],[\\\"$\\\",\\\"div\\\",\\\"NRpmAC3I_t0\\\",{\\\"className\\\":\\\"overflow-hidden rounded-xl border border-border/50\\\",\\\"children\\\":\\\"$L2a\\\"}]]}]]}],\\\"$L2b\\\"]}],\\\"$L2c\\\"]}]}]\\n\"]) self.__next_f.push([1,\"26:[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"border-t border-border/50\\\",\\\"children\\\":[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8\\\",\\\"children\\\":[\\\"$\\\",\\\"$L29\\\",null,{\\\"title\\\":\\\"AI news twice a week\\\",\\\"description\\\":\\\"Join 250,000+ readers getting the most important AI news and coolest tools every Wednesday and Friday.\\\",\\\"buttonText\\\":\\\"Subscribe Free\\\"}]}]}]\\n8:null\\n\"]) self.__next_f.push([1,\"d:[[\\\"$\\\",\\\"title\\\",\\\"0\\\",{\\\"children\\\":\\\"Future Tools - Runway\\\"}],[\\\"$\\\",\\\"meta\\\",\\\"1\\\",{\\\"name\\\":\\\"description\\\",\\\"content\\\":\\\"Video editing tool with AI background remover and more\\\"}],[\\\"$\\\",\\\"link\\\",\\\"2\\\",{\\\"rel\\\":\\\"author\\\",\\\"href\\\":\\\"https://x.com/mreflow\\\"}],[\\\"$\\\",\\\"meta\\\",\\\"3\\\",{\\\"name\\\":\\\"author\\\",\\\"content\\\":\\\"Matt Wolfe\\\"}],[\\\"$\\\",\\\"meta\\\",\\\"4\\\",{\\\"name\\\":\\\"keywords\\\",\\\"content\\\":\\\"AI tools,artificial intelligence,AI news,machine learning,AI directory,Matt Wolfe\\\"}],[\\\"$\\\",\\\"meta\\\",\\\"5\\\",{\\\"name\\\":\\\"creator\\\",\\\"content\\\":\\\"Matt Wolfe\\\"}],[\\\"$\\\",\\\"meta\\\",\\\"6\\\",{\\\"name\\\":\\\"robots\\\",\\\"content\\\":\\\"index, follow\\\"}],[\\\"$\\\",\\\"meta\\\",\\\"7\\\",{\\\"name\\\":\\\"googlebot\\\",\\\"content\\\":\\\"index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1\\\"}],[\\\"$\\\",\\\"link\\\",\\\"8\\\",{\\\"rel\\\":\\\"canonical\\\",\\\"href\\\":\\\"https://futuretools.io/tools/runway\\\"}],[\\\"$\\\",\\\"meta\\\",\\\"9\\\",{\\\"property\\\":\\\"og:title\\\",\\\"content\\\":\\\"Future Tools - Runway\\\"}],[\\\"$\\\",\\\"meta\\\",\\\"10\\\",{\\\"property\\\":\\\"og:description\\\",\\\"content\\\":\\\"Video editing tool with AI background remover and more\\\"}],[\\\"$\\\",\\\"meta\\\",\\\"11\\\",{\\\"property\\\":\\\"og:url\\\",\\\"content\\\":\\\"https://futuretools.io/tools/runway\\\"}],[\\\"$\\\",\\\"meta\\\",\\\"12\\\",{\\\"property\\\":\\\"og:site_name\\\",\\\"content\\\":\\\"Future Tools\\\"}],[\\\"$\\\",\\\"meta\\\",\\\"13\\\",{\\\"property\\\":\\\"og:image\\\",\\\"content\\\":\\\"https://dxukomxvxegiferomewe.supabase.co/storage/v1/object/public/tool-logos/runway.png?t=1771480712678\\\"}],[\\\"$\\\",\\\"meta\\\",\\\"14\\\",{\\\"property\\\":\\\"og:image:alt\\\",\\\"content\\\":\\\"Runway\\\"}],[\\\"$\\\",\\\"meta\\\",\\\"15\\\",{\\\"property\\\":\\\"og:type\\\",\\\"content\\\":\\\"website\\\"}],[\\\"$\\\",\\\"meta\\\",\\\"16\\\",{\\\"name\\\":\\\"twitter:card\\\",\\\"content\\\":\\\"summary\\\"}],[\\\"$\\\",\\\"meta\\\",\\\"17\\\",{\\\"name\\\":\\\"twitter:creator\\\",\\\"content\\\":\\\"@mreflow\\\"}],[\\\"$\\\",\\\"meta\\\",\\\"18\\\",{\\\"name\\\":\\\"twitter:title\\\",\\\"content\\\":\\\"Future Tools - Runway\\\"}],[\\\"$\\\",\\\"meta\\\",\\\"19\\\",{\\\"name\\\":\\\"twitter:description\\\",\\\"content\\\":\\\"Video editing tool with AI background remover and more\\\"}],[\\\"$\\\",\\\"meta\\\",\\\"20\\\",{\\\"name\\\":\\\"twitter:image\\\",\\\"content\\\":\\\"https://dxukomxvxegiferomewe.supabase.co/storage/v1/object/public/tool-logos/runway.png?t=1771480712678\\\"}],[\\\"$\\\",\\\"meta\\\",\\\"21\\\",{\\\"name\\\":\\\"twitter:image:alt\\\",\\\"content\\\":\\\"Runway\\\"}],[\\\"$\\\",\\\"link\\\",\\\"22\\\",{\\\"rel\\\":\\\"icon\\\",\\\"href\\\":\\\"/favicon.ico?favicon.2vob68tjqpejf.ico\\\",\\\"sizes\\\":\\\"256x256\\\",\\\"type\\\":\\\"image/x-icon\\\"}],[\\\"$\\\",\\\"link\\\",\\\"23\\\",{\\\"rel\\\":\\\"icon\\\",\\\"href\\\":\\\"/icon.png?icon.41zx13ju7x1fz.png\\\",\\\"sizes\\\":\\\"134x81\\\",\\\"type\\\":\\\"image/png\\\"}],[\\\"$\\\",\\\"link\\\",\\\"24\\\",{\\\"rel\\\":\\\"apple-touch-icon\\\",\\\"href\\\":\\\"/apple-icon.png?apple-icon.41zx13ju7x1fz.png\\\",\\\"sizes\\\":\\\"134x81\\\",\\\"type\\\":\\\"image/png\\\"}],[\\\"$\\\",\\\"$L2d\\\",\\\"25\\\",{}]]\\n\"]) self.__next_f.push([1,\"2e:I[73852,[\\\"/_next/static/chunks/0obioc_cab1yh.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/1kxf7y-yctdh7.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/0q0zn8gps0-qk.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/14mrh2-p_w84d.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/2js7md5jq_795.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\"],\\\"SimilarToolsSection\\\"]\\n2f:I[72927,[\\\"/_next/static/chunks/0obioc_cab1yh.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/1kxf7y-yctdh7.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/0q0zn8gps0-qk.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/14mrh2-p_w84d.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/2js7md5jq_795.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\"],\\\"ShareRow\\\"]\\n30:I[90300,[\\\"/_next/static/chunks/0obioc_cab1yh.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/1kxf7y-yctdh7.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/0q0zn8gps0-qk.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/14mrh2-p_w84d.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\",\\\"/_next/static/chunks/2js7md5jq_795.js?dpl=dpl_53YCyZFz3VxZev1vqcGuQX4LWh36\\\"],\\\"SuggestChangesModal\\\"]\\n2a:[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"relative aspect-video\\\",\\\"children\\\":[\\\"$\\\",\\\"iframe\\\",null,{\\\"src\\\":\\\"https://www.youtube-nocookie.com/embed/NRpmAC3I_t0\\\",\\\"title\\\":\\\"YouTube video\\\",\\\"allow\\\":\\\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\\\",\\\"allowFullScreen\\\":true,\\\"className\\\":\\\"absolute inset-0 h-full w-full\\\"}]}]\\n2b:[\\\"$\\\",\\\"$L2e\\\",null,{\\\"anchorSlug\\\":\\\"runway\\\"}]\\n\"]) self.__next_f.push([1,\"2c:[\\\"$\\\",\\\"aside\\\",null,{\\\"className\\\":\\\"space-y-6 lg:sticky lg:top-24\\\",\\\"children\\\":[[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"relative overflow-hidden rounded-xl border border-primary/30 bg-card p-5\\\",\\\"children\\\":[[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--ft-glow)_0%,transparent_65%)]\\\"}],[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"relative\\\",\\\"children\\\":[[\\\"$\\\",\\\"$L27\\\",null,{\\\"href\\\":\\\"/go/runway\\\",\\\"slug\\\":\\\"runway\\\",\\\"placement\\\":\\\"detail_sidebar\\\",\\\"className\\\":\\\"flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-[0_0_24px_-8px_var(--ft-glow)] transition-colors hover:bg-primary/90\\\",\\\"children\\\":[\\\"Visit \\\",\\\"Runway\\\",[\\\"$\\\",\\\"svg\\\",null,{\\\"ref\\\":\\\"$undefined\\\",\\\"xmlns\\\":\\\"http://www.w3.org/2000/svg\\\",\\\"width\\\":24,\\\"height\\\":24,\\\"viewBox\\\":\\\"0 0 24 24\\\",\\\"fill\\\":\\\"none\\\",\\\"stroke\\\":\\\"currentColor\\\",\\\"strokeWidth\\\":2,\\\"strokeLinecap\\\":\\\"round\\\",\\\"strokeLinejoin\\\":\\\"round\\\",\\\"className\\\":\\\"lucide lucide-arrow-up-right h-4 w-4\\\",\\\"aria-hidden\\\":\\\"true\\\",\\\"children\\\":[[\\\"$\\\",\\\"path\\\",\\\"1tivn9\\\",{\\\"d\\\":\\\"M7 7h10v10\\\"}],[\\\"$\\\",\\\"path\\\",\\\"1vkiza\\\",{\\\"d\\\":\\\"M7 17 17 7\\\"}],\\\"$undefined\\\"]}]]}],[\\\"$\\\",\\\"p\\\",null,{\\\"className\\\":\\\"mt-2 text-center text-xs text-muted-foreground\\\",\\\"children\\\":\\\"runwayml.com\\\"}]]}]]}],[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"rounded-xl border border-border/50 bg-card p-5\\\",\\\"children\\\":[[\\\"$\\\",\\\"h3\\\",null,{\\\"className\\\":\\\"text-xs font-semibold uppercase tracking-wider text-muted-foreground\\\",\\\"children\\\":\\\"At a glance\\\"}],[\\\"$\\\",\\\"dl\\\",null,{\\\"className\\\":\\\"mt-3 space-y-3 text-sm\\\",\\\"children\\\":[[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"flex items-center justify-between gap-3\\\",\\\"children\\\":[[\\\"$\\\",\\\"dt\\\",null,{\\\"className\\\":\\\"text-muted-foreground\\\",\\\"children\\\":\\\"Pricing\\\"}],[\\\"$\\\",\\\"dd\\\",null,{\\\"children\\\":[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"inline-flex items-center rounded-md border font-medium transition-colors border-primary/20 bg-primary/10 text-primary px-2.5 py-0.5 text-xs\\\",\\\"children\\\":\\\"Freemium\\\"}]}]]}],[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"flex items-center justify-between gap-3\\\",\\\"children\\\":[[\\\"$\\\",\\\"dt\\\",null,{\\\"className\\\":\\\"text-muted-foreground\\\",\\\"children\\\":\\\"API\\\"}],[\\\"$\\\",\\\"dd\\\",null,{\\\"className\\\":\\\"font-medium\\\",\\\"children\\\":\\\"Available\\\"}]]}],[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"flex items-center justify-between gap-3\\\",\\\"children\\\":[[\\\"$\\\",\\\"dt\\\",null,{\\\"className\\\":\\\"text-muted-foreground\\\",\\\"children\\\":\\\"Open source\\\"}],[\\\"$\\\",\\\"dd\\\",null,{\\\"className\\\":\\\"font-medium\\\",\\\"children\\\":\\\"No\\\"}]]}],[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"flex items-center justify-between gap-3\\\",\\\"children\\\":[[\\\"$\\\",\\\"dt\\\",null,{\\\"className\\\":\\\"text-muted-foreground\\\",\\\"children\\\":\\\"Listed\\\"}],[\\\"$\\\",\\\"dd\\\",null,{\\\"className\\\":\\\"font-medium\\\",\\\"children\\\":\\\"Jul 2024\\\"}]]}],[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"flex items-center justify-between gap-3\\\",\\\"children\\\":[[\\\"$\\\",\\\"dt\\\",null,{\\\"className\\\":\\\"text-muted-foreground\\\",\\\"children\\\":\\\"Upvotes\\\"}],[\\\"$\\\",\\\"dd\\\",null,{\\\"className\\\":\\\"font-medium\\\",\\\"children\\\":\\\"173\\\"}]]}]]}],[\\\"$\\\",\\\"p\\\",null,{\\\"className\\\":\\\"mt-3 text-xs text-muted-foreground\\\",\\\"children\\\":\\\"This tool offers a free tier\\\"}]]}],[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"rounded-xl border border-border/50 bg-card p-5\\\",\\\"children\\\":[[\\\"$\\\",\\\"h3\\\",null,{\\\"className\\\":\\\"text-xs font-semibold uppercase tracking-wider text-muted-foreground\\\",\\\"children\\\":\\\"Share this tool\\\"}],[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"mt-3\\\",\\\"children\\\":[\\\"$\\\",\\\"$L2f\\\",null,{\\\"url\\\":\\\"https://futuretools.io/tools/runway\\\",\\\"title\\\":\\\"Runway — found on Future Tools\\\"}]}]]}],[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"rounded-xl border border-border/50 bg-card p-5\\\",\\\"children\\\":[[\\\"$\\\",\\\"h3\\\",null,{\\\"className\\\":\\\"text-xs font-semibold uppercase tracking-wider text-muted-foreground\\\",\\\"children\\\":\\\"Categories\\\"}],[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"mt-3 flex flex-wrap gap-2\\\",\\\"children\\\":[[\\\"$\\\",\\\"$L13\\\",\\\"generative-video-video-editing-matts-picks\\\",{\\\"href\\\":\\\"/tools?categories=generative-video-video-editing-matts-picks\\\",\\\"className\\\":\\\"rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/30 hover:text-primary cursor-pointer\\\",\\\"children\\\":\\\"generative-video-video-editing-matts-picks\\\"}]]}]]}],false,[\\\"$\\\",\\\"$L30\\\",null,{\\\"toolId\\\":\\\"e98cf32f-04c6-4133-90d0-6092fae645e4\\\",\\\"toolName\\\":\\\"Runway\\\",\\\"toolSlug\\\":\\\"runway\\\"}]]}]\\n\"])"
+}

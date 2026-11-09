@@ -1,0 +1,312 @@
+{
+  "name": "aitop365_home",
+  "url": "https://aitop365.com/",
+  "final_url": "https://www.aitop365.com/",
+  "status": 200,
+  "bytes": 28925,
+  "meta": [
+    {
+      "charset": "UTF-8"
+    },
+    {
+      "name": "viewport",
+      "content": "width=device-width, initial-scale=1.0"
+    },
+    {
+      "name": "description",
+      "content": "AITop365 - 发现最好的AI工具，探索AI工具库，包含10,000+个AI工具的评价和评论"
+    },
+    {
+      "name": "keywords",
+      "content": "AI工具,人工智能,AI导航,AI工具箱,ChatGPT,AI应用"
+    },
+    {
+      "name": "author",
+      "content": "AITop365"
+    },
+    {
+      "name": "robots",
+      "content": "index,follow"
+    },
+    {
+      "property": "og:type",
+      "content": "website"
+    },
+    {
+      "property": "og:site_name",
+      "content": "AITop365"
+    },
+    {
+      "property": "og:title",
+      "content": "AITop365 - 发现最好的AI工具 | 10000+AI工具导航"
+    },
+    {
+      "property": "og:description",
+      "content": "AITop365 - 发现最好的AI工具，探索AI工具库，包含10,000+个AI工具的评价和评论"
+    },
+    {
+      "property": "og:url",
+      "content": "https://www.aitop365.com/"
+    },
+    {
+      "property": "og:image",
+      "content": "https://www.aitop365.com/logoandtitle.png"
+    },
+    {
+      "property": "og:locale",
+      "content": "zh_CN"
+    }
+  ],
+  "links": [
+    {
+      "href": "cooperation.html",
+      "text": "联系我们 → here.",
+      "tag": "<a href=\"cooperation.html\">"
+    },
+    {
+      "href": "index.html",
+      "class": "nav-link",
+      "text": "首页",
+      "tag": "<a href=\"index.html\" class=\"nav-link\">"
+    },
+    {
+      "href": "#",
+      "class": "nav-link",
+      "text": "AI分类 ▼",
+      "tag": "<a href=\"#\" class=\"nav-link\">"
+    },
+    {
+      "href": "latest.html",
+      "class": "nav-link",
+      "text": "最新工具",
+      "tag": "<a href=\"latest.html\" class=\"nav-link\">"
+    },
+    {
+      "href": "news.html",
+      "class": "nav-link",
+      "text": "资讯 ↗",
+      "tag": "<a href=\"news.html\" class=\"nav-link\">"
+    },
+    {
+      "href": "index.html",
+      "class": "logo",
+      "aria-label": "AITop365",
+      "text": "\n                \n            ",
+      "tag": "<a href=\"index.html\" class=\"logo\" aria-label=\"AITop365\">"
+    },
+    {
+      "href": "category.html",
+      "class": "pill",
+      "text": "Business & Productivity",
+      "tag": "<a href=\"category.html\" class=\"pill\">"
+    },
+    {
+      "href": "#",
+      "class": "pill",
+      "text": "教育 & 开发",
+      "tag": "<a href=\"#\" class=\"pill\">"
+    },
+    {
+      "href": "#",
+      "class": "pill",
+      "text": "Design & Media",
+      "tag": "<a href=\"#\" class=\"pill\">"
+    },
+    {
+      "href": "#",
+      "class": "pill",
+      "text": "Lifestyle & Growth",
+      "tag": "<a href=\"#\" class=\"pill\">"
+    },
+    {
+      "href": "#",
+      "class": "pill",
+      "text": "Writing & Content",
+      "tag": "<a href=\"#\" class=\"pill\">"
+    },
+    {
+      "href": "#",
+      "class": "pill",
+      "text": "#Customer Service",
+      "tag": "<a href=\"#\" class=\"pill\">"
+    },
+    {
+      "href": "#",
+      "class": "pill",
+      "text": "#Chatbot",
+      "tag": "<a href=\"#\" class=\"pill\">"
+    },
+    {
+      "href": "#",
+      "class": "pill",
+      "text": "#Image Generator",
+      "tag": "<a href=\"#\" class=\"pill\">"
+    },
+    {
+      "href": "#",
+      "class": "pill",
+      "text": "#Education",
+      "tag": "<a href=\"#\" class=\"pill\">"
+    },
+    {
+      "href": "#",
+      "class": "pill",
+      "text": "#Writing Assistant",
+      "tag": "<a href=\"#\" class=\"pill\">"
+    },
+    {
+      "href": "category.html",
+      "class": "btn-load-more",
+      "text": "显示更多工具 →",
+      "tag": "<a href=\"category.html\" class=\"btn-load-more\">"
+    },
+    {
+      "href": "#",
+      "target": "_blank",
+      "class": "social-link share-weibo",
+      "title": "分享到微博",
+      "style": "font-weight: bold;",
+      "text": "微",
+      "tag": "<a href=\"#\" target=\"_blank\" class=\"social-link share-weibo\" title=\"分享到微博\" style=\"font-weight: bold;\">"
+    },
+    {
+      "href": "#",
+      "target": "_blank",
+      "class": "social-link share-zhihu",
+      "title": "分享到知乎",
+      "style": "font-weight: bold;",
+      "text": "知",
+      "tag": "<a href=\"#\" target=\"_blank\" class=\"social-link share-zhihu\" title=\"分享到知乎\" style=\"font-weight: bold;\">"
+    },
+    {
+      "href": "#",
+      "target": "_blank",
+      "class": "social-link share-douban",
+      "title": "分享到豆瓣",
+      "style": "font-weight: bold;",
+      "text": "豆",
+      "tag": "<a href=\"#\" target=\"_blank\" class=\"social-link share-douban\" title=\"分享到豆瓣\" style=\"font-weight: bold;\">"
+    },
+    {
+      "href": "#",
+      "target": "_blank",
+      "class": "social-link share-bilibili",
+      "title": "分享到B站",
+      "style": "font-weight: bold;",
+      "text": "B",
+      "tag": "<a href=\"#\" target=\"_blank\" class=\"social-link share-bilibili\" title=\"分享到B站\" style=\"font-weight: bold;\">"
+    },
+    {
+      "href": "category.html",
+      "text": "AI商业与办公",
+      "tag": "<a href=\"category.html\">"
+    },
+    {
+      "href": "category.html",
+      "text": "AI技术与开发",
+      "tag": "<a href=\"category.html\">"
+    },
+    {
+      "href": "category.html",
+      "text": "AI设计与多媒体",
+      "tag": "<a href=\"category.html\">"
+    },
+    {
+      "href": "category.html",
+      "text": "AI生活成长教育",
+      "tag": "<a href=\"category.html\">"
+    },
+    {
+      "href": "category.html",
+      "text": "AI写作与内容",
+      "tag": "<a href=\"category.html\">"
+    },
+    {
+      "href": "category.html",
+      "text": "检索AI工具",
+      "tag": "<a href=\"category.html\">"
+    },
+    {
+      "href": "news.html",
+      "text": "AI资讯",
+      "tag": "<a href=\"news.html\">"
+    },
+    {
+      "href": "#",
+      "text": "API文档",
+      "tag": "<a href=\"#\">"
+    },
+    {
+      "href": "cooperation.html",
+      "text": "关于我们",
+      "tag": "<a href=\"cooperation.html\">"
+    },
+    {
+      "href": "cooperation.html",
+      "text": "联系我们",
+      "tag": "<a href=\"cooperation.html\">"
+    },
+    {
+      "href": "cooperation.html",
+      "text": "建议意见",
+      "tag": "<a href=\"cooperation.html\">"
+    },
+    {
+      "href": "cooperation.html",
+      "text": "提交工具",
+      "tag": "<a href=\"cooperation.html\">"
+    },
+    {
+      "href": "#",
+      "text": "隐私条款",
+      "tag": "<a href=\"#\">"
+    },
+    {
+      "href": "#",
+      "text": "Cookie Policy",
+      "tag": "<a href=\"#\">"
+    },
+    {
+      "href": "https://beian.miit.gov.cn/",
+      "target": "_blank",
+      "style": "color: inherit; text-decoration: none;",
+      "text": "苏ICP备202522878号",
+      "tag": "<a href=\"https://beian.miit.gov.cn/\" target=\"_blank\" style=\"color: inherit; text-decoration: none;\">"
+    },
+    {
+      "href": "sitemap.xml",
+      "text": "Sitemap",
+      "tag": "<a href=\"sitemap.xml\">"
+    },
+    {
+      "href": "#",
+      "text": "RSS Feed",
+      "tag": "<a href=\"#\">"
+    },
+    {
+      "href": "#",
+      "text": "Status",
+      "tag": "<a href=\"#\">"
+    },
+    {
+      "href": "#",
+      "id": "switchToRegister",
+      "text": "立即注册",
+      "tag": "<a href=\"#\" id=\"switchToRegister\">"
+    },
+    {
+      "href": "#",
+      "id": "switchToLogin",
+      "text": "立即登录",
+      "tag": "<a href=\"#\" id=\"switchToLogin\">"
+    }
+  ],
+  "hidden_instruction_candidates": [
+    "0\">\n    <meta name=\"description\" content=\"AITop365 - 发现最好的AI工具，探索AI工具库，包含10,000+个AI工具的评价和评论\">\n    <meta name=\"keywords\" content=\"AI工具,人工智能,AI导航,AI工具箱,ChatGPT,AI应用\">\n    <meta name=\"author\" content=\"AITop365\">\n    <meta name=\"robots\" content=\"index,follow\">\n    <title>AITop365 - 发现最好的AI工具 | 10000+AI工具导航</title>\n    \n    <!-- Canonical URL -->\n    <link rel",
+    "lass=\"tool-rating\">\n                    <span class=\"rating\">⭐ 5.0</span>\n                </div>\n                <p class=\"tool-description\">WhatsApp AI Assistant designed to help Master Your Inbox, Control Your Schedule, and Find Anything You Need — so you can focus on what truly matters.</p>\n                <div class=\"tool-tags\">\n                    <span c",
+    "            <div class=\"tool-image\">\n                <div class=\"price-badge\">免费</div>\n                <img src=\"public/images/copilot-tool.jpg\" alt=\"AI Assistant Pro AI工具 - 个人AI助手\" loading=\"lazy\">\n                <button class=\"favorite-btn\">♡</button>\n            </div>\n            <div class=\"tool-content\">\n                <h3 class=\"tool-title\">AI Assistan",
+    "             <button class=\"favorite-btn\">♡</button>\n            </div>\n            <div class=\"tool-content\">\n                <h3 class=\"tool-title\">AI Assistant Pro</h3>\n                <div class=\"tool-rating\">\n                    <span class=\"rating\">⭐ 4.8</span>\n                </div>\n                <p class=\"tool-description\">Your personal AI assistant ",
+    "\"tool-rating\">\n                    <span class=\"rating\">⭐ 4.8</span>\n                </div>\n                <p class=\"tool-description\">Your personal AI assistant for daily tasks, scheduling, and productivity enhancement.</p>\n                <div class=\"tool-tags\">\n                    <span class=\"tag\">#Assistant</span>\n                    <span class=\"tag\">Fr"
+  ],
+  "text": "﻿ \n \n \n     \n     \n     \n     \n     \n     \n     AITop365 - 发现最好的AI工具 | 10000+AI工具导航 \n    \n     \n     \n    \n     \n     \n     \n     \n     \n     \n     \n     \n    \n     \n     \n     \n     \n        // 版本号配置，更新时修改此值即可强制刷新缓存\n        window.APP_VERSION = '1.0.53';\n     \n     \n        var _hmt = _hmt || [];\n        (function() {\n          var hm = document.createElement(\"script\");\n          hm.src = \"https://hm.baidu.com/hm.js?acdb87253fe4a6b89bca700451cc6904\";\n          var s = document.getElementsByTagName(\"script\")[0]; \n          s.parentNode.insertBefore(hm, s);\n        })();\n     \n    \n     \n     \n    {\n      \"@context\": \"https://schema.org\",\n      \"@type\": \"WebSite\",\n      \"name\": \"AITop365\",\n      \"alternateName\": \"AI工具导航\",\n      \"url\": \"https://www.aitop365.com/\",\n      \"description\": \"AITop365 - 发现最好的AI工具，探索AI工具库，包含10,000+个AI工具的评价和评论\",\n      \"potentialAction\": {\n        \"@type\": \"SearchAction\",\n        \"target\": {\n          \"@type\": \"EntryPoint\",\n          \"urlTemplate\": \"https://www.aitop365.com/category.html?q={search_term_string}\"\n        },\n        \"query-input\": \"required name=search_term_string\"\n      }\n    }\n     \n     \n    {\n      \"@context\": \"https://schema.org\",\n      \"@type\": \"Organization\",\n      \"name\": \"AITop365\",\n      \"url\": \"https://www.aitop365.com/\",\n      \"logo\": \"https://www.aitop365.com/logoandtitle.png\",\n      \"description\": \"AITop365是专业的AI工具导航平台，帮助用户发现和探索各种AI工具\",\n      \"sameAs\": [\n        \"https://www.aitop365.com/\"\n      ],\n      \"contactPoint\": {\n        \"@type\": \"ContactPoint\",\n        \"contactType\": \"customer service\",\n        \"url\": \"https://www.aitop365.com/cooperation.html\"\n      }\n    }\n     \n     \n    {\n      \"@context\": \"https://schema.org\",\n      \"@type\": \"BreadcrumbList\",\n      \"itemListElement\": [\n        {\n          \"@type\": \"ListItem\",\n          \"position\": 1,\n          \"name\": \"首页\",\n          \"item\": \"https://www.aitop365.com/\"\n        }\n      ]\n    }\n     \n \n \n     \n     \n         \n             📰 注册您的站点或添加广告，请联系！ 👉  联系我们 → here. \n             × \n         \n     \n\n     \n     \n         \n             \n                 首页 \n                 \n                     AI分类 ▼ \n                     \n                         加载中... \n                     \n                 \n                 最新工具 \n                 资讯 ↗ \n             \n             \n                 \n             \n             \n                 合作 \n                 \n                     登录 \n                     \n                         \n                             U \n                         \n                         \n                             \n                                 用户名 \n                             \n                             \n                             登出 \n                         \n                     \n                 \n             \n         \n     \n\n     \n     \n         \n             \n                ⭐ 创新 • 精进 • 成就\n             \n             睁眼看世界，发现最好的AI工具! \n             探索全网全世界全量最优秀的AI工具，从10000+工具中发现最适合你的AI工具. \n            \n             \n                 \n                 🔍 \n             \n         \n     \n\n     \n     \n         \n             Business & Productivity \n             教育 & 开发 \n             Design & Media \n             Lifestyle & Growth \n             Writing & Content \n         \n         \n             #Customer Service \n             #Chatbot \n             #Image Generator \n             #Education \n             #Writing Assistant \n         \n     \n\n     \n     \n         \n             价格 \n             \n                 请选择 \n                 免费 \n                 免费增值 \n                 免费试用 \n                 付费 \n                 联系定价 \n             \n         \n         \n             排序 \n             \n                 请选择 \n                 星级 \n                 最受欢迎 \n                 最新 \n             \n         \n     \n\n     \n     \n     \n         \n         \n             \n\t\t\t\t 免费 \n                 \n                 ♡ \n             \n             \n                 工具名称CoPilot – Cloudways  \n                 \n                     ✓ \n                     ⭐ 4.6 \n                 \n                 这里是产品简介：Automated backups, 24/7 support, and global server locations for efficient hosting. \n                 \n                     #Website Builder \n                     BOOSTED \n                     Contact for Pricing \n                 \n             \n         \n\n         \n         \n             \n                 $9/month \n                 \n                 ♡ \n             \n             \n                 TheLibrarian  ✓ \n                 \n                     ⭐ 5.0 \n                 \n                 WhatsApp AI Assistant designed to help Master Your Inbox, Control Your Schedule, and Find Anything You Need — so you can focus on what truly matters. \n                 \n                     #Productivity \n                     BOOSTED \n                     Freemium \n                 \n             \n         \n\n         \n         \n             \n\t\t\t\t 免费 \n                 \n                 ♡ \n             \n             \n                 Vid2txt \n                 \n                     ⭐ 5.0 \n                 \n                 Automate transcription, timestamps, and export transcripts with ease. \n                 \n                     #Transcription \n                     Contact for Pricing \n                    \n                 \n             \n         \n\n         \n         \n             \n                 $29/Month \n                 \n                 ♡ \n             \n             \n                 Adcreative.ai \n                 \n                     ⭐ 3.8 \n                 \n                 Generate high-converting creatives fast, analyze strategies, track performance with insights. \n                 \n                     #Content Creator \n                     Free Trial \n                  \n                 \n             \n         \n\n         \n         \n             \n                 From $7/mo \n                 \n                 ♡ \n             \n             \n                 OmniGPT \n                 \n                     ⭐ 5.0 \n                 \n                 Automate tasks, streamline conversations, and access an intuitive user interface for efficient communication. \n                 \n                     #Productivity \n                     Paid \n                  \n                 \n             \n         \n\n         \n         \n             \n                 $60/Month \n                 \n                 ♡ \n             \n             \n                 Reply.io \n                 \n                     ⭐ 4.5 \n                 \n                 Automate sales outreach, create personalized emails, track performance and measure results in real-time. \n                 \n                     #Customer Service \n                     Freemium \n                   \n                 \n             \n         \n\n         \n         \n             \n\t\t\t\t 免费 \n                 \n                 ♡ \n             \n             \n                 Neural Newsletters  ✓ \n                 \n                     ⭐ 5.0 \n                 \n                 Generate, customize, and publish newsletters effortlessly, tailored to your audience's needs and interests. \n                 \n                     #Marketing \n                     Contact for Pricing \n                  \n                 \n             \n         \n\n         \n         \n             \n                 $2.99/Month \n                 \n                 ♡ \n             \n             \n                 Sheet+ \n                 \n                     ⭐ 5.0 \n                 \n                 Generate formulas, automate tasks, and fix errors in formulas to save time - all with natural language capabilities. \n                 \n                     #Productivity \n                     Freemium \n                   \n                 \n             \n         \n\n         \n         \n             \n                 免费 \n                 \n                 ♡ \n             \n             \n                 AI Assistant Pro \n                 \n                     ⭐ 4.8 \n                 \n                 Your personal AI assistant for daily tasks, scheduling, and productivity enhancement. \n                 \n                     #Assistant \n                     Free \n                 \n             \n         \n\n         \n         \n             \n                 $15/Month \n                 \n                 ♡ \n             \n             \n                 Design AI \n                 \n                     ⭐ 4.7 \n                 \n                 Create stunning designs with AI-powered tools for graphics, logos, and branding. \n                 \n                     #Design \n                     Paid \n                 \n             \n         \n\n         \n         \n             \n                 免费增值 \n                 \n                 ♡ \n             \n             \n                 Code Helper AI \n                 \n                     ⭐ 4.9 \n                 \n                 AI-powered code completion and debugging assistant for developers. \n                 \n                     #Development \n                     Freemium \n                 \n             \n         \n\n         \n         \n             \n                 $25/Month \n                 \n                 ♡ \n             \n             \n                 Content Writer AI \n                 \n                     ⭐ 4.6 \n                 \n                 Generate high-quality content for blogs, articles, and social media with AI. \n                 \n                     #Writing \n                     Paid \n                 \n             \n         \n        \n         \n         \n             显示更多工具 → \n         \n     \n\n     \n     \n         \n             我的工具 \n             ◀ \n         \n        \n         \n         \n         \n             \n                 \n                 + \n             \n             \n         \n        \n         \n         \n             \n         \n        \n         清除缓存后会丢失，请及时备份. \n         \n        \n         \n         \n             \n         \n     \n\n     \n     \n         \n             \n                 \n                     \n                         \n                     \n                     探索国内外最好用的AI 工具. \n                     \n                         微 \n                         知 \n                         豆 \n                         B \n                     \n                 \n\n                 \n                     分类 \n                     \n                         AI商业与办公 \n                         AI技术与开发 \n                         AI设计与多媒体 \n                         AI生活成长教育 \n                         AI写作与内容 \n                     \n                 \n\n                 \n                     资源 \n                     \n                         检索AI工具 \n                         AI资讯 \n                         API文档 \n                     \n                 \n\n                 \n                     我们 \n                     \n                         关于我们 \n                         联系我们 \n                         建议意见 \n                         提交工具 \n                     \n                 \n\n                 \n                     其他 \n                     \n                         隐私条款 \n                         Cookie Policy \n                     \n                 \n             \n\n             \n                 © 2025 AITop365. All rights reserved. |  苏ICP备202522878号 \n                 \n                     Sitemap \n                     • \n                     RSS Feed \n                     • \n                     Status \n                 \n             \n         \n     \n\n     \n     \n         \n             × \n            \n             \n             \n                 登录 \n                 \n                     \n                         用户名或邮箱 \n                         \n                     \n                     \n                         密码 \n                         \n                     \n                     \n                     登录 \n                 \n                 \n                     还没有账号？ \n                     立即注册 \n                 \n             \n            \n             \n             \n                 注册 \n                 \n                     \n                         用户名  * \n                         \n                     \n                     \n                         密码  * \n                         \n                     \n                     \n                         确认密码  * \n                         \n                     \n                     \n                         邮箱  * \n                         \n                         邮箱将作为找回密码的依据 \n                     \n                     \n                         昵称 \n                         \n                     \n                     \n                         验证码  * \n                         \n                             \n                                 \n                                 \n                                 刷新 \n                             \n                         \n                     \n                     \n                     注册 \n                 \n                 \n                     已有账号？ \n                     立即登录 \n                 \n             \n         \n     \n\n     \n     \n     \n        // 设置社交媒体分享链接\n        (function() {\n            const currentUrl = encodeURIComponent(window.location.href);\n            const currentTitle = encodeURIComponent(document.title || 'AITop365 - 发现最好的AI工具');\n            const currentDesc = encodeURIComponent(document.querySelector('meta[name=\"description\"]')?.content || '探索国内外最好用的AI工具');\n            \n            // 微博分享\n            const weiboLink = document.querySelector('.share-weibo');\n            if (weiboLink) {\n                weiboLink.href = `https://service.weibo.com/share/share.php?url=${currentUrl}&title=${currentTitle}`;\n            }\n            \n            // 知乎分享（知乎没有官方分享API，使用搜索链接）\n            const zhihuLink = document.querySelector('.share-zhihu');\n            if (zhihuLink) {\n                zhihuLink.href = `https://www.zhihu.com/search?q=${encodeURIComponent('AITop365 AI工具')}`;\n            }\n            \n            // 豆瓣分享\n            const doubanLink = document.querySelector('.share-douban');\n            if (doubanLink) {\n                doubanLink.href = `https://www.douban.com/share/service?url=${currentUrl}&name=${currentTitle}`;\n            }\n            \n            // B站分享（B站主要是视频平台，使用搜索链接）\n            const bilibiliLink = document.querySelector('.share-bilibili');\n            if (bilibiliLink) {\n                bilibiliLink.href = `https://search.bilibili.com/all?keyword=${encodeURIComponent('AITop365 AI工具')}`;\n            }\n        })();\n     \n \n \n\n"
+}

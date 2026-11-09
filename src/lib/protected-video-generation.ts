@@ -19,6 +19,8 @@ export type VideoGenerationPayload = {
   duration: number
   resolution: string
   aspectRatio: string
+  optimizePrompt?: boolean
+  inputMode?: 'text' | 'reference' | 'frames'
   referenceImageIds?: string[]
   referenceImageUrls?: string[]
 }

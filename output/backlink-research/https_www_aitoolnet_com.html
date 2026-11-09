@@ -1,0 +1,904 @@
+﻿<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <title>Aitoolnet - Best AI Tools Directory & Search Engine (2026)</title>
+    <meta content="" name="keywords" />
+    <meta content="Aitoolnet is a premier AI tools directory and search engine with 15,000+ tools, updated daily. Find the best AI for writing, coding, and creative projects." name="description" />
+    <link rel="alternate" hreflang="en" href="https://www.aitoolnet.com/" />
+    <link rel="alternate" hreflang="x-default" href="https://www.aitoolnet.com/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://www.aitoolnet.com/zh" />
+    <link rel="alternate" hreflang="zh-TW" href="https://www.aitoolnet.com/zhtw" />
+    <link rel="alternate" hreflang="ko" href="https://www.aitoolnet.com/ko" />
+    <link rel="alternate" hreflang="ja" href="https://www.aitoolnet.com/ja" />
+    <link rel="alternate" hreflang="ru" href="https://www.aitoolnet.com/ru" />
+    <link rel="alternate" hreflang="fr" href="https://www.aitoolnet.com/fr" />
+    <link rel="alternate" hreflang="es" href="https://www.aitoolnet.com/es" />
+    <link rel="canonical" href="https://www.aitoolnet.com/" />
+    <meta charset='utf-8'>
+    <meta content='width=device-width, initial-scale=1' name='viewport'>
+    <link href='/favicon.ico' rel='shortcut icon' type='image/png'>
+    <link rel="preload" href="/static/assets/icon/css/icon.css" as="style" onload="this.onload=null;this.rel='stylesheet'">    
+    <link rel="stylesheet" href="/static/sitenew/css/app.css" type="text/css"/>
+    <script type="text/javascript">var is_mobile_cms = '';var web_dir = '/';</script>
+    <script src="/static/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+    <script defer src="/static/assets/js/cms.js" type="text/javascript"></script>
+    <script defer src="/static/assets/layui/layui.js" type="text/javascript"></script>
+    
+	
+
+</head>
+<body class=''>
+<nav class='navbar is-light' style="position: sticky; top: 0; border-bottom-width: 1px; box-shadow: 0 1px 5px rgb(0 0 0 / 15%);">
+    <div class='container'>
+        <div class='navbar-brand grow' style='flex-grow: 100 !important;'>
+            <a class='aitool navbar-item' href='/' id='navbar-logo'>
+                <img alt='Aitoolnet logo' src='/static/sitenew/image/logo.png' width="176" height="40">
+            </a>
+                        <div class='navbar-burger' data-target='navMenu' style="margin-top:10px">
+                <span></span>
+                <span></span>
+                <span></span>
+                <div class='w-12'></div>
+            </div>
+        </div>
+        <div class='navbar-menu' id='navMenu'>
+            <div class='navbar-end'>
+                <div class='navbar-item'>
+                                        <a class='aitool button is-white hide-on-search' href='/categories'>Categories</a>
+                                        <a class='aitool button is-white hide-on-search' href='/new'>New</a>
+                    
+                    <a class='aitool button is-white hide-on-search' href='/prompt'>Prompt</a>
+                    <!-- <a class='aitool button is-white hide-on-search' href='/discover'>Discover</a> -->
+                    <a class='button is-white ml-2' href='/submit'>Submit</a>
+                    <div class="language col-links mx-auto" style='margin: 0 auto; text-align: center'>
+                        <div class="dropdown lang">
+                            <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">English<i class="caret"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/" data-lang="">English</a></li>
+                                                                <li><a href="/zh" data-lang="zh">简体中文</a></li>
+                                                                <li><a href="/zhtw" data-lang="zhtw">繁體中文</a></li>
+                                                                <li><a href="/ko" data-lang="ko">한국어</a></li>
+                                                                <li><a href="/ja" data-lang="ja">日本語</a></li>
+                                                                <li><a href="/ru" data-lang="ru">Русский язык</a></li>
+                                                                <li><a href="/fr" data-lang="fr">Français</a></li>
+                                                                <li><a href="/es" data-lang="es">Español</a></li>
+                                                            </ul>
+                        </div>
+                    </div>
+                    <div id="nav_member_info" class="login"></div>
+                    <script type="text/javascript">
+                        function handleLogin(data){
+                            $("#nav_member_info").html(data.msg);
+                        }
+                        let scriptLogin = document.createElement('script');
+                        scriptLogin.src = '/index.php?s=api&c=api&m=template&format=jsonp&name=member.html&callback=handleLogin';
+                        document.body.appendChild(scriptLogin);
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<section class='hero shadow is-primary'>
+    <div class='hero-body is-primary'>
+        <div class='container'>
+            <h1 class='text-center'>Discover the Best AI Tools for Any Task！</h1>
+            <div class='subtitle text-center font-bold'>
+                                                                Trusted by 100,000+ AI Adopters. Explore 22,972 curated tools with 11 new updates today.            </div>
+            <div class="w-full max-w-2xl mx-auto">
+                <form class="flex flex-col h-full mx-auto min-h-[105px] relative" action="/index.php?lang=" method="get">
+                    <input type="hidden" name="lang" value="">
+                    <input type="hidden" name="s" value="website">
+                    <input type="hidden" name="c" value="search">
+                    <textarea id="keyword" name="keyword" class="flex min-h-[80px] w-full border border-input ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-white text-black flex-grow resize-none h-full p-4 shadow-lg font-medium focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-opacity-75 text-base text-black-300 rounded-lg bg-slate-50" placeholder="I'm your personal AI search buddy,Tell me what you want..."></textarea>
+                    <button class="inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-primary-foreground hover:bg-primary/90 h-10 px-4 absolute bottom-3 right-3 rounded-xl py-0 bg-blue-500 cursor-pointer" type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    let aiquestion = localStorage.getItem('question');
+    if(aiquestion){
+        $("#question").val(aiquestion);
+    }
+    function handlSearch() {
+        let question = $("#question").val();
+        if(question){
+            localStorage.setItem('question', question);
+            window.location.href='/ask';
+        }
+    }
+</script>
+<section class='filters-section py-6 pb-0'>
+    <div class='container flex filters'>
+        <div class='filters-categories flex filter w-full text-center'>
+            <div class="leftarrow" onclick="moveLeft()"><i class="bi bi-chevron-left"></i></div>
+            <div class="slider" id="slider">
+                <div class="filters-category">
+                                        <span class="item" id="cat232" data-catid="232"><a class="aitool text-inherit" href="/productivity" title="Productivity">Productivity</a></span>
+                                        <span class="item" id="cat233" data-catid="233"><a class="aitool text-inherit" href="/spreadsheets" title="Spreadsheets">Spreadsheets</a></span>
+                                        <span class="item" id="cat234" data-catid="234"><a class="aitool text-inherit" href="/copywriting" title="Copywriting">Copywriting</a></span>
+                                        <span class="item" id="cat235" data-catid="235"><a class="aitool text-inherit" href="/startup-tools" title="Startup Tools">Startup Tools</a></span>
+                                        <span class="item" id="cat236" data-catid="236"><a class="aitool text-inherit" href="/video" title="Video">Video</a></span>
+                                        <span class="item" id="cat237" data-catid="237"><a class="aitool text-inherit" href="/text-to-speech" title="Text To Speech">Text To Speech</a></span>
+                                        <span class="item" id="cat238" data-catid="238"><a class="aitool text-inherit" href="/email-assistant" title="Email Assistant">Email Assistant</a></span>
+                                        <span class="item" id="cat239" data-catid="239"><a class="aitool text-inherit" href="/social-media-assistant" title="Social Media Assistant">Social Media Assistant</a></span>
+                                        <span class="item" id="cat240" data-catid="240"><a class="aitool text-inherit" href="/fun-tools" title="Fun Tools">Fun Tools</a></span>
+                                        <span class="item" id="cat241" data-catid="241"><a class="aitool text-inherit" href="/image-editing" title="Image Editing">Image Editing</a></span>
+                                        <span class="item" id="cat242" data-catid="242"><a class="aitool text-inherit" href="/avatars" title="Avatars">Avatars</a></span>
+                                        <span class="item" id="cat243" data-catid="243"><a class="aitool text-inherit" href="/image-generator" title="Image Generator">Image Generator</a></span>
+                                        <span class="item" id="cat244" data-catid="244"><a class="aitool text-inherit" href="/seo" title="SEO">SEO</a></span>
+                                        <span class="item" id="cat245" data-catid="245"><a class="aitool text-inherit" href="/code-assistant" title="Code Assistant">Code Assistant</a></span>
+                                        <span class="item" id="cat246" data-catid="246"><a class="aitool text-inherit" href="/music" title="Music">Music</a></span>
+                                        <span class="item" id="cat247" data-catid="247"><a class="aitool text-inherit" href="/presentations" title="Presentations">Presentations</a></span>
+                                        <span class="item" id="cat248" data-catid="248"><a class="aitool text-inherit" href="/education-assistant" title="Education Assistant">Education Assistant</a></span>
+                                        <span class="item" id="cat249" data-catid="249"><a class="aitool text-inherit" href="/art" title="Art">Art</a></span>
+                                        <span class="item" id="cat250" data-catid="250"><a class="aitool text-inherit" href="/gaming" title="Gaming">Gaming</a></span>
+                                        <span class="item" id="cat251" data-catid="251"><a class="aitool text-inherit" href="/sales" title="Sales">Sales</a></span>
+                                        <span class="item" id="cat252" data-catid="252"><a class="aitool text-inherit" href="/life-assistant" title="Life Assistant">Life Assistant</a></span>
+                                        <span class="item" id="cat253" data-catid="253"><a class="aitool text-inherit" href="/customer-support" title="Customer Support">Customer Support</a></span>
+                                        <span class="item" id="cat254" data-catid="254"><a class="aitool text-inherit" href="/developer-tools" title="Developer Tools">Developer Tools</a></span>
+                                        <span class="item" id="cat255" data-catid="255"><a class="aitool text-inherit" href="/search-engines" title="Search Engines">Search Engines</a></span>
+                                        <span class="item" id="cat256" data-catid="256"><a class="aitool text-inherit" href="/design-assistant" title="Design Assistant">Design Assistant</a></span>
+                                        <span class="item" id="cat257" data-catid="257"><a class="aitool text-inherit" href="/3d" title="3D">3D</a></span>
+                                        <span class="item" id="cat258" data-catid="258"><a class="aitool text-inherit" href="/legal-assistant" title="Legal Assistant">Legal Assistant</a></span>
+                                        <span class="item" id="cat259" data-catid="259"><a class="aitool text-inherit" href="/healthcare" title="Healthcare">Healthcare</a></span>
+                                        <span class="item" id="cat260" data-catid="260"><a class="aitool text-inherit" href="/prompts" title="Prompts">Prompts</a></span>
+                                        <span class="item" id="cat261" data-catid="261"><a class="aitool text-inherit" href="/research" title="Research">Research</a></span>
+                                        <span class="item" id="cat262" data-catid="262"><a class="aitool text-inherit" href="/audio" title="Audio">Audio</a></span>
+                                        <span class="item" id="cat263" data-catid="263"><a class="aitool text-inherit" href="/human-resources" title="Human Resources">Human Resources</a></span>
+                                        <span class="item" id="cat264" data-catid="264"><a class="aitool text-inherit" href="/story-teller" title="Story Teller">Story Teller</a></span>
+                                        <span class="item" id="cat265" data-catid="265"><a class="aitool text-inherit" href="/fashion" title="Fashion">Fashion</a></span>
+                                        <span class="item" id="cat266" data-catid="266"><a class="aitool text-inherit" href="/ecommerce" title="E-commerce">E-commerce</a></span>
+                                        <span class="item" id="cat267" data-catid="267"><a class="aitool text-inherit" href="/finance" title="Finance">Finance</a></span>
+                                        <span class="item" id="cat268" data-catid="268"><a class="aitool text-inherit" href="/meeting-assistant" title="Meeting Assistant">Meeting Assistant</a></span>
+                                        <span class="item" id="cat269" data-catid="269"><a class="aitool text-inherit" href="/chatbots" title="Chatbots">Chatbots</a></span>
+                                        <span class="item" id="cat270" data-catid="270"><a class="aitool text-inherit" href="/photo-editing" title="Photo Editing">Photo Editing</a></span>
+                                        <span class="item" id="cat271" data-catid="271"><a class="aitool text-inherit" href="/marketing" title="Marketing">Marketing</a></span>
+                                        <span class="item" id="cat272" data-catid="272"><a class="aitool text-inherit" href="/automation" title="Automation">Automation</a></span>
+                                        <span class="item" id="cat273" data-catid="273"><a class="aitool text-inherit" href="/large-language-models" title="Large Language Models">Large Language Models</a></span>
+                                        <span class="item" id="cat274" data-catid="274"><a class="aitool text-inherit" href="/data" title="Data">Data</a></span>
+                                        <span class="item" id="cat275" data-catid="275"><a class="aitool text-inherit" href="/business" title="Business">Business</a></span>
+                                        <span class="item" id="cat276" data-catid="276"><a class="aitool text-inherit" href="/machine-learning" title="Machine Learning">Machine Learning</a></span>
+                                        <span class="item" id="cat277" data-catid="277"><a class="aitool text-inherit" href="/slack" title="Slack">Slack</a></span>
+                                        <span class="item" id="cat278" data-catid="278"><a class="aitool text-inherit" href="/reading" title="summarizer">summarizer</a></span>
+                                        <span class="item" id="cat279" data-catid="279"><a class="aitool text-inherit" href="/qampa" title="Q&A">Q&A</a></span>
+                                        <span class="item" id="cat280" data-catid="280"><a class="aitool text-inherit" href="/grammar-checking" title="Grammar checking">Grammar checking</a></span>
+                                        <span class="item" id="cat281" data-catid="281"><a class="aitool text-inherit" href="/learning" title="Learning">Learning</a></span>
+                                        <span class="item" id="cat282" data-catid="282"><a class="aitool text-inherit" href="/ai-content-detection" title="AI content detection">AI content detection</a></span>
+                                        <span class="item" id="cat283" data-catid="283"><a class="aitool text-inherit" href="/speech-to-text" title="Speech to text">Speech to text</a></span>
+                                        <span class="item" id="cat284" data-catid="284"><a class="aitool text-inherit" href="/voice" title="Voice">Voice</a></span>
+                                        <span class="item" id="cat285" data-catid="285"><a class="aitool text-inherit" href="/face-swap" title=""></a></span>
+                                        <span class="item" id="cat289" data-catid="289"><a class="aitool text-inherit" href="/paraphrasing" title="Paraphrasing">Paraphrasing</a></span>
+                                        <span class="item" id="cat291" data-catid="291"><a class="aitool text-inherit" href="/homeworkifyai" title="Homeworkify">Homeworkify</a></span>
+                                    </div>
+            </div>
+            <div class="rightarrow" onclick="moveRight()"><i class="bi bi-chevron-right"></i></div>
+        </div>
+    </div>
+</section>
+
+<div class='section py-6 mob:py-4'>
+    <div class='container'>
+        <h2 class='text-center py-6 text-4xl font-light'>Featured tools</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-x-10 md:gap-y-8">
+                        <div class="boxitem shadow border rounded-lg w-full bg-white">
+                <div class="w-full h-48">
+                    <a class="aitool" href="/docsbot-ai" title="DocsBot AI"><img class="logo rounded-t-lg drop-shadow w-full h-48" alt="DocsBot AI" src="/uploadfile/thumb/b93f11867481fc6d77908aea58ba6198/612x340_crop.jpg" loading="lazy">
+                    </a>
+                </div>
+                <div class="tool-info p-2">
+                    <div class="flex justify-between items-baseline gap-x-4 tool-title">
+                        <div>
+                            <a class="aitool" href="/docsbot-ai" title="DocsBot AI"><h3 class="text-lg py-1 inline">DocsBot AI</h3></a>
+                            <a rel="noopener nofollow" href="https://docsbot.ai/?ref=aitoolnet.com" title="Site:https://docsbot.ai/?ref=aitoolnet.com" class="ml-1 text-sm text-gray-400 hover:text-gray-600" target="_blank"><i class="fa fa-external-link"></i></a>
+                        </div>
+                        <div class="flex items-end text-sm text-gray-500">
+                                                        <i class="bi-heart mr-1"></i> <span>6</span>
+                                                        </a>
+                        </div>
+                    </div>
+                    <div class="info mt-1 text-sm h-12 overflow-hidden leading-relaxed">
+                        DocsBot turns your knowledge base into AI agents that deliver instant, accurate answers and take act...                    </div>
+                    <div class="mt-2 flex flex-nowrap gap-2 overflow-hidden h-5">
+                        <a class="aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200" href="/customer-support"><span class="mr-1"></span>#</span>Customer Support</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="boxitem shadow border rounded-lg w-full bg-white">
+                <div class="w-full h-48">
+                    <a class="aitool" href="/elsa-speak" title="ELSA Speak"><img class="logo rounded-t-lg drop-shadow w-full h-48" alt="ELSA Speak" src="/uploadfile/thumb/dc7d10dd76b527466b2932433c35385a/612x340_crop.jpg" loading="lazy">
+                    </a>
+                </div>
+                <div class="tool-info p-2">
+                    <div class="flex justify-between items-baseline gap-x-4 tool-title">
+                        <div>
+                            <a class="aitool" href="/elsa-speak" title="ELSA Speak"><h3 class="text-lg py-1 inline">ELSA Speak</h3></a>
+                            <a rel="noopener nofollow" href="https://elsaspeak.com/en/?ref=aitoolnet.com" title="Site:https://elsaspeak.com/en/?ref=aitoolnet.com" class="ml-1 text-sm text-gray-400 hover:text-gray-600" target="_blank"><i class="fa fa-external-link"></i></a>
+                        </div>
+                        <div class="flex items-end text-sm text-gray-500">
+                                                        <i class="bi-heart mr-1"></i> <span>17</span>
+                                                        </a>
+                        </div>
+                    </div>
+                    <div class="info mt-1 text-sm h-12 overflow-hidden leading-relaxed">
+                        ELSA Speak gives instant AI feedback on pronunciation and fluency as you speak, turning passive lear...                    </div>
+                    <div class="mt-2 flex flex-nowrap gap-2 overflow-hidden h-5">
+                        <a class="aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200" href="/education-assistant"><span class="mr-1"></span>#</span>Education Assistant</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="boxitem shadow border rounded-lg w-full bg-white">
+                <div class="w-full h-48">
+                    <a class="aitool" href="/deepseek-harness" title="DeepSeek Harness"><img class="logo rounded-t-lg drop-shadow w-full h-48" alt="DeepSeek Harness" src="/uploadfile/thumb/f5defb589f63abefc5486d79e424640c/612x340_crop.jpg" loading="lazy">
+                    </a>
+                </div>
+                <div class="tool-info p-2">
+                    <div class="flex justify-between items-baseline gap-x-4 tool-title">
+                        <div>
+                            <a class="aitool" href="/deepseek-harness" title="DeepSeek Harness"><h3 class="text-lg py-1 inline">DeepSeek Harness</h3></a>
+                            <a rel="noopener nofollow" href="https://www.deepseek.com/harness/?ref=aitoolnet.com" title="Site:https://www.deepseek.com/harness/?ref=aitoolnet.com" class="ml-1 text-sm text-gray-400 hover:text-gray-600" target="_blank"><i class="fa fa-external-link"></i></a>
+                        </div>
+                        <div class="flex items-end text-sm text-gray-500">
+                                                        <i class="bi-heart mr-1"></i> <span>1</span>
+                                                        </a>
+                        </div>
+                    </div>
+                    <div class="info mt-1 text-sm h-12 overflow-hidden leading-relaxed">
+                        DeepSeek Harness is an open‑source, plugin‑driven agent runtime that lets you freely compose models,...                    </div>
+                    <div class="mt-2 flex flex-nowrap gap-2 overflow-hidden h-5">
+                        <a class="aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200" href="/code-assistant"><span class="mr-1"></span>#</span>Code Assistant</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="boxitem shadow border rounded-lg w-full bg-white">
+                <div class="w-full h-48">
+                    <a class="aitool" href="/speechify" title="Speechify"><img class="logo rounded-t-lg drop-shadow w-full h-48" alt="Speechify" src="/uploadfile/thumb/d6e2790452e86b82909234e2747dc704/612x340_crop.jpg" loading="lazy">
+                    </a>
+                </div>
+                <div class="tool-info p-2">
+                    <div class="flex justify-between items-baseline gap-x-4 tool-title">
+                        <div>
+                            <a class="aitool" href="/speechify" title="Speechify"><h3 class="text-lg py-1 inline">Speechify</h3></a>
+                            <a rel="noopener nofollow" href="https://speechify.com/?ref=aitoolnet.com" title="Site:https://speechify.com/?ref=aitoolnet.com" class="ml-1 text-sm text-gray-400 hover:text-gray-600" target="_blank"><i class="fa fa-external-link"></i></a>
+                        </div>
+                        <div class="flex items-end text-sm text-gray-500">
+                                                        <i class="bi-heart mr-1"></i> <span>27</span>
+                                                        </a>
+                        </div>
+                    </div>
+                    <div class="info mt-1 text-sm h-12 overflow-hidden leading-relaxed">
+                        Transforming text into natural speech, Speechify lets users dictate 5× faster than typing and answer...                    </div>
+                    <div class="mt-2 flex flex-nowrap gap-2 overflow-hidden h-5">
+                        <a class="aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200" href="/text-to-speech"><span class="mr-1"></span>#</span>Text To Speech</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="boxitem shadow border rounded-lg w-full bg-white">
+                <div class="w-full h-48">
+                    <a class="aitool" href="/typingmind" title="Typingmind"><img class="logo rounded-t-lg drop-shadow w-full h-48" alt="Typingmind" src="/uploadfile/thumb/7792a0500b5aabb4b072d113a160d200/612x340_crop.jpg" loading="lazy">
+                    </a>
+                </div>
+                <div class="tool-info p-2">
+                    <div class="flex justify-between items-baseline gap-x-4 tool-title">
+                        <div>
+                            <a class="aitool" href="/typingmind" title="Typingmind"><h3 class="text-lg py-1 inline">Typingmind</h3></a>
+                            <a rel="noopener nofollow" href="https://www.typingmind.com/?ref=aitoolnet.com" title="Site:https://www.typingmind.com/?ref=aitoolnet.com" class="ml-1 text-sm text-gray-400 hover:text-gray-600" target="_blank"><i class="fa fa-external-link"></i></a>
+                        </div>
+                        <div class="flex items-end text-sm text-gray-500">
+                                                        <i class="bi-heart mr-1"></i> <span>9</span>
+                                                        </a>
+                        </div>
+                    </div>
+                    <div class="info mt-1 text-sm h-12 overflow-hidden leading-relaxed">
+                        Advanced chat UI for AI models. ChatGPT, Gemini, Claude, and more. All in one place. Use your own AP...                    </div>
+                    <div class="mt-2 flex flex-nowrap gap-2 overflow-hidden h-5">
+                        <a class="aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200" href="/productivity"><span class="mr-1"></span>#</span>Productivity</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="boxitem shadow border rounded-lg w-full bg-white">
+                <div class="w-full h-48">
+                    <a class="aitool" href="/anysearch" title="AnySearch"><img class="logo rounded-t-lg drop-shadow w-full h-48" alt="AnySearch" src="/uploadfile/thumb/550dde716c139d72e9e2519ab2230a6f/612x340_crop.jpg" loading="lazy">
+                    </a>
+                </div>
+                <div class="tool-info p-2">
+                    <div class="flex justify-between items-baseline gap-x-4 tool-title">
+                        <div>
+                            <a class="aitool" href="/anysearch" title="AnySearch"><h3 class="text-lg py-1 inline">AnySearch</h3></a>
+                            <a rel="noopener nofollow" href="https://www.anysearch.com/?ref=aitoolnet.com" title="Site:https://www.anysearch.com/?ref=aitoolnet.com" class="ml-1 text-sm text-gray-400 hover:text-gray-600" target="_blank"><i class="fa fa-external-link"></i></a>
+                        </div>
+                        <div class="flex items-end text-sm text-gray-500">
+                                                        <i class="bi-heart mr-1"></i> <span>2</span>
+                                                        </a>
+                        </div>
+                    </div>
+                    <div class="info mt-1 text-sm h-12 overflow-hidden leading-relaxed">
+                        AnySearch delivers structured, privacy-preserving data to AI agents from specialized domains, cuttin...                    </div>
+                    <div class="mt-2 flex flex-nowrap gap-2 overflow-hidden h-5">
+                        <a class="aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200" href="/search-engines"><span class="mr-1"></span>#</span>Search Engines</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="boxitem shadow border rounded-lg w-full bg-white">
+                <div class="w-full h-48">
+                    <a class="aitool" href="/nightcafe-studio" title="NightCafe Studio"><img class="logo rounded-t-lg drop-shadow w-full h-48" alt="NightCafe Studio" src="/uploadfile/thumb/0d352b4d3a317e3eae221199fdb49651/612x340_crop.jpg" loading="lazy">
+                    </a>
+                </div>
+                <div class="tool-info p-2">
+                    <div class="flex justify-between items-baseline gap-x-4 tool-title">
+                        <div>
+                            <a class="aitool" href="/nightcafe-studio" title="NightCafe Studio"><h3 class="text-lg py-1 inline">NightCafe Studio</h3></a>
+                            <a rel="noopener nofollow" href="https://creator.nightcafe.studio/?ref=aitoolnet.com" title="Site:https://creator.nightcafe.studio/?ref=aitoolnet.com" class="ml-1 text-sm text-gray-400 hover:text-gray-600" target="_blank"><i class="fa fa-external-link"></i></a>
+                        </div>
+                        <div class="flex items-end text-sm text-gray-500">
+                                                        <i class="bi-heart mr-1"></i> <span>27</span>
+                                                        </a>
+                        </div>
+                    </div>
+                    <div class="info mt-1 text-sm h-12 overflow-hidden leading-relaxed">
+                        NightCafe is an AI art generation platform for creators, offering diverse image and video models and...                    </div>
+                    <div class="mt-2 flex flex-nowrap gap-2 overflow-hidden h-5">
+                        <a class="aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200" href="/art"><span class="mr-1"></span>#</span>Art</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="boxitem shadow border rounded-lg w-full bg-white">
+                <div class="w-full h-48">
+                    <a class="aitool" href="/decktopus-ai" title="Decktopus AI"><img class="logo rounded-t-lg drop-shadow w-full h-48" alt="Decktopus AI" src="/uploadfile/thumb/4e46e93a054f94c059e1fa4701f5a892/612x340_crop.jpg" loading="lazy">
+                    </a>
+                </div>
+                <div class="tool-info p-2">
+                    <div class="flex justify-between items-baseline gap-x-4 tool-title">
+                        <div>
+                            <a class="aitool" href="/decktopus-ai" title="Decktopus AI"><h3 class="text-lg py-1 inline">Decktopus AI</h3></a>
+                            <a rel="noopener nofollow" href="https://www.decktopus.com/?ref=aitoolnet.com" title="Site:https://www.decktopus.com/?ref=aitoolnet.com" class="ml-1 text-sm text-gray-400 hover:text-gray-600" target="_blank"><i class="fa fa-external-link"></i></a>
+                        </div>
+                        <div class="flex items-end text-sm text-gray-500">
+                                                        <i class="bi-heart mr-1"></i> <span>11</span>
+                                                        </a>
+                        </div>
+                    </div>
+                    <div class="info mt-1 text-sm h-12 overflow-hidden leading-relaxed">
+                        Create stunning presentations easily with Decktopus AI. Customize themes, find stock photos, generat...                    </div>
+                    <div class="mt-2 flex flex-nowrap gap-2 overflow-hidden h-5">
+                        <a class="aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200" href="/presentations"><span class="mr-1"></span>#</span>Presentations</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="boxitem shadow border rounded-lg w-full bg-white">
+                <div class="w-full h-48">
+                    <a class="aitool" href="/prezent" title="Prezent"><img class="logo rounded-t-lg drop-shadow w-full h-48" alt="Prezent" src="/uploadfile/thumb/e9b248b7b318f01c293f4604d0cba2da/612x340_crop.jpg" loading="lazy">
+                    </a>
+                </div>
+                <div class="tool-info p-2">
+                    <div class="flex justify-between items-baseline gap-x-4 tool-title">
+                        <div>
+                            <a class="aitool" href="/prezent" title="Prezent"><h3 class="text-lg py-1 inline">Prezent</h3></a>
+                            <a rel="noopener nofollow" href="https://www.prezent.ai/?ref=aitoolnet.com" title="Site:https://www.prezent.ai/?ref=aitoolnet.com" class="ml-1 text-sm text-gray-400 hover:text-gray-600" target="_blank"><i class="fa fa-external-link"></i></a>
+                        </div>
+                        <div class="flex items-end text-sm text-gray-500">
+                                                        <i class="bi-heart mr-1"></i> <span>6</span>
+                                                        </a>
+                        </div>
+                    </div>
+                    <div class="info mt-1 text-sm h-12 overflow-hidden leading-relaxed">
+                        Prezent Vivo is a biopharma communication platform using AI and human expertise to accelerate accura...                    </div>
+                    <div class="mt-2 flex flex-nowrap gap-2 overflow-hidden h-5">
+                        <a class="aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200" href="/presentations"><span class="mr-1"></span>#</span>Presentations</a>
+                    </div>
+                </div>
+            </div>
+                    </div>
+    </div>
+</div>
+
+<div class='section py-6 mob:py-4'>
+    <div class='container'>
+        <h2 class='text-center py-6 text-4xl font-light'>Latest AI tools</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-x-10 md:gap-y-8">
+                        <div class="boxitem shadow border rounded-lg w-full bg-white">
+                <div class="w-full h-48">
+                    <a class="aitool" href="/cuddler" title="Cuddler">
+                        <img class="logo rounded-t-lg drop-shadow w-full h-48" alt="Cuddler" src="/uploadfile/thumb/69b7b122542195f8897a7a1a997c5c3d/612x340_crop.jpg" loading="lazy">
+                    </a>
+                </div>
+                <div class="tool-info p-2">
+                    <div class="flex justify-between items-baseline gap-x-4 tool-title">
+                        <div>
+                            <a class="aitool" href="/cuddler" title="Cuddler"><h3 class="text-lg py-1 inline">Cuddler</h3></a>
+                            <a rel="noopener nofollow" href="https://cuddler.ai/" title="Site:https://cuddler.ai/" class="ml-1 text-sm text-gray-400 hover:text-gray-600"><i class="fa fa-external-link"></i></a>
+                        </div>
+                        <div class="flex items-end text-sm text-gray-500">
+                                                        <i class="bi-heart mr-1"></i> <span>0</span>
+                                                        </a>
+                        </div>
+                    </div>
+                    <div class="info mt-1 text-sm h-12 overflow-hidden leading-relaxed">
+                        Cuddler is an AI storytelling platform: create your own characters, roleplay interactive stories, an...                    </div>
+                    <div class="mt-2 flex flex-nowrap gap-2 overflow-hidden h-5">
+                        <a class="aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200" href="/video">#Video</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="boxitem shadow border rounded-lg w-full bg-white">
+                <div class="w-full h-48">
+                    <a class="aitool" href="/maritime" title="Maritime">
+                        <img class="logo rounded-t-lg drop-shadow w-full h-48" alt="Maritime" src="/uploadfile/thumb/bed169096ccd26ce97c9ff2021ac459a/612x340_crop.jpg" loading="lazy">
+                    </a>
+                </div>
+                <div class="tool-info p-2">
+                    <div class="flex justify-between items-baseline gap-x-4 tool-title">
+                        <div>
+                            <a class="aitool" href="/maritime" title="Maritime"><h3 class="text-lg py-1 inline">Maritime</h3></a>
+                            <a rel="noopener nofollow" href="https://maritime.sh/" title="Site:https://maritime.sh/" class="ml-1 text-sm text-gray-400 hover:text-gray-600"><i class="fa fa-external-link"></i></a>
+                        </div>
+                        <div class="flex items-end text-sm text-gray-500">
+                                                        <i class="bi-heart mr-1"></i> <span>0</span>
+                                                        </a>
+                        </div>
+                    </div>
+                    <div class="info mt-1 text-sm h-12 overflow-hidden leading-relaxed">
+                        Sandboxes for generated code, persistent agent boxes, and Linux, Windows, or Android desktops and ph...                    </div>
+                    <div class="mt-2 flex flex-nowrap gap-2 overflow-hidden h-5">
+                        <a class="aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200" href="/developer-tools">#Developer Tools</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="boxitem shadow border rounded-lg w-full bg-white">
+                <div class="w-full h-48">
+                    <a class="aitool" href="/wisp" title="Wisp">
+                        <img class="logo rounded-t-lg drop-shadow w-full h-48" alt="Wisp" src="/uploadfile/thumb/6f8cc45bcf514a9708e7086b4c21a2f3/612x340_crop.jpg" loading="lazy">
+                    </a>
+                </div>
+                <div class="tool-info p-2">
+                    <div class="flex justify-between items-baseline gap-x-4 tool-title">
+                        <div>
+                            <a class="aitool" href="/wisp" title="Wisp"><h3 class="text-lg py-1 inline">Wisp</h3></a>
+                            <a rel="noopener nofollow" href="https://heywisp.ai/" title="Site:https://heywisp.ai/" class="ml-1 text-sm text-gray-400 hover:text-gray-600"><i class="fa fa-external-link"></i></a>
+                        </div>
+                        <div class="flex items-end text-sm text-gray-500">
+                                                        <i class="bi-heart mr-1"></i> <span>0</span>
+                                                        </a>
+                        </div>
+                    </div>
+                    <div class="info mt-1 text-sm h-12 overflow-hidden leading-relaxed">
+                        A voice-controlled AI fairy that lives on your desktop, runs apps and windows, and handles busywork ...                    </div>
+                    <div class="mt-2 flex flex-nowrap gap-2 overflow-hidden h-5">
+                        <a class="aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200" href="/chatbots">#Chatbots</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="boxitem shadow border rounded-lg w-full bg-white">
+                <div class="w-full h-48">
+                    <a class="aitool" href="/pauta" title="Pauta">
+                        <img class="logo rounded-t-lg drop-shadow w-full h-48" alt="Pauta" src="/uploadfile/thumb/58ff1cbdc3f29a9e7149d19f55dab377/612x340_crop.jpg" loading="lazy">
+                    </a>
+                </div>
+                <div class="tool-info p-2">
+                    <div class="flex justify-between items-baseline gap-x-4 tool-title">
+                        <div>
+                            <a class="aitool" href="/pauta" title="Pauta"><h3 class="text-lg py-1 inline">Pauta</h3></a>
+                            <a rel="noopener nofollow" href="https://www.pauta-ai.com/" title="Site:https://www.pauta-ai.com/" class="ml-1 text-sm text-gray-400 hover:text-gray-600"><i class="fa fa-external-link"></i></a>
+                        </div>
+                        <div class="flex items-end text-sm text-gray-500">
+                                                        <i class="bi-heart mr-1"></i> <span>0</span>
+                                                        </a>
+                        </div>
+                    </div>
+                    <div class="info mt-1 text-sm h-12 overflow-hidden leading-relaxed">
+                        Records, transcribes and summarizes meetings locally on Mac and Windows, with no bot, no cloud and n...                    </div>
+                    <div class="mt-2 flex flex-nowrap gap-2 overflow-hidden h-5">
+                        <a class="aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200" href="/meeting-assistant">#Meeting Assistant</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="boxitem shadow border rounded-lg w-full bg-white">
+                <div class="w-full h-48">
+                    <a class="aitool" href="/tracex" title="TraceX">
+                        <img class="logo rounded-t-lg drop-shadow w-full h-48" alt="TraceX" src="/uploadfile/thumb/469b7aacc86cde9520fcb0d9a34718f1/612x340_crop.jpg" loading="lazy">
+                    </a>
+                </div>
+                <div class="tool-info p-2">
+                    <div class="flex justify-between items-baseline gap-x-4 tool-title">
+                        <div>
+                            <a class="aitool" href="/tracex" title="TraceX"><h3 class="text-lg py-1 inline">TraceX</h3></a>
+                            <a rel="noopener nofollow" href="https://tracexpro.com/" title="Site:https://tracexpro.com/" class="ml-1 text-sm text-gray-400 hover:text-gray-600"><i class="fa fa-external-link"></i></a>
+                        </div>
+                        <div class="flex items-end text-sm text-gray-500">
+                                                        <i class="bi-heart mr-1"></i> <span>0</span>
+                                                        </a>
+                        </div>
+                    </div>
+                    <div class="info mt-1 text-sm h-12 overflow-hidden leading-relaxed">
+                        Reads the support email, investigates your database, logs and code, finds the root cause with eviden...                    </div>
+                    <div class="mt-2 flex flex-nowrap gap-2 overflow-hidden h-5">
+                        <a class="aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200" href="/developer-tools">#Developer Tools</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="boxitem shadow border rounded-lg w-full bg-white">
+                <div class="w-full h-48">
+                    <a class="aitool" href="/selects" title="Selects">
+                        <img class="logo rounded-t-lg drop-shadow w-full h-48" alt="Selects" src="/uploadfile/thumb/3b77904adeed8661014fc7e44e1bf32a/612x340_crop.jpg" loading="lazy">
+                    </a>
+                </div>
+                <div class="tool-info p-2">
+                    <div class="flex justify-between items-baseline gap-x-4 tool-title">
+                        <div>
+                            <a class="aitool" href="/selects" title="Selects"><h3 class="text-lg py-1 inline">Selects</h3></a>
+                            <a rel="noopener nofollow" href="https://tryselects.com/" title="Site:https://tryselects.com/" class="ml-1 text-sm text-gray-400 hover:text-gray-600"><i class="fa fa-external-link"></i></a>
+                        </div>
+                        <div class="flex items-end text-sm text-gray-500">
+                                                        <i class="bi-heart mr-1"></i> <span>0</span>
+                                                        </a>
+                        </div>
+                    </div>
+                    <div class="info mt-1 text-sm h-12 overflow-hidden leading-relaxed">
+                        Talk to an AI video editor, match any style from a link, and refine every cut on a real timeline.                    </div>
+                    <div class="mt-2 flex flex-nowrap gap-2 overflow-hidden h-5">
+                        <a class="aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200" href="/video">#Video</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="boxitem shadow border rounded-lg w-full bg-white">
+                <div class="w-full h-48">
+                    <a class="aitool" href="/unstract-1" title="Unstract">
+                        <img class="logo rounded-t-lg drop-shadow w-full h-48" alt="Unstract" src="/uploadfile/thumb/88ce2f37c3086513fe0a5cdf9841b433/612x340_crop.jpg" loading="lazy">
+                    </a>
+                </div>
+                <div class="tool-info p-2">
+                    <div class="flex justify-between items-baseline gap-x-4 tool-title">
+                        <div>
+                            <a class="aitool" href="/unstract-1" title="Unstract"><h3 class="text-lg py-1 inline">Unstract</h3></a>
+                            <a rel="noopener nofollow" href="https://unstract.com/" title="Site:https://unstract.com/" class="ml-1 text-sm text-gray-400 hover:text-gray-600"><i class="fa fa-external-link"></i></a>
+                        </div>
+                        <div class="flex items-end text-sm text-gray-500">
+                                                        <i class="bi-heart mr-1"></i> <span>0</span>
+                                                        </a>
+                        </div>
+                    </div>
+                    <div class="info mt-1 text-sm h-12 overflow-hidden leading-relaxed">
+                        Turn unstructured documents into structured data with agentic workflows, deterministic execution, an...                    </div>
+                    <div class="mt-2 flex flex-nowrap gap-2 overflow-hidden h-5">
+                        <a class="aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200" href="/automation">#Automation</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="boxitem shadow border rounded-lg w-full bg-white">
+                <div class="w-full h-48">
+                    <a class="aitool" href="/agentkit-2" title="Agentkit">
+                        <img class="logo rounded-t-lg drop-shadow w-full h-48" alt="Agentkit" src="/uploadfile/thumb/64e6211d09d7ea115a95ab0d6e595f34/612x340_crop.jpg" loading="lazy">
+                    </a>
+                </div>
+                <div class="tool-info p-2">
+                    <div class="flex justify-between items-baseline gap-x-4 tool-title">
+                        <div>
+                            <a class="aitool" href="/agentkit-2" title="Agentkit"><h3 class="text-lg py-1 inline">Agentkit</h3></a>
+                            <a rel="noopener nofollow" href="https://agentkit.ai/" title="Site:https://agentkit.ai/" class="ml-1 text-sm text-gray-400 hover:text-gray-600"><i class="fa fa-external-link"></i></a>
+                        </div>
+                        <div class="flex items-end text-sm text-gray-500">
+                                                        <i class="bi-heart mr-1"></i> <span>0</span>
+                                                        </a>
+                        </div>
+                    </div>
+                    <div class="info mt-1 text-sm h-12 overflow-hidden leading-relaxed">
+                        Train an AI agent on your website, docs, or Q&amp;A pairs, then embed it anywhere with one script ta...                    </div>
+                    <div class="mt-2 flex flex-nowrap gap-2 overflow-hidden h-5">
+                        <a class="aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200" href="/qampa">#Q&A</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="boxitem shadow border rounded-lg w-full bg-white">
+                <div class="w-full h-48">
+                    <a class="aitool" href="/wakeman" title="Wakeman">
+                        <img class="logo rounded-t-lg drop-shadow w-full h-48" alt="Wakeman" src="/uploadfile/thumb/bcc1810bc35eeaa19be7a3339df2a563/612x340_crop.jpg" loading="lazy">
+                    </a>
+                </div>
+                <div class="tool-info p-2">
+                    <div class="flex justify-between items-baseline gap-x-4 tool-title">
+                        <div>
+                            <a class="aitool" href="/wakeman" title="Wakeman"><h3 class="text-lg py-1 inline">Wakeman</h3></a>
+                            <a rel="noopener nofollow" href="https://wakeman.ai/" title="Site:https://wakeman.ai/" class="ml-1 text-sm text-gray-400 hover:text-gray-600"><i class="fa fa-external-link"></i></a>
+                        </div>
+                        <div class="flex items-end text-sm text-gray-500">
+                                                        <i class="bi-heart mr-1"></i> <span>0</span>
+                                                        </a>
+                        </div>
+                    </div>
+                    <div class="info mt-1 text-sm h-12 overflow-hidden leading-relaxed">
+                        Answers missed calls in your business's name, checks the address, flags emergencies and texts you th...                    </div>
+                    <div class="mt-2 flex flex-nowrap gap-2 overflow-hidden h-5">
+                        <a class="aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200" href="/customer-support">#Customer Support</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="boxitem shadow border rounded-lg w-full bg-white">
+                <div class="w-full h-48">
+                    <a class="aitool" href="/turnstone" title="Turnstone">
+                        <img class="logo rounded-t-lg drop-shadow w-full h-48" alt="Turnstone" src="/uploadfile/thumb/acd0ce34e1e973cc95b5a4a588b9dc8c/612x340_crop.jpg" loading="lazy">
+                    </a>
+                </div>
+                <div class="tool-info p-2">
+                    <div class="flex justify-between items-baseline gap-x-4 tool-title">
+                        <div>
+                            <a class="aitool" href="/turnstone" title="Turnstone"><h3 class="text-lg py-1 inline">Turnstone</h3></a>
+                            <a rel="noopener nofollow" href="https://myturnstone.ai/" title="Site:https://myturnstone.ai/" class="ml-1 text-sm text-gray-400 hover:text-gray-600"><i class="fa fa-external-link"></i></a>
+                        </div>
+                        <div class="flex items-end text-sm text-gray-500">
+                                                        <i class="bi-heart mr-1"></i> <span>0</span>
+                                                        </a>
+                        </div>
+                    </div>
+                    <div class="info mt-1 text-sm h-12 overflow-hidden leading-relaxed">
+                        AI teammates that run on the subscriptions you already pay for, with persistent memory on your Mac.                    </div>
+                    <div class="mt-2 flex flex-nowrap gap-2 overflow-hidden h-5">
+                        <a class="aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200" href="/chatbots">#Chatbots</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="boxitem shadow border rounded-lg w-full bg-white">
+                <div class="w-full h-48">
+                    <a class="aitool" href="/rankfender" title="Rankfender">
+                        <img class="logo rounded-t-lg drop-shadow w-full h-48" alt="Rankfender" src="/uploadfile/thumb/92a44bf7d5f98655cab29f94db6c04cd/612x340_crop.jpg" loading="lazy">
+                    </a>
+                </div>
+                <div class="tool-info p-2">
+                    <div class="flex justify-between items-baseline gap-x-4 tool-title">
+                        <div>
+                            <a class="aitool" href="/rankfender" title="Rankfender"><h3 class="text-lg py-1 inline">Rankfender</h3></a>
+                            <a rel="noopener nofollow" href="https://rankfender.com/" title="Site:https://rankfender.com/" class="ml-1 text-sm text-gray-400 hover:text-gray-600"><i class="fa fa-external-link"></i></a>
+                        </div>
+                        <div class="flex items-end text-sm text-gray-500">
+                                                        <i class="bi-heart mr-1"></i> <span>0</span>
+                                                        </a>
+                        </div>
+                    </div>
+                    <div class="info mt-1 text-sm h-12 overflow-hidden leading-relaxed">
+                        Audit your site for Google and AI, find winnable keywords, publish articles to WordPress, and check ...                    </div>
+                    <div class="mt-2 flex flex-nowrap gap-2 overflow-hidden h-5">
+                        <a class="aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200" href="/seo">#SEO</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="boxitem shadow border rounded-lg w-full bg-white">
+                <div class="w-full h-48">
+                    <a class="aitool" href="/kreavo" title="Kreavo">
+                        <img class="logo rounded-t-lg drop-shadow w-full h-48" alt="Kreavo" src="/uploadfile/thumb/2f83438a1256c4cafb3d3131cf292e21/612x340_crop.jpg" loading="lazy">
+                    </a>
+                </div>
+                <div class="tool-info p-2">
+                    <div class="flex justify-between items-baseline gap-x-4 tool-title">
+                        <div>
+                            <a class="aitool" href="/kreavo" title="Kreavo"><h3 class="text-lg py-1 inline">Kreavo</h3></a>
+                            <a rel="noopener nofollow" href="https://kreavo.ai/?ref=aitoolnet.com" title="Site:https://kreavo.ai/?ref=aitoolnet.com" class="ml-1 text-sm text-gray-400 hover:text-gray-600"><i class="fa fa-external-link"></i></a>
+                        </div>
+                        <div class="flex items-end text-sm text-gray-500">
+                                                        <i class="bi-heart mr-1"></i> <span>0</span>
+                                                        </a>
+                        </div>
+                    </div>
+                    <div class="info mt-1 text-sm h-12 overflow-hidden leading-relaxed">
+                        Kreavo is an AI UGC video generator and AI influencer platform for ecommerce brands. Upload a produc...                    </div>
+                    <div class="mt-2 flex flex-nowrap gap-2 overflow-hidden h-5">
+                        <a class="aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200" href="/video">#Video</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="boxitem shadow border rounded-lg w-full bg-white">
+                <div class="w-full h-48">
+                    <a class="aitool" href="/lumimusic" title="LumiMusic">
+                        <img class="logo rounded-t-lg drop-shadow w-full h-48" alt="LumiMusic" src="/uploadfile/thumb/74f303673bc7765b1bd3fea078d185b5/612x340_crop.jpg" loading="lazy">
+                    </a>
+                </div>
+                <div class="tool-info p-2">
+                    <div class="flex justify-between items-baseline gap-x-4 tool-title">
+                        <div>
+                            <a class="aitool" href="/lumimusic" title="LumiMusic"><h3 class="text-lg py-1 inline">LumiMusic</h3></a>
+                            <a rel="noopener nofollow" href="https://lumimusic.ai/?ref=aitoolnet.com" title="Site:https://lumimusic.ai/?ref=aitoolnet.com" class="ml-1 text-sm text-gray-400 hover:text-gray-600"><i class="fa fa-external-link"></i></a>
+                        </div>
+                        <div class="flex items-end text-sm text-gray-500">
+                                                        <i class="bi-heart mr-1"></i> <span>0</span>
+                                                        </a>
+                        </div>
+                    </div>
+                    <div class="info mt-1 text-sm h-12 overflow-hidden leading-relaxed">
+                        LumiMusic is an AI music creation platform that turns a text prompt or lyrics into a full vocal or i...                    </div>
+                    <div class="mt-2 flex flex-nowrap gap-2 overflow-hidden h-5">
+                        <a class="aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200" href="/music">#Music</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="boxitem shadow border rounded-lg w-full bg-white">
+                <div class="w-full h-48">
+                    <a class="aitool" href="/voyager-1" title="Voyager">
+                        <img class="logo rounded-t-lg drop-shadow w-full h-48" alt="Voyager" src="/uploadfile/thumb/a1727f8a84477e378910901380dee67e/612x340_crop.jpg" loading="lazy">
+                    </a>
+                </div>
+                <div class="tool-info p-2">
+                    <div class="flex justify-between items-baseline gap-x-4 tool-title">
+                        <div>
+                            <a class="aitool" href="/voyager-1" title="Voyager"><h3 class="text-lg py-1 inline">Voyager</h3></a>
+                            <a rel="noopener nofollow" href="https://voyager.so/?ref=aitoolnet.com" title="Site:https://voyager.so/?ref=aitoolnet.com" class="ml-1 text-sm text-gray-400 hover:text-gray-600"><i class="fa fa-external-link"></i></a>
+                        </div>
+                        <div class="flex items-end text-sm text-gray-500">
+                                                        <i class="bi-heart mr-1"></i> <span>0</span>
+                                                        </a>
+                        </div>
+                    </div>
+                    <div class="info mt-1 text-sm h-12 overflow-hidden leading-relaxed">
+                        An open harness for creative work: direct AI agents and models to control apps like Blender and Reso...                    </div>
+                    <div class="mt-2 flex flex-nowrap gap-2 overflow-hidden h-5">
+                        <a class="aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200" href="/video">#Video</a>
+                    </div>
+                </div>
+            </div>
+                        <div class="boxitem shadow border rounded-lg w-full bg-white">
+                <div class="w-full h-48">
+                    <a class="aitool" href="/minicpmocr" title="MiniCPM-OCR">
+                        <img class="logo rounded-t-lg drop-shadow w-full h-48" alt="MiniCPM-OCR" src="/uploadfile/thumb/e222edf2f02f5811dbbde69b0ab57dcd/612x340_crop.jpg" loading="lazy">
+                    </a>
+                </div>
+                <div class="tool-info p-2">
+                    <div class="flex justify-between items-baseline gap-x-4 tool-title">
+                        <div>
+                            <a class="aitool" href="/minicpmocr" title="MiniCPM-OCR"><h3 class="text-lg py-1 inline">MiniCPM-OCR</h3></a>
+                            <a rel="noopener nofollow" href="https://github.com/OpenBMB/MiniCPM-OCR?ref=aitoolnet.com" title="Site:https://github.com/OpenBMB/MiniCPM-OCR?ref=aitoolnet.com" class="ml-1 text-sm text-gray-400 hover:text-gray-600"><i class="fa fa-external-link"></i></a>
+                        </div>
+                        <div class="flex items-end text-sm text-gray-500">
+                                                        <i class="bi-heart mr-1"></i> <span>0</span>
+                                                        </a>
+                        </div>
+                    </div>
+                    <div class="info mt-1 text-sm h-12 overflow-hidden leading-relaxed">
+                        Parse Chinese and English PDFs and images into Markdown or JSON, with region-level quality scores to...                    </div>
+                    <div class="mt-2 flex flex-nowrap gap-2 overflow-hidden h-5">
+                        <a class="aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200" href="/large-language-models">#Large Language Models</a>
+                    </div>
+                </div>
+            </div>
+                    </div>
+    </div>
+</div>
+
+<div class='section py-6 mob:py-4'>
+    <div class='container'>
+        <h2 class='text-center py-6 text-4xl font-light'>Latest Blogs</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-x-10 md:gap-y-8">
+                        <div class="boxitem shadow border rounded-lg w-full bg-white">
+                <div class="w-full h-48">
+                    <a class="aitool" href="/blog/mastering-cue-words-a-guide-to-effective-prompt-engineering-for-deepseek-r1-and-openai-models" title="Mastering Cue Words: A Guide to Effective Prompt Engineering for DeepSeek R1 and OpenAI Models">
+                        <img class="logo rounded-t-lg drop-shadow w-full h-48" alt="Mastering Cue Words: A Guide to Effective Prompt Engineering for DeepSeek R1 and OpenAI Models" src="/uploadfile/202502/3516152df209bd3.png" loading="lazy">
+                    </a>
+                </div>
+                <div class="tool-info px-3 py-2">
+                    <a class="aitool" href="/blog/mastering-cue-words-a-guide-to-effective-prompt-engineering-for-deepseek-r1-and-openai-models" title="Mastering Cue Words: A Guide to Effective Prompt Engineering for DeepSeek R1 and OpenAI Models"><h3 class="text-base font-medium text-gray-800 leading-snug line-clamp-2 hover:text-blue-600 transition-colors">Mastering Cue Words: A Guide to Effective Prompt Engineering for DeepSeek R1 and OpenAI Models</h3></a>
+                    <!-- <div class="mt-3 text-sm text-slate-400">2025-02-11 16:17:58</div>-->
+                </div>
+            </div>
+                        <div class="boxitem shadow border rounded-lg w-full bg-white">
+                <div class="w-full h-48">
+                    <a class="aitool" href="/blog/764akjr40" title="Master AI-Powered Scraping: Extract Data from 99% of Websites">
+                        <img class="logo rounded-t-lg drop-shadow w-full h-48" alt="Master AI-Powered Scraping: Extract Data from 99% of Websites" src="https://img.youtube.com/vi/-7-64aKjr40/0.jpg" loading="lazy">
+                    </a>
+                </div>
+                <div class="tool-info px-3 py-2">
+                    <a class="aitool" href="/blog/764akjr40" title="Master AI-Powered Scraping: Extract Data from 99% of Websites"><h3 class="text-base font-medium text-gray-800 leading-snug line-clamp-2 hover:text-blue-600 transition-colors">Master AI-Powered Scraping: Extract Data from 99% of Websites</h3></a>
+                    <!-- <div class="mt-3 text-sm text-slate-400">2025-01-10 16:09:35</div>-->
+                </div>
+            </div>
+                        <div class="boxitem shadow border rounded-lg w-full bg-white">
+                <div class="w-full h-48">
+                    <a class="aitool" href="/blog/rnbitowxwto" title="How to Earn $1,370+ Daily with Canva AI's New Money-Making Method">
+                        <img class="logo rounded-t-lg drop-shadow w-full h-48" alt="How to Earn $1,370+ Daily with Canva AI's New Money-Making Method" src="https://img.youtube.com/vi/rNBiTOwXWto/0.jpg" loading="lazy">
+                    </a>
+                </div>
+                <div class="tool-info px-3 py-2">
+                    <a class="aitool" href="/blog/rnbitowxwto" title="How to Earn $1,370+ Daily with Canva AI's New Money-Making Method"><h3 class="text-base font-medium text-gray-800 leading-snug line-clamp-2 hover:text-blue-600 transition-colors">How to Earn $1,370+ Daily with Canva AI's New Money-Making Method</h3></a>
+                    <!-- <div class="mt-3 text-sm text-slate-400">2025-01-10 15:40:15</div>-->
+                </div>
+            </div>
+                    </div>
+    </div>
+</div>
+
+
+<script>
+    var boxWidth = $(".slider").width();
+    var divElement = $(".filters-category");
+    var divWidth = divElement.width();
+    var speed = boxWidth - 100
+    var position = divElement.position();
+    var initleft = position.left;
+    var initoffsetleft = divElement.offset().left;
+    function moveLeft() {
+        var nowposition = divElement.position();
+        var nowleft = nowposition.left;
+        var movedata = nowleft - speed;
+        if(divWidth + initleft + movedata < speed){
+            movedata = boxWidth-divWidth;
+        }
+        divElement.css("transform", "translateX("+movedata+"px)");
+    }
+    function moveRight() {
+        var nowposition = divElement.position();
+        var nowleft = nowposition.left;
+        var movedata = nowleft + speed;
+        if(movedata > initleft){
+            movedata = 0;
+        }
+        divElement.css("transform", "translateX("+movedata+"px)");
+    }
+
+    const swipeElement = document.getElementById('slider');
+    let startX, startY;
+    swipeElement.addEventListener('touchstart', function(e) {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+    });
+    swipeElement.addEventListener('touchmove', function(e) {
+        e.preventDefault();
+    });
+    swipeElement.addEventListener('touchend', function(e) {
+        const endX = e.changedTouches[0].clientX;
+        const endY = e.changedTouches[0].clientY;
+        const deltaX = endX - startX;
+        const SWIPE_THRESHOLD = 30;
+        if (Math.abs(deltaX) > SWIPE_THRESHOLD) {
+            if (deltaX > 0) {
+                moveRight();
+            } else {
+                moveLeft();
+            }
+        }
+    });
+</script>
+<footer class='footer'>
+    <div class='container fbody'>
+        <div class="intro">
+            <div class="title"><a class='aitool' href='/'>Aitoolnet</a></div>
+            <div class="txt">Aitoolnet stands at the forefront of AI technology, boasting an impressive directory of over 15,000+ AI tools, meticulously updated daily.</div>
+        </div>
+        <div class="fmid">
+            <div class="title">Useful Links</div>
+            <div class="flink flex">
+                <div style="width: 30%">
+                    <ul>
+                                                <li><a href="/about" target="_blank" class="aitool">About</a></li>
+                                                <li><a href="/blog" target="_blank" class="aitool">Blog</a></li>
+                                                <li><a href="/popular" target="_blank" class="aitool">Popular</a></li>
+                                                <li><a href="/privacy" target="_blank" class="aitool">Privacy Policy</a></li>
+                                                <li><a href="/terms" target="_blank" class="aitool">Terms</a></li>
+                                            </ul>
+                </div>
+                <div style="width: 70%; padding-left: 30px">
+                    <ul>
+                                                <li><a href="https://www.aitoolnet.com/homeworkifyai" target="_blank" class="aitool">homeworkify</a></li>
+                                                <li><a href="https://radar.aitoolnet.com/" target="_blank">AI Radar</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class='container copyright'>
+        <span class='footer-title'>© 2026 AIToolNet.com · Discover the Best AI Tools</span>
+    </div>
+</footer>
+<script>
+    var lang = '';
+</script>
+<script defer type="text/javascript" src="/static/sitenew/js/common.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D7KF3ZPKH4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-D7KF3ZPKH4');
+</script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a56d4c4b9c309743',t:'MTc5NDA2NDU3NQ=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a56d4c4b9c309743',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"742e4add1fc846e09c81c59f3d046c1b","spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>

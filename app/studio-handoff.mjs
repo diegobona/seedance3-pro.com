@@ -42,10 +42,11 @@ export async function saveVideoHandoff(draft, { storage = sessionStorage,
   }
   const referenceKey = referenceKeys[0] ?? null;
   const metadata = {
+    ...(typeof draft.optimizePrompt === 'boolean' ? { optimizePrompt: draft.optimizePrompt } : {}),
     createdAt: Date.now(), prompt: String(draft.prompt || '').slice(0, 2500),
     duration: [5, 10, 15].includes(Number(draft.duration)) ? Number(draft.duration) : 5,
     aspectRatio: ['16:9', '9:16', '1:1'].includes(draft.aspectRatio) ? draft.aspectRatio : '16:9',
-    mode: draft.mode === 'reference' ? 'reference' : 'text', referenceKey, referenceKeys,
+    mode: ['reference', 'frames'].includes(draft.mode) ? draft.mode : 'text', referenceKey, referenceKeys,
     taskId: UUID.test(draft.taskId || '') ? draft.taskId : '',
   };
   try { storage.setItem(KEY, JSON.stringify(metadata)); }

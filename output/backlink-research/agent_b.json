@@ -1,0 +1,159 @@
+{
+  "checked_at": "2026-11-07 Asia/Shanghai",
+  "scope": "TopAI.tools, TAAFT, AITopTools, Aitoolnet (用Aitoolnet替代工具产品Toolsaday)",
+  "method": "逐站web打开与公开HTTP HTML读取；成功HTML已保存；HTMLParser解析实际a元素rel；页面规则、价格及常见隐藏prompt-injection模式检查；未提交或支付。",
+  "rows": [
+    {
+      "name": "Aitoolnet",
+      "url": "https://www.aitoolnet.com/",
+      "submission_url": "https://www.aitoolnet.com/submit",
+      "type": "目录",
+      "dr": null,
+      "as": 28,
+      "authority_display": "DR未核验；Semrush AS 28",
+      "monthly_visits": 62000,
+      "traffic_period": "2026-09",
+      "traffic_source": "https://www.semrush.com/website/aitoolnet.com/overview/",
+      "metric_source_updated": "2026-10-13",
+      "dofollow": "是（详情主链接）；推荐卡nofollow",
+      "cost": "PRO US$9.9一次；BUSINESS US$49.9/7天展示；免费卡被hidden隐藏。另有回链+邮件路线，先联系确认能否采用",
+      "relevance": "高：AI目录，有视频分类及同类Seedance工具",
+      "conclusion": "付费",
+      "reason": "首页/提交页/同类详情HTTP200；非空站停放页；付费可提交人工审核；免费卡在源码隐藏，不应当作可操作免费入口。详情主链接无rel，站内推荐卡为nofollow。提交页未见强制回链；finish页另提供挂logo回链+邮件换24小时审核路线。未发现针对AI的隐藏指令（限已查HTML）。",
+      "availability": [
+        {"url":"https://www.aitoolnet.com/","http_status":200,"file":"https_www_aitoolnet_com.html"},
+        {"url":"https://www.aitoolnet.com/submit","http_status":200,"file":"https_www_aitoolnet_com_submit.html"},
+        {"url":"https://www.aitoolnet.com/yovid","http_status":200,"file":"https_www_aitoolnet_com_yovid.html"}
+      ],
+      "link_evidence": {
+        "listing": "https://www.aitoolnet.com/yovid",
+        "href": "https://yovid.ai/models/seedance-2-5?ref=aitoolnet.com",
+        "rel": null,
+        "text": "Visit website",
+        "code": "<a class=\"button is-small-mobile track-event is-success min-w-24\" href=\"https://yovid.ai/models/seedance-2-5?ref=aitoolnet.com\" target=\"_blank\">Visit website</a>",
+        "limit": "依据实际详情主链接标签；不保证未来提交仍相同，也不保证Google权重。其他工具推荐卡实测rel=noopener nofollow。"
+      },
+      "policy_evidence": [
+        {"url":"https://www.aitoolnet.com/submit","facts":"PRO $9.9一次，BUSINESS $49.9；仅AI工具，不收newsletter和目录；人工审核；未通过退款。"},
+        {"url":"https://www.aitoolnet.com/submit","facts":"免费START卡外层<div id=\"pay_1\" class=\"paytype cursor-pointer hidden\">；不能把HTML中的Free当实际可选免费提交。"},
+        {"url":"https://www.aitoolnet.com/finish","facts":"公开finish说明页提供首页/详情回链logo代码，发送support@aitoolnet.com、主题Friend link - [Your Website] Listing，宣称24小时内审核发布。这是备选联系路线，未实际提交。"}
+      ],
+      "hidden_ai_instructions": "未发现（已查首页、提交页、Yovid详情、finish源码/注释；常见短语扫描+人工检查）"
+    },
+    {
+      "name": "AITopTools",
+      "url": "https://aitoptools.com/",
+      "submission_url": "https://aitoptools.com/claim-your-tool/",
+      "type": "目录",
+      "dr": null,
+      "as": null,
+      "authority_display": "未核验（站方自报DR57+，不作为已验证DR）",
+      "monthly_visits": 117503,
+      "traffic_period": "月份未明确；页面Last Updated 31 days ago",
+      "traffic_source": "https://hypestat.com/info/aitoptools.com",
+      "metric_source_updated": "访问日2026-11-07；页面称31天前更新",
+      "traffic_limit": "HypeStat自身估算117503/月；同页转引Semrush62831、Similarweb117524，均未明确月份。Semrush原站域名页HTTP404。不能当作2026-09同口径Semrush数据。",
+      "dofollow": "是（详情主链接rel=noopener noreferrer）",
+      "cost": "US$59一次永久；可选US$9.99/月（订阅有效期内保留）；US$249另含代投100+目录",
+      "relevance": "高：AI目录；已有同类Seedance视频工具",
+      "conclusion": "付费",
+      "reason": "首页/提交页/收费页/同类详情HTTP200；当前详情确实follow，与旧名单nofollow说法不同。现收费页$59一次，与旧名单$69也不同。提供可选Featured徽章代码，已查规则未要求必须回链；DR只见站方自报，付费前宜补测。",
+      "availability": [
+        {"url":"https://aitoptools.com/","http_status":200,"file":"https_aitoptools_com.html"},
+        {"url":"https://aitoptools.com/claim-your-tool/","http_status":200,"file":"https_aitoptools_com_claim_your_tool.html"},
+        {"url":"https://aitoptools.com/sponsorships/","http_status":200,"file":"https_aitoptools_com_sponsorships.html"},
+        {"url":"https://aitoptools.com/tool/seedance-2-5-4/","http_status":200,"file":"https_aitoptools_com_tool_seedance_2_5_4.html"}
+      ],
+      "link_evidence": {
+        "listing": "https://aitoptools.com/tool/seedance-2-5-4/",
+        "href": "https://yovid.ai/models/seedance-2-5",
+        "rel": "noopener noreferrer",
+        "text": "Visit Seedance 2.5 on Yovid",
+        "code": "<a href=\"https://yovid.ai/models/seedance-2-5\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"flex items-center justify-center gap-2 w-full rounded-lg bg-indigo-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-600 transition-colors mb-3\">Visit Seedance 2.5 on Yovid</a>",
+        "limit": "2个主CTA属性相同，均无nofollow/sponsored/ugc；不代表所有存量或将来条目。"
+      },
+      "policy_evidence": [
+        {"url":"https://aitoptools.com/sponsorships/","facts":"Instant Listing $59一次永久；$9.99/月只在订阅期间保留；$249含代投其他目录。"},
+        {"url":"https://aitoptools.com/help/","facts":"现FAQ明确新提交须选择付费套餐完成付款。"},
+        {"url":"https://aitoptools.com/claim-your-tool/","facts":"提交草稿支持AI工具URL；站方自报DR57+ dofollow backlink；本次未填写提交。"},
+        {"url":"https://aitoptools.com/tool/seedance-2-5-4/","facts":"Promote Your Tool提供可复制Featured徽章代码；未写强制安装。"}
+      ],
+      "hidden_ai_instructions": "未发现（已查首页、提交页、收费页、Seedance详情HTML/注释）"
+    },
+    {
+      "name": "There's An AI For That (TAAFT)",
+      "url": "https://theresanaiforthat.com/",
+      "submission_url": "https://theresanaiforthat.com/launch/",
+      "type": "目录",
+      "dr": null,
+      "as": 57,
+      "authority_display": "DR未核验；Semrush AS57",
+      "monthly_visits": 6530000,
+      "traffic_period": "2026-09",
+      "traffic_source": "https://www.semrush.com/website/theresanaiforthat.com/overview/",
+      "metric_source_updated": "2026-10-14",
+      "dofollow": "未核验（详情403；不采用第三方名单的dofollow结论）",
+      "cost": "US$49一次基础；US$437一次Maximum Exposure；每月X活动只选1个免费工具",
+      "relevance": "高：AI工具目录，launch页展示Higgsfield/HeyGen客户",
+      "conclusion": "联系站长",
+      "reason": "launch页HTML200可读，明确收AI工具/MCP/GPT，收费和退款可核验；首页及Higgsfield/HeyGen详情、just-released、terms抓取403，无法完成真实rel核验。保留待核验，不因抓取受阻认定拒收产品；当前不列已核实follow优先清单。",
+      "availability": [
+        {"url":"https://theresanaiforthat.com/launch/","http_status":200,"file":"https_theresanaiforthat_com_launch.html"},
+        {"url":"https://theresanaiforthat.com/","http_status":403},
+        {"url":"https://theresanaiforthat.com/ai/higgsfield-ai/","http_status":403},
+        {"url":"https://theresanaiforthat.com/ai/heygen/","http_status":403}
+      ],
+      "policy_evidence": [
+        {"url":"https://theresanaiforthat.com/launch/","facts":"价格49/437一次；基础永久条目；稿件人工审查，未发布自动退款；平均1-2天；月度X活动选1款免费收录。"},
+        {"url":"https://theresanaiforthat.com/launch/","facts":"已查提交说明未见挂徽章/回链强制条件。"}
+      ],
+      "hidden_ai_instructions": "launch源码未发现常见针对AI隐藏指令；详情受403限制不能核查"
+    },
+    {
+      "name": "TopAI.tools",
+      "url": "https://topai.tools/",
+      "submission_url": "https://topai.tools/submit",
+      "type": "目录",
+      "dr": null,
+      "as": 39,
+      "authority_display": "DR未核验；Semrush AS39",
+      "monthly_visits": 385120,
+      "traffic_period": "2026-09",
+      "traffic_source": "https://www.semrush.com/website/topai.tools/overview/",
+      "metric_source_updated": "2026-10-11",
+      "dofollow": "未核验（HTML403；网页阅读器不提供rel）",
+      "cost": "US$47一次Fast Track；US$229一次含7天Featured",
+      "relevance": "高：AI目录，有视频工具分类和Kling类已有收录",
+      "conclusion": "联系站长",
+      "reason": "web实际打开提交页和kling4.tv详情有正常内容；提交需可用AI功能、人工审核，不收录退款；无明确拒绝本类产品。原始HTML请求主页/提交/详情均403，无法验证rel及隐藏指令，先联系确认/人工浏览复核。已查可见规则未提强制徽章/回链。",
+      "availability": [
+        {"url":"https://topai.tools/submit","web_reader":"正常内容","raw_http_status":403},
+        {"url":"https://topai.tools/t/kling4-tv","web_reader":"正常目录详情与Try Now出站链接","raw_http_status":403}
+      ],
+      "link_evidence": {
+        "listing": "https://topai.tools/t/kling4-tv",
+        "observed_target_from_web": "https://kling4.tv",
+        "rel": "unknown",
+        "limit": "只有网页可见文本及链接，不包含rel；不能确认follow。"
+      },
+      "policy_evidence": [
+        {"url":"https://topai.tools/submit","facts":"47/229美元；人工审查；拒收退款；AI工具须功能可用、可访问、为用户提供价值；永久listing。"},
+        {"url":"https://topai.tools/tool-submit","facts":"表单要求工具名称、URL、价格模型、描述、邮箱；不要短网址或链接参数；未实际提交。"}
+      ],
+      "hidden_ai_instructions": "未核验源码；已读可见文本未发现"
+    }
+  ],
+  "discovery_evidence": [
+    {"url":"https://submit.co/sites/aitoolnet.com","use":"候选/核验线索；费用与rel均另实查原站；其免费说法不可直接照用"},
+    {"url":"https://submitmap.com/platform/aitoptools/","use":"现成名单线索；其nofollow/$69与实查页面不一致，采用当前原站证据"},
+    {"url":"https://topai.tools/t/kling4-tv","use":"同类视频生成工具目录覆盖，可见详情存在，未当成最近新增反链"},
+    {"url":"https://nudgescout.com/website-data/aitoptools.com/","use":"潜在雪球来源（2026-09-18公开快照），不是Ahrefs或Semrush新增数据；本子任务未继续抓取其反链列表"}
+  ],
+  "limitations": [
+    "无已连接Ahrefs或Semrush付费反链工具，因此不声称验证任何最近新增反链。",
+    "AS与DR并非同一指标；AS不能填成DR数值，AITopTools的DR57+仅站方自报。",
+    "月流量均第三方估算，不是站点GA实测；AITopTools月份未明确须单独注明。",
+    "未提交产品、付款、创建账户或发邮件。",
+    "未发现隐藏指令仅限取得并检查的页面源代码，无法证明整站不存在。"
+  ]
+}

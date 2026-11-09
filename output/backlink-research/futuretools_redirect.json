@@ -1,0 +1,68 @@
+[
+  {
+    "url": "https://futuretools.io/go/runway",
+    "status": 302,
+    "headers": {
+      "Age": "0",
+      "Cache-Control": "public, max-age=0, must-revalidate",
+      "Content-Length": "0",
+      "Date": "Sat, 07 Nov 2026 15:18:13 GMT",
+      "Location": "https://runwayml.com/?ref=FutureTools.io",
+      "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+      "Referrer-Policy": "strict-origin-when-cross-origin",
+      "Server": "Vercel",
+      "Strict-Transport-Security": "max-age=63072000",
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "SAMEORIGIN",
+      "X-Matched-Path": "/go/[slug]",
+      "X-Vercel-Cache": "MISS",
+      "X-Vercel-Id": "sin1::iad1::hm925-1794064693464-b0855e73efa2",
+      "Connection": "close"
+    }
+  },
+  {
+    "url": "https://runwayml.com/?ref=FutureTools.io",
+    "status": 308,
+    "headers": {
+      "Cache-Control": "public, max-age=0, must-revalidate",
+      "Content-Type": "text/plain",
+      "Date": "Sat, 07 Nov 2026 15:18:14 GMT",
+      "Location": "https://runway.com/?ref=FutureTools.io",
+      "Refresh": "0;url=https://runway.com/?ref=FutureTools.io",
+      "Server": "Vercel",
+      "Strict-Transport-Security": "max-age=63072000",
+      "X-Vercel-Id": "sin1::7frsj-1794064694455-c876ff5704c0",
+      "Connection": "close",
+      "Transfer-Encoding": "chunked"
+    }
+  },
+  {
+    "url": "https://runway.com/?ref=FutureTools.io",
+    "status": 200,
+    "headers": {
+      "Age": "696",
+      "Cache-Control": "public, max-age=0, must-revalidate",
+      "Content-Length": "1189444",
+      "Content-Security-Policy": "default-src 'self';    script-src 'self' 'unsafe-eval' 'unsafe-inline' https://v.runwayml.com https://vercel.live https://va.vercel-scripts.com https://platform.twitter.com https://www.googletagmanager.com https://*.googletagmanager.com https://googleads.g.doubleclick.net https://pagead2.googlesyndication.com www.googletagmanager.com https://tag.unifyintent.com https://unifyintent.com https://static.claydar.com https://cdn.claydar.com https://p.conversion.ai https://connect.facebook.net https://capi-automation.s3.us-east-2.amazonaws.com https://snap.licdn.com https://www.gstatic.com https://www.redditstatic.com https://bzrcdn.openai.com https://consent.cookiebot.com https://consentcdn.cookiebot.com https://sanity-cdn.com https://core.sanity-cdn.com https://*.sanity-cdn.com;    style-src 'self' 'unsafe-inline' https://vercel.live https://www.googletagmanager.com https://fonts.googleapis.com https://consent.cookiebot.com https://consentcdn.cookiebot.com;    img-src 'self' d3phaj0sisr2ct.cloudfront.net duzue7cn7o3dm.cloudfront.net image.mux.com blob: data: https://*.supabase.co https://runway-static-assets.s3.amazonaws.com https://*.googleusercontent.com https://vercel.live https://vercel.com https://img.youtube.com https://placehold.co https://www.googletagmanager.com https://*.googletagmanager.com https://fonts.gstatic.com https://www.googleadservices.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://*.google-analytics.com https://*.g.doubleclick.net https://*.google.com https://googleads.g.doubleclick.net https://www.google.com https://www.facebook.com https://px.ads.linkedin.com https://www.linkedin.com https://i.vimeocdn.com https://alb.reddit.com https://imgsct.cookiebot.com https://bzrcdn.openai.com https://cdn.sanity.io https://*.sanity.io;    media-src 'self' d3phaj0sisr2ct.cloudfront.net duzue7cn7o3dm.cloudfront.net https://runway-static-assets.s3.amazonaws.com https://image.mux.com https://stream.mux.com https://*.mux.com https://*.supabase.co blob:;    font-src 'self' https://vercel.live https://assets.vercel.com https://fonts.gstatic.com;    connect-src 'self' https://v.runwayml.com wss://v.runwayml.com https://*.verisoul.ai wss://*.verisoul.ai https://runway-static-assets.s3.amazonaws.com https://runway-static-assets.s3.us-east-1.amazonaws.com https://rest.iad-05.braze.com https://*.airtable.com https://*.salesforce.com https://api.ashbyhq.com wss://ws-us3.pusher.com https://vercel.live https://*.googleapis.com https://*.firebaseio.com https://firestore.googleapis.com https://*.firebaseauth.com https://securetoken.googleapis.com  https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://*.googletagmanager.com  https://help.runwayml.com https://www.googleadservices.com https://www.google.com https://*.google.com https://*.google.co.uk https://*.google.ca https://*.google.com.au https://*.google.de https://*.google.fr https://*.google.es https://*.google.it https://*.google.nl https://*.google.pl https://*.google.co.jp https://*.google.co.kr https://*.google.com.br https://*.google.com.mx https://*.google.cl https://*.google.com.ar https://*.google.co.in https://*.google.co.nz https://*.google.at https://*.google.ch https://*.google.be https://*.google.se https://ad.doubleclick.net https://*.g.doubleclick.net https://pagead2.googlesyndication.com www.google.com https://unifyintent.com https://api.claydar.com https://p.conversion.ai https://seonaapi.conversion.ai https://www.facebook.com https://px.ads.linkedin.com https://stream.mux.com https://image.mux.com https://*.mux.com https://inferred.litix.io https://peggy-api.runwayml.com https://faved.com https://alb.reddit.com https://pixel-config.reddit.com https://bzrcdn.openai.com https://bzr.openai.com https://consent.cookiebot.com https://consentcdn.cookiebot.com https://api-js.mixpanel.com https://api.mixpanel.com https://*.sanity.io https://*.api.sanity.io https://*.apicdn.sanity.io wss://*.api.sanity.io https://cdn.sanity.io https://sanity-cdn.com https://core.sanity-cdn.com https://*.sanity-cdn.com https://fh-118116076e9a4c2a96a99fbb70bea2a0.ecs.us-west-2.on.aws/events https://bded8a3c6ae-1-1053047382554.us-central1.run.app/events;    frame-src 'self' https://www.youtube.com https://youtube.com https://www.youtube-nocookie.com https://player.vimeo.com https://vercel.live https://platform.twitter.com https://twitter.com https://www.googletagmanager.com https://consent.cookiebot.com https://consentcdn.cookiebot.com https://core.sanity-cdn.com https://*.sanity-cdn.com https://*.sanity.io;    worker-src 'self' blob: data:;    object-src 'none';    base-uri 'self';    form-action 'self';    frame-ancestors 'self';    upgrade-insecure-requests;",
+      "Content-Type": "text/html; charset=utf-8",
+      "Date": "Sat, 07 Nov 2026 15:06:37 GMT",
+      "Etag": "\"4wzv11c5fiphg5\"",
+      "Link": "<https://runway.com/>; rel=\"alternate\"; hreflang=\"en\", <https://runway.com/ja>; rel=\"alternate\"; hreflang=\"ja\", <https://runway.com/ko>; rel=\"alternate\"; hreflang=\"ko\", <https://runway.com/fr>; rel=\"alternate\"; hreflang=\"fr\", <https://runway.com/pt-br>; rel=\"alternate\"; hreflang=\"pt-br\", <https://runway.com/>; rel=\"alternate\"; hreflang=\"x-default\"",
+      "Referrer-Policy": "origin-when-cross-origin",
+      "Server": "Vercel",
+      "Set-Cookie": "NEXT_LOCALE=en; Path=/; SameSite=lax",
+      "Strict-Transport-Security": "max-age=63072000",
+      "Vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "SAMEORIGIN",
+      "X-Matched-Path": "/en",
+      "X-Nextjs-Prerender": "1",
+      "X-Nextjs-Stale-Time": "300",
+      "X-Powered-By": "Next.js",
+      "X-Vercel-Cache": "HIT",
+      "X-Vercel-Id": "sin1::sfo1::j926n-1794064695256-3a9f3e8d4a6d",
+      "X-Xss-Protection": "1; mode=block",
+      "Connection": "close"
+    }
+  }
+]

@@ -336,3 +336,42 @@ test("video errors consistently expose valid credit headers", async () => {
     return true;
   });
 });
+
+
+test('optimization choice survives JSON and image uploads; fallback status reaches the UI', async () => {
+  const { requestVideoGeneration } = await import('../app/video-generation.mjs');
+  for (const optimizePrompt of [true, false]) for (const image of [false, true]) {
+    const statuses=[];
+    await requestVideoGeneration({prompt:'A cat', optimizePrompt, onPromptOptimization: value => statuses.push(value),
+      referenceFiles:image?[new File(['image'],'x.png',{type:'image/png'})]:[],prepareReferenceImpl:async file=>file, waitImpl:async()=>{},
+      fetchImpl:async(url,init)=>{
+        if(url==='/api/videos/generate') {
+          const body=JSON.parse(image ? init.body.get('payload') : init.body);
+          assert.equal(body.optimizePrompt,optimizePrompt);
+          return Response.json({success:true,task:{id:LOCAL_TASK_ID,status:'queued'}},{status:202,headers:{'x-seedance-prompt-optimization':'fallback'}});
+        }
+        return Response.json({success:true,task:{id:LOCAL_TASK_ID,status:'succeeded',resultUrl:'https://example.test/video.mp4'}});
+      }});
+    assert.deepEqual(statuses,['fallback']);
+  }
+});
+
+test('the exact optimized prompt reaches the UI before polling without replacing the original input', async () => {
+  const { requestVideoGeneration } = await import('../app/video-generation.mjs');
+  const prompt = 'A cat turns toward the camera.';
+  const optimizedPrompt = 'integrated_multimodal_description: [Shot 1] A cat turns.\n\noverall_soundscape: N/A\n\nnon_diegetic_music: N/A';
+  const received = [];
+  await requestVideoGeneration({ prompt, optimizePrompt: true,
+    onPromptOptimization: (status, text) => received.push({ status, text }),
+    fetchImpl: async (url, init) => {
+      if (url === '/api/videos/generate') {
+        assert.equal(JSON.parse(init.body).prompt, prompt);
+        return jsonResponse({ success: true, task: { id: LOCAL_TASK_ID, status: 'queued' },
+          promptOptimization: { status: 'optimized', prompt: optimizedPrompt } },
+        { status: 202, headers: { 'x-seedance-prompt-optimization': 'optimized' } });
+      }
+      received.push('poll');
+      return jsonResponse({ success: true, task: { id: LOCAL_TASK_ID, status: 'succeeded', resultUrl: 'https://example.test/video.mp4' } });
+    }, waitImpl: async () => {} });
+  assert.deepEqual(received, [{ status: 'optimized', text: optimizedPrompt }, 'poll']);
+});

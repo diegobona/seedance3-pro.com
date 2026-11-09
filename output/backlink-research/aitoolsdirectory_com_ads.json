@@ -1,0 +1,239 @@
+{
+  "input": "https://aitoolsdirectory.com/ads",
+  "final": "https://aitoolsdirectory.com/ads",
+  "status": 200,
+  "links": [
+    {
+      "class": "content-logo",
+      "href": "/",
+      "aria-label": "AI Tools Directory home"
+    },
+    {
+      "class": "header-search-all",
+      "href": "/#filters",
+      "data-astro-cid-2odkx2fk": null
+    },
+    {
+      "class": "hero-button",
+      "href": "/submit-tool"
+    },
+    {
+      "class": "hero-button",
+      "href": "/ads"
+    },
+    {
+      "class": "hero-button",
+      "href": "/deals"
+    },
+    {
+      "class": "page-back",
+      "href": "/",
+      "aria-label": "Back to AI Tools Directory",
+      "data-history-back": "true"
+    },
+    {
+      "class": "callout",
+      "href": "#spec-pos1",
+      "data-key": "pos1",
+      "style": "--len:180;--delay:.1s",
+      "aria-label": "Featured, Position 1, $499 for 30 days",
+      "data-astro-cid-6bbq3yv5": null
+    },
+    {
+      "class": "callout",
+      "href": "#spec-row",
+      "data-key": "row",
+      "style": "--len:180;--delay:.35s",
+      "aria-label": "Top Organic Row, $299 for 30 days",
+      "data-astro-cid-6bbq3yv5": null
+    },
+    {
+      "class": "callout",
+      "href": "#spec-pos2",
+      "data-key": "pos2",
+      "style": "--len:180;--delay:.2s",
+      "aria-label": "Featured, Position 2, $399 for 30 days",
+      "data-astro-cid-6bbq3yv5": null
+    },
+    {
+      "class": "callout",
+      "href": "#spec-list",
+      "data-key": "list",
+      "style": "--len:180;--delay:.5s",
+      "aria-label": "Fast Track Listing, $99 one-time",
+      "data-astro-cid-6bbq3yv5": null
+    },
+    {
+      "href": "#spec-pos1",
+      "data-astro-cid-6bbq3yv5": null
+    },
+    {
+      "href": "#spec-pos2",
+      "data-astro-cid-6bbq3yv5": null
+    },
+    {
+      "href": "#spec-row",
+      "data-astro-cid-6bbq3yv5": null
+    },
+    {
+      "href": "#spec-list",
+      "data-astro-cid-6bbq3yv5": null
+    },
+    {
+      "class": "btn btn-magenta",
+      "href": "https://aitoolsdirectory.paperform.co/",
+      "data-astro-cid-6bbq3yv5": null
+    },
+    {
+      "class": "btn",
+      "href": "https://aitoolsdirectory.paperform.co/",
+      "data-astro-cid-6bbq3yv5": null
+    },
+    {
+      "class": "btn",
+      "href": "https://aitoolsdirectory.paperform.co/",
+      "data-astro-cid-6bbq3yv5": null
+    },
+    {
+      "class": "btn",
+      "href": "https://aitoolsdirectory.paperform.co/",
+      "data-astro-cid-6bbq3yv5": null
+    },
+    {
+      "class": "black-button",
+      "href": "https://forms.aitoolsdirectory.com/form.html",
+      "target": "_blank",
+      "rel": "noopener"
+    },
+    {
+      "href": "/about"
+    },
+    {
+      "href": "/blog"
+    },
+    {
+      "href": "/newsletter"
+    },
+    {
+      "href": "/trends"
+    },
+    {
+      "href": "/communities"
+    },
+    {
+      "href": "/marketplace-directory"
+    },
+    {
+      "href": "/deals"
+    },
+    {
+      "href": "/black-friday"
+    },
+    {
+      "href": "/submit-tool"
+    },
+    {
+      "href": "/contact"
+    },
+    {
+      "href": "/privacy-policy"
+    },
+    {
+      "href": "/terms-of-use"
+    }
+  ],
+  "text": "Advertise Your AI Tool on AI Tools Directory (function(){const GTM_CONTAINER_ID = \"GTM-NL4PZGZ\";\n\n      if (window.location.hostname === 'aitoolsdirectory.com' || window.location.hostname === 'www.aitoolsdirectory.com') {\n        window.dataLayer = window.dataLayer || [];\n        window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };\n        window.dataLayer.push({ 'gtm.start': Date.now(), event: 'gtm.js' });\n        const firstScript = document.getElementsByTagName('script')[0];\n        const tagManager = document.createElement('script');\n        tagManager.async = true;\n        tagManager.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_CONTAINER_ID}`;\n        firstScript.parentNode.insertBefore(tagManager, firstScript);\n      }\n    })(); {\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"Organization\",\"@id\":\"https://aitoolsdirectory.com/#organization\",\"name\":\"AI Tools Directory\",\"url\":\"https://aitoolsdirectory.com/\",\"logo\":\"https://aitoolsdirectory.com/logo.png\",\"sameAs\":[\"https://www.threads.com/@theaitoolsdirectory\",\"https://x.com/aitoolsdirect\",\"https://www.youtube.com/@AIToolsDirectoryYT\"]},{\"@type\":\"WebSite\",\"@id\":\"https://aitoolsdirectory.com/#website\",\"name\":\"AI Tools Directory\",\"url\":\"https://aitoolsdirectory.com/\",\"publisher\":{\"@id\":\"https://aitoolsdirectory.com/#organization\"}},{\"@type\":\"WebPage\",\"name\":\"Advertise Your AI Tool on AI Tools Directory\",\"description\":\"Put your AI tool on the AI Tools Directory homepage. Featured slots from $299 for 30 days, or a permanent Fast Track listing for $99. No subscription fees.\",\"url\":\"https://aitoolsdirectory.com/ads\"},{\"@type\":\"OfferCatalog\",\"name\":\"AI Tools Directory advertising\",\"url\":\"https://aitoolsdirectory.com/ads\",\"itemListElement\":[{\"@type\":\"Offer\",\"name\":\"Homepage Featured, Position 1\",\"price\":\"499\",\"priceCurrency\":\"USD\",\"description\":\"Exclusive top-left Featured Tool slot for 30 days\"},{\"@type\":\"Offer\",\"name\":\"Homepage Featured, Position 2\",\"price\":\"399\",\"priceCurrency\":\"USD\",\"description\":\"Second Featured Tool slot for 30 days\"},{\"@type\":\"Offer\",\"name\":\"Top Organic Row\",\"price\":\"299\",\"priceCurrency\":\"USD\",\"description\":\"Rotating spot in the first organic row for 30 days\"},{\"@type\":\"Offer\",\"name\":\"Fast Track Listing\",\"price\":\"99\",\"priceCurrency\":\"USD\",\"description\":\"Permanent listing, reviewed and published in 3 days or less\"}]}]} Search AI tools See all results  → Submit Tool Advertise Deals ← Back var e=document.querySelector(`.page-back[data-history-back=\"true\"]`);e&&e?.addEventListener(`click`,e=>{(document.referrer?new URL(document.referrer):null)?.origin===window.location.origin&&history.length>1&&(e.preventDefault(),history.back())}); AI Tools Directory The world's best curated list of AI Tools Featured Tool Featured Tool Your tool here Your tool here Rotates weekly Listed for good Advertise Your AI Tool Put your product on the homepage of AI Tools Directory, where visitors browse and compare AI tools. See exactly where your AI tool will appear. Four placements, priced by position.  Hover or tap one  to see what it includes. No subscription fees. Featured, Position 1 $499 / 30 days Exclusive top-left slot Top Organic Row $299 / 30 days 4 spots, rotating weekly Featured, Position 2 $399 / 30 days Second slot, right side Fast Track Listing $99 one-time Permanent, live in 3 days 1 2 3 4 1 Featured, Position 1 Exclusive top slot $499 / 30d 2 Featured, Position 2 Second featured slot $399 / 30d 3 Top Organic Row 4 spots, rotating weekly $299 / 30d 4 Fast Track Listing Permanent listing $99 once Brand-safe: no NSFW tools on the site Every listing written by our editors No subscription fees What each placement includes Homepage Featured, Position 1 $499 / 30 days The top-left Featured Tool slot, the first thing visitors see. Desktop Top left of the homepage Mobile First featured slot Shared? No. Exclusive for your 30 days Maximum visibility and clicks Bonus first-place alternative on related landing pages Two guaranteed links: homepage and organic page Book Position 1  The premium option for established tools and brands. Homepage Featured, Position 2 $399 / 30 days The second Featured Tool slot, right beside Position 1. Desktop Right-hand featured slot Mobile Second featured slot Shared? No High homepage visibility for $100 less than Position 1 Bonus placement on related landing pages Book Position 2  For tools that want the homepage but don't need the absolute top slot. Top Organic Row $299 / 30 days The first row of organic listings, with 4 slots available. Rotation Weekly, across positions 1 to 4 At #1 At least one week guaranteed Fewer advertisers More of your time in the top positions Book the top row  Ideal for growing tools that want consistent homepage exposure at an affordable rate. Fast Track Listing $99 one-time We receive dozens of new AI tools every day, and each is manually reviewed, tested and written up by our team. Fast Track skips that queue. In many cases your tool goes live the same day. Live in 3 days or less Stays up Permanently Write-up Unique, manually reviewed and SEO-optimized Get Fast Track  Best for startups and solo founders who want a permanent listing and long-term SEO value at the lowest cost. AI tools only. Non-AI submissions won't be approved, so please don't order unless your product clearly qualifies. An audience that came to buy. Other large AI tool directories get substantial organic traffic from adult and NSFW searches. We don't publish those categories. That choice costs us traffic, and it gives you placement in a premium directory focused on business, productivity and creative AI tools. Early adopters in our audience come from companies like High intent Visitors come specifically to find AI tools and make buying decisions. Global, Tier-1 heavy Strong traffic from the US, UK, Canada, Australia and Europe. Decision-makers Early adopters, startup teams, agencies and business owners. Long-term value SEO-optimized listings keep driving traffic well beyond the campaign period. Not accepted Crypto products or services Gambling websites NSFW tools AI girlfriend or companion apps Uncensored or unfiltered AI Products that aren't AI-related We reserve the right to reject non-compliant ads. Your description We may edit or rewrite any part of the description you supply to meet our editorial and SEO standards. If you're not comfortable with that, please don't advertise. var e=document.getElementById(`bigmap`),t=matchMedia(`(min-width: 861px)`);!document.hidden&&!matchMedia(`(prefers-reduced-motion: reduce)`).matches&&e.classList.add(`drawn`),e.querySelectorAll(`.callout`).forEach(t=>{let n=()=>{e.dataset.on=t.dataset.key},r=()=>{e.dataset.on=`all`};t.addEventListener(`mouseenter`,n),t.addEventListener(`focus`,n),t.addEventListener(`mouseleave`,r),t.addEventListener(`blur`,r)});var n=()=>e.setAttribute(`viewBox`,t.matches?`0 0 1300 590`:`300 30 700 530`);t.addEventListener(`change`,n),n(); Aitoolsdirectory.com  is a free resource and does not charge subscription fees. We are not affiliated with aitoolsdirectory.net. AI Tools Newsletter Get the latest updates on  AI software , picked for entrepreneurs and creators. Whether your goal is to automate workflows, enhance creative output, or boost productivity, it’s all here. Subscribe About Blog Newsletter AI Trends Communities AI marketplaces Deals Black Friday deals Submit Tool Contact Privacy Policy Terms of Use AI Tools Directory document.querySelectorAll(`a[href]`).forEach(e=>{let t=new URL(e.href,window.location.href);if((t.protocol===`http:`||t.protocol===`https:`)&&t.origin!==window.location.origin){e.target=`_blank`;let t=new Set((e.rel||``).split(/\\s+/).filter(Boolean));t.add(`noopener`),t.delete(`noreferrer`),e.rel=[...t].join(` `)}else t.origin===window.location.origin&&e.removeAttribute(`target`)}); \n",
+  "comment_count": 0,
+  "hidden_elements": [
+    {
+      "tag": "svg",
+      "attrs": {
+        "viewbox": "0 0 24 24",
+        "width": "20",
+        "height": "20",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "aria-hidden": "true",
+        "data-astro-cid-2odkx2fk": null
+      }
+    },
+    {
+      "tag": "svg",
+      "attrs": {
+        "viewbox": "0 0 24 24",
+        "width": "18",
+        "height": "18",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "aria-hidden": "true",
+        "data-astro-cid-2odkx2fk": null
+      }
+    },
+    {
+      "tag": "div",
+      "attrs": {
+        "class": "header-search-panel",
+        "hidden": null,
+        "data-astro-cid-2odkx2fk": null
+      }
+    },
+    {
+      "tag": "span",
+      "attrs": {
+        "aria-hidden": "true",
+        "data-astro-cid-2odkx2fk": null
+      }
+    },
+    {
+      "tag": "span",
+      "attrs": {
+        "aria-hidden": "true"
+      }
+    },
+    {
+      "tag": "svg",
+      "attrs": {
+        "width": "0",
+        "height": "0",
+        "style": "position:absolute",
+        "aria-hidden": "true",
+        "data-astro-cid-6bbq3yv5": null
+      }
+    },
+    {
+      "tag": "g",
+      "attrs": {
+        "class": "pin",
+        "aria-hidden": "true",
+        "data-astro-cid-6bbq3yv5": null
+      }
+    },
+    {
+      "tag": "g",
+      "attrs": {
+        "class": "pin",
+        "aria-hidden": "true",
+        "data-astro-cid-6bbq3yv5": null
+      }
+    },
+    {
+      "tag": "g",
+      "attrs": {
+        "class": "pin",
+        "aria-hidden": "true",
+        "data-astro-cid-6bbq3yv5": null
+      }
+    },
+    {
+      "tag": "g",
+      "attrs": {
+        "class": "pin",
+        "aria-hidden": "true",
+        "data-astro-cid-6bbq3yv5": null
+      }
+    }
+  ],
+  "suspicious": []
+}

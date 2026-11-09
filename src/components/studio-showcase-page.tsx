@@ -217,8 +217,9 @@ export function StudioShowcasePage({ model }: { model: StudioShowcaseModel }) {
               <p className="studio-showcase-eyebrow">{t(content.label)}</p>
               <h1>{t(content.title)}</h1>
               {content.description && <p>{t(content.description)}</p>}
+              {model === 'minimax-h3' && <p className="video-example-note">{t("AI results vary and won’t exactly match the example.")}</p>}
             </div>
-            {model === 'minimax-h3' ? <><SeedanceVideoPromptCards /><SeedanceVideoPromptCards bottom /></> : model === 'gpt-image-2' ? <GptImageShowcaseGrid /> : model === 'seedance-3-0' ? <Seedance3PlannedGrid /> : model === 'christmas-photo' ? <ChristmasPhotoPrompts /> : <MusePromptGrid model={model} />}
+            {model === 'minimax-h3' ? <><SeedanceVideoPromptCards bottom /><SeedanceVideoPromptCards /></> : model === 'gpt-image-2' ? <GptImageShowcaseGrid /> : model === 'seedance-3-0' ? <Seedance3PlannedGrid /> : model === 'christmas-photo' ? <ChristmasPhotoPrompts /> : <MusePromptGrid model={model} />}
             {(model === 'minimax-h3' || model === 'gpt-image-2') && <PromptLibraryGuide model={model} />}
           </div>
         </main>

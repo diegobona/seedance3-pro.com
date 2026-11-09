@@ -3,7 +3,7 @@ export interface GuestVideoVerificationEnvironment {
   TURNSTILE_SECRET?: string
   TURNSTILE_HOSTNAMES?: string
 }
-export type GuestVideoAction = 'guest_video_generate' | 'guest_video_reference'
+export type GuestVideoAction = 'guest_video_generate' | 'guest_video_reference' | 'guest_image_generate'
 
 /** Fail closed before guest provisioning, credit reservation, R2 writes or supplier calls. */
 export async function verifyGuestVideoRequest(request: Request, environment: GuestVideoVerificationEnvironment,
@@ -32,6 +32,15 @@ export async function verifyGuestVideoRequest(request: Request, environment: Gue
     })
     if (!result.ok) throw new Error('Verification service unavailable')
     const verified = await result.json() as { success?: boolean; action?: string; hostname?: string }
+    // Cloudflare's public test keys return example.com without an action.
+    // This exception is compiled out of production and restricted to loopback,
+    // the exact official test key pair, and the official dummy token.
+    const localTest = import.meta.env?.DEV === true
+      && (hostname === '127.0.0.1' || hostname === 'localhost')
+      && siteKey === '1x00000000000000000000AA'
+      && secret === '1x0000000000000000000000000000000AA'
+      && token === 'XXXX.DUMMY.TOKEN.XXXX'
+    if (localTest && verified.success === true && verified.hostname === 'example.com' && !verified.action) return null
     // Turnstile consumes each token once. Never cache success or trust client device hints here.
     if (verified.success === true && verified.action === action && verified.hostname === hostname) return null
     return response(403, 'GUEST_VERIFICATION_FAILED', 'Verification failed. Please try again.')

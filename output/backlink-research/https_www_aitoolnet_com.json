@@ -1,0 +1,1095 @@
+{
+  "url": "https://www.aitoolnet.com/",
+  "final": "https://www.aitoolnet.com/",
+  "status": 200,
+  "title": "Aitoolnet - Best AI Tools Directory & Search Engine (2026)",
+  "links": [
+    {
+      "class": "aitool navbar-item",
+      "href": "/",
+      "id": "navbar-logo",
+      "text": "\n                \n            "
+    },
+    {
+      "class": "aitool button is-white hide-on-search",
+      "href": "/categories",
+      "text": "Categories"
+    },
+    {
+      "class": "aitool button is-white hide-on-search",
+      "href": "/new",
+      "text": "New"
+    },
+    {
+      "class": "aitool button is-white hide-on-search",
+      "href": "/prompt",
+      "text": "Prompt"
+    },
+    {
+      "class": "button is-white ml-2",
+      "href": "/submit",
+      "text": "Submit"
+    },
+    {
+      "href": "javascript:void(0)",
+      "class": "dropdown-toggle",
+      "data-toggle": "dropdown",
+      "role": "button",
+      "aria-haspopup": "true",
+      "aria-expanded": "false",
+      "text": "English"
+    },
+    {
+      "href": "/",
+      "data-lang": "",
+      "text": "English"
+    },
+    {
+      "href": "/zh",
+      "data-lang": "zh",
+      "text": "简体中文"
+    },
+    {
+      "href": "/zhtw",
+      "data-lang": "zhtw",
+      "text": "繁體中文"
+    },
+    {
+      "href": "/ko",
+      "data-lang": "ko",
+      "text": "한국어"
+    },
+    {
+      "href": "/ja",
+      "data-lang": "ja",
+      "text": "日本語"
+    },
+    {
+      "href": "/ru",
+      "data-lang": "ru",
+      "text": "Русский язык"
+    },
+    {
+      "href": "/fr",
+      "data-lang": "fr",
+      "text": "Français"
+    },
+    {
+      "href": "/es",
+      "data-lang": "es",
+      "text": "Español"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/productivity",
+      "title": "Productivity",
+      "text": "Productivity"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/spreadsheets",
+      "title": "Spreadsheets",
+      "text": "Spreadsheets"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/copywriting",
+      "title": "Copywriting",
+      "text": "Copywriting"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/startup-tools",
+      "title": "Startup Tools",
+      "text": "Startup Tools"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/video",
+      "title": "Video",
+      "text": "Video"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/text-to-speech",
+      "title": "Text To Speech",
+      "text": "Text To Speech"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/email-assistant",
+      "title": "Email Assistant",
+      "text": "Email Assistant"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/social-media-assistant",
+      "title": "Social Media Assistant",
+      "text": "Social Media Assistant"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/fun-tools",
+      "title": "Fun Tools",
+      "text": "Fun Tools"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/image-editing",
+      "title": "Image Editing",
+      "text": "Image Editing"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/avatars",
+      "title": "Avatars",
+      "text": "Avatars"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/image-generator",
+      "title": "Image Generator",
+      "text": "Image Generator"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/seo",
+      "title": "SEO",
+      "text": "SEO"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/code-assistant",
+      "title": "Code Assistant",
+      "text": "Code Assistant"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/music",
+      "title": "Music",
+      "text": "Music"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/presentations",
+      "title": "Presentations",
+      "text": "Presentations"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/education-assistant",
+      "title": "Education Assistant",
+      "text": "Education Assistant"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/art",
+      "title": "Art",
+      "text": "Art"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/gaming",
+      "title": "Gaming",
+      "text": "Gaming"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/sales",
+      "title": "Sales",
+      "text": "Sales"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/life-assistant",
+      "title": "Life Assistant",
+      "text": "Life Assistant"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/customer-support",
+      "title": "Customer Support",
+      "text": "Customer Support"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/developer-tools",
+      "title": "Developer Tools",
+      "text": "Developer Tools"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/search-engines",
+      "title": "Search Engines",
+      "text": "Search Engines"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/design-assistant",
+      "title": "Design Assistant",
+      "text": "Design Assistant"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/3d",
+      "title": "3D",
+      "text": "3D"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/legal-assistant",
+      "title": "Legal Assistant",
+      "text": "Legal Assistant"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/healthcare",
+      "title": "Healthcare",
+      "text": "Healthcare"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/prompts",
+      "title": "Prompts",
+      "text": "Prompts"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/research",
+      "title": "Research",
+      "text": "Research"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/audio",
+      "title": "Audio",
+      "text": "Audio"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/human-resources",
+      "title": "Human Resources",
+      "text": "Human Resources"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/story-teller",
+      "title": "Story Teller",
+      "text": "Story Teller"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/fashion",
+      "title": "Fashion",
+      "text": "Fashion"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/ecommerce",
+      "title": "E-commerce",
+      "text": "E-commerce"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/finance",
+      "title": "Finance",
+      "text": "Finance"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/meeting-assistant",
+      "title": "Meeting Assistant",
+      "text": "Meeting Assistant"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/chatbots",
+      "title": "Chatbots",
+      "text": "Chatbots"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/photo-editing",
+      "title": "Photo Editing",
+      "text": "Photo Editing"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/marketing",
+      "title": "Marketing",
+      "text": "Marketing"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/automation",
+      "title": "Automation",
+      "text": "Automation"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/large-language-models",
+      "title": "Large Language Models",
+      "text": "Large Language Models"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/data",
+      "title": "Data",
+      "text": "Data"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/business",
+      "title": "Business",
+      "text": "Business"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/machine-learning",
+      "title": "Machine Learning",
+      "text": "Machine Learning"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/slack",
+      "title": "Slack",
+      "text": "Slack"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/reading",
+      "title": "summarizer",
+      "text": "summarizer"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/qampa",
+      "title": "Q&A",
+      "text": "Q&A"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/grammar-checking",
+      "title": "Grammar checking",
+      "text": "Grammar checking"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/learning",
+      "title": "Learning",
+      "text": "Learning"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/ai-content-detection",
+      "title": "AI content detection",
+      "text": "AI content detection"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/speech-to-text",
+      "title": "Speech to text",
+      "text": "Speech to text"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/voice",
+      "title": "Voice",
+      "text": "Voice"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/face-swap",
+      "title": "",
+      "text": ""
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/paraphrasing",
+      "title": "Paraphrasing",
+      "text": "Paraphrasing"
+    },
+    {
+      "class": "aitool text-inherit",
+      "href": "/homeworkifyai",
+      "title": "Homeworkify",
+      "text": "Homeworkify"
+    },
+    {
+      "class": "aitool",
+      "href": "/docsbot-ai",
+      "title": "DocsBot AI",
+      "text": "\n                    "
+    },
+    {
+      "class": "aitool",
+      "href": "/docsbot-ai",
+      "title": "DocsBot AI",
+      "text": "DocsBot AI"
+    },
+    {
+      "rel": "noopener nofollow",
+      "href": "https://docsbot.ai/?ref=aitoolnet.com",
+      "title": "Site:https://docsbot.ai/?ref=aitoolnet.com",
+      "class": "ml-1 text-sm text-gray-400 hover:text-gray-600",
+      "target": "_blank",
+      "text": ""
+    },
+    {
+      "class": "aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200",
+      "href": "/customer-support",
+      "text": "#Customer Support"
+    },
+    {
+      "class": "aitool",
+      "href": "/elsa-speak",
+      "title": "ELSA Speak",
+      "text": "\n                    "
+    },
+    {
+      "class": "aitool",
+      "href": "/elsa-speak",
+      "title": "ELSA Speak",
+      "text": "ELSA Speak"
+    },
+    {
+      "rel": "noopener nofollow",
+      "href": "https://elsaspeak.com/en/?ref=aitoolnet.com",
+      "title": "Site:https://elsaspeak.com/en/?ref=aitoolnet.com",
+      "class": "ml-1 text-sm text-gray-400 hover:text-gray-600",
+      "target": "_blank",
+      "text": ""
+    },
+    {
+      "class": "aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200",
+      "href": "/education-assistant",
+      "text": "#Education Assistant"
+    },
+    {
+      "class": "aitool",
+      "href": "/deepseek-harness",
+      "title": "DeepSeek Harness",
+      "text": "\n                    "
+    },
+    {
+      "class": "aitool",
+      "href": "/deepseek-harness",
+      "title": "DeepSeek Harness",
+      "text": "DeepSeek Harness"
+    },
+    {
+      "rel": "noopener nofollow",
+      "href": "https://www.deepseek.com/harness/?ref=aitoolnet.com",
+      "title": "Site:https://www.deepseek.com/harness/?ref=aitoolnet.com",
+      "class": "ml-1 text-sm text-gray-400 hover:text-gray-600",
+      "target": "_blank",
+      "text": ""
+    },
+    {
+      "class": "aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200",
+      "href": "/code-assistant",
+      "text": "#Code Assistant"
+    },
+    {
+      "class": "aitool",
+      "href": "/speechify",
+      "title": "Speechify",
+      "text": "\n                    "
+    },
+    {
+      "class": "aitool",
+      "href": "/speechify",
+      "title": "Speechify",
+      "text": "Speechify"
+    },
+    {
+      "rel": "noopener nofollow",
+      "href": "https://speechify.com/?ref=aitoolnet.com",
+      "title": "Site:https://speechify.com/?ref=aitoolnet.com",
+      "class": "ml-1 text-sm text-gray-400 hover:text-gray-600",
+      "target": "_blank",
+      "text": ""
+    },
+    {
+      "class": "aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200",
+      "href": "/text-to-speech",
+      "text": "#Text To Speech"
+    },
+    {
+      "class": "aitool",
+      "href": "/typingmind",
+      "title": "Typingmind",
+      "text": "\n                    "
+    },
+    {
+      "class": "aitool",
+      "href": "/typingmind",
+      "title": "Typingmind",
+      "text": "Typingmind"
+    },
+    {
+      "rel": "noopener nofollow",
+      "href": "https://www.typingmind.com/?ref=aitoolnet.com",
+      "title": "Site:https://www.typingmind.com/?ref=aitoolnet.com",
+      "class": "ml-1 text-sm text-gray-400 hover:text-gray-600",
+      "target": "_blank",
+      "text": ""
+    },
+    {
+      "class": "aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200",
+      "href": "/productivity",
+      "text": "#Productivity"
+    },
+    {
+      "class": "aitool",
+      "href": "/anysearch",
+      "title": "AnySearch",
+      "text": "\n                    "
+    },
+    {
+      "class": "aitool",
+      "href": "/anysearch",
+      "title": "AnySearch",
+      "text": "AnySearch"
+    },
+    {
+      "rel": "noopener nofollow",
+      "href": "https://www.anysearch.com/?ref=aitoolnet.com",
+      "title": "Site:https://www.anysearch.com/?ref=aitoolnet.com",
+      "class": "ml-1 text-sm text-gray-400 hover:text-gray-600",
+      "target": "_blank",
+      "text": ""
+    },
+    {
+      "class": "aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200",
+      "href": "/search-engines",
+      "text": "#Search Engines"
+    },
+    {
+      "class": "aitool",
+      "href": "/nightcafe-studio",
+      "title": "NightCafe Studio",
+      "text": "\n                    "
+    },
+    {
+      "class": "aitool",
+      "href": "/nightcafe-studio",
+      "title": "NightCafe Studio",
+      "text": "NightCafe Studio"
+    },
+    {
+      "rel": "noopener nofollow",
+      "href": "https://creator.nightcafe.studio/?ref=aitoolnet.com",
+      "title": "Site:https://creator.nightcafe.studio/?ref=aitoolnet.com",
+      "class": "ml-1 text-sm text-gray-400 hover:text-gray-600",
+      "target": "_blank",
+      "text": ""
+    },
+    {
+      "class": "aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200",
+      "href": "/art",
+      "text": "#Art"
+    },
+    {
+      "class": "aitool",
+      "href": "/decktopus-ai",
+      "title": "Decktopus AI",
+      "text": "\n                    "
+    },
+    {
+      "class": "aitool",
+      "href": "/decktopus-ai",
+      "title": "Decktopus AI",
+      "text": "Decktopus AI"
+    },
+    {
+      "rel": "noopener nofollow",
+      "href": "https://www.decktopus.com/?ref=aitoolnet.com",
+      "title": "Site:https://www.decktopus.com/?ref=aitoolnet.com",
+      "class": "ml-1 text-sm text-gray-400 hover:text-gray-600",
+      "target": "_blank",
+      "text": ""
+    },
+    {
+      "class": "aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200",
+      "href": "/presentations",
+      "text": "#Presentations"
+    },
+    {
+      "class": "aitool",
+      "href": "/prezent",
+      "title": "Prezent",
+      "text": "\n                    "
+    },
+    {
+      "class": "aitool",
+      "href": "/prezent",
+      "title": "Prezent",
+      "text": "Prezent"
+    },
+    {
+      "rel": "noopener nofollow",
+      "href": "https://www.prezent.ai/?ref=aitoolnet.com",
+      "title": "Site:https://www.prezent.ai/?ref=aitoolnet.com",
+      "class": "ml-1 text-sm text-gray-400 hover:text-gray-600",
+      "target": "_blank",
+      "text": ""
+    },
+    {
+      "class": "aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200",
+      "href": "/presentations",
+      "text": "#Presentations"
+    },
+    {
+      "class": "aitool",
+      "href": "/cuddler",
+      "title": "Cuddler",
+      "text": "\n                        \n                    "
+    },
+    {
+      "class": "aitool",
+      "href": "/cuddler",
+      "title": "Cuddler",
+      "text": "Cuddler"
+    },
+    {
+      "rel": "noopener nofollow",
+      "href": "https://cuddler.ai/",
+      "title": "Site:https://cuddler.ai/",
+      "class": "ml-1 text-sm text-gray-400 hover:text-gray-600",
+      "text": ""
+    },
+    {
+      "class": "aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200",
+      "href": "/video",
+      "text": "#Video"
+    },
+    {
+      "class": "aitool",
+      "href": "/maritime",
+      "title": "Maritime",
+      "text": "\n                        \n                    "
+    },
+    {
+      "class": "aitool",
+      "href": "/maritime",
+      "title": "Maritime",
+      "text": "Maritime"
+    },
+    {
+      "rel": "noopener nofollow",
+      "href": "https://maritime.sh/",
+      "title": "Site:https://maritime.sh/",
+      "class": "ml-1 text-sm text-gray-400 hover:text-gray-600",
+      "text": ""
+    },
+    {
+      "class": "aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200",
+      "href": "/developer-tools",
+      "text": "#Developer Tools"
+    },
+    {
+      "class": "aitool",
+      "href": "/wisp",
+      "title": "Wisp",
+      "text": "\n                        \n                    "
+    },
+    {
+      "class": "aitool",
+      "href": "/wisp",
+      "title": "Wisp",
+      "text": "Wisp"
+    },
+    {
+      "rel": "noopener nofollow",
+      "href": "https://heywisp.ai/",
+      "title": "Site:https://heywisp.ai/",
+      "class": "ml-1 text-sm text-gray-400 hover:text-gray-600",
+      "text": ""
+    },
+    {
+      "class": "aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200",
+      "href": "/chatbots",
+      "text": "#Chatbots"
+    },
+    {
+      "class": "aitool",
+      "href": "/pauta",
+      "title": "Pauta",
+      "text": "\n                        \n                    "
+    },
+    {
+      "class": "aitool",
+      "href": "/pauta",
+      "title": "Pauta",
+      "text": "Pauta"
+    },
+    {
+      "rel": "noopener nofollow",
+      "href": "https://www.pauta-ai.com/",
+      "title": "Site:https://www.pauta-ai.com/",
+      "class": "ml-1 text-sm text-gray-400 hover:text-gray-600",
+      "text": ""
+    },
+    {
+      "class": "aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200",
+      "href": "/meeting-assistant",
+      "text": "#Meeting Assistant"
+    },
+    {
+      "class": "aitool",
+      "href": "/tracex",
+      "title": "TraceX",
+      "text": "\n                        \n                    "
+    },
+    {
+      "class": "aitool",
+      "href": "/tracex",
+      "title": "TraceX",
+      "text": "TraceX"
+    },
+    {
+      "rel": "noopener nofollow",
+      "href": "https://tracexpro.com/",
+      "title": "Site:https://tracexpro.com/",
+      "class": "ml-1 text-sm text-gray-400 hover:text-gray-600",
+      "text": ""
+    },
+    {
+      "class": "aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200",
+      "href": "/developer-tools",
+      "text": "#Developer Tools"
+    },
+    {
+      "class": "aitool",
+      "href": "/selects",
+      "title": "Selects",
+      "text": "\n                        \n                    "
+    },
+    {
+      "class": "aitool",
+      "href": "/selects",
+      "title": "Selects",
+      "text": "Selects"
+    },
+    {
+      "rel": "noopener nofollow",
+      "href": "https://tryselects.com/",
+      "title": "Site:https://tryselects.com/",
+      "class": "ml-1 text-sm text-gray-400 hover:text-gray-600",
+      "text": ""
+    },
+    {
+      "class": "aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200",
+      "href": "/video",
+      "text": "#Video"
+    },
+    {
+      "class": "aitool",
+      "href": "/unstract-1",
+      "title": "Unstract",
+      "text": "\n                        \n                    "
+    },
+    {
+      "class": "aitool",
+      "href": "/unstract-1",
+      "title": "Unstract",
+      "text": "Unstract"
+    },
+    {
+      "rel": "noopener nofollow",
+      "href": "https://unstract.com/",
+      "title": "Site:https://unstract.com/",
+      "class": "ml-1 text-sm text-gray-400 hover:text-gray-600",
+      "text": ""
+    },
+    {
+      "class": "aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200",
+      "href": "/automation",
+      "text": "#Automation"
+    },
+    {
+      "class": "aitool",
+      "href": "/agentkit-2",
+      "title": "Agentkit",
+      "text": "\n                        \n                    "
+    },
+    {
+      "class": "aitool",
+      "href": "/agentkit-2",
+      "title": "Agentkit",
+      "text": "Agentkit"
+    },
+    {
+      "rel": "noopener nofollow",
+      "href": "https://agentkit.ai/",
+      "title": "Site:https://agentkit.ai/",
+      "class": "ml-1 text-sm text-gray-400 hover:text-gray-600",
+      "text": ""
+    },
+    {
+      "class": "aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200",
+      "href": "/qampa",
+      "text": "#Q&A"
+    },
+    {
+      "class": "aitool",
+      "href": "/wakeman",
+      "title": "Wakeman",
+      "text": "\n                        \n                    "
+    },
+    {
+      "class": "aitool",
+      "href": "/wakeman",
+      "title": "Wakeman",
+      "text": "Wakeman"
+    },
+    {
+      "rel": "noopener nofollow",
+      "href": "https://wakeman.ai/",
+      "title": "Site:https://wakeman.ai/",
+      "class": "ml-1 text-sm text-gray-400 hover:text-gray-600",
+      "text": ""
+    },
+    {
+      "class": "aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200",
+      "href": "/customer-support",
+      "text": "#Customer Support"
+    },
+    {
+      "class": "aitool",
+      "href": "/turnstone",
+      "title": "Turnstone",
+      "text": "\n                        \n                    "
+    },
+    {
+      "class": "aitool",
+      "href": "/turnstone",
+      "title": "Turnstone",
+      "text": "Turnstone"
+    },
+    {
+      "rel": "noopener nofollow",
+      "href": "https://myturnstone.ai/",
+      "title": "Site:https://myturnstone.ai/",
+      "class": "ml-1 text-sm text-gray-400 hover:text-gray-600",
+      "text": ""
+    },
+    {
+      "class": "aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200",
+      "href": "/chatbots",
+      "text": "#Chatbots"
+    },
+    {
+      "class": "aitool",
+      "href": "/rankfender",
+      "title": "Rankfender",
+      "text": "\n                        \n                    "
+    },
+    {
+      "class": "aitool",
+      "href": "/rankfender",
+      "title": "Rankfender",
+      "text": "Rankfender"
+    },
+    {
+      "rel": "noopener nofollow",
+      "href": "https://rankfender.com/",
+      "title": "Site:https://rankfender.com/",
+      "class": "ml-1 text-sm text-gray-400 hover:text-gray-600",
+      "text": ""
+    },
+    {
+      "class": "aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200",
+      "href": "/seo",
+      "text": "#SEO"
+    },
+    {
+      "class": "aitool",
+      "href": "/kreavo",
+      "title": "Kreavo",
+      "text": "\n                        \n                    "
+    },
+    {
+      "class": "aitool",
+      "href": "/kreavo",
+      "title": "Kreavo",
+      "text": "Kreavo"
+    },
+    {
+      "rel": "noopener nofollow",
+      "href": "https://kreavo.ai/?ref=aitoolnet.com",
+      "title": "Site:https://kreavo.ai/?ref=aitoolnet.com",
+      "class": "ml-1 text-sm text-gray-400 hover:text-gray-600",
+      "text": ""
+    },
+    {
+      "class": "aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200",
+      "href": "/video",
+      "text": "#Video"
+    },
+    {
+      "class": "aitool",
+      "href": "/lumimusic",
+      "title": "LumiMusic",
+      "text": "\n                        \n                    "
+    },
+    {
+      "class": "aitool",
+      "href": "/lumimusic",
+      "title": "LumiMusic",
+      "text": "LumiMusic"
+    },
+    {
+      "rel": "noopener nofollow",
+      "href": "https://lumimusic.ai/?ref=aitoolnet.com",
+      "title": "Site:https://lumimusic.ai/?ref=aitoolnet.com",
+      "class": "ml-1 text-sm text-gray-400 hover:text-gray-600",
+      "text": ""
+    },
+    {
+      "class": "aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200",
+      "href": "/music",
+      "text": "#Music"
+    },
+    {
+      "class": "aitool",
+      "href": "/voyager-1",
+      "title": "Voyager",
+      "text": "\n                        \n                    "
+    },
+    {
+      "class": "aitool",
+      "href": "/voyager-1",
+      "title": "Voyager",
+      "text": "Voyager"
+    },
+    {
+      "rel": "noopener nofollow",
+      "href": "https://voyager.so/?ref=aitoolnet.com",
+      "title": "Site:https://voyager.so/?ref=aitoolnet.com",
+      "class": "ml-1 text-sm text-gray-400 hover:text-gray-600",
+      "text": ""
+    },
+    {
+      "class": "aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200",
+      "href": "/video",
+      "text": "#Video"
+    },
+    {
+      "class": "aitool",
+      "href": "/minicpmocr",
+      "title": "MiniCPM-OCR",
+      "text": "\n                        \n                    "
+    },
+    {
+      "class": "aitool",
+      "href": "/minicpmocr",
+      "title": "MiniCPM-OCR",
+      "text": "MiniCPM-OCR"
+    },
+    {
+      "rel": "noopener nofollow",
+      "href": "https://github.com/OpenBMB/MiniCPM-OCR?ref=aitoolnet.com",
+      "title": "Site:https://github.com/OpenBMB/MiniCPM-OCR?ref=aitoolnet.com",
+      "class": "ml-1 text-sm text-gray-400 hover:text-gray-600",
+      "text": ""
+    },
+    {
+      "class": "aitool text-xs text-gray-600 hover:text-blue-600 transition-colors duration-200",
+      "href": "/large-language-models",
+      "text": "#Large Language Models"
+    },
+    {
+      "class": "aitool",
+      "href": "/blog/mastering-cue-words-a-guide-to-effective-prompt-engineering-for-deepseek-r1-and-openai-models",
+      "title": "Mastering Cue Words: A Guide to Effective Prompt Engineering for DeepSeek R1 and OpenAI Models",
+      "text": "\n                        \n                    "
+    },
+    {
+      "class": "aitool",
+      "href": "/blog/mastering-cue-words-a-guide-to-effective-prompt-engineering-for-deepseek-r1-and-openai-models",
+      "title": "Mastering Cue Words: A Guide to Effective Prompt Engineering for DeepSeek R1 and OpenAI Models",
+      "text": "Mastering Cue Words: A Guide to Effective Prompt Engineering for DeepSeek R1 and OpenAI Models"
+    },
+    {
+      "class": "aitool",
+      "href": "/blog/764akjr40",
+      "title": "Master AI-Powered Scraping: Extract Data from 99% of Websites",
+      "text": "\n                        \n                    "
+    },
+    {
+      "class": "aitool",
+      "href": "/blog/764akjr40",
+      "title": "Master AI-Powered Scraping: Extract Data from 99% of Websites",
+      "text": "Master AI-Powered Scraping: Extract Data from 99% of Websites"
+    },
+    {
+      "class": "aitool",
+      "href": "/blog/rnbitowxwto",
+      "title": "How to Earn $1,370+ Daily with Canva AI's New Money-Making Method",
+      "text": "\n                        \n                    "
+    },
+    {
+      "class": "aitool",
+      "href": "/blog/rnbitowxwto",
+      "title": "How to Earn $1,370+ Daily with Canva AI's New Money-Making Method",
+      "text": "How to Earn $1,370+ Daily with Canva AI's New Money-Making Method"
+    },
+    {
+      "class": "aitool",
+      "href": "/",
+      "text": "Aitoolnet"
+    },
+    {
+      "href": "/about",
+      "target": "_blank",
+      "class": "aitool",
+      "text": "About"
+    },
+    {
+      "href": "/blog",
+      "target": "_blank",
+      "class": "aitool",
+      "text": "Blog"
+    },
+    {
+      "href": "/popular",
+      "target": "_blank",
+      "class": "aitool",
+      "text": "Popular"
+    },
+    {
+      "href": "/privacy",
+      "target": "_blank",
+      "class": "aitool",
+      "text": "Privacy Policy"
+    },
+    {
+      "href": "/terms",
+      "target": "_blank",
+      "class": "aitool",
+      "text": "Terms"
+    },
+    {
+      "href": "https://www.aitoolnet.com/homeworkifyai",
+      "target": "_blank",
+      "class": "aitool",
+      "text": "homeworkify"
+    },
+    {
+      "href": "https://radar.aitoolnet.com/",
+      "target": "_blank",
+      "text": "AI Radar"
+    }
+  ],
+  "text": "﻿ \n \n \n     Aitoolnet - Best AI Tools Directory & Search Engine (2026) \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n         \n     \n     var is_mobile_cms = '';var web_dir = '/'; \n     \n     \n     \n    \n\t\n\n \n \n \n     \n         \n             \n                 \n             \n                         \n                 \n                 \n                 \n                 \n             \n         \n         \n             \n                 \n                                         Categories \n                                         New \n                    \n                     Prompt \n                     \n                     Submit \n                     \n                         \n                             English \n                             \n                                 English \n                                                                 简体中文 \n                                                                 繁體中文 \n                                                                 한국어 \n                                                                 日本語 \n                                                                 Русский язык \n                                                                 Français \n                                                                 Español \n                                                             \n                         \n                     \n                     \n                     \n                        function handleLogin(data){\n                            $(\"#nav_member_info\").html(data.msg);\n                        }\n                        let scriptLogin = document.createElement('script');\n                        scriptLogin.src = '/index.php?s=api&c=api&m=template&format=jsonp&name=member.html&callback=handleLogin';\n                        document.body.appendChild(scriptLogin);\n                     \n                 \n             \n         \n     \n \n\n \n     \n         \n             Discover the Best AI Tools for Any Task！ \n             \n                                                                Trusted by 100,000+ AI Adopters. Explore 22,972 curated tools with 11 new updates today.             \n             \n                 \n                     \n                     \n                     \n                     \n                     Submit \n                 \n             \n         \n     \n \n \n    let aiquestion = localStorage.getItem('question');\n    if(aiquestion){\n        $(\"#question\").val(aiquestion);\n    }\n    function handlSearch() {\n        let question = $(\"#question\").val();\n        if(question){\n            localStorage.setItem('question', question);\n            window.location.href='/ask';\n        }\n    }\n \n \n     \n         \n             \n             \n                 \n                                         Productivity \n                                         Spreadsheets \n                                         Copywriting \n                                         Startup Tools \n                                         Video \n                                         Text To Speech \n                                         Email Assistant \n                                         Social Media Assistant \n                                         Fun Tools \n                                         Image Editing \n                                         Avatars \n                                         Image Generator \n                                         SEO \n                                         Code Assistant \n                                         Music \n                                         Presentations \n                                         Education Assistant \n                                         Art \n                                         Gaming \n                                         Sales \n                                         Life Assistant \n                                         Customer Support \n                                         Developer Tools \n                                         Search Engines \n                                         Design Assistant \n                                         3D \n                                         Legal Assistant \n                                         Healthcare \n                                         Prompts \n                                         Research \n                                         Audio \n                                         Human Resources \n                                         Story Teller \n                                         Fashion \n                                         E-commerce \n                                         Finance \n                                         Meeting Assistant \n                                         Chatbots \n                                         Photo Editing \n                                         Marketing \n                                         Automation \n                                         Large Language Models \n                                         Data \n                                         Business \n                                         Machine Learning \n                                         Slack \n                                         summarizer \n                                         Q&A \n                                         Grammar checking \n                                         Learning \n                                         AI content detection \n                                         Speech to text \n                                         Voice \n                                         \n                                         Paraphrasing \n                                         Homeworkify \n                                     \n             \n             \n         \n     \n \n\n \n     \n         Featured tools \n         \n                         \n                 \n                     \n                     \n                 \n                 \n                     \n                         \n                             DocsBot AI \n                             \n                         \n                         \n                                                           6 \n                                                         \n                         \n                     \n                     \n                        DocsBot turns your knowledge base into AI agents that deliver instant, accurate answers and take act...                     \n                     \n                         # Customer Support \n                     \n                 \n             \n                         \n                 \n                     \n                     \n                 \n                 \n                     \n                         \n                             ELSA Speak \n                             \n                         \n                         \n                                                           17 \n                                                         \n                         \n                     \n                     \n                        ELSA Speak gives instant AI feedback on pronunciation and fluency as you speak, turning passive lear...                     \n                     \n                         # Education Assistant \n                     \n                 \n             \n                         \n                 \n                     \n                     \n                 \n                 \n                     \n                         \n                             DeepSeek Harness \n                             \n                         \n                         \n                                                           1 \n                                                         \n                         \n                     \n                     \n                        DeepSeek Harness is an open‑source, plugin‑driven agent runtime that lets you freely compose models,...                     \n                     \n                         # Code Assistant \n                     \n                 \n             \n                         \n                 \n                     \n                     \n                 \n                 \n                     \n                         \n                             Speechify \n                             \n                         \n                         \n                                                           27 \n                                                         \n                         \n                     \n                     \n                        Transforming text into natural speech, Speechify lets users dictate 5× faster than typing and answer...                     \n                     \n                         # Text To Speech \n                     \n                 \n             \n                         \n                 \n                     \n                     \n                 \n                 \n                     \n                         \n                             Typingmind \n                             \n                         \n                         \n                                                           9 \n                                                         \n                         \n                     \n                     \n                        Advanced chat UI for AI models. ChatGPT, Gemini, Claude, and more. All in one place. Use your own AP...                     \n                     \n                         # Productivity \n                     \n                 \n             \n                         \n                 \n                     \n                     \n                 \n                 \n                     \n                         \n                             AnySearch \n                             \n                         \n                         \n                                                           2 \n                                                         \n                         \n                     \n                     \n                        AnySearch delivers structured, privacy-preserving data to AI agents from specialized domains, cuttin...                     \n                     \n                         # Search Engines \n                     \n                 \n             \n                         \n                 \n                     \n                     \n                 \n                 \n                     \n                         \n                             NightCafe Studio \n                             \n                         \n                         \n                                                           27 \n                                                         \n                         \n                     \n                     \n                        NightCafe is an AI art generation platform for creators, offering diverse image and video models and...                     \n                     \n                         # Art \n                     \n                 \n             \n                         \n                 \n                     \n                     \n                 \n                 \n                     \n                         \n                             Decktopus AI \n                             \n                         \n                         \n                                                           11 \n                                                         \n                         \n                     \n                     \n                        Create stunning presentations easily with Decktopus AI. Customize themes, find stock photos, generat...                     \n                     \n                         # Presentations \n                     \n                 \n             \n                         \n                 \n                     \n                     \n                 \n                 \n                     \n                         \n                             Prezent \n                             \n                         \n                         \n                                                           6 \n                                                         \n                         \n                     \n                     \n                        Prezent Vivo is a biopharma communication platform using AI and human expertise to accelerate accura...                     \n                     \n                         # Presentations \n                     \n                 \n             \n                     \n     \n \n\n \n     \n         Latest AI tools \n         \n                         \n                 \n                     \n                         \n                     \n                 \n                 \n                     \n                         \n                             Cuddler \n                             \n                         \n                         \n                                                           0 \n                                                         \n                         \n                     \n                     \n                        Cuddler is an AI storytelling platform: create your own characters, roleplay interactive stories, an...                     \n                     \n                         #Video \n                     \n                 \n             \n                         \n                 \n                     \n                         \n                     \n                 \n                 \n                     \n                         \n                             Maritime \n                             \n                         \n                         \n                                                           0 \n                                                         \n                         \n                     \n                     \n                        Sandboxes for generated code, persistent agent boxes, and Linux, Windows, or Android desktops and ph...                     \n                     \n                         #Developer Tools \n                     \n                 \n             \n                         \n                 \n                     \n                         \n                     \n                 \n                 \n                     \n                         \n                             Wisp \n                             \n                         \n                         \n                                                           0 \n                                                         \n                         \n                     \n                     \n                        A voice-controlled AI fairy that lives on your desktop, runs apps and windows, and handles busywork ...                     \n                     \n                         #Chatbots \n                     \n                 \n             \n                         \n                 \n                     \n                         \n                     \n                 \n                 \n                     \n                         \n                             Pauta \n                             \n                         \n                         \n                                                           0 \n                                                         \n                         \n                     \n                     \n                        Records, transcribes and summarizes meetings locally on Mac and Windows, with no bot, no cloud and n...                     \n                     \n                         #Meeting Assistant \n                     \n                 \n             \n                         \n                 \n                     \n                         \n                     \n                 \n                 \n                     \n                         \n                             TraceX \n                             \n                         \n                         \n                                                           0 \n                                                         \n                         \n                     \n                     \n                        Reads the support email, investigates your database, logs and code, finds the root cause with eviden...                     \n                     \n                         #Developer Tools \n                     \n                 \n             \n                         \n                 \n                     \n                         \n                     \n                 \n                 \n                     \n                         \n                             Selects \n                             \n                         \n                         \n                                                           0 \n                                                         \n                         \n                     \n                     \n                        Talk to an AI video editor, match any style from a link, and refine every cut on a real timeline.                     \n                     \n                         #Video \n                     \n                 \n             \n                         \n                 \n                     \n                         \n                     \n                 \n                 \n                     \n                         \n                             Unstract \n                             \n                         \n                         \n                                                           0 \n                                                         \n                         \n                     \n                     \n                        Turn unstructured documents into structured data with agentic workflows, deterministic execution, an...                     \n                     \n                         #Automation \n                     \n                 \n             \n                         \n                 \n                     \n                         \n                     \n                 \n                 \n                     \n                         \n                             Agentkit \n                             \n                         \n                         \n                                                           0 \n                                                         \n                         \n                     \n                     \n                        Train an AI agent on your website, docs, or Q&A pairs, then embed it anywhere with one script ta...                     \n                     \n                         #Q&A \n                     \n                 \n             \n                         \n                 \n                     \n                         \n                     \n                 \n                 \n                     \n                         \n                             Wakeman \n                             \n                         \n                         \n                                                           0 \n                                                         \n                         \n                     \n                     \n                        Answers missed calls in your business's name, checks the address, flags emergencies and texts you th...                     \n                     \n                         #Customer Support \n                     \n                 \n             \n                         \n                 \n                     \n                         \n                     \n                 \n                 \n                     \n                         \n                             Turnstone \n                             \n                         \n                         \n                                                           0 \n                                                         \n                         \n                     \n                     \n                        AI teammates that run on the subscriptions you already pay for, with persistent memory on your Mac.                     \n                     \n                         #Chatbots \n                     \n                 \n             \n                         \n                 \n                     \n                         \n                     \n                 \n                 \n                     \n                         \n                             Rankfender \n                             \n                         \n                         \n                                                           0 \n                                                         \n                         \n                     \n                     \n                        Audit your site for Google and AI, find winnable keywords, publish articles to WordPress, and check ...                     \n                     \n                         #SEO \n                     \n                 \n             \n                         \n                 \n                     \n                         \n                     \n                 \n                 \n                     \n                         \n                             Kreavo \n                             \n                         \n                         \n                                                           0 \n                                                         \n                         \n                     \n                     \n                        Kreavo is an AI UGC video generator and AI influencer platform for ecommerce brands. Upload a produc...                     \n                     \n                         #Video \n                     \n                 \n             \n                         \n                 \n                     \n                         \n                     \n                 \n                 \n                     \n                         \n                             LumiMusic \n                             \n                         \n                         \n                                                           0 \n                                                         \n                         \n                     \n                     \n                        LumiMusic is an AI music creation platform that turns a text prompt or lyrics into a full vocal or i...                     \n                     \n                         #Music \n                     \n                 \n             \n                         \n                 \n                     \n                         \n                     \n                 \n                 \n                     \n                         \n                             Voyager \n                             \n                         \n                         \n                                                           0 \n                                                         \n                         \n                     \n                     \n                        An open harness for creative work: direct AI agents and models to control apps like Blender and Reso...                     \n                     \n                         #Video \n                     \n                 \n             \n                         \n                 \n                     \n                         \n                     \n                 \n                 \n                     \n                         \n                             MiniCPM-OCR \n                             \n                         \n                         \n                                                           0 \n                                                         \n                         \n                     \n                     \n                        Parse Chinese and English PDFs and images into Markdown or JSON, with region-level quality scores to...                     \n                     \n                         #Large Language Models \n                     \n                 \n             \n                     \n     \n \n\n \n     \n         Latest Blogs \n         \n                         \n                 \n                     \n                         \n                     \n                 \n                 \n                     Mastering Cue Words: A Guide to Effective Prompt Engineering for DeepSeek R1 and OpenAI Models \n                     \n                 \n             \n                         \n                 \n                     \n                         \n                     \n                 \n                 \n                     Master AI-Powered Scraping: Extract Data from 99% of Websites \n                     \n                 \n             \n                         \n                 \n                     \n                         \n                     \n                 \n                 \n                     How to Earn $1,370+ Daily with Canva AI's New Money-Making Method \n                     \n                 \n             \n                     \n     \n \n\n\n \n    var boxWidth = $(\".slider\").width();\n    var divElement = $(\".filters-category\");\n    var divWidth = divElement.width();\n    var speed = boxWidth - 100\n    var position = divElement.position();\n    var initleft = position.left;\n    var initoffsetleft = divElement.offset().left;\n    function moveLeft() {\n        var nowposition = divElement.position();\n        var nowleft = nowposition.left;\n        var movedata = nowleft - speed;\n        if(divWidth + initleft + movedata < speed){\n            movedata = boxWidth-divWidth;\n        }\n        divElement.css(\"transform\", \"translateX(\"+movedata+\"px)\");\n    }\n    function moveRight() {\n        var nowposition = divElement.position();\n        var nowleft = nowposition.left;\n        var movedata = nowleft + speed;\n        if(movedata > initleft){\n            movedata = 0;\n        }\n        divElement.css(\"transform\", \"translateX(\"+movedata+\"px)\");\n    }\n\n    const swipeElement = document.getElementById('slider');\n    let startX, startY;\n    swipeElement.addEventListener('touchstart', function(e) {\n        startX = e.touches[0].clientX;\n        startY = e.touches[0].clientY;\n    });\n    swipeElement.addEventListener('touchmove', function(e) {\n        e.preventDefault();\n    });\n    swipeElement.addEventListener('touchend', function(e) {\n        const endX = e.changedTouches[0].clientX;\n        const endY = e.changedTouches[0].clientY;\n        const deltaX = endX - startX;\n        const SWIPE_THRESHOLD = 30;\n        if (Math.abs(deltaX) > SWIPE_THRESHOLD) {\n            if (deltaX > 0) {\n                moveRight();\n            } else {\n                moveLeft();\n            }\n        }\n    });\n \n \n     \n         \n             Aitoolnet \n             Aitoolnet stands at the forefront of AI technology, boasting an impressive directory of over 15,000+ AI tools, meticulously updated daily. \n         \n         \n             Useful Links \n             \n                 \n                     \n                                                 About \n                                                 Blog \n                                                 Popular \n                                                 Privacy Policy \n                                                 Terms \n                                             \n                 \n                 \n                     \n                                                 homeworkify \n                                                 AI Radar \n                                             \n                 \n             \n         \n     \n     \n         © 2026 AIToolNet.com · Discover the Best AI Tools \n     \n \n \n    var lang = '';\n \n \n \n \n \n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag('js', new Date());\n\n  gtag('config', 'G-D7KF3ZPKH4');\n \n (function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML=\"window.__CF$cv$params={r:'a56d4c4b9c309743',t:'MTc5NDA2NDU3NQ=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a56d4c4b9c309743',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);\";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})(); \n \n \n",
+  "comments": [
+    " <a class='aitool button is-white hide-on-search' href='/discover'>Discover</a> ",
+    " <div class=\"mt-3 text-sm text-slate-400\">2025-02-11 16:17:58</div>",
+    " <div class=\"mt-3 text-sm text-slate-400\">2025-01-10 16:09:35</div>",
+    " <div class=\"mt-3 text-sm text-slate-400\">2025-01-10 15:40:15</div>",
+    " Google tag (gtag.js) "
+  ],
+  "hidden": []
+}

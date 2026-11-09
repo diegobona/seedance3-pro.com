@@ -14,3 +14,6 @@ dist
 worker-configuration.d.ts
 media/pose-demo/renders/frames/
 media/pose-demo/renders/.debug/
+# Raw third-party captures contain embedded credentials; keep them local.
+/output/backlink-research/aitool_paperform_co_.html
+/output/backlink-research/aitool_paperform_co_.json

@@ -10,7 +10,7 @@ export function canonicalSiteRedirect(request: Request): Response | null {
   // Authentication callbacks and server calls must retain their cookie origin.
   if (/^\/(?:api|_serverFn|@tanstack-start)(?:\/|$)/.test(stripLocalePath(url.pathname))) return null
   const htmlAlias = !isLanguageNeutralPath(url.pathname) && /\.html$/i.test(url.pathname)
-  if (url.hostname !== 'www.seedance3-pro.com' && !htmlAlias) return null
+  if (url.protocol === 'https:' && url.hostname !== 'www.seedance3-pro.com' && !htmlAlias) return null
 
   // Resolve old model aliases directly, avoiding an intermediate clean guide URL.
   const modelDestination = legacyModelRedirect(url)

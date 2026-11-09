@@ -1,0 +1,10 @@
+{
+  "url": "https://www.aitoolnet.com/robots.txt",
+  "final": "https://www.aitoolnet.com/robots.txt",
+  "status": 200,
+  "title": "",
+  "links": [],
+  "text": "#\r\n# robots.txt for www.aitoolnet.com\r\n#\r\nUser-agent: * \r\nDisallow: /cache/\r\nDisallow: /config/\r\nDisallow: /diy/\r\nDisallow: *?s=*\r\nDisallow: *?c=*\r\nDisallow: /*c=search\r\n\r\nSitemap: https://www.aitoolnet.com/sitemap_index.xml",
+  "comments": [],
+  "hidden": []
+}

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="same-origin">
+  <meta name="theme-color" content="#090c11">
+  <title>Opening checkout | SEEDANCE 3.0</title>
+  <link rel="preconnect" href="https://checkout.stripe.com" crossorigin>
+  <style>
+    :root{color-scheme:dark;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#090c11;color:#f4f7fc}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;min-height:100dvh;display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse at center,#14335255,transparent 65%)}
+    main{width:min(100%,440px);text-align:center;padding:44px 24px}.brand{font-size:14px;font-weight:750;letter-spacing:.04em;color:#78ded4;margin:0 0 36px}
+    .spinner{width:44px;height:44px;margin:0 auto 28px;border:3px solid #78ded429;border-top-color:#78ded4;border-radius:50%;animation:spin .85s linear infinite}
+    h1{font-size:26px;line-height:1.3;letter-spacing:-.6px;margin:0 0 14px}p{font-size:15px;line-height:1.7;color:#aabacd;margin:0}small{display:block;color:#8296ad;font-size:13px;margin-top:22px;line-height:1.6}
+    .slow{visibility:hidden;margin-top:22px;font-size:13px;color:#aabacd;animation:reveal 0s 8s forwards}.recovery{visibility:hidden;margin-top:14px;font-size:13px;animation:reveal 0s 40s forwards}.recovery a{color:#78ded4;text-underline-offset:4px}
+    @keyframes spin{to{transform:rotate(360deg)}}@keyframes reveal{to{visibility:visible}}@media(prefers-reduced-motion:reduce){.spinner{animation:none}}
+  </style>
+</head>
+<body>
+  <main>
+    <p class="brand">SEEDANCE 3.0</p>
+    <div class="spinner" aria-hidden="true"></div>
+    <div role="status" aria-live="polite">
+      <h1 id="heading">Opening secure checkout…</h1>
+      <p id="message">You’ll be redirected to Stripe automatically.</p>
+      <small id="hint">Please keep this tab open.</small>
+    </div>
+    <p class="slow" id="slow">Still connecting. This is taking a little longer than usual.</p>
+    <p class="recovery"><a id="return" href="/pricing">Return to credit packs</a></p>
+  </main>
+  <script>
+    if(new URLSearchParams(location.search).get('lang')==='zh'){
+      document.documentElement.lang='zh-Hans';document.title='正在打开结账页 | SEEDANCE 3.0';
+      for(const [id,text] of Object.entries({heading:'正在打开安全结账页…',message:'准备好后将自动跳转到 Stripe。',hint:'请保持此标签页打开。',slow:'仍在连接，本次等待比平时稍长。',return:'返回积分套餐'}))document.getElementById(id).textContent=text;
+      document.getElementById('return').href='/zh/pricing';
+    }
+  </script>
+</body>
+</html>

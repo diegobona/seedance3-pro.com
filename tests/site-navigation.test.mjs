@@ -25,8 +25,8 @@ test('public footers expose localized policies and direct support without duplic
     const output = withSiteNavigation(input, pathname);
     assert.match(output, /ColdStone Technology Co\., Ltd\./);
     assert.match(output, /href="mailto:zw83716@gmail\.com"/);
-    for (const page of ['about', 'privacy', 'refund-policy', 'terms']) {
-      assert.ok(output.includes(`href="${prefix}/${page}"`), `${pathname}: ${page}`);
+    for (const page of ['privacy', 'refund-policy', 'terms']) {
+      assert.ok(output.includes(`href="${prefix}/${page}" target="_blank" rel="noopener noreferrer"`), `${pathname}: ${page}`);
     }
     assert.equal(withSiteNavigation(output, pathname), output);
     assert.equal((output.match(/data-site-trust/g) || []).length, 1);

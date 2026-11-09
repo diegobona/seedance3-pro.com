@@ -1,0 +1,432 @@
+{
+  "key": "betalist_aituber",
+  "url": "https://betalist.com/startups/aituber",
+  "final_url": "https://betalist.com/startups/aituber",
+  "status": 200,
+  "bytes": 77179,
+  "links": [
+    {
+      "href": "/",
+      "rel": "",
+      "text": "\n        \n          \n            \n            \n            \n            \n            \n          \n          BetaList\n        \n\n        \n          \n        \n",
+      "html": "<a class=\"block\" href=\"/\">"
+    },
+    {
+      "href": "/",
+      "rel": "",
+      "text": "Home",
+      "html": "<a class=\"relative px-3 py-1.5 text-base font-medium transition-colors duration-200 text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:hover:text-white\" href=\"/\">"
+    },
+    {
+      "href": "/browse",
+      "rel": "",
+      "text": "Browse",
+      "html": "<a class=\"relative px-3 py-1.5 text-base font-medium transition-colors duration-200 text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:hover:text-white\" href=\"/browse\">"
+    },
+    {
+      "href": "/newsletter",
+      "rel": "",
+      "text": "Newsletter",
+      "html": "<a class=\"relative px-3 py-1.5 text-base font-medium transition-colors duration-200 text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:hover:text-white\" href=\"/newsletter\">"
+    },
+    {
+      "href": "/search",
+      "rel": "",
+      "text": "Search",
+      "html": "<a class=\"relative px-3 py-1.5 text-base font-medium transition-colors duration-200 text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:hover:text-white\" href=\"/search\">"
+    },
+    {
+      "href": "/help",
+      "rel": "",
+      "text": "Help",
+      "html": "<a class=\"block px-3 py-1.5 rounded-lg hover:bg-white dark:hover:bg-gray-800 whitespace-nowrap text-gray-700 dark:text-gray-300 text-sm\" data-action=\"dropdown#toggle\" href=\"/help\">"
+    },
+    {
+      "href": "/advertise",
+      "rel": "",
+      "text": "Advertise",
+      "html": "<a class=\"block px-3 py-1.5 rounded-lg hover:bg-white dark:hover:bg-gray-800 whitespace-nowrap text-gray-700 dark:text-gray-300 text-sm\" data-action=\"dropdown#toggle\" href=\"/advertise\">"
+    },
+    {
+      "href": "/refer",
+      "rel": "",
+      "text": "Refer a friend",
+      "html": "<a class=\"block px-3 py-1.5 rounded-lg hover:bg-white dark:hover:bg-gray-800 whitespace-nowrap text-gray-700 dark:text-gray-300 text-sm\" data-action=\"dropdown#toggle\" href=\"/refer\">"
+    },
+    {
+      "href": "/affiliates",
+      "rel": "",
+      "text": "Affiliates",
+      "html": "<a class=\"block px-3 py-1.5 rounded-lg hover:bg-white dark:hover:bg-gray-800 whitespace-nowrap text-gray-700 dark:text-gray-300 text-sm\" data-action=\"dropdown#toggle\" href=\"/affiliates\">"
+    },
+    {
+      "href": "https://startup.jobs",
+      "rel": "",
+      "text": "Startup Jobs",
+      "html": "<a target=\"_blank\" class=\"block px-3 py-1.5 rounded-lg hover:bg-white dark:hover:bg-gray-800 whitespace-nowrap text-gray-700 dark:text-gray-300 text-sm\" data-action=\"dropdown#toggle\" href=\"https://startup.jobs\">"
+    },
+    {
+      "href": "https://vision.directory",
+      "rel": "",
+      "text": "Vision Pro apps",
+      "html": "<a target=\"_blank\" class=\"block px-3 py-1.5 rounded-lg hover:bg-white dark:hover:bg-gray-800 whitespace-nowrap text-gray-700 dark:text-gray-300 text-sm\" data-action=\"dropdown#toggle\" href=\"https://vision.directory\">"
+    },
+    {
+      "href": "https://roomai.com",
+      "rel": "",
+      "text": "Room AI",
+      "html": "<a target=\"_blank\" class=\"block px-3 py-1.5 rounded-lg hover:bg-white dark:hover:bg-gray-800 whitespace-nowrap text-gray-700 dark:text-gray-300 text-sm\" data-action=\"dropdown#toggle\" href=\"https://roomai.com\">"
+    },
+    {
+      "href": "/",
+      "rel": "",
+      "text": "Home",
+      "html": "<a class=\"block py-2 text-lg text-gray-900 dark:text-gray-100 hover:text-gray-600 dark:hover:text-gray-300\" data-action=\"dropdown#toggle\" href=\"/\">"
+    },
+    {
+      "href": "/browse",
+      "rel": "",
+      "text": "Browse",
+      "html": "<a class=\"block py-2 text-lg text-gray-900 dark:text-gray-100 hover:text-gray-600 dark:hover:text-gray-300\" data-action=\"dropdown#toggle\" href=\"/browse\">"
+    },
+    {
+      "href": "/newsletter",
+      "rel": "",
+      "text": "Newsletter",
+      "html": "<a class=\"block py-2 text-lg text-gray-900 dark:text-gray-100 hover:text-gray-600 dark:hover:text-gray-300\" data-action=\"dropdown#toggle\" href=\"/newsletter\">"
+    },
+    {
+      "href": "/search",
+      "rel": "",
+      "text": "Search",
+      "html": "<a class=\"block py-2 text-lg text-gray-900 dark:text-gray-100 hover:text-gray-600 dark:hover:text-gray-300\" data-action=\"dropdown#toggle\" href=\"/search\">"
+    },
+    {
+      "href": "/help",
+      "rel": "",
+      "text": "Help",
+      "html": "<a class=\"block py-2 text-lg text-gray-900 dark:text-gray-100 hover:text-gray-600 dark:hover:text-gray-300\" data-action=\"dropdown#toggle\" href=\"/help\">"
+    },
+    {
+      "href": "/advertise",
+      "rel": "",
+      "text": "Advertise",
+      "html": "<a class=\"block py-2 text-lg text-gray-900 dark:text-gray-100 hover:text-gray-600 dark:hover:text-gray-300\" data-action=\"dropdown#toggle\" href=\"/advertise\">"
+    },
+    {
+      "href": "/refer",
+      "rel": "",
+      "text": "Refer a friend",
+      "html": "<a class=\"block py-2 text-lg text-gray-900 dark:text-gray-100 hover:text-gray-600 dark:hover:text-gray-300\" data-action=\"dropdown#toggle\" href=\"/refer\">"
+    },
+    {
+      "href": "/affiliates",
+      "rel": "",
+      "text": "Affiliates",
+      "html": "<a class=\"block py-2 text-lg text-gray-900 dark:text-gray-100 hover:text-gray-600 dark:hover:text-gray-300\" data-action=\"dropdown#toggle\" href=\"/affiliates\">"
+    },
+    {
+      "href": "/login",
+      "rel": "",
+      "text": "Log in",
+      "html": "<a class=\"text-base px-3.5 py-1.5 rounded-full select-none cursor-default flex items-center justify-center gap-2 transition-colors duration-200 ease-out font-medium border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-50 hover:bg-gray-100 active:bg-gray-200 dark:hover:bg-gray-900 dark:active:bg-gray-800\" data-turbo-frame=\"new_session\" data-action=\"auth-dialog#open\" href=\"/login\">"
+    },
+    {
+      "href": "/submit",
+      "rel": "",
+      "text": "Submit Startup",
+      "html": "<a class=\"text-base px-3.5 py-1.5 rounded-full select-none cursor-default flex items-center justify-center gap-2 transition-colors duration-200 ease-out font-semibold border border-transparent bg-gray-900 text-white hover:bg-gray-700 active:bg-gray-600 dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200 dark:active:bg-gray-300 hidden sm:block\" href=\"/submit\">"
+    },
+    {
+      "href": "/",
+      "rel": "",
+      "text": "\n    \n    Back to all startups\n",
+      "html": "<a class=\"flex items-center gap-1 p-4 justify-center bg-black dark:bg-transparent text-white dark:text-white sm:hidden\" href=\"/\">"
+    },
+    {
+      "href": "/startups/aituber/visit",
+      "rel": "noopener nofollow",
+      "text": "\n            \n              \n",
+      "html": "<a class=\"shrink-0 relative sm:rounded-lg overflow-hidden\" target=\"_blank\" rel=\"noopener nofollow\" href=\"/startups/aituber/visit\">"
+    },
+    {
+      "href": "/startups/aituber/visit",
+      "rel": "noopener nofollow",
+      "text": "\n            \n              \n",
+      "html": "<a class=\"shrink-0 relative sm:rounded-lg overflow-hidden\" target=\"_blank\" rel=\"noopener nofollow\" href=\"/startups/aituber/visit\">"
+    },
+    {
+      "href": "/startups/aituber/visit",
+      "rel": "noopener nofollow",
+      "text": "\n            \n              \n",
+      "html": "<a class=\"shrink-0 relative sm:rounded-lg overflow-hidden\" target=\"_blank\" rel=\"noopener nofollow\" href=\"/startups/aituber/visit\">"
+    },
+    {
+      "href": "/startups/aituber/visit",
+      "rel": "noopener nofollow",
+      "text": "\n            \n              \n",
+      "html": "<a class=\"shrink-0 relative sm:rounded-lg overflow-hidden\" target=\"_blank\" rel=\"noopener nofollow\" href=\"/startups/aituber/visit\">"
+    },
+    {
+      "href": "/startups/aituber/visit",
+      "rel": "",
+      "text": "Visit Site",
+      "html": "<a class=\"block text-center bg-black dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-200 text-white dark:text-black text-lg font-medium rounded-lg px-4 py-3\" target=\"_blank\" data-turbo=\"false\" href=\"/startups/aituber/visit\">"
+    },
+    {
+      "href": "/startups/aituber/visit",
+      "rel": "",
+      "text": "Visit Site",
+      "html": "<a class=\"flex-1 block text-center bg-black dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-200 text-white dark:text-black text-base font-medium rounded-lg px-4 py-3\" target=\"_blank\" data-turbo=\"false\" href=\"/startups/aituber/visit\">"
+    },
+    {
+      "href": "https://betalist.com/@dhivalogu",
+      "rel": "",
+      "text": "\n                  \n                  Dhiva\n",
+      "html": "<a class=\"flex items-center gap-1.5 rounded-lg px-3 py-1.5 border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors\" href=\"https://betalist.com/@dhivalogu\">"
+    },
+    {
+      "href": "/startups/aituber",
+      "rel": "",
+      "text": "\n                August 22, 2026\n",
+      "html": "<a class=\"hover:underline hover:text-gray-800 dark:hover:text-gray-200\" href=\"/startups/aituber\">"
+    },
+    {
+      "href": "/submissions/180501/revision/new",
+      "rel": "",
+      "text": "\n            \n            Request changes\n",
+      "html": "<a class=\"inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors\" href=\"/submissions/180501/revision/new\">"
+    },
+    {
+      "href": "/submissions/180501/makers",
+      "rel": "",
+      "text": "\n            \n            Edit makers\n",
+      "html": "<a class=\"inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors\" href=\"/submissions/180501/makers\">"
+    },
+    {
+      "href": "/boost?startup_id=180438",
+      "rel": "",
+      "text": "\n              \n              Boost this startup\n",
+      "html": "<a class=\"inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-amber-500 hover:text-amber-600 dark:hover:text-amber-400 font-medium transition-colors\" href=\"/boost?startup_id=180438\">"
+    },
+    {
+      "href": "/startups/aituber/badges",
+      "rel": "",
+      "text": "\n              \n              Get your badge\n",
+      "html": "<a class=\"inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors\" href=\"/startups/aituber/badges\">"
+    },
+    {
+      "href": "/startups/aituber/report/new",
+      "rel": "",
+      "text": "Report this startup",
+      "html": "<a class=\"hover:underline\" href=\"/startups/aituber/report/new\">"
+    },
+    {
+      "href": "/collectables/new?collectable%5Bstartup_id%5D=180438",
+      "rel": "",
+      "text": "Manage collections",
+      "html": "<a class=\"hidden admin:block hover:underline\" href=\"/collectables/new?collectable%5Bstartup_id%5D=180438\">"
+    },
+    {
+      "href": "https://betalist.com/promotions/0b6858fa-17ab-4e2c-ae0d-78519ebf0ab1/visit?slot=features%23show",
+      "rel": "nofollow sponsored",
+      "text": "",
+      "html": "<a class=\"absolute inset-0\" rel=\"nofollow sponsored\" data-turbo=\"false\" href=\"https://betalist.com/promotions/0b6858fa-17ab-4e2c-ae0d-78519ebf0ab1/visit?slot=features%23show\">"
+    },
+    {
+      "href": "/advertise",
+      "rel": "",
+      "text": "SPONSOR",
+      "html": "<a title=\"Sponsored. Learn about sponsoring BetaList\" class=\"relative z-10 shrink-0 bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-400 text-2xs font-bold px-1.5 py-0.5 rounded hover:bg-blue-200 dark:hover:bg-blue-800/50 transition-colors inline-block lg:hidden ml-0.5 align-middle\" href=\"/advertise\">"
+    },
+    {
+      "href": "/advertise",
+      "rel": "",
+      "text": "SPONSOR",
+      "html": "<a title=\"Sponsored. Learn about sponsoring BetaList\" class=\"relative z-10 shrink-0 bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-400 text-2xs font-bold px-1.5 py-0.5 rounded hover:bg-blue-200 dark:hover:bg-blue-800/50 transition-colors hidden lg:inline-block ml-1 self-center\" href=\"/advertise\">"
+    },
+    {
+      "href": "/startups/vocallab-ai",
+      "rel": "",
+      "text": "",
+      "html": "<a class=\"absolute inset-0\" href=\"/startups/vocallab-ai\">"
+    },
+    {
+      "href": "/startups/artwurk",
+      "rel": "",
+      "text": "",
+      "html": "<a class=\"absolute inset-0\" href=\"/startups/artwurk\">"
+    },
+    {
+      "href": "/startups/taupia",
+      "rel": "",
+      "text": "",
+      "html": "<a class=\"absolute inset-0\" href=\"/startups/taupia\">"
+    },
+    {
+      "href": "/boost",
+      "rel": "",
+      "text": "BOOSTED",
+      "html": "<a class=\"lg:hidden relative z-10 inline-block bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 text-2xs font-bold ml-0.5 px-1.5 py-0.5 rounded align-middle hover:bg-amber-200 dark:hover:bg-amber-800/50 transition-colors\" href=\"/boost\">"
+    },
+    {
+      "href": "/boost",
+      "rel": "",
+      "text": "BOOSTED",
+      "html": "<a class=\"hidden lg:inline-block relative z-10 shrink-0 bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 text-2xs font-bold ml-1 px-1.5 py-0.5 rounded self-center hover:bg-amber-200 dark:hover:bg-amber-800/50 transition-colors\" href=\"/boost\">"
+    },
+    {
+      "href": "/startups/buzbee-ai",
+      "rel": "",
+      "text": "",
+      "html": "<a class=\"absolute inset-0\" href=\"/startups/buzbee-ai\">"
+    },
+    {
+      "href": "/startups/yolly-ai",
+      "rel": "",
+      "text": "",
+      "html": "<a class=\"absolute inset-0\" href=\"/startups/yolly-ai\">"
+    },
+    {
+      "href": "/startups/captioncrafterai",
+      "rel": "",
+      "text": "",
+      "html": "<a class=\"absolute inset-0\" href=\"/startups/captioncrafterai\">"
+    },
+    {
+      "href": "/startups/hi-ai",
+      "rel": "",
+      "text": "",
+      "html": "<a class=\"absolute inset-0\" href=\"/startups/hi-ai\">"
+    },
+    {
+      "href": "/boost",
+      "rel": "",
+      "text": "BOOSTED",
+      "html": "<a class=\"lg:hidden relative z-10 inline-block bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 text-2xs font-bold ml-0.5 px-1.5 py-0.5 rounded align-middle hover:bg-amber-200 dark:hover:bg-amber-800/50 transition-colors\" href=\"/boost\">"
+    },
+    {
+      "href": "/boost",
+      "rel": "",
+      "text": "BOOSTED",
+      "html": "<a class=\"hidden lg:inline-block relative z-10 shrink-0 bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 text-2xs font-bold ml-1 px-1.5 py-0.5 rounded self-center hover:bg-amber-200 dark:hover:bg-amber-800/50 transition-colors\" href=\"/boost\">"
+    },
+    {
+      "href": "/startups/creatorspark",
+      "rel": "",
+      "text": "",
+      "html": "<a class=\"absolute inset-0\" href=\"/startups/creatorspark\">"
+    }
+  ],
+  "meta": [
+    {
+      "name": "csrf-param",
+      "content": "authenticity_token"
+    },
+    {
+      "name": "csrf-token",
+      "content": "ZO3Fs1M9qBZAH-v8292DpHIZ60RdWzxcoxIDoKHbFZlTVtNEcmR7Rohij3Rbny3dhpwx-BJ_NlRssLYfn8zyPw"
+    },
+    {
+      "charset": "utf-8"
+    },
+    {
+      "content": "IE=edge,chrome=1",
+      "http-equiv": "X-UA-Compatible"
+    },
+    {
+      "content": "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no",
+      "name": "viewport"
+    },
+    {
+      "content": "ZKmJnGwPBwvqYiXVXreD0H-CzeTgFwqVmOhN_EY9lKY",
+      "name": "google-site-verification"
+    },
+    {
+      "name": "direct-upload-url",
+      "content": "/rails/active_storage/direct_uploads"
+    },
+    {
+      "name": "current-user-id"
+    },
+    {
+      "name": "description",
+      "content": "Create faceless AI videos automatically for YouTube, TikTok, and Instagram"
+    },
+    {
+      "name": "twitter:account_id",
+      "content": "1512944793"
+    },
+    {
+      "name": "twitter:site",
+      "content": "@BetaList"
+    },
+    {
+      "name": "twitter:domain",
+      "content": "BetaList.com"
+    },
+    {
+      "name": "twitter:card",
+      "content": "summary_large_image"
+    },
+    {
+      "name": "twitter:creator",
+      "content": "@marckohlbrugge"
+    },
+    {
+      "property": "og:title",
+      "content": "AITuber: Create faceless AI videos automatically for YouTube, TikTok,"
+    },
+    {
+      "property": "og:description",
+      "content": "Create faceless AI videos automatically for YouTube, TikTok, and Instagram"
+    },
+    {
+      "property": "og:image",
+      "content": "https://resize.imagekit.co/O_uJ7MT2rVytyhRbrGxMUix30vFR6xcFsdWxSrB_et8/plain/s3://betalist-production/hku6zblp8lyxb8sokbk5cfoup0sz"
+    },
+    {
+      "property": "og:type",
+      "content": "article,"
+    },
+    {
+      "property": "og:url",
+      "content": "https://betalist.com/startups/aituber"
+    },
+    {
+      "property": "fb:app_id",
+      "content": "379376245443085"
+    },
+    {
+      "property": "fb:admins",
+      "content": "1053302589"
+    },
+    {
+      "name": "apple_mobile_web_app_title",
+      "content": "BetaList"
+    },
+    {
+      "itemprop": "name",
+      "content": "BetaList"
+    },
+    {
+      "itemprop": "description",
+      "content": "Discover tomorrow's startups, today."
+    },
+    {
+      "itemprop": "image",
+      "content": "https://betalist.com/assets/touch-icon-precomposed-144-e8598d79.png"
+    }
+  ],
+  "x_robots_tag": null,
+  "instruction_pattern_hits": [],
+  "comments": [
+    " Google Tag Manager ",
+    " End Google Tag Manager ",
+    " Google Tag Manager Helper function to guarantee business logic ",
+    " https://gist.github.com/taylorgorman/bbe349b63dd4f395523c2cdbf06b0bae ",
+    " Google Tag Manager (noscript) ",
+    " End Google Tag Manager (noscript) "
+  ],
+  "text": "\n \n   \n     \n \n\n \n \n \n\n \n \n\n \n\n AITuber: Create faceless AI videos automatically for | BetaList \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n   \n \n \n\n \n\n {\n  \"imports\": {\n    \"controllers/turnstile_controller\": \"/assets/verify_human/turnstile_controller-db78345a.js\",\n    \"application\": \"/assets/application-1310e83f.js\",\n    \"admin\": \"/assets/admin-f55e5c50.js\",\n    \"theme_manager\": \"/assets/theme_manager-5e445aba.js\",\n    \"@rails/actioncable\": \"/assets/actioncable.esm-e5c1e716.js\",\n    \"@rails/activestorage\": \"/assets/@rails--activestorage-d53525da.js\",\n    \"@rails/request.js\": \"/assets/@rails--request.js-ff400e4a.js\",\n    \"@hotwired/turbo-rails\": \"/assets/turbo.min-86bf8853.js\",\n    \"autosize\": \"/assets/autosize-a648b077.js\",\n    \"current.js\": \"/assets/current.js-f886b1bd.js\",\n    \"el-transition\": \"/assets/el-transition-56e152e9.js\",\n    \"js-cookie\": \"/assets/js-cookie-26dce017.js\",\n    \"local-time\": \"/assets/local-time-4f7ee01f.js\",\n    \"sortablejs\": \"/assets/sortablejs-171087e4.js\",\n    \"tom-select\": \"/assets/tom-select-bf1b6e5d.js\",\n    \"@hotwired/stimulus\": \"/assets/@hotwired--stimulus-745bd373.js\",\n    \"@hotwired/stimulus-loading\": \"/assets/stimulus-loading-25917588.js\",\n    \"stimulus-use\": \"/assets/stimulus-use-9a297524.js\",\n    \"@stimulus-components/rails-nested-form\": \"/assets/@stimulus-components--rails-nested-form-2c10f7ab.js\",\n    \"@stimulus-components/dropdown\": \"/assets/@stimulus-components--dropdown-ec21ea1b.js\",\n    \"@stimulus-components/popover\": \"/assets/@stimulus-components--popover-b3c150aa.js\",\n    \"ahoy.js\": \"/assets/ahoy.js-13b65a99.js\",\n    \"Chart.bundle\": \"/assets/Chart.bundle-eaff0df7.js\",\n    \"chartjs-adapter-date-fns.bundle\": \"/assets/chartjs-adapter-date-fns.bundle-f3e4b617.js\",\n    \"chartkick\": \"/assets/chartkick-61a6088d.js\",\n    \"controllers/application\": \"/assets/controllers/application-15f4648f.js\",\n    \"controllers/auth_dialog_controller\": \"/assets/controllers/auth_dialog_controller-26e1d8bb.js\",\n    \"controllers/auth_frame_controller\": \"/assets/controllers/auth_frame_controller-8f37ba02.js\",\n    \"controllers/auto_submit_controller\": \"/assets/controllers/auto_submit_controller-90f0dc1a.js\",\n    \"controllers/autosize_controller\": \"/assets/controllers/autosize_controller-84c80be1.js\",\n    \"controllers/carousel_controller\": \"/assets/controllers/carousel_controller-59384cd2.js\",\n    \"controllers/checkout_controller\": \"/assets/controllers/checkout_controller-68c93820.js\",\n    \"controllers/claim_poll_controller\": \"/assets/controllers/claim_poll_controller-acb0a738.js\",\n    \"controllers/click_to_enable_controller\": \"/assets/controllers/click_to_enable_controller-f0ba39eb.js\",\n    \"controllers/clipboard_controller\": \"/assets/controllers/clipboard_controller-b75982d1.js\",\n    \"controllers/collapse_controller\": \"/assets/controllers/collapse_controller-83b38f65.js\",\n    \"controllers/cooldown_controller\": \"/assets/controllers/cooldown_controller-824cfa3f.js\",\n    \"controllers/copy_source_controller\": \"/assets/controllers/copy_source_controller-622769db.js\",\n    \"controllers/copy_to_input_controller\": \"/assets/controllers/copy_to_input_controller-b12d2539.js\",\n    \"controllers/debounced_submit_controller\": \"/assets/controllers/debounced_submit_controller-c8ce3466.js\",\n    \"controllers/delayed_enable_controller\": \"/assets/controllers/delayed_enable_controller-71b01c47.js\",\n    \"controllers/disable_on_submit_controller\": \"/assets/controllers/disable_on_submit_controller-7e06de7f.js\",\n    \"controllers/dismissible_controller\": \"/assets/controllers/dismissible_controller-47611f83.js\",\n    \"controllers/drawer_controller\": \"/assets/controllers/drawer_controller-2ebc8a02.js\",\n    \"controllers/dropdown_controller\": \"/assets/controllers/dropdown_controller-658a89db.js\",\n    \"controllers/faq_controller\": \"/assets/controllers/faq_controller-8eefe823.js\",\n    \"controllers/focus_parent_controller\": \"/assets/controllers/focus_parent_controller-9f7df9eb.js\",\n    \"controllers/form_controller\": \"/assets/controllers/form_controller-1bea1511.js\",\n    \"controllers\": \"/assets/controllers/index-5eaf757e.js\",\n    \"controllers/infinite_scroll_controller\": \"/assets/controllers/infinite_scroll_controller-17fd87c9.js\",\n    \"controllers/input_prefixer_controller\": \"/assets/controllers/input_prefixer_controller-a7c740a6.js\",\n    \"controllers/login_code_controller\": \"/assets/controllers/login_code_controller-d50d61ca.js\",\n    \"controllers/max_length_controller\": \"/assets/controllers/max_length_controller-096de387.js\",\n    \"controllers/media_uploads_controller\": \"/assets/controllers/media_uploads_controller-63d22b22.js\",\n    \"controllers/messages_scroll_controller\": \"/assets/controllers/messages_scroll_controller-629631de.js\",\n    \"controllers/nav_dropdown_menu_controller\": \"/assets/controllers/nav_dropdown_menu_controller-3f901b6b.js\",\n    \"controllers/navigate_controller\": \"/assets/controllers/navigate_controller-ea1adb27.js\",\n    \"controllers/nested_form_controller\": \"/assets/controllers/nested_form_controller-b128baaa.js\",\n    \"controllers/passkey_login_controller\": \"/assets/controllers/passkey_login_controller-19f80e76.js\",\n    \"controllers/passkey_offer_controller\": \"/assets/controllers/passkey_offer_controller-f791c6ce.js\",\n    \"controllers/passkey_registration_controller\": \"/assets/controllers/passkey_registration_controller-88c775eb.js\",\n    \"controllers/password_toggle_controller\": \"/assets/controllers/password_toggle_controller-f4645892.js\",\n    \"controllers/popup_link_controller\": \"/assets/controllers/popup_link_controller-e8da3b23.js\",\n    \"controllers/preview_controller\": \"/assets/controllers/preview_controller-064843be.js\",\n    \"controllers/remove_controller\": \"/assets/controllers/remove_controller-000f8017.js\",\n    \"controllers/remove_duplicates_controller\": \"/assets/controllers/remove_duplicates_controller-bfdcbb4f.js\",\n    \"controllers/scrollspy_controller\": \"/assets/controllers/scrollspy_controller-89750c82.js\",\n    \"controllers/sidebar_controller\": \"/assets/controllers/sidebar_controller-36052c00.js\",\n    \"controllers/single_line_controller\": \"/assets/controllers/single_line_controller-f6c1cd23.js\",\n    \"controllers/sortable_controller\": \"/assets/controllers/sortable_controller-d91c1dd2.js\",\n    \"controllers/status_refresh_controller\": \"/assets/controllers/status_refresh_controller-c3662961.js\",\n    \"controllers/submission_controller\": \"/assets/controllers/submission_controller-cee18a7a.js\",\n    \"controllers/submit_shortcut_controller\": \"/assets/controllers/submit_shortcut_controller-11d9cedb.js\",\n    \"controllers/sync_select_controller\": \"/assets/controllers/sync_select_controller-a119e812.js\",\n    \"controllers/tabs_controller\": \"/assets/controllers/tabs_controller-0f7432e5.js\",\n    \"controllers/theme_controller\": \"/assets/controllers/theme_controller-9ffe5b93.js\",\n    \"controllers/timed_toggle_controller\": \"/assets/controllers/timed_toggle_controller-1e6e4c18.js\",\n    \"controllers/toggle_controller\": \"/assets/controllers/toggle_controller-11bdcdf5.js\",\n    \"controllers/tom_select_controller\": \"/assets/controllers/tom_select_controller-2877b381.js\",\n    \"controllers/turbo_modal_controller\": \"/assets/controllers/turbo_modal_controller-9d4dc11a.js\",\n    \"controllers/url_prefix_controller\": \"/assets/controllers/url_prefix_controller-e3a5e6d9.js\",\n    \"lib/passkeys\": \"/assets/lib/passkeys-2c7e6e3a.js\"\n  }\n} \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n import \"application\" \n\n \n (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':\nnew Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],\nj=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=\n'https://betalist.com/metrics/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);\n})(window,document,'script','dataLayer','GTM-KDTKCJPW'); \n \n\n \n \n \n  /**\n  * @param {Object} data - The same object you would give to dataLayer.push\n  */\n  function safeDataLayerPush(data) {\n    const defaultTimeout = 2000\n    const originalCallback = data.eventCallback\n    \n    if (originalCallback) {\n      let callbackDone = false\n\n      function wrappedCallback() {\n        if (callbackDone) return\n\n        callbackDone = true\n        originalCallback()\n      }\n\n      // If Tag Manager fails or is blocked by browser,\n      // callback must still execute.\n      setTimeout(wrappedCallback, data.eventTimeout || defaultTimeout)\n\n      // Update the data's eventCallback to our new wrapper function\n      // that prevents duplicate executions.\n      data.eventCallback = wrappedCallback\n    }\n\n    window.dataLayer = window.dataLayer || []\n    window.dataLayer.push(data)\n  }\n \n\n\n\n     \n     \n   \n\n \n     \n   \n   \n\n    \n\n\n \n   \n     \n     \n     \n     \n     \n     \n   \n\n   \n     \n       \n         \n           \n             \n             \n             \n             \n             \n           \n           BetaList \n         \n\n         \n           \n         \n \n       \n\n           Home \n           Browse \n           Newsletter \n           Search \n\n         \n   \n                 \n               \n             \n\n \n   \n       Help \n       Advertise \n       Refer a friend \n       Affiliates \n       \n       Startup Jobs \n       Vision Pro apps \n       Room AI \n   \n \n       \n\n       \n         \n           \n             \n           \n          \n\n           Home \n           Browse \n           Newsletter \n           Search \n           \n           Help \n           Advertise \n           Refer a friend \n           Affiliates \n           \n             \n          \n       \n\n       \n         \n           \n           \n         \n\n           Log in \n\n           Submit Startup \n       \n     \n   \n \n\n\n     \n  body[data-is-admin] .admin\\:inline,\n  body[data-is-admin].admin\\:inline\n  { display:inline }\n\n  body[data-is-admin] .admin\\:block,\n  body[data-is-admin].admin\\:block\n  { display:block }\n\n  body[data-is-admin] .admin\\:hidden,\n  body[data-is-admin].admin\\:hidden\n  { display:none }\n\n  body[data-signed-in] .signed-in\\:block,\n  body[data-signed-in].signed-in\\:block\n  { display:block }\n\n  body[data-signed-in] .signed-in\\:inline,\n  body[data-signed-in].signed-in\\:inline\n  { display:inline}\n\n  body[data-signed-in] .signed-in\\:hidden,\n  body[data-signed-in].signed-in\\:hidden\n  { display:none }\n \n\n\n     \n\n \n    \n\n    \n\n\n \n   \n     \n    Back to all startups\n \n   \n     \n         \n           \n         \n       \n         AITuber \n         Create faceless AI videos automatically for YouTube, TikTok, and Instagram \n       \n     \n   \n\n   \n     \n      \n   \n     \n\n\n           \n             \n               \n \n\n           \n             \n               \n \n\n           \n             \n               \n \n\n           \n             \n               \n      \n\n       \n         \n       \n       \n         \n       \n   \n\n\n       \n         AITuber is an AI video generator for faceless videos and marketing content. It creates videos for YouTube, TikTok, and Instagram from an idea, script, blog post, or song. Choose from templates like faceless shorts, AI music videos, skeleton videos, 3D talking characters, UGC reaction hooks, product demos, and avatar videos. AITuber writes the voiceover, selects visuals, adds music, syncs captions, and cuts scenes together automatically, so no editing skills are needed. Creators can grow faceless channels, while marketers and agencies can produce UGC-style ads, explainers, and social content at scale. \n\n       \n\n\n\n     \n\n     \n         \n           Visit Site \n             \n               \n   \n     \n       \n         \n       \n   \n \n          \n         \n           Visit Site \n             \n               \n   \n     \n       \n         \n       \n   \n \n          \n\n           \n             Makers \n             \n                 \n                   \n                   Dhiva \n              \n           \n\n\n         \n           Featured \n           \n               \n                August 22, 2026\n            \n\n         \n\n       \n         \n           \n             \n            Request changes\n            \n             \n            Edit makers\n              \n               \n              Boost this startup\n              \n               \n              Get your badge\n          \n       \n\n       \n         Report this startup \n         Manage collections \n       \n     \n   \n\n   \n     \n       Discover startups similar to AITuber \n\n       \n           \n   \n\n   \n     \n         \n     \n   \n\n   \n     \n       FreeDAST\n         SPONSOR \n       Scan your live site for risks and get a clear security grade \n       SPONSOR \n     \n   \n \n           \n   \n\n   \n     \n         \n     \n   \n\n   \n     \n       Vocallab AI \n       Generate realistic AI voices and captions for TikTok and YouTube \n      \n      \n     \n\n\n     \n       \n         \n   \n     \n       \n         \n       \n   \n \n      \n   \n \n          \n           \n   \n\n   \n     \n         \n     \n   \n\n   \n     \n       Artwurk.ai \n       Create AI videos, images, and avatars in minutes \n      \n      \n     \n\n\n     \n       \n         \n   \n     \n       \n         \n       \n   \n \n      \n   \n \n           \n   \n\n   \n     \n         \n     \n   \n\n   \n     \n       Taupia\n           BOOSTED \n       Track, compare, and switch UK household bills from one app \n       BOOSTED \n      \n     \n\n\n     \n       \n         \n   \n     \n       \n         \n       \n   \n \n      \n   \n \n           \n   \n\n   \n     \n         \n     \n   \n\n   \n     \n       Buzbee AI \n       Create videos with a real-time voice collaborator that drives your workflow \n      \n      \n     \n\n\n     \n       \n         \n   \n     \n       \n         \n       \n   \n \n      \n   \n \n          \n           \n   \n\n   \n     \n         \n     \n   \n\n   \n     \n       Yolly AI \n       All-in-One AI Video and Image Generator \n      \n      \n     \n\n\n     \n       \n         \n   \n     \n       \n         \n       \n   \n \n      \n   \n \n          \n           \n   \n\n   \n     \n         \n     \n   \n\n   \n     \n       CaptionCrafterAI \n       AI-powered tool that generates custom Instagram captions from your images \n      \n      \n     \n\n\n     \n       \n         \n   \n     \n       \n         \n       \n   \n \n      \n   \n \n           \n   \n\n   \n     \n         \n     \n   \n\n   \n     \n       Hi-AI\n           BOOSTED \n       Affordable AI videos, music, voice, images, 3D, search, news, and reports \n       BOOSTED \n      \n     \n\n\n     \n       \n         \n   \n     \n       \n         \n       \n   \n \n      \n   \n \n           \n   \n\n   \n     \n         \n     \n   \n\n   \n     \n       CreatorSpark \n       AI writing for YouTube creators that sounds like you \n      \n      \n     \n\n\n     \n       \n         \n   \n     \n       \n         \n       \n   \n \n      \n   \n \n          \n       \n     \n   \n \n\n\n\n    \n\n     \n     \n   \n     \n   \n\n   \n     \n       \n         \n       \n    \n \n\n \n \n"
+}

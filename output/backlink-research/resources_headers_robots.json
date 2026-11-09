@@ -1,0 +1,30 @@
+[
+  {
+    "url": "https://aitoolsdirectory.com/tool/runway",
+    "final": "https://aitoolsdirectory.com/tool/runway",
+    "status": 200,
+    "x_robots_tag": null,
+    "robots": null
+  },
+  {
+    "url": "https://aitoolsdirectory.com/robots.txt",
+    "final": "https://aitoolsdirectory.com/robots.txt",
+    "status": 200,
+    "x_robots_tag": null,
+    "robots": "User-agent: *\nAllow: /\n\nUser-agent: GPTBot\nAllow: /\n\nUser-agent: ClaudeBot\nAllow: /\n\nUser-agent: PerplexityBot\nAllow: /\n\nUser-agent: Applebot-Extended\nAllow: /\n\nUser-agent: Google-Extended\nAllow: /\n\nSitemap: https://aitoolsdirectory.com/sitemap.xml\n"
+  },
+  {
+    "url": "https://www.unite.ai/ai-price-increases-business-dependency/",
+    "final": "https://www.unite.ai/ai-price-increases-business-dependency/",
+    "status": 200,
+    "x_robots_tag": null,
+    "robots": null
+  },
+  {
+    "url": "https://www.unite.ai/robots.txt",
+    "final": "https://www.unite.ai/robots.txt",
+    "status": 200,
+    "x_robots_tag": null,
+    "robots": "User-agent: *\nDisallow: /wp-admin/\nAllow: /wp-admin/admin-ajax.php\nDisallow: /wp-login.php\nSitemap: https://www.unite.ai/wp-sitemap.xml\n"
+  }
+]

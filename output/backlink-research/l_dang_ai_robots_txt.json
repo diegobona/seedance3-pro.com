@@ -1,0 +1,10 @@
+{
+  "input": "https://l.dang.ai/robots.txt",
+  "final": "https://l.dang.ai/robots.txt",
+  "status": 200,
+  "links": [],
+  "text": "\nUser-agent: *\nAllow: /",
+  "comment_count": 0,
+  "hidden_elements": [],
+  "suspicious": []
+}

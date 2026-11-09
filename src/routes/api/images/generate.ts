@@ -17,6 +17,7 @@ import { createGuestImageTrialStore } from '../../../db/guest-image-trials'
 import { prepareImageAnimation } from '../../../lib/image-to-video'
 import { reconcileGuestCredits } from '../../../lib/guest-credit-reconciliation'
 import { guestVideoNetworkHash } from '../../../lib/guest-video-trial'
+import { verifyGuestVideoRequest } from '../../../lib/guest-video-verification'
 
 export const Route = createFileRoute('/api/images/generate')({
   server: {
@@ -27,6 +28,7 @@ export const Route = createFileRoute('/api/images/generate')({
         const creditStore = createGenerationCreditStore(db, networkKey)
         return generateImageWithGuestAccess({
           request,
+          verifyGuest: request => verifyGuestVideoRequest(request, env, 'guest_image_generate'),
           guestOptions: { secret: env.BETTER_AUTH_SECRET, store: createGuestImageTrialStore(db) },
           getSession: async () => {
             const session = await createAuth(request, env).api.getSession({ headers: request.headers })

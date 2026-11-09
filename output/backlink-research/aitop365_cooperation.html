@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AITop365 - 合作申请，提交您的AI工具或联系我们进行广告合作">
+    <meta name="keywords" content="AI工具,合作,广告,提交工具">
+    <meta name="author" content="AITop365">
+    <meta name="robots" content="index,follow">
+    <title>合作申请 - AITop365 | 提交AI工具或广告合作 / Partnership - AITop365 | Submit AI Tool or Advertising</title>
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.aitop365.com/cooperation.html">
+    
+    <!-- Open Graph / 微信/QQ分享 -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="AITop365">
+    <meta property="og:title" content="合作申请 - AITop365 | 提交AI工具或广告合作">
+    <meta property="og:description" content="AITop365 - 合作申请，提交您的AI工具或联系我们进行广告合作">
+    <meta property="og:url" content="https://www.aitop365.com/cooperation.html">
+    <meta property="og:locale" content="zh_CN">
+    
+    <!-- Quill Editor -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <style>
+        .ql-container {
+            font-family: inherit;
+        }
+        .ql-editor {
+            min-height: 150px;
+            font-size: 15px;
+            color: #374151;
+            background: white;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+        .ql-toolbar {
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            background: #f9fafb;
+        }
+        .message-countdown {
+            font-weight: bold;
+            color: #667eea;
+        }
+    </style>
+    
+    <link rel="icon" type="image/x-icon" href="favicon.ico?v=1.0.53">
+    <link rel="alternate icon" href="favicon.ico?v=1.0.53">
+    <link rel="stylesheet" href="styles.css?v=1.0.45">
+    <style>
+        .cooperation-page {
+            max-width: 800px;
+            margin: 80px auto 40px;
+            padding: 0 20px;
+        }
+        
+        .cooperation-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .cooperation-header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #1a1a1a;
+        }
+        
+        .cooperation-header p {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        .cooperation-form {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-group label .required {
+            color: #e74c3c;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .form-group .hint {
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 32px;
+        }
+        
+        .btn-submit {
+            padding: 12px 32px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .btn-submit:hover {
+            background: #5568d3;
+        }
+        
+        .btn-submit:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .btn-cancel {
+            padding: 12px 32px;
+            background: #f5f5f5;
+            color: #333;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .btn-cancel:hover {
+            background: #e5e5e5;
+        }
+        
+        .message {
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            display: none;
+            font-size: 15px;
+            line-height: 1.5;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .message.success::before {
+            content: "✓";
+            font-size: 20px;
+            font-weight: bold;
+            color: #28a745;
+            flex-shrink: 0;
+        }
+        
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .message.error::before {
+            content: "✕";
+            font-size: 20px;
+            font-weight: bold;
+            color: #dc3545;
+            flex-shrink: 0;
+        }
+        
+        .message.show {
+            display: flex;
+        }
+        
+        .message-countdown {
+            font-size: 13px;
+            color: #666;
+            margin-top: 8px;
+            font-weight: normal;
+        }
+        
+        .message.success .message-countdown {
+            color: #155724;
+        }
+
+        .tool-section-toggle {
+            background: #f1f5f9;
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #334155;
+            transition: background 0.2s;
+        }
+        .tool-section-toggle:hover {
+            background: #e2e8f0;
+        }
+        .tool-section-toggle .icon {
+            transition: transform 0.3s;
+        }
+        .tool-section-toggle.open .icon {
+            transform: rotate(180deg);
+        }
+        
+        .tool-form-section {
+            display: none;
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background: #fafafa;
+        }
+        .tool-form-section.show {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+        .image-preview {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+        .upload-hint {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <div class="nav-left">
+                <a href="index.html" class="nav-link">首页 / Home</a>
+                <div class="dropdown">
+                    <a href="#" class="nav-link">AI分类 / Categories ▼</a>
+                    <div class="dropdown-menu" id="categoryDropdown">
+                        <div class="dropdown-loading">加载中... / Loading...</div>
+                    </div>
+                </div>
+                <a href="latest.html" class="nav-link">最新工具 / Latest</a>
+                <a href="news.html" class="nav-link">资讯 / News ↗</a>
+            </div>
+            <a href="index.html" class="logo" aria-label="AITop365">
+                <img src="logoandtitle.png" alt="AITop365" class="logo-image">
+            </a>
+            <div class="nav-right">
+                <button class="btn-submit" onclick="window.location.href='cooperation.html'">合作 / Partnership</button>
+                <div id="userAuthArea">
+                    <button class="btn-login" id="btnLogin">登录 / Login</button>
+                    <div class="user-avatar-container hidden" id="userAvatarContainer">
+                        <div class="user-avatar-circle" id="userAvatar">
+                            <span id="userAvatarText">U</span>
+                        </div>
+                        <div class="user-dropdown" id="userDropdown">
+                            <div class="user-dropdown-item" id="userInfoItem">
+                                <span id="userDisplayName">用户名 / Username</span>
+                            </div>
+                            <div class="user-dropdown-divider"></div>
+                            <div class="user-dropdown-item" id="btnLogout">登出 / Logout</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="cooperation-page">
+        <div class="cooperation-header">
+            <h1>🤝 合作申请 / Partnership Application</h1>
+            <p>欢迎与我们合作，请填写以下信息，我们会尽快与您联系<br><span style="font-size: 0.9em; color: #888;">Welcome to cooperate with us, please fill in the information below, we will contact you as soon as possible</span></p>
+        </div>
+        
+        <div class="message" id="message"></div>
+        
+        <form class="cooperation-form" id="cooperationForm">
+            <div class="form-group">
+                <label>
+                    姓名 / Name <span class="required">*</span>
+                </label>
+                <input type="text" name="name" id="name" required maxlength="50" placeholder="请输入您的姓名 / Please enter your name">
+            </div>
+            
+            <div class="form-group">
+                <label>
+                    邮箱 / Email
+                </label>
+                <input type="email" name="email" id="email" maxlength="100" placeholder="请输入您的邮箱 / Please enter your email">
+                <div class="hint">邮箱和电话至少需要填写一个 / Please provide at least one contact method (email or phone)</div>
+            </div>
+            
+            <div class="form-group">
+                <label>
+                    电话 / Phone
+                </label>
+                <input type="tel" name="phone" id="phone" maxlength="20" placeholder="请输入您的电话 / Please enter your phone number">
+                <div class="hint">邮箱和电话至少需要填写一个 / Please provide at least one contact method (email or phone)</div>
+            </div>
+            
+            <div class="form-group">
+                <label>
+                    合作内容 / Partnership Details <span class="required">*</span>
+                </label>
+                <textarea name="content" id="content" required maxlength="2000" placeholder="请详细描述您的合作意向、需求或建议... / Please describe your partnership intentions, requirements, or suggestions in detail...">提交AI工具 / Submit AI Tool</textarea>
+                <div class="hint">最多2000个字符 / Maximum 2000 characters</div>
+            </div>
+            
+            <div style="margin-bottom: 15px; font-size: 14px; color: #e74c3c; font-weight: 500; background-color: #fef2f2; padding: 12px; border-radius: 8px; border: 1px solid #fecaca;">
+                <span style="font-size: 16px;">⚠️</span> <strong>提示：如果是提交工具，必须要填写下方的工具详细信息；也期望您能在您的站点上任意位置放上本站的连接，谢谢。 </strong><br>
+                Notice: If you are submitting a tool, detailed tool information must be filled in below. We also hope that you can place a link to our site anywhere on your site.Thank you.
+            </div>
+            <div class="tool-section-toggle" id="toolToggleBtn">
+                <span>➕ 选填：同步提交您的 AI 工具 (点击展开) / Optional: Submit your AI Tool (Click to expand)</span>
+                <span class="icon">▼</span>
+            </div>
+            
+            <div class="tool-form-section" id="toolFormSection">
+                <p style="font-size: 14px; color: #666; margin-bottom: 20px;">请完善以下信息以便我们更好地为您免费上架工具<br><span style="font-size: 0.9em; color: #888;">Please complete the following information so we can list your tool for free</span></p>
+                <div class="form-group">
+                    <label>工具名称 / Tool Name <span class="required">*</span></label>
+                    <input type="text" id="toolName" maxlength="100" placeholder="例如：ChatGPT / e.g., ChatGPT">
+                </div>
+                <div class="form-group">
+                    <label>一句话简介 / Short Description <span class="required">*</span></label>
+                    <input type="text" id="toolShortDesc" maxlength="500" placeholder="例如：由 OpenAI 开发的强大对话式语言模型 / e.g., A powerful conversational AI model developed by OpenAI">
+                </div>
+                <div class="form-group">
+                    <label>官网链接 / Website URL <span class="required">*</span></label>
+                    <input type="url" id="toolWebsite" maxlength="255" placeholder="https://...">
+                </div>
+                
+                <div class="form-group">
+                    <label>详细说明 / Full Description</label>
+                    <div id="toolFullDescEditor"></div>
+                </div>
+                <div class="form-group">
+                    <label>核心功能 / Key Features</label>
+                    <div id="toolFeaturesEditor"></div>
+                </div>
+                <div class="form-group">
+                    <label>使用方法 / How to Use</label>
+                    <div id="toolHowToUseEditor"></div>
+                </div>
+                
+                <div class="form-group" style="display: flex; gap: 20px;">
+                    <div style="flex: 1;">
+                        <label>计费模式 / Pricing Model</label>
+                        <select id="toolPricingModel" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #e5e5e5; background: white;">
+                            <option value="">--请选择 / Please select--</option>
+                            <option value="免费">免费 / Free</option>
+                            <option value="免费增值">免费增值 / Freemium</option>
+                            <option value="付费">付费 / Paid</option>
+                            <option value="开源">开源 / Open Source</option>
+                            <option value="需联系销售">需联系销售 / Contact Sales</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <label>所属分类 / Category</label>
+                        <select id="toolCategory" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #e5e5e5; background: white;">
+                            <option value="">--载入中 / Loading...--</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>付费策略详情 / Pricing Details</label>
+                    <input type="text" id="toolPricingDetails" placeholder="例如：基础功能免费，Pro版10美元/月... / e.g., Basic features are free, Pro plan is $10/month...">
+                </div>
+
+                <div class="form-group">
+                    <label>产品截图 (预览图) / Product Screenshot (Preview)</label>
+                    <input type="file" id="toolImageFile" accept="image/jpeg,image/png,image/webp" style="padding: 6px 0;">
+                    <div class="upload-hint">建议尺寸: 宽比例16:9（如 1200x675），支持 JPG/PNG/WEBP 格式，文件大小不超过 2MB。<br>Recommended size: 16:9 ratio (e.g., 1200x675), supports JPG/PNG/WEBP, max size 2MB.</div>
+                    <img id="imagePreview" class="image-preview" src="" alt="预览图 / Preview">
+                    <!-- 隐藏字段保存上传回来的url -->
+                    <input type="hidden" id="toolPreviewUrl">
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" onclick="window.location.href='index.html'">取消 / Cancel</button>
+                <button type="submit" class="btn-submit" id="submitBtn">提交申请 / Submit Application</button>
+            </div>
+        </form>
+
+        <!-- 联系方式补充 -->
+        <div style="margin-top: 40px; text-align: center; padding: 24px; background: linear-gradient(135deg, #f5f7ff 0%, #f0f4ff 100%); border-radius: 16px; border: 1px solid #e0e7ff; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.05);">
+            <p style="margin: 0; color: #4b5563; font-size: 15px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <span style="font-size: 20px;">💬</span> 
+                协商与合作，欢迎加入我们的 <strong>官方QQ交流群</strong>：
+                <span style="color: #667eea; font-weight: bold; font-size: 20px; letter-spacing: 1px;">1094520219</span>
+            </p>
+            <p style="margin: 8px 0 0 0; color: #888; font-size: 13px;">
+                For negotiation and cooperation, welcome to join our <strong>official QQ group</strong>: 1094520219
+            </p>
+        </div>
+    </div>
+
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="api.js?v=1.0.58"></script>
+    <script src="script.js?v=1.0.58"></script>
+    <script>
+        // 初始化 Quill 编辑器
+        const quillOptions = {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'underline'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['link', 'clean']
+                ]
+            },
+            placeholder: '在此输入内容...'
+        };
+
+        const quillFullDesc = new Quill('#toolFullDescEditor', quillOptions);
+        const quillFeatures = new Quill('#toolFeaturesEditor', quillOptions);
+        const quillHowToUse = new Quill('#toolHowToUseEditor', quillOptions);
+
+        const form = document.getElementById('cooperationForm');
+        const message = document.getElementById('message');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const content = document.getElementById('content').value.trim();
+            
+            // 如果工具区展开，则验证必填
+            const isToolSectionOpen = document.getElementById('toolFormSection').classList.contains('show');
+            
+            let uploadedImageUrl = document.getElementById('toolPreviewUrl').value;
+            let fileInput = document.getElementById('toolImageFile');
+            
+            // 验证邮箱和电话至少填一个
+            if (!email && !phone) {
+                showMessage('邮箱和电话至少需要填写一个 / Please provide at least one contact method (email or phone)', 'error');
+                return;
+            }
+            
+            // 验证必填项
+            if (!name) {
+                showMessage('请输入姓名 / Please enter your name', 'error');
+                return;
+            }
+            
+            if (!content) {
+                showMessage('请输入合作内容 / Please enter partnership details', 'error');
+                return;
+            }
+            
+            if (isToolSectionOpen) {
+                if (!document.getElementById('toolName').value.trim() || 
+                    !document.getElementById('toolShortDesc').value.trim() || 
+                    !document.getElementById('toolWebsite').value.trim()) {
+                    showMessage('请填写完整的工具常规必填信息（工具名称、一行简介、官网） / Please fill in the required tool information (Tool Name, Short Description, Website URL)', 'error');
+                    return;
+                }
+            }
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = '提交中... / Submitting...';
+            hideMessage();
+            
+            try {
+                // 如果用户选择了文件但还没上传完成（这里在提交时直接处理上传）
+                if (isToolSectionOpen && fileInput.files.length > 0 && !uploadedImageUrl) {
+                    submitBtn.textContent = '正在上传图片... / Uploading image...';
+                    const formData = new FormData();
+                    formData.append('file', fileInput.files[0]);
+                    
+                    const uploadData = await window.API.upload('/upload/public', formData);
+                    uploadedImageUrl = uploadData.url;
+                    document.getElementById('toolPreviewUrl').value = uploadedImageUrl;
+                }
+                
+                let toolPayload = null;
+                if (isToolSectionOpen && document.getElementById('toolName').value.trim()) {
+                    // 检查富文本是否为空 (Quill 默认会有 <p><br></p>)
+                    const getQuillContent = (quill) => {
+                        const html = quill.root.innerHTML;
+                        if (html === '<p><br></p>') return "";
+                        return html;
+                    };
+
+                    toolPayload = {
+                        name: document.getElementById('toolName').value.trim(),
+                        shortDescription: document.getElementById('toolShortDesc').value.trim(),
+                        websiteUrl: document.getElementById('toolWebsite').value.trim(),
+                        fullDescription: getQuillContent(quillFullDesc),
+                        keyFeatures: getQuillContent(quillFeatures),
+                        howToUse: getQuillContent(quillHowToUse),
+                        pricingModel: document.getElementById('toolPricingModel').value,
+                        categoryId: document.getElementById('toolCategory').value ? parseInt(document.getElementById('toolCategory').value) : null,
+                        pricingDetails: document.getElementById('toolPricingDetails').value.trim(),
+                        previewImageUrl: uploadedImageUrl || ""
+                    };
+                }
+
+                submitBtn.textContent = '正在提交... / Submitting...';
+                
+                // 使用 API 封装
+                await window.API.Cooperation.submit({
+                    name,
+                    email: email || null,
+                    phone: phone || null,
+                    content,
+                    tool: toolPayload
+                });
+                
+                // 显示成功提示
+                showSuccessMessage();
+                form.reset();
+            } catch (error) {
+                console.error('Submit error:', error);
+                showMessage((error.message || '提交失败，请检查网络连接') + ' / Submission failed, please check your network connection', 'error');
+                submitBtn.disabled = false;
+                submitBtn.textContent = '提交申请 / Submit Application';
+            }
+        });
+        
+        function showMessage(text, type, isHtml = false) {
+            if (isHtml) {
+                message.innerHTML = text;
+            } else {
+                message.innerHTML = `<span>${escapeHtml(text)}</span>`;
+            }
+            message.className = `message ${type} show`;
+            
+            // 自动滚动到消息区域，确保用户看到提示
+            message.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function showSuccessMessage() {
+            let countdown = 3;
+            const updateMessage = () => {
+                if (countdown > 0) {
+                    const html = `<span>提交成功！我们会尽快与您联系。 / Submission successful! We will contact you soon.<br><span class="message-countdown">${countdown}秒后自动返回首页... / Returning to home page in ${countdown}s...</span></span>`;
+                    showMessage(html, 'success', true);
+                    countdown--;
+                    setTimeout(updateMessage, 1000);
+                } else {
+                    window.location.href = 'index.html';
+                }
+            };
+            updateMessage();
+        }
+        
+        function hideMessage() {
+            message.classList.remove('show');
+        }
+        
+        // --- 新增工具展示面板逻辑 ---
+        document.getElementById('toolToggleBtn').addEventListener('click', function() {
+            this.classList.toggle('open');
+            document.getElementById('toolFormSection').classList.toggle('show');
+            if (this.classList.contains('open')) {
+                loadCategories();
+            }
+        });
+        
+        document.getElementById('toolImageFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('图片必须小于 2MB / Image must be smaller than 2MB');
+                    this.value = '';
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('imagePreview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+                // 重置 url，以便在 submit 时触发新的上传
+                document.getElementById('toolPreviewUrl').value = '';
+            }
+        });
+        
+        let categoriesLoaded = false;
+        async function loadCategories() {
+            if (categoriesLoaded) return;
+            try {
+                const res = await window.API.Home.getCategories();
+                const sel = document.getElementById('toolCategory');
+                sel.innerHTML = '<option value="">--请选择领域 / Please select category--</option>';
+                const categories = Array.isArray(res) ? res : (res.data || []);
+                
+                const topCats = categories.filter(c => !c.parentId || c.parentId === 0);
+                const usedIds = new Set();
+                
+                topCats.forEach(top => {
+                    const opt = document.createElement('option');
+                    opt.value = top.id;
+                    opt.textContent = `[ ${top.name} ]`;
+                    // 改变首层选项的样式展示
+                    opt.style.fontWeight = 'bold';
+                    sel.appendChild(opt);
+                    usedIds.add(top.id);
+                    
+                    const children = categories.filter(c => c.parentId === top.id);
+                    children.forEach(child => {
+                        const childOpt = document.createElement('option');
+                        childOpt.value = child.id;
+                        childOpt.textContent = `  ├─ ${child.name}`;
+                        sel.appendChild(childOpt);
+                        usedIds.add(child.id);
+                    });
+                });
+                
+                // 将未匹配到的（可能是三级或脏数据）作为额外项补齐
+                categories.forEach(cat => {
+                    if (!usedIds.has(cat.id)) {
+                        const opt = document.createElement('option');
+                        opt.value = cat.id;
+                        opt.textContent = cat.name;
+                        sel.appendChild(opt);
+                    }
+                });
+                categoriesLoaded = true;
+            } catch (err) {
+                console.error("无法加载分类列表:", err);
+            }
+        }
+    </script>
+
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <img src="logoandtitle.png" alt="AITop365" class="footer-logo-image">
+                    </div>
+                    <p class="footer-description">探索国内外最好用的AI 工具. / Discover the best AI tools.</p>
+                    <div class="footer-social">
+                        <a href="#" target="_blank" class="social-link share-weibo" title="分享到微博" style="font-weight: bold;">微</a>
+                        <a href="#" target="_blank" class="social-link share-zhihu" title="分享到知乎" style="font-weight: bold;">知</a>
+                        <a href="#" target="_blank" class="social-link share-douban" title="分享到豆瓣" style="font-weight: bold;">豆</a>
+                        <a href="#" target="_blank" class="social-link share-bilibili" title="分享到B站" style="font-weight: bold;">B</a>
+                    </div>
+                </div>
+
+                <div class="footer-column">
+                    <h4 class="footer-heading">分类 / Categories</h4>
+                    <ul class="footer-links">
+                        <li><a href="category.html">AI商业与办公 / Business & Office</a></li>
+                        <li><a href="category.html">AI技术与开发 / Tech & Dev</a></li>
+                        <li><a href="category.html">AI设计与多媒体 / Design & Media</a></li>
+                        <li><a href="category.html">AI生活成长教育 / Life & Education</a></li>
+                        <li><a href="category.html">AI写作与内容 / Writing & Content</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4 class="footer-heading">资源 / Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="category.html">检索AI工具 / Search Tools</a></li>
+                        <li><a href="news.html">AI资讯 / AI News</a></li>
+                        <li><a href="#">API文档 / API Docs</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4 class="footer-heading">我们 / About Us</h4>
+                    <ul class="footer-links">
+                        <li><a href="cooperation.html">关于我们 / About Us</a></li>
+                        <li><a href="cooperation.html">联系我们 / Contact Us</a></li>
+                        <li><a href="cooperation.html">建议意见 / Feedback</a></li>
+                        <li><a href="cooperation.html">提交工具 / Submit Tool</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4 class="footer-heading">其他 / Others</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">隐私条款 / Privacy Policy</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 AITop365. All rights reserved. | <a href="https://beian.miit.gov.cn/" target="_blank" style="color: inherit; text-decoration: none;">苏ICP备202522878号</a></p>
+                <div class="footer-bottom-links">
+                    <a href="sitemap.xml">Sitemap</a>
+                    <span>•</span>
+                    <a href="#">RSS Feed</a>
+                    <span>•</span>
+                    <a href="#">Status</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 设置社交媒体分享链接
+        (function() {
+            const currentUrl = encodeURIComponent(window.location.href);
+            const currentTitle = encodeURIComponent(document.title || 'AITop365 - 发现最好的AI工具');
+            const currentDesc = encodeURIComponent(document.querySelector('meta[name="description"]')?.content || '探索国内外最好用的AI工具');
+            
+            // 微博分享
+            const weiboLink = document.querySelector('.share-weibo');
+            if (weiboLink) {
+                weiboLink.href = `https://service.weibo.com/share/share.php?url=${currentUrl}&title=${currentTitle}`;
+            }
+            
+            // 知乎分享（知乎没有官方分享API，使用搜索链接）
+            const zhihuLink = document.querySelector('.share-zhihu');
+            if (zhihuLink) {
+                zhihuLink.href = `https://www.zhihu.com/search?q=${encodeURIComponent('AITop365 AI工具')}`;
+            }
+            
+            // 豆瓣分享
+            const doubanLink = document.querySelector('.share-douban');
+            if (doubanLink) {
+                doubanLink.href = `https://www.douban.com/share/service?url=${currentUrl}&name=${currentTitle}`;
+            }
+            
+            // B站分享（B站主要是视频平台，使用搜索链接）
+            const bilibiliLink = document.querySelector('.share-bilibili');
+            if (bilibiliLink) {
+                bilibiliLink.href = `https://search.bilibili.com/all?keyword=${encodeURIComponent('AITop365 AI工具')}`;
+            }
+        })();
+    </script>
+</body>
+</html>
+

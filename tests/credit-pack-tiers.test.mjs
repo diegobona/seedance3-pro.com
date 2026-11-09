@@ -5,26 +5,14 @@ import { DatabaseSync } from 'node:sqlite';
 import { CREDIT_PACKS, creditPack, creditPackValue } from '../assets/credit-packs.mjs';
 import { renderCreditPackCard } from '../assets/credit-pack-cards.mjs';
 
-test('three new packs match the approved prices, bonuses and video allowances; only $49.90 is popular', () => {
-  assert.deepEqual(CREDIT_PACKS.map(({ amount, credits, bonus, popular }) => [amount, credits, bonus, !!popular]), [
-    [1190, 1100, 100, false], [2490, 3000, 500, false], [4990, 6500, 1500, true],
-  ]);
-  assert.equal(creditPack('starter'), null, 'old cached checkout IDs must not silently buy a higher-priced pack');
-  assert.equal(creditPack('creator'), null);
-});
-
-test('both languages distinguish bonus rates from savings and reserve the popular badge for Pro', () => {
-  assert.deepEqual(CREDIT_PACKS.map(pack => creditPackValue(pack).savingsPercent), ['0.0','23.3','29.0']);
-  assert.deepEqual(CREDIT_PACKS.map(pack => creditPackValue(pack).bonusPercent), [10,20,30]);
-  for (const locale of ['en', 'zh']) {
-    for (const pack of CREDIT_PACKS) {
-      const html = renderCreditPackCard(pack, locale);
-      assert.ok(html.includes((pack.amount / 100).toFixed(2)));
-      assert.ok(html.includes(pack.credits.toLocaleString('en-US')));
-      assert.equal(html.includes(locale === 'zh' ? '最受欢迎' : 'MOST POPULAR'), pack.popular);
-      assert.ok(html.includes(`pack=${pack.id}`));
-    }
-  }
+test('new packs have exact prices, output and default selection', () => {
+ assert.deepEqual(CREDIT_PACKS.map(p=>[p.id,p.amount,p.credits,p.videoCount]),[['starter',999,700,140],['creator',1999,1600,320],['studio',4999,4500,900]]);
+ assert.deepEqual(CREDIT_PACKS.map(p=>p.bonusCredits),[0,150,850]);
+ assert.equal(creditPack().id,'creator');assert.equal(creditPack('unknown').id,'creator');
+ assert.deepEqual(CREDIT_PACKS.map(p=>creditPackValue(p).minutes),['11.7','26.7','75.0']);
+ assert.deepEqual(CREDIT_PACKS.map(p=>creditPackValue(p).videoPrice),['0.0714','0.0625','0.0555']);
+ assert.deepEqual(CREDIT_PACKS.map(p=>creditPackValue(p).unitPrice),['0.014','0.012','0.011']);
+ for(const locale of ['en','zh'])for(const pack of CREDIT_PACKS){const html=renderCreditPackCard(pack,locale);assert.ok(html.includes(`<h2>${pack.name}</h2>`));assert.ok(html.includes(`pack=${pack.id}`));assert.ok(html.indexOf('credit-tier-output')<html.indexOf('credit-tier-credits'));assert.ok(html.includes('target="_blank" rel="noopener noreferrer"'));}
 });
 
 test('new pack migration preserves old payments and refunds and enforces amount/credit pairs', () => {

@@ -1,0 +1,11 @@
+{
+  "name": "futuretools_robots",
+  "url": "https://futuretools.io/robots.txt",
+  "final_url": "https://futuretools.io/robots.txt",
+  "status": 200,
+  "bytes": 162,
+  "meta": [],
+  "links": [],
+  "hidden_instruction_candidates": [],
+  "text": "User-Agent: *\nAllow: /\nDisallow: /go/\nDisallow: /admin\nDisallow: /api/\nDisallow: /auth/\n\nHost: https://futuretools.io\nSitemap: https://futuretools.io/sitemap.xml\n"
+}

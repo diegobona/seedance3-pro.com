@@ -72,7 +72,7 @@ test('refund payment status uses canonical Stripe reads, updates order history a
     await store.fulfill({eventId:'evt_sync_paid',orderId:'sync-order',sessionId:'cs_test_sync',paymentIntentId:'pi_sync'})
     await refundStore.submit('sync-owner','sync-order','Bought this pack by mistake.','en')
     const environment={STRIPE_SECRET_KEY:'sk_test_example',STRIPE_WEBHOOK_SECRET:'whsec_example',STRIPE_PRICE_ID:'price_pack',STRIPE_MODE:'test'}
-    let data=[{id:'re_sync',payment_intent:'pi_sync',amount:499,currency:'usd',status:'pending'}]
+    let data=[{id:'re_sync',payment_intent:'pi_sync',amount:1999,currency:'usd',status:'pending'}]
     let calls=0
     const fetcher:typeof fetch=async(input,init)=>{
       calls++;assert.equal(init?.method,'GET')
@@ -92,7 +92,7 @@ test('refund payment status uses canonical Stripe reads, updates order history a
     data=[{...data[0],status:'succeeded',amount:200}]
     await syncStripeRefundStatus(request,deps,'pi_sync')
     assert.equal((await refundStore.forOrder('sync-order','sync-owner'))?.paymentStatus,'partial')
-    data.push({...data[0],id:'re_sync_final',amount:299})
+    data.push({...data[0],id:'re_sync_final',amount:1799})
     // An old pending event must use the current successful Stripe status.
     const body=JSON.stringify({id:'evt_sync_old',livemode:false,type:'refund.updated',data:{object:{id:'re_sync',payment_intent:'pi_sync',status:'pending'}}})
     const timestamp=Math.floor(Date.now()/1000)
@@ -102,12 +102,12 @@ test('refund payment status uses canonical Stripe reads, updates order history a
     assert.equal(response.status,200)
     const history=await (await billingHistory(new Request('http://localhost/api/billing/history'),deps)).json() as any
     assert.equal(history.orders[0].refundRequest.paymentStatus,'succeeded')
-    assert.equal(history.orders[0].refundRequest.refundedAmount,499)
+    assert.equal(history.orders[0].refundRequest.refundedAmount,1999)
     assert.equal(history.canReviewRefunds,false)
     assert.equal(await store.isHeld('sync-owner'),false)
     data=[{...data[0],payment_intent:'pi_someone_else'}]
     await assert.rejects(syncStripeRefundStatus(request,deps,'pi_sync'))
-    assert.equal((await refundStore.forOrder('sync-order','sync-owner'))?.refundedAmount,499)
+    assert.equal((await refundStore.forOrder('sync-order','sync-owner'))?.refundedAmount,1999)
     assert.equal(calls,6)
   } finally {await dispose()}
 })

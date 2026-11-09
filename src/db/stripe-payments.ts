@@ -13,7 +13,6 @@ export function createStripePaymentStore(db: D1Database) {
   return {
     async createOrder(id: string, userId: string, priceId: string, live: boolean, packId = DEFAULT_CREDIT_PACK_ID) {
       const pack = creditPack(packId)
-      if (!pack) throw new TypeError('Invalid credit pack')
       await db.batch([
         prepareD1CreditRefresh(db, userId),
         db.prepare(`INSERT INTO stripe_order (id,user_id,price_id,live_mode,amount,credits)

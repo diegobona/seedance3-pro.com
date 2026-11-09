@@ -1,4 +1,5 @@
 import { guestDeviceHash } from './guest-device'
+import { guestNetworkAddress } from './guest-network'
 import { GUEST_VIDEO_DURATION_SECONDS } from '../../app/guest-video.mjs'
 
 export const GUEST_VIDEO_SECONDS = 10
@@ -50,12 +51,16 @@ export async function readGuestVideoIdentity(request: Request, { secret, store }
     Uint8Array.from(signature.match(/../g)!, pair => parseInt(pair, 16)), new TextEncoder().encode(`guest-video:${id}`))
   return valid ? store.getById(id) : null
 }
-export async function guestVideoNetworkHash(request: Request, secret: string, shared: boolean | string = false) {
-  // Only Cloudflare's trusted header is accepted in production, never X-Forwarded-For.
-  const local = ['localhost', '127.0.0.1', '[::1]'].includes(new URL(request.url).hostname)
-  const ip = request.headers.get('cf-connecting-ip')?.trim().toLowerCase() || (local ? 'local-development' : '')
-  if (!ip || ip.length > 64) throw new GuestVideoTrialError('GUEST_TRIAL_UNAVAILABLE')
+export async function guestVideoNetworkHash(request: Request, secret: string, shared: boolean | string = false, legacy = false) {
+  let ip: string
+  try { ip = guestNetworkAddress(request, legacy) } catch { throw new GuestVideoTrialError('GUEST_TRIAL_UNAVAILABLE') }
   return sign(secret, `${typeof shared === "string" ? shared : shared ? "guest-budget-network" : "guest-video-network"}:${ip}`)
+}
+async function hasClaimedNetwork(request: Request, options: Options) {
+  const hash = await guestVideoNetworkHash(request, options.secret)
+  if (await options.store.hasNetwork(hash)) return true
+  const oldHash = await guestVideoNetworkHash(request, options.secret, false, true)
+  return oldHash !== hash && await options.store.hasNetwork(oldHash)
 }
 export async function resolveGuestVideoTrial(request: Request, options: Options): Promise<GuestVideoAccess | null> {
   if (options.store.syncBudget) {
@@ -65,6 +70,12 @@ export async function resolveGuestVideoTrial(request: Request, options: Options)
       guestVideoNetworkHash(request,options.secret,true),
     ])
     await options.store.syncBudget([own,other],budget)
+    // Keep pre-prefix trial wallets in the current shared budget when they return.
+    const [oldOwn,oldOther] = await Promise.all([
+      guestVideoNetworkHash(request,options.secret,false,true),
+      guestVideoNetworkHash(request,options.secret,'guest-image-network',true),
+    ])
+    if (oldOwn !== own) await options.store.syncBudget([oldOwn,oldOther],budget)
   }
   const existing = await readGuestVideoIdentity(request, options)
   const deviceHash = await guestDeviceHash(request, options.secret)
@@ -80,7 +91,7 @@ export async function resolveGuestVideoTrial(request: Request, options: Options)
   }
   if (!options.create) return null
   const hash = await guestVideoNetworkHash(request, options.secret)
-  const alreadyClaimed = async () => await options.store.hasNetwork(hash) || Boolean(deviceHash && await options.store.hasDevice?.(deviceHash))
+  const alreadyClaimed = async () => await hasClaimedNetwork(request, options) || Boolean(deviceHash && await options.store.hasDevice?.(deviceHash))
   if (await alreadyClaimed()) throw new GuestVideoTrialError('GUEST_TRIAL_USED')
   const identity = { id: crypto.randomUUID(), userId: `guest-${crypto.randomUUID()}`, networkHash: hash, deviceHash, budgetKey: await guestVideoNetworkHash(request,options.secret,true) }
   try {
@@ -99,7 +110,7 @@ export async function getGuestVideoBalance(request: Request, options: Options) {
   const identity = await readGuestVideoIdentity(request, options)
   const deviceHash = await guestDeviceHash(request, options.secret)
   const remaining = identity ? await options.store.getBalance(identity.userId)
-    : await options.store.hasNetwork(await guestVideoNetworkHash(request, options.secret))
+    : await hasClaimedNetwork(request, options)
       || (deviceHash && await options.store.hasDevice?.(deviceHash)) ? 0 : GUEST_VIDEO_SECONDS
   return { remaining, generationCost: GUEST_VIDEO_DURATION_SECONDS, guest: true, maxDuration: GUEST_VIDEO_DURATION_SECONDS, expiresDaily: false }
 }

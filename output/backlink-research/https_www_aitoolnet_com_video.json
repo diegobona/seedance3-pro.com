@@ -1,0 +1,214 @@
+{
+  "url": "https://www.aitoolnet.com/video",
+  "final": "https://www.aitoolnet.com/video",
+  "status": 200,
+  "title": "Best AI Video Tools in 2026 - Aitoolnet",
+  "links": [
+    {
+      "class": "aitool navbar-item",
+      "href": "/",
+      "id": "navbar-logo",
+      "text": "\n                \n            "
+    },
+    {
+      "class": "aitool button is-white hide-on-search",
+      "href": "/categories",
+      "text": "Categories"
+    },
+    {
+      "class": "aitool button is-white hide-on-search",
+      "href": "/new",
+      "text": "New"
+    },
+    {
+      "class": "aitool button is-white hide-on-search",
+      "href": "/prompt",
+      "text": "Prompt"
+    },
+    {
+      "class": "button is-white ml-2",
+      "href": "/submit",
+      "text": "Submit"
+    },
+    {
+      "href": "javascript:void(0)",
+      "class": "dropdown-toggle",
+      "data-toggle": "dropdown",
+      "role": "button",
+      "aria-haspopup": "true",
+      "aria-expanded": "false",
+      "text": "English"
+    },
+    {
+      "href": "/video",
+      "data-lang": "",
+      "text": "English"
+    },
+    {
+      "href": "/zh/video",
+      "data-lang": "zh",
+      "text": "简体中文"
+    },
+    {
+      "href": "/zhtw/video",
+      "data-lang": "zhtw",
+      "text": "繁體中文"
+    },
+    {
+      "href": "/ko/video",
+      "data-lang": "ko",
+      "text": "한국어"
+    },
+    {
+      "href": "/ja/video",
+      "data-lang": "ja",
+      "text": "日本語"
+    },
+    {
+      "href": "/ru/video",
+      "data-lang": "ru",
+      "text": "Русский язык"
+    },
+    {
+      "href": "/fr/video",
+      "data-lang": "fr",
+      "text": "Français"
+    },
+    {
+      "href": "/es/video",
+      "data-lang": "es",
+      "text": "Español"
+    },
+    {
+      "class": "aitool",
+      "href": "/",
+      "text": "\n                            Home\n                        "
+    },
+    {
+      "class": "aitool",
+      "href": "/categories",
+      "text": "\n                            Categories\n                        "
+    },
+    {
+      "class": "aitool item columns is-mobile is-gapless bg-white p-2 rounded-md mb-2",
+      "style": "margin-bottom: 8px!important; align-items: center;",
+      "href": "/docsbot-ai",
+      "title": "DocsBot AI",
+      "text": "\n                                \n                                    \n                                \n                                \n                                    DocsBot AI\n                                                                        Instant AI Answers from Your Documentation for Teams & C...\n                                \n                            "
+    },
+    {
+      "class": "aitool item columns is-mobile is-gapless bg-white p-2 rounded-md mb-2",
+      "style": "margin-bottom: 8px!important; align-items: center;",
+      "href": "/elsa-speak",
+      "title": "ELSA Speak",
+      "text": "\n                                \n                                    \n                                \n                                \n                                    ELSA Speak\n                                                                        AI Coach That Corrects Your Spoken English in Real Time\n                                \n                            "
+    },
+    {
+      "class": "aitool item columns is-mobile is-gapless bg-white p-2 rounded-md mb-2",
+      "style": "margin-bottom: 8px!important; align-items: center;",
+      "href": "/deepseek-harness",
+      "title": "DeepSeek Harness",
+      "text": "\n                                \n                                    \n                                \n                                \n                                    DeepSeek Harness\n                                                                        Plugin-Composable Agent Framework\n                                \n                            "
+    },
+    {
+      "class": "aitool item columns is-mobile is-gapless",
+      "href": "/yovid",
+      "title": "Yovid",
+      "text": "\n                            \n                                \n                            \n                            \n                                Yovid\n                                \nTry Seedance 2.5 online on Yovid: one continuous 4–30s clip ...                                \n                            \n                            "
+    },
+    {
+      "class": "aitool item columns is-mobile is-gapless",
+      "href": "/ltx-desktop",
+      "title": "LTX Desktop",
+      "text": "\n                            \n                                \n                            \n                            \n                                LTX Desktop\n                                \nLTX Desktop combines a full non-linear video editor with on-...                                \n                            \n                            "
+    },
+    {
+      "class": "aitool item columns is-mobile is-gapless",
+      "href": "/optimaclip",
+      "title": "OptimaClip",
+      "text": "\n                            \n                                \n                            \n                            \n                                OptimaClip\n                                \nOptimaClip is an AI clipping agent that turns long videos in...                                \n                            \n                            "
+    },
+    {
+      "class": "aitool item columns is-mobile is-gapless",
+      "href": "/hyperframes",
+      "title": "Hyperframes ",
+      "text": "\n                            \n                                \n                            \n                            \n                                Hyperframes \n                                \nHyperframes is an open-source framework that turns HTML into...                                \n                            \n                            "
+    },
+    {
+      "class": "aitool item columns is-mobile is-gapless",
+      "href": "/popnow",
+      "title": "PopNow",
+      "text": "\n                            \n                                \n                            \n                            \n                                PopNow\n                                \nCreate AI videos, images, music and voiceovers in a browser,...                                \n                            \n                            "
+    },
+    {
+      "class": "aitool item columns is-mobile is-gapless",
+      "href": "/mkanime",
+      "title": "MkAnime",
+      "text": "\n                            \n                                \n                            \n                            \n                                MkAnime\n                                \nMkAnime is an AI anime production platform built for anime a...                                \n                            \n                            "
+    },
+    {
+      "class": "aitool item columns is-mobile is-gapless",
+      "href": "/remocn-studio",
+      "title": "Remocn Studio",
+      "text": "\n                            \n                                \n                            \n                            \n                                Remocn Studio\n                                \nDescribe the video you want. Remocn Studio will turn it into...                                \n                            \n                            "
+    },
+    {
+      "class": "aitool item columns is-mobile is-gapless",
+      "href": "/kling-ai-motion-control",
+      "title": "Kling AI Motion Control",
+      "text": "\n                            \n                                \n                            \n                            \n                                Kling AI Motion Control\n                                \nKling AI Motion Control is a generative video platform creat...                                \n                            \n                            "
+    },
+    {
+      "class": "aitool",
+      "href": "/",
+      "text": "Aitoolnet"
+    },
+    {
+      "href": "/about",
+      "target": "_blank",
+      "class": "aitool",
+      "text": "About"
+    },
+    {
+      "href": "/blog",
+      "target": "_blank",
+      "class": "aitool",
+      "text": "Blog"
+    },
+    {
+      "href": "/popular",
+      "target": "_blank",
+      "class": "aitool",
+      "text": "Popular"
+    },
+    {
+      "href": "/privacy",
+      "target": "_blank",
+      "class": "aitool",
+      "text": "Privacy Policy"
+    },
+    {
+      "href": "/terms",
+      "target": "_blank",
+      "class": "aitool",
+      "text": "Terms"
+    },
+    {
+      "href": "https://www.aitoolnet.com/homeworkifyai",
+      "target": "_blank",
+      "class": "aitool",
+      "text": "homeworkify"
+    },
+    {
+      "href": "https://radar.aitoolnet.com/",
+      "target": "_blank",
+      "text": "AI Radar"
+    }
+  ],
+  "text": "﻿ \n \n \n     Best AI Video Tools in 2026 - Aitoolnet \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n         \n     \n     var is_mobile_cms = '';var web_dir = '/'; \n     \n     \n     \n    \n\t\n \n \n \n     \n         \n             \n                 \n             \n             \n                 \n                     \n                     \n                     \n                     \n                         \n                             \n                                 \n                                     \n                                 \n                             \n                         \n                     \n                     \n                         \n                             \n\t\t\t\t\t\t\t\t \n\t\t\t\t\t\t\t \n                         \n                     \n                 \n                          \n                 \n                 \n                 \n                 \n             \n         \n         \n             \n                 \n                                         Categories \n                                         New \n                    \n                     Prompt \n                     \n                     Submit \n                     \n                         \n                             English \n                             \n                                 English \n                                                                 简体中文 \n                                                                 繁體中文 \n                                                                 한국어 \n                                                                 日本語 \n                                                                 Русский язык \n                                                                 Français \n                                                                 Español \n                                                             \n                         \n                     \n                     \n                     \n                        function handleLogin(data){\n                            $(\"#nav_member_info\").html(data.msg);\n                        }\n                        let scriptLogin = document.createElement('script');\n                        scriptLogin.src = '/index.php?s=api&c=api&m=template&format=jsonp&name=member.html&callback=handleLogin';\n                        document.body.appendChild(scriptLogin);\n                     \n                 \n             \n         \n     \n \n\n \n     \n         \n             \n             \n                 \n                     \n                         \n                             Home \n                         \n                     \n                     \n                         \n                             Categories \n                         \n                     \n                     \n                         Video \n                     \n                 \n             \n\n             \n                 \n                     \n                 \n                  Best AI Video Tools\n             \n             \n                 \nStep into the realm of AI Video Tools, where innovation meets storytelling. Transform your videos with the power of artificial intelligence, revolutionizing every stage of the production process. From seamless editing and automated captioning to advanced analytics and personalized recommendations, these tools empower creators to unleash their creativity like never before. Elevate your content, engage your audience, and drive results with cutting-edge AI technology. Explore the possibilities below and redefine the way you bring your vision to life on screen. The future of video awaits – let's make it extraordinary together.                 \n             \n\n         \n     \n \n\n \n     \n         \n             Showing   -   of   products \n         \n         \n             \n                 Pricing \n                 \n                     Select one \n                     Free \n                     Freemium \n                     Free Trial \n                     Paid \n                     Contact for Pricing \n                 \n             \n             \n                 Sort By \n                 \n                     Select one \n                     popular \n                     new \n                     recommended \n                 \n             \n         \n     \n \n\n \n     \n         \n             \n                 \n             \n             \n            ﻿             \n                 \n                     \n                         Sponsors \n                         \n                                                                                                                                             \n                                 \n                                     \n                                 \n                                 \n                                     DocsBot AI \n                                                                         Instant AI Answers from Your Documentation for Teams & C... \n                                 \n                             \n                                                         \n                                 \n                                     \n                                 \n                                 \n                                     ELSA Speak \n                                                                         AI Coach That Corrects Your Spoken English in Real Time \n                                 \n                             \n                                                         \n                                 \n                                     \n                                 \n                                 \n                                     DeepSeek Harness \n                                                                         Plugin-Composable Agent Framework \n                                 \n                             \n                                                     \n                     \n\n                     \n                         Featured tools \n                         \n                                                                                     \n                             \n                                 \n                             \n                             \n                                 Yovid \n                                 \nTry Seedance 2.5 online on Yovid: one continuous 4–30s clip ...                                 \n                             \n                             \n                                                         \n                             \n                                 \n                             \n                             \n                                 LTX Desktop \n                                 \nLTX Desktop combines a full non-linear video editor with on-...                                 \n                             \n                             \n                                                         \n                             \n                                 \n                             \n                             \n                                 OptimaClip \n                                 \nOptimaClip is an AI clipping agent that turns long videos in...                                 \n                             \n                             \n                                                         \n                             \n                                 \n                             \n                             \n                                 Hyperframes  \n                                 \nHyperframes is an open-source framework that turns HTML into...                                 \n                             \n                             \n                                                         \n                             \n                                 \n                             \n                             \n                                 PopNow \n                                 \nCreate AI videos, images, music and voiceovers in a browser,...                                 \n                             \n                             \n                                                         \n                             \n                                 \n                             \n                             \n                                 MkAnime \n                                 \nMkAnime is an AI anime production platform built for anime a...                                 \n                             \n                             \n                                                         \n                             \n                                 \n                             \n                             \n                                 Remocn Studio \n                                 \nDescribe the video you want. Remocn Studio will turn it into...                                 \n                             \n                             \n                                                         \n                             \n                                 \n                             \n                             \n                                 Kling AI Motion Control \n                                 \nKling AI Motion Control is a generative video platform creat...                                 \n                             \n                             \n                                                     \n                     \n                 \n             \n         \n     \n \n\n \n    .shrink{\n        display: flex;\n    }\n    .shrink a {\n        margin-left: 10px;\n    }\n \n \n \n    let page = 0;\n    if(page==0){\n        page = 1\n        sessionStorage.setItem('price', '')\n        sessionStorage.setItem('order', '')\n    }\n\n    let price = sessionStorage.getItem('price');\n    let order = sessionStorage.getItem('order');\n    if(order==''){\n        order = 'recommended';\n    }\n\n    let urllang = '';\n    let htmllang = '';\n    if(urllang){\n        htmllang = '/'+urllang;\n    }\n    filter(price, order, page);\n\n    if(price=='Free'){\n        htmlprice = '<option value=\"\">Select one</option>\\n' +\n            '                    <option value=\"Free\" selected>Free</option>\\n' +\n            '                    <option value=\"Freemium\">Freemium</option>\\n' +\n            '                    <option value=\"Free Trial\">Free Trial</option>\\n' +\n            '                    <option value=\"Paid\">Paid</option>\\n' +\n            '                    <option value=\"Contact for Pricing\">Contact for Pricing</option>'\n    }else if(price=='Freemium'){\n        htmlprice = '<option value=\"\">Select one</option>\\n' +\n            '                    <option value=\"Free\">Free</option>\\n' +\n            '                    <option value=\"Freemium\" selected>Freemium</option>\\n' +\n            '                    <option value=\"Free Trial\">Free Trial</option>\\n' +\n            '                    <option value=\"Paid\">Paid</option>\\n' +\n            '                    <option value=\"Contact for Pricing\">Contact for Pricing</option>'\n    }else if(price=='Free Trial'){\n        htmlprice = '<option value=\"\">Select one</option>\\n' +\n            '                    <option value=\"Free\">Free</option>\\n' +\n            '                    <option value=\"Freemium\">Freemium</option>\\n' +\n            '                    <option value=\"Free Trial\" selected>Free Trial</option>\\n' +\n            '                    <option value=\"Paid\">Paid</option>\\n' +\n            '                    <option value=\"Contact for Pricing\">Contact for Pricing</option>'\n    }else if(price=='Paid'){\n        htmlprice = '<option value=\"\">Select one</option>\\n' +\n            '                    <option value=\"Free\">Free</option>\\n' +\n            '                    <option value=\"Freemium\">Freemium</option>\\n' +\n            '                    <option value=\"Free Trial\">Free Trial</option>\\n' +\n            '                    <option value=\"Paid\" selected>Paid</option>\\n' +\n            '                    <option value=\"Contact for Pricing\">Contact for Pricing</option>'\n    }else if(price=='Contact for Pricing'){\n        htmlprice = '<option value=\"\">Select one</option>\\n' +\n            '                    <option value=\"Free\">Free</option>\\n' +\n            '                    <option value=\"Freemium\">Freemium</option>\\n' +\n            '                    <option value=\"Free Trial\">Free Trial</option>\\n' +\n            '                    <option value=\"Paid\">Paid</option>\\n' +\n            '                    <option value=\"Contact for Pricing\" selected>Contact for Pricing</option>'\n    }else {\n        htmlprice = '<option value=\"\">Select one</option>\\n' +\n            '                    <option value=\"Free\">Free</option>\\n' +\n            '                    <option value=\"Freemium\">Freemium</option>\\n' +\n            '                    <option value=\"Free Trial\">Free Trial</option>\\n' +\n            '                    <option value=\"Paid\">Paid</option>\\n' +\n            '                    <option value=\"Contact for Pricing\">Contact for Pricing</option>'\n    }\n    $(\"#price\").html(htmlprice);\n\n    if(order=='popular'){\n        htmlorder = '<option value=\"popular\" selected>popular</option>\\n' +\n            '                    <option value=\"new\">new</option>\\n' +\n            '                    <option value=\"recommended\">recommended</option>'\n    }else if(order=='new'){\n        htmlorder = '<option value=\"popular\">popular</option>\\n' +\n            '                    <option value=\"new\" selected>new</option>\\n' +\n            '                    <option value=\"recommended\">recommended</option>'\n    }else if(order=='recommended'){\n        htmlorder = '<option value=\"popular\">popular</option>\\n' +\n            '                    <option value=\"new\">new</option>\\n' +\n            '                    <option value=\"recommended\" selected>recommended</option>'\n    }else {\n        htmlorder = '<option value=\"popular\" selected>popular</option>\\n' +\n            '                    <option value=\"new\">new</option>\\n' +\n            '                    <option value=\"recommended\">recommended</option>'\n    }\n    $(\"#order\").html(htmlorder);\n\n    $('#price').change(function () {\n        page = 1;\n        if($('#price').val()){\n            price = $('#price').val()\n        }\n        if($('#order').val()){\n            order = $('#order').val()\n        }\n        sessionStorage.setItem('price', price)\n        sessionStorage.setItem('order', order)\n        filter(price, order, page);\n        newUrl = htmllang+'/video/1';\n        history.pushState('', '', newUrl);\n    })\n\n    $('#order').change(function () {\n        page = 1;\n        if($('#price').val()){\n            price = $('#price').val()\n        }\n        if($('#order').val()){\n            order = $('#order').val()\n        }\n        sessionStorage.setItem('price', price)\n        sessionStorage.setItem('order', order)\n        filter(price, order, page);\n        newUrl = htmllang+'/video/1';\n        history.pushState('', '', newUrl);\n    })\n\n    function filter_ajax(price, order, page) {\n        let urllang = '';\n        let htmllang = '';\n        if(urllang){\n            htmllang = '/'+urllang;\n        }\n        let pagesize = 20;\n        let htmlobj=$.ajax({\n            url:\"https://www.aitoolnet.com/index.php?s=httpapi&id=3&appid=1&appsecret=PHPCMF9E08B99B07369&catid=236&lang=\"+urllang+\"&pricing=\"+price+\"&sort=\"+order+\"&page=\"+page+\"&pagesize=\"+pagesize,\n            dataType:\"json\",\n            async:false\n        });\n\n        let rs = JSON.parse(htmlobj.responseText);\n        let list = rs.data.list;\n        let total = rs.data.total;\n        let pagecount = Math.ceil(total/pagesize);\n\n        let temptxt = \"\";\n        list.forEach((t, index) => {\n            let tempflag = '';\n            if (t['flag']){\n                tempflag = \"<i class='bi bi-check-circle-fill text-base ml-3'></i></a>\";\n            }\n            temptxt += \"<li class='boxed services-list__item sponsored has-hidden-elements'>\\n\" +\n                \"  <figure class='image is-120x80 grow-0' title='\"+t['title']+\"'><a class='aitool' href='\"+htmllang+t['url']+\"'><img class='logo rounded drop-shadow' src='\"+t['thumb']+\"' alt='\"+t['title']+\"' loading='lazy' width='120' height='80' /></a></figure>\\n\" +\n                \"  <div class='flex-1 content'>\\n\" +\n                \"    <div class='flex'>\\n\" +\n                \"      <div class='grow'>\\n\" +\n                \"        <h3 class='title'>\\n\" +\n                \"          <a class='aitool' href='\"+htmllang+t['url']+\"' title='\"+t['title']+\"'>\"+t['title']+tempflag+\"\\n\" +\n                \"        </h3>\\n\" +\n                \"      </div>\\n\" +\n                \"      <div class='shrink'>\\n\" +\n                \"        <a href='\"+t['site']+\"' title='Visit Website' rel='nofollow' target='_blank' class='track-event' data-event-name='click' data-service-slug='\"+t['title']+\"'><i class='fa fa-external-link'></i></a>\\n\" +\n                \"      </div>\\n\" +\n                \"    </div>\\n\" +\n                \"    <p class='tagline'>\\n\" +\n                \"      \"+t['description']+\"\\n\" +\n                \"    </p>\\n\" +\n                \"    <div class='flex' style='justify-content: flex-end;'>\\n\" +\n                \"      <a id='favorite\"+t['id']+\"' onclick='getFavorite(\"+t['id']+\", `/index.php?appid=1&appsecret=PHPCMF9E08B99B07369&api_auth_code=d41d8cd98f00b204e9800998ecf8427e&api_auth_uid=&s=api&c=module&m=favorite&app=website&id=\"+t['id']+\"&value=1`)' class='loginBtn' data-method='loginfavorite'>\\n\" +\n                \"      <i class='bi-heart text-l mr-1'></i> <span>\"+t['favorite']+\"</span>\\n\" +\n                \"      </a>\\n\" +\n                \"    </div>\\n\" +\n                \"  </div>\\n\" +\n                \"</li>\";\n        })\n        let html = \"<ol class='services-list'>\"+temptxt+\"</ol>\"\n\n        if (pagecount > 1 && page <= pagecount){\n            let htmlpage = \"<div class='search-pagination'>\\n\" +\n                \"<ul class='pagination'>\"\n            htmlpage += \"<li><a href='\"+htmllang+\"/video/1' data-ci-pagination-page='1' class='aitool'>&lt;&lt;</a></li>\"\n\n            if (page==1){\n                htmlpage += \"<li><a href='\"+htmllang+\"/video/1' data-ci-pagination-page='1' class='aitool'>&lt;</a></li>\"\n            }else{\n                htmlpage += \"<li><a href='\"+htmllang+\"/video/\"+(page-1)+\"' data-ci-pagination-page=\"+(page-1)+\" class='aitool'>&lt;</a></li>\"\n            }\n\n            if (page==pagecount){\n                htmlpage += \"<li><a href='\"+htmllang+\"/video/\"+page+\"' data-ci-pagination-page=\"+page+\" class='aitool'>&gt;</a></li>\"\n            }else{\n                htmlpage += \"<li><a href='\"+htmllang+\"/video/\"+(page+1)+\"' data-ci-pagination-page=\"+(page+1)+\" class='aitool'>&gt;</a></li>\"\n            }\n\n            htmlpage += \"<li><a href='\"+htmllang+\"/video/\"+pagecount+\"' data-ci-pagination-page=\"+pagecount+\" class='aitool'>&gt;&gt;</a></li>\"\n            htmlpage += \"</ul>\" +\n                \"</div>\"\n            html = html + htmlpage\n        }\n        productStart = (page-1)*pagesize + 1;\n        productEnd = page*pagesize;\n        if(productEnd>total) productEnd = total;\n        $(\"#product-start\").html(productStart);\n        $(\"#product-end\").html(productEnd);\n        $(\"#total\").html(total);\n        $(\"#h1total\").html(total);\n        $(\"#main_list\").html(html);\n    };\n\n    function filter(price, order, page) {\n        let urllang = '';\n        let htmllang = '';\n        if(urllang){\n            htmllang = '/'+urllang;\n        }\n        let pagesize = 20;\n        axios.get(\"https://www.aitoolnet.com/index.php?s=httpapi&id=3&appid=1&appsecret=PHPCMF9E08B99B07369&catid=236&lang=\"+urllang+\"&pricing=\"+price+\"&sort=\"+order+\"&page=\"+page+\"&pagesize=\"+pagesize)\n            .then(function (response) {\n                let rs = response.data.data;\n                let list = rs.list;\n                let total = rs.total;\n                let pagecount = Math.ceil(total/pagesize);\n                let temptxt = \"\";\n                list.forEach((t, index) => {\n                    let tempflag = '';\n                    if (t['flag']){\n                        tempflag = \"<i class='bi bi-check-circle-fill text-base ml-3'></i></a>\";\n                    }\n                    temptxt += \"<li class='boxed services-list__item sponsored has-hidden-elements'>\\n\" +\n                        \"  <figure class='image is-120x80 grow-0' title='\"+t['title']+\"'><a class='aitool' href='\"+htmllang+t['url']+\"'><img class='logo rounded drop-shadow' src='\"+t['thumb']+\"' alt='\"+t['title']+\"' loading='lazy' width='120' height='80' /></a></figure>\\n\" +\n                        \"  <div class='flex-1 content'>\\n\" +\n                        \"    <div class='flex'>\\n\" +\n                        \"      <div class='grow'>\\n\" +\n                        \"        <h3 class='title'>\\n\" +\n                        \"          <a class='aitool' href='\"+htmllang+t['url']+\"' title='\"+t['title']+\"'>\"+t['title']+tempflag+\"\\n\" +\n                        \"        </h3>\\n\" +\n                        \"      </div>\\n\" +\n                        \"      <div class='shrink'>\\n\" +\n                        \"        <a href='\"+t['site']+\"' title='Visit Website' rel='nofollow' target='_blank' class='track-event' data-event-name='click' data-service-slug='\"+t['title']+\"'><i class='fa fa-external-link'></i></a>\\n\" +\n                        \"      </div>\\n\" +\n                        \"    </div>\\n\" +\n                        \"    <p class='tagline'>\\n\" +\n                        \"      \"+t['description']+\"\\n\" +\n                        \"    </p>\\n\" +\n                        \"    <div class='flex' style='justify-content: flex-end;'>\\n\" +\n                        \"      <a id='favorite\"+t['id']+\"' onclick='getFavorite(\"+t['id']+\", `/index.php?appid=1&appsecret=PHPCMF9E08B99B07369&api_auth_code=d41d8cd98f00b204e9800998ecf8427e&api_auth_uid=&s=api&c=module&m=favorite&app=website&id=\"+t['id']+\"&value=1`)' class='loginBtn' data-method='loginfavorite'>\\n\" +\n                        \"      <i class='bi-heart text-l mr-1'></i> <span>\"+t['favorite']+\"</span>\\n\" +\n                        \"      </a>\\n\" +\n                        \"    </div>\\n\" +\n                        \"  </div>\\n\" +\n                        \"</li>\";\n                })\n                let html = \"<ol class='services-list'>\"+temptxt+\"</ol>\"\n\n                if (pagecount > 1 && page <= pagecount){\n                    let htmlpage = \"<div class='search-pagination'>\\n\" +\n                        \"<ul class='pagination'>\"\n                    htmlpage += \"<li><a href='\"+htmllang+\"/video/1' data-ci-pagination-page='1' class='aitool'>&lt;&lt;</a></li>\"\n\n                    if (page==1){\n                        htmlpage += \"<li><a href='\"+htmllang+\"/video/1' data-ci-pagination-page='1' class='aitool'>&lt;</a></li>\"\n                    }else{\n                        htmlpage += \"<li><a href='\"+htmllang+\"/video/\"+(page-1)+\"' data-ci-pagination-page=\"+(page-1)+\" class='aitool'>&lt;</a></li>\"\n                    }\n\n                    if (page==pagecount){\n                        htmlpage += \"<li><a href='\"+htmllang+\"/video/\"+page+\"' data-ci-pagination-page=\"+page+\" class='aitool'>&gt;</a></li>\"\n                    }else{\n                        htmlpage += \"<li><a href='\"+htmllang+\"/video/\"+(page+1)+\"' data-ci-pagination-page=\"+(page+1)+\" class='aitool'>&gt;</a></li>\"\n                    }\n\n                    htmlpage += \"<li><a href='\"+htmllang+\"/video/\"+pagecount+\"' data-ci-pagination-page=\"+pagecount+\" class='aitool'>&gt;&gt;</a></li>\"\n                    htmlpage += \"</ul>\" +\n                        \"</div>\"\n                    html = html + htmlpage\n                }\n                productStart = (page-1)*pagesize + 1;\n                productEnd = page*pagesize;\n                if(productEnd>total) productEnd = total;\n                $(\"#product-start\").html(productStart);\n                $(\"#product-end\").html(productEnd);\n                $(\"#total\").html(total);\n                $(\"#h1total\").html(total);\n                $(\"#main_list\").html(html);\n            })\n            .catch(function (error) {\n                console.log(error);\n            });\n    };\n \n \n     \n         \n             Aitoolnet \n             Aitoolnet stands at the forefront of AI technology, boasting an impressive directory of over 15,000+ AI tools, meticulously updated daily. \n         \n         \n             Useful Links \n             \n                 \n                     \n                                                 About \n                                                 Blog \n                                                 Popular \n                                                 Privacy Policy \n                                                 Terms \n                                             \n                 \n                 \n                     \n                                                 homeworkify \n                                                 AI Radar \n                                             \n                 \n             \n         \n     \n     \n         © 2026 AIToolNet.com · Discover the Best AI Tools \n     \n \n \n    var lang = '';\n \n \n \n \n \n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag('js', new Date());\n\n  gtag('config', 'G-D7KF3ZPKH4');\n \n \n (function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML=\"window.__CF$cv$params={r:'a56d4ff8ecd5d2f2',t:'MTc5NDA2NDcyNQ=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a56d4ff8ecd5d2f2',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);\";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})(); \n \n",
+  "comments": [
+    " <a class='aitool button is-white hide-on-search' href='/discover'>Discover</a> ",
+    " Google tag (gtag.js) "
+  ],
+  "hidden": []
+}

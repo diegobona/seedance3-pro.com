@@ -36,10 +36,11 @@ export function createVideoWaitNotice({
   }
   let timer = null, startedAt = 0, taskId = '', visible = true, originalTitle = '', reminderTitle = '';
   const render = () => {
-    const active = timer !== null && visible && isAuthenticated();
+    const waiting = timer !== null && visible;
+    const active = waiting && isAuthenticated();
     completionReminder.setActive(active);
     notice.hidden = !active || now() - startedAt < VIDEO_WAIT_NOTICE_DELAY;
-    onElapsed(active ? Math.max(0, now() - startedAt) : null);
+    onElapsed(waiting ? Math.max(0, now() - startedAt) : null);
   };
   const restoreTitle = () => {
     if (reminderTitle && documentImpl.title === reminderTitle) documentImpl.title = originalTitle;

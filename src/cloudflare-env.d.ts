@@ -1,4 +1,8 @@
+declare namespace Cloudflare {
+  interface Env { DEEPSEEK_API_KEY?: string }
+}
 interface Env {
+  DEEPSEEK_API_KEY?: string
   RESEND_API_KEY?: string
   REFUND_EMAIL_FROM?: string
   DB?: WorkerBindings['DB']

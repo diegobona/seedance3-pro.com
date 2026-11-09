@@ -1,0 +1,710 @@
+﻿<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <title>Submit - Aitoolnet</title>
+    <meta content="" name="keywords"/>
+    <meta content="" name="description"/>
+    <meta charset='utf-8'>
+    <meta content='width=device-width, initial-scale=1' name='viewport'>
+    <link href='/favicon.ico' rel='shortcut icon' type='image/png'>
+    <link rel="preload" href="/static/assets/icon/css/icon.css" as="style" onload="this.onload=null;this.rel='stylesheet'">    
+    <link rel="stylesheet" href="/static/sitenew/css/app.css" type="text/css"/>
+    <script type="text/javascript">var is_mobile_cms = '';var web_dir = '/';</script>
+    <script src="/static/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+    <script defer src="/static/assets/js/cms.js" type="text/javascript"></script>
+    <script defer src="/static/assets/layui/layui.js" type="text/javascript"></script>
+    
+	
+</head>
+<body class=''>
+<nav class='navbar is-light' style="position: sticky; top: 0; border-bottom-width: 1px; box-shadow: 0 1px 5px rgb(0 0 0 / 15%);">
+    <div class='container'>
+        <div class='navbar-brand grow' style='flex-grow: 100 !important;'>
+            <a class='aitool navbar-item' href='/' id='navbar-logo'>
+                <img alt='Aitoolnet logo' src='/static/sitenew/image/logo.png' width="176" height="40">
+            </a>
+            <div data-react-props="{}" data-react-cache-id="NavbarSearch-0" class="NavbarSearch">
+                <form class="search-form" action="/index.php?lang=" method="get">
+                    <input type="hidden" name="lang" value="">
+                    <input type="hidden" name="s" value="website">
+                    <input type="hidden" name="c" value="search">
+                    <div class='ServiceSearch react-select react-select--no-dropdown NavbarSearchPlaceholder'>
+                        <div class='react-select__control'>
+                            <div class='react-select__value-container'>
+                                <div class='react-select__input'>
+                                    <input class='react-select__input' placeholder='Search by product name and description' type='text' id="keyword" name="keyword" aria-label="search" style="width: 100%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn default" id="btnSearch" name="btnSearch" aria-label="btnSearch" type="submit">
+                        <span class='searchIcon'>
+                            <svg focusable='false' viewBox='0 0 24 24'>
+								<use href="/static/sitenew/image/icons.svg#icon-search"></use>
+							</svg>
+                        </span>
+                    </button>
+                </form>
+            </div>            <div class='navbar-burger' data-target='navMenu' style="margin-top:10px">
+                <span></span>
+                <span></span>
+                <span></span>
+                <div class='w-12'></div>
+            </div>
+        </div>
+        <div class='navbar-menu' id='navMenu'>
+            <div class='navbar-end'>
+                <div class='navbar-item'>
+                                        <a class='aitool button is-white hide-on-search' href='/categories'>Categories</a>
+                                        <a class='aitool button is-white hide-on-search' href='/new'>New</a>
+                    
+                    <a class='aitool button is-white hide-on-search' href='/prompt'>Prompt</a>
+                    <!-- <a class='aitool button is-white hide-on-search' href='/discover'>Discover</a> -->
+                    <a class='button is-white ml-2' href='/submit'>Submit</a>
+                    <div class="language col-links mx-auto" style='margin: 0 auto; text-align: center'>
+                        <div class="dropdown lang">
+                            <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">English<i class="caret"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/submit" data-lang="">English</a></li>
+                                                                <li><a href="/zh/submit" data-lang="zh">简体中文</a></li>
+                                                                <li><a href="/zhtw/submit" data-lang="zhtw">繁體中文</a></li>
+                                                                <li><a href="/ko/submit" data-lang="ko">한국어</a></li>
+                                                                <li><a href="/ja/submit" data-lang="ja">日本語</a></li>
+                                                                <li><a href="/ru/submit" data-lang="ru">Русский язык</a></li>
+                                                                <li><a href="/fr/submit" data-lang="fr">Français</a></li>
+                                                                <li><a href="/es/submit" data-lang="es">Español</a></li>
+                                                            </ul>
+                        </div>
+                    </div>
+                    <div id="nav_member_info" class="login"></div>
+                    <script type="text/javascript">
+                        function handleLogin(data){
+                            $("#nav_member_info").html(data.msg);
+                        }
+                        let scriptLogin = document.createElement('script');
+                        scriptLogin.src = '/index.php?s=api&c=api&m=template&format=jsonp&name=member.html&callback=handleLogin';
+                        document.body.appendChild(scriptLogin);
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+<link href="/static/assets/icon/css/icon.css" rel="stylesheet" type="text/css"/>
+
+<section class='hero shadow is-primary'>
+    <div class='hero-body'>
+        <div class='container'>
+            <h1 class="text-center">Submit Your AI Tools</h1>
+        </div>
+    </div>
+</section>
+
+<div class="section">
+    <div class="my-5 max-w-5xl mx-auto bg-white rounded-lg p-4 md:p-8">
+        <form class="" action="" method="post" name="myform" id="myform">
+            <input name="is_form" type="hidden" value="1">
+<input name="is_admin" type="hidden" value="0">
+<input name="is_tips" type="hidden" value="">
+<input name="csrf_test_name" type="hidden" value="8f498fe8d63bcd6d77ff9a2ad0500116">
+
+            <section class="text-gray-600 py-10 body-font overflow-hidden">
+                <div class="container mx-auto">
+                    <div class="flex flex-col w-full mb-8">
+                        <p class="leading-relaxed text-base text-gray-500">
+                        <p>At Aitoolnet, we're committed to enhancing collaboration and accelerating innovation within the AI community. By submitting your AI tool, you not only showcase its unique features and capabilities but also contribute to the broader advancement of artificial intelligence. Join our AI Tools directory today and share your innovative solution to gain visibility and impact.</p>
+                        </p>
+                    </div>
+
+                    <div class="flex flex-col text-center text-3xl w-full mb-8">Pricing</div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div id="pay_1" class="paytype cursor-pointer hidden">
+                            <div class="h-full p-6 rounded-xl border-2 border-gray-300 flex flex-col relative overflow-hidden">
+                                <h2 class="text-sm tracking-widest title-font mb-1 font-medium">START</h2>
+                                <h1 class="text-5xl text-gray-900 pb-4 mb-4 border-b border-gray-200 leading-none">Free</h1>
+                                <p class="flex items-center text-gray-600 mb-2">
+                                    <span class="w-4 h-4 mr-2 inline-flex items-center justify-center bg-gray-400 text-white rounded-full flex-shrink-0">
+                                      <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" class="w-3 h-3" viewBox="0 0 24 24">
+                                        <path d="M20 6L9 17l-5-5"></path>
+                                      </svg>
+                                    </span>Published within 30 days
+                                </p>
+                                <p class="flex items-center text-gray-600 mb-2">
+                                    <span class="w-4 h-4 mr-2 inline-flex items-center justify-center bg-gray-400 text-white rounded-full flex-shrink-0">
+                                      <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" class="w-3 h-3" viewBox="0 0 24 24">
+                                        <path d="M20 6L9 17l-5-5"></path>
+                                      </svg>
+                                    </span>Basic tool submission
+                                </p>
+                                <p class="flex items-center text-gray-600 mb-6">
+                                    <span class="w-4 h-4 mr-2 inline-flex items-center justify-center bg-gray-400 text-white rounded-full flex-shrink-0">
+                                      <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" class="w-3 h-3" viewBox="0 0 24 24">
+                                        <path d="M20 6L9 17l-5-5"></path>
+                                      </svg>
+                                    </span>Do-Follow SEO backlink
+                                </p>
+                                <p class="text-xs text-gray-500 mt-3"></p>
+                            </div>
+                        </div>
+                        <div id="pay_2" class="paytype cursor-pointer">
+                            <div class="h-full p-6 rounded-xl border-2 border-blue-500 flex flex-col relative overflow-hidden">
+                                <span class="bg-blue-500 text-white px-3 py-1 tracking-widest text-xs absolute right-0 top-0 rounded-bl">POPULAR</span>
+                                <h2 class="text-sm tracking-widest title-font mb-1 font-medium">PRO</h2>
+                                <h1 class="text-5xl text-gray-900 leading-none flex items-center pb-4 mb-4 border-b border-gray-200">
+                                    <span>$9.9</span>
+                                    <span class="text-lg ml-1 font-normal text-gray-500"></span>
+                                </h1>
+                                <p class="flex items-center text-gray-600 mb-2">
+                                    <span class="w-4 h-4 mr-2 inline-flex items-center justify-center bg-blue-500 text-white rounded-full flex-shrink-0">
+                                      <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" class="w-3 h-3" viewBox="0 0 24 24">
+                                        <path d="M20 6L9 17l-5-5"></path>
+                                      </svg>
+                                    </span>One-time payment
+                                </p>
+                                <p class="flex items-center text-gray-600 mb-2">
+                                    <span class="w-4 h-4 mr-2 inline-flex items-center justify-center bg-blue-500 text-white rounded-full flex-shrink-0">
+                                      <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" class="w-3 h-3" viewBox="0 0 24 24">
+                                        <path d="M20 6L9 17l-5-5"></path>
+                                      </svg>
+                                    </span>No queue, listed within 24 hours
+                                </p>
+                                <p class="flex items-center text-gray-600 mb-6">
+                                    <span class="w-4 h-4 mr-2 inline-flex items-center justify-center bg-blue-500 text-white rounded-full flex-shrink-0">
+                                      <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" class="w-3 h-3" viewBox="0 0 24 24">
+                                        <path d="M20 6L9 17l-5-5"></path>
+                                      </svg>
+                                    </span>Listing & Traffic forever
+                                </p>
+                                <p class="text-xs text-gray-500 mt-3"></p>
+                            </div>
+                        </div>
+                        <div id="pay_3" class="paytype cursor-pointer">
+                            <div class="h-full p-6 rounded-xl border-2 border-gray-300 flex flex-col relative overflow-hidden">
+                                <h2 class="text-sm tracking-widest title-font mb-1 font-medium">BUSINESS</h2>
+                                <h1 class="text-5xl text-gray-900 leading-none flex items-center pb-4 mb-4 border-b border-gray-200">
+                                    <span>$49.9</span>
+                                    <span class="text-lg ml-1 font-normal text-gray-500"></span>
+                                </h1>
+                                <p class="flex items-center text-gray-600 mb-2">
+                                    <span class="w-4 h-4 mr-2 inline-flex items-center justify-center bg-gray-400 text-white rounded-full flex-shrink-0">
+                                      <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" class="w-3 h-3" viewBox="0 0 24 24">
+                                        <path d="M20 6L9 17l-5-5"></path>
+                                      </svg>
+                                    </span>One-time payment
+                                </p>
+                                <p class="flex items-center text-gray-600 mb-2">
+                                    <span class="w-4 h-4 mr-2 inline-flex items-center justify-center bg-gray-400 text-white rounded-full flex-shrink-0">
+                                      <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" class="w-3 h-3" viewBox="0 0 24 24">
+                                        <path d="M20 6L9 17l-5-5"></path>
+                                      </svg>
+                                    </span>Contains all of Fast Track
+                                </p>
+                                <p class="flex items-center text-gray-600 mb-6">
+                                    <span class="w-4 h-4 mr-2 inline-flex items-center justify-center bg-gray-400 text-white rounded-full flex-shrink-0">
+                                      <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" class="w-3 h-3" viewBox="0 0 24 24">
+                                        <path d="M20 6L9 17l-5-5"></path>
+                                      </svg>
+                                    </span>Top spots in Home & category pages for 7 days
+                                </p>
+                                <p class="text-xs text-gray-500 mt-3"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="text-gray-600 py-10 mb-10 md:mb-20 body-font overflow-hidden">
+
+                <ul class="list-disc list-inside text-slate-700 rounded-xl ring-1 p-4 pl-8 my-8">
+                    <li class="py-3">Kindly perform a search on our website before submitting your tool to ensure it hasn't been previously listed.</li>
+                    <li class="py-3">This platform is solely dedicated to AI tools, not newsletters or directories. Therefore, please do not submit newsletter or directory links.</li>
+                    <li class="py-3">Please note that all submitted products go through an approval process.Sometimes we could be a bit too liberal or relaxed when approving products. However, we preserve the right to reject or remove products even if they have been approved already.</li>
+                </ul>
+
+                <div class="flex flex-col text-center text-3xl w-full mb-8 mt-8">Submit a tool</div>
+
+                <div class="field is-horizontal" rs="is_title" id="dr_row_title">
+                    <div class="field-label is-normal">
+                        <label class="label">Name <span>*</span></label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <input autocomplete="off" autocorrect="off" class="input" name="data[title]" id="dr_title" placeholder="Example: Lalamu Studio" value="" required="required">
+                                <div class="help"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal" rs="is_home" id="dr_row_website">
+                    <div class="field-label is-normal">
+                        <label class="label">Website <span>*</span></label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <input autocomplete="off" autocorrect="off" class="input" name="data[website]" id="dr_website" placeholder="https://" spellcheck="false" type="url" value="" required="required">
+                                <div class="help">A URL to the product website or a product page on your company's website.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal" rs="is_category" id="dr_row_category">
+                    <div class="field-label is-normal">
+                        <label class="label">Category <span>*</span></label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <select class="input" name="data[category]" id="dr_category" aria-label="category" placeholder="Please select">
+                                    <option value=""></option>
+                                    <option value="Productivity">Productivity</option>
+                                    <option value="Spreadsheets">Spreadsheets</option>
+                                    <option value="Copywriting">Copywriting</option>
+                                    <option value="Startup Tools">Startup Tools</option>
+                                    <option value="Video">Video</option>
+                                    <option value="Text To Speech">Text To Speech</option>
+                                    <option value="Email Assistant">Email Assistant</option>
+                                    <option value="Social Media Assistant">Social Media Assistant</option>
+                                    <option value="Fun Tools">Fun Tools</option><option value="Image Editing">Image Editing</option><option value="Avatars">Avatars</option><option value="Image Generator">Image Generator</option><option value="SEO">SEO</option><option value="Code Assistant">Code Assistant</option><option value="Music">Music</option><option value="Presentations">Presentations</option><option value="Education Assistant">Education Assistant</option><option value="Art">Art</option><option value="Gaming">Gaming</option><option value="Sales">Sales</option><option value="Life Assistant">Life Assistant</option><option value="Customer Support">Customer Support</option><option value="Developer Tools">Developer Tools</option><option value="Search Engines">Search Engines</option><option value="Design Assistant">Design Assistant</option><option value="3D">3D</option><option value="Legal Assistant">Legal Assistant</option><option value="Healthcare">Healthcare</option><option value="Prompts">Prompts</option><option value="Research">Research</option><option value="Audio">Audio</option><option value="Human Resources">Human Resources</option><option value="Story Teller">Story Teller</option><option value="Fashion">Fashion</option><option value="E-commerce">E-commerce</option><option value="Finance">Finance</option><option value="Meeting Assistant">Meeting Assistant</option><option value="Chatbots">Chatbots</option><option value="Photo Editing">Photo Editing</option><option value="Marketing">Marketing</option><option value="Automation">Automation</option><option value="Large Language Models">Large Language Models</option><option value="Data">Data</option><option value="Business">Business</option><option value="Machine Learning">Machine Learning</option><option value="Slack">Slack</option><option value="summarizer">summarizer</option><option value="Q&amp;A">Q&amp;A</option><option value="Grammar checking">Grammar checking</option><option value="Learning">Learning</option><option value="AI content detection">AI content detection</option><option value="Speech to text">Speech to text</option><option value="Voice">Voice</option><option value="Deepfakes">Deepfakes</option><option value="Paraphrasing">Paraphrasing</option><option value="Deepnude">Deepnude</option><option value="Homeworkify">Homeworkify</option></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal" rs="is_pricingremark" id="dr_row_pricingremark">
+                    <div class="field-label is-normal">
+                        <label class="label ">Pricing</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <select class="input" name="data[pricingremark]" id="dr_pricingremark" aria-label="pricingremark">
+                                    <option value=""></option>
+                                    <option value="Free">Free</option>
+                                    <option value="Freemium">Freemium</option>
+                                    <option value="Free Trial">Free Trial</option>
+                                    <option value="Paid">Paid</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal" rs="is_description" id="dr_row_description">
+                    <div class="field-label is-normal">
+                        <label class="label">Description</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <textarea autocomplete="off" autocorrect="off" class="input" name="data[description]" id="dr_description" placeholder="Example: Experience high-quality lip sync, video editing, and language translation with Lalamu Studio. " value="" required="required" style="height: auto"></textarea>
+                                <div class="help"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal" rs="is_content" id="dr_row_content">
+                    <div class="field-label is-normal">
+                        <label class="label">Content</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <textarea autocomplete="off" autocorrect="off" class="input" name="data[content]" id="dr_content" placeholder="Example: Lalamu Studio is a software that offers lip sync capabilities, text-to-speech processing, and video editing features. It uses AI technology to make syncing videos easier and provides high-quality lip sync results. The software also allows users to choose faces for audio files, edit audio timing, and see real-time lip sync previews. Batch processing is supported for producing multiple lip sync videos simultaneously. Lalamu Studio also offers voice features such as language translation and realistic voices.
+
+Key Features:
+- Lip Sync: High-quality lip sync with the same video resolution as the original footage.
+
+- Face Chooser &amp; Audio Editor: Drag and drop audio files on faces, adjust their timing for each person's face speaking.
+
+- Realtime Lip Sync: Preview the lip-synced result in real-time with high quality.
+
+- Batch Processing: Produce multiple lip-synced videos at the same time in a short period.
+
+- Voice Features: Change original speech into different languages and get more realistic voices." value="" required="required" style="height: 200px"></textarea>
+                                <div class="help">Describe your product in one or two paragraphs starting with its name.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal" rs="is_email" id="dr_row_email">
+                    <div class="field-label is-normal">
+                        <label class="label">Email <span>*</span></label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <input class="input" type="text" name="data[email]" id="dr_email" aria-label="email" value="" style="width:200px;">
+                                <div class="help"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal" rs="is_payway" id="dr_row_payway">
+                    <div class="field-label is-normal">
+                        <label class="label">Payment Platform <span>*</span></label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                    <div id="payway_1" class="payway cursor-pointer h-full p-3 rounded-xl border-2 border-blue-500 flex flex-col relative overflow-hidden">
+                                        <p class="text-center text-gray-600">PayPro Global</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" id="dr_payid" name="data[payid]" required="required">
+                <input type="hidden" id="dr_money" name="data[money]" value="9.9">
+                <input type="hidden" id="dr_payway" name="data[payway]" value="1">
+                <div class="field is-horizontal mt-5">
+                    <div class="field-label is-normal">
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <button type="button" id="btnSubmit" class="button is-info" onclick="handleSubmit()" class="btn green">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="text-gray-600 py-10 mb-10 md:mb-20 body-font overflow-hidden">
+                <div class="flex flex-col text-center text-3xl w-full mb-8">FAQ</div>
+
+                <div class="faq border rounded hidden">
+                    <div class="faq-question border-b p-5 bg-blue-50 cursor-pointer text-xl flex justify-between items-center">
+                        <div>1. Why Submit Your AI Tool with Us?</div>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer p-5 hidden">
+                        <p>We are dedicated to becoming the premier AI tool directory. By promoting your website tool with us, you can gain direct website traffic and user clicks.</p>
+                        <p>Reach over 200,000 monthly visitors.</p>
+                        <p>Receive a valuable dofollow backlink.</p>
+                        <p>Benefit from a multi-language introduction.</p>
+                    </div>
+                    <div class="faq-question border-b p-5 bg-blue-50 cursor-pointer text-xl flex justify-between items-center">
+                        <div>2. What Types of Tools and Services Are Accepted?</div>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer p-5 hidden">
+                        Before submitting your tool, please perform a site search to ensure it's not already listed. We manually review each tool before publication. Our platform exclusively features AI tools, not newsletters or directories. Therefore, kindly refrain from submitting newsletter or directory links. Please be aware that all submissions undergo an approval process. While we may sometimes be lenient in approvals, we retain the right to reject or remove products even after approval.
+                    </div>
+                    <div class="faq-question border-b p-5 bg-blue-50 cursor-pointer text-xl flex justify-between items-center">
+                        <div>3. When Will My Tool Be Listed?</div>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer p-5 hidden">
+                        Due to high demand, our submission queue currently takes 30-60 days. However, you have the option to expedite the process for just $9.9.
+                    </div>
+                    <div class="faq-question border-b p-5 bg-blue-50 cursor-pointer text-xl flex justify-between items-center">
+                        <div>4. How Can I Edit My Listing?</div>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer p-5 hidden">
+                        You can request edits to your listing by emailing us at support@aitoolnet.com. Please use the subject line "Update Tool Listing - [Your Tool Name]."
+                    </div>
+                    <div class="faq-question border-b p-5 bg-blue-50 cursor-pointer text-xl flex justify-between items-center">
+                        <div>5. How Can I Get Featured or Promote My Tool?</div>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer p-5 hidden">
+                        To get started with featuring or promoting your tool, use the boosted submission option or reach out to us for additional packages and options.
+                    </div>
+                </div>
+
+                <div class="faq border rounded">
+                    <div class="faq-question border-b p-5 bg-blue-50 cursor-pointer text-xl flex justify-between items-center">
+                        <div>1. How Much Does It Cost to List a Tool?</div>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer p-5 hidden">
+                        Listing a tool costs $9.9, which is a one-time payment. Once paid, your tool will be listed indefinitely.
+                    </div>
+                    <div class="faq-question border-b p-5 bg-blue-50 cursor-pointer text-xl flex justify-between items-center">
+                        <div>2. How Long Does It Take to Get Listed After Payment and Submission?</div>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer p-5 hidden">
+                        <p>For real-time tracking of your tool's listing status, we recommend using the homepage's advanced search feature. It offers superior filtering and algorithms compared to the basic search.</p>
+                        <p>Upon successful submission and payment, we will list your tool within 24 hours. You can check the following day to see your tool live on the site.</p>
+                    </div>
+                    <div class="faq-question border-b p-5 bg-blue-50 cursor-pointer text-xl flex justify-between items-center">
+                        <div>3. How Can I Edit My Listing?</div>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer p-5 hidden">
+                        To edit your listing, simply email us at support@aitoolnet.com with your requested changes. Please use the subject line "Update Tool Listing – [Your Tool Name]."
+                    </div>
+                    <div class="faq-question border-b p-5 bg-blue-50 cursor-pointer text-xl flex justify-between items-center">
+                        <div>4. Why Wasn't My Tool Listed?</div>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer p-5 hidden">
+                        Before submitting your tool, please perform a site search to ensure it's not already listed. We manually review each tool before publication. Our platform exclusively features AI tools, not newsletters or directories. Therefore, kindly refrain from submitting newsletter or directory links. If your tool isn't approved for any reason, you will receive a full refund of your listing fee. Common reasons for non-approval include the tool not utilizing AI or being already listed.
+                    </div>
+                    <div class="faq-question border-b p-5 bg-blue-50 cursor-pointer text-xl flex justify-between items-center">
+                        <div>5. Can You Guarantee Sales or Traffic?</div>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer p-5 hidden">
+                        <p>We cannot guarantee that listing your AI tool on Aitoolnet will result in sales or traffic. However, based on our traffic statistics, it is likely that your tool/website will receive some clicks. As our website continues to grow, your exposure also increases.</p>
+                        <p>Several factors can enhance your chances of receiving visits, such as having a unique tool name, a clear use case, and well-chosen keywords. When listing your tool, we consider all these aspects to provide you with the best possible exposure.</p>
+                    </div>
+                </div>
+
+                <div class="faq border rounded hidden">
+                    <div class="faq-question border-b p-5 bg-blue-50 cursor-pointer text-xl flex justify-between items-center">
+                        <div>1. How Much Does a Featured Listing Cost?</div>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer p-5 hidden">
+                        Our featured listings are currently priced at $49.9 and are active for a duration of 7 days.
+                    </div>
+                    <div class="faq-question border-b p-5 bg-blue-50 cursor-pointer text-xl flex justify-between items-center">
+                        <div>2. When Will My Featured Listing Go Live?</div>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer p-5 hidden">
+                        Typically, we review featured listings within 24 hours of payment. After the review, you should receive an email notifying you of your scheduled featured listing date.
+                    </div>
+                    <div class="faq-question border-b p-5 bg-blue-50 cursor-pointer text-xl flex justify-between items-center">
+                        <div>3. Can I Renew My Featured Listing?</div>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer p-5 hidden">
+                        If you're satisfied with the results and wish to extend your featured listing, you can choose to renew it at any time. Simply send an email to support@aitoolnet.com and complete the payment form again to extend your featured listing for an additional 7 days. If you're interested in a longer placement, feel free to contact us via email.
+                    </div>
+                    <div class="faq-question border-b p-5 bg-blue-50 cursor-pointer text-xl flex justify-between items-center">
+                        <div>4. What Types of Tools and Services Are Accepted for Featured Listings?</div>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer p-5 hidden">
+                        We conduct a manual review of every tool submitted for a featured listing. If your tool is not approved for any reason, you will receive a full refund of your featured listing fee. Common reasons for non-approval include the tool not utilizing AI or having malicious intent. Please ensure you include your tool's URL when making the payment for a featured listing.
+                    </div>
+                    <div class="faq-question border-b p-5 bg-blue-50 cursor-pointer text-xl flex justify-between items-center">
+                        <div>5. Can You Guarantee Sales or Traffic?</div>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer p-5 hidden">
+                        <p>We cannot guarantee that listing your AI tool on Aitoolnet will result in sales or traffic. However, based on our traffic statistics, it is likely that your tool/website will receive some clicks. As our website continues to grow, your exposure also increases.</p>
+                        <p>Several factors can increase your chances of receiving visits, such as having a unique tool name, a clear use case, and well-chosen keywords. When listing your tool, we take all these aspects into account and strive to provide you with the best possible exposure.</p>
+                    </div>
+                    <div class="faq-question border-b p-5 bg-blue-50 cursor-pointer text-xl flex justify-between items-center">
+                        <div>6. What Is the Refund Policy?</div>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer p-5 hidden">
+                        We offer a full, automatic refund in cases where your AI tool doesn't get published due to our editorial policy. We also provide refunds for Featured/sponsorships if they haven't started yet. Your satisfaction is important to us, and we aim to ensure a fair and transparent refund process.
+                    </div>
+                </div>
+            </section>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    let nowtime = new Date().valueOf()
+    let num = Math.floor(Math.random() * (10000 - 1) + 1)
+    let payid = 'id_' + nowtime + num
+    document.getElementById('dr_payid').value = payid
+
+    let title = '';
+    let price = '';
+    let payway = '1';
+    let baseurl = 'https://www.aitoolnet.com/payment.php';
+    // default
+    title = 'Submit a tool pay $9.9';
+    price = 9.9;
+    submitfinishurl = '';
+    submiturl = baseurl + '?payway=' + payway + '&x-payid=' + payid + '&x-money=' + price;
+    document.querySelector('#btnSubmit').innerHTML="Submit Pay $9.9";
+    const paytypeHtml = document.querySelectorAll('.paytype');
+    paytypeHtml.forEach(function(option,index){
+        option.addEventListener('click', function() {
+            const itemAll = document.querySelectorAll('.paytype>div>p>span');
+            itemAll.forEach(function(item){
+                item.classList.add('bg-gray-400');
+                item.classList.remove('bg-blue-500');
+            });
+            const itemList = option.querySelectorAll('div>p>span');
+            itemList.forEach(function(item){
+                item.classList.remove('bg-gray-400');
+                item.classList.add('bg-blue-500');
+            });
+
+            const itemBoderAll = document.querySelectorAll('.paytype>div');
+            itemBoderAll.forEach(function(item){
+                item.classList.add('border-gray-300');
+                item.classList.remove('border-blue-500');
+            });
+            const itemBoderList = option.querySelectorAll('div');
+            itemBoderList.forEach(function(item){
+                item.classList.remove('border-gray-300');
+                item.classList.add('border-blue-500');
+            });
+
+            if (index==1){
+                paytypeHtml[1].querySelector('div>span').classList.remove('bg-gray-300');
+                paytypeHtml[1].querySelector('div>span').classList.add('bg-blue-500');
+            }else {
+                paytypeHtml[1].querySelector('div>span').classList.add('bg-gray-300');
+                paytypeHtml[1].querySelector('div>span').classList.remove('bg-blue-500');
+            }
+
+            if (index==0){
+                document.getElementById('dr_row_payway').classList.add('hidden');
+                document.getElementById('dr_row_payway').classList.remove('is-horizontal');
+            }else {
+                document.getElementById('dr_row_payway').classList.remove('hidden');
+                document.getElementById('dr_row_payway').classList.add('is-horizontal');
+            }
+
+            if (index===0){
+                title = 'Submit a tool';
+                price = 0;
+                document.querySelector('#btnSubmit').innerHTML="Submit Free";
+            }else if(index===1){
+                title = 'Submit a tool pay $9.9';
+                price = 9.9;
+                document.querySelector('#btnSubmit').innerHTML="Submit Pay $9.9";
+            }else if(index===2){
+                title = 'Submit a tool pay $49.9';
+                price = 49.9;
+                document.querySelector('#btnSubmit').innerHTML="Submit Pay $49.9";
+            }else {
+                title = 'Submit a tool pay $9.9';
+                price = 9.9;
+                document.querySelector('#btnSubmit').innerHTML="Submit Pay $9.9";
+            }
+
+            payway = document.getElementById('dr_payway').value;
+            document.getElementById('dr_money').value = price.toString();
+            if (index==0){
+                submitfinishurl = 'https://www.aitoolnet.com/finish';
+            }else {
+                paramurl ='?payway=' + payway + '&x-payid=' + payid + '&x-money=' + price;
+                submiturl = baseurl + paramurl;
+                submitfinishurl = '';
+            }
+
+            const faqHtml = document.querySelectorAll('.faq');
+            faqHtml.forEach(function(faqitem,faqindex){
+                faqitem.classList.add('hidden');
+                if(index == faqindex){
+                    faqitem.classList.remove('hidden');
+                }
+            })
+
+        });
+    });
+
+    const paywayHtml = document.querySelectorAll('.payway');
+    paywayHtml.forEach(function(option,index){
+        option.addEventListener('click', function() {
+            if (index==0){
+                paywayHtml[0].classList.remove('border-gray-300');
+                paywayHtml[0].classList.add('border-blue-500');
+                paywayHtml[1].classList.add('border-gray-300');
+                paywayHtml[1].classList.remove('border-blue-500');
+                document.getElementById('dr_payway').value = '1';
+            }else if (index==1){
+                paywayHtml[0].classList.add('border-gray-300');
+                paywayHtml[0].classList.remove('border-blue-500');
+                paywayHtml[1].classList.remove('border-gray-300');
+                paywayHtml[1].classList.add('border-blue-500');
+                document.getElementById('dr_payway').value = '2';
+            }else {
+                paywayHtml[0].classList.remove('border-gray-300');
+                paywayHtml[0].classList.add('border-blue-500');
+                paywayHtml[1].classList.add('border-gray-300');
+                paywayHtml[1].classList.remove('border-blue-500');
+                document.getElementById('dr_payway').value = '1';
+            }
+
+            payway = document.getElementById('dr_payway').value;
+            paramurl ='?payway=' + payway + '&x-payid=' + payid + '&x-money=' + price;
+            submiturl = baseurl + paramurl;
+        });
+    });
+
+    const questionHtml = document.querySelectorAll('.faq-question');
+    questionHtml.forEach(function(option,index){
+        option.addEventListener('click', function() {
+            const answerHtml = document.querySelectorAll('.faq-answer')[index];
+            const iconHtml = document.querySelectorAll('.faq-icon')[index];
+            if(answerHtml.classList.contains('hidden')){
+                answerHtml.classList.remove('hidden');
+                iconHtml.innerHTML = '-';
+            }else {
+                answerHtml.classList.add('hidden');
+                iconHtml.innerHTML = '+';
+            }
+        });
+    });
+
+    function handleSubmit(){
+        if(submitfinishurl){
+            dr_ajax_submit('https://www.aitoolnet.com/index.php?s=form&c=website&m=post', 'myform', '2000', submitfinishurl)
+        }else {
+            email = document.getElementById('dr_email').value;
+            submiturl = submiturl + '&email=' + email;
+            dr_ajax_submit('https://www.aitoolnet.com/index.php?s=form&c=website&m=post', 'myform', '2000', submiturl)
+        }
+    }
+</script>
+<footer class='footer'>
+    <div class='container fbody'>
+        <div class="intro">
+            <div class="title"><a class='aitool' href='/'>Aitoolnet</a></div>
+            <div class="txt">Aitoolnet stands at the forefront of AI technology, boasting an impressive directory of over 15,000+ AI tools, meticulously updated daily.</div>
+        </div>
+        <div class="fmid">
+            <div class="title">Useful Links</div>
+            <div class="flink flex">
+                <div style="width: 30%">
+                    <ul>
+                                                <li><a href="/about" target="_blank" class="aitool">About</a></li>
+                                                <li><a href="/blog" target="_blank" class="aitool">Blog</a></li>
+                                                <li><a href="/popular" target="_blank" class="aitool">Popular</a></li>
+                                                <li><a href="/privacy" target="_blank" class="aitool">Privacy Policy</a></li>
+                                                <li><a href="/terms" target="_blank" class="aitool">Terms</a></li>
+                                            </ul>
+                </div>
+                <div style="width: 70%; padding-left: 30px">
+                    <ul>
+                                                <li><a href="https://www.aitoolnet.com/homeworkifyai" target="_blank" class="aitool">homeworkify</a></li>
+                                                <li><a href="https://radar.aitoolnet.com/" target="_blank">AI Radar</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class='container copyright'>
+        <span class='footer-title'>© 2026 AIToolNet.com · Discover the Best AI Tools</span>
+    </div>
+</footer>
+<script>
+    var lang = '';
+</script>
+<script defer type="text/javascript" src="/static/sitenew/js/common.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-D7KF3ZPKH4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-D7KF3ZPKH4');
+</script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"742e4add1fc846e09c81c59f3d046c1b","spa":2}' crossorigin="anonymous"></script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a56d4dbefbcd9874',t:'MTc5NDA2NDYzNA=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a56d4dbefbcd9874',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

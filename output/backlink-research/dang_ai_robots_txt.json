@@ -1,0 +1,10 @@
+{
+  "input": "https://dang.ai/robots.txt",
+  "final": "https://dang.ai/robots.txt",
+  "status": 200,
+  "links": [],
+  "text": "User-Agent: *\nAllow: /\nDisallow: /login\nDisallow: /dashboard\nDisallow: /account\nDisallow: /submit\nDisallow: /api\n\nSitemap: https://dang.ai/sitemap.xml\n",
+  "comment_count": 0,
+  "hidden_elements": [],
+  "suspicious": []
+}

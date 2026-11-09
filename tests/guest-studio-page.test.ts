@@ -69,7 +69,7 @@ test('guest video landing shows only five seconds and explains both free attempt
     assert.match(duration, /<option\b[^>]*value="5"[^>]*selected/)
     assert.equal((duration.match(/<option\b/g) || []).length, 1)
     assert.doesNotMatch(duration, /value="(?:10|15)"/)
-    assert.match(html, prefix ? /每次 5 秒，共 10 秒/ : /Two free videos, 5 seconds each/)
+    assert.match(html, prefix ? /免费生成 2 条视频，每条 5 秒/ : /Two free videos, 5 seconds each/)
     assert.match(html, /data-authenticated="false"/)
     assert.match(html, prefix ? /生成后预计剩余/ : /AFTER GENERATION/)
     assert.match(html, prefix ? /剩余 — 秒/ : /— seconds remaining/)

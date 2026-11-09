@@ -1,4 +1,6 @@
 import { t, localizedErrorMessage } from './i18n.mjs';
+import { validGuestVideoInput } from './guest-video-input.mjs';
+import { normalizeReferenceMentions } from './reference-mentions.mjs';
 import { prepareVideoReferenceFrame } from './video-reference-frame.mjs';
 import { guestDeviceHeaders } from '../assets/guest-device.mjs';
 import { fetchWithGuestVideoVerification } from './guest-video-verification.mjs';
@@ -244,6 +246,9 @@ export async function pollVideoGenerationTask({
 export async function requestVideoGeneration({
   prompt,
   paidOnly = false,
+  optimizePrompt,
+  inputMode,
+  onPromptOptimization = () => {},
   duration = 5,
   aspectRatio = "16:9",
   referenceFiles = [],
@@ -257,9 +262,14 @@ export async function requestVideoGeneration({
 } = {}) {
   throwIfAborted(signal);
   const referenceImageIds = [];
-  let singleReference;
+  const combinedReferences = [];
   // Validate the whole selection before uploading any reference.
   validateVideoReferenceFiles(referenceFiles);
+  if (inputMode !== undefined && !validGuestVideoInput(inputMode, referenceFiles.length)) {
+    throw videoError('Choose up to 5 reference images, or a first frame with an optional last frame.');
+  }
+  // Explicit inputMode is used by the guest Yir flow only.
+  const submittedPrompt = inputMode === 'reference' ? normalizeReferenceMentions(prompt, referenceFiles.length) : prompt;
   for (const [index, file] of referenceFiles.entries()) {
     if (!["image/png", "image/jpeg", "image/webp"].includes(file.type) || !file.size || file.size > 10 * 1024 * 1024) {
       throw videoError(t("Choose PNG, JPEG or WebP images, up to 10 MB each."));
@@ -267,8 +277,8 @@ export async function requestVideoGeneration({
     onUpload({ index: index + 1, total: referenceFiles.length });
     const prepared = await prepareReferenceImpl(file, { aspectRatio, signal });
     throwIfAborted(signal);
-    if (referenceFiles.length === 1) {
-      singleReference = prepared;
+    if (inputMode !== undefined || referenceFiles.length === 1) {
+      combinedReferences.push(prepared);
       continue;
     }
     const upload = await fetchWithGuestVideoVerification("/api/videos/references", {
@@ -282,17 +292,19 @@ export async function requestVideoGeneration({
     referenceImageIds.push(result.id);
   }
   const requestPayload = JSON.stringify({
-    prompt: String(prompt || "").trim(),
+    prompt: String(submittedPrompt || "").trim(),
     duration: Number(duration),
     resolution: "768p",
     aspectRatio: String(aspectRatio || "16:9"),
+    ...(typeof optimizePrompt === "boolean" ? { optimizePrompt } : {}),
+    ...(inputMode !== undefined ? { inputMode } : {}),
     ...(referenceImageIds.length ? { referenceImageIds } : {})
   });
   let body = requestPayload;
-  if (singleReference) {
+  if (combinedReferences.length) {
     body = new FormData();
     body.append('payload', requestPayload);
-    body.append('reference', singleReference, 'reference');
+    combinedReferences.forEach((file, index) => body.append('reference', file, `reference-${index + 1}`));
   }
   const response = await fetchWithGuestVideoVerification("/api/videos/generate", {
     method: "POST",
@@ -301,7 +313,7 @@ export async function requestVideoGeneration({
       ...(await guestDeviceHeaders()),
       accept: "application/json",
       ...(paidOnly === true ? { 'x-seedance-credit-source': 'paid' } : {}),
-      ...(singleReference ? {} : { "content-type": "application/json" })
+      ...(combinedReferences.length ? {} : { "content-type": "application/json" })
     },
     body,
     signal
@@ -310,6 +322,13 @@ export async function requestVideoGeneration({
   const payload = await responsePayload(response);
   if (!response.ok || !payload?.success) throw errorFromResponse(response, payload, credits);
   const taskId = validateTaskPayload(payload);
+  const optimizationStatus = response.headers.get('x-seedance-prompt-optimization');
+  const optimizedPrompt = optimizationStatus === 'optimized'
+    && payload.promptOptimization?.status === 'optimized'
+    && typeof payload.promptOptimization.prompt === 'string'
+    && payload.promptOptimization.prompt.length <= 6000
+    ? payload.promptOptimization.prompt : undefined;
+  onPromptOptimization(optimizationStatus, optimizedPrompt);
   onTask(taskId);
   onStatus({ status: String(payload.task.status || "queued"), taskId, credits });
   return pollVideoGenerationTask({

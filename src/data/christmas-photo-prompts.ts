@@ -122,7 +122,7 @@ export const christmasPhotoPrompts: ChristmasPhotoPrompt[] = [
     summary: 'A landscape family photo with a clean area for your own greeting.',
     editGuidance: 'Set the family size and clothing palette. Keep the right third blank, then add your greeting in an editor.',
     aspectRatio: '3:2',
-    prompt: 'Create a photorealistic landscape Christmas family card photo. If reference images are provided, preserve each family member\'s distinct identity, age and facial features. Arrange the family close together in the left two-thirds of the frame beside a small evergreen tree, wearing cream and forest-green clothes with relaxed smiles. Soft window light, all faces sharp, realistic skin and hands, restrained gold decorations. Reserve the entire right third as clean, softly lit warm ivory wall with no objects, shadows crossing it, or decorations. Leave this copy space blank for a greeting to be added manually later. Generate no text, letters, watermark or logos.',
+    prompt: 'Create a photorealistic landscape Christmas family card photo. If reference images are provided, preserve each family member\'s distinct identity, age and facial features. Arrange the family close together in the left two-thirds of the frame beside a small evergreen tree, wearing cream and forest-green clothes with relaxed smiles. Soft window light, all faces sharp, realistic skin and hands, restrained gold decorations. Reserve the entire right third as clean, softly lit warm ivory wall with no objects, shadows crossing it, or decorations. Leave this copy space blank for a greeting to be added manually later. Generate no text, letters or logos.',
   },
   {
     slug: 'pet-christmas-card-space',
@@ -131,7 +131,7 @@ export const christmasPhotoPrompts: ChristmasPhotoPrompt[] = [
     summary: 'A vertical holiday card composition with open space above the pet.',
     editGuidance: 'Choose a dog or cat and your colors. Keep the upper half clear, then add greeting text manually.',
     aspectRatio: '2:3',
-    prompt: 'Photorealistic vertical Christmas card photo featuring one pet seated naturally in the lower half of the frame on a cream wool blanket. If a pet reference image is provided, preserve its species, face shape, coat pattern and distinctive markings; otherwise show a small dog with a plain forest-green bandana. Soft studio window light, sharp eyes, detailed fur and realistic anatomy. Place a few blurred evergreen branches and muted gold ornaments only along the bottom corners. Reserve the upper half as a clean warm beige background with generous blank copy space for a greeting added manually afterward. No generated text, letters, watermark or logos.',
+    prompt: 'Photorealistic vertical Christmas card photo featuring one pet seated naturally in the lower half of the frame on a cream wool blanket. If a pet reference image is provided, preserve its species, face shape, coat pattern and distinctive markings; otherwise show a small dog with a plain forest-green bandana. Soft studio window light, sharp eyes, detailed fur and realistic anatomy. Place a few blurred evergreen branches and muted gold ornaments only along the bottom corners. Reserve the upper half as a clean warm beige background with generous blank copy space for a greeting added manually afterward. No generated text, letters or logos.',
   },
 ]
 

@@ -41,7 +41,7 @@ test('combined uploads reject extra fields, duplicate images, mixed IDs and unsu
 test('oversized bodies are bounded even when the client omits Content-Length', async () => {
   let cancelled=false
   const stream=new ReadableStream({
-    start(controller) { controller.enqueue(new Uint8Array(10*1024*1024+65536)) },
+    start(controller) { controller.enqueue(new Uint8Array(50*1024*1024+65536)) },
     cancel() { cancelled=true },
   })
   const input=await readVideoGenerationInput(new Request('https://seedance3-pro.com/api/videos/generate',{

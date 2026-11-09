@@ -1,0 +1,16 @@
+[
+  {
+    "file": "seedance3-pro-backlinks-2026-11-07.csv",
+    "rows": 10,
+    "columns": 11,
+    "encoding": "UTF-8 BOM",
+    "roundtrip": "exact"
+  },
+  {
+    "file": "seedance3-pro-backlinks-pending-2026-11-07.csv",
+    "rows": 3,
+    "columns": 11,
+    "encoding": "UTF-8 BOM",
+    "roundtrip": "exact"
+  }
+]

@@ -1,0 +1,197 @@
+{
+  "checked_at": "2026-11-07 Asia/Shanghai",
+  "scope": "资源页与投稿语法、现成目录名单；3个深查候选",
+  "candidates": [
+    {
+      "name": "AI Tools Directory",
+      "url": "https://aitoolsdirectory.com/",
+      "submit_url": "https://aitoolsdirectory.com/submit-tool",
+      "form_url": "https://aitool.paperform.co/",
+      "type": "目录",
+      "DR": "未直接查询Ahrefs；第三方转引50（2026-10）",
+      "DR_value_third_party": 50,
+      "DR_source": "https://dirpush.com/directories/aitoolsdirectory/",
+      "DR_note": "已打开第三方页，其标注Ahrefs Oct 2026；不是本次Ahrefs实测值。其他名单有51等不同时间数据，不混用。",
+      "monthly_visits": 113100,
+      "traffic_period": "2026-09",
+      "traffic_provider": "Similarweb，全站月访问量估计",
+      "traffic_source": "https://www.similarweb.com/website/aitoolsdirectory.com/",
+      "dofollow": "是（实测Runway详情页直链）",
+      "link_evidence": {
+        "page": "https://aitoolsdirectory.com/tool/runway",
+        "target": "https://runwayml.com/",
+        "rel": "external noopener",
+        "html": "<a class=\"try-button tool-side-button\" href=\"https://runwayml.com/\" rel=\"external noopener\" target=\"_blank\">",
+        "status": 200,
+        "meta_robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+        "x_robots_tag": null,
+        "robots": "User-agent:* Allow:/",
+        "caveat": "只证明该样例；首页Vmake广告rel=sponsored noopener，Kling详情采用link.aitoolsdirectory.com短链，不能宣称全站所有链接都follow。"
+      },
+      "fees": "免费人工审核；可选Fast Track US$99一次，承诺3天内；首页广告US$299/399/499每30天。",
+      "fee_source": "https://aitoolsdirectory.com/ads",
+      "backlink_badge": "已打开提交页和Paperform，未见强制徽章或回链要求。",
+      "relevance": "高：有Video Generation、Generative Video、Text-to-Video类别及Runway/Kling收录。",
+      "verdict": "可交",
+      "reason": "有免费可用表单、非零流量和已实测直链follow。须提供真人原创描述（站方明确拒绝AI生成或复制描述）、公开透明价格和可直接使用的产品；等待名单/隐藏价格不收。当前目标站有可用视频工具，应准确描述现有模型，勿将Seedance3.0写成已上线。",
+      "policy_source": "https://aitoolsdirectory.com/submit-tool",
+      "prompt_injection": "在提交页、广告页、首页、Runway及Kling详情原始HTML/注释关键词扫描中未发现针对AI改写审查结果的隐藏指令；不是全站无隐藏指令保证。拒绝AI撰写描述是可见投稿政策，不是提示注入。",
+      "evidence_files": [
+        "aitoolsdirectory_com_submit_tool.html",
+        "aitoolsdirectory_com_ads.html",
+        "aitoolsdirectory_com_tool_runway.html",
+        "aitoolsdirectory_com_tool_kling_ai.html",
+        "aitool_paperform_co_.html",
+        "resources_headers_robots.json"
+      ],
+      "AS": null,
+      "AS_verification": {
+        "checked": "2026-11-07",
+        "semrush_url": "https://www.semrush.com/website/aitoolsdirectory.com/overview/",
+        "semrush_result": "web与Python公开HTTP均404",
+        "exploding_topics_url": "https://analytics.explodingtopics.com/website/aitoolsdirectory.com",
+        "exploding_topics_result": "HTTP跳转到https://tools.explodingtopics.com/website-traffic-checker?q=aitoolsdirectory.com；200但HTML只有查询工具框架，无AS数据；页面使用reCAPTCHA；未绕过验证。",
+        "decision": "AS未核实，不能用历史转引值或DR代替。"
+      }
+    },
+    {
+      "name": "Dang.ai",
+      "url": "https://dang.ai/",
+      "submit_url": "https://dang.ai/pricing",
+      "type": "目录",
+      "DR": "未直接查询Ahrefs；第三方转引82（2026-10-17）",
+      "DR_value_third_party": 82,
+      "DR_source": "https://dr.serp.co/directories/dang.ai/",
+      "DR_note": "已打开SERP DR页面；其标注Domain Rating by Ahrefs。不是本次Ahrefs实测值。",
+      "monthly_visits": 470800,
+      "traffic_period": "2026-09",
+      "traffic_provider": "Similarweb，全站月访问量估计",
+      "traffic_source": "https://www.similarweb.com/website/dang.ai/",
+      "self_reported_traffic": "官网pricing另称Google Analytics 2026-10为330K+月访问者；口径不同，不覆盖Similarweb值。",
+      "dofollow": "未确认真follow：锚点follow，短链302响应带X-Robots-Tag:none",
+      "link_evidence": {
+        "page": "https://dang.ai/tool/seedance-3-0-ai-video-generator-2",
+        "target": "https://l.dang.ai/c4wn",
+        "rel": "noopener noreferrer",
+        "html": "<a href=\"https://l.dang.ai/c4wn\" rel=\"noopener noreferrer\" target=\"_blank\">",
+        "listing_status": 200,
+        "redirect_status": 302,
+        "redirect_x_robots_tag": "none",
+        "final_url": "https://seedance3.si/?ref=dangai",
+        "final_status": 200,
+        "robots": "dang.ai的/tool/未屏蔽；l.dang.ai/robots.txt为User-agent:* Allow:/",
+        "caveat": "竞争产品seedance3.si样例；不能误报用户seedance3-pro.com已收录。none相当于noindex,nofollow，302链的传权无法按真dofollow确认。"
+      },
+      "fees": "免费需可抓取回链，1类别，审核最长4周；Basic US$49一次，无回链要求，约4天；Pro US$30设置费+US$19/月。",
+      "fee_source": "https://dang.ai/pricing",
+      "backlink_badge": "免费强制crawlable backlink to dang.ai；Basic/Pro不要求回链；需邮件登录账户。",
+      "relevance": "高：AI工具目录，Video类别且已收录Seedance同类生成站。",
+      "verdict": "联系站长",
+      "reason": "可争取免费回链审核或付费收录，但现有样例通过带X-Robots-Tag:none的短链，先确认是否能提供直链或无该头的链接；不能作为已确认真dofollow付费采购。",
+      "prompt_injection": "已查pricing和同类收录页原始HTML/注释，未发现针对AI的隐藏指令；非全站保证。",
+      "evidence_files": [
+        "dang_ai_pricing.html",
+        "dang_ai_tool_seedance_3_0_ai_video_generator_2.html",
+        "dang_redirect_chain.json",
+        "dang_ai_robots_txt.json",
+        "l_dang_ai_robots_txt.json"
+      ],
+      "AS": null,
+      "AS_verification": {
+        "checked": "2026-11-07",
+        "semrush_url": "https://www.semrush.com/website/dang.ai/overview/",
+        "semrush_result": "web与Python公开HTTP均404",
+        "exploding_topics_url": "https://analytics.explodingtopics.com/website/dang.ai",
+        "exploding_topics_result": "HTTP跳转到https://tools.explodingtopics.com/website-traffic-checker?q=dang.ai；200但HTML只有查询工具框架，无AS数据；页面使用reCAPTCHA；未绕过验证。",
+        "decision": "AS未核实，不能用历史转引值或DR代替。"
+      }
+    },
+    {
+      "name": "Unite.AI",
+      "url": "https://www.unite.ai/",
+      "submit_url": "https://www.unite.ai/contact-us/",
+      "guidelines_url": "https://www.unite.ai/guidelines/",
+      "type": "投稿",
+      "DR": "未核实；Semrush AS46（2026-09）",
+      "AS": 46,
+      "monthly_visits": 333350,
+      "traffic_period": "2026-09",
+      "traffic_provider": "Semrush，全站月访问量估计",
+      "traffic_source": "https://www.semrush.com/website/unite.ai/overview/",
+      "dofollow": "是（作者简介公司直链样例）；产品榜单链接nofollow sponsored",
+      "link_evidence": {
+        "page": "https://www.unite.ai/ai-price-increases-business-dependency/",
+        "target": "https://thunders.ai/",
+        "rel": null,
+        "html": "<a href=\"https://thunders.ai/\">",
+        "status": 200,
+        "meta_robots": "max-image-preview:large",
+        "x_robots_tag": null,
+        "robots": "仅屏蔽wp-admin和wp-login；文章未屏蔽。",
+        "published": "2026-11-03",
+        "counterexample_page": "https://www.unite.ai/best-ai-video-generators/",
+        "counterexample_rel": "nofollow sponsored noopener noreferrer",
+        "counterexample_target": "https://www.unite.ai/goto/pictory/",
+        "bio_container": "div#mvp-author-box-text.left.relative",
+        "bio_html_context": "<div id=\"mvp-author-box-text\" class=\"left relative\"><p><span style=\"font-weight: 400\"><a href=\"https://www.linkedin.com/in/karimjouini/\">Karim Jouini</a> is the CEO and co-founder of <a href=\"https://thunders.ai/\">Thunders</a>.",
+        "bio_confirmation": "两条thunders.ai链接均在mvp-author-box-wrap：一条作者社交网站图标，一条mvp-author-box-text简介正文；不是文章主正文链接。"
+      },
+      "fees": "费用未公开，需确认；未见徽章或回链要求。",
+      "relevance": "中高：AI产业媒体、AI视频评测；适合创始人提供视频成本/工作流等原创一手经验。",
+      "verdict": "联系站长",
+      "reason": "Thought Leaders指南仅接AI从业者，正文不得宣传自家产品，简介可链公司；最少1000词和5个来源链接。联系页同时明确不接未经邀请guest post requests，故不能标可直接投稿；仅可先就合适合作/编辑邀稿路径确认。视频榜单的产品推荐外链实测为nofollow sponsored，不作为follow资源页推荐。",
+      "policy_sources": [
+        "https://www.unite.ai/guidelines/",
+        "https://www.unite.ai/contact-us/"
+      ],
+      "prompt_injection": "检查指南、联系页、榜单和作者文章原始HTML/注释未发现针对AI的隐藏指令；关键词命中一处作者曾受AI工程教育的普通正文，非指令。",
+      "evidence_files": [
+        "www_unite_ai_guidelines_.html",
+        "www_unite_ai_contact_us_.html",
+        "www_unite_ai_best_ai_video_generators_.html",
+        "www_unite_ai_ai_price_increases_business_dependency_.html",
+        "resources_headers_robots.json"
+      ]
+    }
+  ],
+  "discovery_log": [
+    {
+      "method": "搜索语法",
+      "queries": [
+        "ai tools inurl:resources submit tool",
+        "ai tools inurl:links submit",
+        "ai write for us video",
+        "ai guest post guidelines",
+        "inurl:blog leave a reply ai video generator"
+      ],
+      "result": "发现目录与投稿候选；博客评论语法未找到能够同时核验相关性、非零流量及follow的优质候选，未为补齐类型凑数。"
+    },
+    {
+      "method": "现成名单",
+      "url": "https://www.reddit.com/r/indiehackers/comments/1c5fkk9/i_collected_64_free_tool_submission_sites_20/",
+      "note": "搜索发现论坛64站清单，仅用于候选发现，不采用旧DA及链接结论。"
+    },
+    {
+      "method": "现成名单",
+      "url": "https://github.com/prajwal89/awesome-directories-list",
+      "note": "搜索发现589站清单。Neil Patel AI Tools条目称免费DR91，实际打开提交入口已跳Ubersuggest集成页；未采用该条目的旧指标/可提交结论。"
+    },
+    {
+      "method": "现成名单",
+      "url": "https://www.outrank.so/guest-post-sites/ai",
+      "note": "实际打开22站名单；不采用未独立核验的网站和指标。"
+    },
+    {
+      "method": "名单反证",
+      "url": "https://aitools.neilpatel.com/submit/",
+      "final_url": "https://ubersuggest.com/en/apps-integrations",
+      "note": "实际打开跳转至SEO集成页，旧AI工具提交表单不可用。未视为明确拒收AI视频产品，只不列入可直接提交名单。"
+    },
+    {
+      "method": "滚雪球线索",
+      "url": "https://www.similarweb.com/website/aitoolsdirectory.com/",
+      "note": "公开引荐流量列表露出curations.supply、digitalhandwerk.rocks，未获得近期反链first_seen；这是引荐流量线索而不是已完成Ahrefs/Semrush新增反链滚雪球，未把两站纳入最终候选。"
+    }
+  ],
+  "limitations": "未使用登录态Ahrefs/Semrush新增反链报告。DR50/82为已打开第三方页面转引的Ahrefs值，必须保留转引标签；Unite用已核实AS，不能把AS当DR排序。页面rel只证明所列样例及核验时点，不保证未来提交结果或Google传权。"
+}

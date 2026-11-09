@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pricing | SEEDANCE 3.0</title>
-  <meta name="description" content="One-time credit packs at $11.90, $24.90 and $49.90. Up to 30% bonus credits for videos and images. Credits never expire. No subscription.">
+  <meta name="description" content="Credit packs from US$9.99 (700 credits): 140 videos at 5s or 70 videos at 10s at 1080p. Credits never expire, no subscription.">
   <meta name="robots" content="noindex,follow">
   <link rel="canonical" href="https://seedance3-pro.com/pricing">
   <link rel="alternate" hreflang="en" href="https://seedance3-pro.com/pricing">
@@ -13,14 +13,14 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SEEDANCE 3.0">
   <meta property="og:title" content="Pricing | SEEDANCE 3.0">
-  <meta property="og:description" content="One-time credit packs at $11.90, $24.90 and $49.90. Up to 30% bonus credits for videos and images. Credits never expire. No subscription.">
+  <meta property="og:description" content="Credit packs from US$9.99 (700 credits): 140 videos at 5s or 70 videos at 10s at 1080p. Credits never expire, no subscription.">
   <meta property="og:url" content="https://seedance3-pro.com/pricing">
   <meta property="og:image" content="https://seedance3-pro.com/og-cover.svg">
   <meta property="og:locale" content="en_US">
   <meta property="og:locale:alternate" content="zh_CN">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Pricing | SEEDANCE 3.0">
-  <meta name="twitter:description" content="One-time credit packs at $11.90, $24.90 and $49.90. Up to 30% bonus credits for videos and images. Credits never expire. No subscription.">
+  <meta name="twitter:description" content="Credit packs from US$9.99 (700 credits): 140 videos at 5s or 70 videos at 10s at 1080p. Credits never expire, no subscription.">
   <meta name="twitter:image" content="https://seedance3-pro.com/og-cover.svg">
   <meta name="theme-color" content="#090a0c">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=20261028-checkout-ui">
@@ -28,7 +28,6 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png?v=20261028-checkout-ui">
   <link rel="stylesheet" href="/site.css?v=20261028-checkout-ui">
   <link rel="stylesheet" href="/assets/site-language.css?v=20261028-checkout-ui">
-  <link rel="stylesheet" href="/assets/credit-pricing.css?v=20261105-tiers">
   <link rel="stylesheet" href="/assets/credit-pack-offer.css?v=20261028-adjacent">
   <script src="/assets/site-language.js" defer></script>
   <link rel="stylesheet" href="/assets/site-navigation.css?v=20261031-creations">
@@ -36,12 +35,13 @@
   <script type="module" src="/assets/site-account.mjs?v=20261031-orders"></script>
   <link rel="stylesheet" href="/assets/site-trust.css?v=20261101-credit-packs">
   <link rel="stylesheet" href="/assets/credit-pack-cards.css?v=20261105-tiers">
+  <link rel="stylesheet" href="/assets/credit-pricing.css?v=20261107-brand-blue">
   <link data-site-typography rel="preload" href="/assets/fonts/source-serif-4-roman.woff2" as="font" type="font/woff2" crossorigin>
   <link data-site-typography rel="stylesheet" href="/assets/fonts/noto-serif-sc.css?v=20261024-editorial">
   <link data-site-typography rel="stylesheet" href="/assets/site-typography.css?v=20261024-editorial">
-  <link data-site-brand rel="stylesheet" href="/assets/site-brand.css?v=20261028-checkout-ui">
-  <link rel="stylesheet" href="/assets/site-promo.css?v=20261028-carousel">
-  <script type="module" src="/assets/site-promo-init.mjs?v=20261028-carousel"></script>
+  <link data-site-brand rel="stylesheet" href="/assets/site-brand.css?v=20261107-example-actions">
+  <link rel="stylesheet" href="/assets/site-promo.css?v=20261106-video-rate">
+  <script type="module" src="/assets/site-promo-init.mjs?v=20261106-video-rate"></script>
 </head>
 <body class="credit-pricing-page">
 <!-- SITE_PROMO_START -->
@@ -54,7 +54,7 @@
         <a class="site-promo-action" href="/app/video/seedance-2-5">Start for free<span aria-hidden="true">↗</span></a>
       </div>
       <div class="site-promo-slide" data-promo-slide="1" role="group" aria-label="2 / 2" hidden>
-        <p class="site-promo-copy"><strong>AI video</strong><span> — Packs from US$11.90</span></p>
+        <p class="site-promo-copy"><strong>AI video</strong><span> — US$0.01/second</span></p>
         <a class="site-promo-action" href="/app/video/seedance-2-5">Try now<span aria-hidden="true">↗</span></a>
       </div>
     </div>
@@ -63,6 +63,7 @@
   <button class="site-promo-close" type="button" data-promo-close aria-label="Dismiss banner">×</button>
 </aside>
 <!-- SITE_PROMO_END -->
+
 
 
 
@@ -80,41 +81,32 @@
     <nav class="mobile-nav" id="mobile-navigation" aria-label="Mobile navigation"><a href="/app/video/seedance-2-5">AI Video</a><a href="/app/image/gpt-image-2-5-1k">AI Image</a><a class="home-extra-nav" href="/pricing" aria-current="page">Pricing</a><a class="home-extra-nav" href="/seedance-3-0-release-date">Release Date</a><a class="home-extra-nav" href="/showcase">Showcase</a><a class="home-extra-nav" href="/blog">Blog</a></nav>
   </header>
   <main class="credit-pricing-main" id="main-content">
-    <header class="credit-pricing-heading"><p>ONE-TIME PACKS · CREDITS NEVER EXPIRE</p><h1>More credits. More possibilities.</h1><span>Choose your pack and start creating videos and images. No subscription.</span></header>
-    <div class="credit-pricing-packs"><article class="credit-tier credit-tier-0" data-credit-pack-card data-pack-id="starter-1190" aria-label="Starter Pack"><span class="credit-tier-heading"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4L12 3Z"/><path d="M21 2v4m-2-2h4"/></svg><span>Starter Pack</span></span>
-    <span class="credit-tier-pricing"><strong>$11.90</strong><span>$0.0108/credit</span></span>
-    <span class="credit-tier-expiry">Credits never expire</span>
-    <span class="credit-tier-total"><strong>1,100</strong> credits</span>
-    <span class="credit-tier-breakdown">1,000 base + <b>100 bonus credits</b></span>
-    <span class="credit-tier-bonus">+10% bonus credits</span>
-    <span class="credit-tier-output"><span>TOTAL VIDEO GENERATION</span><strong>1,100 <small>seconds</small></strong><span>18 min 20 sec · 220 × 5-second videos</span></span>
-    <span class="credit-tier-savings">A smaller pack to get started</span>
-    <span class="credit-tier-terms">One-time payment · No subscription</span><a class="credit-tier-buy" href="/checkout?pack=starter-1190" data-credit-pack-buy data-pack-id="starter-1190" target="_blank" rel="noopener noreferrer">Get 1,100 credits <span aria-hidden="true">↗</span></a></article>
-<article class="credit-tier credit-tier-1" data-credit-pack-card data-pack-id="creator-2490" aria-label="Creator Pack"><span class="credit-tier-heading"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13 2-9 12h7l-1 8 10-13h-7l1-7Z"/></svg><span>Creator Pack</span></span>
-    <span class="credit-tier-pricing"><strong>$24.90</strong><span>$0.0083/credit</span></span>
-    <span class="credit-tier-expiry">Credits never expire</span>
-    <span class="credit-tier-total"><strong>3,000</strong> credits</span>
-    <span class="credit-tier-breakdown">2,500 base + <b>500 bonus credits</b></span>
-    <span class="credit-tier-bonus">+20% bonus credits</span>
-    <span class="credit-tier-output"><span>TOTAL VIDEO GENERATION</span><strong>3,000 <small>seconds</small></strong><span>50 min · 600 × 5-second videos</span></span>
-    <span class="credit-tier-savings">Save <b>23.3%</b> per credit vs. Starter</span>
-    <span class="credit-tier-terms">One-time payment · No subscription</span><a class="credit-tier-buy" href="/checkout?pack=creator-2490" data-credit-pack-buy data-pack-id="creator-2490" target="_blank" rel="noopener noreferrer">Get 3,000 credits <span aria-hidden="true">↗</span></a></article>
-<article class="credit-tier credit-tier-2" data-credit-pack-card data-pack-id="pro-4990" aria-label="Pro Pack"><span class="credit-tier-popular">☆ MOST POPULAR</span><span class="credit-tier-heading"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5c3-3 7-3 7-3s0 4-3 7l-7 7-5-5 8-6Z"/><path d="m6 11-3 1 1-5 7-1m0 10-1 5 5-1 1-7M7 17c0 3-4 4-4 4s1-4 4-4Z"/></svg><span>Pro Pack</span></span>
-    <span class="credit-tier-pricing"><strong>$49.90</strong><span>$0.0077/credit</span></span>
-    <span class="credit-tier-expiry">Credits never expire</span>
-    <span class="credit-tier-total"><strong>6,500</strong> credits</span>
-    <span class="credit-tier-breakdown">5,000 base + <b>1,500 bonus credits</b></span>
-    <span class="credit-tier-bonus">+30% bonus credits</span>
-    <span class="credit-tier-output"><span>TOTAL VIDEO GENERATION</span><strong>6,500 <small>seconds</small></strong><span>108 min 20 sec · 1,300 × 5-second videos</span></span>
-    <span class="credit-tier-savings">Save <b>29.0%</b> per credit vs. Starter</span>
-    <span class="credit-tier-terms">One-time payment · No subscription</span><a class="credit-tier-buy" href="/checkout?pack=pro-4990" data-credit-pack-buy data-pack-id="pro-4990" target="_blank" rel="noopener noreferrer">Get 6,500 credits <span aria-hidden="true">↗</span></a></article></div>
-    <p class="credit-pricing-footnote">Video totals assume all credits are used for video at 1 credit per second, across multiple generations. Credits can also be used for images, reducing the available video allowance. Bonuses are relative to each pack’s base credits; savings compare the price per credit with Starter. All prices are in USD.</p>
-  </main>
+ <header class="credit-pricing-heading"><p>US$0.01/second</p><h1>Credit packs</h1><p class="credit-pack-terms-summary">Never expires. No subscription. One-time purchase.</p></header>
+ <div class="credit-pricing-packs"><article class="credit-tier credit-tier-0" data-credit-pack-card data-pack-id="starter"><div class="credit-tier-promo" data-promo-only><b>50% OFF</b><span role="timer" data-promo-countdown>11 days 10:55:58</span></div><div class="credit-tier-heading"><h2>Starter</h2></div>
+ <div class="credit-tier-pricing"><del data-promo-only>US$19.98</del><strong><span class="credit-tier-currency">US$</span>9.99</strong></div>
+ <div class="credit-tier-output"><strong>140 × 5s videos</strong><span class="credit-tier-alternative">5s · 10s · 15s</span></div>
+ <p class="credit-tier-credits"><span class="credit-tier-credit-total">700 credits</span><span class="credit-tier-unit-price"><strong>US$0.014</strong><span>per second</span></span></p><a class="credit-tier-buy" href="/checkout?pack=starter&amp;purchase=1" data-credit-pack-buy data-pack-id="starter" target="_blank" rel="noopener noreferrer">Buy 700 credits · US$9.99</a></article>
+<article class="credit-tier credit-tier-1" data-credit-pack-card data-pack-id="creator"><div class="credit-tier-promo" data-promo-only><b>50% OFF</b><span role="timer" data-promo-countdown>11 days 10:55:58</span></div><div class="credit-tier-heading"><h2>Creator</h2><span class="credit-tier-tag">Most popular</span></div>
+ <div class="credit-tier-pricing"><del data-promo-only>US$39.98</del><strong><span class="credit-tier-currency">US$</span>19.99</strong></div>
+ <div class="credit-tier-output"><strong>320 × 5s videos</strong><span class="credit-tier-alternative">5s · 10s · 15s</span></div>
+ <p class="credit-tier-credits"><span class="credit-tier-credit-total">1600 credits<span class="credit-tier-savings">Save ≈13% per credit vs. Starter</span></span><span class="credit-tier-unit-price"><strong>US$0.012</strong><span>per second</span></span></p><a class="credit-tier-buy" href="/checkout?pack=creator&amp;purchase=1" data-credit-pack-buy data-pack-id="creator" target="_blank" rel="noopener noreferrer">Buy 1600 credits · US$19.99</a></article>
+<article class="credit-tier credit-tier-2" data-credit-pack-card data-pack-id="studio"><div class="credit-tier-promo" data-promo-only><b>50% OFF</b><span role="timer" data-promo-countdown>11 days 10:55:58</span></div><div class="credit-tier-heading"><h2>Studio</h2><span class="credit-tier-tag">Best value</span></div>
+ <div class="credit-tier-pricing"><del data-promo-only>US$99.98</del><strong><span class="credit-tier-currency">US$</span>49.99</strong></div>
+ <div class="credit-tier-output"><strong>900 × 5s videos</strong><span class="credit-tier-alternative">5s · 10s · 15s</span></div>
+ <p class="credit-tier-credits"><span class="credit-tier-credit-total">4500 credits<span class="credit-tier-savings">Save ≈23% per credit vs. Starter</span></span><span class="credit-tier-unit-price"><strong>US$0.011</strong><span>per second</span></span></p><a class="credit-tier-buy" href="/checkout?pack=studio&amp;purchase=1" data-credit-pack-buy data-pack-id="studio" target="_blank" rel="noopener noreferrer">Buy 4500 credits · US$49.99</a></article></div>
+ <p class="credit-pricing-footnote">1 credit = 1 second of 1080p video.</p>
+ </main><script data-promo-bootstrap>window.__creditPromoStop?.();window.__creditPromoStop=(function startPromotionClock(root,endsAt,snapshot) {
+  const update=()=>{const t=snapshot(Date.now(),endsAt);root.querySelectorAll('[data-promo-only]').forEach(node=>{node.hidden=!t.active;});root.querySelectorAll('[data-promo-countdown]').forEach(node=>{node.textContent=`${t.days} days ${t.hours}:${t.minutes}:${t.seconds}`;});};
+  update();const timer=setInterval(update,1000);return ()=>clearInterval(timer);
+})(document,1795219140000,function promoSnapshot(now, endsAt) {
+  const total=Math.max(0,Math.ceil((endsAt-now)/1000)),pad=value=>String(value).padStart(2,'0');
+  return {active:now<endsAt,days:pad(Math.floor(total/86400)),hours:pad(Math.floor(total%86400/3600)),minutes:pad(Math.floor(total%3600/60)),seconds:pad(total%60)};
+});</script>
   <footer class="site-footer credit-pricing-footer">
   <!-- SITE_TRUST_START -->
 <div class="trust-footer trust-footer-compact" data-site-trust>
   <span class="trust-copyright">© 2026 ColdStone Technology Co., Ltd.</span>
-  <nav aria-label="Service and policies"><a href="/privacy">Privacy</a><span aria-hidden="true">·</span><a href="/terms">Terms</a><span aria-hidden="true">·</span><a href="/refund-policy">Refund Policy</a><span aria-hidden="true">·</span><button type="button" class="footer-contact-trigger" popovertarget="footer-contact">Contact</button></nav>
+  <nav aria-label="Service and policies"><a href="/privacy" target="_blank" rel="noopener noreferrer">Privacy</a><span aria-hidden="true">·</span><a href="/terms" target="_blank" rel="noopener noreferrer">Terms</a><span aria-hidden="true">·</span><a href="/refund-policy" target="_blank" rel="noopener noreferrer">Refund Policy</a><span aria-hidden="true">·</span><button type="button" class="footer-contact-trigger" popovertarget="footer-contact">Contact</button></nav>
   <div id="footer-contact" class="footer-contact-popover" popover="auto" role="dialog" aria-label="Contact us">
     <button type="button" class="footer-contact-close" popovertarget="footer-contact" popovertargetaction="hide" aria-label="Close">×</button>
     <h2>Contact us</h2>
@@ -125,6 +117,7 @@
   </div>
 </div>
 <!-- SITE_TRUST_END -->
+
 
 
 </footer>

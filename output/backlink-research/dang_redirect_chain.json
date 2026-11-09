@@ -1,0 +1,13 @@
+[
+  {
+    "url": "https://l.dang.ai/c4wn",
+    "status": 302,
+    "location": "https://seedance3.si/?ref=dangai",
+    "x_robots_tag": "none"
+  },
+  {
+    "url": "https://seedance3.si/?ref=dangai",
+    "status": 200,
+    "x_robots_tag": null
+  }
+]

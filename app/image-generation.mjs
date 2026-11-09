@@ -2,6 +2,7 @@ import { t, localizedErrorMessage } from './i18n.mjs';
 import { IMAGE_MODEL_HEADER, getImageModel } from './image-models.mjs';
 import { DEFAULT_MODEL_ID } from './model-routing.mjs';
 import { guestDeviceHeaders } from '../assets/guest-device.mjs';
+import { fetchWithGuestVideoVerification, requestGuestVideoVerification } from './guest-video-verification.mjs';
 export async function requestImageGeneration({
   model = DEFAULT_MODEL_ID,
   prompt,
@@ -11,6 +12,7 @@ export async function requestImageGeneration({
   paidOnly = false,
   size,
   fetchImpl = fetch,
+  verifyImpl = requestGuestVideoVerification,
   signal
 } = {}) {
   const selectedModel = getImageModel(model);
@@ -25,13 +27,13 @@ export async function requestImageGeneration({
     form.append("image", file, file.name || "reference.png");
   }
 
-  const response = await fetchImpl("/api/images/generate", {
+  const response = await fetchWithGuestVideoVerification("/api/images/generate", {
     method: "POST",
     headers: { ...(await guestDeviceHeaders()), "x-seedance-image-quantity": String(quantity), [IMAGE_MODEL_HEADER]: model,
       ...(paidOnly === true ? { 'x-seedance-credit-source': 'paid' } : {}) },
     body: form,
     signal
-  });
+  }, fetchImpl, verifyImpl);
   const creditCost = Number(response.headers.get("x-seedance-credit-cost"));
   const creditRemaining = Number(response.headers.get("x-seedance-credit-remaining"));
   const scope = response.headers.get('x-seedance-credit-scope');

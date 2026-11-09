@@ -1,73 +1,24 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createCreditOfferClock, subscribeCreditOfferCountdown, CREDIT_OFFER_CYCLE_MS, CREDIT_OFFER_STORAGE_KEY } from '../assets/credit-pack-offer.mjs';
-
-const initialTime = Date.parse('2026-10-28T00:00:00Z');
-function memoryStorage() {
-  const values = new Map();
-  return { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value) };
-}
-
-test('a new visitor starts with five full days', () => {
-  const storage = memoryStorage();
-  const clock = createCreditOfferClock({ storage, now: () => initialTime });
-  assert.deepEqual(clock(), { days: '05', hours: '00', minutes: '00', seconds: '00' });
-  assert.equal(Number(storage.getItem(CREDIT_OFFER_STORAGE_KEY)), initialTime);
+import {PROMO_ENDS_AT,createCreditOfferClock,subscribeCreditOfferCountdown} from '../assets/credit-pack-offer.mjs';
+import {CREDIT_PACKS} from '../assets/credit-packs.mjs';
+import {renderCreditPackCard} from '../assets/credit-pack-cards.mjs';
+test('fixed absolute UTC deadline never resets across visits or after expiry',()=>{
+ assert.equal(PROMO_ENDS_AT,Date.UTC(2026,10,20,23,59,0));
+ const now=PROMO_ENDS_AT-90061000;
+ assert.deepEqual(createCreditOfferClock({now:()=>now})(),{active:true,days:'01',hours:'01',minutes:'01',seconds:'01'});
+ assert.deepEqual(createCreditOfferClock({now:()=>now})(),createCreditOfferClock({now:()=>now})());
+ for(const time of [PROMO_ENDS_AT,PROMO_ENDS_AT+86400000])assert.deepEqual(createCreditOfferClock({now:()=>time})(),{active:false,days:'00',hours:'00',minutes:'00',seconds:'00'});
 });
-
-test('refreshes and other purchase surfaces share the original countdown', () => {
-  const storage = memoryStorage();
-  createCreditOfferClock({ storage, now: () => initialTime });
-  const clock = createCreditOfferClock({ storage, now: () => initialTime + 3_661_000 });
-  assert.deepEqual(clock(), { days: '04', hours: '22', minutes: '58', seconds: '59' });
+test('initial callback is synchronous and sleeping tabs catch up; cleanup stops updates',()=>{
+ let now=PROMO_ENDS_AT-1000,tick,cleared;const seen=[],events=new EventTarget();
+ const stop=subscribeCreditOfferCountdown(t=>seen.push(t),{now:()=>now,eventTarget:events,setIntervalImpl:fn=>{tick=fn;return 1},clearIntervalImpl:id=>{cleared=id}});
+ assert.equal(seen[0].seconds,'01');now=PROMO_ENDS_AT;tick();assert.equal(seen.at(-1).active,false);stop();assert.equal(cleared,1);
+ const count=seen.length;events.dispatchEvent(new Event('focus'));assert.equal(seen.length,count);
 });
-
-test('expiry starts the next five-day cycle and sleeping tabs catch up without drift', () => {
-  let currentTime = initialTime;
-  const clock = createCreditOfferClock({ storage: memoryStorage(), now: () => currentTime });
-  currentTime += CREDIT_OFFER_CYCLE_MS - 1;
-  assert.deepEqual(clock(), { days: '00', hours: '00', minutes: '00', seconds: '01' });
-  currentTime += 1;
-  assert.deepEqual(clock(), { days: '05', hours: '00', minutes: '00', seconds: '00' });
-  currentTime = initialTime + CREDIT_OFFER_CYCLE_MS * 3 + 2_000;
-  assert.deepEqual(clock(), { days: '04', hours: '23', minutes: '59', seconds: '58' });
-});
-
-test('blocked browser storage still counts down for the current visit', () => {
-  let currentTime = initialTime;
-  const storage = { getItem() { throw new Error('blocked'); }, setItem() { throw new Error('blocked'); } };
-  const clock = createCreditOfferClock({ storage, now: () => currentTime });
-  currentTime += 1_000;
-  assert.deepEqual(clock(), { days: '04', hours: '23', minutes: '59', seconds: '59' });
-});
-
-test('corrupt or future timestamps cannot extend a cycle beyond five days', () => {
-  for (const value of ['invalid', 'NaN', '-1', String(initialTime + CREDIT_OFFER_CYCLE_MS)]) {
-    const storage = memoryStorage();
-    storage.setItem(CREDIT_OFFER_STORAGE_KEY, value);
-    const clock = createCreditOfferClock({ storage, now: () => initialTime });
-    assert.deepEqual(clock(), { days: '05', hours: '00', minutes: '00', seconds: '00' });
-    assert.equal(Number(storage.getItem(CREDIT_OFFER_STORAGE_KEY)), initialTime);
-  }
-});
-
-test('subscription ticks, resyncs on return, and releases its timer and listeners', () => {
-  let currentTime = initialTime, tick, cleared;
-  const eventTarget = new EventTarget(), values = [];
-  const stop = subscribeCreditOfferCountdown(value => values.push(value), {
-    storage: memoryStorage(), now: () => currentTime, eventTarget,
-    setIntervalImpl: (callback, delay) => { tick = callback; assert.equal(delay, 1_000); return 42; },
-    clearIntervalImpl: id => { cleared = id; },
-  });
-  assert.equal(values.length, 1);
-  currentTime += 1_000; tick();
-  assert.equal(values.at(-1).seconds, '59');
-  currentTime = initialTime + CREDIT_OFFER_CYCLE_MS;
-  eventTarget.dispatchEvent(new Event('pageshow'));
-  assert.equal(values.at(-1).days, '05');
-  stop();
-  const count = values.length;
-  eventTarget.dispatchEvent(new Event('pageshow'));
-  assert.equal(values.length, count);
-  assert.equal(cleared, 42);
+test('expiry only hides promotional elements and preserves sale prices and actionable links',()=>{
+ for(const pack of CREDIT_PACKS){const before=renderCreditPackCard(pack,'en',{now:PROMO_ENDS_AT-1}),after=renderCreditPackCard(pack,'en',{now:PROMO_ENDS_AT});
+ assert.ok(before.includes('data-promo-only>'));assert.ok(after.includes('data-promo-only hidden'));
+ assert.ok(after.includes(`US$${(pack.amount/100).toFixed(2)}`));assert.ok(after.includes(`/checkout?pack=${pack.id}`));assert.doesNotMatch(after,/disabled|Prices return|will increase|--</);
+ }
 });

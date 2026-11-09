@@ -27,8 +27,21 @@ test('homepage clock receives elapsed time immediately, survives resume and clea
   f.controller.bindTask('clock'); f.advance(125_000); assert.equal(ticks.at(-1), 125_000);
   f.controller.stop(); assert.equal(ticks.at(-1), null);
   f.controller.start('clock'); assert.equal(ticks.at(-1), 125_000);
-  f.auth(false); f.advance(1000); assert.equal(ticks.at(-1), null);
+  f.auth(false); f.advance(1000); assert.equal(ticks.at(-1), 126_000);
   f.controller.destroy();
+});
+
+test('guest homepage clock starts immediately, hides with the workspace and resumes without resetting', () => {
+  const ticks = [];
+  const f = fixture({ authenticated: false, onElapsed: value => ticks.push(value) });
+  f.controller.start(); assert.equal(ticks.at(-1), 0);
+  f.controller.bindTask('guest-clock'); f.advance(5000); assert.equal(ticks.at(-1), 5000);
+  f.controller.setVisible(false); assert.equal(ticks.at(-1), null);
+  f.advance(2000); f.controller.setVisible(true); assert.equal(ticks.at(-1), 7000);
+  f.controller.stop(); assert.equal(ticks.at(-1), null);
+  f.controller.start('guest-clock'); assert.equal(ticks.at(-1), 7000);
+  assert.equal(f.notice.hidden, true);
+  f.controller.destroy(); assert.equal(ticks.at(-1), null); assert.equal(f.timers.size, 0);
 });
 
 test('Generate prepares permission, while guest and automatic resume do not prompt', async () => {

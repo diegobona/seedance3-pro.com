@@ -1,8 +1,13 @@
+import { createVideoFrameInputs } from './video-frame-inputs.mjs';
+import { createReferenceMentions } from './reference-mentions.mjs';
 import { REGISTERED_FREE_CREDITS_ENABLED } from './credit-policy.mjs'
+import { CREDIT_PACKS, creditPackVideoExamples } from '../assets/credit-packs.mjs';
 import { t, localizedErrorMessage, currentLocale } from './i18n.mjs';
 import { bindCreditPurchaseLink } from '../assets/credit-checkout.mjs';
 import { formatCreditResetTime } from './daily-credits.mjs';
+import { createPromptOptimizationControl } from './prompt-optimization.mjs';
 import { guestVideoDurationState, syncVideoDurationOptions } from './guest-video.mjs';
+import { adaptVideoExamplePrompt } from './video-example-prompt.mjs';
 import { guestImageQuantityState } from './guest-image.mjs';
 import { renderGuestTrialNotice } from './guest-trial-notice.mjs';
 import { localizedPath } from './site-locale.mjs';
@@ -150,6 +155,8 @@ export function initializeStudio() {
   const modelName = document.getElementById("model-name");
   const modelCategory = document.getElementById("model-category");
   const packOutput = document.getElementById('studio-pack-output');
+  const packDurations = document.getElementById('studio-pack-durations');
+  const packRate = document.getElementById('studio-pack-rate');
   const modelStatus = document.getElementById("model-status");
   const selectedName = document.getElementById("selected-name");
   const selectedSymbol = document.getElementById("selected-symbol");
@@ -186,6 +193,7 @@ export function initializeStudio() {
   const exampleCarouselPrevious = document.getElementById("example-carousel-previous");
   const exampleCarouselNext = document.getElementById("example-carousel-next");
   const prompt = document.getElementById("studio-prompt");
+  const promptOptimization = createPromptOptimizationControl(prompt, { zh: currentLocale() === "zh" });
   const promptCount = document.getElementById("prompt-count");
   const promptStructureButton = document.getElementById("prompt-structure-button");
   const examplePromptButton = document.getElementById("example-prompt-button");
@@ -201,9 +209,18 @@ export function initializeStudio() {
   const videoReferenceAdd = document.getElementById("video-reference-add");
   const videoReferenceGrid = document.getElementById("video-reference-grid");
   const videoReferenceCount = document.getElementById("video-reference-count");
+  const referenceVideoTab = document.querySelector('[data-video-mode="reference"]');
+  const originalReferenceVideoTabLabel = referenceVideoTab.textContent;
+  const framesTab = referenceVideoTab.cloneNode(false); framesTab.dataset.videoMode = 'frames'; framesTab.hidden = true;
+  framesTab.textContent = currentLocale() === 'zh' ? '首尾帧' : 'First & last frame'; referenceVideoTab.after(framesTab);
+  const frames = createVideoFrameInputs({ before: videoReferenceGroup, zh: currentLocale() === 'zh', onChange: () => updateGenerateButton(),
+    onError: message => { generationStatus.textContent = message; generationStatus.className = 'generation-status is-error'; } });
   const videoModeButtons = document.querySelectorAll("[data-video-mode]");
   let videoMode = "text";
   let videoReferences = [];
+  const mentions = createReferenceMentions(prompt, { zh: currentLocale() === 'zh', onError: message => {
+    generationStatus.textContent = message; generationStatus.className = 'generation-status is-error';
+  } });
   const imageQuantity = document.getElementById("image-quantity");
   const imageQuality = document.getElementById("image-quality");
   const imageAspectRatio = document.getElementById("image-aspect-ratio");
@@ -266,7 +283,7 @@ export function initializeStudio() {
   let exampleIndex = 0;
   let creditInsufficient = false;
   let guestVideo = studioShell.dataset.authenticated !== 'true';
-  let guestVideoModelName = '', guestVideoMaxReferences = 9, guestVideoResolutionLabel = '';
+  let guestVideoModelName = '', guestVideoMaxReferences = 5, guestVideoResolutionLabel = '';
   let defaultVideoModelTitle = '', defaultVideoSelectedName = '';
   let guestRemaining = null;
   let accountRemaining = null;
@@ -308,17 +325,20 @@ export function initializeStudio() {
   function captureGenerationDraft(kind) {
     return {
       kind, modelId: activeModelId, prompt: prompt.value,
+      optimizePrompt: isGuestVideoSelected() ? promptOptimization.choice : undefined,
       quantity: normalizeImageQuantity(imageQuantity.value), resolution: imageQuality.value,
       aspectRatio: kind === 'video' ? videoAspectRatio.value : imageAspectRatio.value,
       duration: creditCostForDuration(videoDuration.value), videoResolution: videoResolution.value || '768p',
+      inputMode: isGuestVideoSelected() && guestVideoMaxReferences === 5 ? videoMode : undefined,
       videoMode, isPose: kind === 'image' && poseReferenceActive,
-      references: kind === 'video' ? (isReferenceVideo() ? videoReferences.map(item => ({ file: item.file })) : [])
+      references: kind === 'video' ? (videoMode === 'frames' ? frames.files.map(file => ({ file })) : isReferenceVideo() ? videoReferences.map(item => ({ file: item.file })) : [])
         : imageReferences.map(item => ({ file: item.file, source: item.source })),
     };
   }
 
   function restoreGenerationDraft(draft) {
     prompt.value = draft.prompt;
+    promptOptimization.choice = draft.optimizePrompt;
     promptCount.textContent = String(draft.prompt.length);
     if (draft.kind === 'image') {
       imageReferences.forEach(item => URL.revokeObjectURL(item.url));
@@ -329,7 +349,8 @@ export function initializeStudio() {
       renderImageReferences();
     } else {
       videoReferences.forEach(item => URL.revokeObjectURL(item.url));
-      videoReferences = draft.references.map(item => ({ ...item, url: URL.createObjectURL(item.file) }));
+      videoReferences = draft.videoMode === 'frames' ? [] : draft.references.map(item => ({ ...item, url: URL.createObjectURL(item.file) }));
+      if (draft.videoMode === 'frames') frames.setFiles(draft.references.map(item => item.file));
       videoDuration.value = String(draft.duration);
       videoResolution.value = draft.videoResolution;
       videoAspectRatio.value = draft.aspectRatio;
@@ -449,7 +470,7 @@ export function initializeStudio() {
   }
 
   function videoReferenceLimitMessage() {
-    return videoReferenceLimit() === 1 ? singleVideoReferenceMessage() : t('Seedance 2.5 supports up to 9 reference images.');
+    return isGuestVideoSelected() && videoReferenceLimit() === 5 ? currentLocale() === 'zh' ? '最多上传 5 张参考图。' : 'Use up to 5 reference images.' : videoReferenceLimit() === 1 ? singleVideoReferenceMessage() : t('Seedance 2.5 supports up to 9 reference images.');
   }
 
   function singleVideoReferenceMessage() {
@@ -470,7 +491,8 @@ export function initializeStudio() {
     const hint = videoReferenceAdd.querySelector('small');
     if (hint) hint.textContent = videoReferenceLimit() === 1
       ? currentLocale() === 'zh' ? '1 张首帧参考图 · PNG、JPEG 或 WebP · 最大 10 MB' : '1 first-frame image · PNG, JPEG or WebP · max 10 MB'
-      : t('1–9 images · PNG, JPEG or WebP · max 10 MB each');
+      : isGuestVideoSelected() ? currentLocale() === 'zh' ? '1–5 张参考图 · PNG、JPEG 或 WebP · 每张最大 10 MB' : '1–5 images · PNG, JPEG or WebP · max 10 MB each' : t('1–9 images · PNG, JPEG or WebP · max 10 MB each');
+    updateVideoMode();
     renderVideoReferences();
     if (isReferenceVideo() && videoReferences.length > videoReferenceLimit() && !videoPolling && !activeVideoTaskId) {
       generationStatus.textContent = videoReferenceLimitMessage();
@@ -493,6 +515,15 @@ export function initializeStudio() {
     imageQuantity.value = state.value;
   }
 
+  function syncExamplePromptDuration() {
+    if (!isVideoGenerationSelected()) return;
+    const next = adaptVideoExamplePrompt(prompt.value, videoDuration.value || '5', currentLocale());
+    if (next !== prompt.value) {
+      prompt.value = next;
+      promptCount.textContent = String(next.length);
+    }
+  }
+
   function updateGuestVideoControls() {
     syncVideoDurationOptions(videoDuration, isGuestVideoSelected(), seconds => t(`${seconds} seconds`));
     const durationHint = document.getElementById('guest-video-duration-hint');
@@ -502,6 +533,7 @@ export function initializeStudio() {
     const state = guestVideoDurationState({ guest: isGuestVideoSelected(), remaining: isGuestVideoSelected() ? guestRemaining : accountRemaining, value: videoDuration.value });
     for (const option of videoDuration.options) option.disabled = state.disabled.includes(Number(option.value));
     videoDuration.value = state.value;
+    syncExamplePromptDuration();
   }
 
   function isVideoGenerationSelected() {
@@ -518,6 +550,11 @@ export function initializeStudio() {
   }
 
   function updateVideoMode() {
+    const guestModes = isGuestVideoSelected() && guestVideoMaxReferences === 5;
+    framesTab.hidden = !guestModes;
+    referenceVideoTab.textContent = guestModes ? currentLocale() === 'zh' ? '多图参考' : 'Multi-image reference' : originalReferenceVideoTabLabel;
+    if (!isGuestVideoSelected() && videoMode === 'frames') videoMode = 'text';
+    frames.update({ visible: guestModes && videoMode === 'frames', disabled: videoPolling || Boolean(activeVideoTaskId) });
     const enabled = activeModelId === "minimax-h3" && videoModeButtons.length > 0;
     modeGroup.hidden = !enabled;
     if (videoReferenceGroup) videoReferenceGroup.hidden = !isReferenceVideo();
@@ -556,6 +593,7 @@ export function initializeStudio() {
       remove.setAttribute("aria-label", t('Remove Image {number}', { number: index + 1 }));
       remove.onclick = () => {
         if (videoPolling) return;
+        if (!mentions.beforeRemove(index)) return;
         URL.revokeObjectURL(reference.url);
         videoReferences = videoReferences.filter((item) => item !== reference);
         renderVideoReferences();
@@ -610,9 +648,13 @@ export function initializeStudio() {
     const generationBlocked = isVideoGenerationSelected()
       ? videoPolling || Boolean(activeVideoTaskId)
       : imageGenerationInFlight;
+    promptOptimization.update({ guest: isGuestVideoSelected(), busy: generationBlocked });
+    mentions.update({ enabled: isGuestVideoSelected() && guestVideoMaxReferences === 5 && videoMode === 'reference' && !generationBlocked, references: videoReferences });
+    frames.update({ visible: isGuestVideoSelected() && videoMode === 'frames', disabled: generationBlocked });
     generateButton.disabled = !canGenerate || !prompt.value.trim() || generationBlocked || creditInsufficient
       || (freeBudgetBlocked && studioShell.dataset.authenticated === 'true' && !paidOnlyCheckbox?.checked)
-      || (isReferenceVideo() && (videoReferences.length === 0 || videoReferences.length > videoReferenceLimit()));
+      || (isReferenceVideo() && (videoReferences.length === 0 || videoReferences.length > videoReferenceLimit()))
+      || (isGuestVideoSelected() && videoMode === 'frames' && !frames.valid);
     if ((isGuestVideoSelected() || isGuestImageSelected()) && guestRemaining === 0 && !generationBlocked) generateButton.disabled = false;
     const disabled = generateButton.disabled;
     poseResultActionsController?.setGenerateState({
@@ -646,7 +688,16 @@ export function initializeStudio() {
     const videoModel = model.type === "video";
     const videoCreditAssurance = document.getElementById('video-credit-assurance');
     if (videoCreditAssurance) videoCreditAssurance.hidden = !videoModel || !model.canGenerate;
-    if (packOutput) packOutput.textContent = t(videoModel ? '1,100 seconds of video' : '1,100 images or 1,100 seconds of video');
+    if (packOutput) {
+      const videoExamples = `${creditPackVideoExamples(CREDIT_PACKS[0], currentLocale())}…`;
+      const videoCount = currentLocale() === 'zh' ? `${CREDIT_PACKS[0].videoCount} × 5 秒视频` : `${CREDIT_PACKS[0].videoCount} × 5s videos`;
+      packOutput.dataset.video = String(videoModel);
+      packOutput.textContent = videoModel ? videoCount : t('{credits} images or {videoExamples}', {
+        credits: CREDIT_PACKS[0].credits.toLocaleString('en-US'), videoExamples,
+      });
+    }
+    if (packDurations) packDurations.hidden = !videoModel;
+    if (packRate) packRate.hidden = !videoModel;
     const availabilityNotice = document.getElementById('video-model-availability');
     if (availabilityNotice) availabilityNotice.hidden = !['minimax-h3', 'seedance-2-5'].includes(normalizedModelId);
     const poseModel = model.type === "pose";
@@ -816,6 +867,7 @@ export function initializeStudio() {
   async function runVideoTask({ resumeTaskId = '' } = {}) {
     if (videoPolling || destroyed || !(availableModelIds.has('minimax-h3') || availableModelIds.has('seedance-2-5'))) return;
     const draft = resumeTaskId ? null : captureGenerationDraft('video');
+    promptOptimization.start({ pending: !resumeTaskId });
     const generationModelId = resumeTaskId ? activeVideoModelId : draft.modelId;
     activeVideoModelId = generationModelId;
     const creditContext = generationModelId === 'minimax-h3' && studioShell.dataset.authenticated !== 'true' ? 'guest-video' : 'account';
@@ -852,6 +904,9 @@ export function initializeStudio() {
         : await requestVideoGeneration({
             ...common,
             paidOnly: studioShell.dataset.authenticated === 'true' && (!REGISTERED_FREE_CREDITS_ENABLED || paidOnlyCheckbox?.checked === true),
+            optimizePrompt: draft.optimizePrompt,
+            inputMode: draft.inputMode,
+            onPromptOptimization: (status, text) => promptOptimization.result(status, text),
             prompt: draft.prompt,
             duration: draft.duration,
             resolution: draft.videoResolution,
@@ -1066,7 +1121,7 @@ export function initializeStudio() {
     const purchaseMessage = document.getElementById('trial-purchase-message');
     if (purchaseMessage) {
       purchaseMessage.hidden = REGISTERED_FREE_CREDITS_ENABLED;
-      purchaseMessage.textContent = t(account ? 'Buy credits to keep creating. Purchased credits never expire.' : isGuestVideoSelected() ? 'Two free videos, 5 seconds each. 10 seconds total.' : 'Guests get a one-time free trial.');
+      purchaseMessage.textContent = t(account ? 'Buy credits to keep creating. Purchased credits never expire.' : isGuestVideoSelected() ? 'Two free videos, 5 seconds each.' : 'Guests get a one-time free trial.');
     }
     const guestMessage = document.getElementById('trial-guest-message');
     if (guestMessage) guestMessage.hidden = !guest || used;
@@ -1106,7 +1161,7 @@ export function initializeStudio() {
     onBalanceLoaded: (remaining, credits) => {
       guestVideo = credits ? credits.guest === true : studioShell.dataset.authenticated !== 'true';
       guestVideoModelName = isGuestVideoSelected() && typeof credits?.videoModelName === 'string' ? credits.videoModelName : '';
-      guestVideoMaxReferences = isGuestVideoSelected() && credits?.maxReferences === 1 ? 1 : 9;
+      guestVideoMaxReferences = isGuestVideoSelected() ? credits?.maxReferences === 1 ? 1 : 5 : 9;
       guestVideoResolutionLabel = isGuestVideoSelected() && credits?.videoResolutionLabel === '768P' ? '768P' : '';
       guestRemaining = isGuestVideoSelected() || isGuestImageSelected() ? remaining : null;
       accountRemaining = isGuestVideoSelected() || isGuestImageSelected() ? null : remaining;
@@ -1217,7 +1272,7 @@ export function initializeStudio() {
     void readVideoHandoff().then((draft) => {
       if (destroyed) return;
       if (draft) {
-        restoreGenerationDraft({ kind: 'video', modelId: 'minimax-h3', prompt: draft.prompt,
+        restoreGenerationDraft({ kind: 'video', modelId: 'minimax-h3', prompt: draft.prompt, optimizePrompt: draft.optimizePrompt,
           duration: draft.duration, videoResolution: '768p', aspectRatio: draft.aspectRatio,
           videoMode: draft.mode, references: (draft.files ?? (draft.file ? [draft.file] : [])).map(file => ({ file })),
         });
@@ -1247,6 +1302,7 @@ export function initializeStudio() {
   }));
   listen(window, "popstate", () => selectModel(modelFromLocation()));
   listen(prompt, "input", () => {
+    syncExamplePromptDuration();
     promptCount.textContent = String(prompt.value.length);
     updateGenerateButton();
   });
@@ -1291,6 +1347,8 @@ export function initializeStudio() {
     if (editable && editable !== prompt) return;
     if (getImageModel(activeModelId) && !uploadGroup.hidden && !referenceInput.disabled && !imageGenerationInFlight) {
       handleReferenceImagePaste(event, setReferenceImage);
+    } else if (isGuestVideoSelected() && videoMode === 'frames' && !videoPolling && !activeVideoTaskId) {
+      handleReferenceImagePaste(event, incoming => frames.paste(incoming));
     } else if (isReferenceVideo() && videoReferenceGroup && !videoReferenceGroup.hidden && !videoReferenceInput.disabled && !videoPolling && !activeVideoTaskId) {
       handleReferenceImagePaste(event, addVideoReferenceImages);
     }
@@ -1398,6 +1456,8 @@ export function initializeStudio() {
   return () => {
     if (destroyed) return;
     destroyed = true;
+    promptOptimization.destroy();
+    mentions.destroy(); frames.destroy(); framesTab.remove(); referenceVideoTab.textContent = originalReferenceVideoTabLabel;
     imageTransferAbortController.abort();
     imageAnimateButtons.clear();
     videoAbortController?.abort();

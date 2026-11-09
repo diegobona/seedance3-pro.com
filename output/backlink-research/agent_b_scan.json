@@ -1,0 +1,47 @@
+[
+  {
+    "file": "https_aitoptools_com.html",
+    "matches": [],
+    "note": "针对HTML与注释的常见prompt-injection短语扫描；未发现不能证明整站没有，未执行页面指令。"
+  },
+  {
+    "file": "https_aitoptools_com_sponsorships.html",
+    "matches": [],
+    "note": "针对HTML与注释的常见prompt-injection短语扫描；未发现不能证明整站没有，未执行页面指令。"
+  },
+  {
+    "file": "https_aitoptools_com_claim_your_tool.html",
+    "matches": [],
+    "note": "针对HTML与注释的常见prompt-injection短语扫描；未发现不能证明整站没有，未执行页面指令。"
+  },
+  {
+    "file": "https_aitoptools_com_tool_seedance_2_5_4.html",
+    "matches": [],
+    "note": "针对HTML与注释的常见prompt-injection短语扫描；未发现不能证明整站没有，未执行页面指令。"
+  },
+  {
+    "file": "https_www_aitoolnet_com.html",
+    "matches": [],
+    "note": "针对HTML与注释的常见prompt-injection短语扫描；未发现不能证明整站没有，未执行页面指令。"
+  },
+  {
+    "file": "https_www_aitoolnet_com_submit.html",
+    "matches": [],
+    "note": "针对HTML与注释的常见prompt-injection短语扫描；未发现不能证明整站没有，未执行页面指令。"
+  },
+  {
+    "file": "https_www_aitoolnet_com_yovid.html",
+    "matches": [],
+    "note": "针对HTML与注释的常见prompt-injection短语扫描；未发现不能证明整站没有，未执行页面指令。"
+  },
+  {
+    "file": "https_www_aitoolnet_com_finish.html",
+    "matches": [],
+    "note": "针对HTML与注释的常见prompt-injection短语扫描；未发现不能证明整站没有，未执行页面指令。"
+  },
+  {
+    "file": "https_theresanaiforthat_com_launch.html",
+    "matches": [],
+    "note": "针对HTML与注释的常见prompt-injection短语扫描；未发现不能证明整站没有，未执行页面指令。"
+  }
+]

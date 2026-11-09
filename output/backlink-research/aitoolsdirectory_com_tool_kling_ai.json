@@ -1,0 +1,173 @@
+{
+  "input": "https://aitoolsdirectory.com/tool/kling-ai",
+  "final": "https://aitoolsdirectory.com/tool/kling-ai",
+  "status": 200,
+  "links": [
+    {
+      "class": "content-logo",
+      "href": "/",
+      "aria-label": "AI Tools Directory home"
+    },
+    {
+      "class": "header-search-all",
+      "href": "/#filters",
+      "data-astro-cid-2odkx2fk": null
+    },
+    {
+      "class": "hero-button",
+      "href": "/submit-tool"
+    },
+    {
+      "class": "hero-button",
+      "href": "/ads"
+    },
+    {
+      "class": "hero-button",
+      "href": "/deals"
+    },
+    {
+      "class": "page-back",
+      "href": "/",
+      "aria-label": "Back to AI Tools Directory",
+      "data-history-back": "true"
+    },
+    {
+      "class": "try-button tool-side-button",
+      "href": "https://link.aitoolsdirectory.com/kling",
+      "rel": "external noopener",
+      "target": "_blank"
+    },
+    {
+      "class": "meta-pill meta-category",
+      "href": "/video-generation"
+    },
+    {
+      "class": "meta-pill meta-category",
+      "href": "/generative-video"
+    },
+    {
+      "class": "meta-pill meta-category",
+      "href": "/text-to-video"
+    },
+    {
+      "class": "meta-pill meta-category",
+      "href": "/generative-art"
+    },
+    {
+      "href": "https://link.aitoolsdirectory.com/kling",
+      "rel": "noopener"
+    },
+    {
+      "href": "/tool/runway"
+    },
+    {
+      "href": "/tool/luma-ai"
+    },
+    {
+      "href": "/tool/hailuo-ai"
+    },
+    {
+      "href": "/tool/higgsfield"
+    },
+    {
+      "href": "/tool/pika"
+    },
+    {
+      "href": "/tool/aura-ai"
+    },
+    {
+      "class": "black-button",
+      "href": "https://forms.aitoolsdirectory.com/form.html",
+      "target": "_blank",
+      "rel": "noopener"
+    },
+    {
+      "href": "/about"
+    },
+    {
+      "href": "/blog"
+    },
+    {
+      "href": "/newsletter"
+    },
+    {
+      "href": "/trends"
+    },
+    {
+      "href": "/communities"
+    },
+    {
+      "href": "/marketplace-directory"
+    },
+    {
+      "href": "/deals"
+    },
+    {
+      "href": "/black-friday"
+    },
+    {
+      "href": "/submit-tool"
+    },
+    {
+      "href": "/contact"
+    },
+    {
+      "href": "/privacy-policy"
+    },
+    {
+      "href": "/terms-of-use"
+    }
+  ],
+  "text": "Kling AI: Cinematic AI Video Generator with Sound (function(){const GTM_CONTAINER_ID = \"GTM-NL4PZGZ\";\n\n      if (window.location.hostname === 'aitoolsdirectory.com' || window.location.hostname === 'www.aitoolsdirectory.com') {\n        window.dataLayer = window.dataLayer || [];\n        window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };\n        window.dataLayer.push({ 'gtm.start': Date.now(), event: 'gtm.js' });\n        const firstScript = document.getElementsByTagName('script')[0];\n        const tagManager = document.createElement('script');\n        tagManager.async = true;\n        tagManager.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_CONTAINER_ID}`;\n        firstScript.parentNode.insertBefore(tagManager, firstScript);\n      }\n    })(); {\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"Organization\",\"@id\":\"https://aitoolsdirectory.com/#organization\",\"name\":\"AI Tools Directory\",\"url\":\"https://aitoolsdirectory.com/\",\"logo\":\"https://aitoolsdirectory.com/logo.png\",\"sameAs\":[\"https://www.threads.com/@theaitoolsdirectory\",\"https://x.com/aitoolsdirect\",\"https://www.youtube.com/@AIToolsDirectoryYT\"]},{\"@type\":\"WebSite\",\"@id\":\"https://aitoolsdirectory.com/#website\",\"name\":\"AI Tools Directory\",\"url\":\"https://aitoolsdirectory.com/\",\"publisher\":{\"@id\":\"https://aitoolsdirectory.com/#organization\"}},{\"@type\":\"WebPage\",\"@id\":\"https://aitoolsdirectory.com/tool/kling-ai#webpage\",\"url\":\"https://aitoolsdirectory.com/tool/kling-ai\",\"name\":\"Kling AI: Cinematic AI Video Generator with Sound\",\"description\":\"Kling AI turns prompts and images into cinematic video with synced sound, up to 30 seconds in native 4K. See how its free credits and paid plans work.\",\"mainEntity\":{\"@id\":\"https://aitoolsdirectory.com/tool/kling-ai#software\"}},{\"@type\":\"SoftwareApplication\",\"@id\":\"https://aitoolsdirectory.com/tool/kling-ai#software\",\"name\":\"Kling AI\",\"description\":\"Kling AI turns prompts and images into cinematic video with synced sound, up to 30 seconds in native 4K. See how its free credits and paid plans work.\",\"applicationCategory\":\"MultimediaApplication\",\"applicationSubCategory\":[\"Video Generation\",\"Generative Video\",\"Text-to-Video\",\"Generative Art\"],\"mainEntityOfPage\":{\"@id\":\"https://aitoolsdirectory.com/tool/kling-ai#webpage\"},\"url\":\"https://aitoolsdirectory.com/tool/kling-ai\",\"image\":\"https://cdn.aitoolsdirectory.com/file/aitools/kling-ai-video-generator-v2.webp\"},{\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"AI Tools Directory\",\"item\":\"https://aitoolsdirectory.com/\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Kling AI\",\"item\":\"https://aitoolsdirectory.com/tool/kling-ai\"}]}]} Search AI tools See all results  → Submit Tool Advertise Deals ← Back var e=document.querySelector(`.page-back[data-history-back=\"true\"]`);e&&e?.addEventListener(`click`,e=>{(document.referrer?new URL(document.referrer):null)?.origin===window.location.origin&&history.length>1&&(e.preventDefault(),history.back())}); TRY IT Freemium Video Generation Generative Video Text-to-Video Generative Art Kling AI Kling AI  is an AI video and image generator from Kuaishou, the Chinese short-video company. You describe a shot or upload an image, and Kling turns it into a video clip, now with synchronized sound and up to native 4K resolution. The current model is Kling 4.0. \n What sets Kling apart from most generators is how much control it gives you. Many AI video tools work like a slot machine: you pull the handle and hope. Kling gives you levers instead, such as keyframes and reference images that keep characters consistent from shot to shot. That's why it shows up in professional work, from Cannes Lions-winning ads to the Amazon Prime series House of David. \n Kling 4.0 and the video models \n Kling 4.0 handles fast, dynamic motion and can generate a 30-second clip in one go, instead of stitching short pieces together. Omni reference keeps the same character or product consistent across shots, and multiple keyframes let you set the frames a scene has to pass through. \n Kling 3.0 and 3.0 Omni are still available, with synchronized audio and video plus intelligent storyboarding.  Motion Control  recreates complex movement and facial expressions from a reference video using motion capture, so you can film a rough performance yourself and have a generated character act it out. Native 4K video is aimed at commercial production, where 1080p upscaled footage doesn't hold up. \n Images, storyboards and Canvas \n Kling Image 3.0 generates stills with a strong sense of cinematic framing, at up to native 4K. It can also produce a series of images in a consistent style, which works well for storyboards. You can give it a frame and ask it to predict the next scenes, for example. \n Canvas is Kling's workspace for longer projects. You brainstorm and write scripts with an AI agent, generate images and video on a node-based board, and then refine the result through several rounds of edits without losing the context of the project. Skills handle specific jobs, such as posters or e-commerce product assets, and several can run at once. \n API, MCP and the CLI \n Developers can use Kling through its API, and Kling also offers MCP and a command-line tool so AI agents can drive it. That's useful for batch work: generating many versions of an ad to test styles, or automating a production pipeline. There are also mobile apps for iOS and Android. \n Plans and credits \n Kling runs on credits, and every generation uses some. The cost depends on the model and the length of the clip, so a 30-second 4K clip with audio uses far more than a short 1080p test. Check the credit cost before you generate, especially while you're still refining a prompt. \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n Plan What you get Free A monthly credit allowance for non-subscribers, with a watermark and no commercial use Standard 660 monthly credits, 1080p and 4K video, watermark removal, commercial use and daily bonus credits Pro 3,000 monthly credits at a lower cost per credit, plus priority access to new features Premier 18,000 monthly credits, with higher limits on saved elements and generations Ultra+ 57,000 monthly credits at the lowest cost per credit, plus beta test invites \n Business plans are also available. Monthly subscription credits expire after 31 days, while credits you buy separately stay valid for two years. When a subscription ends, its unused monthly credits are lost. \n Is Kling AI free? \n Yes, with limits. Non-subscribers get a monthly allowance of free credits, and Kling runs occasional promotions with extra credits. Free videos carry a watermark and can't be used commercially, and the 1080p and 4K options are for subscribers. \n Can I use Kling AI videos commercially? \n Only on a paid subscription. Paid subscribers can use and modify generated content commercially, as long as it isn't used to build a product that competes with Kling. You're still responsible for checking rights to anyone's likeness, and any local rules on labeling AI-generated content. \n Alternatives to Kling AI \n \n   Runway : AI video platform used by filmmakers, with cinematic text and image to video generation. \n   Luma AI : Dream Machine video generation with strong 3D depth, camera moves and keyframes. \n   Hailuo AI : Short AI videos from prompts and reference images, with start and end frames. \n   Higgsfield : AI video platform with precise camera control for cinematic shots. \n   Pika : AI video generator for social creators, with one-click effects for short clips. \n   Aura AI : Puts Kling models alongside more than 20 others, including Google Veo, on one credit balance. \n AI Tools Newsletter Get the latest updates on  AI software , picked for entrepreneurs and creators. Whether your goal is to automate workflows, enhance creative output, or boost productivity, it’s all here. Subscribe About Blog Newsletter AI Trends Communities AI marketplaces Deals Black Friday deals Submit Tool Contact Privacy Policy Terms of Use AI Tools Directory document.querySelectorAll(`a[href]`).forEach(e=>{let t=new URL(e.href,window.location.href);if((t.protocol===`http:`||t.protocol===`https:`)&&t.origin!==window.location.origin){e.target=`_blank`;let t=new Set((e.rel||``).split(/\\s+/).filter(Boolean));t.add(`noopener`),t.delete(`noreferrer`),e.rel=[...t].join(` `)}else t.origin===window.location.origin&&e.removeAttribute(`target`)}); \n",
+  "comment_count": 0,
+  "hidden_elements": [
+    {
+      "tag": "svg",
+      "attrs": {
+        "viewbox": "0 0 24 24",
+        "width": "20",
+        "height": "20",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "aria-hidden": "true",
+        "data-astro-cid-2odkx2fk": null
+      }
+    },
+    {
+      "tag": "svg",
+      "attrs": {
+        "viewbox": "0 0 24 24",
+        "width": "18",
+        "height": "18",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "aria-hidden": "true",
+        "data-astro-cid-2odkx2fk": null
+      }
+    },
+    {
+      "tag": "div",
+      "attrs": {
+        "class": "header-search-panel",
+        "hidden": null,
+        "data-astro-cid-2odkx2fk": null
+      }
+    },
+    {
+      "tag": "span",
+      "attrs": {
+        "aria-hidden": "true",
+        "data-astro-cid-2odkx2fk": null
+      }
+    },
+    {
+      "tag": "span",
+      "attrs": {
+        "aria-hidden": "true"
+      }
+    }
+  ],
+  "suspicious": []
+}

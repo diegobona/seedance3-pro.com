@@ -56,9 +56,12 @@
     .release-offer-copy > .credit-pack-offer { grid-column: 1 / -1; margin-bottom: 14px; }
     .release-tools-section .release-purchase-block { min-width: 0; padding: 0; }
     .release-tools-section .release-tools-title { display: flex; align-items: baseline; gap: 6px; margin: 0 0 8px; font-size: 15px; }
-    .release-tools-section .release-tools-title strong { font-size: clamp(30px,3vw,36px); line-height: 1.1; }
-    .release-tools-section .release-pack-value { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 7px; margin: 0 0 4px; color: var(--text); font-size: 14px; line-height: 1.5; }
-    .release-tools-section .release-pack-value strong { font-size: 20px; }
+    .release-tools-section .release-tools-title strong { font-size: 17px; line-height: 1.4; }
+    .release-tools-section .release-pack-value { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 7px; margin: 0 0 14px; color: var(--text); font-size: 14px; line-height: 1.5; }
+    .release-tools-section .release-pack-value strong { font-size: 28px; }
+    .release-tools-section .release-pack-duration { margin: 0 0 12px; color: #d0ddd9; font-size: 13px; line-height: 1.5; }
+    .release-tools-section .release-pack-rate { margin: 5px 0 9px; color: var(--muted); font-size: 13px; font-weight: 400; line-height: 1.5; }
+    .release-tools-section .release-pack-rate strong { color: var(--lime); font-size: 14px; font-weight: 650; }
     .release-tools-section .release-paid-detail { margin: 0; font-size: 12px; line-height: 1.6; }
     .release-tools-section .release-buy-action { margin: 12px 0 0; }
     .release-tools-section .release-trial-block { position: relative; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; align-self: stretch; gap: 10px; min-width: 0; padding: 6px 0 6px 22px; }
@@ -66,6 +69,7 @@
     .release-tools-section .release-trial-detail { display: flex; flex-direction: column; gap: 8px; margin: 0; font-size: 14px; line-height: 1.4; }
     .release-tools-section .release-trial-detail strong { display: block; color: #b8c8d3; font-size: 13px; font-weight: 500; line-height: 1.5; }
     .release-tools-section .release-trial-detail > span { order: -1; display: block; color: #edf9f7; font-size: 16px; font-weight: 650; line-height: 1.35; }
+    .release-tools-section .release-trial-detail small { display: block; margin-top: 5px; color: #d0ddd9; font-size: 13px; font-weight: 400; line-height: 1.5; }
     .release-tools-section .release-trial-detail b { display: block; margin-bottom: 3px; color: var(--lime); font-size: 38px; font-weight: 750; line-height: 1; letter-spacing: -.04em; }
     .release-tools-section .release-buy-action .button, .release-tools-section .release-trial-block .button { min-height: 38px; padding: 9px 16px; font-size: 13px; text-decoration: none; white-space: nowrap; }
     .release-tools-section .release-trial-block .button { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; min-height: 44px; max-width: 100%; padding: 10px 14px; border: 1px solid #a2f1e6; border-radius: 10px; background: linear-gradient(110deg,#9aeee2,#66d6dc); color: #08282b; box-shadow: 0 5px 18px #55dcca26; font-size: 16px; font-weight: 750; text-decoration: none; }
@@ -152,9 +156,9 @@
   <link data-site-typography rel="preload" href="/assets/fonts/source-serif-4-roman.woff2" as="font" type="font/woff2" crossorigin>
   <link data-site-typography rel="stylesheet" href="/assets/fonts/noto-serif-sc.css?v=20261024-editorial">
   <link data-site-typography rel="stylesheet" href="/assets/site-typography.css?v=20261024-editorial">
-  <link data-site-brand rel="stylesheet" href="/assets/site-brand.css?v=20261028-checkout-ui">
-  <link rel="stylesheet" href="/assets/site-promo.css?v=20261028-carousel">
-  <script type="module" src="/assets/site-promo-init.mjs?v=20261028-carousel"></script>
+  <link data-site-brand rel="stylesheet" href="/assets/site-brand.css?v=20261107-example-actions">
+  <link rel="stylesheet" href="/assets/site-promo.css?v=20261106-video-rate">
+  <script type="module" src="/assets/site-promo-init.mjs?v=20261106-video-rate"></script>
 </head>
 <body>
 <!-- SITE_PROMO_START -->
@@ -167,7 +171,7 @@
         <a class="site-promo-action" href="/app/video/seedance-2-5">Start for free<span aria-hidden="true">↗</span></a>
       </div>
       <div class="site-promo-slide" data-promo-slide="1" role="group" aria-label="2 / 2" hidden>
-        <p class="site-promo-copy"><strong>AI video</strong><span> — Packs from US$11.90</span></p>
+        <p class="site-promo-copy"><strong>AI video</strong><span> — US$0.01/second</span></p>
         <a class="site-promo-action" href="/app/video/seedance-2-5">Try now<span aria-hidden="true">↗</span></a>
       </div>
     </div>
@@ -176,6 +180,11 @@
   <button class="site-promo-close" type="button" data-promo-close aria-label="Dismiss banner">×</button>
 </aside>
 <!-- SITE_PROMO_END -->
+
+
+
+
+
 
   <header class="site-header" data-site-header>
     <div class="container inner">
@@ -197,15 +206,14 @@
         <p class="article-category tag lime">Release tracker</p>
         <h1 class="article-title">Seedance 3.0 Release Date: Estimate &amp; Latest Updates</h1>
         <!-- FACT-CHECK: Keep estimated timing separate from announced dates. Recheck the ByteDance Seed model catalog and visual blog before changing the 3.0 status. -->
-        <p class="article-lead"><strong>As of October 2026, ByteDance Seed has not announced a Seedance 3.0 release date in the model catalog and visual blog reviewed here.</strong> The estimated window below is based on earlier release timing. The timeline links to the announcements and sources checked.</p>
+        <p class="article-lead"><strong>As of now, ByteDance Seed has not announced a Seedance 3.0 release date in the model catalog and visual blog reviewed here.</strong> The estimated window below is based on earlier release timing. The timeline links to the announcements and sources checked.</p>
+        <p class="section-copy">Last updated: <time data-release-updated datetime="2026-10-24">2026-10-24</time></p>
         <aside class="release-forecast" aria-labelledby="release-forecast-label">
           <p class="release-forecast-label" id="release-forecast-label">Estimated release window</p>
           <p class="release-forecast-window"><strong>Expected January–February 2027</strong></p>
-          <p>Seedance 2.0 was announced on <a href="https://seed.bytedance.com/en/blog/seedance-2-0-official-launch" target="_blank" rel="noopener noreferrer">February 12, 2026</a>, followed by Seedance 2.5 on <a href="https://seed.bytedance.com/en/blog/one-take-creation-flexible-referencing-introducing-seedance-2-5" target="_blank" rel="noopener noreferrer">July 31, 2026</a>: a gap of 169 days, or about five and a half months. If the next release follows that interval, it would fall around January 2027, making early 2027, including the Lunar New Year period, worth watching.</p>
+          <p>Seedance 2.0 was announced on <a href="https://seed.bytedance.com/en/blog/seedance-2-0-official-launch" target="_blank" rel="noopener noreferrer">February 12, 2026</a>, followed by Seedance 2.5 on <a href="https://seed.bytedance.com/en/blog/one-take-creation-flexible-referencing-introducing-seedance-2-5" target="_blank" rel="noopener noreferrer">July 31, 2026</a>: a gap of 169 days, or about five and a half months. If the next release follows that interval, it would fall around January 2027, making early 2027, including the Chinese New Year period, worth watching.</p>
           <p class="release-forecast-note">This estimate uses one release interval, not a fixed schedule. The launch could be earlier or later.</p>
         </aside>
-        <p class="section-copy">Last updated: <time data-release-updated datetime="2026-10-24">2026-10-24</time></p>
-        <p class="section-copy">For FAQs, prompt planning and reference guides, visit the <a href="./seedance-3-0">Seedance 3.0 resource hub</a>.</p>
         <section class="article-content prose release-tools-section" aria-labelledby="available-tools">
           <hgroup class="release-tools-heading">
             <p class="release-tools-transition">Seedance 3.0 isn’t available yet. Start creating with 2.5 today.</p>
@@ -213,33 +221,36 @@
           </hgroup>
           <div class="release-tools-offer" aria-label="Seedance 2.5 pricing and free video trial">
             <div class="release-offer-copy">
-              <div class="credit-pack-offer" data-credit-pack-offer>
-                <span class="credit-offer-badge"><span class="credit-offer-flame" aria-hidden="true">🔥</span><span>Up to 30% bonus credits</span></span>
+              <div class="credit-pack-offer" data-credit-pack-offer data-promo-only>
+                <span class="credit-offer-badge"><span class="credit-offer-flame" aria-hidden="true">🔥</span><span>50% OFF</span></span>
                 
               </div>
               <div class="release-purchase-block" aria-label="Video credit pack">
-                <p class="release-tools-title"><strong>1 credit</strong><span>/second</span></p>
-                <p class="release-pack-value"><strong>US$11.90</strong><span>for 1,100 seconds of video</span></p>
+                <p class="release-pack-value"><strong>US$9.99</strong><span>one-time purchase</span></p>
+                <p class="release-tools-title"><strong>140 × 5s videos</strong></p>
+                <p class="release-pack-duration">5s · 10s · 15s</p>
+                <p class="release-pack-rate">700 credits · <strong>US$0.01/second</strong></p>
                 <p class="release-paid-detail">Credits never expire. No subscription.</p>
-                <p class="release-buy-action"><a class="button primary" data-credit-pack-buy href="/checkout" target="_blank" rel="noopener noreferrer">Buy 1,100 video seconds ↗</a></p>
+                <p class="release-buy-action"><a class="button primary" data-credit-pack-buy data-pack-id="starter" href="/checkout?pack=starter" target="_blank" rel="noopener noreferrer">Buy 140 videos ↗</a></p>
               </div>
               <div class="release-trial-block" aria-label="Free video trial">
-                <p class="release-trial-detail"><strong>No login. No sign-up.</strong><span><b>10</b> free video seconds</span></p>
+                <p class="release-trial-detail"><strong>No login. No sign-up.</strong><span><b>2</b> free videos<small>5 seconds each</small></span></p>
                 <a class="button secondary" href="/app/video/seedance-2-5">Try for free ↗</a>
               </div>
             </div>
             <div class="release-offer-examples">
-            <p class="release-examples-heading"><strong>See what Seedance 2.5 can create</strong></p>
+            <p class="release-examples-heading"><strong>Video references</strong></p>
             <div class="release-tools-grid">
-              <figure class="release-tool-example" data-release-example="cinematic">
-                <video src="/assets/h3-example-cinematic.mp4" poster="/assets/h3-example-cinematic-poster.jpg" width="640" height="360" controls muted loop playsinline preload="none" aria-label="Cinematic scene — Seedance 2.5"></video>
-                <figcaption><strong>Cinematic scene</strong><a href="/app/video/seedance-2-5?prompt=At+blue+hour+on+a+windswept+salt+flat%2C+a+lone+traveler+in+a+saffron+coat+walks+toward+a+glowing+glass+observatory.+One+continuous+slow+dolly-in+shot%3B+drifting+dust%2C+soft+volumetric+light%2C+grounded+realistic+motion%2C+film-grain%2C+high-contrast+cinematic+color.+No+text%2C+no+logos.&amp;duration=5&amp;aspect_ratio=16%3A9">Try this prompt ↗</a></figcaption>
+              <figure class="release-tool-example" data-release-example="front-row-confidence">
+                <video src="/assets/seedance25-samples/front-row-confidence.mp4" poster="/assets/seedance25-samples/front-row-confidence.webp" width="640" height="360" controls muted loop playsinline preload="none" aria-label="Front-row confidence"></video>
+                <figcaption><strong>Front-row confidence</strong><a href="/app/video/seedance-2-5?prompt=A+10-second+photorealistic+fashion-event+video%2C+16%3A9%2C+one+continuous+shot+in+bright+natural+daylight.+An+adult+woman+with+long%2C+loose+dark+hair+sits+cross-legged+in+a+cream+upholstered+armchair+with+polished+metal+armrests.+She+wears+an+elegant+black+halter-neck%2C+wide-leg+jumpsuit+and+a+delicate+gold+bracelet.+Oversized+black+sunglasses+rest+on+her+head.+A+large%2C+softly+defocused+crowd+behind+a+dark+waist-high+barrier+applauds%2C+raises+phones+and+cameras%2C+and+reacts+enthusiastically.+A+broad+concrete+grandstand+fills+the+upper+background.%0A0%E2%80%931.2s%3A+Eye-level%2C+centered+medium+shot.+She+rests+both+forearms+on+the+chair%2C+looks+directly+into+the+lens+and+makes+a+subtle%2C+confident+head+movement.+Keep+her+expression+relaxed+and+self-assured%3B+a+light+breeze+moves+a+few+strands+of+hair.%0A1.2%E2%80%933.4s%3A+She+raises+her+right+hand%2C+grips+the+upper+corner+of+the+sunglasses%2C+and+smoothly+slides+them+from+the+top+of+her+head+onto+her+face.+Track+the+fingers+and+glasses+naturally+without+changing+their+shape.+Her+other+arm+stays+relaxed+on+the+armrest.%0A3.4%E2%80%935.2s%3A+Still+holding+the+frame%2C+she+lowers+the+sunglasses+slightly+down+her+nose%2C+tilts+her+head+and+looks+over+the+lenses+at+the+camera+with+a+restrained%2C+playful+smile.+Maintain+sharp+eyes+and+natural+skin+texture+while+the+audience+continues+moving+softly+behind+her.%0A5.2%E2%80%936.7s%3A+She+takes+the+sunglasses+off+and+leans+toward+the+camera.+Her+face+briefly+fills+more+of+the+frame%3B+her+hair+swings+forward+with+the+motion.+Keep+the+lens+perspective+natural%2C+with+no+sudden+cut+or+facial+distortion.%0A6.7%E2%80%9310s%3A+She+rises+smoothly+from+the+chair.+The+camera+rapidly+but+steadily+dollies+backward+to+reveal+her+full+outfit%2C+several+matching+cream+chairs+and+the+cheering+audience.+She+shifts+her+weight%2C+sways+her+shoulders+and+takes+a+small%2C+poised+step%2C+ending+in+a+relaxed+standing+pose.%0ALook%3A+premium+live-action+fashion+footage%2C+warm+neutral+skin+tones%2C+realistic+black+fabric+folds%2C+soft+background+bokeh+and+coherent+sunlit+shadows.+Preserve+the+same+face%2C+outfit%2C+chair+and+crowd+throughout.+Natural+hands%2C+stable+sunglasses%2C+continuous+movement%3B+no+cuts%2C+captions+or+added+graphics.&amp;duration=10&amp;aspect_ratio=16%3A9">Try this prompt ↗</a></figcaption>
               </figure>
-              <figure class="release-tool-example" data-release-example="animation">
-                <video src="/assets/h3-example-animation.mp4" poster="/assets/h3-example-animation-poster.jpg" width="640" height="360" controls muted loop playsinline preload="none" aria-label="Paper animation — Seedance 2.5"></video>
-                <figcaption><strong>Paper animation</strong><a href="/app/video/seedance-2-5?prompt=A+tiny+paper+fox+with+folded+origami+fur+leaps+between+floating+lanterns+over+a+moonlit+forest+pond.+Handcrafted+stop-motion+paper+texture%2C+playful+squash-and-stretch%2C+smooth+sideways+tracking+camera%2C+saturated+indigo+and+amber+palette.+No+text%2C+no+logos.&amp;duration=5&amp;aspect_ratio=16%3A9">Try this prompt ↗</a></figcaption>
+              <figure class="release-tool-example" data-release-example="fire-and-shadow-duel">
+                <video src="/assets/seedance25-samples/fire-and-shadow-duel.mp4" poster="/assets/seedance25-samples/fire-and-shadow-duel.webp" width="640" height="360" controls muted loop playsinline preload="none" aria-label="Fire and shadow"></video>
+                <figcaption><strong>Fire and shadow</strong><a href="/app/video/seedance-2-5?prompt=A+10-second+high-energy+2D+anime+fight%2C+16%3A9+widescreen%2C+with+crisp+hand-drawn+linework%2C+detailed+cel+shading+and+fluid+action+animation.+Two+young+adult+male+fighters+battle+on+a+vast%2C+dark%2C+cracked+stone+platform+beneath+a+smoky+gray+sky+with+a+muted+pink+horizon.+Fighter+A+has+spiky+orange+hair%2C+a+loose+ivory+hooded+jacket+over+black+clothing%2C+dark+trousers+and+boots%3B+bright+orange-gold+fire+wraps+around+his+fist.+Fighter+B+has+spiky+dark+hair+with+burgundy+highlights%2C+a+torn+black+outer+layer+over+a+pale+shirt+and+dark+trousers%3B+black+ink-like+energy+ribbons+with+vivid+violet+cores+stream+from+his+body.+Keep+both+designs+consistent.%0A0%E2%80%931.2s%3A+Low%2C+wide+side+view+as+both+fighters+sprint+toward+each+other+and+trade+a+close-range+strike.+Their+feet+kick+up+pale+dust+across+the+tiles.+Orange+flame+arcs+sweep+from+the+left%2C+meeting+black-and-purple+energy+from+the+right%3B+sparks+burst+between+them.+Use+strong+directional+motion+and+readable+silhouettes.%0A1.2%E2%80%932.6s%3A+Rapid+close-up+cuts%3A+orange-haired+fighter+leaning+forward+with+a+determined+grin+and+fire+illuminating+his+sleeve%3B+then+an+oblique+close-up+of+the+dark-haired+fighter%2C+jaw+clenched+and+eyes+focused%2C+with+his+opponent+and+burning+fist+still+readable+behind+him.+Track+alongside+their+motion.%0A2.6%E2%80%934.3s%3A+Return+to+a+dynamic+side+view.+The+orange-haired+fighter+swings+a+broad%2C+blazing+punch%3B+his+opponent+ducks+low+and+rushes+past%2C+one+hand+skimming+near+the+stone+floor.+Long+orange+fire+trails+and+jagged+black-violet+ribbons+describe+their+opposing+paths.+Cloth%2C+hair%2C+dust+and+fragments+follow+the+momentum.%0A4.3%E2%80%936.7s%3A+A+fast+rising%2C+rotating+camera+follows+their+clash+upward.+Briefly+look+down+over+sweeping+energy+arcs%2C+then+track+the+two+fighters+crossing+in+midair.+Use+foreshortening%2C+speed+streaks%2C+sharp+silhouette+changes+and+a+few+deliberate+motion-smear+frames%3B+keep+their+positions+intelligible.%0A6.7%E2%80%938.8s%3A+The+orange-haired+fighter+launches+toward+the+lens%2C+blazing+fist+leading.+Pull+backward+rapidly+with+radial+speed+lines%2C+then+reveal+his+low+dash+over+the+stone+platform+and+a+thin+dust+wake.%0A8.8%E2%80%9310s%3A+Build+into+a+final+collision%3A+a+short+high-contrast+black-and-white+impact+flash+and+explosive+radial+strokes%2C+followed+by+the+fighters+converging+amid+orange+sparks+and+violet-black+energy.%0AUse+punchy+cuts+and+forceful+camera+moves%2C+not+a+continuous+take.+Keep+impacts+non-graphic.+No+subtitles+or+added+graphic+overlays.&amp;duration=10&amp;aspect_ratio=16%3A9">Try this prompt ↗</a></figcaption>
               </figure>
             </div>
+            <p class="video-example-note">AI results vary and won’t exactly match the example.</p>
             </div>
           </div>
         </section>
@@ -324,7 +335,7 @@
   <!-- SITE_TRUST_START -->
 <div class="trust-footer trust-footer-compact" data-site-trust>
   <span class="trust-copyright">© 2026 ColdStone Technology Co., Ltd.</span>
-  <nav aria-label="Service and policies"><a href="/privacy">Privacy</a><span aria-hidden="true">·</span><a href="/terms">Terms</a><span aria-hidden="true">·</span><a href="/refund-policy">Refund Policy</a><span aria-hidden="true">·</span><button type="button" class="footer-contact-trigger" popovertarget="footer-contact">Contact</button></nav>
+  <nav aria-label="Service and policies"><a href="/privacy" target="_blank" rel="noopener noreferrer">Privacy</a><span aria-hidden="true">·</span><a href="/terms" target="_blank" rel="noopener noreferrer">Terms</a><span aria-hidden="true">·</span><a href="/refund-policy" target="_blank" rel="noopener noreferrer">Refund Policy</a><span aria-hidden="true">·</span><button type="button" class="footer-contact-trigger" popovertarget="footer-contact">Contact</button></nav>
   <div id="footer-contact" class="footer-contact-popover" popover="auto" role="dialog" aria-label="Contact us">
     <button type="button" class="footer-contact-close" popovertarget="footer-contact" popovertargetaction="hide" aria-label="Close">×</button>
     <h2>Contact us</h2>
@@ -335,6 +346,11 @@
   </div>
 </div>
 <!-- SITE_TRUST_END -->
+
+
+
+
+
 </footer>
   <script id="release-date-display">
     (() => {

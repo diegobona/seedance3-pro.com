@@ -20,7 +20,7 @@ export function renderTrustFooter(locale = 'en', { compact = false, popupId = 'f
   ];
   return `<div class="trust-footer trust-footer-compact" data-site-trust>
   <span class="trust-copyright">© 2026 ${SITE_OPERATOR}</span>
-  <nav aria-label="${zh ? '服务与政策' : 'Service and policies'}">${links.map(link => `<a href="${localizedPath(link.href, locale)}">${link.label}</a>`).join('<span aria-hidden="true">·</span>')}<span aria-hidden="true">·</span><button type="button" class="footer-contact-trigger" popovertarget="${popupId}">${zh ? '联系我们' : 'Contact'}</button></nav>
+  <nav aria-label="${zh ? '服务与政策' : 'Service and policies'}">${links.map(link => `<a href="${localizedPath(link.href, locale)}" target="_blank" rel="noopener noreferrer">${link.label}</a>`).join('<span aria-hidden="true">·</span>')}<span aria-hidden="true">·</span><button type="button" class="footer-contact-trigger" popovertarget="${popupId}">${zh ? '联系我们' : 'Contact'}</button></nav>
   <div id="${popupId}" class="footer-contact-popover" popover="auto" role="dialog" aria-label="${zh ? '联系我们' : 'Contact us'}">
     <button type="button" class="footer-contact-close" popovertarget="${popupId}" popovertargetaction="hide" aria-label="${zh ? '关闭' : 'Close'}">×</button>
     <h2>${zh ? '联系我们' : 'Contact us'}</h2>
@@ -39,7 +39,7 @@ export function renderSupportContact(locale = 'en', popupId = 'purchase-support-
 
 export function renderPurchaseAssurance(locale = 'en', popupId = 'purchase-support-email') {
   const zh = locale === 'zh';
-  return `<p class="purchase-assurance" data-purchase-assurance>${zh ? '一次性付款，无自动续费。未使用的整包购买积分可在购买后 7 天内申请退款。' : 'One-time payment, no auto-renewal. Request a refund within 7 days for a completely unused purchased pack.'} <a href="${localizedPath('/refund-policy', locale)}">${zh ? '退款条件' : 'Refund conditions'}</a> · <a href="${localizedPath('/terms', locale)}">${zh ? '服务条款' : 'Terms'}</a> · <a href="${localizedPath('/privacy', locale)}">${zh ? '隐私政策' : 'Privacy'}</a> · ${renderSupportContact(locale, popupId)}</p>`;
+  return `<p class="purchase-assurance" data-purchase-assurance>${zh ? '一次性付款，无自动续费。未使用的整包购买积分可在购买后 7 天内申请退款。' : 'One-time payment, no auto-renewal. Request a refund within 7 days for a completely unused purchased pack.'} <a href="${localizedPath('/refund-policy', locale)}" target="_blank" rel="noopener noreferrer">${zh ? '退款条件' : 'Refund conditions'}</a> · <a href="${localizedPath('/terms', locale)}" target="_blank" rel="noopener noreferrer">${zh ? '服务条款' : 'Terms'}</a> · <a href="${localizedPath('/privacy', locale)}" target="_blank" rel="noopener noreferrer">${zh ? '隐私政策' : 'Privacy'}</a> · ${renderSupportContact(locale, popupId)}</p>`;
 }
 
 export function withSiteTrust(html, pathname = '/') {
@@ -67,7 +67,7 @@ export function withSiteTrust(html, pathname = '/') {
   if (target) {
     const zh = locale === 'zh';
     const notice = target.includes('data-credit-pack-buy') ? renderPurchaseAssurance(locale)
-      : `<p class="purchase-assurance" data-purchase-assurance>${zh ? '购买积分前可查看' : 'Before buying credits, review'} <a href="${localizedPath('/pricing', locale)}">${zh ? '积分价格' : 'pricing'}</a> · <a href="${localizedPath('/refund-policy', locale)}">${zh ? '退款政策' : 'refund policy'}</a> · <a href="${localizedPath('/privacy', locale)}">${zh ? '隐私政策' : 'privacy'}</a> · ${renderSupportContact(locale)}</p>`;
+      : `<p class="purchase-assurance" data-purchase-assurance>${zh ? '购买积分前可查看' : 'Before buying credits, review'} <a href="${localizedPath('/pricing', locale)}">${zh ? '积分价格' : 'pricing'}</a> · <a href="${localizedPath('/refund-policy', locale)}" target="_blank" rel="noopener noreferrer">${zh ? '退款政策' : 'refund policy'}</a> · <a href="${localizedPath('/privacy', locale)}" target="_blank" rel="noopener noreferrer">${zh ? '隐私政策' : 'privacy'}</a> · ${renderSupportContact(locale)}</p>`;
     output = output.includes('data-purchase-assurance')
       ? output.replace(/<p\b[^>]*\bdata-purchase-assurance\b[^>]*>[\s\S]*?<\/p>/, notice)
       : output.replace(purchaseTarget, matched => matched + '\n' + notice);

@@ -25,6 +25,15 @@ export default defineConfig(({ command }) => ({
       configureServer(server) {
         server.middlewares.use(async (request, response, next) => {
           const pathname = new globalThis.URL(request.url || '/', 'http://localhost').pathname
+          if (pathname === '/assets/home-video.js' && ['GET', 'HEAD'].includes(request.method || 'GET')) {
+            try {
+              const script = await readFile(fileURLToPath(new URL('./assets/home-video.js', import.meta.url)))
+              response.setHeader('Content-Type', 'text/javascript; charset=utf-8')
+              response.setHeader('Cache-Control', 'no-store')
+              response.end(request.method === 'HEAD' ? undefined : script)
+            } catch (error) { next(error as Error) }
+            return
+          }
           const publicPath = pathname.replace(/\/$/, '')
           const sitemap = pathname === '/sitemap.xml'
           const file = sitemap ? 'sitemap.xml' : pathname === '/' || pathname === '/index.html' ? 'index.html'

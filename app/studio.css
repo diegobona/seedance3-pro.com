@@ -279,3 +279,5 @@ textarea { width:100%; min-height:154px; resize:vertical; padding:15px; border:1
 .studio-creations-link{display:inline-flex;color:#78ded4;font-size:13px;font-weight:600;white-space:nowrap;text-decoration:none}.studio-creations-link:hover{text-decoration:underline}.studio-creations-link[hidden]{display:none}.sidebar-foot{display:flex;flex-direction:column;gap:16px}#preview-creations{margin-top:16px}@media(max-width:600px){.workspace-header-account{gap:9px}.workspace-header-account .studio-creations-link{font-size:11px}}
 
 .credit-summary.is-insufficient .credit-summary-balance .credit-summary-value{color:#ff6b6b}
+
+.studio-trial-actions .studio-pack-output[data-video="true"]{font-size:17px;font-weight:700}.studio-trial-actions .studio-pack-durations{margin:0 0 6px;color:#c5cec2;font-size:13px;line-height:1.5}.studio-trial-actions .studio-pack-rate{font-size:13px;font-weight:700;color:var(--cyan,#78ded4)}

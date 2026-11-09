@@ -30,6 +30,6 @@ test('public and workspace account menus expose order history separately from di
   const [account,menu,page]=await Promise.all(['assets/site-account.mjs','src/components/user-menu.tsx','src/components/billing-page.tsx'].map(path=>readFile(path,'utf8')))
   assert.match(account,/Order history/);assert.match(account,/path\('\/billing'\)\+'#orders'/)
   assert.match(menu,/\/billing#orders/);assert.match(menu,/openCreditPurchase/)
-  assert.ok(page.indexOf('<OrderHistory')<page.indexOf('className="billing-pack"'))
+  assert.ok(page.indexOf('<OrderHistory')<page.indexOf('<BillingCreditPacks'))
   assert.match(page,/requestVersion\.current/);assert.match(page,/historyState\?\.userId === session\?\.user\.id/)
 })

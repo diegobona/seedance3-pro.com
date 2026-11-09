@@ -1,0 +1,169 @@
+{
+  "checked_at": "2026-11-07",
+  "research_scope": "seedance3-pro.com 外链候选发现方法补充记录",
+  "competitor_backlinks": {
+    "provider": "Semrush public Website Overview",
+    "data_period": "2026-09",
+    "read_method": "分别实际打开四个 overview，并打开 Backlinks and Referring Domains 段落；不是仅采搜索摘要",
+    "records": [
+      {
+        "competitor": "Pollo AI",
+        "domain": "pollo.ai",
+        "source": "https://www.semrush.com/website/pollo.ai/overview/",
+        "backlinks_display": "519.94K",
+        "backlinks_approx": 519940,
+        "backlinks_mom_percent": 6.68,
+        "referring_domains_display": "10K",
+        "referring_domains_approx": 10000,
+        "referring_domains_mom_percent": 4.83,
+        "authority_score": 51
+      },
+      {
+        "competitor": "Kling AI",
+        "domain": "klingai.com",
+        "source": "https://www.semrush.com/website/klingai.com/overview/",
+        "backlinks_display": "345.85K",
+        "backlinks_approx": 345850,
+        "backlinks_mom_percent": 9.9,
+        "referring_domains_display": "17.69K",
+        "referring_domains_approx": 17690,
+        "referring_domains_mom_percent": 6.75,
+        "authority_score": 48
+      },
+      {
+        "competitor": "Hailuo AI",
+        "domain": "hailuoai.video",
+        "source": "https://www.semrush.com/website/hailuoai.video/overview/",
+        "backlinks_display": "67.32K",
+        "backlinks_approx": 67320,
+        "backlinks_mom_percent": 4.8,
+        "referring_domains_display": "8.51K",
+        "referring_domains_approx": 8510,
+        "referring_domains_mom_percent": 6.71,
+        "authority_score": 54
+      },
+      {
+        "competitor": "PixVerse",
+        "domain": "pixverse.ai",
+        "source": "https://www.semrush.com/website/pixverse.ai/overview/",
+        "backlinks_display": "200.99K",
+        "backlinks_approx": 200990,
+        "backlinks_mom_percent": 65.89,
+        "referring_domains_display": "7.88K",
+        "referring_domains_approx": 7880,
+        "referring_domains_mom_percent": 7.95,
+        "authority_score": 56
+      }
+    ],
+    "access_test": {
+      "action": "点击pollo.ai页面Get more free data",
+      "target": "https://www.semrush.com/signup/?custom=ci&domain=pollo.ai&onboarding=off&redirect_to=%2Fanalytics%2Fbacklinks%2Foverview%2F%3Fq%3Dpollo.ai&src=power-pages-ba&trial=force",
+      "result": "引导注册，web取回Cache miss；未获得账号内明细"
+    },
+    "limitations": [
+      "仅获得月度反链总量及净增幅，不能据此识别哪些链接最近新增",
+      "未取得逐来源页面、目标页面、链接级first_seen、new/lost过滤结果",
+      "不将月度净增幅当新增链接数，不将搜索引擎抓取时间当反链first_seen",
+      "未用Semrush或Ahrefs完整最近新增报告完成用户要求的方法1；此为已实际尝试且明确受限的部分结果"
+    ]
+  },
+  "snowball": {
+    "method": "对新找到目录的公开反链快照做有限两层探索；NudgeScout仅作候选发现，不冒充Semrush或Ahrefs",
+    "round_1": [
+      {
+        "seed": "futurepedia.io",
+        "source": "https://nudgescout.com/website-data/futurepedia.io/",
+        "http_status": 200,
+        "result": "页面明确表示Traffic, keyword and backlink data are not yet available；数据对象referringDomains为空",
+        "evidence": "nudge_futurepedia.html",
+        "new_verified_referrals": 0
+      },
+      {
+        "seed": "aitoptools.com",
+        "source": "https://nudgescout.com/website-data/aitoptools.com/",
+        "http_status": 200,
+        "snapshot_date": "2026-09-18",
+        "embedded_provider": "dataforseo",
+        "scope": "公开页面序列化的100条referringDomains（网页默认每页10条），不是全量反链库",
+        "records_saved": "nudge_aitoptools_referrals.json",
+        "important_distinction": "其firstSeen是来源域名级记录，不能当某条页面链接新增日期；authorityRank也不是Ahrefs DR或Semrush AS",
+        "candidate_referring_domains": [
+          {
+            "domain": "aitop365.com",
+            "snapshot_backlinks": 130,
+            "snapshot_domain_first_seen": "2026-06-18",
+            "home": "https://aitop365.com/",
+            "home_opened": true,
+            "home_http_status": 200,
+            "finding": "中文AI工具目录，首页存在工具卡片和提交工具链接",
+            "submission_page": "https://aitop365.com/cooperation.html",
+            "submission_page_http_status": 200,
+            "final_list_status": "仅新线索，未完成DR/月流量/已收录产品rel核验，不进入已核验主清单"
+          },
+          {
+            "domain": "toolidx.com",
+            "snapshot_backlinks": 8,
+            "snapshot_domain_first_seen": "2026-07-03",
+            "home": "https://toolidx.com/",
+            "home_opened": true,
+            "finding": "工具目录，实际页有AI分类与Sora条目以及Contact入口",
+            "final_list_status": "仅新线索，未完成DR/月流量/提交条款/已收录产品rel核验，不进入已核验主清单"
+          },
+          {
+            "domain": "findmoreai.com",
+            "snapshot_backlinks": 22,
+            "snapshot_domain_first_seen": "2024-12-30",
+            "home": "https://findmoreai.com/",
+            "resolved_home": "https://www.findmoreai.com/en/",
+            "home_opened": true,
+            "finding": "AI产品目录，已见AI视频工具分类及DeepAI/Descript等条目；页面提供提交评审邮箱contact@findmoreai.com，同时顶部有Stripe付费提交入口，费用需继续核验",
+            "final_list_status": "仅新线索；未取得Semrush月流量及实际rel，未加入主清单"
+          }
+        ],
+        "other_referrals_seen_not_promoted": [
+          "producthunt.com",
+          "aitoolhunt.com",
+          "ranktracker.com",
+          "appsumo.com",
+          "techbullion.com",
+          "toolactive.com"
+        ],
+        "evidence": "nudge_aitoptools.html"
+      }
+    ],
+    "round_2": [
+      {
+        "seed": "aitop365.com",
+        "source": "https://nudgescout.com/website-data/aitop365.com/",
+        "http_status": 404,
+        "result": "没有可用公开快照，未能继续沿其反链扩展",
+        "evidence": "nudge_aitop365.html"
+      },
+      {
+        "seed": "toolidx.com",
+        "source": "https://nudgescout.com/website-data/toolidx.com/",
+        "http_status": 404,
+        "result": "没有可用公开快照，未能继续沿其反链扩展",
+        "evidence": "nudge_toolidx.html"
+      },
+      {
+        "seed": "findmoreai.com",
+        "source": "https://nudgescout.com/website-data/findmoreai.com/",
+        "http_status": 404,
+        "result": "没有可用公开快照，未能继续沿其反链扩展",
+        "evidence": "nudge_findmoreai.html"
+      }
+    ],
+    "stop_reason": "可访问的这条公开快照探索链已无法继续；缺少完整反链账户/API，不是互联网候选已穷尽，也不是再无好站",
+    "completed_exhaustive_search": false,
+    "new_fully_qualified_sites": 0,
+    "new_discovery_leads": 3
+  },
+  "reporting_rule": "这些探索线索只说明发现路径，不能用其来源名单上的DR/dofollow标签替代每站实测；主CSV继续只纳入已经完成必需核验的站。",
+  "browser_access_followup": {
+    "date": "2026-11-07",
+    "url": "https://www.semrush.com/analytics/backlinks/overview/?q=pollo.ai",
+    "result": "实际Edge浏览器打开报告。页面显示Log In及Register to get 10 free requests注册弹层；当前没有登录态，指标为占位，未得到链接级最近新增明细。",
+    "action": "未创建账户、未订阅。继续使用已保存公开来源；用户拒绝的Ahrefs插件未使用。"
+  }
+}

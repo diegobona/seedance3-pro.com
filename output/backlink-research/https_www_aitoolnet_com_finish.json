@@ -1,0 +1,149 @@
+{
+  "url": "https://www.aitoolnet.com/finish",
+  "final": "https://www.aitoolnet.com/finish",
+  "status": 200,
+  "title": "Finish - Aitoolnet",
+  "links": [
+    {
+      "class": "aitool navbar-item",
+      "href": "/",
+      "id": "navbar-logo",
+      "text": "\n                \n            "
+    },
+    {
+      "class": "aitool button is-white hide-on-search",
+      "href": "/categories",
+      "text": "Categories"
+    },
+    {
+      "class": "aitool button is-white hide-on-search",
+      "href": "/new",
+      "text": "New"
+    },
+    {
+      "class": "aitool button is-white hide-on-search",
+      "href": "/prompt",
+      "text": "Prompt"
+    },
+    {
+      "class": "button is-white ml-2",
+      "href": "/submit",
+      "text": "Submit"
+    },
+    {
+      "href": "javascript:void(0)",
+      "class": "dropdown-toggle",
+      "data-toggle": "dropdown",
+      "role": "button",
+      "aria-haspopup": "true",
+      "aria-expanded": "false",
+      "text": "English"
+    },
+    {
+      "href": "/finish",
+      "data-lang": "",
+      "text": "English"
+    },
+    {
+      "href": "/zh/finish",
+      "data-lang": "zh",
+      "text": "简体中文"
+    },
+    {
+      "href": "/zhtw/finish",
+      "data-lang": "zhtw",
+      "text": "繁體中文"
+    },
+    {
+      "href": "/ko/finish",
+      "data-lang": "ko",
+      "text": "한국어"
+    },
+    {
+      "href": "/ja/finish",
+      "data-lang": "ja",
+      "text": "日本語"
+    },
+    {
+      "href": "/ru/finish",
+      "data-lang": "ru",
+      "text": "Русский язык"
+    },
+    {
+      "href": "/fr/finish",
+      "data-lang": "fr",
+      "text": "Français"
+    },
+    {
+      "href": "/es/finish",
+      "data-lang": "es",
+      "text": "Español"
+    },
+    {
+      "href": "#",
+      "id": "catfish-close",
+      "style": "position:absolute;top:5px;right:15px;color:#000;",
+      "text": "Close"
+    },
+    {
+      "class": "aitool",
+      "href": "/",
+      "text": "Aitoolnet"
+    },
+    {
+      "href": "/about",
+      "target": "_blank",
+      "class": "aitool",
+      "text": "About"
+    },
+    {
+      "href": "/blog",
+      "target": "_blank",
+      "class": "aitool",
+      "text": "Blog"
+    },
+    {
+      "href": "/popular",
+      "target": "_blank",
+      "class": "aitool",
+      "text": "Popular"
+    },
+    {
+      "href": "/privacy",
+      "target": "_blank",
+      "class": "aitool",
+      "text": "Privacy Policy"
+    },
+    {
+      "href": "/terms",
+      "target": "_blank",
+      "class": "aitool",
+      "text": "Terms"
+    },
+    {
+      "href": "https://www.aitoolnet.com/homeworkifyai",
+      "target": "_blank",
+      "class": "aitool",
+      "text": "homeworkify"
+    },
+    {
+      "href": "https://radar.aitoolnet.com/",
+      "target": "_blank",
+      "text": "AI Radar"
+    }
+  ],
+  "text": "﻿ \n \n \n     Finish - Aitoolnet \n     \n     \n     \n     \n     \n         \n     \n     var is_mobile_cms = '';var web_dir = '/'; \n     \n     \n     \n    \n\t\n \n \n \n     \n         \n             \n                 \n             \n             \n                 \n                     \n                     \n                     \n                     \n                         \n                             \n                                 \n                                     \n                                 \n                             \n                         \n                     \n                     \n                         \n                             \n\t\t\t\t\t\t\t\t \n\t\t\t\t\t\t\t \n                         \n                     \n                 \n                          \n                 \n                 \n                 \n                 \n             \n         \n         \n             \n                 \n                                         Categories \n                                         New \n                    \n                     Prompt \n                     \n                     Submit \n                     \n                         \n                             English \n                             \n                                 English \n                                                                 简体中文 \n                                                                 繁體中文 \n                                                                 한국어 \n                                                                 日本語 \n                                                                 Русский язык \n                                                                 Français \n                                                                 Español \n                                                             \n                         \n                     \n                     \n                     \n                        function handleLogin(data){\n                            $(\"#nav_member_info\").html(data.msg);\n                        }\n                        let scriptLogin = document.createElement('script');\n                        scriptLogin.src = '/index.php?s=api&c=api&m=template&format=jsonp&name=member.html&callback=handleLogin';\n                        document.body.appendChild(scriptLogin);\n                     \n                 \n             \n         \n     \n \n\n \n     \n         \n             Submission Successful \n         \n     \n \n \n     \n         \n             \n                 \n                     \n                         \n                             Hey there. \n\n                             All submissions are placed in the review queue, but we will strive to review and process your request as promptly as possible. Due to the high volume of submissions, please be prepared for a potential waiting period of up to 30 days. \n                         \n\n                         \n                             (NEW FEATURE) \n\n                             ⚡️Fast AI Tools Submissions \n                             (Want to get published in 24 hours?): \n\n                             Link to your website: Submission of Aitoolnet tools are free. As part of our collaboration, we kindly ask for your support in providing a backlink to our website’s homepage or listing page. To make it convenient for you, we have prepared a code snippet that you can easily utilize:\n                             \n                             \n                                code1 {\n                                    background-color: #f5f5f5; /* 背景色 */\n                                    padding: 10px; /* 内边距 */\n                                    font-family: monospace; /* 字体类型为等宽字体 */\n                                }\n                             \n                             <a href=\"https://www.aitoolnet.com/\" target=\"_blank\"><img src=\"http://www.aitoolnet.com/static/assets/images/logo.svg\" alt=\"aitoolnet.com\" style=\"width:150px;height:52px;\" /></a> \n                         \n\n                         \n                             send an email to support@aitoolnet.com \n\n                             with the subject line “Friend link – [Your Website] Listing,” and include your website URL \n\n                             🔥 Our team will review your tool than publish it in less than 24 hours. \n                         \n\n                     \n                 \n             \n         \n     \n \n \n \n     This is a simple Catfish Ad. The content can be any HTML code including text, image, form \n     Close \n \n\n \n    $('#catfish').catfish({closeLink:'#catfish-close'});\n \n \n     \n         \n             Aitoolnet \n             Aitoolnet stands at the forefront of AI technology, boasting an impressive directory of over 15,000+ AI tools, meticulously updated daily. \n         \n         \n             Useful Links \n             \n                 \n                     \n                                                 About \n                                                 Blog \n                                                 Popular \n                                                 Privacy Policy \n                                                 Terms \n                                             \n                 \n                 \n                     \n                                                 homeworkify \n                                                 AI Radar \n                                             \n                 \n             \n         \n     \n     \n         © 2026 AIToolNet.com · Discover the Best AI Tools \n     \n \n \n    var lang = '';\n \n \n \n \n \n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag('js', new Date());\n\n  gtag('config', 'G-D7KF3ZPKH4');\n \n (function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML=\"window.__CF$cv$params={r:'a56d50f3ca7bbbaa',t:'MTc5NDA2NDc2Ng=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a56d50f3ca7bbbaa',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);\";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})(); \n \n \n",
+  "comments": [
+    " <a class='aitool button is-white hide-on-search' href='/discover'>Discover</a> ",
+    " Google tag (gtag.js) "
+  ],
+  "hidden": [
+    {
+      "tag": "div",
+      "attrs": {
+        "id": "catfish",
+        "style": "display:none;background-color:#CCC;text-align:center;border-top: 1px solid #000;"
+      }
+    }
+  ]
+}

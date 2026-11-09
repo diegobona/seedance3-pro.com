@@ -1,5 +1,7 @@
 // https://yir.ai/docs/reference/videos/submit-video-generation
 // https://yir.ai/docs/reference/jobs/get-job
+import { validGuestVideoInput } from '../app/guest-video-input.mjs';
+import { normalizeReferenceMentions } from '../app/reference-mentions.mjs';
 const API_BASE = 'https://gateway.yir.ai';
 const MAX_RESPONSE_BYTES = 1024 * 1024;
 export const YIR_TEXT_WORKFLOW_ID = 'yir:minimax-h3:metaso:text-to-video';
@@ -13,7 +15,7 @@ export class YirVideoError extends Error {
   }
 }
 
-function inputError(message = 'Guest Yir videos require 5 seconds at 768p and at most one reference image.') {
+function inputError(message = 'Guest Yir videos require 5 seconds at 768p: up to 5 reference images, or a first frame with an optional last frame.') {
   return new YirVideoError(message, { code: 'YIR_INPUT_ERROR' });
 }
 
@@ -62,11 +64,13 @@ export function buildYirVideoRequest(payload) {
   const references = payload.referenceImageUrls ?? [];
   if (payload.duration !== 5 || payload.resolution !== '768p' || !['16:9','9:16','1:1'].includes(payload.aspectRatio)
     || typeof payload.prompt !== 'string' || !payload.prompt.trim() || payload.prompt.length > 20_000
-    || references.length > 1 || references.some(url => !publicHttpsUrl(url))) throw inputError();
+    || !validGuestVideoInput(payload.inputMode, references.length) || references.some(url => !publicHttpsUrl(url))) throw inputError();
   if (payload.referenceImageIds?.length && references.length !== payload.referenceImageIds.length) throw inputError('Reference image is not ready.');
   return { model: 'minimax/minimax-h3', routing: { only: ['metaso'], fallback: false },
-    input: { type: references.length ? 'image' : 'text', prompt: payload.prompt,
-      ...(references.length ? { references: [{ role: 'first_frame', url: references[0] }] } : {}) },
+    input: { type: references.length ? payload.inputMode === 'reference' ? 'reference' : 'image' : 'text', prompt: payload.inputMode === 'reference' ? normalizeReferenceMentions(payload.prompt, references.length) : payload.prompt,
+      ...(references.length ? { references: references.map((url, index) => ({
+        role: payload.inputMode === 'reference' ? 'reference_image' : index === 0 ? 'first_frame' : 'last_frame', url,
+      })) } : {}) },
     parameters: { duration: 5, resolution: '768P', aspect_ratio: references.length ? 'adaptive' : payload.aspectRatio,
       generate_audio: true, n: 1 } };
 }

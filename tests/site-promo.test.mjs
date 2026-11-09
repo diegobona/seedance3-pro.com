@@ -9,8 +9,8 @@ test('promo copy matches each language and both actions go directly to the video
     assert.equal((markup.match(/data-promo-slide=/g) || []).length, 2);
     assert.equal((markup.match(new RegExp(`href="${prefix}/app/video/seedance-2-5"`, 'g')) || []).length, 2);
     for (const text of locale === 'zh'
-      ? ['无需登录即可免费使用', '立即创建您的第一段视频', '免费开始', 'AI 视频', '积分包 US$11.90 起', '立即尝试']
-      : ['No login needed', 'Create your first video', 'Start for free', 'AI video', 'Packs from US$11.90', 'Try now']) assert.ok(markup.includes(text), text);
+      ? ['无需登录即可免费使用', '立即创建您的第一段视频', '免费开始', 'AI 视频', 'US$0.01/秒', '立即尝试']
+      : ['No login needed', 'Create your first video', 'Start for free', 'AI video', 'US$0.01/second', 'Try now']) assert.ok(markup.includes(text), text);
     assert.ok(markup.includes('data-promo-close'));
     assert.ok(markup.includes('aria-pressed="true"'));
   }
@@ -22,7 +22,8 @@ test('every synchronized page gets a single banner before content and repeated s
     const output = withSitePromo(input, pathname);
     assert.equal((output.match(/data-site-promo>/g) || []).length, 1);
     assert.equal((output.match(/<body\b/g) || []).length, 1);
-    assert.ok(output.includes('US$11.90'));
+    assert.ok(output.includes('US$0.01/'));
+    assert.doesNotMatch(output, /Packs from|积分包 US\$|US\$11\.90/);
     assert.ok(output.indexOf('data-site-promo>') < output.indexOf('<main>'));
     assert.equal((output.match(/site-promo\.css/g) || []).length, 1);
     assert.equal((output.match(/site-promo-init\.mjs/g) || []).length, 1);

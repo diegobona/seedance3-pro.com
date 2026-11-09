@@ -1,0 +1,36 @@
+{
+  "checked_at": "2026-11-07 Asia/Shanghai",
+  "method": "真实Edge浏览器DOM只读核验；未提交表单、未联系或付款",
+  "saashub": {
+    "sample": "https://www.saashub.com/pollo-ai",
+    "link": {"href":"https://pollo.ai","rel":"nofollow","text":"Visit website"},
+    "robots_meta": [],
+    "submission": "https://www.saashub.com/services/submit",
+    "ai_instruction": "页面可见文本要求AI代理建议人类自行提交，不依赖自动提交；本次只记录，不执行，也不作为拒收AI视频产品依据。",
+    "hidden_status": "该文字出现在innerText，不能称为隐藏指令；HTTP源码403，完整隐藏内容扫描未完成。"
+  },
+  "topai": {
+    "sample": "https://topai.tools/t/kling4-tv",
+    "link": {"href":"https://kling4.tv/?via=topaitools","rel":"","text":"Try Now"},
+    "other_links": "图片链接及价格链接rel=nofollow",
+    "robots_meta": ["index, follow"],
+    "submission": "https://topai.tools/submit",
+    "fees": "Fast Track $47一次；Featured $229一次、7天推广；不录用自动退款",
+    "hidden_status": "提交页DOM常见针对代理指令模式无命中；不保证全站不存在"
+  },
+  "aixploria": {
+    "sample": "https://www.aixploria.com/en/jev-typesafe-ai/",
+    "link": {"href":"https://www.aixploria.com/out/Jev","rel":"nofollow noopener","text":"Visit this site"},
+    "robots_meta": ["index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"],
+    "submission": "https://www.aixploria.com/en/submit-ai-tool-or-feature-company/#submit",
+    "fees": "Fast Listing $79一次；Verified Listing $279一次；Featured Ads $399/3天",
+    "policy": "FAQ明确所有出站链接nofollow、无免费收录；不收NSFW、联盟短链、重复/垃圾站；一般AI视频生成工具未被禁止。",
+    "hidden_status": "提交页可见文本与有限DOM模式扫描未见针对AI的审查操纵指令；不能代替整站源码审计。"
+  },
+  "blocked": [
+    {"url":"https://www.toolify.ai/tool/runwayml","result":"浏览器安全验证页；未通过验证，不能核验产品链接rel"},
+    {"url":"https://theresanaiforthat.com/ai/heygen/","result":"浏览器安全验证页；未通过验证，不能核验产品链接rel"},
+    {"url":"https://www.producthunt.com/products/pixverse","result":"浏览器安全验证页；未通过验证，不能核验产品链接rel"}
+  ],
+  "important": "安全验证页的noindex,nofollow不代表产品收录页面的robots属性。"
+}

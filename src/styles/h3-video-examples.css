@@ -13,12 +13,15 @@
 @media (prefers-reduced-motion:reduce) { .h3-example-pagination button::after { transition:none; } }
 .h3-example-details { padding: 17px 6px 14px; }
 .h3-example-title { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.h3-example-actions { display: flex; flex-direction: column; align-items: flex-end; flex: 0 1 45%; max-width: 280px; gap: 4px; text-align: right; }
+.h3-examples .h3-example-actions .video-example-note { margin: 0; }
 .h3-example-title span { color: #94a4a6; font-size: 10px; font-weight: 800; letter-spacing: .12em; }
 .h3-example-title h2 { margin: 4px 0 0; font-size: clamp(20px, 2vw, 25px); }
 .h3-example-title button { flex: 0 0 auto; padding: 10px 15px; border: 0; border-radius: 10px; background: #78ded4; color: #13160d; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; }
 .h3-example-title button:hover { background: #a1e9e4; }
 .h3-example-title button:focus-visible, .h3-example-options button:focus-visible { outline: 2px solid #78ded4; outline-offset: 3px; }
 .h3-example-prompt { margin: 13px 0 0; color: #b7bdc0 !important; font-size: 13px !important; line-height: 1.65 !important; }
+.h3-example-prompt summary { cursor: pointer; }
 .h3-example-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; padding: 12px 2px 2px; border-top: 1px solid #33383a; }
 .h3-example-options button { min-width: 0; padding: 5px; border: 1px solid #363b3d; border-radius: 11px; background: #202326; color: #c7cdce; text-align: left; cursor: pointer; }
 .h3-example-options button.is-selected { border-color: #78ded4; color: #f7f9f4; }

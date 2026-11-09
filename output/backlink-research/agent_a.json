@@ -1,0 +1,83 @@
+{
+  "checked_at": "2026-11-07",
+  "scope": "Futurepedia, FutureTools, Toolify, AIxploria",
+  "method": "web打开一手页面及Semrush公开站点分析；Python urllib读取公开服务器HTML，用HTMLParser解析实际a标签；原始HTML/JSON同目录保存。未登录Ahrefs/Semrush，未读取最近新增反链明细。",
+  "rows": [
+    {
+      "站名": "Futurepedia",
+      "网址": "https://www.futurepedia.io/",
+      "提交页": "https://www.futurepedia.io/contact",
+      "类型": "目录",
+      "DR": "未取得Ahrefs一手值；Semrush AS 39",
+      "月流量": "533510（Semrush，2026-09，总访问量估算）",
+      "dofollow": "是（抽查2个已收录页，主产品直链rel=noopener noreferrer）",
+      "费用": "当前未公开；旧提交页404，联系编辑确认；未见强制回链/徽章要求",
+      "相关度": "高：AI工具目录，含video-generators分类",
+      "结论": "联系站长",
+      "原因": "首页、视频分类、contact均HTTP200且内容完整。/submit-tool实测404，当前联系表单可询问编辑收录。Runway和invideo详情主产品链接均无nofollow/sponsored/ugc，页面robots为index, follow。接收AI工具，明确拒收NSFW、恋爱类、其他目录和newsletter；未发现对该视频生成平台的类别禁令。已读取HTML及注释/脚本常见指令模式，未见明显针对AI的隐藏指令；此为有限扫描。",
+      "traffic": {"visits":533510,"authority_score":39,"period":"2026-09","source":"https://www.semrush.com/website/futurepedia.io/overview/","source_read":"2026-11-07"},
+      "link_evidence": [
+        {"page":"https://www.futurepedia.io/tool/runway","href":"https://runwayml.com/?utm_source=futurepedia&utm_medium=marketplace&utm_campaign=futurepedia","rel":"noopener noreferrer","text":"Visit Website","file":"futurepedia_runway.html"},
+        {"page":"https://www.futurepedia.io/tool/invideo","href":"https://invideo.io/?utm_source=futurepedia&utm_medium=marketplace&utm_campaign=futurepedia","rel":"noopener noreferrer","text":"Visit Website","file":"futurepedia_invideo.html"}
+      ],
+      "policy_source":"https://www.futurepedia.io/terms-of-service",
+      "source_caution":"第三方清单仍称nofollow，与本次实际HTML不符，优先采用实时HTML。DR第三方有72/73不一致；未用于已核验DR。"
+    },
+    {
+      "站名": "Future Tools",
+      "网址": "https://futuretools.io/",
+      "提交页": "https://futuretools.io/submit-a-tool",
+      "类型": "目录",
+      "DR": "未取得Ahrefs一手值；Semrush AS 42",
+      "月流量": "411700（Semrush，2026-09，总访问量估算）",
+      "dofollow": "不计真dofollow：rel无nofollow，但链接经/go/302跳转，该路径被robots禁止抓取",
+      "费用": "普通提交免费；赞助另行报价；未见强制回链/徽章",
+      "相关度": "高：AI工具目录，Generative Video / Video Editing",
+      "结论": "可交",
+      "原因": "首页/提交页/FAQ/Runway详情均HTTP200。免费人工筛选，不保证收录；公开FAQ称超过75%未获收录，一周后可重交。拒绝仅waitlist、非工具、重复概念、NSFW等；目标产品应描述现已可用的视频生成工具，避免将尚未上线模型写成已上线。Runway访问按钮没有nofollow却指向/go/runway；robots.txt明确Disallow: /go/，故保留为相关流量渠道并降低SEO优先级。已查取得HTML未见明显隐藏AI指令。",
+      "traffic": {"visits":411700,"authority_score":42,"period":"2026-09","source":"https://www.semrush.com/website/futuretools.io/overview/","source_read":"2026-11-07"},
+      "link_evidence": [{"page":"https://futuretools.io/tools/runway","href":"/go/runway","rel":"noopener noreferrer","text":"Visit Runway","file":"futuretools_runway.html"}],
+      "redirect_evidence": [{"url":"https://futuretools.io/go/runway","status":302,"location":"https://runwayml.com/?ref=FutureTools.io"},{"url":"https://runwayml.com/?ref=FutureTools.io","status":308,"location":"https://runway.com/?ref=FutureTools.io"},{"url":"https://runway.com/?ref=FutureTools.io","status":200}],
+      "robots_source":"https://futuretools.io/robots.txt",
+      "robots_excerpt":"User-Agent: *; Allow: /; Disallow: /go/",
+      "policy_source":"https://futuretools.io/faq",
+      "source_caution":"第三方常把rel无nofollow直接归为dofollow，遗漏/go/机器人抓取限制；本次不计真dofollow。"
+    },
+    {
+      "站名": "Toolify",
+      "网址": "https://www.toolify.ai/",
+      "提交页": "https://www.toolify.ai/submit",
+      "类型": "目录",
+      "DR": "未取得Ahrefs一手值；Semrush AS 44",
+      "月流量": "1230000（Semrush，2026-09，总访问量估算）",
+      "dofollow": "待实际rel核验；提交页自称至少6条dofollow",
+      "费用": "99美元；提供认证嵌入代码，是否强制回链尚未证实",
+      "相关度": "高：AI工具目录，收录Runway等视频生成工具",
+      "结论": "付费",
+      "原因": "web实际打开提交页与Runway详情并能读到内容；本机公开HTTP访问403无法取得真实HTML属性，不能把站方dofollow广告当实测。当前提交页99美元、48小时刊登；隐藏AI指令检查未完成。应待浏览器补验rel及徽章条款后进入主清单。",
+      "traffic": {"visits":1230000,"authority_score":44,"period":"2026-09","source":"https://www.semrush.com/website/toolify.ai/overview/","source_read":"2026-11-07"},
+      "sample_page":"https://www.toolify.ai/tool/runwayml",
+      "policy_source":"https://www.toolify.ai/submit",
+      "verification_pending":["实际href/rel","隐藏AI指令","是否强制徽章回链"],
+      "secondary_dr_only":{"value":73,"source":"https://dr.serp.co/directories/toolify.ai/","claimed_provider":"Ahrefs","claimed_date":"2026-10-31","note":"非Ahrefs一手查询，不当作已实测"}
+    },
+    {
+      "站名": "AIxploria",
+      "网址": "https://www.aixploria.com/en/",
+      "提交页": "https://www.aixploria.com/en/featured-on-aixploria/",
+      "类型": "目录",
+      "DR": "未取得Ahrefs一手值；Semrush AS 42",
+      "月流量": "1370000（Semrush，2026-09，总访问量估算）",
+      "dofollow": "站方明确说nofollow，实际rel待核验",
+      "费用": "付费，无免费收录；搜索缓存79美元与99美元冲突，当前金额待浏览器确认",
+      "相关度": "高：AI工具目录，含视频工具",
+      "结论": "付费",
+      "原因": "web可读已收录Jev页面与条款，提交页实时打开仅导航/cookie框；本机HTTP403，未完成HTML属性扫描。站方FAQ明确全部出站nofollow，免费收录已停止；不收NSFW，提交文案要求原创且不得AI生成（可见政策，非隐藏指令），未发现拒收一般AI视频工具。建议待核验单保留，不进入已完整核验主表。",
+      "traffic": {"visits":1370000,"authority_score":42,"period":"2026-09","source":"https://www.semrush.com/website/aixploria.com/overview/","source_read":"2026-11-07"},
+      "sample_page":"https://www.aixploria.com/en/jev-typesafe-ai/",
+      "policy_source":"https://www.aixploria.com/en/terms-conditions/",
+      "verification_pending":["实际href/rel","隐藏AI指令","当前提交报价","是否强制徽章回链"]
+    }
+  ],
+  "files": ["futurepedia_runway.html","futurepedia_invideo.html","futurepedia_contact.html","futurepedia_submit.html","futurepedia_terms.html","futuretools_home.html","futuretools_submit.html","futuretools_faq.html","futuretools_runway.html","futuretools_robots.html","futuretools_redirect.json","a_instruction_scan.json"]
+}

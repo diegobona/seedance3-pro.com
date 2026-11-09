@@ -1,0 +1,92 @@
+[
+  {
+    "page": "futurepedia_home",
+    "hits": [],
+    "robots": [
+      {
+        "name": "robots",
+        "content": "index, follow"
+      }
+    ]
+  },
+  {
+    "page": "futurepedia_contact",
+    "hits": [],
+    "robots": [
+      {
+        "name": "robots",
+        "content": "index, follow"
+      }
+    ]
+  },
+  {
+    "page": "futurepedia_runway",
+    "hits": [],
+    "robots": [
+      {
+        "name": "robots",
+        "content": "index, follow"
+      }
+    ]
+  },
+  {
+    "page": "futurepedia_invideo",
+    "hits": [],
+    "robots": [
+      {
+        "name": "robots",
+        "content": "index, follow"
+      }
+    ]
+  },
+  {
+    "page": "futurepedia_terms",
+    "hits": [],
+    "robots": [
+      {
+        "name": "robots",
+        "content": "index, follow"
+      }
+    ]
+  },
+  {
+    "page": "futuretools_home",
+    "hits": [],
+    "robots": [
+      {
+        "name": "robots",
+        "content": "index, follow"
+      }
+    ]
+  },
+  {
+    "page": "futuretools_faq",
+    "hits": [],
+    "robots": [
+      {
+        "name": "robots",
+        "content": "index, follow"
+      }
+    ]
+  },
+  {
+    "page": "futuretools_submit",
+    "hits": [],
+    "robots": [
+      {
+        "name": "robots",
+        "content": "index, follow"
+      }
+    ]
+  },
+  {
+    "page": "futuretools_runway",
+    "hits": [],
+    "robots": [
+      {
+        "name": "robots",
+        "content": "index, follow"
+      }
+    ]
+  }
+]

@@ -1,4 +1,5 @@
 import { submitYirVideoTask, queryYirVideoTask, YIR_TEXT_WORKFLOW_ID, YIR_IMAGE_WORKFLOW_ID } from '../../scripts/yir-video.mjs'
+import { validGuestVideoInput } from '../../app/guest-video-input.mjs'
 import { submitAutodlVideoTask, queryAutodlVideoTask, AUTODL_UPGRADED_REFERENCE_WORKFLOW_ID } from '../../scripts/autodl-video.mjs'
 import { assertCompshareVideoPayload, submitCompshareVideoTask, queryCompshareVideoTask, COMPSHARE_FIRST_FRAME_WORKFLOW_ID } from '../../scripts/compshare-video.mjs'
 import { VIDEO_WORKFLOW_ID, REFERENCE_VIDEO_WORKFLOW_ID, type VideoGenerationPayload, type VideoProviderQueryResult } from './protected-video-generation'
@@ -14,7 +15,9 @@ function providerConfigurationError(retriable = false) {
 export function selectVideoWorkflow(payload: VideoGenerationPayload, environment: VideoProviderEnvironment, { guest = false } = {}): string {
   if (guest && ['seeapi', 'yir'].includes(environment.GUEST_VIDEO_PROVIDER?.trim() ?? '')) {
     const count = Math.max(payload.referenceImageIds?.length ?? 0, payload.referenceImageUrls?.length ?? 0)
-    if (payload.duration !== 5 || payload.resolution !== '768p' || count > 1) {
+    const validImages = environment.GUEST_VIDEO_PROVIDER?.trim() === 'yir'
+      ? validGuestVideoInput(payload.inputMode, count) : payload.inputMode === undefined && count <= 1
+    if (payload.duration !== 5 || payload.resolution !== '768p' || !validImages) {
       throw Object.assign(new Error('Guest videos support five seconds and one reference image.'), { code: 'SEEAPI_INPUT_ERROR' })
     }
     // Previous guest AutoDL selection is retained below for rollback:
@@ -22,6 +25,7 @@ export function selectVideoWorkflow(payload: VideoGenerationPayload, environment
     if (environment.GUEST_VIDEO_PROVIDER?.trim() === 'yir') return count ? YIR_IMAGE_WORKFLOW_ID : YIR_TEXT_WORKFLOW_ID
     return count ? SEEAPI_IMAGE_WORKFLOW_ID : SEEAPI_TEXT_WORKFLOW_ID
   }
+  if (payload.inputMode !== undefined) throw providerConfigurationError()
   if (!payload.referenceImageIds && !payload.referenceImageUrls) return VIDEO_WORKFLOW_ID
   const provider = environment.H3_REFERENCE_PROVIDER?.trim() || 'autodl'
   if (provider === 'autodl-upgraded') return AUTODL_UPGRADED_REFERENCE_WORKFLOW_ID

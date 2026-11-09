@@ -1,0 +1,124 @@
+{
+  "key": "betalist_submit",
+  "url": "https://betalist.com/submissions/new",
+  "final_url": "https://betalist.com/submissions/new",
+  "status": 200,
+  "bytes": 30401,
+  "links": [
+    {
+      "href": "/",
+      "rel": "",
+      "text": "\n            \n              \n              \n              \n              \n              \n            \n            BetaList\n",
+      "html": "<a class=\"flex items-center gap-3.5\" href=\"/\">"
+    }
+  ],
+  "meta": [
+    {
+      "name": "csrf-param",
+      "content": "authenticity_token"
+    },
+    {
+      "name": "csrf-token",
+      "content": "13AtmpcEB879v3pN_GRD-977rm7PiOdcmHYQ1VlsNzrHAO75n9kZdiCjbg2VncyvxKpETa4g9PKl31qtrbzMXg"
+    },
+    {
+      "charset": "utf-8"
+    },
+    {
+      "content": "IE=edge,chrome=1",
+      "http-equiv": "X-UA-Compatible"
+    },
+    {
+      "content": "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no",
+      "name": "viewport"
+    },
+    {
+      "content": "ZKmJnGwPBwvqYiXVXreD0H-CzeTgFwqVmOhN_EY9lKY",
+      "name": "google-site-verification"
+    },
+    {
+      "name": "direct-upload-url",
+      "content": "/rails/active_storage/direct_uploads"
+    },
+    {
+      "name": "current-user-id"
+    },
+    {
+      "name": "description",
+      "content": "BetaList provides an overview of upcoming internet startups. Discover and get early access to the future."
+    },
+    {
+      "name": "twitter:account_id",
+      "content": "1512944793"
+    },
+    {
+      "name": "twitter:site",
+      "content": "@BetaList"
+    },
+    {
+      "name": "twitter:domain",
+      "content": "BetaList.com"
+    },
+    {
+      "name": "twitter:card",
+      "content": "summary_large_image"
+    },
+    {
+      "name": "twitter:creator",
+      "content": "@marckohlbrugge"
+    },
+    {
+      "property": "og:title",
+      "content": "Discover and get early access to tomorrow's startups"
+    },
+    {
+      "property": "og:description",
+      "content": "BetaList provides an overview of upcoming internet startups. Discover and get early access to the future."
+    },
+    {
+      "property": "og:image",
+      "content": "https://betalist.com/assets/homepage-9b998efc.jpg"
+    },
+    {
+      "property": "og:type",
+      "content": "website"
+    },
+    {
+      "property": "fb:app_id",
+      "content": "379376245443085"
+    },
+    {
+      "property": "fb:admins",
+      "content": "1053302589"
+    },
+    {
+      "name": "apple_mobile_web_app_title",
+      "content": "BetaList"
+    },
+    {
+      "itemprop": "name",
+      "content": "BetaList"
+    },
+    {
+      "itemprop": "description",
+      "content": "Discover tomorrow's startups, today."
+    },
+    {
+      "itemprop": "image",
+      "content": "https://betalist.com/assets/touch-icon-precomposed-144-e8598d79.png"
+    }
+  ],
+  "x_robots_tag": null,
+  "instruction_pattern_hits": [
+    "true\" aria-controls=\"entry-panel-agent\" tabindex=\"0\" data-tabs-target=\"tab\" data-action=\"click-&gt;tabs#select keydown.right-&gt;tabs#next keydown.left-&gt;tabs#previous\">\n        Submit with your agent\n</button>  </div>\n\n  <div role=\"tabpanel\" id=\"entry-panel-website\" aria-labelledby=\"entry-tab-website\" class=\"hidden\" data-tabs-target=\"panel\">\n    \n    <form data-turbo=\"false\" class=\"flex flex-col gap-8\" action=\"/submissions\" accept-charset=\"UTF-8\" method=\"post\"><input type=\"hidden\" name=\"authenticity_token\" value=\"Wo2XWYS2Ej9UxcqaMWGLwp4XOxhcyY"
+  ],
+  "comments": [
+    " Google Tag Manager ",
+    " End Google Tag Manager ",
+    " Google Tag Manager Helper function to guarantee business logic ",
+    " https://gist.github.com/taylorgorman/bbe349b63dd4f395523c2cdbf06b0bae ",
+    " Google Tag Manager (noscript) ",
+    " End Google Tag Manager (noscript) "
+  ],
+  "text": "\n \n   \n     \n \n\n \n \n \n\n \n \n\n \n\n Discover and get early access to tomorrow's startups | BetaList \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n   \n \n \n\n \n\n {\n  \"imports\": {\n    \"controllers/turnstile_controller\": \"/assets/verify_human/turnstile_controller-db78345a.js\",\n    \"application\": \"/assets/application-1310e83f.js\",\n    \"admin\": \"/assets/admin-f55e5c50.js\",\n    \"theme_manager\": \"/assets/theme_manager-5e445aba.js\",\n    \"@rails/actioncable\": \"/assets/actioncable.esm-e5c1e716.js\",\n    \"@rails/activestorage\": \"/assets/@rails--activestorage-d53525da.js\",\n    \"@rails/request.js\": \"/assets/@rails--request.js-ff400e4a.js\",\n    \"@hotwired/turbo-rails\": \"/assets/turbo.min-86bf8853.js\",\n    \"autosize\": \"/assets/autosize-a648b077.js\",\n    \"current.js\": \"/assets/current.js-f886b1bd.js\",\n    \"el-transition\": \"/assets/el-transition-56e152e9.js\",\n    \"js-cookie\": \"/assets/js-cookie-26dce017.js\",\n    \"local-time\": \"/assets/local-time-4f7ee01f.js\",\n    \"sortablejs\": \"/assets/sortablejs-171087e4.js\",\n    \"tom-select\": \"/assets/tom-select-bf1b6e5d.js\",\n    \"@hotwired/stimulus\": \"/assets/@hotwired--stimulus-745bd373.js\",\n    \"@hotwired/stimulus-loading\": \"/assets/stimulus-loading-25917588.js\",\n    \"stimulus-use\": \"/assets/stimulus-use-9a297524.js\",\n    \"@stimulus-components/rails-nested-form\": \"/assets/@stimulus-components--rails-nested-form-2c10f7ab.js\",\n    \"@stimulus-components/dropdown\": \"/assets/@stimulus-components--dropdown-ec21ea1b.js\",\n    \"@stimulus-components/popover\": \"/assets/@stimulus-components--popover-b3c150aa.js\",\n    \"ahoy.js\": \"/assets/ahoy.js-13b65a99.js\",\n    \"Chart.bundle\": \"/assets/Chart.bundle-eaff0df7.js\",\n    \"chartjs-adapter-date-fns.bundle\": \"/assets/chartjs-adapter-date-fns.bundle-f3e4b617.js\",\n    \"chartkick\": \"/assets/chartkick-61a6088d.js\",\n    \"controllers/application\": \"/assets/controllers/application-15f4648f.js\",\n    \"controllers/auth_dialog_controller\": \"/assets/controllers/auth_dialog_controller-26e1d8bb.js\",\n    \"controllers/auth_frame_controller\": \"/assets/controllers/auth_frame_controller-8f37ba02.js\",\n    \"controllers/auto_submit_controller\": \"/assets/controllers/auto_submit_controller-90f0dc1a.js\",\n    \"controllers/autosize_controller\": \"/assets/controllers/autosize_controller-84c80be1.js\",\n    \"controllers/carousel_controller\": \"/assets/controllers/carousel_controller-59384cd2.js\",\n    \"controllers/checkout_controller\": \"/assets/controllers/checkout_controller-68c93820.js\",\n    \"controllers/claim_poll_controller\": \"/assets/controllers/claim_poll_controller-acb0a738.js\",\n    \"controllers/click_to_enable_controller\": \"/assets/controllers/click_to_enable_controller-f0ba39eb.js\",\n    \"controllers/clipboard_controller\": \"/assets/controllers/clipboard_controller-b75982d1.js\",\n    \"controllers/collapse_controller\": \"/assets/controllers/collapse_controller-83b38f65.js\",\n    \"controllers/cooldown_controller\": \"/assets/controllers/cooldown_controller-824cfa3f.js\",\n    \"controllers/copy_source_controller\": \"/assets/controllers/copy_source_controller-622769db.js\",\n    \"controllers/copy_to_input_controller\": \"/assets/controllers/copy_to_input_controller-b12d2539.js\",\n    \"controllers/debounced_submit_controller\": \"/assets/controllers/debounced_submit_controller-c8ce3466.js\",\n    \"controllers/delayed_enable_controller\": \"/assets/controllers/delayed_enable_controller-71b01c47.js\",\n    \"controllers/disable_on_submit_controller\": \"/assets/controllers/disable_on_submit_controller-7e06de7f.js\",\n    \"controllers/dismissible_controller\": \"/assets/controllers/dismissible_controller-47611f83.js\",\n    \"controllers/drawer_controller\": \"/assets/controllers/drawer_controller-2ebc8a02.js\",\n    \"controllers/dropdown_controller\": \"/assets/controllers/dropdown_controller-658a89db.js\",\n    \"controllers/faq_controller\": \"/assets/controllers/faq_controller-8eefe823.js\",\n    \"controllers/focus_parent_controller\": \"/assets/controllers/focus_parent_controller-9f7df9eb.js\",\n    \"controllers/form_controller\": \"/assets/controllers/form_controller-1bea1511.js\",\n    \"controllers\": \"/assets/controllers/index-5eaf757e.js\",\n    \"controllers/infinite_scroll_controller\": \"/assets/controllers/infinite_scroll_controller-17fd87c9.js\",\n    \"controllers/input_prefixer_controller\": \"/assets/controllers/input_prefixer_controller-a7c740a6.js\",\n    \"controllers/login_code_controller\": \"/assets/controllers/login_code_controller-d50d61ca.js\",\n    \"controllers/max_length_controller\": \"/assets/controllers/max_length_controller-096de387.js\",\n    \"controllers/media_uploads_controller\": \"/assets/controllers/media_uploads_controller-63d22b22.js\",\n    \"controllers/messages_scroll_controller\": \"/assets/controllers/messages_scroll_controller-629631de.js\",\n    \"controllers/nav_dropdown_menu_controller\": \"/assets/controllers/nav_dropdown_menu_controller-3f901b6b.js\",\n    \"controllers/navigate_controller\": \"/assets/controllers/navigate_controller-ea1adb27.js\",\n    \"controllers/nested_form_controller\": \"/assets/controllers/nested_form_controller-b128baaa.js\",\n    \"controllers/passkey_login_controller\": \"/assets/controllers/passkey_login_controller-19f80e76.js\",\n    \"controllers/passkey_offer_controller\": \"/assets/controllers/passkey_offer_controller-f791c6ce.js\",\n    \"controllers/passkey_registration_controller\": \"/assets/controllers/passkey_registration_controller-88c775eb.js\",\n    \"controllers/password_toggle_controller\": \"/assets/controllers/password_toggle_controller-f4645892.js\",\n    \"controllers/popup_link_controller\": \"/assets/controllers/popup_link_controller-e8da3b23.js\",\n    \"controllers/preview_controller\": \"/assets/controllers/preview_controller-064843be.js\",\n    \"controllers/remove_controller\": \"/assets/controllers/remove_controller-000f8017.js\",\n    \"controllers/remove_duplicates_controller\": \"/assets/controllers/remove_duplicates_controller-bfdcbb4f.js\",\n    \"controllers/scrollspy_controller\": \"/assets/controllers/scrollspy_controller-89750c82.js\",\n    \"controllers/sidebar_controller\": \"/assets/controllers/sidebar_controller-36052c00.js\",\n    \"controllers/single_line_controller\": \"/assets/controllers/single_line_controller-f6c1cd23.js\",\n    \"controllers/sortable_controller\": \"/assets/controllers/sortable_controller-d91c1dd2.js\",\n    \"controllers/status_refresh_controller\": \"/assets/controllers/status_refresh_controller-c3662961.js\",\n    \"controllers/submission_controller\": \"/assets/controllers/submission_controller-cee18a7a.js\",\n    \"controllers/submit_shortcut_controller\": \"/assets/controllers/submit_shortcut_controller-11d9cedb.js\",\n    \"controllers/sync_select_controller\": \"/assets/controllers/sync_select_controller-a119e812.js\",\n    \"controllers/tabs_controller\": \"/assets/controllers/tabs_controller-0f7432e5.js\",\n    \"controllers/theme_controller\": \"/assets/controllers/theme_controller-9ffe5b93.js\",\n    \"controllers/timed_toggle_controller\": \"/assets/controllers/timed_toggle_controller-1e6e4c18.js\",\n    \"controllers/toggle_controller\": \"/assets/controllers/toggle_controller-11bdcdf5.js\",\n    \"controllers/tom_select_controller\": \"/assets/controllers/tom_select_controller-2877b381.js\",\n    \"controllers/turbo_modal_controller\": \"/assets/controllers/turbo_modal_controller-9d4dc11a.js\",\n    \"controllers/url_prefix_controller\": \"/assets/controllers/url_prefix_controller-e3a5e6d9.js\",\n    \"lib/passkeys\": \"/assets/lib/passkeys-2c7e6e3a.js\"\n  }\n} \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n import \"application\" \n\n \n (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':\nnew Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],\nj=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=\n'https://betalist.com/metrics/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);\n})(window,document,'script','dataLayer','GTM-KDTKCJPW'); \n \n\n \n \n \n  /**\n  * @param {Object} data - The same object you would give to dataLayer.push\n  */\n  function safeDataLayerPush(data) {\n    const defaultTimeout = 2000\n    const originalCallback = data.eventCallback\n    \n    if (originalCallback) {\n      let callbackDone = false\n\n      function wrappedCallback() {\n        if (callbackDone) return\n\n        callbackDone = true\n        originalCallback()\n      }\n\n      // If Tag Manager fails or is blocked by browser,\n      // callback must still execute.\n      setTimeout(wrappedCallback, data.eventTimeout || defaultTimeout)\n\n      // Update the data's eventCallback to our new wrapper function\n      // that prevents duplicate executions.\n      data.eventCallback = wrappedCallback\n    }\n\n    window.dataLayer = window.dataLayer || []\n    window.dataLayer.push(data)\n  }\n \n\n\n\n     \n     \n   \n\n \n     \n   \n   \n\n\n     \n       \n           \n             \n               \n               \n               \n               \n               \n             \n             BetaList \n \n           \n   \n \n\n\n       \n     \n\n     \n  body[data-is-admin] .admin\\:inline,\n  body[data-is-admin].admin\\:inline\n  { display:inline }\n\n  body[data-is-admin] .admin\\:block,\n  body[data-is-admin].admin\\:block\n  { display:block }\n\n  body[data-is-admin] .admin\\:hidden,\n  body[data-is-admin].admin\\:hidden\n  { display:none }\n\n  body[data-signed-in] .signed-in\\:block,\n  body[data-signed-in].signed-in\\:block\n  { display:block }\n\n  body[data-signed-in] .signed-in\\:inline,\n  body[data-signed-in].signed-in\\:inline\n  { display:inline}\n\n  body[data-signed-in] .signed-in\\:hidden,\n  body[data-signed-in].signed-in\\:hidden\n  { display:none }\n \n\n\n     \n\n \n\n    \n \n   Submit your startup \n\n  \n\n   \n   \n       \n        Paste your website\n        \n        Submit with your agent\n    \n\n   \n    \n     \n      \n         \n           Website URL \n           \n         \n\n       \n\n         \n           Your email \n           \n           New here? We create your account on the spot. Already have one? We email you a code to log in. \n         \n\n         \n         \n\n       \n         \n          Continue\n           \n        \n\n         \n           \n             \n            or\n             \n           \n\n            \n      \n  Continue with Google\n \n\n          \n      \n  Continue with X\n \n\n         \n \n \n   \n     \n       \n        Paste this into your coding agent. It reads our instructions, drafts your submission and sends you a link to review and pay.\n       \n\n       \n         Submit my startup to BetaList: fetch https://betalist.com/agent and follow the instructions. If you don't know my website URL, ask me first. Send me the claim link when done. \n\n         \n           \n             \n            Copy prompt\n          \n       \n\n       \n        Your agent brings back a claim link. Open it, confirm your email and pick a plan — nothing is published until you do.\n       \n     \n \n \n\n\n     \n     \n   \n     \n   \n\n   \n     \n       \n         \n       \n    \n \n\n \n \n"
+}

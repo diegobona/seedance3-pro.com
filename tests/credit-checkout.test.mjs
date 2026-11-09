@@ -12,7 +12,7 @@ test('checkout failures explain account restrictions separately from payment ser
   assert.doesNotMatch(checkout.creditCheckoutErrorMessage(new Error('private provider error'), 'en'), /private provider/);
 });
 
-test('purchase reserves its tab synchronously then goes straight to Stripe without a billing page', async () => {
+test('purchase opens a localized loading tab and starts checkout immediately without waiting for its page load', async () => {
   assert.equal(typeof checkout.openSelectedCreditPurchase, 'function');
   for (const locale of ['en', 'zh']) {
     const calls = [], destinations = [];
@@ -20,18 +20,18 @@ test('purchase reserves its tab synchronously then goes straight to Stripe witho
     const tab = { opener: {}, location: { replace: url => destinations.push(url) }, close() { assert.fail('successful checkout stays open'); } };
     const browser = { open: (...args) => { calls.push(args); return tab; }, location: { assign: () => assert.fail('editor must stay open') } };
     const purchase = checkout.openSelectedCreditPurchase({ locale, eventTarget: browser, requestCheckout: async options => {
-      assert.deepEqual(options, { locale, packId: 'starter-1190' });
+      assert.deepEqual(options, { locale, packId: 'creator' });
       await new Promise(resolve => { finish = resolve; });
       return 'https://checkout.stripe.com/c/pay/example';
     } });
-    assert.deepEqual(calls, [['about:blank', '_blank']]);
+    assert.deepEqual(calls, [[`/assets/checkout-loading?lang=${locale}`, '_blank']]);
     assert.equal(tab.opener, null);
     finish(); await purchase;
     assert.deepEqual(destinations, ['https://checkout.stripe.com/c/pay/example']);
   }
 });
 
-test('blocked tabs do not create an order; failed checkout closes the blank tab and permits retry', async () => {
+test('blocked tabs do not create an order; failed checkout closes the loading tab and permits retry', async () => {
   await assert.rejects(checkout.openSelectedCreditPurchase({ eventTarget: { open: () => null }, requestCheckout: () => assert.fail('no order without a tab') }), { code: 'POPUP_BLOCKED' });
   let closed = 0;
   const tab = { location: { replace: () => assert.fail('failed checkout must not navigate') }, close: () => closed++ };
@@ -42,7 +42,7 @@ test('blocked tabs do not create an order; failed checkout closes the blank tab 
 test('authentication continues in the reserved tab and automatically resumes checkout', async () => {
   const destinations = [];
   await checkout.openSelectedCreditPurchase({ locale: 'zh', eventTarget: { open: () => ({ location: { replace: url => destinations.push(url) } }) }, requestCheckout: async () => { throw { code: 'AUTH_REQUIRED' }; } });
-  assert.deepEqual(destinations, ['/zh/checkout?pack=starter-1190']);
+  assert.deepEqual(destinations, ['/zh/checkout?pack=creator&purchase=1']);
 });
 
 test('new-tab and fallback purchase destinations go to checkout with the source page preserved', () => {
@@ -89,13 +89,13 @@ function storage() {
   return { getItem: key => values.get(key) ?? null, setItem: (key,value) => values.set(key,value), removeItem: key => values.delete(key) };
 }
 
-test('direct checkout posts only locale with same-origin credentials and returns Stripe payment URL', async () => {
+test('direct checkout posts only pack ID with same-origin credentials and keeps locale in routing', async () => {
   assert.equal(typeof checkout.requestCreditCheckout, 'function');
   const url = await checkout.requestCreditCheckout({ locale: 'zh', fetchImpl: async (url, init) => {
-    assert.equal(url, '/api/billing/checkout');
+    assert.equal(new URL(url,'http://localhost').pathname, '/api/billing/checkout');assert.equal(new URL(url,'http://localhost').searchParams.get('locale'),'zh');
     assert.equal(init.method, 'POST');
     assert.equal(init.credentials, 'same-origin');
-    assert.deepEqual(JSON.parse(init.body), { locale: 'zh', packId: 'starter-1190' });
+    assert.deepEqual(JSON.parse(init.body), { packId: 'creator' });
     return Response.json({ url: 'https://checkout.stripe.com/c/pay/example' });
   } });
   assert.equal(url, 'https://checkout.stripe.com/c/pay/example');
@@ -111,7 +111,8 @@ test('checkout rejects unsafe redirect URLs', async () => {
 test('checkout preserves safe local source pages and rejects external return targets', async () => {
  for(const returnTo of ['/', '/zh/', 'https://evil.test', '//evil.test', '/app']) {
   await checkout.requestCreditCheckout({returnTo,fetchImpl:async(_url,init)=>{
-   assert.deepEqual(JSON.parse(init.body),{locale:'en',packId:'starter-1190',...(['/', '/zh/', '/app'].includes(returnTo)?{returnTo}:{})});
+   assert.equal(new URL(_url,'http://localhost').searchParams.get('returnTo'),['/','/zh/','/app'].includes(returnTo)?returnTo:null);
+   assert.deepEqual(JSON.parse(init.body),{packId:'creator'});
    return Response.json({url:'https://checkout.stripe.com/test'});
   }});
  }
@@ -146,7 +147,51 @@ test('blocked browser storage never prevents signing in or causes an unintended 
 
  test('selected creator pack survives authentication and sends only its catalog id', async () => {
   const targets=[];
-  await checkout.openSelectedCreditPurchase({packId:'creator-2490',eventTarget:{open:()=>({location:{replace:url=>targets.push(url)}})},requestCheckout:async options=>{assert.equal(options.packId,'creator-2490');throw {code:'AUTH_REQUIRED'};}});
-  assert.deepEqual(targets,['/checkout?pack=creator-2490']);
-  await checkout.requestCreditCheckout({packId:'creator-2490',fetchImpl:async(_url,init)=>{assert.deepEqual(JSON.parse(init.body),{locale:'en',packId:'creator-2490'});return Response.json({url:'https://checkout.stripe.com/c/pay/creator'});}});
+  await checkout.openSelectedCreditPurchase({packId:'studio',eventTarget:{open:()=>({location:{replace:url=>targets.push(url)}})},requestCheckout:async options=>{assert.equal(options.packId,'studio');throw {code:'AUTH_REQUIRED'};}});
+  assert.deepEqual(targets,['/checkout?pack=studio&purchase=1']);
+  await checkout.requestCreditCheckout({packId:'studio',fetchImpl:async(_url,init)=>{assert.deepEqual(JSON.parse(init.body),{packId:'studio'});return Response.json({url:'https://checkout.stripe.com/c/pay/creator'});}});
+});
+
+test('each pack-specific purchase link goes straight to Stripe with that pack, without a picker', async () => {
+ for (const packId of ['starter','creator','studio']) {
+  let click, captured;
+  const targets=[];
+  const link={dataset:{packId},setAttribute(){},removeAttribute(){},addEventListener:(type,fn)=>{if(type==='click')click=fn},removeEventListener(){},parentElement:{querySelector:()=>null}};
+  const eventTarget={location:{pathname:'/pricing',search:''},open:()=>({location:{replace:url=>targets.push(url)}})};
+  checkout.bindCreditPurchaseLink(link,{eventTarget,purchaseMode:'direct',openPurchase:()=>assert.fail('no picker for a pack purchase'),requestCheckout:async options=>{captured=options;return 'https://checkout.stripe.com/c/pay/test'}});
+  await click({button:0,preventDefault(){}});
+  assert.equal(captured.packId,packId);
+  assert.deepEqual(targets,['https://checkout.stripe.com/c/pay/test']);
+ }
+});
+
+test('generic promotional links open the picker even when they describe a starter pack', async () => {
+ for (const locale of ['en','zh']) {
+  const handlers = new Map(), attributes = new Map();
+  let pickerOpens = 0, prevented = 0;
+  const link = { dataset: { packId: 'starter' },
+   setAttribute: (key, value) => attributes.set(key, value), removeAttribute: key => attributes.delete(key),
+   addEventListener: (type, handler) => handlers.set(type, handler), removeEventListener() {},
+   parentElement: { querySelector: () => null },
+  };
+  const pathname = locale === 'zh' ? '/zh/seedance-3-0-release-date' : '/seedance-3-0-release-date';
+  const eventTarget = { location: { pathname, search: '' }, open: () => assert.fail('generic entry must not open a checkout tab') };
+  checkout.bindCreditPurchaseLink(link, { locale, eventTarget,
+   requestCheckout: () => assert.fail('no checkout session until a pack is chosen'),
+   openPurchase: async options => { pickerOpens++; assert.equal(options.locale, locale); },
+  });
+  const fallback = new URL(link.href, 'https://seedance3-pro.com');
+  assert.equal(fallback.pathname, locale === 'zh' ? '/zh/checkout' : '/checkout');
+  assert.equal(fallback.searchParams.get('return_to'), pathname);
+  assert.equal(fallback.searchParams.has('pack'), false);
+  assert.equal(fallback.searchParams.has('purchase'), false);
+  await handlers.get('click')({ button: 0, preventDefault: () => prevented++ });
+  assert.equal(pickerOpens, 1);
+  assert.equal(prevented, 1);
+  assert.equal(attributes.has('aria-busy'), false);
+  await handlers.get('click')({ button: 0, ctrlKey: true, preventDefault: () => assert.fail('preserve modified link behavior') });
+  handlers.get('contextmenu')();
+  assert.equal(pickerOpens, 1);
+  assert.equal(new URL(link.href, 'https://seedance3-pro.com').searchParams.has('purchase'), false);
+ }
 });

@@ -1,12 +1,12 @@
 import { preflightVideoGenerationRequest } from '../../scripts/autodl-video.mjs'
 import type { VideoGenerationPreflight } from './protected-video-generation'
 
-// A single reference travels with its generation request, under the same one-use
-// Turnstile check. Multiple paid references retain the existing upload flow.
+// Guest references travel together under one Turnstile verification.
+// Legacy single-file and paid reference-ID requests remain supported.
 const MAX_IMAGE_BYTES = 10 * 1024 * 1024
-const MAX_BODY_BYTES = MAX_IMAGE_BYTES + 32 * 1024
+const MAX_BODY_BYTES = 5 * MAX_IMAGE_BYTES + 32 * 1024
 const MAX_PAYLOAD_BYTES = 16 * 1024
-type Input = VideoGenerationPreflight & { reference?: File }
+type Input = VideoGenerationPreflight & { reference?: File; references?: File[] }
 
 function invalid(message: string, status = 400): Input {
   return { ok: false, response: Response.json({ success: false, code: 'INVALID_VIDEO_REQUEST', message }, {
@@ -40,26 +40,28 @@ export async function readVideoGenerationInput(request: Request): Promise<Input>
   } finally { reader.releaseLock() }
   try {
     const form = await new Response(new Blob(chunks), { headers: { 'content-type': request.headers.get('content-type')! } }).formData()
-    if ([...form.keys()].length !== 2 || form.getAll('payload').length !== 1 || form.getAll('reference').length !== 1) {
-      return invalid('Provide one payload and one reference image.')
+    if ([...form.keys()].some(key => !['payload', 'reference'].includes(key)) || form.getAll('payload').length !== 1
+      || form.getAll('reference').length < 1 || form.getAll('reference').length > 5) {
+      return invalid('Provide one payload and up to five reference images.')
     }
     const raw = form.get('payload')
-    const reference = form.get('reference')
+    const references = form.getAll('reference')
     if (typeof raw !== 'string' || new TextEncoder().encode(raw).byteLength > MAX_PAYLOAD_BYTES) return invalid('Invalid video payload.')
-    if (!reference || typeof reference === 'string' || !reference.size || reference.size > MAX_IMAGE_BYTES
-      || !['image/png', 'image/jpeg', 'image/webp'].includes(reference.type)) {
+    if (references.some(reference => typeof reference === 'string' || !reference.size || reference.size > MAX_IMAGE_BYTES
+      || !['image/png', 'image/jpeg', 'image/webp'].includes(reference.type))) {
       return invalid('Choose a PNG, JPEG or WebP image, up to 10 MB.')
     }
     const payload = JSON.parse(raw)
     if (!payload || Array.isArray(payload) || typeof payload !== 'object' || 'referenceImageIds' in payload) {
       return invalid('Do not mix an uploaded reference with reference IDs.')
     }
+    if (payload.inputMode === undefined && references.length !== 1) return invalid('Provide one reference image.')
     // This server-generated ID only selects/validates the reference workflow.
     // It is replaced by the actual owned R2 upload before credit reservation.
     const validation = await preflightVideoGenerationRequest(new Request(request.url, {
       method: 'POST', headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ ...payload, referenceImageIds: [crypto.randomUUID()] }),
+      body: JSON.stringify({ ...payload, referenceImageIds: references.map(() => crypto.randomUUID()) }),
     })) as VideoGenerationPreflight
-    return validation.ok ? { ...validation, reference } : validation
+    return validation.ok ? { ...validation, reference: references.length === 1 ? references[0] as File : undefined, references: references as File[] } : validation
   } catch { return invalid('Invalid reference upload.') }
 }

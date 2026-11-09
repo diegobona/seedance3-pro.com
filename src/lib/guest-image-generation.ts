@@ -8,6 +8,7 @@ export async function generateImageWithGuestAccess(options: {
   request: Request
   getSession: () => Promise<{ user: { id: string } } | null>
   guestOptions: { secret: string; store: GuestImageTrialStore }
+  verifyGuest: (request: Request) => Promise<Response | null>
   creditStore: GenerationCreditStore
   preflight: (request: Request) => Promise<Response | null>
   getCreditCost: (request: Request) => number
@@ -27,6 +28,10 @@ export async function generateImageWithGuestAccess(options: {
     if (!session?.user?.id && options.getCreditCost(request) > GUEST_IMAGE_COUNT * GPT_IMAGE_2_CREDIT_COST) {
       return Response.json({ success: false, code: 'GUEST_IMAGE_QUANTITY', message: 'Guest generation supports up to 2 images.' },
         { status: 400, headers: { 'cache-control': 'no-store' } })
+    }
+    if (!session?.user?.id) {
+      const verification = await options.verifyGuest(request)
+      if (verification) return verification
     }
     guest = session?.user?.id ? null : await resolveGuestImageTrial(request, { ...options.guestOptions, create: true })
     const access = session ?? guest?.session ?? null

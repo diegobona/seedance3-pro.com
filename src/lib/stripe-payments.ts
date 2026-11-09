@@ -8,7 +8,7 @@ export type StripeEnvironment = {
   STRIPE_SECRET_KEY?: string; STRIPE_WEBHOOK_SECRET?: string; STRIPE_PRICE_ID?: string
   STRIPE_MODE?: string; STRIPE_ACCOUNT_ID?: string
 }
-type Config = { key: string; webhookSecret: string; priceId: string; live: boolean; accountId?: string }
+type Config = { key: string; webhookSecret: string; live: boolean; accountId?: string }
 type Session = { user: { id: string } } | null
 type Dependencies = { environment: StripeEnvironment & RefundEnvironment; store: StripePaymentStore; fetcher?: typeof fetch; refundStore?: RefundRequestStore }
 type AuthDependencies = Dependencies & { getSession: (request: Request) => Promise<Session> }
@@ -29,9 +29,9 @@ function errorResponse(error: unknown) {
 export function readStripeConfig(env: StripeEnvironment): Config {
   const mode = env.STRIPE_MODE
   if ((mode !== 'test' && mode !== 'live') || !new RegExp(`^(sk|rk)_${mode}_\\S+$`).test(env.STRIPE_SECRET_KEY ?? '')
-    || !/^whsec_\S+$/.test(env.STRIPE_WEBHOOK_SECRET ?? '') || !/^price_[A-Za-z0-9_]+$/.test(env.STRIPE_PRICE_ID ?? '')
+    || !/^whsec_\S+$/.test(env.STRIPE_WEBHOOK_SECRET ?? '')
     || (env.STRIPE_ACCOUNT_ID && !/^acct_[A-Za-z0-9]+$/.test(env.STRIPE_ACCOUNT_ID))) throw unavailable()
-  return { key: env.STRIPE_SECRET_KEY!, webhookSecret: env.STRIPE_WEBHOOK_SECRET!, priceId: env.STRIPE_PRICE_ID!, live: mode === 'live', accountId: env.STRIPE_ACCOUNT_ID }
+  return { key: env.STRIPE_SECRET_KEY!, webhookSecret: env.STRIPE_WEBHOOK_SECRET!, live: mode === 'live', accountId: env.STRIPE_ACCOUNT_ID }
 }
 function requestConfig(request: Request, environment: StripeEnvironment) {
   const config = readStripeConfig(environment)
@@ -109,13 +109,17 @@ export async function billingCheckout(request: Request, deps: AuthDependencies) 
     const raw = await readBoundedBody(request, 4096)
     let body: StripeObject
     try { body = raw ? JSON.parse(raw) : {} } catch { throw new BillingError('INVALID_REQUEST', 400, 'Invalid checkout request.') }
-    const pack = creditPack(body?.packId === undefined ? DEFAULT_CREDIT_PACK_ID : body.packId)
-    if (!pack) throw new BillingError('INVALID_REQUEST', 400, 'Invalid credit pack.')
+    if (!body || typeof body !== 'object' || Array.isArray(body)
+      || Object.keys(body).some(key => !['packId', 'locale', 'returnTo'].includes(key))) {
+      throw new BillingError('INVALID_REQUEST', 400, 'Only packId and checkout routing fields are accepted.')
+    }
+    const pack = creditPack(typeof body.packId === 'string' ? body.packId : DEFAULT_CREDIT_PACK_ID)
     const fetcher = deps.fetcher ?? fetch
     await verifyAccount(config, fetcher)
     const id = crypto.randomUUID()
     await deps.store.createOrder(id, owner, 'pending_pack_price', config.live, pack.id)
-    const returnPath = normalizeCreditReturn(body?.returnTo) || `${body?.locale === 'zh' ? '/zh' : ''}/billing`
+    const routing = new URL(request.url).searchParams
+    const returnPath = normalizeCreditReturn(routing.get('returnTo') ?? body?.returnTo) || `${(routing.get('locale') ?? body?.locale) === 'zh' ? '/zh' : ''}/billing`
     const returnOrigin = new URL(request.url).origin
     const form = new URLSearchParams({
       mode: 'payment', 'line_items[0][quantity]': '1',

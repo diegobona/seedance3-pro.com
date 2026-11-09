@@ -25,6 +25,18 @@ test('homepage handoff keeps the original reference, draft settings and accepted
   assert.equal(values.size, 0); assert.equal(files.size, 0);
 });
 
+test('homepage handoff preserves frames mode and first/last image order', async () => {
+  const values = new Map(), files = new Map();
+  const storage = { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value), removeItem: key => values.delete(key) };
+  const options = { storage, putFile: async (key, file) => files.set(key, file), getFile: async key => files.get(key), deleteFile: async key => files.delete(key) };
+  const references = ['first', 'last'].map(name => new File([name], `${name}.png`, { type: 'image/png' }));
+  await saveVideoHandoff({ prompt: 'Move between frames', mode: 'frames', files: references, duration: 5 }, options);
+  const restored = await readVideoHandoff(options);
+  assert.equal(restored.mode, 'frames');
+  assert.deepEqual(await Promise.all(restored.files.map(file => file.text())), ['first', 'last']);
+  assert.equal(files.size, 0);
+});
+
 test('replacing a draft releases its old reference and malformed task identifiers are discarded', async () => {
   const values = new Map(), files = new Map();
   const storage = { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value), removeItem: key => values.delete(key) };
@@ -91,7 +103,8 @@ test('both homepages retain one keyword H1 and structured SEO while showing the 
     assert.match(html, /class="home-resolution">[\s\S]*?<strong>1080P<\/strong>/);
     assert.ok(html.indexOf('id="create"') < html.indexOf('id="showcase"'));
     assert.ok(html.indexOf('id="showcase"') < html.indexOf('id="pose-control"'));
-    assert.doesNotMatch(html, /christmas-feature|\$0\.01\/sec/);
+    const pageContent=html.replace(/<!-- SITE_PROMO_START -->[\s\S]*?<!-- SITE_PROMO_END -->/g,'');
+    assert.doesNotMatch(pageContent, /christmas-feature|\$0\.01\/sec/);
     assert.match(html, /<h2[^>]*>Get Inspired|<h2[^>]*>创作灵感/);
   }
 });

@@ -1,0 +1,156 @@
+{
+  "input": "https://aitoolsdirectory.com/submit-tool",
+  "final": "https://aitoolsdirectory.com/submit-tool",
+  "status": 200,
+  "links": [
+    {
+      "class": "content-logo",
+      "href": "/",
+      "aria-label": "AI Tools Directory home"
+    },
+    {
+      "class": "header-search-all",
+      "href": "/#filters",
+      "data-astro-cid-2odkx2fk": null
+    },
+    {
+      "class": "hero-button",
+      "href": "/submit-tool"
+    },
+    {
+      "class": "hero-button",
+      "href": "/ads"
+    },
+    {
+      "class": "hero-button",
+      "href": "/deals"
+    },
+    {
+      "class": "page-back",
+      "href": "/",
+      "aria-label": "Back to AI Tools Directory",
+      "data-history-back": "true"
+    },
+    {
+      "href": "https://aitoolsdirectory.com/ads"
+    },
+    {
+      "href": "https://aitoolsdirectory.com/ads"
+    },
+    {
+      "href": "https://aitoolsdirectory.com/ads"
+    },
+    {
+      "href": "https://aitool.paperform.co/",
+      "target": "_blank",
+      "rel": "noopener",
+      "data-astro-cid-jb6xilqr": null
+    },
+    {
+      "class": "black-button",
+      "href": "https://forms.aitoolsdirectory.com/form.html",
+      "target": "_blank",
+      "rel": "noopener"
+    },
+    {
+      "href": "/about"
+    },
+    {
+      "href": "/blog"
+    },
+    {
+      "href": "/newsletter"
+    },
+    {
+      "href": "/trends"
+    },
+    {
+      "href": "/communities"
+    },
+    {
+      "href": "/marketplace-directory"
+    },
+    {
+      "href": "/deals"
+    },
+    {
+      "href": "/black-friday"
+    },
+    {
+      "href": "/submit-tool"
+    },
+    {
+      "href": "/contact"
+    },
+    {
+      "href": "/privacy-policy"
+    },
+    {
+      "href": "/terms-of-use"
+    },
+    {
+      "href": "https://www.threads.com/@theaitoolsdirectory",
+      "rel": "me noopener"
+    },
+    {
+      "href": "https://x.com/aitoolsdirect",
+      "rel": "me noopener"
+    },
+    {
+      "href": "https://www.youtube.com/@AIToolsDirectoryYT",
+      "rel": "me noopener"
+    }
+  ],
+  "text": "Submit Tool to the AI Tools Directory (function(){const GTM_CONTAINER_ID = \"GTM-NL4PZGZ\";\n\n      if (window.location.hostname === 'aitoolsdirectory.com' || window.location.hostname === 'www.aitoolsdirectory.com') {\n        window.dataLayer = window.dataLayer || [];\n        window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };\n        window.dataLayer.push({ 'gtm.start': Date.now(), event: 'gtm.js' });\n        const firstScript = document.getElementsByTagName('script')[0];\n        const tagManager = document.createElement('script');\n        tagManager.async = true;\n        tagManager.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_CONTAINER_ID}`;\n        firstScript.parentNode.insertBefore(tagManager, firstScript);\n      }\n    })(); {\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"Organization\",\"@id\":\"https://aitoolsdirectory.com/#organization\",\"name\":\"AI Tools Directory\",\"url\":\"https://aitoolsdirectory.com/\",\"logo\":\"https://aitoolsdirectory.com/logo.png\",\"sameAs\":[\"https://www.threads.com/@theaitoolsdirectory\",\"https://x.com/aitoolsdirect\",\"https://www.youtube.com/@AIToolsDirectoryYT\"]},{\"@type\":\"WebSite\",\"@id\":\"https://aitoolsdirectory.com/#website\",\"name\":\"AI Tools Directory\",\"url\":\"https://aitoolsdirectory.com/\",\"publisher\":{\"@id\":\"https://aitoolsdirectory.com/#organization\"}},{\"@type\":\"WebPage\",\"name\":\"Submit Tool to the AI Tools Directory\",\"description\":\"Got a cool AI tool that’s not listed on our site? Or do you love an AI-related product that you would like to share with others? Here’s how you can submit your software to the directory\",\"url\":\"https://aitoolsdirectory.com/submit-tool\"}]} Search AI tools See all results  → Submit Tool Advertise Deals ← Back var e=document.querySelector(`.page-back[data-history-back=\"true\"]`);e&&e?.addEventListener(`click`,e=>{(document.referrer?new URL(document.referrer):null)?.origin===window.location.origin&&history.length>1&&(e.preventDefault(),history.back())}); Submit AI Tool \n Got a cool AI tool that’s not listed on our site? Or do you love an AI-related product that you would like to share with others? Here’s how you can submit your creation. Fill out the form below with all the necessary details, and I’ll review your submission according to the guidelines (read below). \n Once everything checks out, we’ll publish your tool as soon as possible. \nNote: every tool is manually reviewed. Submitting a tool is not a guarantee that it will be published on the AI Tools Directory website. \n \n   ✅ Fast Track Option \n   \n    We receive dozens of new AI tools every single day. Each one is manually reviewed, tested, \n    and given a unique description written by our team. This process takes time, but it ensures \n    every tool gets a fair shot. If you’d rather not wait, you can skip the line with \n     Fast Track . In many cases, your tool can be \n    reviewed and published the same day.\n   \n   \n     Please note:  we only list AI-related tools. Non-AI submissions won’t be approved, \n    so don’t order Fast Track unless your product clearly qualifies.\n   \n   \n    Skip the queue and get your tool listed on AI Tools Directory in \n     3 days or less \n     ✅  Fast Track \n   \n \n \n How to get your tool placed on the list: \n \n It must be clear what your product or services does. If regular people can’t figure it out in 5 seconds, it’s not going on the directory. \n PLEASE READ : \n \n 👉 Write  unique descriptions . If the descriptions are copied from another website, your tool will go to the bottom of the list (or discarded) and you’ll be waiting longer while I write a description. \n 👉  Content written using AI tools or copied content will be detected and discarded. \n \n Display transparent pricing without any hidden fees. If we need to call you to get the pricing, it won’t be included. Please do not submit a tool that has a waiting list or hidden pricing. It will not be added to the list. \n Have a practical and user-friendly product, free from technical jargon or excessive corporate language. It should be for end users and consumers in general. \n Please do not submit crypto-related products. \n \n Thanks for your contribution to the AI tools directory. \n NEW:🔥 Show your product in the  Featured Tool homepage spot  and get added in the organic listings immediately. \n \n Open the form in a new tab Aitoolsdirectory.com  is a free resource and does not charge subscription fees. We are not affiliated with aitoolsdirectory.net. AI Tools Newsletter Get the latest updates on  AI software , picked for entrepreneurs and creators. Whether your goal is to automate workflows, enhance creative output, or boost productivity, it’s all here. Subscribe About Blog Newsletter AI Trends Communities AI marketplaces Deals Black Friday deals Submit Tool Contact Privacy Policy Terms of Use Threads X YouTube AI Tools Directory document.querySelectorAll(`a[href]`).forEach(e=>{let t=new URL(e.href,window.location.href);if((t.protocol===`http:`||t.protocol===`https:`)&&t.origin!==window.location.origin){e.target=`_blank`;let t=new Set((e.rel||``).split(/\\s+/).filter(Boolean));t.add(`noopener`),t.delete(`noreferrer`),e.rel=[...t].join(` `)}else t.origin===window.location.origin&&e.removeAttribute(`target`)}); \n",
+  "comment_count": 0,
+  "hidden_elements": [
+    {
+      "tag": "svg",
+      "attrs": {
+        "viewbox": "0 0 24 24",
+        "width": "20",
+        "height": "20",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "aria-hidden": "true",
+        "data-astro-cid-2odkx2fk": null
+      }
+    },
+    {
+      "tag": "svg",
+      "attrs": {
+        "viewbox": "0 0 24 24",
+        "width": "18",
+        "height": "18",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "aria-hidden": "true",
+        "data-astro-cid-2odkx2fk": null
+      }
+    },
+    {
+      "tag": "div",
+      "attrs": {
+        "class": "header-search-panel",
+        "hidden": null,
+        "data-astro-cid-2odkx2fk": null
+      }
+    },
+    {
+      "tag": "span",
+      "attrs": {
+        "aria-hidden": "true",
+        "data-astro-cid-2odkx2fk": null
+      }
+    },
+    {
+      "tag": "span",
+      "attrs": {
+        "aria-hidden": "true"
+      }
+    }
+  ],
+  "suspicious": []
+}

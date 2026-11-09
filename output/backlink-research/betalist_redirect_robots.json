@@ -1,0 +1,16 @@
+[
+  {
+    "url": "https://betalist.com/startups/aituber/visit",
+    "status": 301,
+    "location": "https://aituber.app/?ref=betalist&utm_source=betalist&utm_medium=referral",
+    "x_robots_tag": null,
+    "body": ""
+  },
+  {
+    "url": "https://betalist.com/robots.txt",
+    "status": 200,
+    "location": null,
+    "x_robots_tag": null,
+    "body": "# See https://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file\n"
+  }
+]

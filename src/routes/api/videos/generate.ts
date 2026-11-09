@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import '@tanstack/react-start'
 import { env } from 'cloudflare:workers'
+import { optimizeGuestVideoPrompt, type PromptOptimizationStatus } from '../../../lib/guest-prompt-optimization'
 import { readVideoGenerationInput } from '../../../lib/video-generation-input'
 import { selectVideoWorkflow, assertVideoProviderConfigured, submitVideoTask, COMPSHARE_FIRST_FRAME_WORKFLOW_ID, YIR_IMAGE_WORKFLOW_ID, SEEAPI_IMAGE_WORKFLOW_ID } from '../../../lib/video-providers'
 import { createAppDatabase, databaseConfigured, isD1Database } from '../../../db'
@@ -103,7 +104,7 @@ export const Route = createFileRoute('/api/videos/generate')({
               return jsonError(400, 'INVALID_VIDEO_REQUEST', 'Reference video input is invalid. The prompt cannot exceed 7,000 characters.')
             }
             if ((error as { code?: string }).code === 'SEEAPI_INPUT_ERROR') {
-              return jsonError(400, 'INVALID_VIDEO_REQUEST', 'Guest videos support 5 seconds at 768p with one reference image.')
+              return jsonError(400, 'INVALID_VIDEO_REQUEST', 'Guest videos support 5 seconds at 768p: up to 5 reference images, or a first frame with an optional last frame.')
             }
             return unavailableResponse()
           }
@@ -117,7 +118,9 @@ export const Route = createFileRoute('/api/videos/generate')({
           const guestResourceOwner = session?.user?.id
             ? await readGuestVideoResourceOwner(request, session.user.id, { secret: env.BETTER_AUTH_SECRET, store: guestStore })
             : guest?.session.user.id
-          const response = await protectVideoGenerationStart({
+          let promptOptimization: PromptOptimizationStatus = 'off'
+          let optimizedPrompt: string | undefined
+          let response = await protectVideoGenerationStart({
             request,
             getSession: async () => session?.user?.id ? { user: { id: session.user.id } } : guest?.session ?? null,
             taskStore,
@@ -152,7 +155,7 @@ export const Route = createFileRoute('/api/videos/generate')({
                   ),
                 }
               }
-              if (validation.reference) {
+              if (validation.references?.length) {
                 // Verification has already succeeded for this entire operation.
                 // Preserve the quota check before writing a reference; reservation
                 // below remains atomic and is the final authority on available credits.
@@ -160,12 +163,16 @@ export const Route = createFileRoute('/api/videos/generate')({
                   return { ok: false as const, response: jsonError(403, 'GUEST_TRIAL_USED',
                     'This device or network has already claimed the guest video trial. Sign up to keep creating.') }
                 }
-                const upload = await uploadVideoReference(new Request(request.url, {
-                  method: 'POST', headers: { 'content-type': validation.reference.type }, body: validation.reference,
-                }), { getUserId: async () => userId, bucket: env.VIDEO_REFERENCES, limiter: env.VIDEO_UPLOAD_RATE_LIMITER })
-                if (!upload.ok) return { ok: false as const, response: upload }
-                const uploaded = await upload.json() as { id: string }
-                validation.payload.referenceImageIds = [uploaded.id]
+                const uploadedIds: string[] = []
+                for (const reference of validation.references) {
+                  const upload = await uploadVideoReference(new Request(request.url, {
+                    method: 'POST', headers: { 'content-type': reference.type }, body: reference,
+                  }), { getUserId: async () => userId, bucket: env.VIDEO_REFERENCES, limiter: env.VIDEO_UPLOAD_RATE_LIMITER })
+                  if (!upload.ok) return { ok: false as const, response: upload }
+                  const uploaded = await upload.json() as { id: string }
+                  uploadedIds.push(uploaded.id)
+                }
+                validation.payload.referenceImageIds = uploadedIds
               }
               if (validation.payload.referenceImageIds) {
                 try {
@@ -195,18 +202,33 @@ export const Route = createFileRoute('/api/videos/generate')({
               return validation
             },
             submit: async (payload, context) => {
+              // Called only after the protected flow has atomically reserved trial seconds.
+              const optimized = await optimizeGuestVideoPrompt(payload, { guest: Boolean(guest), environment: env,
+                onDiagnostic: details => logVideoEvent('video_prompt_optimization_fallback', details) })
+              promptOptimization = optimized.status
+              if (optimized.status === 'optimized') optimizedPrompt = optimized.payload.prompt
               if(session?.user?.id && isD1Database(db)) {
                 try { await recordVideoCreation(db,context.localTaskId,session.user.id,payload.prompt,context.workflowId) }
                 catch { logVideoEvent('creation_video_metadata_deferred') }
               }
               try {
-                return await submitVideoTask(payload, { ...context, environment: env })
+                return await submitVideoTask(optimized.payload, { ...context, environment: env })
               } catch (error) {
                 logVideoEvent('video_generate_provider_error', safeProviderLogDetails(error))
                 throw error
               }
             },
           })
+          // Return only this request's actual generation prompt, never rewrite instructions
+          // or reference URLs. Keep it in the private JSON body, not HTTP headers/logs.
+          if (response.ok && optimizedPrompt !== undefined) {
+            const body = await response.json() as Record<string, unknown>
+            response = Response.json({ ...body, promptOptimization: { status: 'optimized', prompt: optimizedPrompt } }, {
+              status: response.status, headers: response.headers,
+            })
+            response.headers.set('cache-control', 'no-store')
+          }
+          response.headers.set('x-seedance-prompt-optimization', promptOptimization)
           return withGuestVideoCookie(response, guest)
         } catch (error) { return guestVideoTrialErrorResponse(error) }
       },

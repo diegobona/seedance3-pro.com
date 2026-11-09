@@ -25,7 +25,7 @@ test('both image models spend the same two-image D1 allowance independently of v
     const video = createGuestVideoTrialStore(db), videoId = crypto.randomUUID()
     await video.create({ id: videoId, userId: `video-${videoId}`, networkHash: 'v'.repeat(64) })
     let calls = 0, fail = false
-    const generate = (req: Request) => generateImageWithGuestAccess({
+    const generate = (req: Request) => generateImageWithGuestAccess({ verifyGuest: async () => null,
       request: req, getSession: async () => null, guestOptions: { store, secret }, creditStore: credits,
       preflight: request => preflightImageGenerationRequest(request, {}, { skipRateLimit: true }),
       getCreditCost: getRequestedImageCreditCost,
@@ -96,7 +96,7 @@ test('invalid or cross-site image requests never allocate a guest allowance', as
   try {
     const { createGuestImageTrialStore } = await import('../src/db/guest-image-trials')
     const { generateImageWithGuestAccess } = await import('../src/lib/guest-image-generation')
-    const generate = (req: Request) => generateImageWithGuestAccess({ request: req,
+    const generate = (req: Request) => generateImageWithGuestAccess({ verifyGuest: async () => null, request: req,
       getSession: async () => null, guestOptions: { store: createGuestImageTrialStore(db), secret },
       creditStore: createGenerationCreditStore(db), getCreditCost: getRequestedImageCreditCost,
       preflight: request => preflightImageGenerationRequest(request, {}, { skipRateLimit: true }),
@@ -117,7 +117,7 @@ test('a two-image batch consumes both trial images and signed-in generation uses
     const { generateImageWithGuestAccess } = await import('../src/lib/guest-image-generation')
     const store = createGuestImageTrialStore(db), credits = createGenerationCreditStore(db)
     let account: {user:{id:string}} | null = null
-    const generate = (req: Request) => generateImageWithGuestAccess({ request: req,
+    const generate = (req: Request) => generateImageWithGuestAccess({ verifyGuest: async () => null, request: req,
       getSession: async () => account, guestOptions: { store, secret }, creditStore: credits,
       getCreditCost: getRequestedImageCreditCost,
       preflight: request => preflightImageGenerationRequest(request, {}, { skipRateLimit: true }),
@@ -145,7 +145,7 @@ test('a credit-store failure still returns the new guest cookie so a retry retai
     const { createGuestImageTrialStore } = await import('../src/db/guest-image-trials')
     const { generateImageWithGuestAccess } = await import('../src/lib/guest-image-generation')
     const credits = createGenerationCreditStore(db)
-    const response = await generateImageWithGuestAccess({ request: request(), getSession: async () => null,
+    const response = await generateImageWithGuestAccess({ verifyGuest: async () => null, request: request(), getSession: async () => null,
       guestOptions: { store: createGuestImageTrialStore(db), secret },
       creditStore: { ...credits, reserve: async () => { throw new Error('Synthetic D1 interruption') } },
       getCreditCost: getRequestedImageCreditCost, preflight: async () => null,

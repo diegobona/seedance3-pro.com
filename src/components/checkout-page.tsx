@@ -1,89 +1,68 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { useSiteI18n } from '../lib/site-i18n'
-import { AuthDialog } from './auth-dialog'
-import { requestCreditCheckout, creditCheckoutErrorMessage } from '../../assets/credit-checkout.mjs'
-import { normalizeCreditReturn } from '../../assets/credit-return.mjs'
-import { showCreditPackPicker } from '../../assets/credit-pack-picker.mjs'
-import { creditPack } from '../../assets/credit-packs.mjs'
+import {useCallback,useEffect,useRef,useState} from 'react'
+import {useSiteI18n} from '../lib/site-i18n'
+import {authClient} from '../lib/auth-client'
+import {AuthDialog} from './auth-dialog'
+import {SiteHeader} from './site-header'
+import {SiteTrustFooter} from './site-trust'
+import {requestCreditCheckout,creditCheckoutErrorMessage,rememberCheckoutIntent,hasCheckoutIntent,clearCheckoutIntent} from '../../assets/credit-checkout.mjs'
+import {normalizeCreditReturn} from '../../assets/credit-return.mjs'
+import {CREDIT_PACKS,creditPack,creditPackValue} from '../../assets/credit-packs.mjs'
+import {renderPricingPack,creditPackFootnote,creditPackTerms} from '../../assets/credit-pack-cards.mjs'
+import {startPromotionClock,promoSnapshot,PROMO_ENDS_AT,promotionBootstrap} from '../../assets/credit-pack-offer.mjs'
 import '../styles/auth.css'
+import '../../assets/credit-pack-cards.css'
 import '../styles/checkout.css'
+import '../../assets/credit-pricing.css'
 
-export function CheckoutPage() {
-  const { locale } = useSiteI18n()
-  const [status, setStatus] = useState('opening')
-  const [authOpen, setAuthOpen] = useState(false)
-  const [returnTo, setReturnTo] = useState(locale === 'zh' ? '/zh/app' : '/app')
-  const started = useRef(false)
-  const inFlight = useRef(false)
-  const text = (en: string, zh: string) => locale === 'zh' ? zh : en
-
-  const start = useCallback(async () => {
-    if (inFlight.current) return
-    inFlight.current = true
-    setStatus('opening')
-    const requested = normalizeCreditReturn(new URLSearchParams(window.location.search).get('return_to'))
-    const target = requested && !/^\/(?:zh\/)?checkout(?:\/|\?|#|$)/.test(requested)
-      ? requested : locale === 'zh' ? '/zh/app' : '/app'
-    setReturnTo(target)
-    try {
-      const packId = new URLSearchParams(window.location.search).get('pack')
-      if (packId && creditPack(packId)) {
-        window.location.replace(await requestCreditCheckout({ locale, returnTo: target, packId }))
-      } else {
-        setStatus('choosing')
-        await showCreditPackPicker({ locale, errorMessage: creditCheckoutErrorMessage, onPurchase: async (selected: string) => {
-          const url = new URL(window.location.href); url.searchParams.set('pack', selected)
-          window.history.replaceState(window.history.state, '', url.href)
-          inFlight.current = false
-          await start()
-        } })
-        inFlight.current = false
-        setStatus(current => current === 'choosing' ? 'choose' : current)
-      }
-    } catch (error) {
-      inFlight.current = false
-      const code = (error as { code?: string })?.code
-      if (code === 'AUTH_REQUIRED') {
-        setStatus('auth')
-        setAuthOpen(true)
-      } else {
-        setStatus(code === 'BILLING_HOLD' ? 'hold' : code === 'BILLING_UNAVAILABLE' ? 'unavailable' : 'error')
-      }
-    }
-  }, [locale])
-
-  useEffect(() => {
-    if (started.current) return
-    started.current = true
-    void start()
-  }, [start])
-
-  const closeAuth = useCallback(() => {
-    // Email login calls onAuthenticated immediately before onClose.
-    if (inFlight.current) return
-    setAuthOpen(false)
-    setStatus('cancelled')
-  }, [])
-
-  return <main className="checkout-handoff">
-    <div className="checkout-handoff-content">
-      <a className="checkout-brand" href={locale === 'zh' ? '/zh/' : '/'}>SEEDANCE 3.0</a>
-      <p role={['error', 'hold', 'unavailable'].includes(status) ? 'alert' : 'status'}>
-        {status === 'choosing' || status === 'choose' ? text('Choose your credit pack to continue.', '请选择积分包后继续。')
-          : status === 'opening' ? text('Opening Stripe Checkout…', '正在打开 Stripe 付款页面…')
-          : status === 'auth' || status === 'cancelled' ? text('Sign in to continue to Stripe.', '登录后继续前往 Stripe 付款。')
-          : status === 'hold' ? text('Your payment needs review. Please contact support.', '账户支付需要审核，请联系支持。')
-          : status === 'unavailable' ? text('Purchases are temporarily unavailable. Please try again later.', '暂时无法购买，请稍后重试。')
-          : text('Could not open checkout. Please try again.', '无法打开付款页面，请重试。')}
-      </p>
-      {status === 'choose' && <button type="button" onClick={() => void start()}>{text('Buy Credits', '购买积分')}</button>}
-      {status === 'cancelled' && <button type="button" onClick={() => { setStatus('auth'); setAuthOpen(true) }}>{text('Sign in', '登录')}</button>}
-      {['error', 'unavailable'].includes(status) && <button type="button" onClick={() => void start()}>{text('Try again', '重试')}</button>}
-      <a className="checkout-back" href={returnTo}>{text('← Back', '← 返回')}</a>
-    </div>
-    <AuthDialog open={authOpen} onClose={closeAuth} onAuthenticated={() => {
-      setAuthOpen(false)
-      void start()
-    }} />
-  </main>
+export function CheckoutPage(){
+ const {locale}=useSiteI18n();
+ const {data:session,isPending}=authClient.useSession();
+ const [ready,setReady]=useState(false),[busyPack,setBusyPack]=useState<string|null>(null),[error,setError]=useState(''),[authOpen,setAuthOpen]=useState(false);
+ const root=useRef<HTMLDivElement>(null),inFlight=useRef(false),initialIntentHandled=useRef(false),pendingPack=useRef<string|null>(null);
+ const text=(en:string,zh:string)=>locale==='zh'?zh:en;
+ useEffect(()=>{
+  setReady(true);
+  (window as Window & {__creditPromoStop?:()=>void}).__creditPromoStop?.();
+  if(root.current)return startPromotionClock(root.current,PROMO_ENDS_AT,promoSnapshot)
+ },[]);
+ const clearPurchaseIntent=useCallback(()=>{
+  pendingPack.current=null;clearCheckoutIntent();
+  const url=new URL(window.location.href);url.searchParams.delete('purchase');window.history.replaceState(window.history.state,'',url.href);
+ },[]);
+ const buy=useCallback(async(id:string)=>{
+  if(inFlight.current)return;
+  const pack=creditPack(id);initialIntentHandled.current=true;clearPurchaseIntent();inFlight.current=true;setBusyPack(pack.id);setError('');
+  const requested=normalizeCreditReturn(new URLSearchParams(window.location.search).get('return_to'));
+  const returnTo=requested&&!/^\/(?:zh\/)?checkout(?:\/|\?|#|$)/.test(requested)?requested:locale==='zh'?'/zh/billing':'/billing';
+  try{window.location.assign(await requestCreditCheckout({locale,packId:pack.id,returnTo}));}
+  catch(caught){if((caught as {code?:string})?.code==='AUTH_REQUIRED'){
+   pendingPack.current=pack.id;
+   const url=new URL(window.location.href);url.searchParams.set('pack',pack.id);url.searchParams.set('purchase','1');window.history.replaceState(window.history.state,'',url.href);
+   rememberCheckoutIntent({path:window.location.pathname+window.location.search});setAuthOpen(true);
+  }else setError(creditCheckoutErrorMessage(caught,locale));}
+  finally{inFlight.current=false;setBusyPack(null);}
+ },[locale,clearPurchaseIntent]);
+ const resumePurchase=useCallback(()=>{
+  const id=pendingPack.current;if(!id||inFlight.current)return;
+  pendingPack.current=null;setAuthOpen(false);void buy(id);
+ },[buy]);
+ useEffect(()=>{
+  if(isPending)return;
+  if(!initialIntentHandled.current){
+   initialIntentHandled.current=true;
+   const query=new URLSearchParams(window.location.search),path=window.location.pathname+window.location.search;
+   if(query.get('purchase')==='1'||hasCheckoutIntent({path})){
+    pendingPack.current=creditPack(query.get('pack')??undefined).id;
+    if(!session?.user.id){rememberCheckoutIntent({path});setAuthOpen(true);return;}
+   }
+  }
+  if(session?.user.id)resumePurchase();
+ },[isPending,session?.user.id,resumePurchase]);
+ return <><SiteHeader/><main className="credit-checkout-page" ref={root}>
+ <header><h1>{text('Checkout','结账')}</h1><p className="credit-pack-terms-summary">{creditPackTerms(locale)}</p></header>
+ <div className="checkout-cards">{CREDIT_PACKS.map((pack,index)=><article className={`credit-tier credit-tier-${index}`} data-credit-pack-card data-pack-id={pack.id} key={pack.id}><div className="checkout-pack-details" dangerouslySetInnerHTML={{__html:renderPricingPack(pack,locale,{detailsOnly:true})}} suppressHydrationWarning/><button className="credit-tier-buy" type="button" onClick={()=>void buy(pack.id)} disabled={!ready||busyPack!==null} aria-busy={busyPack===pack.id}>{busyPack===pack.id?text('Opening checkout…','正在打开付款…'):text(`Buy ${pack.credits} credits · US$${creditPackValue(pack).price}`,`购买 ${pack.credits} 积分 · US$${creditPackValue(pack).price}`)}</button></article>)}</div>
+ <script dangerouslySetInnerHTML={{__html:promotionBootstrap()}}/>
+ <p className="checkout-note">{creditPackFootnote(locale)}</p>
+ {error&&<p role="alert" className="checkout-error">{error}</p>}
+ </main><SiteTrustFooter/><AuthDialog open={authOpen} onClose={()=>{setAuthOpen(false);clearPurchaseIntent()}} onAuthenticated={resumePurchase}/></>
 }

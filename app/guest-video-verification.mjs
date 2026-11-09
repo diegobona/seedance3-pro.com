@@ -27,7 +27,7 @@ function loadTurnstile() {
 export async function requestGuestVideoVerification({ siteKey, action, signal }) {
   signal?.throwIfAborted();
   if (verifying) throw new Error(t('Please complete the security check to continue.'));
-  if (!siteKey || !['guest_video_generate', 'guest_video_reference'].includes(action)) throw new Error(t('Verification failed. Please try again.'));
+  if (!siteKey || !['guest_video_generate', 'guest_video_reference', 'guest_image_generate'].includes(action)) throw new Error(t('Verification failed. Please try again.'));
   verifying = true;
   installVerificationStyles();
   const previousFocus = document.activeElement;

@@ -1,12 +1,17 @@
+import { createVideoFrameInputs } from './video-frame-inputs.mjs';
+import { createReferenceMentions } from './reference-mentions.mjs';
 import { SEEDANCE_VIDEO_EXAMPLES } from './seedance-video-examples.mjs';
 import { REGISTERED_FREE_CREDITS_ENABLED } from './credit-policy.mjs'
+import { CREDIT_PACKS, creditPackValue } from '../assets/credit-packs.mjs';
 import { requestVideoGeneration, pollVideoGenerationTask, validateVideoReferenceFiles } from './video-generation.mjs';
 import { saveVideoHandoff, readVideoHandoff, ACTIVE_VIDEO_TASK_KEY } from './studio-handoff.mjs';
 import { videoReferenceFrameSize } from './video-reference-frame.mjs';
 import {homeGenerationAction, initializeHomePurchase} from './home-purchase.mjs';
 import {millisecondsUntilCreditReset} from './daily-credits.mjs';
 import { guestDeviceHeaders } from '../assets/guest-device.mjs';
+import { createPromptOptimizationControl } from './prompt-optimization.mjs';
 import { syncVideoDurationOptions } from './guest-video.mjs';
+import { adaptVideoExamplePrompt, videoExamplePrompt } from './video-example-prompt.mjs';
 import { modelDisplayNames } from './model-display-names.mjs';
 import { videoResolutionLabel } from './video-resolution-label.mjs';
 import { createVideoWaitNotice } from './video-wait-notice.mjs';
@@ -22,9 +27,16 @@ export function initializeHomeVideo(root = document.querySelector('[data-home-vi
   const text = (en, cn) => zh ? cn : en;
   const el = name => root.querySelector(`[data-home-${name}]`);
   const form = el('form'), prompt = el('prompt'), duration = el('duration'), ratio = el('ratio');
+  const promptOptimization = createPromptOptimizationControl(prompt, { zh });
+  const mentions = createReferenceMentions(prompt, { zh, onError: value => message(value, true) });
   const input = el('file'), reference = el('reference');
   const grid = el('reference-grid') || Object.assign(document.createElement('div'), { className: 'home-reference-grid' });
   if (!grid.parentNode) { grid.dataset.homeReferenceGrid = ''; reference.append(grid); }
+  const referenceTab = root.querySelector('[data-home-mode="reference"]');
+  const originalReferenceTabLabel = referenceTab.textContent;
+  const framesTab = referenceTab.cloneNode(false); framesTab.dataset.homeMode = 'frames';
+  framesTab.textContent = text('First & last frame', '首尾帧'); framesTab.hidden = true; referenceTab.after(framesTab);
+  const frames = createVideoFrameInputs({ before: reference, zh, onChange: () => { draftEdited = true; update(); }, onError: value => message(value, true) });
   input.multiple = true;
   el('thumb')?.remove(); el('remove')?.remove();
   const submit = el('generate'), status = el('status'), player = el('player');
@@ -36,15 +48,15 @@ export function initializeHomeVideo(root = document.querySelector('[data-home-vi
   let references = [], mode = 'text', busy = false, disposed = false, draftEdited = false;
   let guest = true, remaining = null, taskId = '', completed = false, controller = null, selectedExample = 0, pendingTask = false;
   let paidRemaining=0, freeBudgetBlocked=false, purchaseBusy=false, balanceVersion=0, balanceController, dailyTimer;
-  let guestVideoModelName = '', guestMaxReferences = 9, guestVideoResolutionLabel = '';
+  let guestVideoModelName = '', guestMaxReferences = 5, guestVideoResolutionLabel = '';
   let restoreReady=Promise.resolve(), restoreFailed=false;
   const elapsedLabel = root.querySelector('.home-live-dot');
-  const idlePreviewLabel = elapsedLabel?.textContent;
   const videoWaitNotice = createVideoWaitNotice({ host: el('preview'), before: el('example-pagination') || result, isAuthenticated: () => !guest, zh,
     onElapsed: milliseconds => {
       if (!elapsedLabel) return;
-      elapsedLabel.textContent = milliseconds === null ? idlePreviewLabel
-        : text('Waiting ', '已等待 ') + elapsedTime(0, milliseconds, true);
+      elapsedLabel.hidden = milliseconds === null;
+      elapsedLabel.textContent = milliseconds === null ? ''
+        : text('Waiting ', '已等待 ') + elapsedTime(0, milliseconds, !guest);
       elapsedLabel.style.fontVariantNumeric = 'tabular-nums';
     },
   });
@@ -55,8 +67,12 @@ export function initializeHomeVideo(root = document.querySelector('[data-home-vi
   const action = () => homeGenerationAction({guest,remaining,duration:duration.value,freeBudgetBlocked,paidRemaining});
   const referenceLimit = () => guest ? guestMaxReferences : 9;
   const singleReferenceMessage = () => text('This trial supports 1 reference image. Remove extra images to continue.', '本次试用支持 1 张参考图，请移除多余图片后继续。');
-  const referenceLimitMessage = () => referenceLimit() === 1 ? singleReferenceMessage() : text('Seedance 2.5 supports up to 9 reference images.', 'Seedance 2.5 最多支持 9 张参考图。');
+  const referenceLimitMessage = () => guest && referenceLimit() === 5 ? text('Use up to 5 reference images.', '最多上传 5 张参考图。') : referenceLimit() === 1 ? singleReferenceMessage() : text('Seedance 2.5 supports up to 9 reference images.', 'Seedance 2.5 最多支持 9 张参考图。');
   function update() {
+    if (!guest && mode === 'frames') mode = 'text';
+    framesTab.hidden = !guest || guestMaxReferences !== 5;
+    referenceTab.textContent = guest && guestMaxReferences === 5 ? text('Multi-image reference', '多图参考') : originalReferenceTabLabel;
+    frames.update({ visible: guest && mode === 'frames', disabled: busy || pendingTask || purchaseBusy });
     const showSignup = trialUsedUp() && !busy && !pendingTask;
     if (el('example-source')) el('example-source').hidden = busy || pendingTask || completed;
     if (el('example-pagination')) el('example-pagination').hidden = busy || pendingTask || completed;
@@ -65,9 +81,12 @@ export function initializeHomeVideo(root = document.querySelector('[data-home-vi
     for (const option of duration.options) option.disabled = guest && Number(option.value) !== 5 || remaining !== null && Number(option.value) > remaining;
     if (guest && !busy && !pendingTask) duration.value = '5';
     if (!busy && remaining !== null && remaining < Number(duration.value) && remaining >= 5) duration.value = '5';
+    if (!busy && !pendingTask) prompt.value = adaptVideoExamplePrompt(prompt.value, duration.value, zh ? 'zh' : 'en');
+    promptOptimization.update({ guest, busy: busy || pendingTask || purchaseBusy });
+    mentions.update({ enabled: guest && guestMaxReferences === 5 && mode === 'reference' && !busy && !pendingTask && !purchaseBusy, references });
     const next=action(), generating=next==='generate'||next==='paid-generate';
     const referencesOverLimit = mode === 'reference' && references.length > referenceLimit();
-    submit.disabled = busy || pendingTask || purchaseBusy || generating && (!prompt.value.trim() || mode === 'reference' && !references.length || referencesOverLimit);
+    submit.disabled = busy || pendingTask || purchaseBusy || generating && (!prompt.value.trim() || mode === 'reference' && !references.length || referencesOverLimit || mode === 'frames' && !frames.valid);
     submit.textContent = purchaseBusy ? text('Opening checkout…','正在打开付款…') : busy ? text('Generating…', '正在生成…')
       : next==='auth' ? REGISTERED_FREE_CREDITS_ENABLED ? text('Register / log in to continue', '注册 / 登录后继续') : text('Log in and buy credits to continue', '登录并购买积分后继续')
       : next==='buy' ? text('Buy Credits', '购买积分')
@@ -95,10 +114,10 @@ export function initializeHomeVideo(root = document.querySelector('[data-home-vi
       ? text('Choose or paste one image', '选择或粘贴一张参考图')
       : references.length ? text('Add more images', '继续添加参考图') : text('Choose or paste images', '选择或粘贴参考图');
     if (referenceHint) referenceHint.textContent = referenceLimit() === 1
-      ? text('1 first-frame image · PNG / JPEG / WebP · 10 MB', '1 张首帧参考图 · PNG / JPEG / WebP · 最大 10 MB') : originalReferenceHint;
+      ? text('1 first-frame image · PNG / JPEG / WebP · 10 MB', '1 张首帧参考图 · PNG / JPEG / WebP · 最大 10 MB') : guest ? text('1–5 images · PNG / JPEG / WebP · 10 MB each', '1–5 张参考图 · PNG / JPEG / WebP · 每张最大 10 MB') : originalReferenceHint;
     if (referencesOverLimit && !busy && !pendingTask) message(referenceLimitMessage(), true);
     else if ([singleReferenceMessage(), referenceLimitMessage()].includes(status.textContent)) message(text('Reference images ready.', '参考图已就绪。'));
-    el('balance').textContent = remaining === null ? text('10 free seconds · no sign-up or login', '10 秒免费额度 · 无需注册和登录')
+    el('balance').textContent = remaining === null ? text('2 free videos · 5 seconds each · no sign-up or login', '2 条免费视频 · 每条 5 秒 · 无需注册和登录')
       : guest ? text(`${remaining} free seconds remaining`, `实际剩余 ${remaining} 秒免费额度`) : text(`${remaining} credits available`, `可用 ${remaining} 积分`);
     el('balance').classList.toggle('is-insufficient', remaining !== null && remaining < Number(duration.value) && !busy && !pendingTask);
     el('cost').textContent = guest ? text(`This video: ${duration.value}s free`, `本次免费 ${duration.value} 秒`) : text(`This video: ${duration.value} credits`, `本次 ${duration.value} 积分`);
@@ -118,17 +137,19 @@ export function initializeHomeVideo(root = document.querySelector('[data-home-vi
       if (!disposed && version===balanceVersion && response.ok && Number.isSafeInteger(payload.credits?.remaining)) {
         guest = payload.credits.guest === true; remaining = payload.credits.remaining;
         guestVideoModelName = guest && typeof payload.credits.videoModelName === 'string' ? payload.credits.videoModelName : '';
-        guestMaxReferences = guest && payload.credits.maxReferences === 1 ? 1 : 9;
+        guestMaxReferences = guest ? payload.credits.maxReferences === 1 ? 1 : 5 : 9;
         guestVideoResolutionLabel = guest && payload.credits.videoResolutionLabel === '768P' ? '768P' : '';
         paidRemaining=payload.credits.paidRemaining||0;update();
         clearTimeout(dailyTimer);if(REGISTERED_FREE_CREDITS_ENABLED&&!guest)dailyTimer=setTimeout(()=>{freeBudgetBlocked=false;void loadBalance();},millisecondsUntilCreditReset());
         const intro=document.querySelector('.home-intro-copy');
         if(intro){intro.dataset.trialState=guest?'guest':'account';
-          const offerValue=intro.querySelector('[data-home-offer-value]');if(offerValue)offerValue.textContent=guest?'10':REGISTERED_FREE_CREDITS_ENABLED?'5':'500';
-          intro.querySelector('.home-free-badge').textContent=guest?text('FREE VIDEO SECONDS','秒视频免费体验'):REGISTERED_FREE_CREDITS_ENABLED?text('DAILY FREE CREDITS','每日免费积分'):text('CREDITS PER PACK','积分／包');
-          intro.querySelector('.home-guest-benefit strong').textContent=guest?text('No sign-up or login required','无需注册或登录，即可试用'):REGISTERED_FREE_CREDITS_ENABLED?text('Credits reset daily and do not accumulate.','积分每日重置，不累积。'):text('Purchased credits never expire.','购买积分永久有效。');
-          intro.querySelector('.home-member-offer').hidden=!REGISTERED_FREE_CREDITS_ENABLED||!guest;
-          const purchaseOffer=intro.querySelector('.home-member-purchase');if(purchaseOffer)purchaseOffer.hidden=REGISTERED_FREE_CREDITS_ENABLED||!guest;
+          const trialOffer=intro.querySelector('.home-trial-offer');if(trialOffer)trialOffer.hidden=!guest;
+          const purchaseOffer=intro.querySelector('[data-home-account-offer]');
+          if(purchaseOffer){
+            purchaseOffer.querySelector('[data-home-pack-price]').textContent=`US$${creditPackValue(CREDIT_PACKS[0]).price}`;
+            purchaseOffer.hidden=guest;
+          }
+          const memberOffer=intro.querySelector('.home-member-offer');if(memberOffer)memberOffer.hidden=!REGISTERED_FREE_CREDITS_ENABLED||!guest;
           const networkLimit=root.querySelector('.home-network-limit');if(networkLimit)networkLimit.hidden=!REGISTERED_FREE_CREDITS_ENABLED;}
       }
     } catch { /* The protected submit endpoint remains authoritative. */ }
@@ -140,6 +161,7 @@ export function initializeHomeVideo(root = document.querySelector('[data-home-vi
     if (!completed) {
       player.src = example.src; player.poster = example.poster; player.muted = true; player.loop = false;
       el('example-title').textContent = example.title[zh ? 1 : 0];
+      if (el('example-label')) el('example-label').textContent = example.sourceType === 'user-provided' ? text('VIDEO REFERENCE', '视频参考') : text('MADE WITH Seedance 2.5', '由 Seedance 2.5 生成');
       void player.play().catch(() => {});
     }
     el('example-count').textContent = `${String(index + 1).padStart(2, '0')} / ${String(HOME_VIDEO_EXAMPLES.length).padStart(2, '0')}`;
@@ -148,7 +170,10 @@ export function initializeHomeVideo(root = document.querySelector('[data-home-vi
     });
     if (fillPrompt) {
       draftEdited=true;
-      prompt.value = example.prompt; duration.value = '5'; ratio.value = '16:9'; mode = 'text';
+      const requestedDuration = String(example.durationSeconds || 5);
+      duration.value = Array.from(duration.options).some(option => option.value === requestedDuration && !option.disabled) ? requestedDuration : '5';
+      prompt.value = videoExamplePrompt(example, duration.value, zh ? 'zh' : 'en');
+      ratio.value = '16:9'; mode = 'text';
       update(); prompt.focus(); root.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
@@ -175,7 +200,7 @@ export function initializeHomeVideo(root = document.querySelector('[data-home-vi
     renderReferences(); update(); return true;
   }
   const draft = () => ({ prompt: prompt.value, duration: Number(duration.value), aspectRatio: ratio.value, mode,
-    files: references.map(item => item.file), taskId });
+    optimizePrompt: promptOptimization.choice, files: mode === 'frames' ? frames.files : references.map(item => item.file), taskId });
   listen(window,'seedance:home-before-leave',event=>{event.detail.promises.push(restoreReady.then(()=>{
     if(busy&&!taskId)throw Error('Wait for the current submission');
     if(restoreFailed&&!draftEdited)throw Error('Restore the references before leaving');
@@ -198,6 +223,7 @@ export function initializeHomeVideo(root = document.querySelector('[data-home-vi
   async function run(resume = '', paidOnly=false) {
     if (busy || disposed) return;
     const captured = draft();
+    promptOptimization.start({ pending: !resume });
     if (resume) pendingTask = true;
     busy = true; completed = false; controller = new AbortController();
     videoWaitNotice.start(resume);
@@ -214,8 +240,11 @@ export function initializeHomeVideo(root = document.querySelector('[data-home-vi
         el('pending-text').textContent = value; message(value);
       } };
       const video = resume ? await pollImpl({ ...common, taskId: resume }) : await requestImpl({ ...common,
+        optimizePrompt: guest ? captured.optimizePrompt : undefined,
+        inputMode: guest && guestMaxReferences === 5 ? captured.mode : undefined,
+        onPromptOptimization: (status, text) => promptOptimization.result(status, text),
         prompt: captured.prompt, duration: captured.duration, aspectRatio: captured.aspectRatio,
-        referenceFiles: captured.mode==='reference'?captured.files:[],paidOnly:paidOnly||!REGISTERED_FREE_CREDITS_ENABLED&&!guest,
+        referenceFiles: captured.mode!=='text'?captured.files:[],paidOnly:paidOnly||!REGISTERED_FREE_CREDITS_ENABLED&&!guest,
         onTask(id) {
           taskId = id; pendingTask = true;
           videoWaitNotice.bindTask(id);
@@ -267,6 +296,7 @@ export function initializeHomeVideo(root = document.querySelector('[data-home-vi
     if (!button || busy || pendingTask || purchaseBusy) return;
     const index = Number(button.dataset.homeRemoveReference);
     if (!Number.isInteger(index) || !references[index]) return;
+    if (!mentions.beforeRemove(index)) return;
     URL.revokeObjectURL(references[index].url); references.splice(index,1); draftEdited = true;
     renderReferences(); update();
   });
@@ -284,15 +314,17 @@ export function initializeHomeVideo(root = document.querySelector('[data-home-vi
     if (!busy && !pendingTask) prompt.focus({ preventScroll: true });
   }));
   listen(root, 'paste', event => {
-    if (mode !== 'reference' || busy || pendingTask || purchaseBusy) return;
+    if (mode === 'text' || busy || pendingTask || purchaseBusy) return;
     const incoming = [...(event.clipboardData?.files || [])].filter(item => item.type.startsWith('image/'));
-    if (incoming.length && addFiles(incoming)) event.preventDefault();
+    if (incoming.length && (mode === 'frames' ? frames.paste(incoming) : addFiles(incoming))) event.preventDefault();
   });
   const restore = readVideoHandoff({ consume: false,maxAgeMs:24*60*60*1000 }).then(value => {
     if (!value || disposed || draftEdited) return;
     prompt.value = value.prompt; duration.value = String(value.duration === 15 ? 10 : value.duration); ratio.value = value.aspectRatio; mode = value.mode;
+    promptOptimization.choice = value.optimizePrompt;
     const files = value.files ?? (value.file ? [value.file] : []);
-    if (files.length && !addFiles(files, { restoring: true })) restoreFailed = true; update();
+    if (mode === 'frames') frames.setFiles(files);
+    else if (files.length && !addFiles(files, { restoring: true })) restoreFailed = true; update();
   }).catch(() => {restoreFailed=true;message(text('Could not restore your draft. Please reselect your reference images.','无法恢复草稿，请重新选择参考图。'),true);});
   restoreReady=restore;
   useExample(0); update(); void loadBalance();
@@ -300,7 +332,7 @@ export function initializeHomeVideo(root = document.querySelector('[data-home-vi
     const active = sessionStorage.getItem(ACTIVE_VIDEO_TASK_KEY);
     if (active && !disposed) { taskId = active; void run(active); }
   });
-  const cleanup = () => { disposed = true; controller?.abort();videoWaitNotice.destroy();balanceVersion++;balanceController?.abort();clearTimeout(dailyTimer); references.forEach(item => URL.revokeObjectURL(item.url)); listeners.forEach(remove => remove()); };
+  const cleanup = () => { mentions.destroy(); frames.destroy(); framesTab.remove(); referenceTab.textContent = originalReferenceTabLabel; promptOptimization.destroy(); disposed = true; controller?.abort();videoWaitNotice.destroy();balanceVersion++;balanceController?.abort();clearTimeout(dailyTimer); references.forEach(item => URL.revokeObjectURL(item.url)); listeners.forEach(remove => remove()); };
   listen(window, 'pagehide', cleanup);
   return cleanup;
 }

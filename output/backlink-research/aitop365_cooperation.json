@@ -1,0 +1,222 @@
+{
+  "name": "aitop365_cooperation",
+  "url": "https://aitop365.com/cooperation.html",
+  "final_url": "https://www.aitop365.com/cooperation.html",
+  "status": 200,
+  "bytes": 33144,
+  "meta": [
+    {
+      "charset": "UTF-8"
+    },
+    {
+      "name": "viewport",
+      "content": "width=device-width, initial-scale=1.0"
+    },
+    {
+      "name": "description",
+      "content": "AITop365 - 合作申请，提交您的AI工具或联系我们进行广告合作"
+    },
+    {
+      "name": "keywords",
+      "content": "AI工具,合作,广告,提交工具"
+    },
+    {
+      "name": "author",
+      "content": "AITop365"
+    },
+    {
+      "name": "robots",
+      "content": "index,follow"
+    },
+    {
+      "property": "og:type",
+      "content": "website"
+    },
+    {
+      "property": "og:site_name",
+      "content": "AITop365"
+    },
+    {
+      "property": "og:title",
+      "content": "合作申请 - AITop365 | 提交AI工具或广告合作"
+    },
+    {
+      "property": "og:description",
+      "content": "AITop365 - 合作申请，提交您的AI工具或联系我们进行广告合作"
+    },
+    {
+      "property": "og:url",
+      "content": "https://www.aitop365.com/cooperation.html"
+    },
+    {
+      "property": "og:locale",
+      "content": "zh_CN"
+    }
+  ],
+  "links": [
+    {
+      "href": "index.html",
+      "class": "nav-link",
+      "text": "首页 / Home",
+      "tag": "<a href=\"index.html\" class=\"nav-link\">"
+    },
+    {
+      "href": "#",
+      "class": "nav-link",
+      "text": "AI分类 / Categories ▼",
+      "tag": "<a href=\"#\" class=\"nav-link\">"
+    },
+    {
+      "href": "latest.html",
+      "class": "nav-link",
+      "text": "最新工具 / Latest",
+      "tag": "<a href=\"latest.html\" class=\"nav-link\">"
+    },
+    {
+      "href": "news.html",
+      "class": "nav-link",
+      "text": "资讯 / News ↗",
+      "tag": "<a href=\"news.html\" class=\"nav-link\">"
+    },
+    {
+      "href": "index.html",
+      "class": "logo",
+      "aria-label": "AITop365",
+      "text": "\n                \n            ",
+      "tag": "<a href=\"index.html\" class=\"logo\" aria-label=\"AITop365\">"
+    },
+    {
+      "href": "#",
+      "target": "_blank",
+      "class": "social-link share-weibo",
+      "title": "分享到微博",
+      "style": "font-weight: bold;",
+      "text": "微",
+      "tag": "<a href=\"#\" target=\"_blank\" class=\"social-link share-weibo\" title=\"分享到微博\" style=\"font-weight: bold;\">"
+    },
+    {
+      "href": "#",
+      "target": "_blank",
+      "class": "social-link share-zhihu",
+      "title": "分享到知乎",
+      "style": "font-weight: bold;",
+      "text": "知",
+      "tag": "<a href=\"#\" target=\"_blank\" class=\"social-link share-zhihu\" title=\"分享到知乎\" style=\"font-weight: bold;\">"
+    },
+    {
+      "href": "#",
+      "target": "_blank",
+      "class": "social-link share-douban",
+      "title": "分享到豆瓣",
+      "style": "font-weight: bold;",
+      "text": "豆",
+      "tag": "<a href=\"#\" target=\"_blank\" class=\"social-link share-douban\" title=\"分享到豆瓣\" style=\"font-weight: bold;\">"
+    },
+    {
+      "href": "#",
+      "target": "_blank",
+      "class": "social-link share-bilibili",
+      "title": "分享到B站",
+      "style": "font-weight: bold;",
+      "text": "B",
+      "tag": "<a href=\"#\" target=\"_blank\" class=\"social-link share-bilibili\" title=\"分享到B站\" style=\"font-weight: bold;\">"
+    },
+    {
+      "href": "category.html",
+      "text": "AI商业与办公 / Business & Office",
+      "tag": "<a href=\"category.html\">"
+    },
+    {
+      "href": "category.html",
+      "text": "AI技术与开发 / Tech & Dev",
+      "tag": "<a href=\"category.html\">"
+    },
+    {
+      "href": "category.html",
+      "text": "AI设计与多媒体 / Design & Media",
+      "tag": "<a href=\"category.html\">"
+    },
+    {
+      "href": "category.html",
+      "text": "AI生活成长教育 / Life & Education",
+      "tag": "<a href=\"category.html\">"
+    },
+    {
+      "href": "category.html",
+      "text": "AI写作与内容 / Writing & Content",
+      "tag": "<a href=\"category.html\">"
+    },
+    {
+      "href": "category.html",
+      "text": "检索AI工具 / Search Tools",
+      "tag": "<a href=\"category.html\">"
+    },
+    {
+      "href": "news.html",
+      "text": "AI资讯 / AI News",
+      "tag": "<a href=\"news.html\">"
+    },
+    {
+      "href": "#",
+      "text": "API文档 / API Docs",
+      "tag": "<a href=\"#\">"
+    },
+    {
+      "href": "cooperation.html",
+      "text": "关于我们 / About Us",
+      "tag": "<a href=\"cooperation.html\">"
+    },
+    {
+      "href": "cooperation.html",
+      "text": "联系我们 / Contact Us",
+      "tag": "<a href=\"cooperation.html\">"
+    },
+    {
+      "href": "cooperation.html",
+      "text": "建议意见 / Feedback",
+      "tag": "<a href=\"cooperation.html\">"
+    },
+    {
+      "href": "cooperation.html",
+      "text": "提交工具 / Submit Tool",
+      "tag": "<a href=\"cooperation.html\">"
+    },
+    {
+      "href": "#",
+      "text": "隐私条款 / Privacy Policy",
+      "tag": "<a href=\"#\">"
+    },
+    {
+      "href": "#",
+      "text": "Cookie Policy",
+      "tag": "<a href=\"#\">"
+    },
+    {
+      "href": "https://beian.miit.gov.cn/",
+      "target": "_blank",
+      "style": "color: inherit; text-decoration: none;",
+      "text": "苏ICP备202522878号",
+      "tag": "<a href=\"https://beian.miit.gov.cn/\" target=\"_blank\" style=\"color: inherit; text-decoration: none;\">"
+    },
+    {
+      "href": "sitemap.xml",
+      "text": "Sitemap",
+      "tag": "<a href=\"sitemap.xml\">"
+    },
+    {
+      "href": "#",
+      "text": "RSS Feed",
+      "tag": "<a href=\"#\">"
+    },
+    {
+      "href": "#",
+      "text": "Status",
+      "tag": "<a href=\"#\">"
+    }
+  ],
+  "hidden_instruction_candidates": [
+    " <label>工具名称 / Tool Name <span class=\"required\">*</span></label>\n                    <input type=\"text\" id=\"toolName\" maxlength=\"100\" placeholder=\"例如：ChatGPT / e.g., ChatGPT\">\n                </div>\n                <div class=\"form-group\">\n                    <label>一句话简介 / Short Description <span class=\"required\">*</span></label>\n                    <inp",
+    "ool Name <span class=\"required\">*</span></label>\n                    <input type=\"text\" id=\"toolName\" maxlength=\"100\" placeholder=\"例如：ChatGPT / e.g., ChatGPT\">\n                </div>\n                <div class=\"form-group\">\n                    <label>一句话简介 / Short Description <span class=\"required\">*</span></label>\n                    <input type=\"text\" i"
+  ],
+  "text": "\n \n \n     \n     \n     \n     \n     \n     \n     合作申请 - AITop365 | 提交AI工具或广告合作 / Partnership - AITop365 | Submit AI Tool or Advertising \n    \n     \n     \n    \n     \n     \n     \n     \n     \n     \n     \n    \n     \n     \n     \n        .ql-container {\n            font-family: inherit;\n        }\n        .ql-editor {\n            min-height: 150px;\n            font-size: 15px;\n            color: #374151;\n            background: white;\n            border-bottom-left-radius: 8px;\n            border-bottom-right-radius: 8px;\n        }\n        .ql-toolbar {\n            border-top-left-radius: 8px;\n            border-top-right-radius: 8px;\n            background: #f9fafb;\n        }\n        .message-countdown {\n            font-weight: bold;\n            color: #667eea;\n        }\n     \n    \n     \n     \n     \n     \n        .cooperation-page {\n            max-width: 800px;\n            margin: 80px auto 40px;\n            padding: 0 20px;\n        }\n        \n        .cooperation-header {\n            text-align: center;\n            margin-bottom: 40px;\n        }\n        \n        .cooperation-header h1 {\n            font-size: 32px;\n            margin-bottom: 10px;\n            color: #1a1a1a;\n        }\n        \n        .cooperation-header p {\n            color: #666;\n            font-size: 16px;\n        }\n        \n        .cooperation-form {\n            background: white;\n            border-radius: 12px;\n            padding: 40px;\n            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);\n        }\n        \n        .form-group {\n            margin-bottom: 24px;\n        }\n        \n        .form-group label {\n            display: block;\n            margin-bottom: 8px;\n            font-weight: 500;\n            color: #333;\n        }\n        \n        .form-group label .required {\n            color: #e74c3c;\n        }\n        \n        .form-group input,\n        .form-group textarea {\n            width: 100%;\n            padding: 12px;\n            border: 1px solid #ddd;\n            border-radius: 6px;\n            font-size: 14px;\n            font-family: inherit;\n            transition: border-color 0.3s;\n        }\n        \n        .form-group input:focus,\n        .form-group textarea:focus {\n            outline: none;\n            border-color: #667eea;\n        }\n        \n        .form-group textarea {\n            min-height: 150px;\n            resize: vertical;\n        }\n        \n        .form-group .hint {\n            font-size: 12px;\n            color: #999;\n            margin-top: 4px;\n        }\n        \n        .form-actions {\n            display: flex;\n            gap: 12px;\n            justify-content: flex-end;\n            margin-top: 32px;\n        }\n        \n        .btn-submit {\n            padding: 12px 32px;\n            background: #667eea;\n            color: white;\n            border: none;\n            border-radius: 6px;\n            font-size: 16px;\n            font-weight: 500;\n            cursor: pointer;\n            transition: background 0.3s;\n        }\n        \n        .btn-submit:hover {\n            background: #5568d3;\n        }\n        \n        .btn-submit:disabled {\n            background: #ccc;\n            cursor: not-allowed;\n        }\n        \n        .btn-cancel {\n            padding: 12px 32px;\n            background: #f5f5f5;\n            color: #333;\n            border: none;\n            border-radius: 6px;\n            font-size: 16px;\n            font-weight: 500;\n            cursor: pointer;\n            transition: background 0.3s;\n        }\n        \n        .btn-cancel:hover {\n            background: #e5e5e5;\n        }\n        \n        .message {\n            padding: 16px 20px;\n            border-radius: 8px;\n            margin-bottom: 24px;\n            display: none;\n            font-size: 15px;\n            line-height: 1.5;\n            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);\n            animation: slideDown 0.3s ease-out;\n        }\n        \n        @keyframes slideDown {\n            from {\n                opacity: 0;\n                transform: translateY(-10px);\n            }\n            to {\n                opacity: 1;\n                transform: translateY(0);\n            }\n        }\n        \n        .message.success {\n            background: #d4edda;\n            color: #155724;\n            border: 1px solid #c3e6cb;\n            display: flex;\n            align-items: center;\n            gap: 10px;\n        }\n        \n        .message.success::before {\n            content: \"✓\";\n            font-size: 20px;\n            font-weight: bold;\n            color: #28a745;\n            flex-shrink: 0;\n        }\n        \n        .message.error {\n            background: #f8d7da;\n            color: #721c24;\n            border: 1px solid #f5c6cb;\n            display: flex;\n            align-items: center;\n            gap: 10px;\n        }\n        \n        .message.error::before {\n            content: \"✕\";\n            font-size: 20px;\n            font-weight: bold;\n            color: #dc3545;\n            flex-shrink: 0;\n        }\n        \n        .message.show {\n            display: flex;\n        }\n        \n        .message-countdown {\n            font-size: 13px;\n            color: #666;\n            margin-top: 8px;\n            font-weight: normal;\n        }\n        \n        .message.success .message-countdown {\n            color: #155724;\n        }\n\n        .tool-section-toggle {\n            background: #f1f5f9;\n            padding: 12px 16px;\n            border-radius: 8px;\n            cursor: pointer;\n            margin: 20px 0;\n            display: flex;\n            justify-content: space-between;\n            align-items: center;\n            font-weight: 600;\n            color: #334155;\n            transition: background 0.2s;\n        }\n        .tool-section-toggle:hover {\n            background: #e2e8f0;\n        }\n        .tool-section-toggle .icon {\n            transition: transform 0.3s;\n        }\n        .tool-section-toggle.open .icon {\n            transform: rotate(180deg);\n        }\n        \n        .tool-form-section {\n            display: none;\n            border: 1px solid #e2e8f0;\n            padding: 20px;\n            border-radius: 8px;\n            margin-bottom: 20px;\n            background: #fafafa;\n        }\n        .tool-form-section.show {\n            display: block;\n            animation: fadeIn 0.3s ease-out;\n        }\n        .image-preview {\n            max-width: 100%;\n            border-radius: 8px;\n            margin-top: 10px;\n            display: none;\n        }\n        .upload-hint {\n            font-size: 12px;\n            color: #94a3b8;\n            margin-top: 4px;\n        }\n     \n \n \n     \n     \n         \n             \n                 首页 / Home \n                 \n                     AI分类 / Categories ▼ \n                     \n                         加载中... / Loading... \n                     \n                 \n                 最新工具 / Latest \n                 资讯 / News ↗ \n             \n             \n                 \n             \n             \n                 合作 / Partnership \n                 \n                     登录 / Login \n                     \n                         \n                             U \n                         \n                         \n                             \n                                 用户名 / Username \n                             \n                             \n                             登出 / Logout \n                         \n                     \n                 \n             \n         \n     \n\n     \n         \n             🤝 合作申请 / Partnership Application \n             欢迎与我们合作，请填写以下信息，我们会尽快与您联系 Welcome to cooperate with us, please fill in the information below, we will contact you as soon as possible \n         \n        \n         \n        \n         \n             \n                 \n                    姓名 / Name  * \n                 \n                 \n             \n            \n             \n                 \n                    邮箱 / Email\n                 \n                 \n                 邮箱和电话至少需要填写一个 / Please provide at least one contact method (email or phone) \n             \n            \n             \n                 \n                    电话 / Phone\n                 \n                 \n                 邮箱和电话至少需要填写一个 / Please provide at least one contact method (email or phone) \n             \n            \n             \n                 \n                    合作内容 / Partnership Details  * \n                 \n                 提交AI工具 / Submit AI Tool \n                 最多2000个字符 / Maximum 2000 characters \n             \n            \n             \n                 ⚠️   提示：如果是提交工具，必须要填写下方的工具详细信息；也期望您能在您的站点上任意位置放上本站的连接，谢谢。  \n                Notice: If you are submitting a tool, detailed tool information must be filled in below. We also hope that you can place a link to our site anywhere on your site.Thank you.\n             \n             \n                 ➕ 选填：同步提交您的 AI 工具 (点击展开) / Optional: Submit your AI Tool (Click to expand) \n                 ▼ \n             \n            \n             \n                 请完善以下信息以便我们更好地为您免费上架工具 Please complete the following information so we can list your tool for free \n                 \n                     工具名称 / Tool Name  * \n                     \n                 \n                 \n                     一句话简介 / Short Description  * \n                     \n                 \n                 \n                     官网链接 / Website URL  * \n                     \n                 \n                \n                 \n                     详细说明 / Full Description \n                     \n                 \n                 \n                     核心功能 / Key Features \n                     \n                 \n                 \n                     使用方法 / How to Use \n                     \n                 \n                \n                 \n                     \n                         计费模式 / Pricing Model \n                         \n                             --请选择 / Please select-- \n                             免费 / Free \n                             免费增值 / Freemium \n                             付费 / Paid \n                             开源 / Open Source \n                             需联系销售 / Contact Sales \n                         \n                     \n                     \n                         所属分类 / Category \n                         \n                             --载入中 / Loading...-- \n                         \n                     \n                 \n\n                 \n                     付费策略详情 / Pricing Details \n                     \n                 \n\n                 \n                     产品截图 (预览图) / Product Screenshot (Preview) \n                     \n                     建议尺寸: 宽比例16:9（如 1200x675），支持 JPG/PNG/WEBP 格式，文件大小不超过 2MB。 Recommended size: 16:9 ratio (e.g., 1200x675), supports JPG/PNG/WEBP, max size 2MB. \n                     \n                     \n                     \n                 \n             \n            \n             \n                 取消 / Cancel \n                 提交申请 / Submit Application \n             \n         \n\n         \n         \n             \n                 💬  \n                协商与合作，欢迎加入我们的  官方QQ交流群 ：\n                 1094520219 \n             \n             \n                For negotiation and cooperation, welcome to join our  official QQ group : 1094520219\n             \n         \n     \n\n     \n     \n     \n     \n        // 初始化 Quill 编辑器\n        const quillOptions = {\n            theme: 'snow',\n            modules: {\n                toolbar: [\n                    ['bold', 'italic', 'underline'],\n                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],\n                    ['link', 'clean']\n                ]\n            },\n            placeholder: '在此输入内容...'\n        };\n\n        const quillFullDesc = new Quill('#toolFullDescEditor', quillOptions);\n        const quillFeatures = new Quill('#toolFeaturesEditor', quillOptions);\n        const quillHowToUse = new Quill('#toolHowToUseEditor', quillOptions);\n\n        const form = document.getElementById('cooperationForm');\n        const message = document.getElementById('message');\n        const submitBtn = document.getElementById('submitBtn');\n        \n        form.addEventListener('submit', async (e) => {\n            e.preventDefault();\n            \n            const name = document.getElementById('name').value.trim();\n            const email = document.getElementById('email').value.trim();\n            const phone = document.getElementById('phone').value.trim();\n            const content = document.getElementById('content').value.trim();\n            \n            // 如果工具区展开，则验证必填\n            const isToolSectionOpen = document.getElementById('toolFormSection').classList.contains('show');\n            \n            let uploadedImageUrl = document.getElementById('toolPreviewUrl').value;\n            let fileInput = document.getElementById('toolImageFile');\n            \n            // 验证邮箱和电话至少填一个\n            if (!email && !phone) {\n                showMessage('邮箱和电话至少需要填写一个 / Please provide at least one contact method (email or phone)', 'error');\n                return;\n            }\n            \n            // 验证必填项\n            if (!name) {\n                showMessage('请输入姓名 / Please enter your name', 'error');\n                return;\n            }\n            \n            if (!content) {\n                showMessage('请输入合作内容 / Please enter partnership details', 'error');\n                return;\n            }\n            \n            if (isToolSectionOpen) {\n                if (!document.getElementById('toolName').value.trim() || \n                    !document.getElementById('toolShortDesc').value.trim() || \n                    !document.getElementById('toolWebsite').value.trim()) {\n                    showMessage('请填写完整的工具常规必填信息（工具名称、一行简介、官网） / Please fill in the required tool information (Tool Name, Short Description, Website URL)', 'error');\n                    return;\n                }\n            }\n            \n            submitBtn.disabled = true;\n            submitBtn.textContent = '提交中... / Submitting...';\n            hideMessage();\n            \n            try {\n                // 如果用户选择了文件但还没上传完成（这里在提交时直接处理上传）\n                if (isToolSectionOpen && fileInput.files.length > 0 && !uploadedImageUrl) {\n                    submitBtn.textContent = '正在上传图片... / Uploading image...';\n                    const formData = new FormData();\n                    formData.append('file', fileInput.files[0]);\n                    \n                    const uploadData = await window.API.upload('/upload/public', formData);\n                    uploadedImageUrl = uploadData.url;\n                    document.getElementById('toolPreviewUrl').value = uploadedImageUrl;\n                }\n                \n                let toolPayload = null;\n                if (isToolSectionOpen && document.getElementById('toolName').value.trim()) {\n                    // 检查富文本是否为空 (Quill 默认会有 <p><br></p>)\n                    const getQuillContent = (quill) => {\n                        const html = quill.root.innerHTML;\n                        if (html === '<p><br></p>') return \"\";\n                        return html;\n                    };\n\n                    toolPayload = {\n                        name: document.getElementById('toolName').value.trim(),\n                        shortDescription: document.getElementById('toolShortDesc').value.trim(),\n                        websiteUrl: document.getElementById('toolWebsite').value.trim(),\n                        fullDescription: getQuillContent(quillFullDesc),\n                        keyFeatures: getQuillContent(quillFeatures),\n                        howToUse: getQuillContent(quillHowToUse),\n                        pricingModel: document.getElementById('toolPricingModel').value,\n                        categoryId: document.getElementById('toolCategory').value ? parseInt(document.getElementById('toolCategory').value) : null,\n                        pricingDetails: document.getElementById('toolPricingDetails').value.trim(),\n                        previewImageUrl: uploadedImageUrl || \"\"\n                    };\n                }\n\n                submitBtn.textContent = '正在提交... / Submitting...';\n                \n                // 使用 API 封装\n                await window.API.Cooperation.submit({\n                    name,\n                    email: email || null,\n                    phone: phone || null,\n                    content,\n                    tool: toolPayload\n                });\n                \n                // 显示成功提示\n                showSuccessMessage();\n                form.reset();\n            } catch (error) {\n                console.error('Submit error:', error);\n                showMessage((error.message || '提交失败，请检查网络连接') + ' / Submission failed, please check your network connection', 'error');\n                submitBtn.disabled = false;\n                submitBtn.textContent = '提交申请 / Submit Application';\n            }\n        });\n        \n        function showMessage(text, type, isHtml = false) {\n            if (isHtml) {\n                message.innerHTML = text;\n            } else {\n                message.innerHTML = `<span>${escapeHtml(text)}</span>`;\n            }\n            message.className = `message ${type} show`;\n            \n            // 自动滚动到消息区域，确保用户看到提示\n            message.scrollIntoView({ behavior: 'smooth', block: 'center' });\n        }\n        \n        function escapeHtml(text) {\n            const div = document.createElement('div');\n            div.textContent = text;\n            return div.innerHTML;\n        }\n        \n        function showSuccessMessage() {\n            let countdown = 3;\n            const updateMessage = () => {\n                if (countdown > 0) {\n                    const html = `<span>提交成功！我们会尽快与您联系。 / Submission successful! We will contact you soon.<br><span class=\"message-countdown\">${countdown}秒后自动返回首页... / Returning to home page in ${countdown}s...</span></span>`;\n                    showMessage(html, 'success', true);\n                    countdown--;\n                    setTimeout(updateMessage, 1000);\n                } else {\n                    window.location.href = 'index.html';\n                }\n            };\n            updateMessage();\n        }\n        \n        function hideMessage() {\n            message.classList.remove('show');\n        }\n        \n        // --- 新增工具展示面板逻辑 ---\n        document.getElementById('toolToggleBtn').addEventListener('click', function() {\n            this.classList.toggle('open');\n            document.getElementById('toolFormSection').classList.toggle('show');\n            if (this.classList.contains('open')) {\n                loadCategories();\n            }\n        });\n        \n        document.getElementById('toolImageFile').addEventListener('change', function(e) {\n            const file = e.target.files[0];\n            if (file) {\n                if (file.size > 2 * 1024 * 1024) {\n                    alert('图片必须小于 2MB / Image must be smaller than 2MB');\n                    this.value = '';\n                    return;\n                }\n                const reader = new FileReader();\n                reader.onload = function(e) {\n                    const preview = document.getElementById('imagePreview');\n                    preview.src = e.target.result;\n                    preview.style.display = 'block';\n                };\n                reader.readAsDataURL(file);\n                // 重置 url，以便在 submit 时触发新的上传\n                document.getElementById('toolPreviewUrl').value = '';\n            }\n        });\n        \n        let categoriesLoaded = false;\n        async function loadCategories() {\n            if (categoriesLoaded) return;\n            try {\n                const res = await window.API.Home.getCategories();\n                const sel = document.getElementById('toolCategory');\n                sel.innerHTML = '<option value=\"\">--请选择领域 / Please select category--</option>';\n                const categories = Array.isArray(res) ? res : (res.data || []);\n                \n                const topCats = categories.filter(c => !c.parentId || c.parentId === 0);\n                const usedIds = new Set();\n                \n                topCats.forEach(top => {\n                    const opt = document.createElement('option');\n                    opt.value = top.id;\n                    opt.textContent = `[ ${top.name} ]`;\n                    // 改变首层选项的样式展示\n                    opt.style.fontWeight = 'bold';\n                    sel.appendChild(opt);\n                    usedIds.add(top.id);\n                    \n                    const children = categories.filter(c => c.parentId === top.id);\n                    children.forEach(child => {\n                        const childOpt = document.createElement('option');\n                        childOpt.value = child.id;\n                        childOpt.textContent = `  ├─ ${child.name}`;\n                        sel.appendChild(childOpt);\n                        usedIds.add(child.id);\n                    });\n                });\n                \n                // 将未匹配到的（可能是三级或脏数据）作为额外项补齐\n                categories.forEach(cat => {\n                    if (!usedIds.has(cat.id)) {\n                        const opt = document.createElement('option');\n                        opt.value = cat.id;\n                        opt.textContent = cat.name;\n                        sel.appendChild(opt);\n                    }\n                });\n                categoriesLoaded = true;\n            } catch (err) {\n                console.error(\"无法加载分类列表:\", err);\n            }\n        }\n     \n\n\n     \n     \n         \n             \n                 \n                     \n                         \n                     \n                     探索国内外最好用的AI 工具. / Discover the best AI tools. \n                     \n                         微 \n                         知 \n                         豆 \n                         B \n                     \n                 \n\n                 \n                     分类 / Categories \n                     \n                         AI商业与办公 / Business & Office \n                         AI技术与开发 / Tech & Dev \n                         AI设计与多媒体 / Design & Media \n                         AI生活成长教育 / Life & Education \n                         AI写作与内容 / Writing & Content \n                     \n                 \n\n                 \n                     资源 / Resources \n                     \n                         检索AI工具 / Search Tools \n                         AI资讯 / AI News \n                         API文档 / API Docs \n                     \n                 \n\n                 \n                     我们 / About Us \n                     \n                         关于我们 / About Us \n                         联系我们 / Contact Us \n                         建议意见 / Feedback \n                         提交工具 / Submit Tool \n                     \n                 \n\n                 \n                     其他 / Others \n                     \n                         隐私条款 / Privacy Policy \n                         Cookie Policy \n                     \n                 \n             \n\n             \n                 © 2025 AITop365. All rights reserved. |  苏ICP备202522878号 \n                 \n                     Sitemap \n                     • \n                     RSS Feed \n                     • \n                     Status \n                 \n             \n         \n     \n\n     \n        // 设置社交媒体分享链接\n        (function() {\n            const currentUrl = encodeURIComponent(window.location.href);\n            const currentTitle = encodeURIComponent(document.title || 'AITop365 - 发现最好的AI工具');\n            const currentDesc = encodeURIComponent(document.querySelector('meta[name=\"description\"]')?.content || '探索国内外最好用的AI工具');\n            \n            // 微博分享\n            const weiboLink = document.querySelector('.share-weibo');\n            if (weiboLink) {\n                weiboLink.href = `https://service.weibo.com/share/share.php?url=${currentUrl}&title=${currentTitle}`;\n            }\n            \n            // 知乎分享（知乎没有官方分享API，使用搜索链接）\n            const zhihuLink = document.querySelector('.share-zhihu');\n            if (zhihuLink) {\n                zhihuLink.href = `https://www.zhihu.com/search?q=${encodeURIComponent('AITop365 AI工具')}`;\n            }\n            \n            // 豆瓣分享\n            const doubanLink = document.querySelector('.share-douban');\n            if (doubanLink) {\n                doubanLink.href = `https://www.douban.com/share/service?url=${currentUrl}&name=${currentTitle}`;\n            }\n            \n            // B站分享（B站主要是视频平台，使用搜索链接）\n            const bilibiliLink = document.querySelector('.share-bilibili');\n            if (bilibiliLink) {\n                bilibiliLink.href = `https://search.bilibili.com/all?keyword=${encodeURIComponent('AITop365 AI工具')}`;\n            }\n        })();\n     \n \n \n\n"
+}

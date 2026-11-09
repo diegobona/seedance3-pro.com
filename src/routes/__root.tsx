@@ -8,7 +8,7 @@ import '../../assets/site-language.css'
 import { localeFromPath, localizedPath } from '../../app/site-locale.mjs'
 import { SiteTrustFooter } from '../components/site-trust'
 import { PLAUSIBLE_INIT, PLAUSIBLE_SCRIPT_URL } from '../lib/plausible'
-import { BRAND_VERSION } from '../../app/site-brand.mjs'
+import { BRAND_VERSION, BRAND_STYLE_VERSION } from '../../app/site-brand.mjs'
 import { SitePromoBanner } from '../components/site-promo-banner'
 
 export const Route = createRootRoute({
@@ -39,7 +39,7 @@ function RootDocument({ children }: { children: ReactNode }) {
         <link rel="preload" href="/assets/fonts/source-serif-4-roman.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="stylesheet" href="/assets/fonts/noto-serif-sc.css?v=20261024-editorial" />
         <link rel="stylesheet" href="/assets/site-typography.css?v=20261024-editorial" />
-        <link data-site-brand rel="stylesheet" href={`/assets/site-brand.css?v=${BRAND_VERSION}`} />
+        <link data-site-brand rel="stylesheet" href={`/assets/site-brand.css?v=${BRAND_STYLE_VERSION}`} />
         <link rel="stylesheet" href="/assets/site-promo.css?v=20261028-carousel" />
         <link rel="alternate" hrefLang="en" href={enUrl} />
         <link rel="alternate" hrefLang="zh-Hans" href={zhUrl} />

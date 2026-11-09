@@ -120,7 +120,7 @@
     #faq .faq-article-link { display: inline-flex; align-items: center; gap: 10px; max-width: 100%; min-height: 44px; font-weight: 700; line-height: 1.5; }
     #faq .faq-article-link::after { content: "→"; flex: 0 0 auto; }
   </style>
-  <link rel="stylesheet" href="/assets/home-video.css?v=20261031-creations">
+  <link rel="stylesheet" href="/assets/home-video.css?v=26babc6c2a3b">
   <link rel="stylesheet" href="/assets/video-credit-assurance.css?v=20261030-speed">
   <link rel="stylesheet" href="/assets/site-navigation.css?v=20261031-creations">
   <script src="/assets/site-navigation.js" defer></script>
@@ -129,9 +129,9 @@
   <link data-site-typography rel="preload" href="/assets/fonts/source-serif-4-roman.woff2" as="font" type="font/woff2" crossorigin>
   <link data-site-typography rel="stylesheet" href="/assets/fonts/noto-serif-sc.css?v=20261024-editorial">
   <link data-site-typography rel="stylesheet" href="/assets/site-typography.css?v=20261024-editorial">
-  <link data-site-brand rel="stylesheet" href="/assets/site-brand.css?v=20261028-checkout-ui">
-  <link rel="stylesheet" href="/assets/site-promo.css?v=20261028-carousel">
-  <script type="module" src="/assets/site-promo-init.mjs?v=20261028-carousel"></script>
+  <link data-site-brand rel="stylesheet" href="/assets/site-brand.css?v=20261107-example-actions">
+  <link rel="stylesheet" href="/assets/site-promo.css?v=20261106-video-rate">
+  <script type="module" src="/assets/site-promo-init.mjs?v=20261106-video-rate"></script>
 </head>
 <body class="home-page">
 <!-- SITE_PROMO_START -->
@@ -144,7 +144,7 @@
         <a class="site-promo-action" href="/app/video/seedance-2-5">Start for free<span aria-hidden="true">↗</span></a>
       </div>
       <div class="site-promo-slide" data-promo-slide="1" role="group" aria-label="2 / 2" hidden>
-        <p class="site-promo-copy"><strong>AI video</strong><span> — Packs from US$11.90</span></p>
+        <p class="site-promo-copy"><strong>AI video</strong><span> — US$0.01/second</span></p>
         <a class="site-promo-action" href="/app/video/seedance-2-5">Try now<span aria-hidden="true">↗</span></a>
       </div>
     </div>
@@ -153,6 +153,8 @@
   <button class="site-promo-close" type="button" data-promo-close aria-label="Dismiss banner">×</button>
 </aside>
 <!-- SITE_PROMO_END -->
+
+
 
 
 
@@ -175,15 +177,22 @@
       <div><h1 class="display">SEEDANCE 3.0 <span class="outline">AI Video Generator</span></h1></div>
       <div class="home-intro-copy">
         <div class="home-trial-offer">
-          <span class="home-trial-number" data-home-offer-value>10</span>
-          <div class="home-trial-details"><span class="home-free-badge">FREE VIDEO SECONDS</span><p class="home-guest-benefit"><strong>No sign-up or login required</strong></p></div>
+          <span class="home-trial-number" data-home-offer-value>2</span>
+          <div class="home-trial-details"><span class="home-free-badge">FREE VIDEOS · 5 SECONDS EACH</span><p class="home-guest-benefit"><strong>No sign-up or login required</strong></p></div>
           <a class="home-trial-start" href="#create" data-home-focus aria-label="Open video generator"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 10 7-10 7Z" /></svg></a>
+        </div>
+        <div class="home-account-offer" data-home-account-offer hidden>
+          <div class="home-account-copy">
+            <span class="home-account-discount" data-promo-only>50% OFF</span>
+            <p class="home-account-rate"><strong>US$0.01</strong><span>/ second</span></p>
+            <p class="home-account-expiry">Credits never expire</p>
+          </div>
+          <a class="home-account-buy" data-home-buy href="/checkout">Packs from <span data-home-pack-price></span><span aria-hidden="true">→</span></a>
         </div>
         <div class="home-member-offer" hidden>
           <span class="home-offer-label">AFTER SIGN-UP</span>
           <a class="home-daily-benefit" data-home-auth="register" href="/app/video/seedance-2-5?auth=register">Get free credits every day <span aria-hidden="true">↗</span></a>
         </div>
-        <div class="home-member-offer home-member-purchase"><span class="home-offer-label home-offer-sale">Up to 30% bonus credits</span><a class="home-daily-benefit" href="/checkout" data-home-buy>Packs from US$11.90 <span aria-hidden="true">↗</span></a></div>
       </div>
     </section>
     <section class="home-create container" id="create" data-home-video aria-label="AI video generator">
@@ -203,32 +212,41 @@
         <p class="home-payment-status" data-home-payment-status role="status" hidden></p>
         <button class="button primary home-generate" type="submit" data-home-generate>Generate for free ↗</button>
         <p class="video-credit-assurance" role="note"><span class="video-speed-note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-9 12h7l-1 8 10-12h-7l1-8Z" /></svg>Ultra-fast generation</span><span class="video-credit-assurance-item"><span class="video-credit-assurance-icon" aria-hidden="true">✓</span><span>No credits charged if generation fails</span></span></p>
-<p class="purchase-assurance" data-purchase-assurance>Before buying credits, review <a href="/pricing">pricing</a> · <a href="/refund-policy">refund policy</a> · <a href="/privacy">privacy</a> · <button type="button" class="support-email-trigger" popovertarget="purchase-support-email">Contact support</button><span id="purchase-support-email" class="support-email-popover" popover="auto" role="dialog" aria-label="Support email"><strong>Support email</strong><span class="support-email-address">zw83716@gmail.com</span><button type="button" class="support-email-close" popovertarget="purchase-support-email" popovertargetaction="hide" aria-label="Close email window" autofocus>×</button></span></p>
+<p class="purchase-assurance" data-purchase-assurance>Before buying credits, review <a href="/pricing">pricing</a> · <a href="/refund-policy" target="_blank" rel="noopener noreferrer">refund policy</a> · <a href="/privacy" target="_blank" rel="noopener noreferrer">privacy</a> · <button type="button" class="support-email-trigger" popovertarget="purchase-support-email">Contact support</button><span id="purchase-support-email" class="support-email-popover" popover="auto" role="dialog" aria-label="Support email"><strong>Support email</strong><span class="support-email-address">zw83716@gmail.com</span><button type="button" class="support-email-close" popovertarget="purchase-support-email" popovertargetaction="hide" aria-label="Close email window" autofocus>×</button></span></p>
         <p class="home-status" role="status" aria-live="polite" data-home-status></p>
       </form>
       <div class="home-preview" data-home-preview>
-        <div class="home-panel-heading"><div><p class="eyebrow">MADE WITH Seedance 2.5</p><h3 data-home-example-title>Behind the curtain</h3></div><span class="home-live-dot">VIDEO PREVIEW</span></div>
-        <div class="home-video-stage"><video data-home-player src="/assets/seedance25-samples/backstage.mp4" controls autoplay muted playsinline preload="metadata" aria-label="Example or generated video"></video><div class="home-pending" data-home-pending role="status" hidden><span class="home-spinner"></span><strong data-home-pending-text>Generating your video…</strong><small>Your result will appear right here.</small></div></div>
-        <div class="home-example-pagination" data-home-example-pagination role="group" aria-label="Choose a video example"><button type="button" data-home-example-dot="0" aria-label="Show example 1：Behind the curtain" aria-pressed="true"></button><button type="button" data-home-example-dot="1" aria-label="Show example 2：The art of movement" aria-pressed="false"></button><button type="button" data-home-example-dot="2" aria-label="Show example 3：Lantern-lit streets" aria-pressed="false"></button></div>
-        <div data-home-examples class="home-example-controls"><span class="home-carousel-caption"><span data-home-example-count>01 / 03</span><span>Auto-playing examples</span></span><button class="home-use-prompt" type="button" data-home-try>Use this prompt ↗</button></div>
+        <div class="home-panel-heading"><div><p class="eyebrow" data-home-example-label>VIDEO REFERENCE</p><h3 data-home-example-title>Front-row confidence</h3></div><span class="home-live-dot" hidden></span></div>
+        <div class="home-video-stage"><video data-home-player src="/assets/seedance25-samples/front-row-confidence.mp4" poster="/assets/seedance25-samples/front-row-confidence.webp" controls autoplay muted playsinline preload="metadata" aria-label="Example or generated video"></video><div class="home-pending" data-home-pending role="status" hidden><span class="home-spinner"></span><strong data-home-pending-text>Generating your video…</strong><small>Your result will appear right here.</small></div></div>
+        <div class="home-example-pagination" data-home-example-pagination role="group" aria-label="Choose a video example"><button type="button" data-home-example-dot="0" aria-label="Show example 1：Front-row confidence" aria-pressed="true"></button><button type="button" data-home-example-dot="1" aria-label="Show example 2：Fire and shadow" aria-pressed="false"></button><button type="button" data-home-example-dot="2" aria-label="Show example 3：Behind the curtain" aria-pressed="false"></button></div>
+        <div data-home-examples class="home-example-controls"><span class="home-carousel-caption"><span data-home-example-count>01 / 03</span></span><div class="home-prompt-action"><button class="home-use-prompt" type="button" data-home-try>Use this prompt ↗</button><p class="video-example-note">AI results vary and won’t exactly match the example.</p></div></div>
         <div class="home-result-actions" data-home-result hidden><a class="button primary" data-home-download download="minimax-h3-video.mp4" target="_blank" rel="noopener">Download video ↓</a><a href="/app/video/seedance-2-5?from=home" data-video-workbench>Continue creating ↗</a></div>
         <button class="home-use-prompt" data-home-resume type="button" hidden>Continue checking progress</button>
       </div>
     </section>
     <section class="video-showcase home-showcase" id="showcase" aria-label="Seedance video showcase">
       <h2 class="container showcase-heading">Get Inspired</h2>
+      <p class="container video-example-note">AI results vary and won’t exactly match the example.</p>
       <div class="container video-grid">
+        <article class="showcase-card">
+          <button class="showcase-preview-button" type="button" data-video-src="/assets/seedance25-samples/front-row-confidence.mp4" aria-label="Play: Front-row confidence"><img class="showcase-preview" src="/assets/seedance25-samples/front-row-confidence.webp" width="640" height="360" loading="lazy" decoding="async" alt="Front-row confidence"><span class="showcase-play" aria-hidden="true"></span></button>
+          <div class="showcase-meta"><div class="showcase-copy"><div class="showcase-title-row"><strong>Front-row confidence</strong><a class="showcase-try" href="/app/video/seedance-2-5?prompt=A+10-second+photorealistic+fashion-event+video%2C+16%3A9%2C+one+continuous+shot+in+bright+natural+daylight.+An+adult+woman+with+long%2C+loose+dark+hair+sits+cross-legged+in+a+cream+upholstered+armchair+with+polished+metal+armrests.+She+wears+an+elegant+black+halter-neck%2C+wide-leg+jumpsuit+and+a+delicate+gold+bracelet.+Oversized+black+sunglasses+rest+on+her+head.+A+large%2C+softly+defocused+crowd+behind+a+dark+waist-high+barrier+applauds%2C+raises+phones+and+cameras%2C+and+reacts+enthusiastically.+A+broad+concrete+grandstand+fills+the+upper+background.%0A0%E2%80%931.2s%3A+Eye-level%2C+centered+medium+shot.+She+rests+both+forearms+on+the+chair%2C+looks+directly+into+the+lens+and+makes+a+subtle%2C+confident+head+movement.+Keep+her+expression+relaxed+and+self-assured%3B+a+light+breeze+moves+a+few+strands+of+hair.%0A1.2%E2%80%933.4s%3A+She+raises+her+right+hand%2C+grips+the+upper+corner+of+the+sunglasses%2C+and+smoothly+slides+them+from+the+top+of+her+head+onto+her+face.+Track+the+fingers+and+glasses+naturally+without+changing+their+shape.+Her+other+arm+stays+relaxed+on+the+armrest.%0A3.4%E2%80%935.2s%3A+Still+holding+the+frame%2C+she+lowers+the+sunglasses+slightly+down+her+nose%2C+tilts+her+head+and+looks+over+the+lenses+at+the+camera+with+a+restrained%2C+playful+smile.+Maintain+sharp+eyes+and+natural+skin+texture+while+the+audience+continues+moving+softly+behind+her.%0A5.2%E2%80%936.7s%3A+She+takes+the+sunglasses+off+and+leans+toward+the+camera.+Her+face+briefly+fills+more+of+the+frame%3B+her+hair+swings+forward+with+the+motion.+Keep+the+lens+perspective+natural%2C+with+no+sudden+cut+or+facial+distortion.%0A6.7%E2%80%9310s%3A+She+rises+smoothly+from+the+chair.+The+camera+rapidly+but+steadily+dollies+backward+to+reveal+her+full+outfit%2C+several+matching+cream+chairs+and+the+cheering+audience.+She+shifts+her+weight%2C+sways+her+shoulders+and+takes+a+small%2C+poised+step%2C+ending+in+a+relaxed+standing+pose.%0ALook%3A+premium+live-action+fashion+footage%2C+warm+neutral+skin+tones%2C+realistic+black+fabric+folds%2C+soft+background+bokeh+and+coherent+sunlit+shadows.+Preserve+the+same+face%2C+outfit%2C+chair+and+crowd+throughout.+Natural+hands%2C+stable+sunglasses%2C+continuous+movement%3B+no+cuts%2C+captions+or+added+graphics.&amp;duration=10&amp;aspect_ratio=16%3A9">Try it ↗</a></div><span>Video reference · 10s</span></div></div>
+        </article>
+        <article class="showcase-card">
+          <button class="showcase-preview-button" type="button" data-video-src="/assets/seedance25-samples/fire-and-shadow-duel.mp4" aria-label="Play: Fire and shadow"><img class="showcase-preview" src="/assets/seedance25-samples/fire-and-shadow-duel.webp" width="640" height="360" loading="lazy" decoding="async" alt="Fire and shadow"><span class="showcase-play" aria-hidden="true"></span></button>
+          <div class="showcase-meta"><div class="showcase-copy"><div class="showcase-title-row"><strong>Fire and shadow</strong><a class="showcase-try" href="/app/video/seedance-2-5?prompt=A+10-second+high-energy+2D+anime+fight%2C+16%3A9+widescreen%2C+with+crisp+hand-drawn+linework%2C+detailed+cel+shading+and+fluid+action+animation.+Two+young+adult+male+fighters+battle+on+a+vast%2C+dark%2C+cracked+stone+platform+beneath+a+smoky+gray+sky+with+a+muted+pink+horizon.+Fighter+A+has+spiky+orange+hair%2C+a+loose+ivory+hooded+jacket+over+black+clothing%2C+dark+trousers+and+boots%3B+bright+orange-gold+fire+wraps+around+his+fist.+Fighter+B+has+spiky+dark+hair+with+burgundy+highlights%2C+a+torn+black+outer+layer+over+a+pale+shirt+and+dark+trousers%3B+black+ink-like+energy+ribbons+with+vivid+violet+cores+stream+from+his+body.+Keep+both+designs+consistent.%0A0%E2%80%931.2s%3A+Low%2C+wide+side+view+as+both+fighters+sprint+toward+each+other+and+trade+a+close-range+strike.+Their+feet+kick+up+pale+dust+across+the+tiles.+Orange+flame+arcs+sweep+from+the+left%2C+meeting+black-and-purple+energy+from+the+right%3B+sparks+burst+between+them.+Use+strong+directional+motion+and+readable+silhouettes.%0A1.2%E2%80%932.6s%3A+Rapid+close-up+cuts%3A+orange-haired+fighter+leaning+forward+with+a+determined+grin+and+fire+illuminating+his+sleeve%3B+then+an+oblique+close-up+of+the+dark-haired+fighter%2C+jaw+clenched+and+eyes+focused%2C+with+his+opponent+and+burning+fist+still+readable+behind+him.+Track+alongside+their+motion.%0A2.6%E2%80%934.3s%3A+Return+to+a+dynamic+side+view.+The+orange-haired+fighter+swings+a+broad%2C+blazing+punch%3B+his+opponent+ducks+low+and+rushes+past%2C+one+hand+skimming+near+the+stone+floor.+Long+orange+fire+trails+and+jagged+black-violet+ribbons+describe+their+opposing+paths.+Cloth%2C+hair%2C+dust+and+fragments+follow+the+momentum.%0A4.3%E2%80%936.7s%3A+A+fast+rising%2C+rotating+camera+follows+their+clash+upward.+Briefly+look+down+over+sweeping+energy+arcs%2C+then+track+the+two+fighters+crossing+in+midair.+Use+foreshortening%2C+speed+streaks%2C+sharp+silhouette+changes+and+a+few+deliberate+motion-smear+frames%3B+keep+their+positions+intelligible.%0A6.7%E2%80%938.8s%3A+The+orange-haired+fighter+launches+toward+the+lens%2C+blazing+fist+leading.+Pull+backward+rapidly+with+radial+speed+lines%2C+then+reveal+his+low+dash+over+the+stone+platform+and+a+thin+dust+wake.%0A8.8%E2%80%9310s%3A+Build+into+a+final+collision%3A+a+short+high-contrast+black-and-white+impact+flash+and+explosive+radial+strokes%2C+followed+by+the+fighters+converging+amid+orange+sparks+and+violet-black+energy.%0AUse+punchy+cuts+and+forceful+camera+moves%2C+not+a+continuous+take.+Keep+impacts+non-graphic.+No+subtitles+or+added+graphic+overlays.&amp;duration=10&amp;aspect_ratio=16%3A9">Try it ↗</a></div><span>Video reference · 10s</span></div></div>
+        </article>
         <article class="showcase-card">
           <button class="showcase-preview-button" type="button" data-video-src="/assets/seedance25-samples/backstage.mp4" aria-label="Play: Behind the curtain"><img class="showcase-preview" src="/assets/seedance25-samples/backstage.webp" width="640" height="360" loading="lazy" decoding="async" alt="Behind the curtain"><span class="showcase-play" aria-hidden="true"></span></button>
           <div class="showcase-meta"><div class="showcase-copy"><div class="showcase-title-row"><strong>Behind the curtain</strong><a class="showcase-try" href="#create" data-home-focus>Try it ↗</a></div><span>Seedance 2.5</span></div></div>
         </article>
         <article class="showcase-card">
-          <button class="showcase-preview-button" type="button" data-video-src="/assets/seedance25-samples/opera.mp4" aria-label="Play: The art of movement"><img class="showcase-preview" src="/assets/seedance25-samples/opera.webp" width="640" height="360" loading="lazy" decoding="async" alt="The art of movement"><span class="showcase-play" aria-hidden="true"></span></button>
-          <div class="showcase-meta"><div class="showcase-copy"><div class="showcase-title-row"><strong>The art of movement</strong><a class="showcase-try" href="#create" data-home-focus>Try it ↗</a></div><span>Seedance 2.5</span></div></div>
+          <button class="showcase-preview-button" type="button" data-video-src="/assets/seedance25-samples/clockwork.mp4" aria-label="Play: Clockwork worlds"><img class="showcase-preview" src="/assets/seedance25-samples/clockwork.webp" width="640" height="360" loading="lazy" decoding="async" alt="Clockwork worlds"><span class="showcase-play" aria-hidden="true"></span></button>
+          <div class="showcase-meta"><div class="showcase-copy"><div class="showcase-title-row"><strong>Clockwork worlds</strong><a class="showcase-try" href="#create" data-home-focus>Try it ↗</a></div><span>Seedance 2.5</span></div></div>
         </article>
         <article class="showcase-card">
-          <button class="showcase-preview-button" type="button" data-video-src="/assets/seedance25-samples/painterly.mp4" aria-label="Play: Lantern-lit streets"><img class="showcase-preview" src="/assets/seedance25-samples/painterly.webp" width="640" height="360" loading="lazy" decoding="async" alt="Lantern-lit streets"><span class="showcase-play" aria-hidden="true"></span></button>
-          <div class="showcase-meta"><div class="showcase-copy"><div class="showcase-title-row"><strong>Lantern-lit streets</strong><a class="showcase-try" href="#create" data-home-focus>Try it ↗</a></div><span>Seedance 2.5</span></div></div>
+          <button class="showcase-preview-button" type="button" data-video-src="/assets/seedance25-samples/desert-museum.mp4" aria-label="Play: Museum above the dunes"><img class="showcase-preview" src="/assets/seedance25-samples/desert-museum.webp" width="640" height="360" loading="lazy" decoding="async" alt="Museum above the dunes"><span class="showcase-play" aria-hidden="true"></span></button>
+          <div class="showcase-meta"><div class="showcase-copy"><div class="showcase-title-row"><strong>Museum above the dunes</strong><a class="showcase-try" href="#create" data-home-focus>Try it ↗</a></div><span>Seedance 2.5</span></div></div>
         </article>
         <article class="showcase-card">
           <button class="showcase-preview-button" type="button" data-video-src="/assets/seedance25-samples/orchestra.mp4" aria-label="Play: A night at the concert hall"><img class="showcase-preview" src="/assets/seedance25-samples/orchestra.webp" width="640" height="360" loading="lazy" decoding="async" alt="A night at the concert hall"><span class="showcase-play" aria-hidden="true"></span></button>
@@ -348,7 +366,7 @@
 <!-- SITE_TRUST_START -->
 <div class="trust-footer trust-footer-compact" data-site-trust>
   <span class="trust-copyright">© 2026 ColdStone Technology Co., Ltd.</span>
-  <nav aria-label="Service and policies"><a href="/privacy">Privacy</a><span aria-hidden="true">·</span><a href="/terms">Terms</a><span aria-hidden="true">·</span><a href="/refund-policy">Refund Policy</a><span aria-hidden="true">·</span><button type="button" class="footer-contact-trigger" popovertarget="footer-contact">Contact</button></nav>
+  <nav aria-label="Service and policies"><a href="/privacy" target="_blank" rel="noopener noreferrer">Privacy</a><span aria-hidden="true">·</span><a href="/terms" target="_blank" rel="noopener noreferrer">Terms</a><span aria-hidden="true">·</span><a href="/refund-policy" target="_blank" rel="noopener noreferrer">Refund Policy</a><span aria-hidden="true">·</span><button type="button" class="footer-contact-trigger" popovertarget="footer-contact">Contact</button></nav>
   <div id="footer-contact" class="footer-contact-popover" popover="auto" role="dialog" aria-label="Contact us">
     <button type="button" class="footer-contact-close" popovertarget="footer-contact" popovertargetaction="hide" aria-label="Close">×</button>
     <h2>Contact us</h2>
@@ -362,9 +380,12 @@
 
 
 
+
+
 </footer>
   <script src="./main.js"></script>
-  <script type="module" src="/assets/home-video.js?v=20261101-credit-packs"></script>
+  <script type="module" src="/assets/home-video.js?v=1d6d2a2e2a6e"></script>
 <script src="/assets/site-contact.js?v=20261101-contact" defer></script>
+  <script type="module" src="/assets/credit-pack-offer-ui.mjs?v=20261106-fixed"></script>
 </body>
 </html>

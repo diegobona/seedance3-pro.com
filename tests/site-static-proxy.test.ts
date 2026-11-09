@@ -5,6 +5,9 @@ import { localeRedirect } from '../app/site-locale.mjs'
 
 test('www and HTML aliases redirect permanently to the same non-www clean document', () => {
   for (const [source, destination] of [
+    ['http://seedance3-pro.com/zh/app/video/seedance-2-5', 'https://seedance3-pro.com/zh/app/video/seedance-2-5'],
+    ['http://seedance3-pro.com/blog?ref=partner', 'https://seedance3-pro.com/blog?ref=partner'],
+    ['http://www.seedance3-pro.com/blog.html', 'https://seedance3-pro.com/blog'],
     ['https://www.seedance3-pro.com/', 'https://seedance3-pro.com/'],
     ['https://www.seedance3-pro.com/blog', 'https://seedance3-pro.com/blog'],
     ['https://seedance3-pro.com/blog.html', 'https://seedance3-pro.com/blog'],

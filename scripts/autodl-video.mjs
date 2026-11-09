@@ -1,3 +1,4 @@
+import { validGuestVideoInput } from '../app/guest-video-input.mjs';
 const AUTODL_RESOLUTIONS = {
   "480p": {
     "9:16": "480p竖",
@@ -12,7 +13,7 @@ const AUTODL_RESOLUTIONS = {
 };
 const MAX_VIDEO_REQUEST_BYTES = 16 * 1024;
 const MAX_PROMPT_LENGTH = 10_000;
-const VIDEO_REQUEST_FIELDS = new Set(["prompt", "duration", "resolution", "aspectRatio", "referenceImageIds"]);
+const VIDEO_REQUEST_FIELDS = new Set(["prompt", "duration", "resolution", "aspectRatio", "referenceImageIds", "optimizePrompt", "inputMode"]);
 const ALLOWED_DURATIONS = new Set([5, 10, 15]);
 const ALLOWED_RESOLUTIONS = new Set(["480p", "768p"]);
 const ALLOWED_ASPECT_RATIOS = new Set(["9:16", "16:9", "1:1"]);
@@ -108,6 +109,9 @@ export async function preflightVideoGenerationRequest(request) {
   if (!ALLOWED_ASPECT_RATIOS.has(payload.aspectRatio)) {
     return invalidRequest("Aspect ratio must be 9:16, 16:9, or 1:1.", 400);
   }
+  if (payload.optimizePrompt !== undefined && typeof payload.optimizePrompt !== "boolean") {
+    return invalidRequest("optimizePrompt must be a boolean.", 400);
+  }
   const ids = payload.referenceImageIds;
   if (ids !== undefined && (!Array.isArray(ids) || ids.length < 1 || ids.length > 9
     || new Set(ids).size !== ids.length
@@ -115,6 +119,9 @@ export async function preflightVideoGenerationRequest(request) {
     return invalidRequest("Choose 1 to 9 valid reference images.", 400);
   }
 
+  if (payload.inputMode !== undefined && !validGuestVideoInput(payload.inputMode, ids?.length ?? 0)) {
+    return invalidRequest('Choose up to 5 reference images, or a first frame with an optional last frame.', 400);
+  }
   return {
     ok: true,
     payload: {
@@ -122,6 +129,8 @@ export async function preflightVideoGenerationRequest(request) {
       duration: payload.duration,
       resolution: payload.resolution,
       aspectRatio: payload.aspectRatio,
+      ...(payload.inputMode !== undefined ? { inputMode: payload.inputMode } : {}),
+      ...(payload.optimizePrompt !== undefined ? { optimizePrompt: payload.optimizePrompt } : {}),
       ...(ids ? { referenceImageIds: ids } : {})
     }
   };

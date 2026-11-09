@@ -1,0 +1,341 @@
+{
+  "name": "nudge_futurepedia",
+  "url": "https://nudgescout.com/website-data/futurepedia.io/",
+  "final_url": "https://nudgescout.com/website-data/futurepedia.io/",
+  "status": 200,
+  "bytes": 23530,
+  "meta": [
+    {
+      "name": "toolfound-verify",
+      "content": "cc016590f5eb6d25e185700bdcd2f0fb094266a1d681f826"
+    },
+    {
+      "charset": "UTF-8"
+    },
+    {
+      "name": "viewport",
+      "content": "width=device-width, initial-scale=1.0"
+    },
+    {
+      "name": "description",
+      "content": "Review the saved website record for futurepedia.io. Core search and backlink data are not yet available."
+    },
+    {
+      "name": "robots",
+      "content": "noindex,follow"
+    },
+    {
+      "name": "theme-color",
+      "content": "#ffffff"
+    },
+    {
+      "property": "og:type",
+      "content": "website"
+    },
+    {
+      "property": "og:site_name",
+      "content": "NudgeScout"
+    },
+    {
+      "property": "og:locale",
+      "content": "en_US"
+    },
+    {
+      "property": "og:title",
+      "content": "futurepedia.io Website Data Record | NudgeScout"
+    },
+    {
+      "property": "og:description",
+      "content": "Review the saved website record for futurepedia.io. Core search and backlink data are not yet available."
+    },
+    {
+      "property": "og:url",
+      "content": "https://nudgescout.com/website-data/futurepedia.io/"
+    },
+    {
+      "property": "og:image",
+      "content": "https://nudgescout.com/nudgescout-share-en-20261012.png"
+    },
+    {
+      "property": "og:image:alt",
+      "content": "NudgeScout: Find the right sites. Start real conversations."
+    },
+    {
+      "name": "twitter:card",
+      "content": "summary_large_image"
+    },
+    {
+      "name": "twitter:title",
+      "content": "futurepedia.io Website Data Record | NudgeScout"
+    },
+    {
+      "name": "twitter:description",
+      "content": "Review the saved website record for futurepedia.io. Core search and backlink data are not yet available."
+    },
+    {
+      "name": "twitter:image",
+      "content": "https://nudgescout.com/nudgescout-share-en-20261012.png"
+    },
+    {
+      "name": "twitter:image:alt",
+      "content": "NudgeScout: Find the right sites. Start real conversations."
+    }
+  ],
+  "links": [
+    {
+      "class": "attio-wordmark",
+      "href": "/",
+      "aria-label": "NudgeScout home",
+      "text": "NudgeScout",
+      "tag": "<a class=\"attio-wordmark\" href=\"/\" aria-label=\"NudgeScout home\">"
+    },
+    {
+      "href": "/backlink-checker",
+      "text": "Backlink checker",
+      "tag": "<a href=\"/backlink-checker\">"
+    },
+    {
+      "href": "/backlink-outreach",
+      "text": "AI outreach",
+      "tag": "<a href=\"/backlink-outreach\">"
+    },
+    {
+      "href": "/contact-finder",
+      "text": "Find contacts",
+      "tag": "<a href=\"/contact-finder\">"
+    },
+    {
+      "href": "/backlink-sites",
+      "text": "Link opportunities",
+      "tag": "<a href=\"/backlink-sites\">"
+    },
+    {
+      "href": "/backlink-gap",
+      "text": "Backlink gap",
+      "tag": "<a href=\"/backlink-gap\">"
+    },
+    {
+      "href": "/free-backlink-sites",
+      "text": "Free backlinks",
+      "tag": "<a href=\"/free-backlink-sites\">"
+    },
+    {
+      "href": "/website-data/",
+      "aria-current": "page",
+      "text": "Website insights",
+      "tag": "<a href=\"/website-data/\" aria-current=\"page\">"
+    },
+    {
+      "href": "/guides",
+      "text": "Growth guides",
+      "tag": "<a href=\"/guides\">"
+    },
+    {
+      "href": "/website-data/futurepedia.io/",
+      "hreflang": "en",
+      "aria-current": "page",
+      "class": "is-active",
+      "text": "EN",
+      "tag": "<a href=\"/website-data/futurepedia.io/\" hrefLang=\"en\" aria-current=\"page\" class=\"is-active\">"
+    },
+    {
+      "href": "/zh/website-data/futurepedia.io/",
+      "hreflang": "zh-CN",
+      "class": "",
+      "text": "中文",
+      "tag": "<a href=\"/zh/website-data/futurepedia.io/\" hrefLang=\"zh-CN\" class=\"\">"
+    },
+    {
+      "class": "public-signin",
+      "href": "/app",
+      "text": "Sign in",
+      "tag": "<a class=\"public-signin\" href=\"/app\">"
+    },
+    {
+      "class": "public-start",
+      "href": "/app",
+      "text": "Start for free",
+      "tag": "<a class=\"public-start\" href=\"/app\">"
+    },
+    {
+      "href": "/",
+      "text": "Home",
+      "tag": "<a href=\"/\">"
+    },
+    {
+      "href": "/website-data/",
+      "text": "Website data",
+      "tag": "<a href=\"/website-data/\">"
+    },
+    {
+      "href": "https://futurepedia.io/",
+      "target": "_blank",
+      "rel": "noopener noreferrer nofollow",
+      "title": "https://futurepedia.io/",
+      "text": "futurepedia.io",
+      "tag": "<a href=\"https://futurepedia.io/\" target=\"_blank\" rel=\"noopener noreferrer nofollow\" title=\"https://futurepedia.io/\">"
+    },
+    {
+      "href": "/app",
+      "class": "wd-button is-primary",
+      "text": "Find similar backlink sites",
+      "tag": "<a href=\"/app\" class=\"wd-button is-primary\">"
+    },
+    {
+      "class": "wd-button",
+      "href": "#query-more",
+      "text": "Explore another website",
+      "tag": "<a class=\"wd-button\" href=\"#query-more\">"
+    },
+    {
+      "href": "https://twitter.com/intent/tweet?text=futurepedia.io+Website+Data+Record&url=https%3A%2F%2Fnudgescout.com%2Fwebsite-data%2Ffuturepedia.io%2F",
+      "target": "_blank",
+      "rel": "noopener noreferrer",
+      "aria-label": "Share on X (opens a new tab)",
+      "text": "X",
+      "tag": "<a href=\"https://twitter.com/intent/tweet?text=futurepedia.io+Website+Data+Record&amp;url=https%3A%2F%2Fnudgescout.com%2Fwebsite-data%2Ffuturepedia.io%2F\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Share on X (opens a new tab)\">"
+    },
+    {
+      "href": "https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fnudgescout.com%2Fwebsite-data%2Ffuturepedia.io%2F",
+      "target": "_blank",
+      "rel": "noopener noreferrer",
+      "aria-label": "Share on LinkedIn (opens a new tab)",
+      "text": "LinkedIn",
+      "tag": "<a href=\"https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fnudgescout.com%2Fwebsite-data%2Ffuturepedia.io%2F\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Share on LinkedIn (opens a new tab)\">"
+    },
+    {
+      "href": "https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fnudgescout.com%2Fwebsite-data%2Ffuturepedia.io%2F",
+      "target": "_blank",
+      "rel": "noopener noreferrer",
+      "aria-label": "Share on Facebook (opens a new tab)",
+      "text": "Facebook",
+      "tag": "<a href=\"https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fnudgescout.com%2Fwebsite-data%2Ffuturepedia.io%2F\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Share on Facebook (opens a new tab)\">"
+    },
+    {
+      "href": "https://api.whatsapp.com/send?text=futurepedia.io+Website+Data+Record%0Ahttps%3A%2F%2Fnudgescout.com%2Fwebsite-data%2Ffuturepedia.io%2F",
+      "target": "_blank",
+      "rel": "noopener noreferrer",
+      "aria-label": "Share on WhatsApp (opens a new tab)",
+      "text": "WhatsApp",
+      "tag": "<a href=\"https://api.whatsapp.com/send?text=futurepedia.io+Website+Data+Record%0Ahttps%3A%2F%2Fnudgescout.com%2Fwebsite-data%2Ffuturepedia.io%2F\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Share on WhatsApp (opens a new tab)\">"
+    },
+    {
+      "href": "https://t.me/share/url?url=https%3A%2F%2Fnudgescout.com%2Fwebsite-data%2Ffuturepedia.io%2F&text=futurepedia.io+Website+Data+Record",
+      "target": "_blank",
+      "rel": "noopener noreferrer",
+      "aria-label": "Share on Telegram (opens a new tab)",
+      "text": "Telegram",
+      "tag": "<a href=\"https://t.me/share/url?url=https%3A%2F%2Fnudgescout.com%2Fwebsite-data%2Ffuturepedia.io%2F&amp;text=futurepedia.io+Website+Data+Record\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Share on Telegram (opens a new tab)\">"
+    },
+    {
+      "class": "wd-text-link wd-directory-link",
+      "href": "/website-data/",
+      "text": "Browse the website data directory",
+      "tag": "<a class=\"wd-text-link wd-directory-link\" href=\"/website-data/\">"
+    },
+    {
+      "href": "/app",
+      "class": "wd-button is-primary",
+      "text": "Find similar backlink sites",
+      "tag": "<a href=\"/app\" class=\"wd-button is-primary\">"
+    },
+    {
+      "class": "ps-footer-brand",
+      "href": "/",
+      "text": "NudgeScout",
+      "tag": "<a class=\"ps-footer-brand\" href=\"/\">"
+    },
+    {
+      "href": "/backlink-outreach",
+      "text": "AI outreach",
+      "tag": "<a href=\"/backlink-outreach\">"
+    },
+    {
+      "href": "/contact-finder",
+      "text": "Find contacts",
+      "tag": "<a href=\"/contact-finder\">"
+    },
+    {
+      "href": "/backlink-sites",
+      "text": "Link opportunities",
+      "tag": "<a href=\"/backlink-sites\">"
+    },
+    {
+      "href": "/free-backlink-sites",
+      "text": "Free backlinks",
+      "tag": "<a href=\"/free-backlink-sites\">"
+    },
+    {
+      "href": "/backlink-checker",
+      "text": "Backlink checker",
+      "tag": "<a href=\"/backlink-checker\">"
+    },
+    {
+      "href": "/backlink-gap",
+      "text": "Backlink gap",
+      "tag": "<a href=\"/backlink-gap\">"
+    },
+    {
+      "href": "/website-data/",
+      "text": "Website insights",
+      "tag": "<a href=\"/website-data/\">"
+    },
+    {
+      "href": "/guides",
+      "text": "Growth guides",
+      "tag": "<a href=\"/guides\">"
+    },
+    {
+      "href": "/backlink-api",
+      "text": "Backlink API",
+      "tag": "<a href=\"/backlink-api\">"
+    },
+    {
+      "href": "/mcp",
+      "text": "MCP",
+      "tag": "<a href=\"/mcp\">"
+    },
+    {
+      "href": "/app",
+      "text": "Sign in",
+      "tag": "<a href=\"/app\">"
+    },
+    {
+      "href": "/app",
+      "text": "Start a task",
+      "tag": "<a href=\"/app\">"
+    },
+    {
+      "href": "/cdn-cgi/l/email-protection#a1c9c4cdcdcee1c2cecfd7c4d3d5ced28fc0c8",
+      "text": "Contact",
+      "tag": "<a href=\"/cdn-cgi/l/email-protection#a1c9c4cdcdcee1c2cecfd7c4d3d5ced28fc0c8\">"
+    },
+    {
+      "href": "/privacy",
+      "text": "Privacy",
+      "tag": "<a href=\"/privacy\">"
+    },
+    {
+      "href": "/terms",
+      "text": "Terms",
+      "tag": "<a href=\"/terms\">"
+    },
+    {
+      "href": "/website-data/futurepedia.io/",
+      "hreflang": "en",
+      "aria-current": "page",
+      "class": "is-active",
+      "text": "EN",
+      "tag": "<a href=\"/website-data/futurepedia.io/\" hrefLang=\"en\" aria-current=\"page\" class=\"is-active\">"
+    },
+    {
+      "href": "/zh/website-data/futurepedia.io/",
+      "hreflang": "zh-CN",
+      "class": "",
+      "text": "中文",
+      "tag": "<a href=\"/zh/website-data/futurepedia.io/\" hrefLang=\"zh-CN\" class=\"\">"
+    }
+  ],
+  "hidden_instruction_candidates": [],
+  "text": "\n \n   \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     \n     {\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"WebPage\",\"@id\":\"https://nudgescout.com/website-data/futurepedia.io/#webpage\",\"name\":\"futurepedia.io Website Data Record | NudgeScout\",\"description\":\"Review the saved website record for futurepedia.io. Core search and backlink data are not yet available.\",\"url\":\"https://nudgescout.com/website-data/futurepedia.io/\",\"inLanguage\":\"en\",\"isAccessibleForFree\":true,\"isPartOf\":{\"@id\":\"https://nudgescout.com/#website\"},\"publisher\":{\"@id\":\"https://nudgescout.com/#organization\"},\"breadcrumb\":{\"@id\":\"https://nudgescout.com/website-data/futurepedia.io/#breadcrumbs\"}},{\"@type\":\"BreadcrumbList\",\"@id\":\"https://nudgescout.com/website-data/futurepedia.io/#breadcrumbs\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://nudgescout.com/\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Website data\",\"item\":\"https://nudgescout.com/website-data/\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"futurepedia.io\",\"item\":\"https://nudgescout.com/website-data/futurepedia.io/\"}]},{\"@type\":\"WebSite\",\"@id\":\"https://nudgescout.com/#website\",\"name\":\"NudgeScout\",\"url\":\"https://nudgescout.com/\",\"inLanguage\":[\"en\",\"zh-CN\"],\"publisher\":{\"@id\":\"https://nudgescout.com/#organization\"}},{\"@type\":\"Organization\",\"@id\":\"https://nudgescout.com/#organization\",\"name\":\"NudgeScout\",\"url\":\"https://nudgescout.com/\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://nudgescout.com/outreach-mark-192.png\"}}]} \n     futurepedia.io Website Data Record | NudgeScout \n     \n     \n     \n     \n   \n   \n     NudgeScout product trial runs until  January 1, 2027 . NudgeScout Backlink checker AI outreach Find contacts Link opportunities Backlink gap Free backlinks Website insights Growth guides EN 中文 Sign in Start for free Home / Website data / futurepedia.io Search futurepedia.io Website Data Record Futurepedia is a free site to help you find the best AI tools and software to make your work and life more efficient and… futurepedia.io Find similar backlink sites Explore another website Share Share this page futurepedia.io Website Data Record nudgescout.com X LinkedIn Facebook WhatsApp Telegram Page link Copy Traffic, keyword and backlink data are not yet available for this website. Use the website information and official links above to continue your research. Browse the website data directory Find your next backlink opportunity. Compare websites with a similar topic, market and traffic scale. Find similar backlink sites Your request stays editable after sign-in. Which other website interests you? Enter a domain to continue your research in the marketplace. Continue Your domain is kept when you sign in. NudgeScout Find relevant websites and contacts, send outreach emails, and follow up on replies. Product AI outreach Find contacts Link opportunities Free backlinks Backlink checker Backlink gap Website insights Growth guides Account Backlink API MCP Sign in Start a task Contact Legal Privacy Terms © 2026 NudgeScout EN 中文 \n   {\"kind\":\"detail\",\"site\":{\"domain\":\"futurepedia.io\",\"name\":\"futurepedia.io\",\"profile\":{\"description\":\"Futurepedia is a free site to help you find the best AI tools and software to make your work and life more efficient and…\",\"sourceUrl\":\"https://www.futurepedia.io/\"},\"marketplace\":{\"primaryCountry\":null,\"primaryLanguage\":null,\"primaryLanguageCode\":null,\"primaryLocationCode\":null,\"categoryId\":null,\"publisherVerified\":false,\"homepageUrl\":\"https://futurepedia.io/\"},\"seo\":{\"server\":null,\"cms\":null,\"ipAddress\":null,\"topCountry\":null,\"trafficTrendDirection\":null,\"organicTraffic\":null,\"organicKeywords\":null,\"trafficCost\":null,\"top3Keywords\":null,\"top10Keywords\":null,\"top20Keywords\":null,\"top100Keywords\":null,\"paidTraffic\":null,\"paidKeywords\":null,\"authorityRank\":null,\"backlinks\":null,\"referringDomains\":null,\"referringMainDomains\":null,\"referringPages\":null,\"referringIps\":null,\"referringSubnets\":null,\"brokenBacklinks\":null,\"brokenPages\":null,\"dofollowBacklinks\":null,\"nofollowBacklinks\":null,\"dofollowRatio\":null,\"targetSpamScore\":null,\"backlinksSpamScore\":null,\"crawledPages\":null,\"internalLinksCount\":null,\"externalLinksCount\":null,\"trafficTrendPercent\":null,\"fetchedAt\":null,\"providerDataUpdatedAt\":null,\"backlinksFetchedAt\":null,\"technicalFetchedAt\":null,\"dofollowFetchedAt\":null},\"publicData\":{\"updatedAt\":null,\"datasets\":{\"backlinks\":{\"provider\":null,\"providerDataUpdatedAt\":null,\"fetchedAt\":null},\"technical\":{\"provider\":null,\"providerDataUpdatedAt\":null,\"fetchedAt\":null},\"dofollow\":{\"provider\":null,\"providerDataUpdatedAt\":null,\"fetchedAt\":null},\"keywords\":[],\"history\":[]}},\"seoDetail\":{\"markets\":[],\"history\":[],\"keywords\":[],\"referringDomains\":[],\"distributions\":[]},\"offers\":[],\"freePlatform\":{\"slug\":\"candidate-futurepedia-io\",\"name\":\"futurepedia\",\"domain\":\"futurepedia.io\",\"category\":\"ai\",\"submissionType\":\"unknown\",\"officialUrl\":\"https://futurepedia.io/\",\"actionUrl\":null,\"registrationRequired\":null,\"freeScopeVerified\":false,\"status\":\"unverified\",\"verifiedAt\":null,\"observedAt\":\"2026-10-07T07:23:03.605Z\",\"sourceKind\":\"homepage_metadata\",\"en\":{\"description\":\"Futurepedia is a free site to help you find the best AI tools and software to make your work and life more efficient and…\",\"freeScope\":\"Free participation has not been verified. Check the current official conditions.\",\"bestFor\":\"\",\"placement\":\"A public backlink placement has not been confirmed.\",\"requirements\":\"Check the official website for eligibility, account requirements and submission options.\",\"limitations\":\"This is a candidate, not a verified free submission opportunity.\"},\"zh\":{\"description\":\"公开简介：Futurepedia is a free site to help you find the best AI tools and software to make your work and life more efficient and…\",\"freeScope\":\"免费参与条件尚未核实，请查看当前官方说明。\",\"bestFor\":\"\",\"placement\":\"尚未确认可以获得公开展示的外链。\",\"requirements\":\"请在官网核对参与资格、账号要求与提交方式。\",\"limitations\":\"这是待核实候选站，尚不能视为已确认的免费提交机会。\"},\"sources\":[\"https://www.futurepedia.io/\"]},\"internalLinks\":{\"relatedSites\":[],\"referringDomains\":{}}},\"related\":[]} \n \n \n"
+}

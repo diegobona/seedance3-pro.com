@@ -1,0 +1,157 @@
+{
+  "input": "https://aitoolsdirectory.com/tool/runway",
+  "final": "https://aitoolsdirectory.com/tool/runway",
+  "status": 200,
+  "links": [
+    {
+      "class": "content-logo",
+      "href": "/",
+      "aria-label": "AI Tools Directory home"
+    },
+    {
+      "class": "header-search-all",
+      "href": "/#filters",
+      "data-astro-cid-2odkx2fk": null
+    },
+    {
+      "class": "hero-button",
+      "href": "/submit-tool"
+    },
+    {
+      "class": "hero-button",
+      "href": "/ads"
+    },
+    {
+      "class": "hero-button",
+      "href": "/deals"
+    },
+    {
+      "class": "page-back",
+      "href": "/",
+      "aria-label": "Back to AI Tools Directory",
+      "data-history-back": "true"
+    },
+    {
+      "class": "try-button tool-side-button",
+      "href": "https://runwayml.com/",
+      "rel": "external noopener",
+      "target": "_blank"
+    },
+    {
+      "class": "meta-pill meta-category",
+      "href": "/generative-video"
+    },
+    {
+      "href": "/tool/kling-ai"
+    },
+    {
+      "href": "/tool/revid"
+    },
+    {
+      "href": "/tool/luma-ai"
+    },
+    {
+      "href": "/tool/hailuo-ai"
+    },
+    {
+      "href": "/tool/pika"
+    },
+    {
+      "href": "/tool/dreamlux-ai"
+    },
+    {
+      "class": "black-button",
+      "href": "https://forms.aitoolsdirectory.com/form.html",
+      "target": "_blank",
+      "rel": "noopener"
+    },
+    {
+      "href": "/about"
+    },
+    {
+      "href": "/blog"
+    },
+    {
+      "href": "/newsletter"
+    },
+    {
+      "href": "/trends"
+    },
+    {
+      "href": "/communities"
+    },
+    {
+      "href": "/marketplace-directory"
+    },
+    {
+      "href": "/deals"
+    },
+    {
+      "href": "/black-friday"
+    },
+    {
+      "href": "/submit-tool"
+    },
+    {
+      "href": "/contact"
+    },
+    {
+      "href": "/privacy-policy"
+    },
+    {
+      "href": "/terms-of-use"
+    }
+  ],
+  "text": "Runway (function(){const GTM_CONTAINER_ID = \"GTM-NL4PZGZ\";\n\n      if (window.location.hostname === 'aitoolsdirectory.com' || window.location.hostname === 'www.aitoolsdirectory.com') {\n        window.dataLayer = window.dataLayer || [];\n        window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };\n        window.dataLayer.push({ 'gtm.start': Date.now(), event: 'gtm.js' });\n        const firstScript = document.getElementsByTagName('script')[0];\n        const tagManager = document.createElement('script');\n        tagManager.async = true;\n        tagManager.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_CONTAINER_ID}`;\n        firstScript.parentNode.insertBefore(tagManager, firstScript);\n      }\n    })(); {\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"Organization\",\"@id\":\"https://aitoolsdirectory.com/#organization\",\"name\":\"AI Tools Directory\",\"url\":\"https://aitoolsdirectory.com/\",\"logo\":\"https://aitoolsdirectory.com/logo.png\",\"sameAs\":[\"https://www.threads.com/@theaitoolsdirectory\",\"https://x.com/aitoolsdirect\",\"https://www.youtube.com/@AIToolsDirectoryYT\"]},{\"@type\":\"WebSite\",\"@id\":\"https://aitoolsdirectory.com/#website\",\"name\":\"AI Tools Directory\",\"url\":\"https://aitoolsdirectory.com/\",\"publisher\":{\"@id\":\"https://aitoolsdirectory.com/#organization\"}},{\"@type\":\"WebPage\",\"@id\":\"https://aitoolsdirectory.com/tool/runway#webpage\",\"url\":\"https://aitoolsdirectory.com/tool/runway\",\"name\":\"Runway\",\"description\":\"Runway: The AI video tool that professional filmmakers actually use. Gen-4.5 produces cinematic outputs from text or images with director-level control over.\",\"mainEntity\":{\"@id\":\"https://aitoolsdirectory.com/tool/runway#software\"}},{\"@type\":\"SoftwareApplication\",\"@id\":\"https://aitoolsdirectory.com/tool/runway#software\",\"name\":\"Runway\",\"description\":\"Runway: The AI video tool that professional filmmakers actually use. Gen-4.5 produces cinematic outputs from text or images with director-level control over.\",\"applicationCategory\":\"MultimediaApplication\",\"applicationSubCategory\":[\"Generative Video\"],\"mainEntityOfPage\":{\"@id\":\"https://aitoolsdirectory.com/tool/runway#webpage\"},\"url\":\"https://aitoolsdirectory.com/tool/runway\",\"image\":\"https://assets.aitoolsdirectory.com/file/aitools/runway-ML.webp\"},{\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"AI Tools Directory\",\"item\":\"https://aitoolsdirectory.com/\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Runway\",\"item\":\"https://aitoolsdirectory.com/tool/runway\"}]}]} Search AI tools See all results  → Submit Tool Advertise Deals ← Back var e=document.querySelector(`.page-back[data-history-back=\"true\"]`);e&&e?.addEventListener(`click`,e=>{(document.referrer?new URL(document.referrer):null)?.origin===window.location.origin&&history.length>1&&(e.preventDefault(),history.back())}); TRY IT Freemium Generative Video Runway Runway fits in a different category from most AI video tools. Where the rest of the market competes on ease of use and template counts, Runway is genuinely built for production work -- the kind where someone has a brief, a deadline, and a client who will notice if the lighting is wrong. \n The flagship Gen-4.5 model is where most people start. You give it a scene description -- camera angle, lighting conditions, mood, motion -- and it renders a clip that actually follows those instructions rather than ignoring them in favor of whatever looked good in training data. Character consistency across scenes works from a single reference image, which solves a problem that derails a lot of AI video projects early. \n Aleph  is the feature that separates Runway from casual tools. It takes footage you already have and transforms it through natural language -- change the environment, restyle the shot, add elements, generate a camera angle you never filmed. For agencies doing product work where reshoots cost money, this is genuinely useful rather than just impressive. \n Act-Two  handles character performance: capture facial expressions, gestures, and voice from a real performer and map them onto any generated character. It's the closest thing to motion capture without the rig. Works for branded animated characters, stylized avatars, anything where you need a real human performance underneath an AI exterior. \n The  Apps library  covers the practical stuff -- remove objects from footage, upscale to 4K, change lighting in a scene, adjust time of day, lip-sync dialogue to a character. These aren't gimmicks. They save hours of post work on the kind of small fixes that pile up in a production schedule. \n One honest note: Runway has a learning curve. The interface rewards people who already understand video production concepts. If you're coming in without any background in camera work or editing, the free tier (125 credits) is worth using to test before committing to a paid plan. \n Pricing:  Free plan includes 125 credits. Standard is $12/month for 625 credits with watermark-free export. Pro runs $28/month for 2,250 credits with custom voices and advanced export options. Unlimited is $95/month for teams. Check the official Runway site for current pricing -- it updates regularly. \n Alternatives to Runway \n \n   Kling AI  — The closest competitor on output quality. Kling 3.0 produces 1080p video with strong physics and character consistency, and its free tier is more generous than Runway's. Better value for creators who don't need Runway's production-pipeline features. \n For a quicker route to short clips from prompts, still images, or visual references,  Revid  is a lighter weight AI video generator for social posts, product visuals, and creative concepts. \n   Luma AI (Dream Machine)  — Stronger on spatial depth and camera coherence than most tools. The Keyframe feature — set a start and end image, let the AI build the transition — has no real equivalent in Runway. Worth testing if camera work is the priority. \n   Hailuo AI  — Consistently produces the most atmospheric output in the category. Where Runway optimises for control and pipeline integration, Hailuo optimises for how the final clip actually looks and feels. Different strengths, worth having both bookmarked. \n   Pika  — If the use case is social content rather than production work, Pika is faster, cheaper, and more fun to use. Its Pikaffects physics simulations have no equivalent in Runway. Not a like-for-like replacement, but often the right tool for a different job. \n   Dreamlux  — The zero-friction option. No learning curve, no credit anxiety, watermark-free on the free tier. For quick social clips or early ideation where Runway's precision isn't needed yet. \n AI Tools Newsletter Get the latest updates on  AI software , picked for entrepreneurs and creators. Whether your goal is to automate workflows, enhance creative output, or boost productivity, it’s all here. Subscribe About Blog Newsletter AI Trends Communities AI marketplaces Deals Black Friday deals Submit Tool Contact Privacy Policy Terms of Use AI Tools Directory document.querySelectorAll(`a[href]`).forEach(e=>{let t=new URL(e.href,window.location.href);if((t.protocol===`http:`||t.protocol===`https:`)&&t.origin!==window.location.origin){e.target=`_blank`;let t=new Set((e.rel||``).split(/\\s+/).filter(Boolean));t.add(`noopener`),t.delete(`noreferrer`),e.rel=[...t].join(` `)}else t.origin===window.location.origin&&e.removeAttribute(`target`)}); \n",
+  "comment_count": 0,
+  "hidden_elements": [
+    {
+      "tag": "svg",
+      "attrs": {
+        "viewbox": "0 0 24 24",
+        "width": "20",
+        "height": "20",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "aria-hidden": "true",
+        "data-astro-cid-2odkx2fk": null
+      }
+    },
+    {
+      "tag": "svg",
+      "attrs": {
+        "viewbox": "0 0 24 24",
+        "width": "18",
+        "height": "18",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "aria-hidden": "true",
+        "data-astro-cid-2odkx2fk": null
+      }
+    },
+    {
+      "tag": "div",
+      "attrs": {
+        "class": "header-search-panel",
+        "hidden": null,
+        "data-astro-cid-2odkx2fk": null
+      }
+    },
+    {
+      "tag": "span",
+      "attrs": {
+        "aria-hidden": "true",
+        "data-astro-cid-2odkx2fk": null
+      }
+    },
+    {
+      "tag": "span",
+      "attrs": {
+        "aria-hidden": "true"
+      }
+    }
+  ],
+  "suspicious": []
+}

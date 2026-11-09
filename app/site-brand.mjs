@@ -1,4 +1,5 @@
 export const BRAND_VERSION = '20261028-checkout-ui';
+export const BRAND_STYLE_VERSION = '20261107-example-actions';
 export const BRAND_MARK = `/assets/seedance-mark.svg?v=${BRAND_VERSION}`;
 
 export function brandAssetUrl(path) {
@@ -17,5 +18,5 @@ export function withSiteBrand(html) {
     }
     return match;
   });
-  return output.replace('</head>', `  <link data-site-brand rel="stylesheet" href="/assets/site-brand.css?v=${BRAND_VERSION}">\n</head>`);
+  return output.replace('</head>', `  <link data-site-brand rel="stylesheet" href="/assets/site-brand.css?v=${BRAND_STYLE_VERSION}">\n</head>`);
 }

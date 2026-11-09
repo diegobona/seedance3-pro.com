@@ -1,15 +1,15 @@
 import { localizedPath } from './site-locale.mjs';
 
-export const SITE_PROMO_VERSION = '20261028-carousel';
+export const SITE_PROMO_VERSION = '20261106-video-rate';
 
 export function renderSitePromo(locale = 'en') {
   const zh = locale === 'zh';
   const slides = zh ? [
     ['无需登录即可免费使用', '立即创建您的第一段视频', '免费开始'],
-    ['AI 视频', '积分包 US$11.90 起', '立即尝试'],
+    ['AI 视频', 'US$0.01/秒', '立即尝试'],
   ] : [
     ['No login needed', 'Create your first video for free', 'Start for free'],
-    ['AI video', 'Packs from US$11.90', 'Try now'],
+    ['AI video', 'US$0.01/second', 'Try now'],
   ];
   return `<aside class="site-promo" aria-label="${zh ? '视频创作优惠' : 'Video creation offers'}" aria-roledescription="${zh ? '轮播' : 'carousel'}" data-site-promo>
   <div class="site-promo-inner">

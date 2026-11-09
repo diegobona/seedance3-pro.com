@@ -1,4 +1,5 @@
 import { REGISTERED_FREE_CREDITS_ENABLED } from '../../app/credit-policy.mjs'
+import { CREDIT_PACKS, creditPackValue, creditPackVideoExamples } from '../../assets/credit-packs.mjs'
 import { BRAND_MARK } from '../../app/site-brand.mjs'
 import { localizeHead } from '../lib/site-i18n'
 import { SiteLanguageSwitch } from '../components/site-language-switch'
@@ -52,6 +53,11 @@ function AppPage() {
 
 export function StudioPage({ initialModel = DEFAULT_MODEL_ID, modelLanding = false, landingPage }: { initialModel?: string; modelLanding?: boolean; landingPage?: 'flux-3' }) {
   const { t, path, locale } = useSiteI18n()
+  const entryPack = CREDIT_PACKS[0]
+  const entryValue = creditPackValue(entryPack)
+  const entryCredits = entryPack.credits.toLocaleString('en-US')
+  const entryVideoExamples = `${creditPackVideoExamples(entryPack, locale)}…`
+  const entryVideoCount = locale === 'zh' ? `${entryPack.videoCount} × 5 秒视频` : `${entryPack.videoCount} × 5s videos`
   const fluxLanding = landingPage === 'flux-3'
   const initiallyPose = initialModel === 'pose-to-image'
   const initiallyH3 = initialModel === 'minimax-h3'
@@ -166,16 +172,17 @@ export function StudioPage({ initialModel = DEFAULT_MODEL_ID, modelLanding = fal
                 <strong id="trial-notice-title">{trialNoticeTitle}</strong><span id="trial-guest-message" hidden={!(initialGuestImage || initialGuestVideo)}>{t('Try for free. No sign-up or login required.')}</span>
                 <p id="trial-allowance-message" className="studio-daily-allowance" hidden={!REGISTERED_FREE_CREDITS_ENABLED}>{dailyTrialBefore}<strong className="studio-trial-daily">{t("daily")}</strong>{dailyTrialAfter}</p>
                 <p id="daily-credit-reset-notice" hidden={!REGISTERED_FREE_CREDITS_ENABLED}>{t('Credits reset daily and do not accumulate.')}</p>
-                <p id="trial-purchase-message" hidden={REGISTERED_FREE_CREDITS_ENABLED}>{t(session?.user ? 'Buy credits to keep creating. Purchased credits never expire.' : initiallyVideo ? 'Two free videos, 5 seconds each. 10 seconds total.' : 'Guests get a one-time free trial.')}</p>
+                <p id="trial-purchase-message" hidden={REGISTERED_FREE_CREDITS_ENABLED}>{t(session?.user ? 'Buy credits to keep creating. Purchased credits never expire.' : initiallyVideo ? 'Two free videos, 5 seconds each.' : 'Guests get a one-time free trial.')}</p>
                 </div>
               </div>
               <div className="studio-trial-actions">
                 <div className="studio-pack-summary">
                   <CreditPackOffer />
-                  <p className="studio-pack-price">US$11.90 <small>{locale === 'zh' ? '1,100 积分' : '1,100 credits'}</small></p>
-                  <p id="studio-pack-output" className="studio-pack-output">{initiallyVideo
-                    ? locale === 'zh' ? '可生成总计 1,100 秒视频' : '1,100 seconds of video'
-                    : locale === 'zh' ? '可生成 1,100 张图片或 1,100 秒视频' : '1,100 images or 1,100 seconds of video'}</p>
+                  <p className="studio-pack-price">US${entryValue.price} <small>{entryCredits} {locale === 'zh' ? '积分' : 'credits'}</small> <strong id="studio-pack-rate" className="studio-pack-rate" hidden={!initiallyVideo}>US$0.01/second</strong></p>
+                  <p id="studio-pack-output" className="studio-pack-output" data-video={initiallyVideo}>{initiallyVideo
+                    ? entryVideoCount
+                    : locale === 'zh' ? `${entryCredits} 张图片，或 ${entryVideoExamples}` : `${entryCredits} images or ${entryVideoExamples}`}</p>
+                  <p id="studio-pack-durations" className="studio-pack-durations" hidden={!initiallyVideo}>5s · 10s · 15s</p>
                   <small>{locale === 'zh' ? '永久有效 · 无订阅' : 'Never expires · No subscription'}</small>
                 </div>
                 <CreditPackPurchase className="studio-credit-pack-link" showAssurance={false} />
